@@ -66,8 +66,29 @@ def main() -> None:
             fail(f"file exceeds the GitHub 100 MiB limit: {path.relative_to(site)}")
 
     demo_html = required[2].read_text(encoding="utf-8")
+    demo_js = required[3].read_text(encoding="utf-8")
+    demo_css = required[4].read_text(encoding="utf-8")
     if "vendor/d3-dag-1.2.2.iife.min.js" not in demo_html:
         fail("the demo does not load the vendored d3-dag bundle")
+
+    semantic_highlight_tokens = [
+        "activeClaimArrow",
+        "activeDefinitionArrow",
+        "activeScopeArrow",
+        "dependencyMarker(link.dataset.type, active)",
+    ]
+    missing_tokens = [token for token in semantic_highlight_tokens if token not in demo_js]
+    if missing_tokens:
+        fail(f"highlighting does not preserve dependency markers: {missing_tokens}")
+
+    active_edge_selectors = [
+        ".dependency-link.scientific_claim_dependency.query-active",
+        ".dependency-link.definition_dependency.query-active",
+        ".dependency-link.scope_dependency.query-active",
+    ]
+    missing_selectors = [selector for selector in active_edge_selectors if selector not in demo_css]
+    if missing_selectors:
+        fail(f"highlighting does not preserve dependency styles: {missing_selectors}")
 
     print(
         "PAGES_SITE_VALIDATION=PASS "

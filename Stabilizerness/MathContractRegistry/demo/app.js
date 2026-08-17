@@ -327,6 +327,15 @@ function setProfile(profileId) {
   }
 }
 
+function dependencyMarker(type, active = false) {
+  const markerByType = {
+    scientific_claim_dependency: active ? "activeClaimArrow" : "claimArrow",
+    definition_dependency: active ? "activeDefinitionArrow" : "definitionArrow",
+    scope_dependency: active ? "activeScopeArrow" : "scopeArrow"
+  };
+  return `url(#${markerByType[type]})`;
+}
+
 function renderMathematicsGraph() {
   const svg = document.getElementById("dag");
   const ownershipEdges = mathematicsContracts.map(contract => ({
@@ -341,8 +350,8 @@ function renderMathematicsGraph() {
     .layering(d3.layeringSimplex())
     .decross(d3.decrossTwoLayer())
     .coord(d3.coordQuad())
-    .nodeSize(node => agentCatalog.has(node.data) ? [72, 72] : [28, 28])
-    .gap([18, 78]);
+    .nodeSize(node => agentCatalog.has(node.data) ? [90, 90] : [36, 36])
+    .gap([24, 92]);
   const dimensions = layout(graph);
   const margin = { x: 92, y: 78 };
   const width = Math.max(1280, dimensions.height + margin.x * 2);
@@ -353,11 +362,23 @@ function renderMathematicsGraph() {
   svg.setAttribute("height", height);
   svg.innerHTML = `
     <defs>
-      <marker id="dependencyArrow" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <marker id="claimArrow" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
         <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#8f9e96"></path>
       </marker>
-      <marker id="activeDependencyArrow" viewBox="0 0 12 10" markerWidth="11" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <marker id="definitionArrow" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#607c8b"></path>
+      </marker>
+      <marker id="scopeArrow" viewBox="0 0 10 10" markerWidth="9" markerHeight="9" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M1,1 L9,5 L1,9 L3.2,5 Z" fill="#b06b20"></path>
+      </marker>
+      <marker id="activeClaimArrow" viewBox="0 0 12 10" markerWidth="11" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse">
         <path d="M1,1 L11,5 L1,9 L3.4,5 Z" fill="#1f6b4f"></path>
+      </marker>
+      <marker id="activeDefinitionArrow" viewBox="0 0 12 10" markerWidth="11" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M1,1 L11,5 L1,9 L3.4,5 Z" fill="#315f78"></path>
+      </marker>
+      <marker id="activeScopeArrow" viewBox="0 0 12 10" markerWidth="11" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M1,1 L11,5 L1,9 L3.4,5 Z" fill="#b06b20"></path>
       </marker>
       <filter id="nodeShadow" x="-80%" y="-80%" width="260%" height="280%">
         <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#17211c" flood-opacity="0.18"></feDropShadow>
@@ -380,7 +401,7 @@ function renderMathematicsGraph() {
     const path = svgElement("path", {
       d: pathData,
       class: `dependency-link ${dependency.type}`,
-      "marker-end": "url(#dependencyArrow)"
+      "marker-end": dependencyMarker(dependency.type)
     });
     path.dataset.from = from;
     path.dataset.to = to;
@@ -507,7 +528,7 @@ function renderInterfaceNode(contract, x, y) {
   group.appendChild(svgElement("circle", { r: 10.5, class: "interface-shell", filter: "url(#nodeShadow)" }));
   group.appendChild(svgElement("circle", { r: 7.5, class: "interface-dot" }));
   group.appendChild(svgElement("circle", { r: 14, class: "interface-focus" }));
-  const ownerCode = svgElement("text", { x: 10, y: -10, class: "owner-code" });
+  const ownerCode = svgElement("text", { x: 13, y: -13, class: "owner-code" });
   ownerCode.textContent = agent.code;
   group.appendChild(ownerCode);
   group.addEventListener("pointerenter", event => {
@@ -566,9 +587,7 @@ function applyQueryHighlight() {
     const active = currentClosure.has(link.dataset.from) && currentClosure.has(link.dataset.to);
     link.classList.toggle("query-active", active);
     link.classList.toggle("query-muted", !active);
-    link.setAttribute("marker-end", active
-      ? "url(#activeDependencyArrow)"
-      : "url(#dependencyArrow)");
+    link.setAttribute("marker-end", dependencyMarker(link.dataset.type, active));
     if (active) activeLinks.push(link);
   });
   activeLinks.forEach(link => link.parentNode.appendChild(link));
@@ -627,12 +646,6 @@ function agentTooltipContent(id, agent) {
 function interfaceTooltipContent(contract) {
   const owner = ownerByInterface.get(contract.dag_node_id);
   const agent = agentCatalog.get(owner);
-  const allImports = [
-    ...contract.assumption_nodes,
-    ...contract.definition_imports,
-    ...contract.theorem_imports,
-    ...contract.data_imports
-  ];
   const inClosure = currentClosure.has(contract.dag_node_id);
   const isTarget = contract.dag_node_id === selectedTarget;
   return `
@@ -642,7 +655,10 @@ function interfaceTooltipContent(contract) {
     <h3>${esc(contract.dag_node_id)}</h3>
     <section><h4>Contained by Agent</h4><code>${esc(agent.code)} | ${esc(agent.title)} | ${esc(agent.identifier)}</code></section>
     <section><h4>Mathematical content</h4><p>${esc(contract.normalized_mathematical_statement || "No mathematical theorem is required for this node.")}</p></section>
-    ${listSection("Registered imports", allImports, "No registered import is recorded.")}
+    ${listSection("Claim or theorem premises", contract.theorem_imports, "No claim or theorem premise is recorded.")}
+    ${listSection("Definition prerequisites", contract.definition_imports, "No definition prerequisite is recorded.")}
+    ${listSection("Scope assumptions", contract.assumption_nodes, "No scope assumption is recorded.")}
+    ${contract.data_imports?.length ? listSection("Data prerequisites", contract.data_imports, "") : ""}
     ${listSection("Existing Lean declarations", contract.lean_binding.existing_declarations, "No existing Lean declaration is mapped.")}
     ${leanSourceSection(contract)}
     ${listSection("Planned local delta", contract.lean_binding.planned_declarations, contract.lean_binding.gap || "No planned declaration is recorded.")}
