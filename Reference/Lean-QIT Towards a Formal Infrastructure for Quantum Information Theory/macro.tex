@@ -1,0 +1,267 @@
+%% layout
+% \usepackage{times}
+% \renewcommand{\baselinestretch}{1.0}
+% \usepackage[paperwidth=199.8mm,paperheight=297mm,centering,hmargin=25mm,vmargin=25mm]{geometry}
+\usepackage{authblk} % package for author list
+\usepackage[titletoc,title]{appendix}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,citecolor=blue,linkcolor=blue,filecolor=blue,urlcolor=blue,breaklinks=true}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{color}
+\usepackage[marginal]{footmisc}
+\usepackage{url}
+\usepackage{cite}
+% \RequirePackage{doi}
+
+%% math
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{graphicx,epic,eepic,epsfig,latexsym,verbatim}
+\usepackage{dsfont}
+
+%% picture drawing
+\usepackage{framed}
+\definecolor{shadecolor}{rgb}{0.9,0.9,0.9}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepackage{tcolorbox}
+\usepackage{relsize}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{patchplots}
+
+\definecolor{LightGray}{RGB}{220,220,220}
+\definecolor{myred}{RGB}{236, 17, 0}
+\definecolor{myblue}{RGB}{10, 88, 153}
+\definecolor{myorange}{RGB}{236, 137, 0}
+\definecolor{mygreen}{RGB}{26, 152, 81}
+
+\usepackage{amsthm}
+%% theorems
+% \usepackage{theorem}
+% Theorem environments — shared counter, reset per section
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\def\squareforqed{\hbox{\rlap{$\sqcap$}$\sqcup$}}
+\def\qed{\ifmmode\squareforqed\else{\unskip\nobreak\hfil
+      \penalty50\hskip1em\null\nobreak\hfil\squareforqed
+      \parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
+\def\endenv{\ifmmode\;\else{\unskip\nobreak\hfil
+      \penalty50\hskip1em\null\nobreak\hfil\;
+      \parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
+% \newenvironment{proof}{\noindent \textbf{{Proof~} }}{\hfill $\blacksquare$}
+
+\newcounter{remark}
+\newenvironment{remark}[1][]{\refstepcounter{remark}\par\medskip\noindent%
+  \textbf{Remark~\theremark #1} }{\medskip}
+
+\newcounter{example}
+\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip\noindent%
+  \textbf{Example~\theexample #1} }{\medskip}
+
+\newcommand{\exampleTitle}[1]{\textbf{(#1)}}
+\newcommand{\remarkTitle}[1]{\textbf{(#1)}}
+\newcommand{\proofComment}[1]{\exampleTitle{#1}}
+
+\newtheorem{problems}{\textcolor{red}{Problem}}
+% \newtheorem{note}[problem]{Note}
+
+
+% Align := properly in math mode
+\mathchardef\ordinarycolon\mathcode`\:
+\mathcode`\:=\string"8000
+\def\vcentcolon{\mathrel{\mathop\ordinarycolon}}
+\begingroup \catcode`\:=\active
+\lowercase{\endgroup
+  \let :\vcentcolon
+}
+
+%% table
+\usepackage{colortbl}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\definecolor{Gray}{gray}{0.92}
+\definecolor{Gray2}{gray}{0.75}
+\definecolor{maroon}{cmyk}{0,0.87,0.68,0.32}
+\usepackage{booktabs}
+\usepackage{makecell}%To keep spacing of text in tables
+% \setcellgapes{3pt}%parameter for the spacing
+\usepackage{diagbox}
+\usepackage{multirow}
+
+
+%% new commands
+
+\newcommand{\nc}{\newcommand}
+\newcommand{\rnc}{\renewcommand}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\ketbra}[2]{|#1\rangle\!\langle#2|}
+\newcommand{\braket}[2]{\langle#1|#2\rangle}
+\newcommand{\braandket}[3]{\langle #1|#2|#3\rangle}
+\newcommand{\proj}[1]{| #1\rangle\!\langle #1 |}
+\newcommand{\avg}[1]{\langle#1\rangle}
+\newcommand{\Rank}{\operatorname{Rank}}
+\newcommand{\smfrac}[2]{\mbox{$\frac{#1}{#2}$}}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\ox}{\otimes}
+\newcommand{\grad}{\operatorname{grad}}
+\newcommand{\frob}{\mathrm{F}}
+\newcommand{\cA}{{\cal A}}
+\newcommand{\cB}{{\cal B}}
+\newcommand{\cC}{{\cal C}}
+\newcommand{\cD}{{\cal D}}
+\newcommand{\cE}{{\cal E}}
+\newcommand{\cF}{{\cal F}}
+\newcommand{\cG}{{\cal G}}
+\newcommand{\cH}{{\cal H}}
+\newcommand{\cI}{{\cal I}}
+\newcommand{\cJ}{{\cal J}}
+\newcommand{\cK}{{\cal K}}
+\newcommand{\cL}{{\cal L}}
+\newcommand{\cM}{{\cal M}}
+\newcommand{\cN}{{\cal N}}
+\newcommand{\cO}{{\cal O}}
+\newcommand{\cP}{{\cal P}}
+\newcommand{\cQ}{{\cal Q}}
+\newcommand{\cR}{{\cal R}}
+\newcommand{\cS}{{\cal S}}
+\newcommand{\cT}{{\cal T}}
+\newcommand{\cV}{{\cal V}}
+\newcommand{\cU}{{\cal U}}
+\newcommand{\cX}{{\cal X}}
+\newcommand{\cY}{{\cal Y}}
+\newcommand{\cZ}{{\cal Z}}
+\newcommand{\cW}{{\cal W}}
+
+\newcommand{\RR}{{{\mathbb R}}}
+\newcommand{\CC}{{{\mathbb C}}}
+\newcommand{\FF}{{{\mathbb F}}}
+\newcommand{\NN}{{{\mathbb N}}}
+\newcommand{\ZZ}{{{\mathbb Z}}}
+% \newcommand{\PP}{{{\mathbb P}}}
+\newcommand{\QQ}{{{\mathbb Q}}}
+\newcommand{\UU}{{{\mathbb U}}}
+\newcommand{\EE}{{{\mathbb E}}}
+\newcommand{\id}{{\operatorname{id}}}
+
+\newcommand{\1}{{\mathds{1}}}
+\newcommand{\supp}{{\operatorname{supp}}}
+
+\def\ve{\varepsilon}
+
+
+% widebar
+\makeatletter
+\newcommand*\rel@kern[1]{\kern#1\dimexpr\macc@kerna}
+\newcommand*\widebar[1]{%
+  \begingroup
+  \def\mathaccent##1##2{%
+    \rel@kern{0.8}%
+    \overline{\rel@kern{-0.8}\macc@nucleus\rel@kern{0.2}}%
+    \rel@kern{-0.2}%
+  }%
+  \macc@depth\@ne
+  \let\math@bgroup\@empty \let\math@egroup\macc@set@skewchar
+  \mathsurround\z@ \frozen@everymath{\mathgroup\macc@group\relax}%
+  \macc@set@skewchar\relax
+  \let\mathaccentV\macc@nested@a
+  \macc@nested@a\relax111{#1}%
+  \endgroup
+}
+\makeatother
+
+
+%% Others
+\newcommand{\Choi}{Choi-Jamio\l{}kowski }
+\newcommand{\cptp}{\text{\rm CPTP}}
+\newcommand{\cp}{\text{\rm CP}}
+\newcommand{\reg}{\infty}
+\newcommand{\amo}{\text{\rm amo}}
+\newcommand{\Renyi}{R\'{e}nyi }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator{\tangent}{T}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\usepackage{mathrsfs}
+% \mathtoolsset{showonlyrefs}
+
+\newcommand{\pl}{{\scalebox{0.7}{+}}}
+\newcommand{\PSD}{\mathscr{P}}
+\newcommand{\PD}{\mathscr{P_\pl}}
+\newcommand{\HERM}{\mathscr{H}}
+\newcommand{\cvxset}{\mathscr{C}}
+\newcommand{\density}{\mathscr{D}}
+\newcommand{\subdensity}{\mathscr{D}_\bullet}
+\newcommand{\bcC}{\cC}
+\newcommand{\Meas}{{\scriptscriptstyle \rm M}}
+\newcommand{\MM}{{{\mathbb M}}}
+% \newcommand{\ALL}{}
+\newcommand{\Proj}{{{\scriptscriptstyle \rm P}}}
+\newcommand{\RM}{{{\mathscr{R}}}}
+\newcommand{\sK}{{{\mathscr{K}}}}
+\newcommand{\sS}{{{\mathscr{S}}}}
+\newcommand{\sT}{{{\mathscr{T}}}}
+\newcommand{\sA}{{{\mathscr{A}}}}
+\newcommand{\sB}{{{\mathscr{B}}}}
+\newcommand{\sC}{{{\mathscr{C}}}}
+\newcommand{\sL}{{{\mathscr{L}}}}
+\newcommand{\sG}{{{\mathscr{G}}}}
+\newcommand{\sF}{{{\mathscr{F}}}}
+\newcommand{\sM}{{{\mathscr{M}}}}
+
+\newcommand{\Cone}{\text{\rm Cone}}
+\newcommand{\sep}{{\SEP}}
+\newcommand{\BS}{{\scriptscriptstyle \rm {BS}}}
+\newcommand{\Sand}{{\scriptscriptstyle  \rm S}}
+\newcommand{\Petz}{{\scriptscriptstyle  \rm P}}
+\newcommand{\Hypo}{{\scriptscriptstyle  \rm H}}
+\newcommand{\DD}{{{\mathbb D}}}
+\newcommand{\suchthat}{\text{\rm s.t.}}
+\newcommand{\PPT}{\text{\rm PPT}}
+\newcommand{\Rains}{\text{\rm Rains}}
+\newcommand{\WD}{\text{\rm WD}}
+\newcommand{\new}{\text{\rm new}}
+\newcommand{\sfT}{\mathsf T}
+\newcommand{\SEP}{\text{\rm SEP}}
+\newcommand{\PSEP}{\text{\rm PSEP}}
+\newcommand{\CPTP}{\text{\rm CPTP}}
+\newcommand{\POVM}{\text{\rm POVM}}
+\newcommand{\PVM}{\text{\rm PVM}}
+\newcommand{\CP}{\text{\rm CP}}
+\newcommand{\adv}{\text{\rm adv}}
+\newcommand{\spec}{\text{\rm spec}}
+\newcommand{\poly}{\text{\rm poly}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Par}{\operatorname{Par}}
+\newcommand{\RNG}{\operatorname{RNG}}
+\newcommand{\dg}{\operatorname{dg}}
+
+\usepackage{stmaryrd}
+\newcommand{\db}[1]{\left\llbracket#1 \right\rrbracket}
+
+\usepackage{pgfplots}
+
+

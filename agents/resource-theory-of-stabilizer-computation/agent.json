@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "agent": {
+    "id": "agent:resource-theory-of-stabilizer-computation",
+    "paper_id": "arxiv:1307.7171v1",
+    "title": "The Resource Theory of Stabilizer Computation",
+    "role": [
+      "primary_conceptual_root",
+      "stabilizer_free_set_provider"
+    ],
+    "lifecycle_status": "PARTIALLY_VERIFIED"
+  },
+  "source": {
+    "canonical_artifact": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+    "artifacts": "agents/resource-theory-of-stabilizer-computation/source/artifacts.json",
+    "source_hashes": "agents/resource-theory-of-stabilizer-computation/source/source-hashes.json",
+    "anchors": "agents/resource-theory-of-stabilizer-computation/source/anchors.jsonl"
+  },
+  "imports": [
+    {
+      "contract": "contract:9705052v1:pure-stabilizer-state",
+      "purpose": "align the common-eigenspace and Clifford-orbit definitions of a pure stabilizer state",
+      "status": "MATHEMATICALLY_ALIGNED_UPSTREAM_UNACCEPTED"
+    }
+  ],
+  "local_delta": {
+    "statements": "agents/resource-theory-of-stabilizer-computation/knowledge/statements.jsonl",
+    "chains": "agents/resource-theory-of-stabilizer-computation/reasoning/chains.jsonl"
+  },
+  "verification": {
+    "records": "agents/resource-theory-of-stabilizer-computation/verification/records.jsonl",
+    "verification_partition": "agents/resource-theory-of-stabilizer-computation/verification/partition.json"
+  },
+  "formalization_contract": "agents/resource-theory-of-stabilizer-computation/formal/qubit-stabilizer-polytope-kernel.json",
+  "exports": [
+    "agents/resource-theory-of-stabilizer-computation/exports/stabilizer-polytope-and-magic-membership.json"
+  ],
+  "unresolved": [
+    "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json"
+  ]
+}

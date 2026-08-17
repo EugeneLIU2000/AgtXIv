@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "agent": {
+    "id": "agent:predicting-magic-from-very-few-measurements",
+    "paper_id": "arxiv:2602.18939v1",
+    "title": "Predicting Magic from Very Few Measurements",
+    "role": [
+      "direct_technical_dependency"
+    ],
+    "lifecycle_status": "PARTIALLY_VERIFIED"
+  },
+  "source": {
+    "canonical_artifact": "Reference/Predicting magic from very few measurements/pra_version.tex",
+    "artifacts": "agents/predicting-magic-from-very-few-measurements/source/artifacts.json",
+    "source_hashes": "agents/predicting-magic-from-very-few-measurements/source/source-hashes.json",
+    "anchors": "agents/predicting-magic-from-very-few-measurements/source/anchors.jsonl"
+  },
+  "imports": [
+    {
+      "contract": "formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel",
+      "status": "MATHEMATICS_KERNEL_ALIGNED_SCIENTIFIC_ACCEPTANCE_PENDING"
+    },
+    {
+      "contract": "statement:foundation:isotropic-pauli-extension",
+      "status": "PARTIALLY_FORMALIZED_SUPPORT_LEVEL_ONLY"
+    }
+  ],
+  "local_delta": {
+    "statements": "agents/predicting-magic-from-very-few-measurements/knowledge/statements.jsonl",
+    "chains": "agents/predicting-magic-from-very-few-measurements/reasoning/chains.jsonl"
+  },
+  "verification": {
+    "records": "agents/predicting-magic-from-very-few-measurements/verification/records.jsonl",
+    "reviews": "agents/predicting-magic-from-very-few-measurements/reviews"
+  },
+  "formalization": {
+    "contract": "agents/predicting-magic-from-very-few-measurements/formal/repaired-reduced-polytope-vrep.json",
+    "project": "formal/AgtXIvVarela",
+    "status": "PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS"
+  },
+  "exports": [
+    "agents/predicting-magic-from-very-few-measurements/exports/reduced-polytope-vrep.json"
+  ],
+  "unresolved": [
+    "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+    "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json"
+  ]
+}

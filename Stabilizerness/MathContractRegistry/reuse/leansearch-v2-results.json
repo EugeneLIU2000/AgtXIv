@@ -1,0 +1,598 @@
+{
+  "schema_version": "0.1.0",
+  "warning": "Search results are candidates, not verified substitutes. Exact type and semantic compatibility must be checked in the pinned project before replacement.",
+  "queries": [
+    {
+      "query_id": "signed-absolute-sum",
+      "query": "maximum over sign choices of absolute signed finite sum plus a constant equals sum of absolute values plus absolute constant",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "Finset.abs_sum_le_sum_abs",
+          "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+          "kind": "theorem",
+          "signature": "{G : Type*} [AddCommGroup G] [LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G) (s : Finset ι) :\n  |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|",
+          "distance": 0.3899446725845337,
+          "informal_description": "For any additive commutative group $G$ equipped with a linear order and compatible addition (i.e., an ordered additive commutative monoid), any function $f : \\iota \\to G$, and any finite set $s \\subseteq \\iota$, the absolute value of the sum of $f(i)$ over $s$ is less than or equal to the sum of the absolute values of $f(i)$ over $s$. This generalizes the classical triangle inequality to finite sums in ordered algebraic structures."
+        },
+        {
+          "declaration": "IsAbsoluteValue.abv_sum",
+          "module": "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
+          "kind": "theorem",
+          "signature": "[Semiring R] [Semiring S] [PartialOrder S] [IsOrderedRing S] (abv : R → S) [IsAbsoluteValue abv] (f : ι → R)\n  (s : Finset ι) : abv (∑ i ∈ s, f i) ≤ ∑ i ∈ s, abv (f i)",
+          "distance": 0.4053877592086792,
+          "informal_description": "For an absolute value function $ abv : R \\to S $ between semirings $ R $ and $ S $ (where $ S $ is an ordered ring), the absolute value of the sum of elements $ f(i) $ over a finite set $ s $ satisfies $ abv\\left(\\sum_{i \\in s} f(i)\\right) \\leq \\sum_{i \\in s} abv(f(i)) $. This generalizes the triangle inequality to finite sums in ordered semirings."
+        },
+        {
+          "declaration": "nat_abs_sum_le",
+          "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+          "kind": "theorem",
+          "signature": "(s : Finset ι) (f : ι → ℤ) : (∑ i ∈ s, f i).natAbs ≤ ∑ i ∈ s, (f i).natAbs",
+          "distance": 0.3952282667160034,
+          "informal_description": "For any finite set $ s $ of type $ \\iota $ and any function $ f : \\iota \\to \\mathbb{Z} $, the absolute value of the sum of $ f(i) $ over $ s $ is less than or equal to the sum of the absolute values of $ f(i) $ over $ s $. Formally, $ \\left| \\sum_{i \\in s} f(i) \\right| \\leq \\sum_{i \\in s} |f(i)| $."
+        },
+        {
+          "declaration": "Multiset.abs_sum_le_sum_abs",
+          "module": "Mathlib.Algebra.Order.BigOperators.Group.Multiset",
+          "kind": "theorem",
+          "signature": "[AddCommGroup α] [LinearOrder α] [IsOrderedAddMonoid α] {s : Multiset α} : |s.sum| ≤ (s.map abs).sum",
+          "distance": 0.4064207077026367,
+          "informal_description": "For any multiset $ s $ over an additive commutative group $ \\alpha $ equipped with a linear order and compatible addition, the absolute value of the sum of the elements in $ s $ is less than or equal to the sum of the absolute values of the elements in $ s $. Symbolically, $ |\\sum s| \\leq \\sum_{a \\in s} |a| $."
+        },
+        {
+          "declaration": "AbsoluteValue.listSum_le",
+          "module": "Mathlib.Algebra.Order.AbsoluteValue.Basic",
+          "kind": "theorem",
+          "signature": "[AddLeftMono S] (l : List R) : abv l.sum ≤ (l.map abv).sum",
+          "distance": 0.4267292618751526,
+          "informal_description": "For any finite list $l$ of elements in a semiring $R$, the absolute value of the sum of the elements in $l$ is less than or equal to the sum of the absolute values of the individual elements in the list, where the absolute value is defined as a function from $R$ to a partially ordered semiring $S$."
+        },
+        {
+          "declaration": "AbsoluteValue.sum_le",
+          "module": "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
+          "kind": "theorem",
+          "signature": "[Semiring R] [Semiring S] [PartialOrder S] [IsOrderedRing S] (abv : AbsoluteValue R S) (s : Finset ι) (f : ι → R) :\n  abv (∑ i ∈ s, f i) ≤ ∑ i ∈ s, abv (f i)",
+          "distance": 0.39135974645614624,
+          "informal_description": "For any semiring $R$, partially ordered semiring $S$ that is an ordered ring, absolute value $\\text{abv}: R \\to S$, finite set $s \\subseteq \\iota$, and function $f: \\iota \\to R$, the inequality $\\text{abv}\\left(\\sum_{i \\in s} f(i)\\right) \\leq \\sum_{i \\in s} \\text{abv}(f(i))$ holds. This generalizes the triangle inequality to finite sums in the context of absolute values between semirings."
+        },
+        {
+          "declaration": "Finset.abs_sum_of_nonneg",
+          "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+          "kind": "theorem",
+          "signature": "{G : Type*} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) :\n  |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+          "distance": 0.3841860294342041,
+          "informal_description": "For any additive commutative group $G$ equipped with a linear order and left addition monotonicity, and for any function $f : \\iota \\to G$ and finite set $s$, if $f(i)$ is non-negative for all $i \\in s$, then the absolute value of the sum of $f(i)$ over $s$ is equal to the sum itself."
+        },
+        {
+          "declaration": "max_zero_add_max_neg_zero_eq_abs_self",
+          "module": "Mathlib.Algebra.Order.Group.Abs",
+          "kind": "theorem",
+          "signature": "∀ {G : Type u_1} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G] (a : G),\n  max a 0 + max (-a) 0 = |a|",
+          "distance": 0.3652045726776123,
+          "informal_description": "For any element $a$ in an additive commutative group $G$ equipped with a linear order and an ordered additive monoid structure, the sum of the maximum of $a$ and $0$, and the maximum of $-a$ and $0$, equals the absolute value of $a$. Formally, $\\max(a, 0) + \\max(-a, 0) = |a|$."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "affine-span-from-differences",
+      "query": "affine span is top when differences of points span the whole vector space",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs",
+          "kind": "theorem",
+          "signature": "{s : Set P} (hs : s.Nonempty) : affineSpan k s = ⊤ ↔ vectorSpan k s = ⊤",
+          "distance": 0.23103809356689453,
+          "informal_description": "For a non-empty subset $ S $ of an affine space $ P $, the affine span of $ S $ equals the entire space $ P $ if and only if the vector span of $ S $ (generated by differences $ a - b $ for $ a, b \\in S $) equals the entire vector space $ V $."
+        },
+        {
+          "declaration": "AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nontrivial",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs",
+          "kind": "theorem",
+          "signature": "{s : Set P} [Nontrivial P] : affineSpan k s = ⊤ ↔ vectorSpan k s = ⊤",
+          "distance": 0.267230749130249,
+          "informal_description": "For a nontrivial torsor $P$ over a ring $k$, the affine span of a subset $s \\subseteq P$ equals the entire space $P$ if and only if the vector span of $s$ (generated by differences $a - b$ for $a, b \\in s$) equals the entire module $V$ acting on $P$."
+        },
+        {
+          "declaration": "AffineBasis.tot'",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.Basis",
+          "kind": "theorem",
+          "signature": "∀ {ι : Type u₁} {k : Type u₂} {V : Type u₃} {P : Type u₄} [inst : AddCommGroup V] [inst_1 : AddTorsor V P]\n  [inst_2 : Ring k] [inst_3 : Module k V] (self : AffineBasis ι k P), affineSpan k (Set.range self.toFun) = ⊤",
+          "distance": 0.25719642639160156,
+          "informal_description": "For any affine basis in an affine space $P$ over a vector space $V$ with coefficients in a ring $k$, the affine span of the set of basis points equals the entire affine space $P$."
+        },
+        {
+          "declaration": "AffineIndependent.affineSpan_eq_top_iff_card_eq_finrank_add_one",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional",
+          "kind": "theorem",
+          "signature": "[FiniteDimensional k V] [Fintype ι] {p : ι → P} (hi : AffineIndependent k p) :\n  affineSpan k (Set.range p) = ⊤ ↔ Fintype.card ι = finrank k V + 1",
+          "distance": 0.27599024772644043,
+          "informal_description": "For an affinely independent family of points $ p_i $ in an affine space $ P $ over a division ring $ k $, the affine span of $ \\{p_i\\} $ equals the entire space $ P $ if and only if the number of points in the family is equal to the dimension of the underlying vector space $ V $ plus one."
+        },
+        {
+          "declaration": "affineSpan_singleton_union_vadd_eq_top_of_span_eq_top",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic",
+          "kind": "theorem",
+          "signature": "{s : Set V} (p : P) (h : Submodule.span k (Set.range ((↑) : s → V)) = ⊤) :\n  affineSpan k ({ p } ∪ (fun v => v +ᵥ p) '' s) = ⊤",
+          "distance": 0.262969970703125,
+          "informal_description": "If the vector span of a set $S$ in a module $V$ equals the entire module $V$, then the affine span of the union of a singleton set $\\{p\\}$ and the set obtained by translating each element of $S$ by $p$ (i.e., $\\{v + p \\mid v \\in S\\}$) equals the entire affine space $P$."
+        },
+        {
+          "declaration": "AffineSubspace.span_univ",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs",
+          "kind": "theorem",
+          "signature": ": affineSpan k (Set.univ : Set P) = ⊤",
+          "distance": 0.2788439393043518,
+          "informal_description": "The affine span of the universal set $ P $ is equal to the entire torsor $ P $, i.e., $ \\operatorname{affineSpan}_k(P) = \\top $. This follows from the fact that the universal set contains all points of the torsor, so its affine span must be the full space itself."
+        },
+        {
+          "declaration": "affineSpan",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs",
+          "kind": "definition",
+          "signature": "(s : Set P) : AffineSubspace k P",
+          "distance": 0.2526088356971741,
+          "informal_description": "The affine span of a subset $ s $ of an affine space $ P $ is the smallest affine subspace containing $ s $, constructed as the set of all points obtained by adding vectors from the vector span of $ s $ (generated by differences $ a - b $ for $ a, b \\in s $) to elements of $ s $. Formally, it consists of all points $ p $ such that $ p = v + p_1 $ for some $ p_1 \\in s $ and $ v $ in the vector span of $ s $. This affine subspace is closed under affine combinations with coefficients in the ring $ k $ summing to 1."
+        },
+        {
+          "declaration": "AffineEquiv.span_eq_top_iff",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic",
+          "kind": "theorem",
+          "signature": "{s : Set P₁} (e : P₁ ≃ᵃ[k] P₂) : affineSpan k s = ⊤ ↔ affineSpan k (e '' s) = ⊤",
+          "distance": 0.2865595817565918,
+          "informal_description": "The collection of affine subspaces over a ring $ k $ in a torsor $ P $ forms a complete lattice. For any family of affine subspaces, their infimum (greatest lower bound) is their set-theoretic intersection, and their supremum (least upper bound) is the affine span of the union of their underlying sets. The top element is the entire torsor $ P $, and the bottom element is the empty set. This structure is valid because intersections of affine subspaces are affine subspaces, and the affine span of any subset is the smallest affine subspace containing it, ensuring closure under arbitrary meets and joins."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "linear-image-convex-hull",
+      "query": "linear image of convex hull equals convex hull of linear image",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "IsLinearMap.image_convexHull",
+          "module": "Mathlib.Analysis.Convex.Hull",
+          "kind": "theorem",
+          "signature": "{f : E → F} (hf : IsLinearMap 𝕜 f) (s : Set E) : f '' convexHull 𝕜 s = convexHull 𝕜 (f '' s)",
+          "distance": 0.19901084899902344,
+          "informal_description": "For any linear map $ f : E \\to F $ between modules over a semiring $ \\mathbb{K} $ and any subset $ S \\subseteq E $, the image of the convex hull of $ S $ under $ f $ is equal to the convex hull of the image of $ S $ under $ f $. Symbolically, $ f(\\text{convexHull}(S)) = \\text{convexHull}(f(S)) $."
+        },
+        {
+          "declaration": "LinearMap.image_convexHull",
+          "module": "Mathlib.Analysis.Convex.Hull",
+          "kind": "theorem",
+          "signature": "(f : E →ₗ[𝕜] F) (s : Set E) : f '' convexHull 𝕜 s = convexHull 𝕜 (f '' s)",
+          "distance": 0.21254408359527588,
+          "informal_description": "For any linear map $ f : E \to F $ over a semiring $ \\mathbb{K} $ with partial order and any subset $ S \\subseteq E $, the image of the convex hull of $ S $ under $ f $ is equal to the convex hull of the image of $ S $ under $ f $. Symbolically, $ f(\\mathrm{convex\\,hull}(S)) = \\mathrm{convex\\,hull}(f(S)) $."
+        },
+        {
+          "declaration": "AffineMap.image_convexHull",
+          "module": "Mathlib.Analysis.Convex.Hull",
+          "kind": "theorem",
+          "signature": "(f : E →ᵃ[𝕜] F) (s : Set E) : f '' convexHull 𝕜 s = convexHull 𝕜 (f '' s)",
+          "distance": 0.2847318649291992,
+          "informal_description": "For any affine map $ f : E \\to F $ over a semiring $ \\mathbb{K} $ and any subset $ s \\subseteq E $, the image of the convex hull of $ s $ under $ f $ equals the convex hull of the image of $ s $ under $ f $. Symbolically, $ f(\\operatorname{conv}(s)) = \\operatorname{conv}(f(s)) $."
+        },
+        {
+          "declaration": "Convex.linear_image",
+          "module": "Mathlib.Analysis.Convex.Basic",
+          "kind": "theorem",
+          "signature": "(hs : Convex 𝕜 s) (f : E →ₗ[𝕜] F) : Convex 𝕜 (f '' s)",
+          "distance": 0.28484421968460083,
+          "informal_description": "Let $ \\mathbb{K} $ be a semiring with a partial order, and let $ E $ and $ F $ be modules over $ \\mathbb{K} $. If $ s \\subseteq E $ is a convex set and $ f : E \\to F $ is a linear map, then the image $ f(s) \\subseteq F $ is also a convex set. This holds because for any $ x, y \\in s $ and scalars $ a, b \\in \\mathbb{K} $ with $ 0 \\leq a $, $ 0 \\leq b $, and $ a + b = 1 $, the convex combination $ a \\cdot f(x) + b \\cdot f(y) = f(a \\cdot x + b \\cdot y) $ lies in $ f(s) $ due to the linearity of $ f $ and the convexity of $ s $."
+        },
+        {
+          "declaration": "Convex.is_linear_image",
+          "module": "Mathlib.Analysis.Convex.Basic",
+          "kind": "theorem",
+          "signature": "(hs : Convex 𝕜 s) {f : E → F} (hf : IsLinearMap 𝕜 f) : Convex 𝕜 (f '' s)",
+          "distance": 0.2731163501739502,
+          "informal_description": "If $ s $ is a convex set in a module $ E $ over an ordered semiring $ \\mathbb{K} $, and $ f : E \\to F $ is a $ \\mathbb{K} $-linear map, then the image $ f(s) $ is a convex set in $ F $."
+        },
+        {
+          "declaration": "LinearEquiv.image_closure_of_convex'",
+          "module": "Mathlib.Analysis.LocallyConvex.WeakSpace",
+          "kind": "theorem",
+          "signature": "{s : Set E} (hs : Convex ℝ s) (e : E ≃ₗ[𝕜] F) (e_dual : StrongDual 𝕜 F ≃ StrongDual 𝕜 E)\n  (he : ∀ f : StrongDual 𝕜 F, (e_dual f : E →ₗ[𝕜] 𝕜) = e.dualMap f) : e '' (closure s) = closure (e '' s)",
+          "distance": 0.3197099566459656,
+          "informal_description": "For a convex set $ s $ in a real vector space $ E $, and a linear isomorphism $ e: E \to F $ with a compatible dual space equivalence $ e_{\\text{dual}} $, the image of the closure of $ s $ under $ e $ equals the closure of the image of $ s $ under $ e $. This holds when $ e_{\\text{dual}} $ satisfies $ e_{\\text{dual}}(f) = e^*(f) $ for all $ f $ in the strong dual of $ F $, where $ e^* $ denotes the dual map of $ e $."
+        },
+        {
+          "declaration": "image_extremePoints",
+          "module": "Mathlib.Analysis.Convex.Extreme",
+          "kind": "theorem",
+          "signature": "(f : L) (s : Set E) : f '' extremePoints 𝕜 s = extremePoints 𝕜 (f '' s)",
+          "distance": 0.379835844039917,
+          "informal_description": "For a linear equivalence $ f $ and a set $ s $, the image of the extreme points of $ s $ under $ f $ is equal to the extreme points of the image of $ s $ under $ f $, i.e., $ f(\text{extremePoints}(s)) = \text{extremePoints}(f(s)) $."
+        },
+        {
+          "declaration": "toWeakSpace_closedConvexHull_eq",
+          "module": "Mathlib.Analysis.LocallyConvex.WeakSpace",
+          "kind": "theorem",
+          "signature": "{s : Set E} : (toWeakSpace 𝕜 E) '' (closedConvexHull 𝕜 s) = closedConvexHull 𝕜 (toWeakSpace 𝕜 E '' s)",
+          "distance": 0.3655751943588257,
+          "informal_description": "For any set $ s $ in the space $ E $, the image of the closed convex hull of $ s $ under the weak space embedding $ \\text{toWeakSpace} $ is equal to the closed convex hull of the image of $ s $ under $ \\text{toWeakSpace} $. In symbols, $ \\text{toWeakSpace}(\\text{closedConvexHull}(s)) = \\text{closedConvexHull}(\\text{toWeakSpace}(s)) $."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "compact-minimum-attainment",
+      "query": "continuous real function attains minimum on a nonempty compact set",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "IsCompact.exists_isMinOn",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIicTopology α] {s : Set β} (hs : IsCompact s) (ne_s : s.Nonempty) {f : β → α} (hf : ContinuousOn f s) :\n  ∃ x ∈ s, IsMinOn f s x",
+          "distance": 0.25248873233795166,
+          "informal_description": "Let $\\alpha$ be a linearly ordered set equipped with the order-closed topology, and let $s \\subseteq \\beta$ be a non-empty compact set. If $f : \\beta \\to \\alpha$ is continuous on $s$, then there exists an element $x \\in s$ such that $f(x)$ is the minimum value of $f$ on $s$, i.e., $f(x) \\leq f(y)$ for all $y \\in s$."
+        },
+        {
+          "declaration": "IsCompact.exists_sInf_image_eq",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIicTopology α] {s : Set β} (hs : IsCompact s) (ne_s : s.Nonempty) {f : β → α} (hf : ContinuousOn f s) :\n  ∃ x ∈ s, sInf (f '' s) = f x",
+          "distance": 0.23963934183120728,
+          "informal_description": "Let $\\alpha$ be a type equipped with the order-closed topology, and let $\\beta$ be a topological space. If $s$ is a non-empty compact subset of $\\beta$ and $f : \\beta \\to \\alpha$ is continuous on $s$, then there exists an $x \\in s$ such that the infimum of the image $f(s)$ is equal to $f(x)$."
+        },
+        {
+          "declaration": "IsCompact.exists_sSup_image_eq",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIciTopology α] {s : Set β} (hs : IsCompact s) (ne_s : s.Nonempty) :\n  ∀ {f : β → α}, ContinuousOn f s → ∃ x ∈ s, sSup (f '' s) = f x",
+          "distance": 0.29376137256622314,
+          "informal_description": "Let $\\alpha$ be a conditionally complete linear order equipped with the closed upper interval topology, and let $s \\subseteq \\beta$ be a non-empty compact set. If $f : \\beta \\to \\alpha$ is continuous on $s$, then there exists $x \\in s$ such that $f(x)$ equals the supremum of the image $f(s)$, i.e., $\\sup f(s) = f(x)$."
+        },
+        {
+          "declaration": "IsCompact.exists_isMinOn_mem_subset",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIicTopology α] {f : β → α} {s t : Set β} {z : β} (ht : IsCompact t) (hf : ContinuousOn f t) (hz : z ∈ t)\n  (hfz : ∀ z' ∈ t \\ s, f z < f z') : ∃ x ∈ s, IsMinOn f t x",
+          "distance": 0.3121020793914795,
+          "informal_description": "Let $\\alpha$ be a linearly ordered type equipped with the order-closed topology. For a compact set $t \\subseteq \\beta$, a function $f : \\beta \\to \\alpha$ continuous on $t$, and a point $z \\in t$ satisfying $f(z) < f(z')$ for all $z' \\in t \\setminus s$, there exists a point $x \\in s$ such that $f(x)$ is the minimum value of $f$ on $t$."
+        },
+        {
+          "declaration": "LowerSemicontinuousOn.exists_isMinOn",
+          "module": "Mathlib.Topology.Semicontinuity.Basic",
+          "kind": "theorem",
+          "signature": "{s : Set α} (ne_s : s.Nonempty) (hs : IsCompact s) (hf : LowerSemicontinuousOn f s) : ∃ a ∈ s, IsMinOn f s a",
+          "distance": 0.2640836238861084,
+          "informal_description": "Let $ s $ be a non-empty compact set in a topological space $ \\alpha $, and let $ f : \\alpha \\to \\mathbb{R} $ be a function that is lower semicontinuous on $ s $. Then there exists a point $ a \\in s $ such that $ f(a) $ is the minimum value of $ f $ on $ s $, i.e., $ f(a) \\leq f(x) $ for all $ x \\in s $."
+        },
+        {
+          "declaration": "IsCompact.exists_sInf_image_eq_and_le",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIicTopology α] {s : Set β} (hs : IsCompact s) (ne_s : s.Nonempty) {f : β → α} (hf : ContinuousOn f s) :\n  ∃ x ∈ s, sInf (f '' s) = f x ∧ ∀ y ∈ s, f x ≤ f y",
+          "distance": 0.24394863843917847,
+          "informal_description": "Let $\\alpha$ be a conditionally complete linear order equipped with the topology where closed sets are precisely the lower sets. For any non-empty compact subset $s$ of a topological space $\\beta$ and a function $f : \\beta \\to \\alpha$ that is continuous on $s$, there exists a point $x \\in s$ such that $f(x)$ is the infimum of the image $f(s)$ and $f(x) \\leq f(y)$ for all $y \\in s$."
+        },
+        {
+          "declaration": "ContinuousOn.exists_isMinOn'",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIicTopology α] {s : Set β} {f : β → α} (hf : ContinuousOn f s) (hsc : IsClosed s) {x₀ : β} (h₀ : x₀ ∈ s)\n  (hc : ∀ᶠ x in cocompact β ⊓ 𝓟 s, f x₀ ≤ f x) : ∃ x ∈ s, IsMinOn f s x",
+          "distance": 0.2609318494796753,
+          "informal_description": "Let $\\alpha$ be a linearly ordered type equipped with the closed Iic topology, and let $s \\subseteq \\beta$ be a closed set. If $f : \\beta \\to \\alpha$ is continuous on $s$ and there exists $x_0 \\in s$ such that $f(x_0) \\leq f(x)$ for all $x \\in s$ outside some compact subset of $\\beta$, then there exists $x \\in s$ where $f$ attains its minimum on $s$."
+        },
+        {
+          "declaration": "Continuous.exists_forall_le_of_hasCompactMulSupport",
+          "module": "Mathlib.Topology.Order.Compact",
+          "kind": "theorem",
+          "signature": "[ClosedIicTopology α] [Nonempty β] [One α] {f : β → α} (hf : Continuous f) (h : HasCompactMulSupport f) :\n  ∃ x : β, ∀ y : β, f x ≤ f y",
+          "distance": 0.28717803955078125,
+          "informal_description": "Let $\\alpha$ be a topological space equipped with the order-closed topology (where closed sets are lower sets), and let $\\beta$ be a non-empty topological space. If $f : \\beta \\to \\alpha$ is a continuous function whose multiplicative support (the set of points where $f(x) \\ne 1$) has compact closure, then there exists a point $x \\in \\beta$ such that $f(x) \\le f(y)$ for all $y \\in \\beta$."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "stochastic-l1-contraction",
+      "query": "l1 norm contraction under a finite stochastic matrix or Markov kernel",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "ProbabilityTheory.Kernel.tendsto_eLpNorm_one_densityProcess_limitProcess",
+          "module": "Mathlib.Probability.Kernel.Disintegration.Density",
+          "kind": "theorem",
+          "signature": "(hκν : fst κ ≤ ν) [IsFiniteKernel ν] (a : α) {s : Set β} (hs : MeasurableSet s) :\n  Tendsto\n    (fun n ↦\n      eLpNorm\n        ((fun x ↦ densityProcess κ ν n a x s) -\n          (countableFiltration γ).limitProcess (fun n x ↦ densityProcess κ ν n a x s) (ν a))\n        1 (ν a))\n    atTop (𝓝 0)",
+          "distance": 0.36070680618286133,
+          "informal_description": "For a finite Markov kernel $\\nu$ and another kernel $\\kappa$ satisfying $\\kappa_\\mathrm{fst} \\le \\nu$, and for any measurable set $s \\subseteq \\beta$, the $L^1$-norm of the difference between the $n$-th density process $\\rho_n$ and the limit process $\\rho_\\infty$ converges to zero as $n \\to \\infty$. Formally, $\\lim_{n \\to \\infty} \\int \\left|\\rho_n(a,x,s) - \\rho_\\infty(a,x,s)\\right| \\, d\\nu_a(x) = 0$ for all $a \\in \\alpha$."
+        },
+        {
+          "declaration": "Matrix.l2_opNorm_le_one_of_mem_doublyStochastic",
+          "module": "Mathlib.Analysis.Convex.Birkhoff",
+          "kind": "theorem",
+          "signature": "{M : Matrix n n ℝ} (hM : M ∈ doublyStochastic ℝ n) : ‖M‖ ≤ 1",
+          "distance": 0.37219667434692383,
+          "informal_description": "For any $n \\times n$ real matrix $M$ that is doubly stochastic (i.e., all entries are non-negative and each row and column sums to 1), the L2 operator norm $\\|M\\|$ satisfies $\\|M\\| \\leq 1$. The L2 operator norm is defined as the supremum of $\\|Mx\\|_2$ over all unit vectors $x$."
+        },
+        {
+          "declaration": "ProbabilityTheory.Kernel.eLpNorm_densityProcess_le",
+          "module": "Mathlib.Probability.Kernel.Disintegration.Density",
+          "kind": "theorem",
+          "signature": "(hκν : fst κ ≤ ν) (n : ℕ) (a : α) (s : Set β) : eLpNorm (fun x ↦ densityProcess κ ν n a x s) 1 (ν a) ≤ ν a univ",
+          "distance": 0.3696860074996948,
+          "informal_description": "For Markov kernels $\\kappa : \\alpha \\to \\mathrm{Measure}(\\gamma \\times \\beta)$ and $\\nu : \\alpha \\to \\mathrm{Measure}(\\gamma)$ satisfying $\\mathrm{fst}(\\kappa) \\leq \\nu$, any $n \\in \\mathbb{N}$, $a \\in \\alpha$, and measurable set $s \\subseteq \\beta$, the $L^1$-norm of the density process $\\frac{\\kappa_a(P_n(x) \\times s)}{\\nu_a(P_n(x))}$ (truncated to $\\mathbb{R}$) with respect to $\\nu_a$ is bounded above by $\\nu_a(\\gamma)$. Here $P_n(x)$ denotes the $n$-th set in the countable partition of $\\gamma$ induced by its measurable space structure."
+        },
+        {
+          "declaration": "ProbabilityTheory.Kernel.eLpNorm_density_le",
+          "module": "Mathlib.Probability.Kernel.Disintegration.Density",
+          "kind": "theorem",
+          "signature": "(hκν : fst κ ≤ ν) (a : α) (s : Set β) : eLpNorm (fun x ↦ density κ ν a x s) 1 (ν a) ≤ ν a univ",
+          "distance": 0.3665095567703247,
+          "informal_description": "For Markov kernels $\\kappa$ and $\\nu$ with $\\kappa_\\mathrm{fst} \\le \\nu$, the $L^1$-norm of the truncated density ratio $\\frac{\\kappa_a(P_n(x) \\times s)}{\\nu_a(P_n(x))}$ satisfies $\\|\\mathrm{density}(\\kappa,\\nu,a,\\cdot)\\|_{L^1(\\nu_a)} \\le \\nu_a(\\mathrm{univ})$ for all $a \\in \\alpha$."
+        },
+        {
+          "declaration": "ProbabilityTheory.Kernel.memL1_limitProcess_densityProcess",
+          "module": "Mathlib.Probability.Kernel.Disintegration.Density",
+          "kind": "theorem",
+          "signature": "(hκν : fst κ ≤ ν) [IsFiniteKernel ν] (a : α) {s : Set β} (hs : MeasurableSet s) :\n  MemLp ((countableFiltration γ).limitProcess (fun n x ↦ densityProcess κ ν n a x s) (ν a)) 1 (ν a)",
+          "distance": 0.4017993211746216,
+          "informal_description": "Given a Markov kernel $\\kappa$ and a finite kernel $\\nu$ satisfying $\\kappa_\\mathrm{fst} \\leq \\nu$, for any $a \\in \\alpha$ and measurable set $s \\subseteq \\beta$, the limit process of the density processes $\\frac{\\kappa_a(P_n(x) \\times s)}{\\nu_a(P_n(x))}$ (truncated to $\\mathbb{R}$) with respect to the countable filtration on $\\gamma$ is in the $L^1$ space with respect to the measure $\\nu_a$."
+        },
+        {
+          "declaration": "Matrix.permMatrix_l2_opNorm_le",
+          "module": "Mathlib.LinearAlgebra.Matrix.Permutation",
+          "kind": "theorem",
+          "signature": ": ‖σ.permMatrix 𝕜‖ ≤ 1",
+          "distance": 0.4390835165977478,
+          "informal_description": "For any permutation $\\sigma$ on a finite set and real closed-like field $\\mathbb{K}$, the L2 operator norm of the associated permutation matrix $\\sigma.\\text{permMatrix} \\, \\mathbb{K}$ satisfies $\\|\\sigma.\\text{permMatrix} \\, \\mathbb{K}\\| \\leq 1$."
+        },
+        {
+          "declaration": "ProbabilityTheory.Kernel.tendsto_eLpNorm_one_restrict_densityProcess_limitProcess",
+          "module": "Mathlib.Probability.Kernel.Disintegration.Density",
+          "kind": "theorem",
+          "signature": "[IsFiniteKernel ν] (hκν : fst κ ≤ ν) (a : α) {s : Set β} (hs : MeasurableSet s) (A : Set γ) :\n  Tendsto\n    (fun n ↦\n      eLpNorm\n        ((fun x ↦ densityProcess κ ν n a x s) -\n          (countableFiltration γ).limitProcess (fun n x ↦ densityProcess κ ν n a x s) (ν a))\n        1 ((ν a).restrict A))\n    atTop (𝓝 0)",
+          "distance": 0.40481746196746826,
+          "informal_description": "For a finite kernel $\\nu$ and a kernel $\\kappa$ satisfying $\\operatorname{fst}(\\kappa) \\le \\nu$, and for any $a \\in \\alpha$, measurable set $s \\subseteq \\beta$, and set $A \\subseteq \\gamma$, the $L^1$-norm of the difference between the $n$-th density process $\\rho_n(a,x,s)$ and its limit process $\\rho_\\infty(a,x,s)$, restricted to $A$ with respect to $\\nu(a)$, converges to zero as $n \\to \\infty$. Formally, $\\lim_{n \\to \\infty} \\|\\rho_n(a,\\cdot,s) - \\rho_\\infty(a,\\cdot,s)\\|_{L^1(\\nu(a)|_A)} = 0$."
+        },
+        {
+          "declaration": "one_vecMul_of_mem_doublyStochastic",
+          "module": "Mathlib.Analysis.Convex.DoublyStochasticMatrix",
+          "kind": "theorem",
+          "signature": "(hM : M ∈ doublyStochastic R n) : 1 ᵥ* M = 1",
+          "distance": 0.43511074781417847,
+          "informal_description": "For any doubly stochastic matrix $ M $, the product of the vector of ones with $ M $ equals the vector of ones, i.e., $ \\mathbf{1} \\cdot M = \\mathbf{1} $."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "finite-group-average-projection",
+      "query": "finite group representation averaging is projection onto invariant subspace",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "Representation.isProj_averageMap",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "kind": "theorem",
+          "signature": ": LinearMap.IsProj ρ.invariants ρ.averageMap",
+          "distance": 0.20073366165161133,
+          "informal_description": "The averaging map associated with a representation of a finite group over a commutative semiring, where the group's cardinality is invertible, is a linear projection operator whose image coincides with the submodule of $G$-invariant elements. This means the map satisfies $\\pi \\circ \\pi = \\pi$ and $\\mathrm{im}(\\pi) = V^G$."
+        },
+        {
+          "declaration": "Representation.averageMap_invariant",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "kind": "theorem",
+          "signature": "(v : V) : averageMap ρ v ∈ invariants ρ",
+          "distance": 0.24345934391021729,
+          "informal_description": "For any commutative semiring $k$, finite group $G$ with invertible cardinality $\\#G$ in $k$, and representation $\\rho: G \\to \\mathrm{End}_k(V)$, the image of the averaging map $v \\mapsto \\frac{1}{\\#G} \\sum_{g \\in G} \\rho(g)(v)$ lies in the submodule $V^G$ of $G$-invariant vectors. That is, for every $v \\in V$, the averaged vector $\\frac{1}{\\#G} \\sum_{g \\in G} \\rho(g)(v)$ is fixed by the action of every $g \\in G$."
+        },
+        {
+          "declaration": "Representation.averageMap",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "kind": "definition",
+          "signature": "{k : Type u_1} →\n  {G : Type u_2} →\n    {V : Type u_3} →\n      [inst : CommSemiring k] →\n        [inst_1 : Group G] →\n          [inst_2 : AddCommMonoid V] →\n            [inst_3 : Module k V] →\n              Representation k G V → [inst_4 : Fintype G] → [Invertible ↑(Fintype.card G)] → V →ₗ[k] V",
+          "distance": 0.26407086849212646,
+          "informal_description": "Given a commutative semiring $ k $, finite group $ G $ with invertible cardinality $ \\#G $ in $ k $, and a representation $ \\rho: G \\to \\mathrm{End}_k(V) $ of $ G $ on a $ k $-module $ V $, this constructs the $ k $-linear map $ V \\to V $ defined by averaging the group action: $ v \\mapsto \\frac{1}{\\#G} \\sum_{g \\in G} \\rho(g)(v) $. The map is obtained by applying the average element $ \\frac{1}{\\#G} \\sum_{g \\in G} g $ in the group algebra $ k[G] $ to the representation."
+        },
+        {
+          "declaration": "Representation.averageMap_id",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "kind": "theorem",
+          "signature": "(v : V) (hv : v ∈ invariants ρ) : averageMap ρ v = v",
+          "distance": 0.27792418003082275,
+          "informal_description": "For a commutative semiring $k$, a finite group $G$ with invertible cardinality in $k$, and a representation $\\rho$ of $G$ on a $k$-module $V$, the averaging map associated to $\\rho$ satisfies $\\text{averageMap}(\\rho)(v) = v$ for every invariant vector $v \\in V^G$."
+        },
+        {
+          "declaration": "FDRep.average_char_eq_finrank_invariants",
+          "module": "Mathlib.RepresentationTheory.Character",
+          "kind": "theorem",
+          "signature": "(V : FDRep k G) : ⅟(Fintype.card G : k) • ∑ g : G, V.character g = finrank k (invariants V.ρ)",
+          "distance": 0.3058840036392212,
+          "informal_description": "For a finite group $ G $ and a finitely generated representation $ V $ of $ G $ over a commutative ring $ k $, the average of the character values of $ V $ over all elements of $ G $, computed as $ \\frac{1}{|G|} \\sum_{g \\in G} \\chi_V(g) $, equals the rank of the invariant submodule $ V^G $, where $ \\chi_V $ denotes the character of $ V $ and $ |G| $ is the cardinality of $ G $ converted to $ k $."
+        },
+        {
+          "declaration": "GroupAlgebra.average",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "kind": "definition",
+          "signature": "(k : Type u_1) →\n  (G : Type u_2) →\n    [inst : CommSemiring k] → [Group G] → [inst_2 : Fintype G] → [Invertible ↑(Fintype.card G)] → MonoidAlgebra k G",
+          "distance": 0.4109290838241577,
+          "informal_description": "Given a commutative semiring $ k $, a finite group $ G $, and an invertible cardinality $ \\#G $ in $ k $, this constructs the average element in the group algebra $ k[G] $, defined as $ \\frac{1}{\\#G} \\sum_{g \\in G} g $, where the sum is taken over all elements of $ G $ and scaled by the inverse of the group's cardinality."
+        },
+        {
+          "declaration": "TannakaDuality.FiniteGroup.sumSMulInv",
+          "module": "Mathlib.RepresentationTheory.Tannaka",
+          "kind": "definition",
+          "signature": "[Fintype G] {X : FDRep k G} (v : X) : (G → k) →ₗ[k] X",
+          "distance": 0.42387163639068604,
+          "informal_description": "Let $k$ be a commutative ring and $G$ be a finite group. Let $(X, \\rho)$ be a finitely generated representation of $G$ over $k$, where $\\rho: G \\to \\mathrm{End}_k(X)$ is the group homomorphism to the endomorphism ring of $X$. For a fixed vector $v \\in X$, this definition constructs a $k$-linear map from the space of functions from $G$ to $k$, denoted $(G \\to k)$, to the representation space $X$. This linear map takes a function $f: G \\to k$ and maps it to the vector given by the sum:\n$$ \\sum_{s \\in G} f(s) \\cdot \\rho(s^{-1})(v) $$"
+        },
+        {
+          "declaration": "Representation.invariants",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "kind": "definition",
+          "signature": "{k : Type u_1} →\n  {G : Type u_2} →\n    {V : Type u_3} →\n      [inst : CommSemiring k] →\n        [inst_1 : Group G] → [inst_2 : AddCommMonoid V] → [inst_3 : Module k V] → Representation k G V → Submodule k V",
+          "distance": 0.35981154441833496,
+          "informal_description": "For a commutative semiring $k$, group $G$, and $k$-module $V$ equipped with a representation $\\rho: G \\to \\mathrm{End}_k(V)$, this is the submodule of $V$ consisting of all elements $v \\in V$ such that $\\rho(g)(v) = v$ for every $g \\in G$. This submodule is denoted $V^G$ and contains precisely the elements of $V$ fixed by the entire group action."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "anticommuting-expectation-l2",
+      "query": "pairwise anticommuting Hermitian involutions expectation values sum of squares at most one",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "CliffordAlgebra.map_mul_map_eq_neg_of_isOrtho_of_mem_evenOdd_one",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Prod",
+          "kind": "theorem",
+          "signature": "(hm₁ : m₁ ∈ evenOdd Q₁ 1) (hm₂ : m₂ ∈ evenOdd Q₂ 1) : map f₁ m₁ * map f₂ m₂ = -map f₂ m₂ * map f₁ m₁",
+          "distance": 0.512424886226654,
+          "informal_description": "If $ m_1 $ and $ m_2 $ are elements in the odd subspaces of the Clifford algebras $ \\mathrm{Cl}(R, M_1, Q_1) $ and $ \\mathrm{Cl}(R, M_2, Q_2) $ respectively, then the images of $ m_1 $ and $ m_2 $ under the induced algebra homomorphisms $ f_1 $ and $ f_2 $ anticommute, i.e., $ f_1(m_1) \\cdot f_2(m_2) = -f_2(m_2) \\cdot f_1(m_1) $."
+        },
+        {
+          "declaration": "CHSH_id",
+          "module": "Mathlib.Algebra.Star.CHSH",
+          "kind": "theorem",
+          "signature": "[CommRing R] {A₀ A₁ B₀ B₁ : R} (A₀_inv : A₀ ^ 2 = 1) (A₁_inv : A₁ ^ 2 = 1) (B₀_inv : B₀ ^ 2 = 1)\n  (B₁_inv : B₁ ^ 2 = 1) :\n  (2 - A₀ * B₀ - A₀ * B₁ - A₁ * B₀ + A₁ * B₁) * (2 - A₀ * B₀ - A₀ * B₁ - A₁ * B₀ + A₁ * B₁) =\n    4 * (2 - A₀ * B₀ - A₀ * B₁ - A₁ * B₀ + A₁ * B₁)",
+          "distance": 0.5184246301651001,
+          "informal_description": "In a commutative ring $ R $, for elements $ A_0, A_1, B_0, B_1 $ satisfying $ A_0^2 = A_1^2 = B_0^2 = B_1^2 = 1 $, the square of the expression $ (2 - A_0B_0 - A_0B_1 - A_1B_0 + A_1B_1) $ equals $ 4 $ times the same expression, i.e., $$(2 - A_0B_0 - A_0B_1 - A_1B_0 + A_1B_1)^2 = 4(2 - A_0B_0 - A_0B_1 - A_1B_0 + A_1B_1).$$"
+        },
+        {
+          "declaration": "CliffordAlgebra.ι_mul_ι_add_swap_of_isOrtho",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+          "kind": "theorem",
+          "signature": "{a b : M} (h : Q.IsOrtho a b) : ι Q a * ι Q b + ι Q b * ι Q a = 0",
+          "distance": 0.48783206939697266,
+          "informal_description": "For any elements $a, b$ in the $R$-module $M$ that are orthogonal with respect to the quadratic form $Q$ (i.e., $Q(a + b) = Q(a) + Q(b)$), the product of their images under the canonical inclusion map $\\iota: M \\to \\mathrm{Cl}(R, M, Q)$ into the Clifford algebra satisfies $\\iota(a) \\iota(b) + \\iota(b) \\iota(a) = 0$."
+        },
+        {
+          "declaration": "CliffordAlgebra.ι_mul_ι_mul_of_isOrtho",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+          "kind": "theorem",
+          "signature": "(x : CliffordAlgebra Q) {a b : M} (h : Q.IsOrtho a b) : ι Q a * (ι Q b * x) = -(ι Q b * (ι Q a * x))",
+          "distance": 0.49955201148986816,
+          "informal_description": "For any elements $a, b$ in an $R$-module $M$ that are orthogonal with respect to a quadratic form $Q$ (i.e., $Q(a + b) = Q(a) + Q(b)$), and for any element $x$ in the Clifford algebra $\\mathrm{Cl}(R, M, Q)$, the inclusion map $\\iota: M \\to \\mathrm{Cl}(R, M, Q)$ satisfies the anticommutation relation: $\\iota(a) \\cdot (\\iota(b) \\cdot x) = -\\iota(b) \\cdot (\\iota(a) \\cdot x)$."
+        },
+        {
+          "declaration": "CliffordAlgebra.ι_mul_ι_comm",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+          "kind": "theorem",
+          "signature": "(a b : M) : ι Q a * ι Q b = algebraMap R _ (QuadraticMap.polar Q a b) - ι Q b * ι Q a",
+          "distance": 0.5137301683425903,
+          "informal_description": "For any elements $ a, b $ in the $ R $-module $ M $, the product of their images under the canonical inclusion $ \\iota: M \\to \\mathrm{Cl}(R, M, Q) $ satisfies $ \\iota(a) \\iota(b) = \\text{algebraMap}_R(B_Q(a, b)) - \\iota(b) \\iota(a) $, where $ B_Q $ denotes the polar form of the quadratic form $ Q $. This expresses the fundamental anticommutation relation in the Clifford algebra generated by $ Q $."
+        },
+        {
+          "declaration": "CliffordAlgebra.ι_mul_ι_comm_of_isOrtho",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+          "kind": "theorem",
+          "signature": "{a b : M} (h : Q.IsOrtho a b) : ι Q a * ι Q b = -(ι Q b * ι Q a)",
+          "distance": 0.4962869882583618,
+          "informal_description": "For any elements $a$ and $b$ in the module $M$ that are orthogonal with respect to the quadratic form $Q$, the product of their images under the canonical inclusion map $\\iota: M \\to \\mathrm{Cl}(R, M, Q)$ satisfies $\\iota(a)\\iota(b) = -\\iota(b)\\iota(a)$."
+        },
+        {
+          "declaration": "IsCHSHTuple.mk",
+          "module": "Mathlib.Algebra.Star.CHSH",
+          "kind": "constructor",
+          "signature": "∀ {R : Type u_1} [inst : Monoid R] [inst_1 : StarMul R] {A₀ A₁ B₀ B₁ : R},\n  A₀ ^ 2 = 1 →\n    A₁ ^ 2 = 1 →\n      B₀ ^ 2 = 1 →\n        B₁ ^ 2 = 1 →\n          star A₀ = A₀ →\n            star A₁ = A₁ →\n              star B₀ = B₀ →\n                star B₁ = B₁ →\n                  A₀ * B₀ = B₀ * A₀ →\n                    A₀ * B₁ = B₁ * A₀ → A₁ * B₀ = B₀ * A₁ → A₁ * B₁ = B₁ * A₁ → IsCHSHTuple A₀ A₁ B₀ B₁",
+          "distance": 0.40646040439605713,
+          "informal_description": "Given four elements $A_0, A_1, B_0, B_1$ in a monoid $R$ with star multiplication, if each element squares to the identity ($A_0^2 = A_1^2 = B_0^2 = B_1^2 = 1$), is self-adjoint ($\\star A_0 = A_0$, $\\star A_1 = A_1$, $\\star B_0 = B_0$, $\\star B_1 = B_1$), and commutes pairwise ($A_0 B_0 = B_0 A_0$, $A_0 B_1 = B_1 A_0$, $A_1 B_0 = B_0 A_1$, $A_1 B_1 = B_1 A_1$), then they form a CHSH tuple."
+        },
+        {
+          "declaration": "CliffordAlgebra.mul_ι_mul_ι_of_isOrtho",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+          "kind": "theorem",
+          "signature": "(x : CliffordAlgebra Q) {a b : M} (h : Q.IsOrtho a b) : x * ι Q a * ι Q b = -(x * ι Q b * ι Q a)",
+          "distance": 0.49725455045700073,
+          "informal_description": "If $ a $ and $ b $ are orthogonal elements in the module $ M $ with respect to the quadratic form $ Q $, then their images under the canonical inclusion $ \\iota: M \\to \\mathrm{Cl}(R, M, Q) $ anti-commute in the Clifford algebra, i.e., $ \\iota(a)\\iota(b) = -\\iota(b)\\iota(a) $."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    },
+    {
+      "query_id": "perfect-graph-weighted-duality",
+      "query": "weighted stable set fractional clique cover duality finite perfect graph",
+      "service": "LeanSearch v2 public standard-mode API",
+      "endpoint": "https://leansearch.net/search",
+      "retrieved_at": "2026-08-16",
+      "results": [
+        {
+          "declaration": "SimpleGraph.isMaximumClique_compl",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "kind": "theorem",
+          "signature": "[Fintype α] (s : Finset α) : Gᶜ.IsMaximumClique s ↔ G.IsMaximumIndepSet s",
+          "distance": 0.5073440074920654,
+          "informal_description": "For a finite simple graph $G$ and a finite set $s$ of vertices, the set $s$ is a maximum clique in the complement graph $\\overline{G}$ if and only if $s$ is a maximum independent set in the original graph $G$."
+        },
+        {
+          "declaration": "SimpleGraph.IsVertexCover",
+          "module": "Mathlib.Combinatorics.SimpleGraph.VertexCover",
+          "kind": "definition",
+          "signature": "(G : SimpleGraph V) (c : Set V) : Prop",
+          "distance": 0.5370163917541504,
+          "informal_description": "A vertex cover of a simple graph $ G $ is a set $ c $ of vertices such that for every pair of adjacent vertices $ v $ and $ w $ in $ G $, at least one of $ v $ or $ w $ is in $ c $. In other words, every edge of $ G $ has at least one endpoint in $ c $."
+        },
+        {
+          "declaration": "SimpleGraph.isMaximumIndepSet_compl",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "kind": "theorem",
+          "signature": "[Fintype α] (s : Finset α) : Gᶜ.IsMaximumIndepSet s ↔ G.IsMaximumClique s",
+          "distance": 0.5115816593170166,
+          "informal_description": "For a simple graph $ G $ on a finite vertex set $ \\alpha $, a finite set $ s $ of vertices is a maximum independent set in the complement graph $ \\overline{G} $ if and only if $ s $ is a maximum clique in $ G $."
+        },
+        {
+          "declaration": "SimpleGraph.isMaximalIndepSet_compl",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "kind": "theorem",
+          "signature": "(s : Finset α) : Maximal Gᶜ.IsIndepSet s ↔ Maximal G.IsClique s",
+          "distance": 0.5133091807365417,
+          "informal_description": "For a finite set $ s $ of vertices in a simple graph $ G $, $ s $ is a maximal independent set in the complement graph $ \\overline{G} $ if and only if $ s $ is a maximal clique in the original graph $ G $."
+        },
+        {
+          "declaration": "SimpleGraph.exists_isNClique_cliqueNum",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "kind": "theorem",
+          "signature": "[Finite α] : ∃ s, G.IsNClique G.cliqueNum s",
+          "distance": 0.524135947227478,
+          "informal_description": "In any finite simple graph $ G $, there exists a clique $ S $ such that the cardinality of $ S $ is precisely the clique number of $ G $. This asserts that the supremum defining the clique number is attained by an actual clique in the graph."
+        },
+        {
+          "declaration": "SimpleGraph.tutte",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Tutte",
+          "kind": "theorem",
+          "signature": ": (∃ M : Subgraph G, M.IsPerfectMatching) ↔ ∀ u, ¬G.IsTutteViolator u",
+          "distance": 0.5315440893173218,
+          "informal_description": "A finite simple graph $ G $ admits a perfect matching if and only if for every subset $ U $ of its vertices, the number of connected components in $ G - U $ with an odd number of vertices is at most $ |U| $."
+        },
+        {
+          "declaration": "SimpleGraph.Subgraph.IsPerfectMatching.exists_of_isClique_supp",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Tutte",
+          "kind": "theorem",
+          "signature": "(hveven : Even (Nat.card V)) (h : ¬G.IsTutteViolator G.universalVerts)\n  (h' : ∀ (K : G.deleteUniversalVerts.coe.ConnectedComponent), G.deleteUniversalVerts.coe.IsClique K.supp) :\n  ∃ (M : Subgraph G), M.IsPerfectMatching",
+          "distance": 0.5180463790893555,
+          "informal_description": "Let $ G $ be a simple graph with an even number of vertices. Suppose that the set of universal vertices in $ G $ is not a Tutte violator, and that every connected component in the graph obtained by deleting all universal vertices from $ G $ is a clique. Then, $ G $ admits a perfect matching."
+        },
+        {
+          "declaration": "SimpleGraph.Subgraph.IsPerfectMatching.even_card",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Matching",
+          "kind": "theorem",
+          "signature": "[Fintype V] (h : M.IsPerfectMatching) : Even (Fintype.card V)",
+          "distance": 0.5117827653884888,
+          "informal_description": "If a finite vertex set $ V $ admits a perfect matching, then the cardinality $ \\#V $ is even."
+        }
+      ],
+      "status": "CANDIDATE_RETRIEVAL_ONLY"
+    }
+  ]
+}

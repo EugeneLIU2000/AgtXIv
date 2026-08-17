@@ -1,0 +1,42 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "formalization-contract:2607.26154v1:sign-max-and-affine-span",
+  "source_statements": [
+    "statement:2607.26154v1:relaxed-affine-span",
+    "statement:2607.26154v1:dual-mwis"
+  ],
+  "source_anchors": [
+    "anchor:2607.26154v1:relaxation-proofs"
+  ],
+  "normalized_mathematical_statements": [
+    "For a finite index set S, y:S->R, and mu:R, max over f:S->{-1,1} of |sum_i f(i)y(i)+mu| equals sum_i |y(i)|+|mu|.",
+    "If a finite relaxed vertex family contains, for each coordinate i, two vertices with difference 2e_i, then it affinely spans R^m."
+  ],
+  "physical_context_removed": [
+    "interpretation of coordinates as Pauli expectations",
+    "density operators",
+    "perfect graph structure",
+    "exact reduced robustness theorem"
+  ],
+  "assumptions_made_explicit": [
+    "finite index types",
+    "real coefficient field",
+    "nonempty sign choice set"
+  ],
+  "intended_lean_declarations": [
+    "AgtXIv.Stabilizerness.max_abs_signed_sum",
+    "AgtXIv.Stabilizerness.relaxed_vertices_affineSpan"
+  ],
+  "environment": {
+    "project": "formal/AgtXIvStabilizerness",
+    "toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_commit": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+    "environment_verification": "formal/AgtXIvStabilizerness/verification-result.json"
+  },
+  "status": "PARTIALLY_IMPLEMENTED",
+  "implemented_declarations": [
+    "AgtXIv.Stabilizerness.max_abs_signed_sum"
+  ],
+  "residual_gap": "The generic affine-span reduction is kernel-checked, but the paper-specific construction of relaxed vertices whose coordinate differences span the measurement space remains unproved.",
+  "note": "The sign-maximization identity is kernel-checked. This does not prove the LP-to-MWIS reduction or the full closed-form target theorem."
+}

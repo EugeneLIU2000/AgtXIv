@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "symbols": [
+    {
+      "symbol": "M",
+      "canonical_name": "ordered signed Pauli measurement set",
+      "representation": {
+        "observable": "a nonidentity Hermitian Pauli representative with its sign retained",
+        "phase_free_key": "a vector in F_2^(2n) used only for commutation and product-support calculations"
+      },
+      "invariants": [
+        "finite",
+        "nonempty",
+        "no duplicate signed observable",
+        "identity excluded for the target theorem"
+      ]
+    },
+    {
+      "symbol": "G_M",
+      "canonical_name": "frustration graph",
+      "definition": "one node per element of M and an edge exactly for each anticommuting pair"
+    },
+    {
+      "symbol": "B_S",
+      "canonical_name": "admissible sign set",
+      "definition": "the affine binary code of joint eigenvalue assignments satisfying every commuting Pauli product relation in S"
+    },
+    {
+      "symbol": "alpha_w(G)",
+      "canonical_name": "maximum-weight independent-set value",
+      "warning": "Independent set means pairwise commuting support. Maximum-weight is an optimization; maximal means inclusion-maximal and is different."
+    },
+    {
+      "symbol": "omega(G)",
+      "canonical_name": "clique number",
+      "definition": "the largest number of pairwise anticommuting observables"
+    }
+  ],
+  "terminology_collision": {
+    "avoid": "active dependency",
+    "use_for_paper_domain": "Pauli-active dependency",
+    "use_for_AgtXIv_graph": "scientific claim dependency"
+  }
+}

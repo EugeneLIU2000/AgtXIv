@@ -1,0 +1,120 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "verification-partition:1609.07488v2:root",
+  "agent": "agent:robustness-of-magic",
+  "route_catalog": ["SOURCE_ALIGNMENT", "LEAN_KERNEL", "EXACT_PHYSICAL_SEMANTICS", "PHYSICAL_APPROXIMATION", "EMPIRICAL"],
+  "objects": [
+    {
+      "object_id": "statement:1609.07488v2:rom-definition-source",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1609.07488v2:rom-definition"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.coeff_sum_eq_one", "AgtXIv.RoM.normalized_l1", "AgtXIv.RoM.exists_l1Minimizer", "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["verification:1609.07488v2:derivation-audit", "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Full robustness of magic is defined exactly in the ideal finite-dimensional model."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "statement:1609.07488v2:stabilizer-channel-action",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1609.07488v2:rom-property-proofs"]},
+        {"route": "LEAN_KERNEL", "status": "LEAN_ENCODED_AS_EXACT_DETERMINISTIC_ATOM_MAP_INTERFACE_PROTOCOL_BRIDGE_OPEN", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "subclaims_kernel_checked": ["AgtXIv.RoM.kernelOfAtomImages", "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages", "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "BLOCKED_ON_SOURCE_PROTOCOL_CHANNEL_TO_ATOM_MAP_INTERFACE", "evidence": ["verification:1609.07488v2:derivation-audit", "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The channel-to-convex-mixture condition is exact; noisy implementations require a separate error contract."},
+        {"route": "EMPIRICAL", "reason": "No channel data are sampled."}
+      ]
+    },
+    {
+      "object_id": "statement:1609.07488v2:rom-definition-normalized",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "NORMALIZATION_AND_IMPORTED_ATOM_SET_MADE_EXPLICIT", "evidence": ["anchor:1609.07488v2:rom-definition", "verification:1609.07488v2:derivation-audit"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.exists_l1Minimizer", "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan", "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The definition, minimum existence, and atom alignment are exact mathematical obligations."},
+        {"route": "EMPIRICAL", "reason": "No optimization is estimated from data."}
+      ]
+    },
+    {
+      "object_id": "statement:1609.07488v2:rom-faithfulness",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1609.07488v2:rom-properties", "anchor:1609.07488v2:rom-property-proofs"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.feasible_faithful", "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free", "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope", "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["verification:1609.07488v2:derivation-audit", "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Faithfulness is an exact convex-geometric theorem."},
+        {"route": "EMPIRICAL", "reason": "Finite tests cannot discharge the universal theorem and none are used here."}
+      ]
+    },
+    {
+      "object_id": "statement:1609.07488v2:rom-monotonicity",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED_TRACE_PRESERVING_ONLY", "evidence": ["anchor:1609.07488v2:rom-properties", "anchor:1609.07488v2:rom-property-proofs"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "scope_relation": "EXACT_DETERMINISTIC_ATOM_PRESERVING_MAP_INTERFACE", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.kernelOfAtomImages", "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages", "AgtXIv.RoM.finiteRoM_mono_of_atomImages", "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono", "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "BLOCKED_ON_SOURCE_PROTOCOL_CHANNEL_TO_ATOM_MAP_INTERFACE_AND_SELECTIVE_BRANCHES", "evidence": ["verification:1609.07488v2:derivation-audit", "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Deterministic atom-preserving-map monotonicity is exact. Selective average monotonicity is a separate exact contract, not an approximation."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "step:1609.07488v2:001",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "NORMALIZATION_AND_IMPORTED_ATOM_SET_MADE_EXPLICIT", "evidence": ["verification:1609.07488v2:derivation-audit"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.exists_l1Minimizer", "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan", "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Definition alignment is exact."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "step:1609.07488v2:002",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1609.07488v2:rom-property-proofs"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.exists_l1Minimizer", "AgtXIv.RoM.feasible_faithful", "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free", "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["verification:1609.07488v2:derivation-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The proof step is exact."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "step:1609.07488v2:003",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1609.07488v2:rom-property-proofs"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "scope_relation": "EXACT_DETERMINISTIC_ATOM_PRESERVING_MAP_INTERFACE", "formalization_contracts": ["formalization-contract:1609.07488v2:qubit-full-rom-kernel"], "declarations": ["AgtXIv.RoM.kernelOfAtomImages", "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages", "AgtXIv.RoM.finiteRoM_mono_of_atomImages", "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono"], "evidence": ["verification:1609.07488v2:lean-qubit-full-rom-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "BLOCKED_ON_SOURCE_PROTOCOL_CHANNEL_TO_ATOM_MAP_INTERFACE_AND_SELECTIVE_BRANCHES", "evidence": ["verification:1609.07488v2:derivation-audit", "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The deterministic pushforward proof is exact; selective on-average semantics are separate."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    }
+  ]
+}

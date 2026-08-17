@@ -1,0 +1,3479 @@
+{
+  "schema_version": "0.1.0",
+  "canonical_dag": "Stabilizerness/dag/claim-dag.json",
+  "node_count": 74,
+  "policy": "Every DAG node has one registry record. NON_MATHEMATICAL and GAP are explicit states; no proof is fabricated.",
+  "contracts": [
+    {
+      "id": "math-contract:root.gottesman-stabilizer-formalism",
+      "dag_node_id": "root:gottesman-stabilizer-formalism",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ANCHORED",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "An abelian Pauli subgroup not containing -I defines its common +1 eigenspace; the rank-n, k=0 case defines a pure stabilizer state.",
+      "source_reference": {
+        "paper_id": "arxiv:quant-ph/9705052v1",
+        "artifact": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+        "lines": "980-998"
+      },
+      "paper_agent": "agent:stabilizer-codes-and-quantum-error-correction",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:full-stabilizer-polytope",
+        "claim:frustration-graph",
+        "claim:dependency-affine-code",
+        "claim:sign-syndrome-linear-consistent",
+        "claim:anticommuting-l2-bound",
+        "claim:max-anticommuting-size",
+        "claim:clifford-rom-covariance",
+        "claim:squared-stabilizer-support",
+        "claim:pauli-parseval"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.Gottesman.groupAverage_eq_self_iff",
+          "AgtXIv.Gottesman.groupAverage_idempotent",
+          "AgtXIv.Gottesman.groupAverage_isProjection",
+          "AgtXIv.Gottesman.groupAverage_mem_commonFixed",
+          "AgtXIv.Gottesman.range_groupAverageMap",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.finrank_commonFixed_eq_two_pow_sub",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_generalRankCommonFixed",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_idempotent",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_isHermitian",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_range_finrank",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_trace",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_idempotent",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one",
+          "AgtXIv.Stabilizer.toLin_stabilizerCodeProjectorMatrix",
+          "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero"
+        ],
+        "modules": [
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "Representation.isProj_averageMap",
+            "module": "Mathlib.RepresentationTheory.Invariants",
+            "assessment": "EXACT_FOR_ABSTRACT_SUBCLAIM",
+            "use": "Can replace the proof body of the abstract projection endpoint; project wrappers may remain for source alignment and stable naming."
+          },
+          {
+            "declaration": "Representation.averageMap_invariant",
+            "module": "Mathlib.RepresentationTheory.Invariants",
+            "assessment": "EXACT_FOR_ABSTRACT_SUBCLAIM",
+            "use": "Already used by AgtXIv.Gottesman.groupAverage_mem_commonFixed."
+          },
+          {
+            "declaration": "Representation.averageMap_id",
+            "module": "Mathlib.RepresentationTheory.Invariants",
+            "assessment": "EXACT_FOR_ABSTRACT_SUBCLAIM",
+            "use": "Already used to prove fixed-point and idempotence wrappers."
+          }
+        ],
+        "verification_references": [
+          "verification:9705052v1:source-freeze",
+          "verification:9705052v1:specialization-review",
+          "verification:9705052v1:lean-group-average",
+          "verification:9705052v1:lean-qubit-stabilizer-code-kernel"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "blocker_ids": [
+        "blocker:9705052v1:root-review-open"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.gottesman-knill-simulation",
+      "dag_node_id": "root:gottesman-knill-simulation",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ANCHORED",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "A quantum computation restricted to Clifford gates, Pauli measurements and classically conditioned Clifford gates can be perfectly simulated in probabilistic polynomial time on a classical computer.",
+      "source_reference": {
+        "paper_id": "arxiv:quant-ph/9807006v1",
+        "artifact": "Reference/The Heisenberg Representation of Quantum Computers/HeisRep.tex",
+        "lines": "1238-1260"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:resource-interpretation"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.bravyi-kitaev-magic-model",
+      "dag_node_id": "root:bravyi-kitaev-magic-model",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ANCHORED",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "Clifford operations, Pauli measurements and stabilizer preparations are classically simulable; suitable nonstabilizer ancillas enable universal computation. For one qubit, mixtures of Pauli eigenstates form the stabilizer octahedron.",
+      "source_reference": {
+        "paper_id": "arxiv:quant-ph/0403025v2",
+        "artifact": "Reference/Universal quantum computation with ideal Clifford gates and noisy ancillas/final.tex",
+        "lines": "166-190,256-300,389-403"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:resource-interpretation"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.veitch-stabilizer-resource-theory",
+      "dag_node_id": "root:veitch-stabilizer-resource-theory",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ANCHORED",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "Pure stabilizer states form a finite Clifford orbit; the full free state set STAB is their convex hull; states not freely preparable are magic/nonstabilizer resources, and stabilizer operations are free operations.",
+      "source_reference": {
+        "paper_id": "arxiv:1307.7171v1",
+        "artifact": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+        "lines": "269-280,331-367,425-482"
+      },
+      "paper_agent": "agent:resource-theory-of-stabilizer-computation",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:resource-interpretation",
+        "claim:full-stabilizer-polytope"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+          "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+          "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+          "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit"
+        ],
+        "modules": [
+          "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:1307.7171v1:source-freeze",
+          "verification:1307.7171v1:semantic-audit",
+          "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "blocker_ids": [
+        "blocker:1307.7171v1:formalism-alignment-pending"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.howard-campbell-rom",
+      "dag_node_id": "root:howard-campbell-rom",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ANCHORED",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "RoM is the minimum l1 norm of a signed affine decomposition over pure stabilizer states; RoM=1 exactly on the stabilizer polytope and is nonincreasing under stabilizer operations.",
+      "source_reference": {
+        "paper_id": "arxiv:1609.07488v2",
+        "artifact": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+        "lines": "75-119,208-232"
+      },
+      "paper_agent": "agent:robustness-of-magic",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:full-rom"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.RoM.coeff_sum_eq_one",
+          "AgtXIv.RoM.exists_l1Minimizer",
+          "AgtXIv.RoM.feasible_faithful",
+          "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+          "AgtXIv.RoM.kernelOfAtomImages",
+          "AgtXIv.RoM.normalized_l1",
+          "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+          "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+          "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+          "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+          "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+        ],
+        "modules": [
+          "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:1609.07488v2:source-freeze",
+          "verification:1609.07488v2:derivation-audit",
+          "verification:1609.07488v2:lean-finite-atom-kernel",
+          "verification:1609.07488v2:lean-qubit-full-rom-kernel"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "blocker_ids": [
+        "blocker:1609.07488v2:free-set-import-alignment-pending"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.varela-reduced-polytope",
+      "dag_node_id": "root:varela-reduced-polytope",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "external_contract",
+      "dag_status": "BLOCKED_BY_VREP_PROOF_GAP",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "A Pauli expectation window defines a projected stabilizer polytope and reduced RoM; its claimed V-representation uses maximal commuting contexts and admissible signs.",
+      "source_reference": {
+        "paper_id": "arxiv:2602.18939v1",
+        "artifact": "Reference/Predicting magic from very few measurements/pra_version.tex",
+        "lines": "188-260,279-309,691-808"
+      },
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:reduced-stabilizer-polytope",
+        "claim:reduced-rom",
+        "claim:fixed-window-monotonicity",
+        "claim:exact-reduced-vrep",
+        "claim:general-reduced-hardness",
+        "claim:full-pauli-obstructions"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+          "AgtXIv.Varela.MeasurementWindow.mem_projectedStabilizerPolytope_iff",
+          "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.abs_vector_le_one",
+          "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+          "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+        ],
+        "modules": [
+          "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+          "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+          "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+          "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "blocker_ids": [
+        "blocker:2602.18939v1:root-reconstruction-pending",
+        "blocker:2602.18939v1:fixed-window-monotonicity-false"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:foundation.finite-lp-strong-duality",
+      "dag_node_id": "foundation:finite-lp-strong-duality",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "standard_foundation",
+      "dag_status": "DECLARED_BACKGROUND_NOT_RECONSTRUCTED",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "A feasible finite-dimensional linear program with finite optimum has an equal dual optimum under the stated primal/dual formulation.",
+      "source_reference": {
+        "citation_key": "hamaguchi2024handbook",
+        "target_anchor": "draft.tex:607-614"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:exact-vertex-dual",
+        "claim:relaxed-lp-dual"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.perfect-graph-weighted-duality",
+      "dag_node_id": "root:perfect-graph-weighted-duality",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "external_contract",
+      "dag_status": "PRIMARY_SOURCE_ALIGNMENT_PENDING",
+      "branch": "graph_theory",
+      "normalized_mathematical_statement": "For a finite perfect graph and nonnegative weights, the maximum-weight stable-set value equals the fractional clique-cover optimum. This equality contract does not itself include an algorithmic complexity claim.",
+      "source_reference": {
+        "primary_candidates": [
+          "Chvatal 1975",
+          "Fulkerson 1971/1972"
+        ],
+        "target_anchor": "draft.tex:639-684"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:lovasz-sandwich",
+        "claim:perfect-graph-antiblocker",
+        "claim:perfect-graph-weighted-collapse"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "SimpleGraph.isMaximumIndepSet_compl",
+            "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+            "assessment": "INSUFFICIENT_NEARBY_API",
+            "use": "Only complement/independent-set infrastructure was retrieved; no weighted perfect-graph duality replacement was found."
+          }
+        ],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:foundation.perfect-graph-complement-and-algorithm",
+      "dag_node_id": "foundation:perfect-graph-complement-and-algorithm",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "standard_foundation",
+      "dag_status": "PRIMARY_SOURCE_ALIGNMENT_PENDING",
+      "branch": "graph_theory",
+      "normalized_mathematical_statement": "The complement of a perfect graph is perfect; under an explicit rational bit encoding and a promise/certificate of perfectness, weighted stable-set optimization is polynomial-time.",
+      "source_reference": {
+        "primary_candidates": [
+          "Lovasz weak perfect graph theorem",
+          "Groetschel-Lovasz-Schrijver 1981"
+        ],
+        "target_anchor": "draft.tex:267-284,677-684"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:polynomial-evaluation"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.xu-quadratic-pauli-graph",
+      "dag_node_id": "root:xu-quadratic-pauli-graph",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "The quantum maximum of a weighted squared Pauli profile depends only on the frustration graph; hbar-perfect graphs are those for which it equals the weighted independent-set value for all nonnegative weights.",
+      "source_reference": {
+        "citation_keys": [
+          "xu2024bounding",
+          "xu2025simultaneous"
+        ],
+        "target_anchor": "draft.tex:923-933"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:hbar-perfect-quadratic-witness"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.leone-stabilizer-renyi-entropy",
+      "dag_node_id": "root:leone-stabilizer-renyi-entropy",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "For a pure n-qubit state, the fourth Pauli moment defines the order-2 stabilizer Renyi entropy and vanishes exactly for pure stabilizer states.",
+      "source_reference": {
+        "citation_key": "leone2022stabilizer",
+        "target_anchor": "draft.tex:960-979"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:pure-sre-graph-identity",
+        "claim:mixed-sre-identity-limitation"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:root.full-pauli-symplectic-graph",
+      "dag_node_id": "root:full-pauli-symplectic-graph",
+      "interface_class": "EXTERNAL_MATHEMATICAL_INTERFACE",
+      "dag_kind": "external_contract",
+      "dag_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "The full n-qubit Pauli frustration graph is an isolated identity plus the binary symplectic graph; maximal abelian Pauli supports are maximum independent sets of size 2^n.",
+      "source_reference": {
+        "citation_keys": [
+          "brouwer2012spectra",
+          "sarkar2021sets"
+        ],
+        "target_anchor": "draft.tex:935-958"
+      },
+      "paper_agent": "UNMAPPED",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:full-pauli-independent-sets",
+        "claim:full-pauli-obstructions"
+      ],
+      "lean_binding": {
+        "status": "EXTERNAL_OR_UNMAPPED",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "UNMAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.resource-interpretation",
+      "dag_node_id": "claim:resource-interpretation",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_ANCHORED_WITH_EXTERNAL_IMPORTS",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "Relative to stabilizer operations as the free subtheory, states outside the stabilizer free set carry nonstabilizerness, also called magic.",
+      "source_reference": "draft.tex:79-88",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "root:bravyi-kitaev-magic-model",
+        "root:gottesman-knill-simulation",
+        "root:veitch-stabilizer-resource-theory"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.full-stabilizer-polytope",
+      "dag_node_id": "claim:full-stabilizer-polytope",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "IMPORTED_CONCEPT",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "STAB_n is the convex hull of all pure n-qubit stabilizer states.",
+      "source_reference": "draft.tex:81-86,111-114",
+      "paper_agent": "agent:resource-theory-of-stabilizer-computation",
+      "statement_ids": [
+        "statement:1307.7171v1:n-qubit-stabilizer-polytope"
+      ],
+      "reasoning_step_ids": [
+        "step:1307.7171v1:001"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "theorem_imports": [
+        "root:veitch-stabilizer-resource-theory"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:full-rom",
+        "claim:reduced-stabilizer-polytope"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+          "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+          "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+          "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit"
+        ],
+        "modules": [
+          "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:1307.7171v1:source-freeze",
+          "verification:1307.7171v1:semantic-audit",
+          "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "blocker_ids": [
+        "blocker:1307.7171v1:formalism-alignment-pending"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.full-rom",
+      "dag_node_id": "claim:full-rom",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "IMPORTED_CONCEPT",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "Full RoM is the minimum l1 norm of a signed affine decomposition of rho over pure stabilizer states, with value one exactly on STAB_n.",
+      "source_reference": "draft.tex:83-88,111-114",
+      "paper_agent": "agent:robustness-of-magic",
+      "statement_ids": [
+        "statement:1609.07488v2:rom-definition-normalized"
+      ],
+      "reasoning_step_ids": [
+        "step:1609.07488v2:001"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:full-stabilizer-polytope"
+      ],
+      "theorem_imports": [
+        "root:howard-campbell-rom"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:reduced-rom"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.RoM.coeff_sum_eq_one",
+          "AgtXIv.RoM.exists_l1Minimizer",
+          "AgtXIv.RoM.feasible_faithful",
+          "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+          "AgtXIv.RoM.kernelOfAtomImages",
+          "AgtXIv.RoM.normalized_l1",
+          "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+          "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+          "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+          "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+          "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+        ],
+        "modules": [
+          "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+          "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "IsCompact.exists_isMinOn",
+            "module": "Mathlib.Topology.Order.Compact",
+            "assessment": "EXACT_FOUNDATIONAL_LEMMA",
+            "use": "Already used in FiniteAtomAttainment.lean; no need to reprove compact minimum attainment."
+          }
+        ],
+        "verification_references": [
+          "verification:1609.07488v2:source-freeze",
+          "verification:1609.07488v2:derivation-audit",
+          "verification:1609.07488v2:lean-finite-atom-kernel",
+          "verification:1609.07488v2:lean-qubit-full-rom-kernel"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "blocker_ids": [
+        "blocker:1609.07488v2:free-set-import-alignment-pending"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.pauli-window",
+      "dag_node_id": "claim:pauli-window",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT_AGENT_NORMALIZED_DOMAIN",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "A finite set M of nonidentity Hermitian n-qubit Pauli observables maps rho to b_M(rho)=(tr(P rho))_{P in M}.",
+      "source_reference": "draft.tex:113-115",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:reduced-stabilizer-polytope",
+        "claim:frustration-graph"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.reduced-stabilizer-polytope",
+      "dag_node_id": "claim:reduced-stabilizer-polytope",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT_IMPORTED_ORIGIN",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "STAB(M) is the image of STAB_n under the Pauli expectation window.",
+      "source_reference": "draft.tex:115-121,496-500",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-definition"
+      ],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:pauli-window",
+        "claim:full-stabilizer-polytope"
+      ],
+      "theorem_imports": [
+        "root:varela-reduced-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:reduced-rom",
+        "claim:exact-reduced-vrep",
+        "claim:relaxed-rom-lower-bound",
+        "claim:clifford-rom-covariance"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "LinearMap.image_convexHull",
+            "module": "Mathlib.Analysis.Convex.Hull",
+            "assessment": "ADAPTABLE_GENERIC_API",
+            "use": "Can simplify the generic fact that linear projection commutes with convex hull; does not establish the stabilizer-specific V-representation."
+          }
+        ],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.reduced-rom",
+      "dag_node_id": "claim:reduced-rom",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "DEFINITION_VALID_MONOTONICITY_LABEL_FALSE",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "RoM_M(rho) is the minimum l1 norm of a signed affine decomposition of b_M(rho) over STAB(M); projection implies RoM_M(rho)<=RoM(rho), so RoM_M(rho)>1 is a sound magic certificate. With M held fixed, it is not a monotone under all stabilizer operations.",
+      "source_reference": "draft.tex:122-131,496-500",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-rom-definition"
+      ],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:reduced-stabilizer-polytope"
+      ],
+      "theorem_imports": [
+        "claim:full-rom",
+        "root:varela-reduced-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:fixed-window-monotonicity",
+        "claim:exact-vertex-dual",
+        "claim:relaxed-rom",
+        "claim:clifford-rom-covariance"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.frustration-graph",
+      "dag_node_id": "claim:frustration-graph",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "G_M has one vertex per measured Pauli and an edge exactly for anticommuting pairs; independent sets are pairwise commuting contexts.",
+      "source_reference": "draft.tex:89-91,133-141",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism",
+        "claim:pauli-window"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:exact-reduced-vrep",
+        "claim:dependency-affine-code",
+        "claim:sign-syndrome-linear-consistent",
+        "claim:relaxed-mwis-dual",
+        "claim:anticommuting-l2-bound",
+        "claim:max-anticommuting-size",
+        "claim:measurement-setting-bound",
+        "claim:clifford-structure-invariance",
+        "claim:squared-stabilizer-support",
+        "claim:quadratic-stabilizer-mwis"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.exact-reduced-vrep",
+      "dag_node_id": "claim:exact-reduced-vrep",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "BLOCKED_BY_ROOT_CONTRACT",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "STAB(M)=conv{v_(S,f)} over inclusion-maximal commuting contexts S and phase-aware admissible signs f.",
+      "source_reference": "draft.tex:137-150,499-510",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "reasoning_step_ids": [
+        "step:2602.18939v1:001"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:reduced-stabilizer-polytope",
+        "claim:frustration-graph"
+      ],
+      "theorem_imports": [
+        "root:varela-reduced-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:exact-vertex-dual",
+        "claim:general-reduced-hardness",
+        "claim:sign-relaxed-polytope",
+        "claim:relaxation-exactness"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+          "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+        ],
+        "modules": [
+          "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+          "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "LinearMap.image_convexHull",
+            "module": "Mathlib.Analysis.Convex.Hull",
+            "assessment": "ADAPTABLE_GENERIC_API",
+            "use": "Useful for top-down projected-polytope semantics, but not a substitute for candidate physicality, refinement, or extremality."
+          }
+        ],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "gap": null
+      },
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "blocker_ids": [
+        "blocker:2602.18939v1:root-reconstruction-pending"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.fixed-window-monotonicity",
+      "dag_node_id": "claim:fixed-window-monotonicity",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "CLAIM_FALSE",
+      "branch": "conceptual_foundation",
+      "normalized_mathematical_statement": "The target and Varela source claim RoM_M(E(rho))<=RoM_M(rho) for every trace-preserving stabilizer operation E while M is held fixed.",
+      "source_reference": "draft.tex:87,122,499; Varela pra_version.tex:241-254,657-665",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "statement_ids": [
+        "statement:2602.18939v1:fixed-window-monotonicity-claimed"
+      ],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:reduced-rom"
+      ],
+      "theorem_imports": [
+        "root:varela-reduced-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [
+        "blocker:2602.18939v1:fixed-window-monotonicity-false"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.exact-vertex-dual",
+      "dag_node_id": "claim:exact-vertex-dual",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_DUALIZATION_BLOCKED_BY_VREP_IMPORT",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "Finite linear-program duality expresses exact reduced RoM as max b.y+mu subject to one absolute-value constraint for every admissible maximal-context vertex.",
+      "source_reference": "draft.tex:150-157",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:reduced-rom"
+      ],
+      "theorem_imports": [
+        "claim:exact-reduced-vrep",
+        "foundation:finite-lp-strong-duality"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.general-reduced-hardness",
+      "dag_node_id": "claim:general-reduced-hardness",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "IMPORTED_FROM_VARELA_SOURCE_ALIGNMENT_PENDING",
+      "branch": "complexity",
+      "normalized_mathematical_statement": "The exact V-representation can be exponentially large and general reduced-polytope membership is NP-hard; consequently no polynomial algorithm in n,m exists for arbitrary exact instances unless P=NP.",
+      "source_reference": "draft.tex:93-97,157,499-512",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:exact-reduced-vrep"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [
+        "root:varela-reduced-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.sign-syndrome-linear-consistent",
+      "dag_node_id": "claim:sign-syndrome-linear-consistent",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "AGENT_EXPLICITATION_REQUIRES_PROOF_AUDIT",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "For commuting Hermitian Pauli representatives, the product phase defines a linear syndrome on ker(M_S); independent generator eigenvalues extend consistently, so B_S is a nonempty affine coset of size 2^rank(M_S).",
+      "source_reference": "draft.tex:522-535 (implicit load-bearing lemma)",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:frustration-graph"
+      ],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:dependency-affine-code"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.dependency-affine-code",
+      "dag_node_id": "claim:dependency-affine-code",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "reduced_polytope",
+      "normalized_mathematical_statement": "Within a commuting context, phase-free kernel relations with their +/- identity syndromes are exactly the parity checks defining the admissible sign assignments.",
+      "source_reference": "draft.tex:514-538",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:frustration-graph"
+      ],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "theorem_imports": [
+        "claim:sign-syndrome-linear-consistent"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:pauli-active-dependency",
+        "claim:no-active-free-signs",
+        "claim:full-pauli-obstructions",
+        "claim:active-dependency-coset-decoding-open"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.sign-relaxed-polytope",
+      "dag_node_id": "claim:sign-relaxed-polytope",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT",
+      "branch": "relaxation",
+      "normalized_mathematical_statement": "The sign-relaxed polytope retains all +/- assignments on every maximal commuting context, including assignments not compatible with Pauli product relations.",
+      "source_reference": "draft.tex:196-207",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:sign-relaxed-polytope"
+      ],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:exact-reduced-vrep"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxed-rom",
+        "claim:relaxed-rom-lower-bound",
+        "claim:relaxed-affine-span",
+        "claim:relaxed-lp-dual",
+        "claim:sign-alignment-identity"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.relaxed-rom",
+      "dag_node_id": "claim:relaxed-rom",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT",
+      "branch": "relaxation",
+      "normalized_mathematical_statement": "relaxed_RoM_M is the minimum l1 signed affine decomposition of b_M(rho) over the sign-relaxed polytope.",
+      "source_reference": "draft.tex:208-215",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:sign-relaxed-polytope",
+        "claim:reduced-rom"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxed-rom-lower-bound",
+        "claim:relaxed-lp-dual"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.mwis-definition",
+      "dag_node_id": "claim:mwis-definition",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT_STANDARD_DEFINITION",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "For nonnegative vertex weights w, alpha_w(G) is the maximum total weight over all independent sets of G.",
+      "source_reference": "draft.tex:245-251",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxed-mwis-dual"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.GraphFoundation.independentFinsets",
+          "AgtXIv.GraphFoundation.maxWeightIndependent"
+        ],
+        "modules": [
+          "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "lean-verification:varela-vrep:2026-08-16",
+          "lean-verification:stabilizerness-local-delta:2026-08-16"
+        ],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "MAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.relaxed-rom-lower-bound",
+      "dag_node_id": "claim:relaxed-rom-lower-bound",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "relaxation",
+      "normalized_mathematical_statement": "STAB(M) is contained in the sign-relaxed polytope and therefore relaxed_RoM_M(rho)<=RoM_M(rho).",
+      "source_reference": "draft.tex:207-220",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:relaxed-rom",
+        "claim:reduced-stabilizer-polytope"
+      ],
+      "theorem_imports": [
+        "claim:sign-relaxed-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.pauli-active-dependency",
+      "dag_node_id": "claim:pauli-active-dependency",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT",
+      "branch": "relaxation",
+      "normalized_mathematical_statement": "An inclusion-minimal Pauli product relation is active exactly when its support is pairwise commuting and therefore imposes a joint-eigenvalue parity check.",
+      "source_reference": "draft.tex:222-233",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:dependency-affine-code"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:no-active-free-signs",
+        "claim:jordan-wigner-extremal-set",
+        "claim:four-solvable-families",
+        "claim:clifford-structure-invariance"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.no-active-free-signs",
+      "dag_node_id": "claim:no-active-free-signs",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "relaxation",
+      "normalized_mathematical_statement": "M has no Pauli-active dependency iff every commuting context admits every deterministic sign assignment.",
+      "source_reference": "draft.tex:228-233,546-570",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:sign-set-collapse"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:001"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:pauli-active-dependency"
+      ],
+      "theorem_imports": [
+        "claim:dependency-affine-code"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxation-exactness"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.relaxation-exactness",
+      "dag_node_id": "claim:relaxation-exactness",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+      "branch": "relaxation",
+      "normalized_mathematical_statement": "STAB(M) equals the sign-relaxed polytope iff M has no Pauli-active dependency; in that regime exact and relaxed reduced RoM coincide.",
+      "source_reference": "draft.tex:234-244,572-594",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:relaxation-exactness"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:002"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:no-active-free-signs",
+        "claim:exact-reduced-vrep"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:exact-graph-program"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.relaxed-affine-span",
+      "dag_node_id": "claim:relaxed-affine-span",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "HIDDEN_LOCAL_LEMMA_RECONSTRUCTED",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "For every measured coordinate i, a maximal commuting context containing i and a one-sign flip yield a vertex difference proportional to e_i; hence the relaxed primal is feasible for every b in R^m and bounded below by one.",
+      "source_reference": "draft.tex:607-609",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:relaxed-affine-span"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:003"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:sign-relaxed-polytope"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxed-lp-dual"
+      ],
+      "lean_binding": {
+        "status": "PLANNED_DELTA",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [
+          "Stabilizerness.relaxed_vertices_affineSpan"
+        ],
+        "candidate_reuse": [
+          {
+            "declaration": "AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty",
+            "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs",
+            "assessment": "STRONG_NEAR_MATCH",
+            "use": "Reduces the planned target delta to proving nonemptiness and that selected vertex differences span the coordinate space."
+          },
+          {
+            "declaration": "affineSpan_singleton_union_vadd_eq_top_of_span_eq_top",
+            "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic",
+            "assessment": "STRONG_NEAR_MATCH",
+            "use": "May package the chosen basepoint plus coordinate-difference spanning argument."
+          }
+        ],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.relaxed-lp-dual",
+      "dag_node_id": "claim:relaxed-lp-dual",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_DERIVATION_WITH_STANDARD_FOUNDATION",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "Strong LP duality turns relaxed RoM into a maximization over (y,mu) with one absolute-value constraint per relaxed vertex.",
+      "source_reference": "draft.tex:606-614",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:relaxed-dual-vertex-form"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:004"
+      ],
+      "assumption_nodes": [
+        "claim:relaxed-affine-span"
+      ],
+      "definition_imports": [
+        "claim:relaxed-rom",
+        "claim:sign-relaxed-polytope"
+      ],
+      "theorem_imports": [
+        "foundation:finite-lp-strong-duality"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxed-mwis-dual"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.sign-alignment-identity",
+      "dag_node_id": "claim:sign-alignment-identity",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "For fixed S,y,mu, maximizing over all sign assignments gives sum_{i in S}|y_i|+|mu|.",
+      "source_reference": "draft.tex:615-620",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:sign-relaxed-polytope"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:relaxed-mwis-dual"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+          "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+          "AgtXIv.Stabilizerness.max_abs_signed_sum"
+        ],
+        "modules": [
+          "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "Finset.abs_sum_le_sum_abs",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "assessment": "PARTIAL_EXACT_BOUND",
+            "use": "Provides the upper bound. The sign choice attaining equality remains a small local delta."
+          }
+        ],
+        "verification_references": [
+          "lean-verification:stabilizerness-local-delta:2026-08-16"
+        ],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "MAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.relaxed-mwis-dual",
+      "dag_node_id": "claim:relaxed-mwis-dual",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "relaxed_RoM_M(rho)=max b.y+mu subject to alpha_|y|(G_M)+|mu|<=1; a maximum-weight independent set supplies a violated constraint when one exists.",
+      "source_reference": "draft.tex:245-264,596-626",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:dual-mwis"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:005"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:frustration-graph",
+        "claim:mwis-definition"
+      ],
+      "theorem_imports": [
+        "claim:relaxed-lp-dual",
+        "claim:sign-alignment-identity"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:exact-graph-program",
+        "claim:active-dependency-coset-decoding-open"
+      ],
+      "lean_binding": {
+        "status": "PLANNED_DELTA",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [
+          "Stabilizerness.max_abs_signed_sum"
+        ],
+        "candidate_reuse": [
+          {
+            "declaration": "Finset.abs_sum_le_sum_abs",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "assessment": "PARTIAL_EXACT_BOUND",
+            "use": "Useful inside free-sign maximization; does not by itself identify the MWIS separation oracle."
+          }
+        ],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.exact-graph-program",
+      "dag_node_id": "claim:exact-graph-program",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+      "branch": "optimization",
+      "normalized_mathematical_statement": "Under no Pauli-active dependency, the MWIS-constrained relaxed dual is the exact reduced-RoM dual.",
+      "source_reference": "draft.tex:628-632",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:exact-graph-dual"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:006"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:relaxation-exactness",
+        "claim:relaxed-mwis-dual"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:closed-form-rom",
+        "claim:imperfect-graph-theta-lower-bound-open"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.perfect-graph-definition",
+      "dag_node_id": "claim:perfect-graph-definition",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT_STANDARD_DEFINITION",
+      "branch": "graph_theory",
+      "normalized_mathematical_statement": "G is perfect iff every induced subgraph G' satisfies chromatic_number(G')=clique_number(G').",
+      "source_reference": "draft.tex:265-268",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:perfect-graph-antiblocker",
+        "claim:perfect-graph-weighted-collapse",
+        "claim:closed-form-rom",
+        "claim:jordan-wigner-extremal-set",
+        "claim:measurement-setting-bound",
+        "claim:four-solvable-families"
+      ],
+      "lean_binding": {
+        "status": "EXISTING_PROJECT_DECLARATIONS",
+        "existing_declarations": [
+          "AgtXIv.GraphFoundation.IsPerfect"
+        ],
+        "modules": [
+          "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean"
+        ],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "lean-verification:varela-vrep:2026-08-16",
+          "lean-verification:stabilizerness-local-delta:2026-08-16"
+        ],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "MAPPED",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.lovasz-sandwich",
+      "dag_node_id": "claim:lovasz-sandwich",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "CITATION_REPORTED_SOURCE_UNCHECKED",
+      "branch": "graph_theory",
+      "normalized_mathematical_statement": "For every finite graph and nonnegative weight, weighted alpha <= weighted theta <= weighted fractional clique-cover number.",
+      "source_reference": "draft.tex:634-662",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "root:perfect-graph-weighted-duality"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:perfect-graph-weighted-collapse",
+        "claim:imperfect-graph-theta-lower-bound-open"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.perfect-graph-antiblocker",
+      "dag_node_id": "claim:perfect-graph-antiblocker",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SYNTHESIS_BLOCKED_BY_WEIGHTED_DUALITY_ALIGNMENT",
+      "branch": "graph_theory",
+      "normalized_mathematical_statement": "For a perfect graph, {z>=0:alpha_z<=1} is the convex hull of clique incidence vectors including the empty clique. The target derives this locally from weighted stable-set/fractional-cover duality and downward closure.",
+      "source_reference": "draft.tex:671-675,680-684",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:perfect-antiblocker-local"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:007"
+      ],
+      "assumption_nodes": [
+        "claim:perfect-graph-definition"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [
+        "root:perfect-graph-weighted-duality"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:closed-form-rom"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "SimpleGraph.isMaximumIndepSet_compl",
+            "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+            "assessment": "INSUFFICIENT_NEARBY_API",
+            "use": "Basic graph API only; the weighted antiblocker theorem remains a local/external obligation."
+          }
+        ],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.perfect-graph-weighted-collapse",
+      "dag_node_id": "claim:perfect-graph-weighted-collapse",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "CITATION_REPORTED_SOURCE_ALIGNMENT_PENDING",
+      "branch": "graph_theory",
+      "normalized_mathematical_statement": "For a perfect graph and nonnegative weights, weighted alpha=weighted theta=weighted fractional clique-cover number.",
+      "source_reference": "draft.tex:664-681",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:perfect-graph-definition"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:lovasz-sandwich",
+        "root:perfect-graph-weighted-duality"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.closed-form-rom",
+      "dag_node_id": "claim:closed-form-rom",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "LOCAL_DERIVATION_WITH_BLOCKED_IMPORTS",
+      "branch": "closed_form",
+      "normalized_mathematical_statement": "If M has no Pauli-active dependency and G_M is perfect, RoM_M(rho)=max(1,max_Q sum_{P in Q}|tr(P rho)|).",
+      "source_reference": "draft.tex:270-283,687-723",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:closed-form-equality"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:008"
+      ],
+      "assumption_nodes": [
+        "claim:perfect-graph-definition"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:exact-graph-program",
+        "claim:perfect-graph-antiblocker"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:capacity-upper-bound",
+        "claim:capacity-attainment",
+        "claim:polynomial-evaluation",
+        "claim:rotated-closed-form"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [
+        "contract:2607.26154v1:closed-form-equality"
+      ],
+      "blocker_ids": [
+        "blocker:2607.26154v1:root-contract-not-accepted",
+        "blocker:2607.26154v1:perfect-graph-foundation-unchecked"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.anticommuting-l2-bound",
+      "dag_node_id": "claim:anticommuting-l2-bound",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SELF_CONTAINED_DERIVATION",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "For a pairwise anticommuting Pauli set Q and any state rho, sum_{P in Q}tr(P rho)^2<=1.",
+      "source_reference": "draft.tex:725-755",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism",
+        "claim:frustration-graph"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:capacity-upper-bound",
+        "claim:capacity-attainment"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [
+          {
+            "declaration": "Orthonormal.sum_inner_products_le",
+            "module": "Mathlib.Analysis.InnerProductSpace.Orthonormal",
+            "assessment": "ANALOGOUS_NOT_SUBSTITUTE",
+            "use": "Bessel inequality has the same l2-bound shape, but a semantic bridge from anticommuting observables to an orthonormal family is still required."
+          },
+          {
+            "declaration": "CliffordAlgebra.\u03b9_mul_\u03b9_mul_of_isOrtho",
+            "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+            "assessment": "STRUCTURAL_NEAR_MATCH",
+            "use": "Provides a generic anticommutation identity in Clifford algebras; not a direct density-operator expectation theorem."
+          }
+        ],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.capacity-upper-bound",
+      "dag_node_id": "claim:capacity-upper-bound",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "In the solvable regime, RoM_M(rho)<=sqrt(clique_number(G_M)) for every rho.",
+      "source_reference": "draft.tex:274-283,755-763",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:clique-upper-bound"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:009"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:closed-form-rom",
+        "claim:anticommuting-l2-bound"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:witness-capacity"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.capacity-attainment",
+      "dag_node_id": "claim:capacity-attainment",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "construction",
+      "dag_status": "LOCAL_SELF_CONTAINED_DERIVATION_WITH_UPSTREAM_USE",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "A state supported on the +1 eigenspace of |Q|^{-1/2}sum_{P in Q}P has equal expectations 1/sqrt(|Q|) on Q and attains sqrt(|Q|).",
+      "source_reference": "draft.tex:281-283,765-793",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:capacity-attained"
+      ],
+      "reasoning_step_ids": [
+        "step:2607.26154v1:010"
+      ],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:anticommuting-l2-bound"
+      ],
+      "theorem_imports": [
+        "claim:closed-form-rom"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:witness-capacity"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.witness-capacity",
+      "dag_node_id": "claim:witness-capacity",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "In the solvable regime, sup_rho RoM_M(rho)=sqrt(clique_number(G_M)).",
+      "source_reference": "draft.tex:99-101,809-815",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:capacity-upper-bound",
+        "claim:capacity-attainment"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:universal-ceiling",
+        "claim:four-solvable-families",
+        "claim:rotated-closed-form",
+        "claim:figure2-coverage-gain"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.max-anticommuting-size",
+      "dag_node_id": "claim:max-anticommuting-size",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SELF_CONTAINED_DERIVATION",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "The binary-symplectic Gram matrix of a pairwise anticommuting n-qubit Pauli family implies cardinality at most 2n+1.",
+      "source_reference": "draft.tex:815-862",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism",
+        "claim:frustration-graph"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:jordan-wigner-extremal-set",
+        "claim:universal-ceiling"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.jordan-wigner-extremal-set",
+      "dag_node_id": "claim:jordan-wigner-extremal-set",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "construction",
+      "dag_status": "LOCAL_DERIVATION_CITATION_SUPPORTED",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "The 2n Jordan-Wigner Majoranas plus global parity form K_(2n+1), have only an inactive full-support dependency, and therefore lie in the solvable regime.",
+      "source_reference": "draft.tex:289-295,863-884",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:max-anticommuting-size",
+        "claim:perfect-graph-definition"
+      ],
+      "definition_imports": [
+        "claim:pauli-active-dependency"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:universal-ceiling",
+        "claim:four-solvable-families"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.universal-ceiling",
+      "dag_node_id": "claim:universal-ceiling",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "branch": "capacity",
+      "normalized_mathematical_statement": "Among solvable n-qubit measurement windows, max_M sup_rho RoM_M(rho)=sqrt(2n+1), with equality exactly when M contains a maximum anticommuting clique.",
+      "source_reference": "draft.tex:287-295,796-884",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:witness-capacity",
+        "claim:max-anticommuting-size",
+        "claim:jordan-wigner-extremal-set"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.polynomial-evaluation",
+      "dag_node_id": "claim:polynomial-evaluation",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "PROMISE_PROBLEM_DEPENDS_ON_UNCHECKED_GRAPH_ROOT_RECOGNITION_COMPLEXITY_OPEN",
+      "branch": "complexity",
+      "normalized_mathematical_statement": "Promise evaluation only: given rational/finite-precision expectation values together with a certified no-active-dependency, perfect-graph measurement window, the maximum-weight clique in the closed form is polynomial-time computable. The paper does not establish a polynomial-time end-to-end recognizer for the no-active condition.",
+      "source_reference": "draft.tex:284",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:closed-form-rom",
+        "foundation:perfect-graph-complement-and-algorithm"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.measurement-setting-bound",
+      "dag_node_id": "claim:measurement-setting-bound",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "SOURCE_DERIVED_WITH_EXPERIMENTAL_IDEALIZATION",
+      "branch": "experimental_design",
+      "normalized_mathematical_statement": "Assuming arbitrary Clifford diagonalization of each commuting family, a perfect frustration graph partitions M into clique_number(G_M) jointly measurable settings.",
+      "source_reference": "draft.tex:285-287",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:frustration-graph"
+      ],
+      "theorem_imports": [
+        "claim:perfect-graph-definition"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.four-solvable-families",
+      "dag_node_id": "claim:four-solvable-families",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "construction",
+      "dag_status": "SOURCE_CLAIM_PARTIALLY_REGRESSION_TESTED",
+      "branch": "experimental_design",
+      "normalized_mathematical_statement": "Local XYZ, open Ising path, Majorana tree and Jordan-Wigner families have the stated perfect frustration graphs, no Pauli-active dependencies and the stated witness capacities.",
+      "source_reference": "draft.tex:289-299,340-450",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:perfect-graph-definition",
+        "claim:pauli-active-dependency"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:witness-capacity",
+        "claim:jordan-wigner-extremal-set"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:figure2-protocol"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.clifford-rom-covariance",
+      "dag_node_id": "claim:clifford-rom-covariance",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "clifford",
+      "normalized_mathematical_statement": "RoM_(C M Cdag)(rho)=RoM_M(Cdag rho C), retaining the signed conjugated observables as coordinates.",
+      "source_reference": "draft.tex:302-324",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:clifford-covariance"
+      ],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism",
+        "claim:reduced-stabilizer-polytope",
+        "claim:reduced-rom"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:rotated-closed-form"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean declaration is mapped to this node."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.clifford-structure-invariance",
+      "dag_node_id": "claim:clifford-structure-invariance",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "clifford",
+      "normalized_mathematical_statement": "Clifford conjugation preserves commutation, anticommutation and Pauli product relations, hence preserves G_M, perfectness and the active/inactive status of dependencies.",
+      "source_reference": "draft.tex:322-326",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:frustration-graph",
+        "claim:pauli-active-dependency"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:rotated-closed-form"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.rotated-closed-form",
+      "dag_node_id": "claim:rotated-closed-form",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "branch": "clifford",
+      "normalized_mathematical_statement": "Every Clifford image of a solvable seed window has the same graph, solvability condition, closed form and witness capacity.",
+      "source_reference": "draft.tex:310-326",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:clifford-rom-covariance",
+        "claim:clifford-structure-invariance",
+        "claim:closed-form-rom",
+        "claim:witness-capacity"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:detection-coverage-definition"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.detection-coverage-definition",
+      "dag_node_id": "claim:detection-coverage-definition",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT",
+      "branch": "numerics",
+      "normalized_mathematical_statement": "For a specified state ensemble, rotation list and threshold, detection coverage is the fraction with max_l RoM_(C_l M C_ldag)(rho)>1.",
+      "source_reference": "draft.tex:454-458",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:rotated-closed-form"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:figure2-protocol"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.figure2-protocol",
+      "dag_node_id": "claim:figure2-protocol",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "empirical_protocol",
+      "dag_status": "SOURCE_REPORTED_INCOMPLETE_REPRODUCTION_METADATA",
+      "branch": "numerics",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:328-338,454-459",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:four-solvable-families",
+        "claim:detection-coverage-definition"
+      ],
+      "theorem_imports": [],
+      "data_imports": [
+        "claim:figure2-haar-input",
+        "claim:figure2-variational-input"
+      ],
+      "downstream_nodes": [
+        "claim:figure2-coverage-gain",
+        "claim:figure2-reproduction-blocker"
+      ],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.figure2-haar-input",
+      "dag_node_id": "claim:figure2-haar-input",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "empirical_protocol",
+      "dag_status": "SOURCE_REPORTED_MISSING_RNG_AND_SAMPLER_CONTRACT",
+      "branch": "numerics",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:457",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:figure2-protocol"
+      ],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.figure2-variational-input",
+      "dag_node_id": "claim:figure2-variational-input",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "empirical_protocol",
+      "dag_status": "SOURCE_REPORTED_MISSING_ANGLE_ROTATION_AND_RNG_CONTRACT",
+      "branch": "numerics",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:458",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:figure2-protocol"
+      ],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.figure2-coverage-gain",
+      "dag_node_id": "claim:figure2-coverage-gain",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "empirical_claim",
+      "dag_status": "NOT_REPRODUCED_MISSING_CODE_DATA_SEED_TOLERANCE",
+      "branch": "numerics",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:454-459",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [
+        "statement:2607.26154v1:figure2-detection"
+      ],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:witness-capacity"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [
+        "claim:figure2-protocol"
+      ],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [
+        "blocker:2607.26154v1:figure2-code-unavailable"
+      ],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.figure2-reproduction-blocker",
+      "dag_node_id": "claim:figure2-reproduction-blocker",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "limitation",
+      "dag_status": "BLOCKED",
+      "branch": "numerics",
+      "normalized_mathematical_statement": null,
+      "source_reference": "agent audit of Stabilizerness/arXiv-2607.26154v1 source bundle",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [
+        "claim:figure2-protocol"
+      ],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [
+        "blocker:2607.26154v1:figure2-code-unavailable"
+      ],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.squared-pauli-profile",
+      "dag_node_id": "claim:squared-pauli-profile",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "definition",
+      "dag_status": "SOURCE_EXPLICIT",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "x_P(rho)=tr(P rho)^2 defines a nonnegative profile; weighted directional concentration and its self-collision are distinct nonlinear summaries.",
+      "source_reference": "draft.tex:911-913",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:squared-stabilizer-support"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.squared-stabilizer-support",
+      "dag_node_id": "claim:squared-stabilizer-support",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "Squaring Pauli expectations removes eigenvalue signs; a pure stabilizer profile is the incidence vector of a commuting support, and every independent set extends into such a profile.",
+      "source_reference": "draft.tex:912-916",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:squared-pauli-profile",
+        "root:gottesman-stabilizer-formalism",
+        "claim:frustration-graph"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:quadratic-stabilizer-mwis"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.quadratic-stabilizer-mwis",
+      "dag_node_id": "claim:quadratic-stabilizer-mwis",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "For nonnegative weights, max over STAB_n of sum w_P tr(P sigma)^2 equals alpha_w(G_M); sign dependencies do not affect this quadratic optimum.",
+      "source_reference": "draft.tex:916-921",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:frustration-graph"
+      ],
+      "theorem_imports": [
+        "claim:squared-stabilizer-support"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:hbar-perfect-quadratic-witness"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.hbar-perfect-quadratic-witness",
+      "dag_node_id": "claim:hbar-perfect-quadratic-witness",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "IMPORTED_EXTENSION_SOURCE_UNCHECKED",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "A strict gap beta(G,w)>alpha_w(G) certifies nonstabilizerness; hbar-perfect graphs have no witness from this quadratic family.",
+      "source_reference": "draft.tex:923-933",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:quadratic-stabilizer-mwis",
+        "root:xu-quadratic-pauli-graph"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.pauli-parseval",
+      "dag_node_id": "claim:pauli-parseval",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "lemma",
+      "dag_status": "LOCAL_STANDARD_DERIVATION",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "For d=2^n, sum_P tr(P rho)^2=d tr(rho^2), defining a normalized Pauli distribution.",
+      "source_reference": "draft.tex:935-942",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:full-pauli-independent-sets",
+        "claim:pure-sre-graph-identity",
+        "claim:mixed-sre-identity-limitation",
+        "claim:dephased-purity-mwis"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.full-pauli-independent-sets",
+      "dag_node_id": "claim:full-pauli-independent-sets",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "IMPORTED_STRUCTURE_WITH_LOCAL_SYNTHESIS",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "Maximum independent sets of the full Pauli graph are maximal abelian supports of size d; pure stabilizer Pauli distributions are uniform on them, and conversely.",
+      "source_reference": "draft.tex:942-959",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:pauli-parseval"
+      ],
+      "theorem_imports": [
+        "root:full-pauli-symplectic-graph"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:pure-sre-graph-identity",
+        "claim:dephased-purity-mwis"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.pure-sre-graph-identity",
+      "dag_node_id": "claim:pure-sre-graph-identity",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "theorem",
+      "dag_status": "LOCAL_DERIVATION_WITH_EXTENSION_IMPORT",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "For pure psi, M2(psi)=H2(Xi)-log alpha(G_full), and it vanishes exactly when Xi is uniform on a maximum independent set, equivalently psi is a stabilizer state.",
+      "source_reference": "draft.tex:960-979",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:leone-stabilizer-renyi-entropy"
+      ],
+      "theorem_imports": [
+        "claim:pauli-parseval",
+        "claim:full-pauli-independent-sets"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.mixed-sre-identity-limitation",
+      "dag_node_id": "claim:mixed-sre-identity-limitation",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "limitation",
+      "dag_status": "LOCAL_ALGEBRAIC_DERIVATION",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:981-989",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "root:leone-stabilizer-renyi-entropy"
+      ],
+      "theorem_imports": [
+        "claim:pauli-parseval"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:mixed-state-graph-bound-open"
+      ],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.dephased-purity-mwis",
+      "dag_node_id": "claim:dephased-purity-mwis",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "LOCAL_SOURCE_DERIVATION",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": "The MWIS with weights tr(P rho)^2 equals d times the largest purity retained after dephasing rho in a stabilizer basis and is at most d tr(rho^2).",
+      "source_reference": "draft.tex:991-997",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:full-pauli-independent-sets"
+      ],
+      "theorem_imports": [
+        "claim:pauli-parseval"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [
+        "claim:mixed-state-graph-bound-open"
+      ],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.mixed-state-graph-bound-open",
+      "dag_node_id": "claim:mixed-state-graph-bound-open",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "open_problem",
+      "dag_status": "OPEN",
+      "branch": "squared_profile",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:997-998",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:mixed-sre-identity-limitation"
+      ],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:dephased-purity-mwis"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.full-pauli-obstructions",
+      "dag_node_id": "claim:full-pauli-obstructions",
+      "interface_class": "MATHEMATICAL",
+      "dag_kind": "proposition",
+      "dag_status": "IMPORTED_COMPOSITE_CLAIM_SOURCE_ALIGNMENT_PENDING",
+      "branch": "outlook",
+      "normalized_mathematical_statement": "For n>=2, the full Pauli frustration graph is imperfect with exponentially larger chromatic than clique number, and each maximal commuting context carries exponentially many independent sign constraints.",
+      "source_reference": "draft.tex:460-462",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [
+        "claim:dependency-affine-code"
+      ],
+      "theorem_imports": [
+        "root:full-pauli-symplectic-graph",
+        "root:varela-reduced-polytope"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "GAP",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "gap": "No current Lean mapping."
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "PARTIAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.active-dependency-coset-decoding-open",
+      "dag_node_id": "claim:active-dependency-coset-decoding-open",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "open_problem",
+      "dag_status": "OPEN",
+      "branch": "outlook",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:464-466",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [
+        "claim:relaxed-mwis-dual"
+      ],
+      "definition_imports": [
+        "claim:dependency-affine-code"
+      ],
+      "theorem_imports": [],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    },
+    {
+      "id": "math-contract:claim.imperfect-graph-theta-lower-bound-open",
+      "dag_node_id": "claim:imperfect-graph-theta-lower-bound-open",
+      "interface_class": "NON_MATHEMATICAL",
+      "dag_kind": "open_problem",
+      "dag_status": "OPEN",
+      "branch": "outlook",
+      "normalized_mathematical_statement": null,
+      "source_reference": "draft.tex:464-466",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "statement_ids": [],
+      "reasoning_step_ids": [],
+      "assumption_nodes": [],
+      "definition_imports": [],
+      "theorem_imports": [
+        "claim:exact-graph-program",
+        "claim:lovasz-sandwich"
+      ],
+      "data_imports": [],
+      "downstream_nodes": [],
+      "lean_binding": {
+        "status": "NOT_APPLICABLE",
+        "existing_declarations": [],
+        "modules": [],
+        "planned_declarations": [],
+        "candidate_reuse": [],
+        "verification_references": [],
+        "gap": null
+      },
+      "export_ids": [],
+      "blocker_ids": [],
+      "mapping_status": "NON_MATHEMATICAL",
+      "acceptance_effect": "NONE_FROM_REGISTRY"
+    }
+  ]
+}

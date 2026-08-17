@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "blocker:2602.18939v1:fixed-window-monotonicity-false",
+  "affects": [
+    "statement:2602.18939v1:fixed-window-monotonicity-claimed"
+  ],
+  "status": "CLAIM_FALSE",
+  "reason": "For M={X,Z}, a free pi/2 Clifford rotation about X raises the reduced functional of a suitable pure qubit from 1 to sqrt(2). The source proof minimizes over full-state decompositions and therefore does not establish a bound by the input reduced optimum.",
+  "resolution_policy": "Do not export fixed-window RoM as a resource monotone. Export only its valid witness/lower-bound properties and the covariance statement in which state and measurement set co-rotate."
+}

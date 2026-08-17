@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "lean-verification:stabilizerness-local-delta:2026-08-16",
+  "verified_at": "2026-08-16",
+  "project": "formal/AgtXIvStabilizerness",
+  "status": "TARGET_LOCAL_DELTA_KERNEL_CHECKED",
+  "environment": {
+    "lean_toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_commit": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+    "root_math_project": "formal/AgtXIvRootMath",
+    "varela_project": "formal/AgtXIvVarela"
+  },
+  "commands": [
+    "lake build",
+    "lake env lean Audit.lean",
+    "project-source placeholder scan"
+  ],
+  "results": {
+    "kernel_build": "PASSED (8408 jobs)",
+    "placeholder_scan": "PASSED (no sorry, admit, project axiom, or native_decide in target project declarations)",
+    "axiom_audit": {
+      "result": "PASSED",
+      "reported_standard_dependencies": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "forbidden_dependencies": []
+    }
+  },
+  "target_local_declarations": [
+    "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+    "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+    "AgtXIv.Stabilizerness.max_abs_signed_sum",
+    "AgtXIv.Stabilizerness.affineSpan_eq_top_of_vectorSpan_eq_top"
+  ],
+  "reused_imported_declarations_audited_here": [
+    "AgtXIv.GraphFoundation.independentFinsets",
+    "AgtXIv.GraphFoundation.maxWeightIndependent",
+    "AgtXIv.GraphFoundation.IsPerfect"
+  ],
+  "registry_claim_effects": [
+    {
+      "dag_node_id": "claim:sign-alignment-identity",
+      "effect": "PROMOTE_TO_EXISTING_PROJECT_DECLARATIONS",
+      "declaration": "AgtXIv.Stabilizerness.max_abs_signed_sum"
+    },
+    {
+      "dag_node_id": "claim:mwis-definition",
+      "effect": "PROMOTE_TO_EXISTING_PROJECT_DECLARATIONS",
+      "declarations": [
+        "AgtXIv.GraphFoundation.independentFinsets",
+        "AgtXIv.GraphFoundation.maxWeightIndependent"
+      ]
+    },
+    {
+      "dag_node_id": "claim:perfect-graph-definition",
+      "effect": "PROMOTE_TO_EXISTING_PROJECT_DECLARATIONS",
+      "declaration": "AgtXIv.GraphFoundation.IsPerfect"
+    }
+  ],
+  "scope_limitations": [
+    "The affine-span declaration is only a generic reduction from vector span and does not prove claim:relaxed-affine-span.",
+    "The sign-maximization declaration does not by itself prove claim:relaxed-mwis-dual; the LP-to-MWIS bridge remains open.",
+    "Weighted perfect-graph duality remains an explicit external foundation and is not proved by this project."
+  ],
+  "artifact_hashes": {
+    "formal/AgtXIvStabilizerness/AgtXIvStabilizerness.lean": "sha256:59ac900616f5beaad0780647c48c6eea28f2dcb01d881c207b7b3503aafea7b6",
+    "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean": "sha256:17bb3964088083529ffa7553d6fc7b5f0e43a7f48cf995a5450bb1c7faeb1883",
+    "formal/AgtXIvStabilizerness/Audit.lean": "sha256:7ebd77749aa9fcb07572f88eb8aa1168d5c75608f78ce85bb672d3a107499941",
+    "formal/AgtXIvStabilizerness/lakefile.toml": "sha256:35913676c34c4b3c44c4b0ab8970496629f4c6944e5b2bb681309eb98441437a",
+    "formal/AgtXIvStabilizerness/lake-manifest.json": "sha256:e74f74ab81a3cf51a50ad6f4ea7adbfb6aee275c855ae4202e764daa571d6702",
+    "formal/AgtXIvStabilizerness/lean-toolchain": "sha256:ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61"
+  },
+  "scientific_acceptance_effect": "NONE; only the three claim-to-declaration mappings listed above are promoted. The closed-form theorem remains unproved."
+}

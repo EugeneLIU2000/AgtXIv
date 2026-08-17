@@ -1,0 +1,10 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "blocker:2602.18939v1:root-reconstruction-pending",
+  "affects": [
+    "contract:2602.18939v1:reduced-polytope-vrep"
+  ],
+  "status": "OPEN",
+  "reason": "The source proof at pra_version.tex lines 716-720 incorrectly treats every stabilizer intersection with M as a maximal commuting subset. The normalized Lean project now checks the exact coordinate projection, context/sign domain, and the conditional convex-hull implication, but it does not yet prove candidate physicality, maximal-context mixture refinement, or extremality.",
+  "next_action": "Prove context-to-partial-frame alignment and a sign-preserving partial-to-complete frame extension, use them to close candidatePhysical and atomRefinement, then prove saturated-coordinate extremality and complete independent source/physical-semantic review. Keep the original source-proof gap permanently visible."
+}

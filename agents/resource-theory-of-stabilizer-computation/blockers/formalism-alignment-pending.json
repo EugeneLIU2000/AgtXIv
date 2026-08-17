@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "blocker:1307.7171v1:formalism-alignment-pending",
+  "affects": [
+    "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+  ],
+  "status": "OPEN",
+  "reason": "The n-qubit common-eigenspace/frame and semantic Clifford-orbit atom sets, and hence their convex hulls, are now exactly kernel-identified. Scientific acceptance remains open because the imported Gottesman export is still accepted=false, the cross-source normalization awaits independent human review, and the source's full stabilizer-operation protocol syntax and semantics are outside the current Lean boundary.",
+  "resolved_mathematics": [
+    "phase-aware frame-to-SemanticClifford witness construction",
+    "bidirectional pure-atom equivalence",
+    "atom-set equality",
+    "ordinary real convex-hull and membership equivalence"
+  ],
+  "next_action": "Close upstream scientific acceptance and independent human source/physical-semantic review; separately formalize or review the exact stabilizer protocol operation class and selective on-average semantics."
+}

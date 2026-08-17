@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "selection_basis": "Roots are selected only after constructing Stabilizerness/dag/claim-dag.json. Conceptual roots define the scientific objects; theorem roots carry particular downstream proofs.",
+  "root_sets": {
+    "conceptual_spine": [
+      "agent:stabilizer-codes-and-quantum-error-correction",
+      "agent:resource-theory-of-stabilizer-computation",
+      "agent:robustness-of-magic"
+    ],
+    "closed_form_theorem_roots": [
+      "agent:predicting-magic-from-very-few-measurements",
+      "foundation:perfect-graph-weighted-duality",
+      "statement:foundation:finite-lp-strong-duality"
+    ]
+  },
+  "roots": [
+    {
+      "agent": "agent:stabilizer-codes-and-quantum-error-correction",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "root_class": "foundational_concept_root",
+      "expected_exports": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "stop_reason": "PRIMARY_FORMALISM_SOURCE_REACHED",
+      "status": "PARTIALLY_VERIFIED",
+      "mathematics_status": "KERNEL_CHECKED",
+      "warning": "Lean now derives the general 2^(n-r) code-space dimension, general-r projector properties, and the rank-n pure state from phase-aware Pauli generators. Source-convention and human physical-semantic acceptance remain open."
+    },
+    {
+      "agent": "agent:resource-theory-of-stabilizer-computation",
+      "paper_id": "arxiv:1307.7171v1",
+      "root_class": "primary_conceptual_root",
+      "expected_exports": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "stop_reason": "PRIMARY_FREE_SET_SOURCE_REACHED",
+      "status": "PARTIALLY_VERIFIED",
+      "mathematics_status": "KERNEL_CHECKED",
+      "warning": "Lean constructs the Clifford witness, proves common-eigenspace/orbit equivalence, and transfers it to equality of stabilizer polytopes. Exact source operation-class alignment and human semantic review remain open."
+    },
+    {
+      "agent": "agent:robustness-of-magic",
+      "paper_id": "arxiv:1609.07488v2",
+      "root_class": "primary_measure_root",
+      "expected_exports": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "stop_reason": "PRIMARY_FULL_ROM_SOURCE_REACHED",
+      "status": "PARTIALLY_VERIFIED",
+      "mathematics_status": "KERNEL_CHECKED",
+      "warning": "Lean proves all-n signed feasibility, optimum attainment, faithfulness against the Clifford-orbit polytope, and deterministic atom-preserving-map monotonicity. Physical protocol-to-map and selective-branch semantics remain open."
+    },
+    {
+      "agent": "agent:predicting-magic-from-very-few-measurements",
+      "paper_id": "arxiv:2602.18939v1",
+      "root_class": "direct_technical_dependency",
+      "expected_exports": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "stop_reason": "PRIMARY_SOURCE_REACHED",
+      "status": "PARTIALLY_VERIFIED",
+      "warning": "The source statement is frozen, the source proof remains GAP_FOUND, and a separate phase-aware reconstruction has only a conditional independent pass."
+    },
+    {
+      "foundation": "foundation:perfect-graph-weighted-duality",
+      "expected_exports": [
+        "statement:foundation:perfect-graph-weighted-duality"
+      ],
+      "stop_reason": "STANDARD_BACKGROUND_ACCEPTED",
+      "status": "DECLARED_BACKGROUND",
+      "warning": "The Chvatal primary source has not yet been frozen and checked against the target paper's weighted conventions."
+    },
+    {
+      "foundation": "foundation:isotropic-pauli-extension",
+      "expected_exports": [
+        "statement:foundation:isotropic-pauli-extension"
+      ],
+            "stop_reason": "DECLARED_STANDARD_BACKGROUND",
+            "status": "DECLARED_BACKGROUND",
+            "warning": "The binary symplectic completion and signed Pauli lift used by the Root bridge are now Lean kernel checked; the separate external-foundation source alignment and human review remain open."
+    }
+  ],
+  "historical_or_operational_precursors_not_used_as_closed_form_proof_roots": [
+    {
+      "paper_id": "arxiv:quant-ph/9807006v1",
+      "role": "Gottesman-Knill operational simulation boundary"
+    },
+    {
+      "paper_id": "arxiv:quant-ph/0403025v2",
+      "role": "magic-state operational precursor and one-qubit stabilizer octahedron"
+    },
+    {
+      "paper_id": "arxiv:1201.1256v4",
+      "role": "early stabilizer-polytope terminology and bound-magic warning, mainly odd-dimensional Wigner theory"
+    },
+    {
+      "paper_id": "arxiv:quant-ph/0608085",
+      "role": "early qubit convex stabilizer polyhedron lineage"
+    }
+  ]
+}

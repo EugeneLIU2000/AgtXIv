@@ -1,0 +1,1603 @@
+{
+  "schema_version": "0.1.0-demo-en",
+  "language": "en",
+  "generated_from": "Stabilizerness/dag/claim-dag.json",
+  "projection_policy": "English-only read-only demo projection. Node identities, layers, branches, statuses, contracts, edges, and dependency semantics are preserved; Chinese display labels are omitted.",
+  "paper": {
+    "id": "arxiv:2607.26154v1",
+    "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
+    "canonical_source": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+    "scope": "Claim-level scientific dependency DAG for the full main text and appendices. Bibliographic citations without load-bearing logical use are excluded from edges."
+  },
+  "node_kinds": [
+    "external_contract",
+    "standard_foundation",
+    "definition",
+    "lemma",
+    "theorem",
+    "proposition",
+    "construction",
+    "empirical_protocol",
+    "empirical_claim",
+    "limitation",
+    "open_problem"
+  ],
+  "edge_types": {
+    "scientific_claim_dependency": "The target claim requires the source claim as a mathematical or physical premise.",
+    "definition_dependency": "The target object is not meaningful until the source object is defined.",
+    "scope_dependency": "The source supplies a hypothesis or validity regime used by the target.",
+    "data_dependency": "The target empirical claim depends on the source protocol or data-generating setup."
+  },
+  "nodes": [
+    {
+      "id": "root:gottesman-stabilizer-formalism",
+      "layer": 0,
+      "branch": "conceptual_foundation",
+      "kind": "external_contract",
+      "root_class": "foundational_root",
+      "contract": "An abelian Pauli subgroup not containing -I defines its common +1 eigenspace; the rank-n, k=0 case defines a pure stabilizer state.",
+      "source": {
+        "paper_id": "arxiv:quant-ph/9705052v1",
+        "artifact": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+        "lines": "980-998"
+      },
+      "status": "SOURCE_ANCHORED"
+    },
+    {
+      "id": "root:gottesman-knill-simulation",
+      "layer": 0,
+      "branch": "conceptual_foundation",
+      "kind": "external_contract",
+      "root_class": "operational_foundation",
+      "contract": "A quantum computation restricted to Clifford gates, Pauli measurements and classically conditioned Clifford gates can be perfectly simulated in probabilistic polynomial time on a classical computer.",
+      "source": {
+        "paper_id": "arxiv:quant-ph/9807006v1",
+        "artifact": "Reference/The Heisenberg Representation of Quantum Computers/HeisRep.tex",
+        "lines": "1238-1260"
+      },
+      "status": "SOURCE_ANCHORED"
+    },
+    {
+      "id": "root:bravyi-kitaev-magic-model",
+      "layer": 0,
+      "branch": "conceptual_foundation",
+      "kind": "external_contract",
+      "root_class": "operational_precursor",
+      "contract": "Clifford operations, Pauli measurements and stabilizer preparations are classically simulable; suitable nonstabilizer ancillas enable universal computation. For one qubit, mixtures of Pauli eigenstates form the stabilizer octahedron.",
+      "source": {
+        "paper_id": "arxiv:quant-ph/0403025v2",
+        "artifact": "Reference/Universal quantum computation with ideal Clifford gates and noisy ancillas/final.tex",
+        "lines": "166-190,256-300,389-403"
+      },
+      "status": "SOURCE_ANCHORED"
+    },
+    {
+      "id": "root:veitch-stabilizer-resource-theory",
+      "layer": 0,
+      "branch": "conceptual_foundation",
+      "kind": "external_contract",
+      "root_class": "primary_conceptual_root",
+      "contract": "Pure stabilizer states form a finite Clifford orbit; the full free state set STAB is their convex hull; states not freely preparable are magic/nonstabilizer resources, and stabilizer operations are free operations.",
+      "source": {
+        "paper_id": "arxiv:1307.7171v1",
+        "artifact": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+        "lines": "269-280,331-367,425-482"
+      },
+      "status": "SOURCE_ANCHORED"
+    },
+    {
+      "id": "root:howard-campbell-rom",
+      "layer": 0,
+      "branch": "conceptual_foundation",
+      "kind": "external_contract",
+      "root_class": "primary_measure_root",
+      "contract": "RoM is the minimum l1 norm of a signed affine decomposition over pure stabilizer states; RoM=1 exactly on the stabilizer polytope and is nonincreasing under stabilizer operations.",
+      "source": {
+        "paper_id": "arxiv:1609.07488v2",
+        "artifact": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+        "lines": "75-119,208-232"
+      },
+      "status": "SOURCE_ANCHORED"
+    },
+    {
+      "id": "root:varela-reduced-polytope",
+      "layer": 0,
+      "branch": "reduced_polytope",
+      "kind": "external_contract",
+      "root_class": "direct_technical_dependency",
+      "contract": "A Pauli expectation window defines a projected stabilizer polytope and reduced RoM; its claimed V-representation uses maximal commuting contexts and admissible signs.",
+      "source": {
+        "paper_id": "arxiv:2602.18939v1",
+        "artifact": "Reference/Predicting magic from very few measurements/pra_version.tex",
+        "lines": "188-260,279-309,691-808"
+      },
+      "status": "BLOCKED_BY_VREP_PROOF_GAP",
+      "issue_badges": [
+        {
+          "object": "projected-polytope V-representation",
+          "status": "PROOF_GAP",
+          "badges": [
+            "PROOF_GAP",
+            "THEOREM_NOT_REFUTED",
+            "CONDITIONAL_REPAIR"
+          ],
+          "interpretation": "The published proof has a failed intermediate bijection; the theorem statement is not refuted, and an independent repair is only conditional."
+        },
+        {
+          "object": "fixed-window reduced-RoM monotonicity",
+          "status": "CLAIM_FALSE",
+          "badges": [
+            "FALSE",
+            "EXPLICIT_COUNTEREXAMPLE"
+          ],
+          "interpretation": "An explicit one-qubit Clifford counterexample is recorded; this does not refute the V-representation."
+        }
+      ]
+    },
+    {
+      "id": "foundation:finite-lp-strong-duality",
+      "layer": 0,
+      "branch": "optimization",
+      "kind": "standard_foundation",
+      "root_class": "declared_standard_background",
+      "contract": "A feasible finite-dimensional linear program with finite optimum has an equal dual optimum under the stated primal/dual formulation.",
+      "source": {
+        "citation_key": "hamaguchi2024handbook",
+        "target_anchor": "draft.tex:607-614"
+      },
+      "status": "DECLARED_BACKGROUND_NOT_RECONSTRUCTED"
+    },
+    {
+      "id": "root:perfect-graph-weighted-duality",
+      "layer": 0,
+      "branch": "graph_theory",
+      "kind": "external_contract",
+      "root_class": "technical_mathematical_root",
+      "contract": "For a finite perfect graph and nonnegative weights, the maximum-weight stable-set value equals the fractional clique-cover optimum. This equality contract does not itself include an algorithmic complexity claim.",
+      "source": {
+        "primary_candidates": [
+          "Chvatal 1975",
+          "Fulkerson 1971/1972"
+        ],
+        "target_anchor": "draft.tex:639-684"
+      },
+      "status": "PRIMARY_SOURCE_ALIGNMENT_PENDING"
+    },
+    {
+      "id": "foundation:perfect-graph-complement-and-algorithm",
+      "layer": 0,
+      "branch": "graph_theory",
+      "kind": "standard_foundation",
+      "root_class": "algorithmic_foundation",
+      "contract": "The complement of a perfect graph is perfect; under an explicit rational bit encoding and a promise/certificate of perfectness, weighted stable-set optimization is polynomial-time.",
+      "source": {
+        "primary_candidates": [
+          "Lovasz weak perfect graph theorem",
+          "Groetschel-Lovasz-Schrijver 1981"
+        ],
+        "target_anchor": "draft.tex:267-284,677-684"
+      },
+      "status": "PRIMARY_SOURCE_ALIGNMENT_PENDING"
+    },
+    {
+      "id": "root:xu-quadratic-pauli-graph",
+      "layer": 0,
+      "branch": "squared_profile",
+      "kind": "external_contract",
+      "root_class": "extension_root",
+      "contract": "The quantum maximum of a weighted squared Pauli profile depends only on the frustration graph; hbar-perfect graphs are those for which it equals the weighted independent-set value for all nonnegative weights.",
+      "source": {
+        "citation_keys": [
+          "xu2024bounding",
+          "xu2025simultaneous"
+        ],
+        "target_anchor": "draft.tex:923-933"
+      },
+      "status": "SOURCE_ALIGNMENT_NOT_STARTED"
+    },
+    {
+      "id": "root:leone-stabilizer-renyi-entropy",
+      "layer": 0,
+      "branch": "squared_profile",
+      "kind": "external_contract",
+      "root_class": "extension_root",
+      "contract": "For a pure n-qubit state, the fourth Pauli moment defines the order-2 stabilizer Renyi entropy and vanishes exactly for pure stabilizer states.",
+      "source": {
+        "citation_key": "leone2022stabilizer",
+        "target_anchor": "draft.tex:960-979"
+      },
+      "status": "SOURCE_ALIGNMENT_NOT_STARTED"
+    },
+    {
+      "id": "root:full-pauli-symplectic-graph",
+      "layer": 0,
+      "branch": "squared_profile",
+      "kind": "external_contract",
+      "root_class": "extension_foundation",
+      "contract": "The full n-qubit Pauli frustration graph is an isolated identity plus the binary symplectic graph; maximal abelian Pauli supports are maximum independent sets of size 2^n.",
+      "source": {
+        "citation_keys": [
+          "brouwer2012spectra",
+          "sarkar2021sets"
+        ],
+        "target_anchor": "draft.tex:935-958"
+      },
+      "status": "SOURCE_ALIGNMENT_NOT_STARTED"
+    },
+    {
+      "id": "claim:resource-interpretation",
+      "layer": 1,
+      "branch": "conceptual_foundation",
+      "kind": "definition",
+      "contract": "Relative to stabilizer operations as the free subtheory, states outside the stabilizer free set carry nonstabilizerness, also called magic.",
+      "anchor": "draft.tex:79-88",
+      "status": "SOURCE_ANCHORED_WITH_EXTERNAL_IMPORTS"
+    },
+    {
+      "id": "claim:full-stabilizer-polytope",
+      "layer": 1,
+      "branch": "conceptual_foundation",
+      "kind": "definition",
+      "contract": "STAB_n is the convex hull of all pure n-qubit stabilizer states.",
+      "anchor": "draft.tex:81-86,111-114",
+      "status": "IMPORTED_CONCEPT"
+    },
+    {
+      "id": "claim:full-rom",
+      "layer": 1,
+      "branch": "conceptual_foundation",
+      "kind": "definition",
+      "contract": "Full RoM is the minimum l1 norm of a signed affine decomposition of rho over pure stabilizer states, with value one exactly on STAB_n.",
+      "anchor": "draft.tex:83-88,111-114",
+      "status": "IMPORTED_CONCEPT"
+    },
+    {
+      "id": "claim:pauli-window",
+      "layer": 1,
+      "branch": "reduced_polytope",
+      "kind": "definition",
+      "contract": "A finite set M of nonidentity Hermitian n-qubit Pauli observables maps rho to b_M(rho)=(tr(P rho))_{P in M}.",
+      "anchor": "draft.tex:113-115",
+      "status": "SOURCE_EXPLICIT_AGENT_NORMALIZED_DOMAIN"
+    },
+    {
+      "id": "claim:reduced-stabilizer-polytope",
+      "layer": 2,
+      "branch": "reduced_polytope",
+      "kind": "definition",
+      "contract": "STAB(M) is the image of STAB_n under the Pauli expectation window.",
+      "anchor": "draft.tex:115-121,496-500",
+      "status": "SOURCE_EXPLICIT_IMPORTED_ORIGIN"
+    },
+    {
+      "id": "claim:reduced-rom",
+      "layer": 2,
+      "branch": "reduced_polytope",
+      "kind": "definition",
+      "contract": "RoM_M(rho) is the minimum l1 norm of a signed affine decomposition of b_M(rho) over STAB(M); projection implies RoM_M(rho)<=RoM(rho), so RoM_M(rho)>1 is a sound magic certificate. With M held fixed, it is not a monotone under all stabilizer operations.",
+      "normalization": "l1_pseudomixture_free_visible_value_1",
+      "anchor": "draft.tex:122-131,496-500",
+      "status": "DEFINITION_VALID_MONOTONICITY_LABEL_FALSE"
+    },
+    {
+      "id": "claim:frustration-graph",
+      "layer": 2,
+      "branch": "reduced_polytope",
+      "kind": "definition",
+      "contract": "G_M has one vertex per measured Pauli and an edge exactly for anticommuting pairs; independent sets are pairwise commuting contexts.",
+      "anchor": "draft.tex:89-91,133-141",
+      "status": "SOURCE_EXPLICIT"
+    },
+    {
+      "id": "claim:exact-reduced-vrep",
+      "layer": 3,
+      "branch": "reduced_polytope",
+      "kind": "theorem",
+      "contract": "STAB(M)=conv{v_(S,f)} over inclusion-maximal commuting contexts S and phase-aware admissible signs f.",
+      "anchor": "draft.tex:137-150,499-510",
+      "status": "BLOCKED_BY_ROOT_CONTRACT"
+    },
+    {
+      "id": "claim:fixed-window-monotonicity",
+      "layer": 3,
+      "branch": "conceptual_foundation",
+      "kind": "proposition",
+      "contract": "The target and Varela source claim RoM_M(E(rho))<=RoM_M(rho) for every trace-preserving stabilizer operation E while M is held fixed.",
+      "anchor": "draft.tex:87,122,499; Varela pra_version.tex:241-254,657-665",
+      "status": "CLAIM_FALSE",
+      "counterexample": "For one qubit M={X,Z} and rho with Bloch vector (1/sqrt(2),1/sqrt(2),0), RoM_M(rho)=1. The free Clifford Rx(pi/2) maps the visible coordinates to (1/sqrt(2),+/-1/sqrt(2)), so RoM_M(E(rho))=sqrt(2). Covariance under jointly rotating both state and window remains valid."
+    },
+    {
+      "id": "claim:exact-vertex-dual",
+      "layer": 4,
+      "branch": "reduced_polytope",
+      "kind": "proposition",
+      "contract": "Finite linear-program duality expresses exact reduced RoM as max b.y+mu subject to one absolute-value constraint for every admissible maximal-context vertex.",
+      "anchor": "draft.tex:150-157",
+      "status": "LOCAL_DUALIZATION_BLOCKED_BY_VREP_IMPORT"
+    },
+    {
+      "id": "claim:general-reduced-hardness",
+      "layer": 4,
+      "branch": "complexity",
+      "kind": "proposition",
+      "contract": "The exact V-representation can be exponentially large and general reduced-polytope membership is NP-hard; consequently no polynomial algorithm in n,m exists for arbitrary exact instances unless P=NP.",
+      "anchor": "draft.tex:93-97,157,499-512",
+      "status": "IMPORTED_FROM_VARELA_SOURCE_ALIGNMENT_PENDING"
+    },
+    {
+      "id": "claim:sign-syndrome-linear-consistent",
+      "layer": 3,
+      "branch": "reduced_polytope",
+      "kind": "lemma",
+      "contract": "For commuting Hermitian Pauli representatives, the product phase defines a linear syndrome on ker(M_S); independent generator eigenvalues extend consistently, so B_S is a nonempty affine coset of size 2^rank(M_S).",
+      "anchor": "draft.tex:522-535 (implicit load-bearing lemma)",
+      "status": "AGENT_EXPLICITATION_REQUIRES_PROOF_AUDIT"
+    },
+    {
+      "id": "claim:dependency-affine-code",
+      "layer": 3,
+      "branch": "reduced_polytope",
+      "kind": "lemma",
+      "contract": "Within a commuting context, phase-free kernel relations with their +/- identity syndromes are exactly the parity checks defining the admissible sign assignments.",
+      "anchor": "draft.tex:514-538",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:sign-relaxed-polytope",
+      "layer": 3,
+      "branch": "relaxation",
+      "kind": "definition",
+      "contract": "The sign-relaxed polytope retains all +/- assignments on every maximal commuting context, including assignments not compatible with Pauli product relations.",
+      "anchor": "draft.tex:196-207",
+      "status": "SOURCE_EXPLICIT"
+    },
+    {
+      "id": "claim:relaxed-rom",
+      "layer": 3,
+      "branch": "relaxation",
+      "kind": "definition",
+      "contract": "relaxed_RoM_M is the minimum l1 signed affine decomposition of b_M(rho) over the sign-relaxed polytope.",
+      "anchor": "draft.tex:208-215",
+      "status": "SOURCE_EXPLICIT"
+    },
+    {
+      "id": "claim:mwis-definition",
+      "layer": 3,
+      "branch": "optimization",
+      "kind": "definition",
+      "contract": "For nonnegative vertex weights w, alpha_w(G) is the maximum total weight over all independent sets of G.",
+      "anchor": "draft.tex:245-251",
+      "status": "SOURCE_EXPLICIT_STANDARD_DEFINITION"
+    },
+    {
+      "id": "claim:relaxed-rom-lower-bound",
+      "layer": 4,
+      "branch": "relaxation",
+      "kind": "proposition",
+      "contract": "STAB(M) is contained in the sign-relaxed polytope and therefore relaxed_RoM_M(rho)<=RoM_M(rho).",
+      "anchor": "draft.tex:207-220",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:pauli-active-dependency",
+      "layer": 4,
+      "branch": "relaxation",
+      "kind": "definition",
+      "contract": "An inclusion-minimal Pauli product relation is active exactly when its support is pairwise commuting and therefore imposes a joint-eigenvalue parity check.",
+      "anchor": "draft.tex:222-233",
+      "status": "SOURCE_EXPLICIT"
+    },
+    {
+      "id": "claim:no-active-free-signs",
+      "layer": 5,
+      "branch": "relaxation",
+      "kind": "lemma",
+      "contract": "M has no Pauli-active dependency iff every commuting context admits every deterministic sign assignment.",
+      "anchor": "draft.tex:228-233,546-570",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:relaxation-exactness",
+      "layer": 6,
+      "branch": "relaxation",
+      "kind": "theorem",
+      "contract": "STAB(M) equals the sign-relaxed polytope iff M has no Pauli-active dependency; in that regime exact and relaxed reduced RoM coincide.",
+      "anchor": "draft.tex:234-244,572-594",
+      "status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT"
+    },
+    {
+      "id": "claim:relaxed-affine-span",
+      "layer": 4,
+      "branch": "optimization",
+      "kind": "lemma",
+      "contract": "For every measured coordinate i, a maximal commuting context containing i and a one-sign flip yield a vertex difference proportional to e_i; hence the relaxed primal is feasible for every b in R^m and bounded below by one.",
+      "anchor": "draft.tex:607-609",
+      "status": "HIDDEN_LOCAL_LEMMA_RECONSTRUCTED"
+    },
+    {
+      "id": "claim:relaxed-lp-dual",
+      "layer": 5,
+      "branch": "optimization",
+      "kind": "proposition",
+      "contract": "Strong LP duality turns relaxed RoM into a maximization over (y,mu) with one absolute-value constraint per relaxed vertex.",
+      "anchor": "draft.tex:606-614",
+      "status": "LOCAL_DERIVATION_WITH_STANDARD_FOUNDATION"
+    },
+    {
+      "id": "claim:sign-alignment-identity",
+      "layer": 5,
+      "branch": "optimization",
+      "kind": "lemma",
+      "contract": "For fixed S,y,mu, maximizing over all sign assignments gives sum_{i in S}|y_i|+|mu|.",
+      "anchor": "draft.tex:615-620",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:relaxed-mwis-dual",
+      "layer": 6,
+      "branch": "optimization",
+      "kind": "proposition",
+      "contract": "relaxed_RoM_M(rho)=max b.y+mu subject to alpha_|y|(G_M)+|mu|<=1; a maximum-weight independent set supplies a violated constraint when one exists.",
+      "anchor": "draft.tex:245-264,596-626",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:exact-graph-program",
+      "layer": 7,
+      "branch": "optimization",
+      "kind": "theorem",
+      "contract": "Under no Pauli-active dependency, the MWIS-constrained relaxed dual is the exact reduced-RoM dual.",
+      "anchor": "draft.tex:628-632",
+      "status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT"
+    },
+    {
+      "id": "claim:perfect-graph-definition",
+      "layer": 3,
+      "branch": "graph_theory",
+      "kind": "definition",
+      "contract": "G is perfect iff every induced subgraph G' satisfies chromatic_number(G')=clique_number(G').",
+      "anchor": "draft.tex:265-268",
+      "status": "SOURCE_EXPLICIT_STANDARD_DEFINITION"
+    },
+    {
+      "id": "claim:lovasz-sandwich",
+      "layer": 4,
+      "branch": "graph_theory",
+      "kind": "lemma",
+      "contract": "For every finite graph and nonnegative weight, weighted alpha <= weighted theta <= weighted fractional clique-cover number.",
+      "anchor": "draft.tex:634-662",
+      "status": "CITATION_REPORTED_SOURCE_UNCHECKED"
+    },
+    {
+      "id": "claim:perfect-graph-antiblocker",
+      "layer": 5,
+      "branch": "graph_theory",
+      "kind": "lemma",
+      "contract": "For a perfect graph, {z>=0:alpha_z<=1} is the convex hull of clique incidence vectors including the empty clique. The target derives this locally from weighted stable-set/fractional-cover duality and downward closure.",
+      "anchor": "draft.tex:671-675,680-684",
+      "status": "LOCAL_SYNTHESIS_BLOCKED_BY_WEIGHTED_DUALITY_ALIGNMENT"
+    },
+    {
+      "id": "claim:perfect-graph-weighted-collapse",
+      "layer": 5,
+      "branch": "graph_theory",
+      "kind": "lemma",
+      "contract": "For a perfect graph and nonnegative weights, weighted alpha=weighted theta=weighted fractional clique-cover number.",
+      "anchor": "draft.tex:664-681",
+      "status": "CITATION_REPORTED_SOURCE_ALIGNMENT_PENDING"
+    },
+    {
+      "id": "claim:closed-form-rom",
+      "layer": 8,
+      "branch": "closed_form",
+      "kind": "theorem",
+      "contract": "If M has no Pauli-active dependency and G_M is perfect, RoM_M(rho)=max(1,max_Q sum_{P in Q}|tr(P rho)|).",
+      "anchor": "draft.tex:270-283,687-723",
+      "status": "LOCAL_DERIVATION_WITH_BLOCKED_IMPORTS"
+    },
+    {
+      "id": "claim:anticommuting-l2-bound",
+      "layer": 4,
+      "branch": "capacity",
+      "kind": "lemma",
+      "contract": "For a pairwise anticommuting Pauli set Q and any state rho, sum_{P in Q}tr(P rho)^2<=1.",
+      "anchor": "draft.tex:725-755",
+      "status": "LOCAL_SELF_CONTAINED_DERIVATION"
+    },
+    {
+      "id": "claim:capacity-upper-bound",
+      "layer": 9,
+      "branch": "capacity",
+      "kind": "theorem",
+      "contract": "In the solvable regime, RoM_M(rho)<=sqrt(clique_number(G_M)) for every rho.",
+      "anchor": "draft.tex:274-283,755-763",
+      "status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM"
+    },
+    {
+      "id": "claim:capacity-attainment",
+      "layer": 9,
+      "branch": "capacity",
+      "kind": "construction",
+      "contract": "A state supported on the +1 eigenspace of |Q|^{-1/2}sum_{P in Q}P has equal expectations 1/sqrt(|Q|) on Q and attains sqrt(|Q|).",
+      "anchor": "draft.tex:281-283,765-793",
+      "status": "LOCAL_SELF_CONTAINED_DERIVATION_WITH_UPSTREAM_USE"
+    },
+    {
+      "id": "claim:witness-capacity",
+      "layer": 10,
+      "branch": "capacity",
+      "kind": "theorem",
+      "contract": "In the solvable regime, sup_rho RoM_M(rho)=sqrt(clique_number(G_M)).",
+      "anchor": "draft.tex:99-101,809-815",
+      "status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM"
+    },
+    {
+      "id": "claim:max-anticommuting-size",
+      "layer": 5,
+      "branch": "capacity",
+      "kind": "lemma",
+      "contract": "The binary-symplectic Gram matrix of a pairwise anticommuting n-qubit Pauli family implies cardinality at most 2n+1.",
+      "anchor": "draft.tex:815-862",
+      "status": "LOCAL_SELF_CONTAINED_DERIVATION"
+    },
+    {
+      "id": "claim:jordan-wigner-extremal-set",
+      "layer": 6,
+      "branch": "capacity",
+      "kind": "construction",
+      "contract": "The 2n Jordan-Wigner Majoranas plus global parity form K_(2n+1), have only an inactive full-support dependency, and therefore lie in the solvable regime.",
+      "anchor": "draft.tex:289-295,863-884",
+      "status": "LOCAL_DERIVATION_CITATION_SUPPORTED"
+    },
+    {
+      "id": "claim:universal-ceiling",
+      "layer": 11,
+      "branch": "capacity",
+      "kind": "proposition",
+      "contract": "Among solvable n-qubit measurement windows, max_M sup_rho RoM_M(rho)=sqrt(2n+1), with equality exactly when M contains a maximum anticommuting clique.",
+      "anchor": "draft.tex:287-295,796-884",
+      "status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM"
+    },
+    {
+      "id": "claim:polynomial-evaluation",
+      "layer": 9,
+      "branch": "complexity",
+      "kind": "proposition",
+      "contract": "Promise evaluation only: given rational/finite-precision expectation values together with a certified no-active-dependency, perfect-graph measurement window, the maximum-weight clique in the closed form is polynomial-time computable. The paper does not establish a polynomial-time end-to-end recognizer for the no-active condition.",
+      "anchor": "draft.tex:284",
+      "status": "PROMISE_PROBLEM_DEPENDS_ON_UNCHECKED_GRAPH_ROOT_RECOGNITION_COMPLEXITY_OPEN"
+    },
+    {
+      "id": "claim:measurement-setting-bound",
+      "layer": 5,
+      "branch": "experimental_design",
+      "kind": "proposition",
+      "contract": "Assuming arbitrary Clifford diagonalization of each commuting family, a perfect frustration graph partitions M into clique_number(G_M) jointly measurable settings.",
+      "anchor": "draft.tex:285-287",
+      "status": "SOURCE_DERIVED_WITH_EXPERIMENTAL_IDEALIZATION"
+    },
+    {
+      "id": "claim:four-solvable-families",
+      "layer": 11,
+      "branch": "experimental_design",
+      "kind": "construction",
+      "contract": "Local XYZ, open Ising path, Majorana tree and Jordan-Wigner families have the stated perfect frustration graphs, no Pauli-active dependencies and the stated witness capacities.",
+      "anchor": "draft.tex:289-299,340-450",
+      "status": "SOURCE_CLAIM_PARTIALLY_REGRESSION_TESTED"
+    },
+    {
+      "id": "claim:clifford-rom-covariance",
+      "layer": 4,
+      "branch": "clifford",
+      "kind": "proposition",
+      "contract": "RoM_(C M Cdag)(rho)=RoM_M(Cdag rho C), retaining the signed conjugated observables as coordinates.",
+      "anchor": "draft.tex:302-324",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:clifford-structure-invariance",
+      "layer": 5,
+      "branch": "clifford",
+      "kind": "lemma",
+      "contract": "Clifford conjugation preserves commutation, anticommutation and Pauli product relations, hence preserves G_M, perfectness and the active/inactive status of dependencies.",
+      "anchor": "draft.tex:322-326",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:rotated-closed-form",
+      "layer": 9,
+      "branch": "clifford",
+      "kind": "proposition",
+      "contract": "Every Clifford image of a solvable seed window has the same graph, solvability condition, closed form and witness capacity.",
+      "anchor": "draft.tex:310-326",
+      "status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM"
+    },
+    {
+      "id": "claim:detection-coverage-definition",
+      "layer": 10,
+      "branch": "numerics",
+      "kind": "definition",
+      "contract": "For a specified state ensemble, rotation list and threshold, detection coverage is the fraction with max_l RoM_(C_l M C_ldag)(rho)>1.",
+      "anchor": "draft.tex:454-458",
+      "status": "SOURCE_EXPLICIT"
+    },
+    {
+      "id": "claim:figure2-protocol",
+      "layer": 11,
+      "branch": "numerics",
+      "kind": "empirical_protocol",
+      "contract": "At n=8, evaluate four seed windows on 10,000 Haar states across K Clifford rotations and on 400 hardware-efficient variational states at each listed depth.",
+      "anchor": "draft.tex:328-338,454-459",
+      "status": "SOURCE_REPORTED_INCOMPLETE_REPRODUCTION_METADATA"
+    },
+    {
+      "id": "claim:figure2-haar-input",
+      "layer": 11,
+      "branch": "numerics",
+      "kind": "empirical_protocol",
+      "contract": "At n=8, a common batch of 10,000 Haar-random pure states is evaluated for K in {1,5,10,20,50,100} Clifford rotations.",
+      "anchor": "draft.tex:457",
+      "status": "SOURCE_REPORTED_MISSING_RNG_AND_SAMPLER_CONTRACT"
+    },
+    {
+      "id": "claim:figure2-variational-input",
+      "layer": 11,
+      "branch": "numerics",
+      "kind": "empirical_protocol",
+      "contract": "At n=8, a common batch of 400 states per depth L in {5,10,15,30,50} is generated by independent one-qubit RY/RZ rotations followed by a periodic CZ ring.",
+      "anchor": "draft.tex:458",
+      "status": "SOURCE_REPORTED_MISSING_ANGLE_ROTATION_AND_RNG_CONTRACT"
+    },
+    {
+      "id": "claim:figure2-coverage-gain",
+      "layer": 12,
+      "branch": "numerics",
+      "kind": "empirical_claim",
+      "contract": "For the reported finite samples, adding Clifford rotations increases coverage, especially for the Jordan-Wigner and Majorana-tree windows; larger capacity is empirically associated with higher detection rates.",
+      "anchor": "draft.tex:454-459",
+      "status": "NOT_REPRODUCED_MISSING_CODE_DATA_SEED_TOLERANCE"
+    },
+    {
+      "id": "claim:figure2-reproduction-blocker",
+      "layer": 12,
+      "branch": "numerics",
+      "kind": "limitation",
+      "contract": "The supplied source bundle lacks code, raw data, random seeds, rotation sampler details, angle distributions and numerical tolerance; the empirical branch cannot be marked reproduced.",
+      "anchor": "agent audit of Stabilizerness/arXiv-2607.26154v1 source bundle",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "claim:squared-pauli-profile",
+      "layer": 2,
+      "branch": "squared_profile",
+      "kind": "definition",
+      "contract": "x_P(rho)=tr(P rho)^2 defines a nonnegative profile; weighted directional concentration and its self-collision are distinct nonlinear summaries.",
+      "anchor": "draft.tex:911-913",
+      "domain_override": "This appendix branch uses the full qubit Pauli set including identity; it does not inherit the main branch's nonidentity-only window assumption.",
+      "status": "SOURCE_EXPLICIT"
+    },
+    {
+      "id": "claim:squared-stabilizer-support",
+      "layer": 3,
+      "branch": "squared_profile",
+      "kind": "lemma",
+      "contract": "Squaring Pauli expectations removes eigenvalue signs; a pure stabilizer profile is the incidence vector of a commuting support, and every independent set extends into such a profile.",
+      "anchor": "draft.tex:912-916",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:quadratic-stabilizer-mwis",
+      "layer": 4,
+      "branch": "squared_profile",
+      "kind": "proposition",
+      "contract": "For nonnegative weights, max over STAB_n of sum w_P tr(P sigma)^2 equals alpha_w(G_M); sign dependencies do not affect this quadratic optimum.",
+      "anchor": "draft.tex:916-921",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:hbar-perfect-quadratic-witness",
+      "layer": 5,
+      "branch": "squared_profile",
+      "kind": "proposition",
+      "contract": "A strict gap beta(G,w)>alpha_w(G) certifies nonstabilizerness; hbar-perfect graphs have no witness from this quadratic family.",
+      "anchor": "draft.tex:923-933",
+      "status": "IMPORTED_EXTENSION_SOURCE_UNCHECKED"
+    },
+    {
+      "id": "claim:pauli-parseval",
+      "layer": 2,
+      "branch": "squared_profile",
+      "kind": "lemma",
+      "contract": "For d=2^n, sum_P tr(P rho)^2=d tr(rho^2), defining a normalized Pauli distribution.",
+      "anchor": "draft.tex:935-942",
+      "domain": {
+        "system": "n_qubits",
+        "d": "2^n",
+        "includes_identity": true
+      },
+      "status": "LOCAL_STANDARD_DERIVATION"
+    },
+    {
+      "id": "claim:full-pauli-independent-sets",
+      "layer": 3,
+      "branch": "squared_profile",
+      "kind": "proposition",
+      "contract": "Maximum independent sets of the full Pauli graph are maximal abelian supports of size d; pure stabilizer Pauli distributions are uniform on them, and conversely.",
+      "anchor": "draft.tex:942-959",
+      "status": "IMPORTED_STRUCTURE_WITH_LOCAL_SYNTHESIS"
+    },
+    {
+      "id": "claim:pure-sre-graph-identity",
+      "layer": 5,
+      "branch": "squared_profile",
+      "kind": "theorem",
+      "contract": "For pure psi, M2(psi)=H2(Xi)-log alpha(G_full), and it vanishes exactly when Xi is uniform on a maximum independent set, equivalently psi is a stabilizer state.",
+      "anchor": "draft.tex:960-979",
+      "status": "LOCAL_DERIVATION_WITH_EXTENSION_IMPORT"
+    },
+    {
+      "id": "claim:mixed-sre-identity-limitation",
+      "layer": 5,
+      "branch": "squared_profile",
+      "kind": "limitation",
+      "contract": "For mixed rho, the normalized fourth-moment identity includes -S2(rho); it can be negative and therefore is not by itself a mixed-state magic measure.",
+      "anchor": "draft.tex:981-989",
+      "status": "LOCAL_ALGEBRAIC_DERIVATION"
+    },
+    {
+      "id": "claim:dephased-purity-mwis",
+      "layer": 5,
+      "branch": "squared_profile",
+      "kind": "proposition",
+      "contract": "The MWIS with weights tr(P rho)^2 equals d times the largest purity retained after dephasing rho in a stabilizer basis and is at most d tr(rho^2).",
+      "anchor": "draft.tex:991-997",
+      "status": "LOCAL_SOURCE_DERIVATION"
+    },
+    {
+      "id": "claim:mixed-state-graph-bound-open",
+      "layer": 6,
+      "branch": "squared_profile",
+      "kind": "open_problem",
+      "contract": "A graph-theoretic mixed-state magic bound connecting the moment identity to a stabilizer threshold has not been established.",
+      "anchor": "draft.tex:997-998",
+      "status": "OPEN"
+    },
+    {
+      "id": "claim:full-pauli-obstructions",
+      "layer": 6,
+      "branch": "outlook",
+      "kind": "proposition",
+      "contract": "For n>=2, the full Pauli frustration graph is imperfect with exponentially larger chromatic than clique number, and each maximal commuting context carries exponentially many independent sign constraints.",
+      "anchor": "draft.tex:460-462",
+      "status": "IMPORTED_COMPOSITE_CLAIM_SOURCE_ALIGNMENT_PENDING"
+    },
+    {
+      "id": "claim:active-dependency-coset-decoding-open",
+      "layer": 7,
+      "branch": "outlook",
+      "kind": "open_problem",
+      "contract": "When the graph is perfect but active dependencies remain, MWIS is tractable while admissible-sign optimization becomes coset decoding; efficiently decodable dependency-code classes are open.",
+      "anchor": "draft.tex:464-466",
+      "status": "OPEN"
+    },
+    {
+      "id": "claim:imperfect-graph-theta-lower-bound-open",
+      "layer": 7,
+      "branch": "outlook",
+      "kind": "open_problem",
+      "contract": "With no active dependencies but an imperfect graph, replacing MWIS by weighted Lovasz theta yields a sound polynomial-time lower bound; characterizing tight cases is open.",
+      "anchor": "draft.tex:464-466",
+      "status": "OPEN"
+    }
+  ],
+  "edges": [
+    {
+      "from": "root:bravyi-kitaev-magic-model",
+      "to": "claim:resource-interpretation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the operational meaning of a nonstabilizer ancilla as a computational resource."
+    },
+    {
+      "from": "root:gottesman-knill-simulation",
+      "to": "claim:resource-interpretation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the restricted-operation classical-simulation boundary that makes extra resources meaningful."
+    },
+    {
+      "from": "root:veitch-stabilizer-resource-theory",
+      "to": "claim:resource-interpretation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the free-state/free-operation resource-theory boundary."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:full-stabilizer-polytope",
+      "type": "definition_dependency",
+      "reason": "Defines the pure stabilizer states whose convex hull is taken."
+    },
+    {
+      "from": "root:veitch-stabilizer-resource-theory",
+      "to": "claim:full-stabilizer-polytope",
+      "type": "scientific_claim_dependency",
+      "reason": "Explicitly defines the full stabilizer free set as a convex hull."
+    },
+    {
+      "from": "claim:full-stabilizer-polytope",
+      "to": "claim:full-rom",
+      "type": "definition_dependency",
+      "reason": "RoM decomposes the state over pure vertices of this free polytope."
+    },
+    {
+      "from": "root:howard-campbell-rom",
+      "to": "claim:full-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Provides the RoM definition and faithfulness contract."
+    },
+    {
+      "from": "claim:pauli-window",
+      "to": "claim:reduced-stabilizer-polytope",
+      "type": "definition_dependency",
+      "reason": "Defines the projection map."
+    },
+    {
+      "from": "claim:full-stabilizer-polytope",
+      "to": "claim:reduced-stabilizer-polytope",
+      "type": "definition_dependency",
+      "reason": "Defines the set being projected."
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:reduced-stabilizer-polytope",
+      "type": "scientific_claim_dependency",
+      "reason": "Target imports the reduced-polytope framework from Varela et al."
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:reduced-rom",
+      "type": "definition_dependency",
+      "reason": "Reduced RoM is a signed affine gauge of the projected polytope."
+    },
+    {
+      "from": "claim:full-rom",
+      "to": "claim:reduced-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Projection yields the stated lower-bound relation to full RoM."
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:reduced-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Imports the reduced functional and valid projection bound; its stronger fixed-window monotonicity claim is tracked separately as false."
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:fixed-window-monotonicity",
+      "type": "definition_dependency",
+      "reason": "Supplies the functional for the monotonicity claim."
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:fixed-window-monotonicity",
+      "type": "scientific_claim_dependency",
+      "reason": "Varela states and attempts to prove the claim imported by the target."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:frustration-graph",
+      "type": "definition_dependency",
+      "reason": "Supplies Pauli commutation and joint eigenspaces."
+    },
+    {
+      "from": "claim:pauli-window",
+      "to": "claim:frustration-graph",
+      "type": "definition_dependency",
+      "reason": "Supplies graph vertices."
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:exact-reduced-vrep",
+      "type": "definition_dependency",
+      "reason": "The V-representation describes this polytope."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:exact-reduced-vrep",
+      "type": "definition_dependency",
+      "reason": "Supplies maximal commuting supports."
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:exact-reduced-vrep",
+      "type": "scientific_claim_dependency",
+      "reason": "This is the load-bearing imported theorem."
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:exact-vertex-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies the exact primal objective."
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:exact-vertex-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the admissible atoms indexing the dual constraints."
+    },
+    {
+      "from": "foundation:finite-lp-strong-duality",
+      "to": "claim:exact-vertex-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Justifies equality of exact primal and dual optima."
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:general-reduced-hardness",
+      "type": "scientific_claim_dependency",
+      "reason": "The representation size and NP-hardness are imported rather than proved locally."
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:general-reduced-hardness",
+      "type": "scope_dependency",
+      "reason": "The size statement concerns this representation."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:dependency-affine-code",
+      "type": "definition_dependency",
+      "reason": "Supplies Pauli multiplication and binary symplectic representation."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:dependency-affine-code",
+      "type": "scope_dependency",
+      "reason": "The parity syndrome is order-independent only inside commuting contexts."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:sign-syndrome-linear-consistent",
+      "type": "definition_dependency",
+      "reason": "Supplies commuting Pauli generators and their joint eigenspaces."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:sign-syndrome-linear-consistent",
+      "type": "scope_dependency",
+      "reason": "Restricts the relation space to a commuting context."
+    },
+    {
+      "from": "claim:sign-syndrome-linear-consistent",
+      "to": "claim:dependency-affine-code",
+      "type": "scientific_claim_dependency",
+      "reason": "Makes the affine-code syndrome linear and the coset nonempty."
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:sign-relaxed-polytope",
+      "type": "definition_dependency",
+      "reason": "The relaxation replaces admissible signs in the exact candidate representation by all signs."
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-rom",
+      "type": "definition_dependency",
+      "reason": "Supplies the relaxed atom set for the l1 functional."
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:relaxed-rom",
+      "type": "definition_dependency",
+      "reason": "Supplies the signed-affine normalization convention being relaxed."
+    },
+    {
+      "from": "claim:relaxed-rom",
+      "to": "claim:relaxed-rom-lower-bound",
+      "type": "definition_dependency",
+      "reason": "Supplies the relaxed value compared with exact reduced RoM."
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:relaxed-rom-lower-bound",
+      "type": "definition_dependency",
+      "reason": "Supplies the exact feasible polytope."
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-rom-lower-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Outer inclusion enlarges the feasible atom set."
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:pauli-active-dependency",
+      "type": "definition_dependency",
+      "reason": "Active dependencies are the minimal commuting parity checks of the code."
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:no-active-free-signs",
+      "type": "scientific_claim_dependency",
+      "reason": "The affine parity checks characterize precisely when signs are restricted."
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:no-active-free-signs",
+      "type": "definition_dependency",
+      "reason": "States the condition whose equivalence is proved."
+    },
+    {
+      "from": "claim:no-active-free-signs",
+      "to": "claim:relaxation-exactness",
+      "type": "scientific_claim_dependency",
+      "reason": "Identifies when exact and relaxed sign sets coincide."
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:relaxation-exactness",
+      "type": "scientific_claim_dependency",
+      "reason": "Needed for both the forward equality and saturated-coordinate converse."
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-affine-span",
+      "type": "definition_dependency",
+      "reason": "Supplies the vertices used in the sign-flip argument."
+    },
+    {
+      "from": "claim:relaxed-affine-span",
+      "to": "claim:relaxed-lp-dual",
+      "type": "scope_dependency",
+      "reason": "Establishes feasibility and boundedness before invoking strong duality."
+    },
+    {
+      "from": "claim:relaxed-rom",
+      "to": "claim:relaxed-lp-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies the primal optimization problem."
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-lp-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies the primal atom set."
+    },
+    {
+      "from": "foundation:finite-lp-strong-duality",
+      "to": "claim:relaxed-lp-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Converts the finite l1 primal to the stated dual."
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:sign-alignment-identity",
+      "type": "definition_dependency",
+      "reason": "Supplies unrestricted signs on each context."
+    },
+    {
+      "from": "claim:relaxed-lp-dual",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Starting point for collapsing all vertex constraints."
+    },
+    {
+      "from": "claim:sign-alignment-identity",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Turns sign maximization into a sum of absolute weights."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "definition_dependency",
+      "reason": "Independent-set maximization defines MWIS."
+    },
+    {
+      "from": "claim:mwis-definition",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies alpha_|y|(G)."
+    },
+    {
+      "from": "claim:relaxation-exactness",
+      "to": "claim:exact-graph-program",
+      "type": "scientific_claim_dependency",
+      "reason": "Identifies exact reduced RoM with relaxed RoM."
+    },
+    {
+      "from": "claim:relaxed-mwis-dual",
+      "to": "claim:exact-graph-program",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the graph-only dual."
+    },
+    {
+      "from": "root:perfect-graph-weighted-duality",
+      "to": "claim:lovasz-sandwich",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the cited weighted graph-theory comparison."
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:perfect-graph-antiblocker",
+      "type": "scope_dependency",
+      "reason": "Perfectness is the weighted duality hypothesis."
+    },
+    {
+      "from": "root:perfect-graph-weighted-duality",
+      "to": "claim:perfect-graph-antiblocker",
+      "type": "scientific_claim_dependency",
+      "reason": "Weighted stable-set/fractional-cover duality is the load-bearing external theorem."
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:perfect-graph-weighted-collapse",
+      "type": "scope_dependency",
+      "reason": "Perfectness is the collapse hypothesis."
+    },
+    {
+      "from": "claim:lovasz-sandwich",
+      "to": "claim:perfect-graph-weighted-collapse",
+      "type": "scientific_claim_dependency",
+      "reason": "Theta is squeezed between equal weighted endpoints."
+    },
+    {
+      "from": "root:perfect-graph-weighted-duality",
+      "to": "claim:perfect-graph-weighted-collapse",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies equality of weighted stable set and fractional clique cover."
+    },
+    {
+      "from": "claim:exact-graph-program",
+      "to": "claim:closed-form-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the exact feasible set for (y,mu)."
+    },
+    {
+      "from": "claim:perfect-graph-antiblocker",
+      "to": "claim:closed-form-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Expresses feasible absolute weights as convex combinations of clique indicators."
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:closed-form-rom",
+      "type": "scope_dependency",
+      "reason": "States the required graph regime."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:anticommuting-l2-bound",
+      "type": "definition_dependency",
+      "reason": "Supplies Hermitian Pauli involutions and anticommutation."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:anticommuting-l2-bound",
+      "type": "definition_dependency",
+      "reason": "Cliques identify pairwise anticommuting sets."
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:capacity-upper-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Reduces reduced RoM to clique l1 sums."
+    },
+    {
+      "from": "claim:anticommuting-l2-bound",
+      "to": "claim:capacity-upper-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Cauchy-Schwarz converts the l2 uncertainty bound to sqrt(|Q|)."
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:capacity-attainment",
+      "type": "scientific_claim_dependency",
+      "reason": "Turns the constructed clique expectations into an attained RoM value."
+    },
+    {
+      "from": "claim:anticommuting-l2-bound",
+      "to": "claim:capacity-attainment",
+      "type": "definition_dependency",
+      "reason": "The same Clifford-algebra square identity constructs the involution."
+    },
+    {
+      "from": "claim:capacity-upper-bound",
+      "to": "claim:witness-capacity",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the upper half of the supremum equality."
+    },
+    {
+      "from": "claim:capacity-attainment",
+      "to": "claim:witness-capacity",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the matching lower half."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:max-anticommuting-size",
+      "type": "definition_dependency",
+      "reason": "Supplies the binary symplectic representation."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:max-anticommuting-size",
+      "type": "definition_dependency",
+      "reason": "A graph clique is the pairwise anticommuting family being bounded."
+    },
+    {
+      "from": "claim:max-anticommuting-size",
+      "to": "claim:jordan-wigner-extremal-set",
+      "type": "scope_dependency",
+      "reason": "Identifies the size that the construction must attain."
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:jordan-wigner-extremal-set",
+      "type": "definition_dependency",
+      "reason": "Classifies the unique full-support relation as inactive."
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:jordan-wigner-extremal-set",
+      "type": "scope_dependency",
+      "reason": "Complete graphs certify the graph hypothesis."
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:universal-ceiling",
+      "type": "scientific_claim_dependency",
+      "reason": "Relates capacity to clique number for each window."
+    },
+    {
+      "from": "claim:max-anticommuting-size",
+      "to": "claim:universal-ceiling",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the universal upper bound."
+    },
+    {
+      "from": "claim:jordan-wigner-extremal-set",
+      "to": "claim:universal-ceiling",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies an attaining solvable window."
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:polynomial-evaluation",
+      "type": "scientific_claim_dependency",
+      "reason": "Evaluation becomes maximum-weight clique."
+    },
+    {
+      "from": "foundation:perfect-graph-complement-and-algorithm",
+      "to": "claim:polynomial-evaluation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies complement closure and rational weighted optimization complexity under the promise."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:measurement-setting-bound",
+      "type": "definition_dependency",
+      "reason": "Independent color classes are commuting contexts."
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:measurement-setting-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Perfectness gives chi=omega for the full graph."
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:four-solvable-families",
+      "type": "scientific_claim_dependency",
+      "reason": "Computes the tabulated capacities once graph and dependency hypotheses are checked."
+    },
+    {
+      "from": "claim:jordan-wigner-extremal-set",
+      "to": "claim:four-solvable-families",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies one of the four constructions and Majorana ingredients."
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:four-solvable-families",
+      "type": "scope_dependency",
+      "reason": "Each displayed graph must be certified perfect."
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:four-solvable-families",
+      "type": "scope_dependency",
+      "reason": "Each measurement family must be checked for no active relation."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:clifford-rom-covariance",
+      "type": "definition_dependency",
+      "reason": "Clifford conjugation preserves Pauli and pure stabilizer states."
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:clifford-rom-covariance",
+      "type": "definition_dependency",
+      "reason": "The coordinate projection is identified under conjugation."
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:clifford-rom-covariance",
+      "type": "definition_dependency",
+      "reason": "The two affine optimization problems are compared."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:clifford-structure-invariance",
+      "type": "definition_dependency",
+      "reason": "Commutation edges are invariant under conjugation."
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:clifford-structure-invariance",
+      "type": "definition_dependency",
+      "reason": "Product relations and their active support are invariant."
+    },
+    {
+      "from": "claim:clifford-rom-covariance",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Transfers values between a rotated window and rotated state."
+    },
+    {
+      "from": "claim:clifford-structure-invariance",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Transfers the solvability hypotheses."
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the formula inherited by every rotation."
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Shows rotation does not enlarge the capacity of a single window."
+    },
+    {
+      "from": "claim:rotated-closed-form",
+      "to": "claim:detection-coverage-definition",
+      "type": "definition_dependency",
+      "reason": "Defines the ensemble maximum used for detection."
+    },
+    {
+      "from": "claim:four-solvable-families",
+      "to": "claim:figure2-protocol",
+      "type": "definition_dependency",
+      "reason": "Supplies the four seed windows evaluated."
+    },
+    {
+      "from": "claim:detection-coverage-definition",
+      "to": "claim:figure2-protocol",
+      "type": "definition_dependency",
+      "reason": "Supplies the reported response variable."
+    },
+    {
+      "from": "claim:figure2-haar-input",
+      "to": "claim:figure2-protocol",
+      "type": "data_dependency",
+      "reason": "Supplies panel-a ensemble and rotation counts."
+    },
+    {
+      "from": "claim:figure2-variational-input",
+      "to": "claim:figure2-protocol",
+      "type": "data_dependency",
+      "reason": "Supplies panel-b circuit ensemble and depths."
+    },
+    {
+      "from": "claim:figure2-protocol",
+      "to": "claim:figure2-coverage-gain",
+      "type": "data_dependency",
+      "reason": "The empirical statement is conditional on this sample and rotation protocol."
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:figure2-coverage-gain",
+      "type": "scope_dependency",
+      "reason": "Capacity is compared with, but must not be conflated with, empirical coverage."
+    },
+    {
+      "from": "claim:figure2-protocol",
+      "to": "claim:figure2-reproduction-blocker",
+      "type": "data_dependency",
+      "reason": "Auditing the stated protocol reveals the missing reproducibility artifacts."
+    },
+    {
+      "from": "claim:squared-pauli-profile",
+      "to": "claim:squared-stabilizer-support",
+      "type": "definition_dependency",
+      "reason": "Supplies the squared coordinates whose support is characterized."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:squared-stabilizer-support",
+      "type": "definition_dependency",
+      "reason": "Pure stabilizer Pauli expectations are 0 or +/-1 on a commuting stabilizer support."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:squared-stabilizer-support",
+      "type": "definition_dependency",
+      "reason": "Commuting support becomes an independent set."
+    },
+    {
+      "from": "claim:squared-stabilizer-support",
+      "to": "claim:quadratic-stabilizer-mwis",
+      "type": "scientific_claim_dependency",
+      "reason": "Convexity reduces the stabilizer optimum to weighted independent supports."
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:quadratic-stabilizer-mwis",
+      "type": "definition_dependency",
+      "reason": "Defines alpha_w."
+    },
+    {
+      "from": "claim:quadratic-stabilizer-mwis",
+      "to": "claim:hbar-perfect-quadratic-witness",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the stabilizer benchmark."
+    },
+    {
+      "from": "root:xu-quadratic-pauli-graph",
+      "to": "claim:hbar-perfect-quadratic-witness",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the quantum beta value and hbar-perfectness results."
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:pauli-parseval",
+      "type": "definition_dependency",
+      "reason": "Supplies the orthogonal Pauli operator basis."
+    },
+    {
+      "from": "root:full-pauli-symplectic-graph",
+      "to": "claim:full-pauli-independent-sets",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the full graph and maximal-support classification."
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:full-pauli-independent-sets",
+      "type": "definition_dependency",
+      "reason": "Normalizes the Pauli distribution on those supports."
+    },
+    {
+      "from": "root:leone-stabilizer-renyi-entropy",
+      "to": "claim:pure-sre-graph-identity",
+      "type": "definition_dependency",
+      "reason": "Supplies the order-2 stabilizer entropy definition."
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:pure-sre-graph-identity",
+      "type": "scientific_claim_dependency",
+      "reason": "Normalizes the pure-state Pauli distribution."
+    },
+    {
+      "from": "claim:full-pauli-independent-sets",
+      "to": "claim:pure-sre-graph-identity",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the graph-defined uniform stabilizer reference scale."
+    },
+    {
+      "from": "root:leone-stabilizer-renyi-entropy",
+      "to": "claim:mixed-sre-identity-limitation",
+      "type": "definition_dependency",
+      "reason": "Provides the pure-state moment convention being extended algebraically."
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:mixed-sre-identity-limitation",
+      "type": "scientific_claim_dependency",
+      "reason": "Produces the purity correction term."
+    },
+    {
+      "from": "claim:full-pauli-independent-sets",
+      "to": "claim:dephased-purity-mwis",
+      "type": "definition_dependency",
+      "reason": "Maximum independent sets label stabilizer dephasing bases."
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:dephased-purity-mwis",
+      "type": "scientific_claim_dependency",
+      "reason": "Relates squared expectations to dephased purity."
+    },
+    {
+      "from": "claim:mixed-sre-identity-limitation",
+      "to": "claim:mixed-state-graph-bound-open",
+      "type": "scope_dependency",
+      "reason": "Shows why the pure-state support argument fails for mixtures."
+    },
+    {
+      "from": "claim:dephased-purity-mwis",
+      "to": "claim:mixed-state-graph-bound-open",
+      "type": "scientific_claim_dependency",
+      "reason": "Provides a complementary graph statistic but not the missing stabilizer bound."
+    },
+    {
+      "from": "root:full-pauli-symplectic-graph",
+      "to": "claim:full-pauli-obstructions",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the symplectic graph parameters and coloring facts."
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:full-pauli-obstructions",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the independent sign-constraint count."
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:full-pauli-obstructions",
+      "type": "definition_dependency",
+      "reason": "Explains the sign-code obstruction."
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:active-dependency-coset-decoding-open",
+      "type": "definition_dependency",
+      "reason": "Admissible signs form the affine code to be decoded."
+    },
+    {
+      "from": "claim:relaxed-mwis-dual",
+      "to": "claim:active-dependency-coset-decoding-open",
+      "type": "scope_dependency",
+      "reason": "The graph part remains tractable while sign decoding does not collapse."
+    },
+    {
+      "from": "claim:exact-graph-program",
+      "to": "claim:imperfect-graph-theta-lower-bound-open",
+      "type": "scientific_claim_dependency",
+      "reason": "Identifies the MWIS term to be relaxed."
+    },
+    {
+      "from": "claim:lovasz-sandwich",
+      "to": "claim:imperfect-graph-theta-lower-bound-open",
+      "type": "scientific_claim_dependency",
+      "reason": "Replacing alpha by theta gives the sound relaxation direction."
+    }
+  ],
+  "root_standardization_priority": [
+    {
+      "order": 1,
+      "node": "root:gottesman-stabilizer-formalism",
+      "why": "Reader and formal starting point: defines Pauli stabilizer groups, common eigenspaces, and the rank-n pure-state specialization."
+    },
+    {
+      "order": 2,
+      "node": "root:veitch-stabilizer-resource-theory",
+      "why": "Builds the primary conceptual contract for STAB_n, stabilizerness/nonstabilizerness, and free stabilizer operations on top of the pure-state formalism."
+    },
+    {
+      "order": 3,
+      "node": "root:howard-campbell-rom",
+      "why": "Primary measure contract used by both full and reduced RoM."
+    },
+    {
+      "order": 4,
+      "node": "root:varela-reduced-polytope",
+      "why": "Direct technical bridge from the full polytope to the target paper; retained after conceptual roots and currently blocked by a source-proof gap."
+    },
+    {
+      "order": 5,
+      "node": "root:perfect-graph-weighted-duality",
+      "why": "Load-bearing classical graph-theory root for the closed form and complexity branch."
+    }
+  ],
+  "excluded_from_dependency_edges": [
+    "Citations used only for historical context or examples",
+    "Numerical comparison references not needed to generate the target data",
+    "Alternative proofs cited when the target gives a self-contained proof",
+    "Downstream applications that do not support a target claim"
+  ]
+}

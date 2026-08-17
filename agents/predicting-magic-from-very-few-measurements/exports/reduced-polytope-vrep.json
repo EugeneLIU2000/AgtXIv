@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:2602.18939v1:reduced-polytope-vrep",
+  "provider_agent": "agent:predicting-magic-from-very-few-measurements",
+  "statement": "statement:2602.18939v1:reduced-polytope-vrep-normalized",
+  "assumptions": [
+    "assumption:2602.18939v1:normalized-pauli-window",
+    "M is finite and nonempty",
+    "M uses fixed nonidentity Hermitian involutive n-qubit Pauli representatives",
+    "the representatives are distinct modulo phase, with no duplicate or plus/minus-duplicate class",
+    "G_M has one node per member of M and edges exactly for anticommuting pairs",
+    "S ranges over inclusion-maximal independent sets, not maximum-cardinality independent sets",
+    "B_S contains exactly the sign assignments consistent with all Pauli product relations in S",
+    "v_(S,f) uses the signed Pauli representatives for expectation coordinates"
+  ],
+  "validity_regime": [
+    "finite n and m"
+  ],
+  "imports": [
+    {
+      "contract": "statement:foundation:isotropic-pauli-extension",
+      "status": "BLOCKED"
+    }
+  ],
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvVarela",
+    "contract": "formalization-contract:2602.18939v1:repaired-reduced-polytope-vrep",
+    "declaration": "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional",
+    "status": "PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS"
+  },
+  "verification": {
+    "source_fidelity": "PARTIAL_NORMALIZED_EXPORT_ALIGNMENT_PENDING",
+    "dependency_closure": "BLOCKED",
+    "mathematics": "PARTIALLY_FORMALIZED",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "AGENT_REVIEWED",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "provenance": {
+    "source_statement": "statement:2602.18939v1:reduced-polytope-vrep",
+    "source_anchors": [
+      "anchor:2602.18939v1:vrep-theorem",
+      "anchor:2602.18939v1:vrep-proof"
+    ],
+    "source_proof_verification": "verification:2602.18939v1:vrep-proof-audit",
+    "agent_repair_chain": "chain:2602.18939v1:vrep-repaired",
+    "agent_repair_artifact": {
+      "path": "agents/predicting-magic-from-very-few-measurements/reasoning/repaired-vrep-proof-candidate.md",
+      "sha256": "a1b3cedfefec74f4817c55d79d0379d8cd0e959ca30bec7d2349d5c62608a310"
+    },
+    "agent_repair_verification": "verification:2602.18939v1:vrep-repair-review",
+    "lean_conditional_verification": "verification:2602.18939v1:lean-vrep-conditional"
+  },
+  "claim_lineage": {
+    "source_claim": {
+      "statement": "statement:2602.18939v1:reduced-polytope-vrep",
+      "statement_alignment": "PASSED",
+      "theorem_truth_status": "THEOREM_NOT_REFUTED",
+      "published_derivation": {
+        "step": "step:2602.18939v1:001",
+        "verification": "verification:2602.18939v1:vrep-proof-audit",
+        "status": "GAP_FOUND",
+        "mathematics": "FAILED",
+        "export_eligible": false
+      }
+    },
+    "replacement_claim": {
+      "statement": "statement:2602.18939v1:reduced-polytope-vrep-normalized",
+      "origin": "AGENT_NORMALIZED",
+      "scope_relation": "SOURCE_SPECIAL_CASE_AND_NOTATION_REPAIR",
+      "repair_chain": "chain:2602.18939v1:vrep-repaired",
+      "status": "PARTIALLY_FORMALIZED",
+      "does_not_upgrade_source_derivation": true
+    }
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:2602.18939v1:root-reconstruction-pending"
+  ],
+  "blocking_reason": "The concrete projection layer and conditional double-inclusion implication are kernel-checked, but candidate physicality, maximal-context refinement, extremality, partial-to-complete signed-frame extension, final source alignment, and human semantic review remain open. The published proof gap remains FAILED."
+}

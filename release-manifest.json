@@ -1,0 +1,40 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "release_id": "pilot:stabilizerness:closed-form-equality:0.1.0",
+  "release_kind": "runnable_vertical_slice",
+  "accepted_release": false,
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "target_contract": "contract:2607.26154v1:closed-form-equality",
+  "agents": [
+    "agents/stabilizer-codes-and-quantum-error-correction/agent.json",
+    "agents/resource-theory-of-stabilizer-computation/agent.json",
+    "agents/robustness-of-magic/agent.json",
+    "agents/predicting-magic-from-very-few-measurements/agent.json",
+    "agents/graph-theoretic-nonstabilizerness/agent.json"
+  ],
+  "graphs": [
+    "graph/paper-dependencies.json",
+    "graph/claim-dependencies.json"
+  ],
+  "commands": {
+    "structural_validation": "python3 tools/validate_pilot.py",
+    "scientific_release_gate": "python3 tools/validate_pilot.py --strict-science",
+    "root_math_formalization": "python3 tools/validate_lean_formalization.py",
+    "varela_projection_formalization": "python3 tools/validate_varela_formalization.py",
+    "root_verification_partitions": "python3 tools/validate_root_partitions.py",
+    "finite_instance_regression": "python3 agents/graph-theoretic-nonstabilizerness/computational/verify_closed_form.py --output agents/graph-theoretic-nonstabilizerness/verification/logs/finite-instance-results.json",
+    "query_target": "python3 tools/query_agent.py why statement:2607.26154v1:closed-form-equality"
+  },
+    "release_gate": {
+        "structural_validation": "PASSED",
+        "root_math_validation": "PASSED (ROOT_MATH_KERNEL_COMPLETE; 43 audited declarations)",
+        "varela_projection_validation": "PASSED (6 audited declarations; aggregate V-representation remains PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS; no scientific acceptance effect)",
+        "scientific_validation": "BLOCKED",
+    "reasons": [
+      "The imported V-representation source proof has a gap. Lean checks the coordinate-projection layer and the conditional convex-hull implication, but maximal-context candidate physicality, projected-atom refinement, extremality, and final source alignment remain open.",
+      "The perfect-graph weighted-duality foundation is not yet frozen and aligned from a primary source.",
+            "The selected Gottesman-to-Veitch-to-Howard Root mathematics is kernel-complete, but source/physical-semantic acceptance remains open and the target paper's sign-maximization and relaxed-vertex affine-span lemmas are not implemented."
+    ]
+  },
+    "scope_warning": "ROOT_MATH_KERNEL_COMPLETE concerns only the three conceptual roots' selected mathematical interfaces. The Varela validator checks a partial theorem with explicit premises, and the graph interface treats weighted perfect-graph duality as an external parameter rather than a proved theorem. Neither proves the target closed-form theorem. Finite-instance checks are regression evidence and do not reproduce Figure 2."
+}

@@ -1,0 +1,16 @@
+name = "AgtXIvStabilizerness"
+version = "0.1.0"
+defaultTargets = ["AgtXIvStabilizerness"]
+packagesDir = "../AgtXIvRootMath/.lake/packages"
+
+[[require]]
+name = "AgtXIvRootMath"
+path = "../AgtXIvRootMath"
+
+[[require]]
+name = "AgtXIvVarela"
+path = "../AgtXIvVarela"
+
+[[lean_lib]]
+name = "AgtXIvStabilizerness"
+moreLeanArgs = ["-DautoImplicit=false"]

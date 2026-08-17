@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:2607.26154v1:closed-form-equality",
+  "provider_agent": "agent:graph-theoretic-nonstabilizerness",
+  "statement": "statement:2607.26154v1:closed-form-equality",
+  "assumptions": [
+    "assumption:2607.26154v1:measurement-set-normalized",
+    "assumption:2607.26154v1:rho-density",
+    "assumption:2607.26154v1:no-pauli-active-dependencies",
+    "assumption:2607.26154v1:perfect-frustration-graph"
+  ],
+  "imports": [
+    {
+      "contract": "contract:2602.18939v1:reduced-polytope-vrep",
+      "status": "BLOCKED"
+    },
+    {
+      "contract": "statement:foundation:perfect-graph-weighted-duality",
+      "status": "BLOCKED"
+    },
+    {
+      "contract": "statement:foundation:finite-lp-strong-duality",
+      "status": "SATISFIED"
+    }
+  ],
+  "validity_regime": [
+    "finite n and finite nonempty M",
+    "qubit Hermitian Pauli observables",
+    "exact expectation values and real arithmetic",
+    "the equality only; capacity, polynomial time and empirical coverage are separate contracts"
+  ],
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvRootMath",
+    "contract": "formalization-contract:2607.26154v1:sign-max-and-affine-span",
+    "declaration": null,
+    "status": "QUEUED_AFTER_ROOT_MATH",
+    "scope_note": "The pinned environment is verified, but no target-paper declaration is implemented. The current kernel-checked declarations cover only a Howard Root Agent coefficient slice."
+  },
+  "verification": {
+    "source_fidelity": "PASSED",
+    "dependency_closure": "BLOCKED",
+    "mathematics": "LOCAL_SOURCE_DERIVATION_CHECKED_WITH_BLOCKED_IMPORTS",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "AGENT_REVIEWED",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "provenance": {
+    "source_anchors": [
+      "anchor:2607.26154v1:closed-form-theorem",
+      "anchor:2607.26154v1:closed-form-proof"
+    ],
+    "reasoning_chain": "chain:2607.26154v1:closed-form"
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:2607.26154v1:root-contract-not-accepted",
+    "blocker:2607.26154v1:perfect-graph-foundation-unchecked"
+  ]
+}

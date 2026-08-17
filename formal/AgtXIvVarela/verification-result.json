@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "lean-verification:varela-vrep:2026-08-16",
+  "verified_at": "2026-08-16",
+  "project": "formal/AgtXIvVarela",
+  "vrep_status": "PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS",
+  "environment": {
+    "lean_toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "root_math_project": "formal/AgtXIvRootMath",
+    "root_math_status": "ROOT_MATH_KERNEL_COMPLETE",
+    "mathlib_commit": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+    "quantumlib_commit": "44fc4eb1f4ba512e659deacd3468fda0a764d162",
+    "dependency_policy": "The Varela package imports the pinned RootMath package and introduces no new external theorem axiom."
+  },
+  "results": {
+    "dependency_resolution": "PASSED_USING_PINNED_ROOT_CACHE",
+    "kernel_build": "PASSED (8405 jobs)",
+    "placeholder_scan": "PASSED (no sorry, admit, project axiom, or native_decide)",
+    "axiom_audit": {
+      "result": "PASSED",
+      "declarations_audited": 6,
+      "reported_standard_dependencies": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  },
+  "declarations": [
+    "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+    "AgtXIv.Varela.MeasurementWindow.mem_projectedStabilizerPolytope_iff",
+    "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.abs_vector_le_one",
+    "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+    "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional",
+    "AgtXIv.GraphFoundation.weighted_duality_of_foundation"
+  ],
+  "kernel_checked_scope": [
+    "normalized finite window of fixed nonidentity Hermitian Pauli representatives with distinct phase classes",
+    "exact real-linear expectation-coordinate projection",
+    "top-down projected stabilizer-polytope semantics",
+    "inclusion-maximal commuting contexts and phase-aware admissible signs",
+    "the implication from the two explicit repaired-proof obligations to convex-hull equality",
+    "exact finite definitions of weighted independent-set value, fractional clique-cover value, and perfectness",
+    "conditional use of weighted perfect-graph duality through an explicit theorem parameter"
+  ],
+  "open_exact_obligations": [
+    "construct a partial signed frame from every admissible context/sign assignment",
+    "extend that partial frame to a complete signed stabilizer frame without changing its signs",
+    "prove every maximal-context candidate belongs to the projected stabilizer polytope",
+    "prove every projected pure stabilizer atom is a Born-weighted mixture of maximal-context candidates",
+    "prove every listed candidate is an extreme point",
+    "complete source-to-normalized-statement and human physical-semantic alignment"
+  ],
+  "graph_foundation_policy": "The exact graph quantities and an explicit WeightedPerfectGraphFoundation proposition are encoded. The Chvatal theorem is not proved or declared as an axiom; every downstream use must receive a proof parameter backed by an accepted external AgtXIv foundation contract.",
+  "artifact_hashes": {
+    "formal/AgtXIvVarela/AgtXIvVarela.lean": "sha256:05724966d2acc1f6a8cfb9f3609fa7e9ce54b15a147b6d9d65d98d0911e9c433",
+    "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean": "sha256:3268f79629d4f08a2f8584be64c2a1cfdf2040685571c37b17b0ecda62b984e8",
+    "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean": "sha256:400897508d5c2816185f18a90980a3e0009cf05a3e394a8ef450541984b0eaca",
+    "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean": "sha256:8b421813476f88c412873b1478966b6de14ffe60a10b72730ee0b2a43f381ddf",
+    "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean": "sha256:9cfcf580303831782d07dcb791ea1071f5964631f7ec04793372c66c0ddfaf6f",
+    "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean": "sha256:6d64c5b933f67621cf0cc5803923d382beb26d39c6ec2cba5c1c9771f331936a",
+    "formal/AgtXIvVarela/Audit.lean": "sha256:f599aba879c9faefcfe7ec16dbd12a427482686f4ce59c02935e441458b6f1df",
+    "formal/AgtXIvVarela/README.md": "sha256:791397af25318841518dd3d327abf2a18c5c4fbbc08cc115c91752e51d16c4a2",
+    "formal/AgtXIvVarela/lakefile.toml": "sha256:e93c0aa9b44f54e33ad69153e3db1d3b880d1d6c8ea5a7850d70a44ce51bf60d",
+    "formal/AgtXIvVarela/lake-manifest.json": "sha256:13b6afe58265e0f6626c5ba69b6cd3cf3982aaaa3e747b6d23701c261ae838c7",
+    "formal/AgtXIvVarela/lean-toolchain": "sha256:ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61",
+    "tools/validate_varela_formalization.py": "sha256:85be0aad99c6d47b8b3c0a58f75fb46a47ed89ec9fa36af1167789502ab309f7"
+  },
+  "non_inheritance_guard": "The aggregate normalized V-representation is not yet KERNEL_CHECKED. The kernel has checked only the concrete projection layer and the conditional implication, not the two repaired-proof obligations or source-proof correctness.",
+  "scientific_acceptance_effect": "NONE; contract:2602.18939v1:reduced-polytope-vrep remains accepted=false"
+}

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgtXIv Interface DAG</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true"><span>A</span><i></i><i></i><i></i></div>
+      <div>
+        <p class="eyebrow">AGTXIV | INTERFACE DAG</p>
+        <h1>Closed-Form Chain</h1>
+        <p class="subtitle">A verification-aware view of reusable scientific interfaces.</p>
+      </div>
+    </div>
+    <div class="release-pill"><i></i><span><strong>PARTIALLY_VERIFIED</strong>Not an accepted release</span></div>
+  </header>
+
+  <main>
+    <section class="graph-shell">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">SELECT AN INTERFACE PROFILE</p>
+          <h2 id="profileTitle">Mathematics</h2>
+          <p id="profileDescription">All registered mathematical interfaces and dependencies. The selected target highlights one backward query closure.</p>
+        </div>
+        <nav id="profileTabs" class="profile-tabs" aria-label="Interface profiles">
+          <button type="button" data-profile="mathematics" aria-selected="true">Mathematics</button>
+          <button type="button" data-profile="computation" aria-selected="false">Computation</button>
+          <button type="button" data-profile="physical" aria-selected="false">Physical Semantics</button>
+          <button type="button" data-profile="empirical" aria-selected="false">Empirical Evidence</button>
+        </nav>
+      </div>
+
+      <div id="queryBar" class="query-bar">
+        <label>
+          <span>Target Agent</span>
+          <select id="targetAgentSelect" aria-label="Target Agent"></select>
+        </label>
+        <label class="interface-select">
+          <span>Query Interface</span>
+          <select id="queryInterfaceSelect" aria-label="Query Interface"></select>
+        </label>
+        <p id="querySummary"></p>
+      </div>
+
+      <div class="relationship-key" aria-label="Relationship semantics">
+        <strong>Directed arrow: prerequisite -&gt; dependent conclusion</strong>
+        <span><i class="edge-key-solid"></i>Claim or theorem premise</span>
+        <span><i class="edge-key-dashed"></i>Definition prerequisite</span>
+        <span><i class="edge-key-scope"></i>Scope assumption</span>
+        <span><b>A01</b>Agent membership code; never a directed dependency</span>
+      </div>
+
+      <div class="graph-toolbar">
+        <div class="legend" aria-label="Verification legend">
+          <span><i class="agent-root"></i>Root Agent</span>
+          <span><i class="agent-target"></i>Target Agent</span>
+          <span><i class="status existing"></i>Existing Lean</span>
+          <span><i class="status planned"></i>Planned Delta</span>
+          <span><i class="status gap"></i>Gap</span>
+          <span><i class="status external"></i>External</span>
+          <span><i class="query-route"></i>Highlighted Query Route</span>
+        </div>
+        <span id="profileMeta" class="profile-meta"></span>
+      </div>
+
+      <div id="graphStage" class="graph-stage">
+        <svg id="dag" role="img" aria-label="Mathematics interface DAG"></svg>
+        <div id="emptyState" class="empty-state" hidden>
+          <span>0</span>
+          <h3>No registered interface graph</h3>
+          <p>This profile has no verified or explicitly mapped relationships in the selected closed-form slice.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
+
+  <footer>
+    <span>Layout: <a href="https://github.com/erikbrinkman/d3-dag" rel="noreferrer">d3-dag 1.2.2</a></span>
+    <span>Hover over any node to inspect its registered content.</span>
+    <span>No Registry view promotes verification or acceptance status.</span>
+  </footer>
+
+  <script src="vendor/d3-dag-1.2.2.iife.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

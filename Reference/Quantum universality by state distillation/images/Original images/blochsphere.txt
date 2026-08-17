@@ -1,0 +1,69 @@
+\documentclass[10pt]{article}
+\usepackage{color} %used for font color
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage[utf8]{inputenc} %useful to type directly accentuated characters
+
+\usepackage{graphicx}
+\include{qcircuit}
+\newcommand{\targup}{*{\xy{<0em,0em>*{} \ar @{ - } +<.4em,0em> \ar @{ - } -<.4em,0em> \ar @{ - } +<0em,.4em> \ar @{ - } -<0em,.3em>},*+<.8em>\frm{o}\endxy} \qw}
+\renewcommand{\targ}{\targup}
+
+\def\ket #1{\vert #1\rangle}
+\def\bra #1{\langle #1\vert}
+\def\ketbra #1#2{\ket{#1}\!\bra{#2}}
+\def\sub #1{\!_#1\!}
+\def\abs #1{\lvert #1\rvert}
+\def\norm #1{\lVert #1\rVert}
+\DeclareMathOperator{\tr}{Tr}%{\operatorname{Tr}}
+
+\newcommand{\binomial}[2]{\ensuremath{\left(\begin{smallmatrix}#1 \\ #2 \end{smallmatrix}\right)}}
+
+\newcommand\pr{{\bf {P}}}
+\def\place #1#2#3{\mspace{#2}\makebox[0pt]{\raisebox{#3}{#1}}\mspace{-#2}}
+
+\usepackage{pst-all,pst-3dplot}
+
+
+\begin{pspicture}(-2,-1)(2,1)
+\psset{Alpha=50,Beta=20}
+\psset{unit=2.5cm} % default unit=1cm
+\psset{linewidth=.56pt} % default linewidth=.8pt
+%\psgrid
+%xMin=-1.1,xMax=1.5,yMin=-1,yMax=1,zMin=-1,zMax=1,
+%\pstThreeDCoor[IIIDticks,Dx=1,Dy=1,Dz=1,linecolor=black,xMin=-1.1,yMin=-1.1,zMin=-1.1]
+\pstThreeDCoor[linestyle=dashed,linecolor=black,linewidth=.28pt,xMin=-1.1,xMax=1.3,yMin=-1.1,yMax=1.3,zMin=-1.1,zMax=1.3]
+\pstThreeDLine(1,0,0)(0,1,0)(0,0,1)(1,0,0)
+\pstThreeDLine(0,0,1)(0,-1,0)(1,0,0)(0,0,-1)(0,1,0)(-1,0,0)(0,0,1)
+\pstThreeDLine[linewidth=.28pt](0,0,-1)(-1,0,0)(0,-1,0)(0,0,-1)
+%% this is the horizontal circle, going from -Alpha to 180-Alpha in front
+\pstThreeDCircle[linewidth=.28pt,beginAngle=-50,endAngle=130](0,0,0)(1,0,0)(0,1,0)
+\pstThreeDCircle[linewidth=.56pt,linestyle=dotted,beginAngle=130,endAngle=310](0,0,0)(1,0,0)(0,1,0)
+%% here are the two vertically oriented circles, from -90+Beta to 90+Beta
+%$ this isn't quite right (it should depend on Alpha), but I have fudged it
+\pstThreeDCircle[linewidth=.28pt,beginAngle=-70,endAngle=110](0,0,0)(1,0,0)(0,0,1)
+\pstThreeDCircle[linewidth=.56pt,linestyle=dotted,beginAngle=110,endAngle=290](0,0,0)(1,0,0)(0,0,1)
+\pstThreeDCircle[linewidth=.28pt,beginAngle=-65,endAngle=115](0,0,0)(0,1,0)(0,0,1)
+\pstThreeDCircle[linewidth=.56pt,linestyle=dotted,beginAngle=115,endAngle=295](0,0,0)(0,1,0)(0,0,1)
+%\pstThreeDCircle[linewidth=.28pt](0,0,0)(.707,-.707,0)(0,0,1)
+%% this is the circle that goes along the silhouette
+\pscircle[linewidth=.28pt](0,0){1}
+%\pstThreeDCircle[linewidth=.28pt](0,0,0)(.707,-.707,0)(-.354,-.354,.866)
+\pstThreeDDot[drawCoor=false](0,0,1)
+\pstThreeDNode(0,0,1){Z0}
+\rput([nodesep=.2,angle=45]Z0){$\ket 0$}
+\pstThreeDNode(0,0,-1){Z1}
+\rput([nodesep=.2,angle=-45]Z1){$\ket 1$}
+\pstThreeDNode(1,0,0){X0}
+\rput([nodesep=.25,angle=160]X0){$\frac{\ket 0 + \ket 1}{\sqrt 2}$}
+\pstThreeDNode(-1,0,0){X1}
+\rput([nodesep=.25,angle=0]X1){$\frac{\ket 0 - \ket 1}{\sqrt 2}$}
+\pstThreeDNode(0,1,0){Y0}
+\rput([nodesep=.25,angle=20]Y0){$\frac{\ket 0 + i \ket 1}{\sqrt 2}$}
+\pstThreeDNode(0,-1,0){Y1}
+\rput([nodesep=.3,angle=170]Y1){$\frac{\ket 0 - i \ket 1}{\sqrt 2}$}
+%\pstThreeDPut[origin=lb](0,0,1){$\ket 1$}
+\pstThreeDNode(.707,0,.707){H}
+\rput([nodesep=.15,angle=150]H){$\ket H$}
+\psdots(H)(Z0)(Z1)(X0)(X1)(Y0)(Y1)
+\end{pspicture}

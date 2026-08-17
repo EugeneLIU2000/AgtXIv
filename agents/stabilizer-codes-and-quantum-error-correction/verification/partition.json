@@ -1,0 +1,134 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "verification-partition:9705052v1:root",
+  "agent": "agent:stabilizer-codes-and-quantum-error-correction",
+  "route_catalog": ["SOURCE_ALIGNMENT", "LEAN_KERNEL", "EXACT_PHYSICAL_SEMANTICS", "PHYSICAL_APPROXIMATION", "EMPIRICAL"],
+  "objects": [
+    {
+      "object_id": "assumption:9705052v1:rank-n-phase-normalized-stabilizer",
+      "object_kind": "ASSUMPTION",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "MODERN_PHASE_NORMALIZED_SPECIALIZATION", "evidence": ["anchor:9705052v1:pauli-group", "anchor:9705052v1:general-stabilizer-code"]},
+        {"route": "LEAN_KERNEL", "status": "LEAN_ENCODED_AS_EXACT_TYPED_PREMISE", "scope_relation": "INDEPENDENCE_COMMUTATION_INVOLUTION_AND_MINUS_ONE_EXCLUSION_ARE_PREMISES; CARDINALITY_TRACE_AND_DIMENSION_ARE_DERIVED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:9705052v1:specialization-review"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "This is an exact ideal Pauli-group assumption; no noise, sampling, or truncation is introduced."},
+        {"route": "EMPIRICAL", "reason": "No data-dependent claim is made."}
+      ]
+    },
+    {
+      "object_id": "assumption:9705052v1:finite-group-representation-core",
+      "object_kind": "ASSUMPTION",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "scope_relation": "ABSTRACT_ALGEBRAIC_CORE_WITH_PAULI_SEMANTICS_REMOVED", "evidence": ["anchor:9705052v1:encoding-group-sum-fixedness", "agents/stabilizer-codes-and-quantum-error-correction/formal/group-average-fixed-space.json"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:group-average-fixed-space"], "declarations": ["AgtXIv.Gottesman.groupAverage_mem_commonFixed"], "evidence": ["verification:9705052v1:lean-group-average", "formal/AgtXIvRootMath/verification-result.json"]}
+      ],
+      "not_applicable": [
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "reason": "This assumption intentionally removes Pauli and state semantics and is used only inside the abstract algebraic sub-contract."},
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Abstraction is not approximation; no physical error model is present."},
+        {"route": "EMPIRICAL", "reason": "No data-dependent claim is made."}
+      ]
+    },
+    {
+      "object_id": "statement:9705052v1:stabilizer-code-fixed-space",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:9705052v1:general-stabilizer-code"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "declarations": ["AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_generalRankCommonFixed", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension", "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_trace", "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_range_finrank"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:9705052v1:specialization-review"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The fixed-space and dimension statement is exact in the ideal finite-qubit model."},
+        {"route": "EMPIRICAL", "reason": "No experiment or numerical sample is involved."}
+      ]
+    },
+    {
+      "object_id": "statement:9705052v1:n-generator-unique-eigenvector",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:9705052v1:n-generator-unique-state"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "declarations": ["AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:9705052v1:specialization-review"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Uniqueness is an exact eigenspace and normalized-ray claim."},
+        {"route": "EMPIRICAL", "reason": "No data-dependent claim is made."}
+      ]
+    },
+    {
+      "object_id": "statement:9705052v1:group-sum-fixedness",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:9705052v1:encoding-group-sum-fixedness"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "declarations": ["AgtXIv.Stabilizer.toLin_stabilizerCodeProjectorMatrix", "AgtXIv.Gottesman.groupAverage_mem_commonFixed"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["anchor:9705052v1:encoding-group-sum-fixedness"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The stabilizer-group sum is an exact operator identity, not a measurement approximation or a twirling channel."},
+        {"route": "EMPIRICAL", "reason": "No data-dependent claim is made."}
+      ]
+    },
+    {
+      "object_id": "statement:9705052v1:group-average-projector",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "scope_relation": "FORMAL_RECONSTRUCTION_GENERALIZES_SOURCE_STEP", "evidence": ["anchor:9705052v1:encoding-group-sum-fixedness", "agents/stabilizer-codes-and-quantum-error-correction/formal/group-average-fixed-space.json"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "declarations": ["AgtXIv.Gottesman.groupAverage_idempotent", "AgtXIv.Gottesman.range_groupAverageMap", "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_isHermitian", "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_idempotent", "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:9705052v1:specialization-review"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The physical projector reconstruction is exact in the ideal finite-qubit model."},
+        {"route": "EMPIRICAL", "reason": "No data-dependent claim is made."}
+      ]
+    },
+    {
+      "object_id": "statement:9705052v1:pure-stabilizer-state",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "K_ZERO_SPECIALIZATION_AND_MODERN_PURE_STATE_TERMINOLOGY", "evidence": ["anchor:9705052v1:general-stabilizer-code", "anchor:9705052v1:n-generator-unique-state"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "declarations": ["AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian", "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef", "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one", "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:9705052v1:specialization-review"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The pure-state conclusion belongs to exact ideal stabilizer theory."},
+        {"route": "EMPIRICAL", "reason": "No data-dependent claim is made."}
+      ]
+    },
+    {
+      "object_id": "step:9705052v1:000",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "scope_relation": "FORMAL_RECONSTRUCTION_GENERALIZES_SOURCE_STEP", "evidence": ["anchor:9705052v1:encoding-group-sum-fixedness"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:group-average-fixed-space"], "declarations": ["AgtXIv.Gottesman.groupAverage_mem_commonFixed", "AgtXIv.Gottesman.groupAverage_eq_self_iff", "AgtXIv.Gottesman.groupAverage_idempotent", "AgtXIv.Gottesman.range_groupAverageMap", "AgtXIv.Gottesman.groupAverage_isProjection"], "evidence": ["verification:9705052v1:lean-group-average", "formal/AgtXIvRootMath/verification-result.json"]}
+      ],
+      "not_applicable": [
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "reason": "This step proves only an abstract algebraic projection; the physical projector is partitioned separately."},
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "No approximation map or error parameter occurs."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "step:9705052v1:001",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "SOURCE_SPECIALIZATION_PLUS_MODERN_PROJECTOR_TERMINOLOGY", "evidence": ["verification:9705052v1:specialization-review"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:9705052v1:qubit-stabilizer-code-kernel"], "declarations": ["AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase", "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity"], "evidence": ["verification:9705052v1:lean-qubit-stabilizer-code-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:9705052v1:specialization-review"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The bridge is exact mathematics and semantics, not an approximation."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    }
+  ]
+}

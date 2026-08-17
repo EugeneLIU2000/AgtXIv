@@ -1,0 +1,67 @@
+{
+  "schema_version": "0.1.0-overlay",
+  "overlay_id": "agtxiv-overlay:stabilizerness:2026-08-16",
+  "overlay_kind": "non_destructive_compatibility_index",
+  "target_paper": {
+    "id": "arxiv:2607.26154v1",
+    "source": "Stabilizerness/arXiv-2607.26154v1/draft.tex"
+  },
+  "canonical_dependency_dag": "Stabilizerness/dag/claim-dag.json",
+  "canonical_dag_index": "Stabilizerness/agtxiv/dag/claim-dag-index.json",
+  "root_agents": [
+    {
+      "id": "agent:stabilizer-codes-and-quantum-error-correction",
+      "manifest": "agents/stabilizer-codes-and-quantum-error-correction/agent.json"
+    },
+    {
+      "id": "agent:resource-theory-of-stabilizer-computation",
+      "manifest": "agents/resource-theory-of-stabilizer-computation/agent.json"
+    },
+    {
+      "id": "agent:robustness-of-magic",
+      "manifest": "agents/robustness-of-magic/agent.json"
+    }
+  ],
+  "technical_and_target_agents": [
+    {
+      "id": "agent:predicting-magic-from-very-few-measurements",
+      "manifest": "agents/predicting-magic-from-very-few-measurements/agent.json"
+    },
+    {
+      "id": "agent:graph-theoretic-nonstabilizerness",
+      "manifest": "agents/graph-theoretic-nonstabilizerness/agent.json"
+    }
+  ],
+  "lean_projects": [
+    {
+      "path": "formal/AgtXIvRootMath",
+      "role": "ROOT_PROOF_BASE",
+      "verification_record": "formal/AgtXIvRootMath/verification-result.json"
+    },
+    {
+      "path": "formal/AgtXIvVarela",
+      "role": "INTERMEDIATE_LOCAL_DELTA",
+      "verification_record": "formal/AgtXIvVarela/verification-result.json"
+    }
+  ],
+  "target_delta_contract": "agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json",
+  "overlay_files": [
+    "Stabilizerness/agtxiv/README.md",
+    "Stabilizerness/agtxiv/agents/node-agent-index.json",
+    "Stabilizerness/agtxiv/archive/index.json",
+    "Stabilizerness/agtxiv/dag/claim-dag-index.json",
+    "Stabilizerness/agtxiv/lean/declaration-index.json",
+    "Stabilizerness/agtxiv/manifest.json"
+  ],
+  "historical_artifact_indexes": [
+    "Stabilizerness/AGTXIV_IMPLEMENTATION.md",
+    "Stabilizerness/DAG_AND_ROOTS.md",
+    "graph/claim-dependencies.json",
+    "graph/paper-dependencies.json",
+    "roots.json",
+    "pilot-scope.json",
+    "coverage.json",
+    "release-manifest.json"
+  ],
+  "acceptance_policy": "The overlay does not promote candidates, alter verification status, or imply accepted=true."
+}

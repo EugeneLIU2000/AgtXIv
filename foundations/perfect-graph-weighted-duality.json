@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "foundation:perfect-graph-weighted-duality",
+  "statement_id": "statement:foundation:perfect-graph-weighted-duality",
+  "kind": "external_foundation",
+  "statement": "For a finite simple perfect graph G and every nonnegative node-weight vector w, the maximum-weight stable-set value equals the weighted fractional clique-cover optimum.",
+  "assumptions": [
+    "G is finite and simple",
+    "G is perfect, meaning every induced subgraph H satisfies chi(H) = omega(H)",
+    "w is a nonnegative real vector indexed by V(G)"
+  ],
+  "target_source_report": {
+    "artifact": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+    "lines": [639, 684],
+    "labels": [
+      "eq:fractional-clique-cover",
+      "lem:perfect-collapse"
+    ]
+  },
+  "reported_primary_source": "V. Chvatal, On certain polytopes associated with graphs (1975)",
+  "source_fidelity": "UNCHECKED",
+  "acceptance_basis": "DECLARED_BACKGROUND",
+  "statement_alignment": "PENDING",
+  "formalization_mode": "EXPLICIT_THEOREM_PARAMETER",
+  "lean_interface": {
+    "project": "formal/AgtXIvVarela",
+    "module": "AgtXIvVarela.ExternalPerfectGraphFoundation",
+    "foundation_proposition": "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation",
+    "conditional_use_theorem": "AgtXIv.GraphFoundation.weighted_duality_of_foundation",
+    "status": "FORMALIZED_AS_EXPLICIT_PREMISE",
+    "verification_record": "verification:foundation:perfect-graph-weighted-duality-lean-interface",
+    "verification_evidence": "formal/AgtXIvVarela/verification-result.json"
+  },
+  "downstream_kernel_status": "KERNEL_CHECKED_CONDITIONAL_ON_EXTERNAL_FOUNDATION",
+  "kernel_proves": "Only consequences derived after receiving this weighted-duality statement as an explicit hypothesis.",
+  "kernel_does_not_prove": [
+    "the Chvatal weighted perfect-graph theorem itself",
+    "that an arbitrary graph is perfect",
+    "that finite-instance graph checks establish the universal theorem"
+  ],
+  "dependency_closure": "BLOCKED_ON_PRIMARY_SOURCE_ALIGNMENT",
+  "acceptance_effect": "NONE",
+  "unexpanded_scope": "The target paper locally derives its clean antiblocker identity from this weighted duality plus downward closure. The prototype does not import that cleaner target-local statement as though a cited primary source had stated it verbatim."
+}

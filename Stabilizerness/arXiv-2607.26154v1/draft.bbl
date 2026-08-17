@@ -1,0 +1,495 @@
+%apsrev4-2.bst 2019-01-14 (MD) hand-edited version of apsrev4-1.bst
+%Control: key (0)
+%Control: author (8) initials jnrlst
+%Control: editor formatted (1) identically to author
+%Control: production of article title (1) required
+%Control: page (1) range
+%Control: year (1) truncated
+%Control: production of eprint (0) enabled
+\begin{thebibliography}{39}%
+\makeatletter
+\providecommand \@ifxundefined [1]{%
+ \@ifx{#1\undefined}
+}%
+\providecommand \@ifnum [1]{%
+ \ifnum #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \@ifx [1]{%
+ \ifx #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \natexlab [1]{#1}%
+\providecommand \enquote  [1]{``#1''}%
+\providecommand \bibnamefont  [1]{#1}%
+\providecommand \bibfnamefont [1]{#1}%
+\providecommand \citenamefont [1]{#1}%
+\providecommand \href@noop [0]{\@secondoftwo}%
+\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+\providecommand \@@startlink[1]{}%
+\providecommand \@@endlink[0]{}%
+\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+\providecommand \urlprefix  [0]{URL }%
+\providecommand \Eprint [0]{\href }%
+\providecommand \doibase [0]{https://doi.org/}%
+\providecommand \selectlanguage [0]{\@gobble}%
+\providecommand \bibinfo  [0]{\@secondoftwo}%
+\providecommand \bibfield  [0]{\@secondoftwo}%
+\providecommand \translation [1]{[#1]}%
+\providecommand \BibitemOpen [0]{}%
+\providecommand \bibitemStop [0]{}%
+\providecommand \bibitemNoStop [0]{.\EOS\space}%
+\providecommand \EOS [0]{\spacefactor3000\relax}%
+\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+\let\auto@bib@innerbib\@empty
+%</preamble>
+\bibitem [{\citenamefont {Nielsen}\ and\ \citenamefont
+  {Chuang}(2010)}]{nielsen2010quantum}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~A.}\ \bibnamefont
+  {Nielsen}}\ and\ \bibinfo {author} {\bibfnamefont {I.~L.}\ \bibnamefont
+  {Chuang}},\ }\href {https://doi.org/10.1017/CBO9780511976667} {\emph
+  {\bibinfo {title} {Quantum Computation and Quantum Information: 10th
+  Anniversary Edition}}}\ (\bibinfo  {publisher} {Cambridge University Press},\
+  \bibinfo {year} {2010})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont
+  {Gottesman}(1997)}]{gottesman1997stabilizercodesquantumerror}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Gottesman}},\ }\emph {\bibinfo {title} {Stabilizer Codes and Quantum Error
+  Correction}},\ \href {https://doi.org/10.7907/rzr7-dt72} {Ph.D. thesis},\
+  \bibinfo  {school} {California Institute of Technology} (\bibinfo {year}
+  {1997})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Shor}(1996)}]{shor1996faulttolerant}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+  {Shor}},\ }\bibfield  {title} {\bibinfo {title} {Fault-tolerant quantum
+  computation},\ }in\ \href {https://doi.org/10.1109/SFCS.1996.548464} {\emph
+  {\bibinfo {booktitle} {Proceedings of the 37th Annual Symposium on
+  Foundations of Computer Science}}}\ (\bibinfo  {publisher} {IEEE},\ \bibinfo
+  {year} {1996})\ pp.\ \bibinfo {pages} {56--65}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gottesman}\ and\ \citenamefont
+  {Chuang}(1999)}]{gottesman1999demonstrating}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Gottesman}}\ and\ \bibinfo {author} {\bibfnamefont {I.~L.}\ \bibnamefont
+  {Chuang}},\ }\bibfield  {title} {\bibinfo {title} {Demonstrating the
+  viability of universal quantum computation using teleportation and
+  single-qubit operations},\ }\href {https://doi.org/10.1038/46503} {\bibfield
+  {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo {volume} {402}},\
+  \bibinfo {pages} {390--393} (\bibinfo {year} {1999})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bravyi}\ and\ \citenamefont
+  {Kitaev}(2005)}]{bravyi2005universal}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Bravyi}}\ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Kitaev}},\ }\bibfield  {title} {\bibinfo {title} {Universal quantum
+  computation with ideal {Clifford} gates and noisy ancillas},\ }\href
+  {https://doi.org/10.1103/PhysRevA.71.022316} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {71}},\ \bibinfo
+  {pages} {022316} (\bibinfo {year} {2005})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Wills}\ \emph {et~al.}(2025)\citenamefont {Wills},
+  \citenamefont {Hsieh},\ and\ \citenamefont
+  {Yamasaki}}]{wills2025constantoverhead}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Wills}}, \bibinfo {author} {\bibfnamefont {M.-H.}\ \bibnamefont {Hsieh}},\
+  and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Yamasaki}},\
+  }\bibfield  {title} {\bibinfo {title} {Constant-overhead magic state
+  distillation},\ }\href {https://doi.org/10.1038/s41567-025-03026-0}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf
+  {\bibinfo {volume} {21}},\ \bibinfo {pages} {1842--1846} (\bibinfo {year}
+  {2025})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Wang}\ \emph {et~al.}(2019)\citenamefont {Wang},
+  \citenamefont {Wilde},\ and\ \citenamefont
+  {Su}}]{wang2019quantifyingmagicchannels}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {X.}~\bibnamefont
+  {Wang}}, \bibinfo {author} {\bibfnamefont {M.~M.}\ \bibnamefont {Wilde}},\
+  and\ \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Su}},\ }\bibfield
+  {title} {\bibinfo {title} {Quantifying the magic of quantum channels},\
+  }\href {https://doi.org/10.1088/1367-2630/ab451d} {\bibfield  {journal}
+  {\bibinfo  {journal} {New Journal of Physics}\ }\textbf {\bibinfo {volume}
+  {21}},\ \bibinfo {pages} {103002} (\bibinfo {year} {2019})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Wang}\ \emph {et~al.}(2020)\citenamefont {Wang},
+  \citenamefont {Wilde},\ and\ \citenamefont {Su}}]{wang2020efficientbounds}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {X.}~\bibnamefont
+  {Wang}}, \bibinfo {author} {\bibfnamefont {M.~M.}\ \bibnamefont {Wilde}},\
+  and\ \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Su}},\ }\bibfield
+  {title} {\bibinfo {title} {Efficiently computable bounds for magic state
+  distillation},\ }\href {https://doi.org/10.1103/PhysRevLett.124.090505}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
+  }\textbf {\bibinfo {volume} {124}},\ \bibinfo {pages} {090505} (\bibinfo
+  {year} {2020})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Veitch}\ \emph {et~al.}(2012)\citenamefont {Veitch},
+  \citenamefont {Ferrie}, \citenamefont {Gross},\ and\ \citenamefont
+  {Emerson}}]{veitch2012negative}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.}~\bibnamefont
+  {Veitch}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Ferrie}},
+  \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Gross}},\ and\ \bibinfo
+  {author} {\bibfnamefont {J.}~\bibnamefont {Emerson}},\ }\bibfield  {title}
+  {\bibinfo {title} {Negative quasi-probability as a resource for quantum
+  computation},\ }\href {https://doi.org/10.1088/1367-2630/14/11/113011}
+  {\bibfield  {journal} {\bibinfo  {journal} {New Journal of Physics}\ }\textbf
+  {\bibinfo {volume} {14}},\ \bibinfo {pages} {113011} (\bibinfo {year}
+  {2012})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Howard}\ and\ \citenamefont
+  {Campbell}(2017)}]{howard2017application}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Howard}}\ and\ \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Campbell}},\ }\bibfield  {title} {\bibinfo {title} {Application of a
+  resource theory for magic states to fault-tolerant quantum computing},\
+  }\href {https://doi.org/10.1103/PhysRevLett.118.090501} {\bibfield  {journal}
+  {\bibinfo  {journal} {Physical Review Letters}\ }\textbf {\bibinfo {volume}
+  {118}},\ \bibinfo {pages} {090501} (\bibinfo {year} {2017})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Leone}\ \emph {et~al.}(2022)\citenamefont {Leone},
+  \citenamefont {Oliviero},\ and\ \citenamefont {Hamma}}]{leone2022stabilizer}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Leone}}, \bibinfo {author} {\bibfnamefont {S.~F.~E.}\ \bibnamefont
+  {Oliviero}},\ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Hamma}},\ }\bibfield  {title} {\bibinfo {title} {Stabilizer {R}\'enyi
+  entropy},\ }\href {https://doi.org/10.1103/PhysRevLett.128.050402} {\bibfield
+   {journal} {\bibinfo  {journal} {Physical Review Letters}\ }\textbf {\bibinfo
+  {volume} {128}},\ \bibinfo {pages} {050402} (\bibinfo {year}
+  {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Leone}\ and\ \citenamefont
+  {Bittel}(2024)}]{leone2024stabilizer}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Leone}}\ and\ \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Bittel}},\
+  }\bibfield  {title} {\bibinfo {title} {Stabilizer entropies are monotones for
+  magic-state resource theory},\ }\href
+  {https://doi.org/10.1103/PhysRevA.110.L040403} {\bibfield  {journal}
+  {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume}
+  {110}},\ \bibinfo {pages} {L040403} (\bibinfo {year} {2024})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Haug}\ and\ \citenamefont
+  {Piroli}(2023)}]{haug2023stabilizer}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+  {Haug}}\ and\ \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Piroli}},\
+  }\bibfield  {title} {\bibinfo {title} {Stabilizer entropies and
+  nonstabilizerness monotones},\ }\href
+  {https://doi.org/10.22331/q-2023-08-28-1092} {\bibfield  {journal} {\bibinfo
+  {journal} {Quantum}\ }\textbf {\bibinfo {volume} {7}},\ \bibinfo {pages}
+  {1092} (\bibinfo {year} {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Veitch}\ \emph {et~al.}(2014)\citenamefont {Veitch},
+  \citenamefont {Mousavian}, \citenamefont {Gottesman},\ and\ \citenamefont
+  {Emerson}}]{Veitch2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.}~\bibnamefont
+  {Veitch}}, \bibinfo {author} {\bibfnamefont {S.~A.~H.}\ \bibnamefont
+  {Mousavian}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Gottesman}},\ and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Emerson}},\ }\bibfield  {title} {\bibinfo {title} {The resource theory of
+  stabilizer quantum computation},\ }\href
+  {https://doi.org/10.1088/1367-2630/16/1/013009} {\bibfield  {journal}
+  {\bibinfo  {journal} {New Journal of Physics}\ }\textbf {\bibinfo {volume}
+  {16}},\ \bibinfo {pages} {013009} (\bibinfo {year} {2014})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Garc{\'i}a}\ \emph {et~al.}(2014)\citenamefont
+  {Garc{\'i}a}, \citenamefont {Markov},\ and\ \citenamefont
+  {Cross}}]{garcia2017geometry}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.~J.}\ \bibnamefont
+  {Garc{\'i}a}}, \bibinfo {author} {\bibfnamefont {I.~L.}\ \bibnamefont
+  {Markov}},\ and\ \bibinfo {author} {\bibfnamefont {A.~W.}\ \bibnamefont
+  {Cross}},\ }\bibfield  {title} {\bibinfo {title} {On the geometry of
+  stabilizer states},\ }\href {https://doi.org/10.26421/QIC14.7-8-9} {\bibfield
+   {journal} {\bibinfo  {journal} {Quantum Information and Computation}\
+  }\textbf {\bibinfo {volume} {14}},\ \bibinfo {pages} {683--720} (\bibinfo
+  {year} {2014})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Heinrich}\ and\ \citenamefont
+  {Gross}(2019)}]{heinrich2019robustness}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Heinrich}}\ and\ \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Gross}},\ }\bibfield  {title} {\bibinfo {title} {Robustness of magic and
+  symmetries of the stabiliser polytope},\ }\href
+  {https://doi.org/10.22331/q-2019-04-08-132} {\bibfield  {journal} {\bibinfo
+  {journal} {Quantum}\ }\textbf {\bibinfo {volume} {3}},\ \bibinfo {pages}
+  {132} (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hamaguchi}\ \emph {et~al.}(2024)\citenamefont
+  {Hamaguchi}, \citenamefont {Hamada},\ and\ \citenamefont
+  {Yoshioka}}]{hamaguchi2024handbook}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Hamaguchi}}, \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Hamada}},\
+  and\ \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont {Yoshioka}},\
+  }\bibfield  {title} {\bibinfo {title} {Handbook for quantifying robustness of
+  magic},\ }\href {https://doi.org/10.22331/q-2024-09-05-1461} {\bibfield
+  {journal} {\bibinfo  {journal} {Quantum}\ }\textbf {\bibinfo {volume} {8}},\
+  \bibinfo {pages} {1461} (\bibinfo {year} {2024})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Junior}\ \emph {et~al.}(2026)\citenamefont {Junior},
+  \citenamefont {Zamora}, \citenamefont {Mac{\^e}do}, \citenamefont {Sarubi},
+  \citenamefont {Varela}, \citenamefont {Rocha}, \citenamefont {Moreira},\ and\
+  \citenamefont {Chaves}}]{oliveirajunior2025geometric}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~B.~P.}\
+  \bibnamefont {Junior}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Zamora}}, \bibinfo {author} {\bibfnamefont {R.~A.}\ \bibnamefont
+  {Mac{\^e}do}}, \bibinfo {author} {\bibfnamefont {T.~S.}\ \bibnamefont
+  {Sarubi}}, \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Varela}},
+  \bibinfo {author} {\bibfnamefont {G.~W.~C.}\ \bibnamefont {Rocha}}, \bibinfo
+  {author} {\bibfnamefont {D.~A.}\ \bibnamefont {Moreira}},\ and\ \bibinfo
+  {author} {\bibfnamefont {R.}~\bibnamefont {Chaves}},\ }\bibfield  {title}
+  {\bibinfo {title} {A trace distance-based geometric analysis of the
+  stabilizer polytope for few-qubit systems},\ }\href
+  {https://doi.org/10.1016/j.physleta.2026.131417} {\bibfield  {journal}
+  {\bibinfo  {journal} {Physics Letters A}\ }\textbf {\bibinfo {volume}
+  {576}},\ \bibinfo {pages} {131417} (\bibinfo {year} {2026})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Leone}\ \emph {et~al.}(2026)\citenamefont {Leone},
+  \citenamefont {Eisert},\ and\ \citenamefont
+  {Oliviero}}]{leone2026unbearablehardnessdecidingmagic}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Leone}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Eisert}},\ and\
+  \bibinfo {author} {\bibfnamefont {S.~F.~E.}\ \bibnamefont {Oliviero}},\
+  }\bibfield  {title} {\bibinfo {title} {The unbearable hardness of deciding
+  about magic},\ }\href {https://arxiv.org/abs/2602.22330} {\bibfield
+  {journal} {\bibinfo  {journal} {arXiv:2602.22330}\ } (\bibinfo {year}
+  {2026})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Varela}\ \emph {et~al.}(2026)\citenamefont {Varela},
+  \citenamefont {Keller}, \citenamefont {de~Oliveira~Junior}, \citenamefont
+  {Moreira}, \citenamefont {Chaves},\ and\ \citenamefont
+  {Mac{\^e}do}}]{varela2026predictingmagicmeasurements}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Varela}}, \bibinfo {author} {\bibfnamefont {L.~L.}\ \bibnamefont {Keller}},
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {de~Oliveira~Junior}},
+  \bibinfo {author} {\bibfnamefont {D.~A.}\ \bibnamefont {Moreira}}, \bibinfo
+  {author} {\bibfnamefont {R.}~\bibnamefont {Chaves}},\ and\ \bibinfo {author}
+  {\bibfnamefont {R.~A.}\ \bibnamefont {Mac{\^e}do}},\ }\bibfield  {title}
+  {\bibinfo {title} {Predicting magic from very few measurements},\ }\href
+  {https://arxiv.org/abs/2602.18939} {\bibfield  {journal} {\bibinfo  {journal}
+  {arXiv:2602.18939}\ } (\bibinfo {year} {2026})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Chapman}\ and\ \citenamefont
+  {Flammia}(2020)}]{chapman2020characterization}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Chapman}}\ and\ \bibinfo {author} {\bibfnamefont {S.~T.}\ \bibnamefont
+  {Flammia}},\ }\bibfield  {title} {\bibinfo {title} {Characterization of
+  solvable spin models via graph invariants},\ }\href
+  {https://doi.org/10.22331/q-2020-06-04-278} {\bibfield  {journal} {\bibinfo
+  {journal} {Quantum}\ }\textbf {\bibinfo {volume} {4}},\ \bibinfo {pages}
+  {278} (\bibinfo {year} {2020})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Cabello}\ \emph {et~al.}(2014)\citenamefont
+  {Cabello}, \citenamefont {Severini},\ and\ \citenamefont
+  {Winter}}]{cabello2014graph}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Cabello}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Severini}},\
+  and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Winter}},\
+  }\bibfield  {title} {\bibinfo {title} {Graph-theoretic approach to quantum
+  correlations},\ }\href {https://doi.org/10.1103/PhysRevLett.112.040401}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
+  }\textbf {\bibinfo {volume} {112}},\ \bibinfo {pages} {040401} (\bibinfo
+  {year} {2014})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Xu}\ \emph {et~al.}(2024)\citenamefont {Xu},
+  \citenamefont {Schwonnek},\ and\ \citenamefont {Winter}}]{xu2024bounding}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Z.-P.}\ \bibnamefont
+  {Xu}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Schwonnek}},\ and\
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Winter}},\ }\bibfield
+  {title} {\bibinfo {title} {Bounding the joint numerical range of {P}auli
+  strings by graph parameters},\ }\href
+  {https://doi.org/10.1103/PRXQuantum.5.020318} {\bibfield  {journal} {\bibinfo
+   {journal} {PRX Quantum}\ }\textbf {\bibinfo {volume} {5}},\ \bibinfo {pages}
+  {020318} (\bibinfo {year} {2024})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Karp}(1972)}]{karp1972reducibility}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.~M.}\ \bibnamefont
+  {Karp}},\ }\bibfield  {title} {\bibinfo {title} {Reducibility among
+  combinatorial problems},\ }in\ \href
+  {https://doi.org/10.1007/978-1-4684-2001-2_9} {\emph {\bibinfo {booktitle}
+  {Complexity of Computer Computations}}},\ \bibinfo {editor} {edited by\
+  \bibinfo {editor} {\bibfnamefont {R.~E.}\ \bibnamefont {Miller}}, \bibinfo
+  {editor} {\bibfnamefont {J.~W.}\ \bibnamefont {Thatcher}},\ and\ \bibinfo
+  {editor} {\bibfnamefont {J.~D.}\ \bibnamefont {Bohlinger}}}\ (\bibinfo
+  {publisher} {Springer},\ \bibinfo {year} {1972})\ pp.\ \bibinfo {pages}
+  {85--103}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mac{\^e}do}\ \emph {et~al.}(2026)\citenamefont
+  {Mac{\^e}do}, \citenamefont {de~Oliveira~Junior}, \citenamefont {Comar},
+  \citenamefont {Keller}, \citenamefont {Brask}, \citenamefont {C{\'e}leri},\
+  and\ \citenamefont {Chaves}}]{macedo2026heat}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.~A.}\ \bibnamefont
+  {Mac{\^e}do}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {de~Oliveira~Junior}}, \bibinfo {author} {\bibfnamefont {N.~E.}\ \bibnamefont
+  {Comar}}, \bibinfo {author} {\bibfnamefont {L.~L.}\ \bibnamefont {Keller}},
+  \bibinfo {author} {\bibfnamefont {J.~B.}\ \bibnamefont {Brask}}, \bibinfo
+  {author} {\bibfnamefont {L.~C.}\ \bibnamefont {C{\'e}leri}},\ and\ \bibinfo
+  {author} {\bibfnamefont {R.}~\bibnamefont {Chaves}},\ }\bibfield  {title}
+  {\bibinfo {title} {Every little thing heat does is magic},\ }\href
+  {https://arxiv.org/abs/2604.08663} {\bibfield  {journal} {\bibinfo  {journal}
+  {arXiv:2604.08663}\ } (\bibinfo {year} {2026})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Chudnovsky}\ \emph {et~al.}(2006)\citenamefont
+  {Chudnovsky}, \citenamefont {Robertson}, \citenamefont {Seymour},\ and\
+  \citenamefont {Thomas}}]{chudnovsky2006strong}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Chudnovsky}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+  {Robertson}}, \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Seymour}},\
+  and\ \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Thomas}},\
+  }\bibfield  {title} {\bibinfo {title} {The strong perfect graph theorem},\
+  }\href {https://doi.org/10.4007/annals.2006.164.51} {\bibfield  {journal}
+  {\bibinfo  {journal} {Annals of Mathematics}\ }\textbf {\bibinfo {volume}
+  {164}},\ \bibinfo {pages} {51--229} (\bibinfo {year} {2006})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Lov{\'a}sz}(1972{\natexlab{a}})}]{lovasz1972normal}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Lov{\'a}sz}},\ }\bibfield  {title} {\bibinfo {title} {Normal hypergraphs and
+  the perfect graph conjecture},\ }\href
+  {https://doi.org/10.1016/0012-365X(72)90006-4} {\bibfield  {journal}
+  {\bibinfo  {journal} {Discrete Mathematics}\ }\textbf {\bibinfo {volume}
+  {2}},\ \bibinfo {pages} {253--267} (\bibinfo {year}
+  {1972}{\natexlab{a}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont
+  {Lov{\'a}sz}(1972{\natexlab{b}})}]{lovasz1972characterization}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Lov{\'a}sz}},\ }\bibfield  {title} {\bibinfo {title} {A characterization of
+  perfect graphs},\ }\href {https://doi.org/10.1016/0095-8956(72)90045-7}
+  {\bibfield  {journal} {\bibinfo  {journal} {Journal of Combinatorial Theory,
+  Series B}\ }\textbf {\bibinfo {volume} {13}},\ \bibinfo {pages} {95--98}
+  (\bibinfo {year} {1972}{\natexlab{b}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Lov{\'a}sz}(1979)}]{lovasz1979shannon}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Lov{\'a}sz}},\ }\bibfield  {title} {\bibinfo {title} {On the {S}hannon
+  capacity of a graph},\ }\href {https://doi.org/10.1109/TIT.1979.1055985}
+  {\bibfield  {journal} {\bibinfo  {journal} {IEEE Transactions on Information
+  Theory}\ }\textbf {\bibinfo {volume} {25}},\ \bibinfo {pages} {1--7}
+  (\bibinfo {year} {1979})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gr{\"o}tschel}\ \emph {et~al.}(1981)\citenamefont
+  {Gr{\"o}tschel}, \citenamefont {Lov{\'a}sz},\ and\ \citenamefont
+  {Schrijver}}]{grotschel1981ellipsoid}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Gr{\"o}tschel}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Lov{\'a}sz}},\ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Schrijver}},\ }\bibfield  {title} {\bibinfo {title} {The ellipsoid method
+  and its consequences in combinatorial optimization},\ }\href
+  {https://doi.org/10.1007/BF02579273} {\bibfield  {journal} {\bibinfo
+  {journal} {Combinatorica}\ }\textbf {\bibinfo {volume} {1}},\ \bibinfo
+  {pages} {169--197} (\bibinfo {year} {1981})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gr{\"o}tschel}\ \emph {et~al.}(1988)\citenamefont
+  {Gr{\"o}tschel}, \citenamefont {Lov{\'a}sz},\ and\ \citenamefont
+  {Schrijver}}]{grotschel1988geometric}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Gr{\"o}tschel}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Lov{\'a}sz}},\ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Schrijver}},\ }\href {https://doi.org/10.1007/978-3-642-97881-4} {\emph
+  {\bibinfo {title} {Geometric Algorithms and Combinatorial Optimization}}},\
+  \bibinfo {series} {Algorithms and Combinatorics}, Vol.~\bibinfo {volume} {2}\
+  (\bibinfo  {publisher} {Springer},\ \bibinfo {year} {1988})\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Chv{\'a}tal}(1975)}]{chvatal1975certain}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.}~\bibnamefont
+  {Chv{\'a}tal}},\ }\bibfield  {title} {\bibinfo {title} {On certain polytopes
+  associated with graphs},\ }\href
+  {https://doi.org/10.1016/0095-8956(75)90041-6} {\bibfield  {journal}
+  {\bibinfo  {journal} {Journal of Combinatorial Theory, Series B}\ }\textbf
+  {\bibinfo {volume} {18}},\ \bibinfo {pages} {138--154} (\bibinfo {year}
+  {1975})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sarkar}\ and\ \citenamefont {van~den
+  Berg}(2021)}]{sarkar2021sets}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Sarkar}}\ and\ \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {van~den
+  Berg}},\ }\bibfield  {title} {\bibinfo {title} {On sets of maximally
+  commuting and anticommuting {P}auli operators},\ }\href
+  {https://doi.org/10.1007/s40687-020-00244-1} {\bibfield  {journal} {\bibinfo
+  {journal} {Research in the Mathematical Sciences}\ }\textbf {\bibinfo
+  {volume} {8}},\ \bibinfo {pages} {14} (\bibinfo {year} {2021})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Brauer}\ and\ \citenamefont
+  {Weyl}(1935)}]{brauer1935spinors}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Brauer}}\ and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Weyl}},\
+  }\bibfield  {title} {\bibinfo {title} {Spinors in $n$ dimensions},\ }\href
+  {https://doi.org/10.2307/2371218} {\bibfield  {journal} {\bibinfo  {journal}
+  {American Journal of Mathematics}\ }\textbf {\bibinfo {volume} {57}},\
+  \bibinfo {pages} {425--449} (\bibinfo {year} {1935})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ipek}\ \emph {et~al.}(2026)\citenamefont {Ipek},
+  \citenamefont {Yucel}, \citenamefont {Shahi}, \citenamefont {Ozdemir},\ and\
+  \citenamefont {Okay}}]{ipek2026phasespace}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Ipek}}, \bibinfo {author} {\bibfnamefont {A.~T.}\ \bibnamefont {Yucel}},
+  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Shahi}}, \bibinfo
+  {author} {\bibfnamefont {C.}~\bibnamefont {Ozdemir}},\ and\ \bibinfo {author}
+  {\bibfnamefont {C.}~\bibnamefont {Okay}},\ }\bibfield  {title} {\bibinfo
+  {title} {Phase-space tableau simulation for quantum computation},\ }\href
+  {https://doi.org/10.1103/11f2-nqht} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {113}},\ \bibinfo
+  {pages} {032409} (\bibinfo {year} {2026})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Xu}\ \emph {et~al.}(2025)\citenamefont {Xu},
+  \citenamefont {Wang}, \citenamefont {Ye}, \citenamefont {Ko{\ss}mann},
+  \citenamefont {Schwonnek},\ and\ \citenamefont
+  {Winter}}]{xu2025simultaneous}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Z.-P.}\ \bibnamefont
+  {Xu}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Wang}}, \bibinfo
+  {author} {\bibfnamefont {Q.}~\bibnamefont {Ye}}, \bibinfo {author}
+  {\bibfnamefont {G.}~\bibnamefont {Ko{\ss}mann}}, \bibinfo {author}
+  {\bibfnamefont {R.}~\bibnamefont {Schwonnek}},\ and\ \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Winter}},\ }\bibfield  {title} {\bibinfo
+  {title} {Simultaneous variances of {P}auli strings, weighted independence
+  numbers, and a new kind of perfection of graphs},\ }\href
+  {https://arxiv.org/abs/2511.13531} {\bibfield  {journal} {\bibinfo  {journal}
+  {arXiv:2511.13531}\ } (\bibinfo {year} {2025})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Zurel}\ \emph {et~al.}(2025)\citenamefont {Zurel},
+  \citenamefont {Cohen},\ and\ \citenamefont
+  {Raussendorf}}]{zurel2025simulation}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Zurel}}, \bibinfo {author} {\bibfnamefont {L.~Z.}\ \bibnamefont {Cohen}},\
+  and\ \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Raussendorf}},\
+  }\bibfield  {title} {\bibinfo {title} {Simulation of quantum computation with
+  magic states via {Jordan--Wigner} transformations},\ }\href
+  {https://doi.org/10.1103/ng4l-96kd} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {112}},\ \bibinfo
+  {pages} {042602} (\bibinfo {year} {2025})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nation}\ \emph {et~al.}(2026)\citenamefont {Nation},
+  \citenamefont {Simon}, \citenamefont {Banerjee}, \citenamefont {Martini},
+  \citenamefont {Ricottone}, \citenamefont {Cerisola},\ and\ \citenamefont
+  {Dellantonio}}]{nation2026clifford}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Nation}}, \bibinfo {author} {\bibfnamefont {R.~P.~A.}\ \bibnamefont
+  {Simon}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Banerjee}},
+  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Martini}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Ricottone}}, \bibinfo {author}
+  {\bibfnamefont {F.}~\bibnamefont {Cerisola}},\ and\ \bibinfo {author}
+  {\bibfnamefont {L.}~\bibnamefont {Dellantonio}},\ }\bibfield  {title}
+  {\bibinfo {title} {Clifford symmetries in quantum many-body systems},\ }\href
+  {https://arxiv.org/abs/2605.18966} {\bibfield  {journal} {\bibinfo  {journal}
+  {arXiv:2605.18966}\ } (\bibinfo {year} {2026})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Brouwer}\ and\ \citenamefont
+  {Haemers}(2012)}]{brouwer2012spectra}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~E.}\ \bibnamefont
+  {Brouwer}}\ and\ \bibinfo {author} {\bibfnamefont {W.~H.}\ \bibnamefont
+  {Haemers}},\ }\href {https://doi.org/10.1007/978-1-4614-1939-6} {\emph
+  {\bibinfo {title} {Spectra of Graphs}}},\ Universitext\ (\bibinfo
+  {publisher} {Springer},\ \bibinfo {year} {2012})\BibitemShut {NoStop}%
+\end{thebibliography}%

@@ -1,0 +1,93 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "formalization-contract:9705052v1:qubit-stabilizer-code-kernel",
+  "provider_agent": "agent:stabilizer-codes-and-quantum-error-correction",
+  "source_statements": [
+    "statement:9705052v1:stabilizer-code-fixed-space",
+    "statement:9705052v1:n-generator-unique-eigenvector",
+    "statement:9705052v1:group-sum-fixedness",
+    "statement:9705052v1:group-average-projector",
+    "statement:9705052v1:pure-stabilizer-state"
+  ],
+  "source_anchors": [
+    "anchor:9705052v1:pauli-group",
+    "anchor:9705052v1:general-stabilizer-code",
+    "anchor:9705052v1:encoding-group-sum-fixedness",
+    "anchor:9705052v1:n-generator-unique-state"
+  ],
+  "reasoning_steps": [
+    "step:9705052v1:000",
+    "step:9705052v1:001"
+  ],
+  "normalized_mathematical_statement": "For r <= n independent commuting involutive phase-clean signed n-qubit Pauli generators, the generated binary subgroup has 2^r elements, its common +1 space is the generator-by-generator fixed space and has complex dimension 2^(n-r), and its normalized group sum is the Hermitian idempotent positive-semidefinite projector onto that space with the same trace and range dimension. At r=n the projector is a trace-one rank-one pure density matrix, and normalized fixed vectors differ only by global phase.",
+  "scope_relation": "EXACT_PHASE_AWARE_N_QUBIT_RECONSTRUCTION_WITH_GENERAL_RANK_AND_RANK_N_PURE_SPECIALIZATION",
+  "formal_project": {
+    "path": "formal/AgtXIvRootMath",
+    "system": "Lean 4",
+    "toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_commit": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+    "quantumlib_path": "Reference/LeanQuantum",
+    "default_import": "AgtXIvRootMath"
+  },
+  "declarations": [
+    "AgtXIv.Gottesman.groupAverage_mem_commonFixed",
+    "AgtXIv.Gottesman.groupAverage_eq_self_iff",
+    "AgtXIv.Gottesman.groupAverage_idempotent",
+    "AgtXIv.Gottesman.range_groupAverageMap",
+    "AgtXIv.Gottesman.groupAverage_isProjection",
+    "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero",
+    "AgtXIv.Stabilizer.IndependentSignedPauliFrame.finrank_commonFixed_eq_two_pow_sub",
+    "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension",
+    "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_generalRankCommonFixed",
+    "AgtXIv.Stabilizer.toLin_stabilizerCodeProjectorMatrix",
+    "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_isHermitian",
+    "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_idempotent",
+    "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+    "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_trace",
+    "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_range_finrank",
+    "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed",
+    "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector",
+    "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase",
+    "AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian",
+    "AgtXIv.Stabilizer.stabilizerProjectorMatrix_idempotent",
+    "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef",
+    "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one",
+    "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one",
+    "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity"
+  ],
+  "assumptions_made_explicit": [
+    "n and r are finite natural numbers with r <= n",
+    "the source generators are pairwise commuting involutive signed Paulis",
+    "their binary subset-product map is injective",
+    "minus identity is excluded",
+    "the pinned phase-aware Pauli matrix evaluation is used"
+  ],
+  "derived_not_postulated": [
+    "the binary subgroup cardinality 2^r",
+    "absence of nonidentity scalar support inside the frame",
+    "the nonidentity trace-zero character profile",
+    "the fixed-space dimension 2^(n-r)",
+    "Hermiticity, idempotence, positive semidefiniteness, trace, range dimension, and rank-one purity"
+  ],
+  "physical_context_scoped_out": [
+    "encoding and decoding circuits",
+    "error-correction distance and correctable-noise conditions",
+    "hardware noise or approximate Pauli constraints",
+    "qudit generalization beyond the n-qubit scope"
+  ],
+  "non_inheritance_guards": [
+    "KERNEL_CHECKED applies to the exact ideal n-qubit mathematical statements, not to source acceptance or physical-semantic review.",
+    "The result assumes exact independence, commutation, involution, phase cleanliness, and r <= n; it is not a noise-robust or approximate theorem.",
+    "The theorem does not supply an encoding circuit, decoder, or code distance."
+  ],
+  "supporting_contracts": [
+    "formalization-contract:9705052v1:group-average-fixed-space"
+  ],
+  "verification_record": "verification:9705052v1:lean-qubit-stabilizer-code-kernel",
+  "verification_evidence": "formal/AgtXIvRootMath/verification-result.json",
+  "status": "KERNEL_CHECKED",
+  "parent_contract_effect": {
+    "contract:9705052v1:pure-stabilizer-state": "mathematics KERNEL_CHECKED; lifecycle remains PARTIALLY_VERIFIED and accepted=false",
+    "agent:stabilizer-codes-and-quantum-error-correction": "remains PARTIALLY_VERIFIED"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "formalization-contract:9705052v1:group-average-fixed-space",
+  "provider_agent": "agent:stabilizer-codes-and-quantum-error-correction",
+  "source_statements": [
+    "statement:9705052v1:group-sum-fixedness",
+    "statement:9705052v1:group-average-projector"
+  ],
+  "source_anchors": [
+    "anchor:9705052v1:encoding-group-sum-fixedness"
+  ],
+  "reasoning_steps": [
+    "step:9705052v1:000"
+  ],
+  "normalized_mathematical_statement": "For a finite group G, a complex vector space V, and a linear representation rho of G on V, normalized group averaging is an idempotent linear map whose range is exactly the subspace fixed by every element of G.",
+  "scope_relation": "FORMAL_RECONSTRUCTION_GENERALIZES_SOURCE_STEP",
+  "formal_project": {
+    "path": "formal/AgtXIvRootMath",
+    "system": "Lean 4",
+    "toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_commit": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+    "module": "AgtXIvRootMath.GottesmanGroupAverage"
+  },
+  "declarations": [
+    "AgtXIv.Gottesman.groupAverage_mem_commonFixed",
+    "AgtXIv.Gottesman.groupAverage_eq_self_iff",
+    "AgtXIv.Gottesman.groupAverage_idempotent",
+    "AgtXIv.Gottesman.range_groupAverageMap",
+    "AgtXIv.Gottesman.groupAverage_isProjection"
+  ],
+  "assumptions_made_explicit": [
+    "G is a finite group",
+    "V is a complex vector space",
+    "rho is a linear representation of G on V",
+    "the cardinality of G is invertible in the complex scalar field"
+  ],
+  "physical_context_removed": [
+    "n-qubit Hilbert-space dimension",
+    "Pauli phases, Hermiticity, and unitarity",
+    "commutativity and independence of stabilizer generators",
+    "exclusion of minus identity and imaginary scalar phases",
+    "self-adjointness, orthogonality, and positive-semidefinite projector semantics",
+    "trace of nonidentity Pauli operators",
+    "the fixed-space dimension 2^k and the rank-n dimension-one specialization",
+    "pure-state density-matrix interpretation"
+  ],
+  "non_inheritance_guards": [
+    "LinearMap.IsProj here is an algebraic projection statement; it is not an orthogonal-projector, self-adjointness, or positivity theorem.",
+    "This supporting lemma does not prove the Gottesman pure-stabilizer-state export or its one-dimensionality conclusion.",
+    "No physical approximation is introduced; omitted physical semantics remain exact alignment obligations."
+  ],
+  "verification_record": "verification:9705052v1:lean-group-average",
+  "status": "KERNEL_CHECKED",
+  "parent_contract_effect": {
+    "formalization-contract:9705052v1:qubit-stabilizer-code-kernel": "composed as the abstract group-average supporting layer",
+    "contract:9705052v1:pure-stabilizer-state": "mathematics is closed by the umbrella contract, while lifecycle remains PARTIALLY_VERIFIED and accepted=false"
+  }
+}

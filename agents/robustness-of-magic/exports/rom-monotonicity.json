@@ -1,0 +1,51 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:1609.07488v2:rom-monotonicity",
+  "provider_agent": "agent:robustness-of-magic",
+  "statement": "statement:1609.07488v2:rom-monotonicity",
+  "assumptions": [
+    "E is represented by the exact deterministic DensityStabilizerAtomMap interface: a real-linear density action agreeing with the matrix map and mapping every pure stabilizer atom into the output stabilizer polytope",
+    "alignment of source-level stabilizer protocol/channel syntax with this interface remains an exact physical-semantic obligation"
+  ],
+  "imports": [
+    {
+      "contract": "contract:1609.07488v2:rom-definition",
+      "status": "MATHEMATICALLY_CLOSED_EXPORT_UNACCEPTED"
+    },
+    {
+      "contract": "contract:1307.7171v1:stabilizer-polytope-and-magic-membership",
+      "status": "MATHEMATICALLY_ALIGNED_UPSTREAM_UNACCEPTED"
+    }
+  ],
+  "non_inheritance_guard": "This contract applies to full-state RoM. It does not imply monotonicity of RoM_M when a restricted measurement set M is held fixed.",
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvRootMath",
+    "contract": "formalization-contract:1609.07488v2:qubit-full-rom-kernel",
+    "declarations": [
+      "AgtXIv.RoM.kernelOfAtomImages",
+      "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+      "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+      "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+      "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono"
+    ],
+    "status": "KERNEL_CHECKED",
+    "scope_relation": "EXACT_DETERMINISTIC_ATOM_PRESERVING_LINEAR_AND_DENSITY_MAP_MONOTONICITY",
+    "not_covered": "The source-level stabilizer-protocol syntax and its map semantics, plus selective branch-averaged monotonicity, are not formalized."
+  },
+  "verification": {
+    "source_fidelity": "PASSED",
+    "dependency_closure": "INCOMPLETE_UPSTREAM_SCIENTIFIC_ACCEPTANCE_AND_PROTOCOL_SEMANTICS",
+    "mathematics": "KERNEL_CHECKED",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "PENDING_PROTOCOL_TO_ATOM_PRESERVING_MAP_ALIGNMENT_AND_HUMAN_REVIEW",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:1609.07488v2:free-set-import-alignment-pending"
+  ],
+  "blocking_reason": "Deterministic atom-preserving map monotonicity is kernel-checked, but the full physical stabilizer-protocol-to-map bridge, selective on-average branch semantics, upstream scientific acceptance, and human review remain open."
+}

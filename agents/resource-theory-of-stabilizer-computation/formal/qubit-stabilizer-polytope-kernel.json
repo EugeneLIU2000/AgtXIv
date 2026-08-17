@@ -1,0 +1,68 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel",
+  "provider_agent": "agent:resource-theory-of-stabilizer-computation",
+  "source_statements": [
+    "statement:1307.7171v1:pure-stabilizer-clifford-orbit",
+    "statement:1307.7171v1:fixed-space-clifford-orbit-equivalence",
+    "statement:1307.7171v1:stabilizer-convex-hull",
+    "statement:1307.7171v1:magic-membership",
+    "statement:1307.7171v1:n-qubit-stabilizer-polytope"
+  ],
+  "source_anchors": [
+    "anchor:1307.7171v1:resource-split",
+    "anchor:1307.7171v1:stabilizer-free-set",
+    "anchor:9705052v1:general-stabilizer-code"
+  ],
+  "reasoning_steps": [
+    "step:1307.7171v1:000",
+    "step:1307.7171v1:001"
+  ],
+  "normalized_mathematical_statement": "In finite n-qubit matrix semantics, complete phase-clean signed-Pauli-frame projectors are exactly the semantic Clifford orbit of the computational zero projector. Consequently their atom sets are equal and their ordinary real convex hulls are equal; membership is classical convex mixing, not coherent superposition.",
+  "scope_relation": "EXACT_N_QUBIT_COMMON_EIGENSPACE_TO_SEMANTIC_CLIFFORD_ORBIT_AND_CONVEX_HULL_EQUIVALENCE",
+  "formal_project": {
+    "path": "formal/AgtXIvRootMath",
+    "system": "Lean 4",
+    "toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_commit": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+    "quantumlib_path": "Reference/LeanQuantum",
+    "default_import": "AgtXIvRootMath"
+  },
+  "declarations": [
+    "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+    "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+    "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+    "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit",
+    "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope"
+  ],
+  "assumptions_made_explicit": [
+    "finite n-qubit matrix semantics",
+    "phase-aware signed Pauli representatives",
+    "semantic Clifford operators are unitary Pauli normalizers",
+    "the free-state mixture uses nonnegative real weights summing to one"
+  ],
+  "derived_not_postulated": [
+    "the reverse frame-to-Clifford witness",
+    "the bidirectional frame/common-eigenspace to Clifford-orbit equivalence",
+    "atom-set equality",
+    "convex-hull equality and the corresponding membership equivalence"
+  ],
+  "physical_context_scoped_out": [
+    "syntax and denotational semantics of the full stabilizer protocol language",
+    "ancilla, measurement, discard, conditioning, and classical-control closure",
+    "selective branch and on-average monotonicity",
+    "odd-prime Wigner or mana branches of the source"
+  ],
+  "non_inheritance_guards": [
+    "This contract identifies state atoms and their convex hull; it does not formalize the source's complete stabilizer-operation protocol syntax.",
+    "Classical convex mixing is not coherent ket superposition.",
+    "KERNEL_CHECKED does not accept the imported Gottesman export or replace human source and physical-semantic review."
+  ],
+  "verification_record": "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel",
+  "verification_evidence": "formal/AgtXIvRootMath/verification-result.json",
+  "status": "KERNEL_CHECKED",
+  "parent_contract_effect": {
+    "contract:1307.7171v1:stabilizer-polytope-and-magic-membership": "mathematics KERNEL_CHECKED; dependency and human-semantic gates remain open",
+    "agent:resource-theory-of-stabilizer-computation": "remains PARTIALLY_VERIFIED and accepted=false"
+  }
+}

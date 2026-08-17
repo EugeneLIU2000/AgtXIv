@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:9705052v1:pure-stabilizer-state",
+  "provider_agent": "agent:stabilizer-codes-and-quantum-error-correction",
+  "statement": "statement:9705052v1:pure-stabilizer-state",
+  "assumptions": [
+    "assumption:9705052v1:rank-n-phase-normalized-stabilizer"
+  ],
+  "imports": [],
+  "validity_regime": [
+    "finite-dimensional n-qubit Hilbert space",
+    "Hermitian phase-normalized Pauli generators",
+    "n independent commuting generators",
+    "minus identity excluded",
+    "exact algebra; no asymptotic or numerical approximation"
+  ],
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvRootMath",
+    "contract": "formalization-contract:9705052v1:qubit-stabilizer-code-kernel",
+    "supporting_contract": "formalization-contract:9705052v1:group-average-fixed-space",
+    "declarations": [
+      "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed",
+      "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector",
+      "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase",
+      "AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian",
+      "AgtXIv.Stabilizer.stabilizerProjectorMatrix_idempotent",
+      "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef",
+      "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one",
+      "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one",
+      "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity"
+    ],
+    "status": "KERNEL_CHECKED",
+    "scope_relation": "EXACT_PHASE_AWARE_N_QUBIT_RANK_N_PURE_DENSITY_SPECIALIZATION",
+    "not_covered": "Human source/physical-semantic sign-off, encoding or decoding circuits, code distance, noise, and qudit generalization are outside this Lean contract."
+  },
+  "verification": {
+    "source_fidelity": "PASSED",
+    "dependency_closure": "COMPLETE",
+    "mathematics": "KERNEL_CHECKED",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "AGENT_REVIEWED_PENDING_HUMAN",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "provenance": {
+    "source_anchors": [
+      "anchor:9705052v1:general-stabilizer-code",
+      "anchor:9705052v1:n-generator-unique-state"
+    ],
+    "reasoning_chain": "chain:9705052v1:pure-stabilizer-state",
+    "scope_note": "The modern phrase pure stabilizer state is an agent-normalized name for the source's k=0, n-generator stabilizer-code specialization, not a verbatim source definition."
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:9705052v1:root-review-open"
+  ],
+  "blocking_reason": "The exact n-qubit mathematical chain is kernel-checked, but the normalized modern terminology and source-to-physical interpretation still require independent human review; therefore accepted remains false."
+}

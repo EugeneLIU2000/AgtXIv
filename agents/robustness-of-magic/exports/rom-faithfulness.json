@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:1609.07488v2:rom-faithfulness",
+  "provider_agent": "agent:robustness-of-magic",
+  "statement": "statement:1609.07488v2:rom-faithfulness",
+  "assumptions": [
+    "rho is an n-qubit density operator",
+    "STAB_n is the classical convex hull of all pure n-qubit stabilizer states"
+  ],
+  "imports": [
+    {
+      "contract": "contract:1609.07488v2:rom-definition",
+      "status": "MATHEMATICALLY_CLOSED_EXPORT_UNACCEPTED"
+    },
+    {
+      "contract": "contract:1307.7171v1:stabilizer-polytope-and-magic-membership",
+      "status": "MATHEMATICALLY_ALIGNED_UPSTREAM_UNACCEPTED"
+    }
+  ],
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvRootMath",
+    "contract": "formalization-contract:1609.07488v2:qubit-full-rom-kernel",
+    "declarations": [
+      "AgtXIv.RoM.exists_l1Minimizer",
+      "AgtXIv.RoM.feasible_faithful",
+      "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible",
+      "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+      "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+      "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit"
+    ],
+    "status": "KERNEL_CHECKED",
+    "scope_relation": "EXACT_FULL_N_QUBIT_STABILIZER_ATOM_FAITHFULNESS_WITH_UNCONDITIONAL_FEASIBILITY_AND_ATTAINMENT"
+  },
+  "verification": {
+    "source_fidelity": "PASSED",
+    "dependency_closure": "INCOMPLETE_UPSTREAM_SCIENTIFIC_ACCEPTANCE",
+    "mathematics": "KERNEL_CHECKED",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "AGENT_REVIEWED_PENDING_HUMAN",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:1609.07488v2:free-set-import-alignment-pending"
+  ],
+  "blocking_reason": "Faithfulness is kernel-checked for the exact Clifford-orbit stabilizer polytope, but the definition and upstream free-set exports remain scientifically unaccepted and human semantic review remains open."
+}

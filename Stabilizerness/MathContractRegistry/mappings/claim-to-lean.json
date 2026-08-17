@@ -1,0 +1,1356 @@
+{
+  "schema_version": "0.1.0",
+  "mappings": [
+    {
+      "dag_node_id": "root:gottesman-stabilizer-formalism",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.Gottesman.groupAverage_eq_self_iff",
+        "AgtXIv.Gottesman.groupAverage_idempotent",
+        "AgtXIv.Gottesman.groupAverage_isProjection",
+        "AgtXIv.Gottesman.groupAverage_mem_commonFixed",
+        "AgtXIv.Gottesman.range_groupAverageMap",
+        "AgtXIv.Stabilizer.IndependentSignedPauliFrame.finrank_commonFixed_eq_two_pow_sub",
+        "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector",
+        "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension",
+        "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed",
+        "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_generalRankCommonFixed",
+        "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase",
+        "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity",
+        "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_idempotent",
+        "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_isHermitian",
+        "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+        "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_range_finrank",
+        "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_trace",
+        "AgtXIv.Stabilizer.stabilizerProjectorMatrix_idempotent",
+        "AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian",
+        "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef",
+        "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one",
+        "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one",
+        "AgtXIv.Stabilizer.toLin_stabilizerCodeProjectorMatrix",
+        "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero"
+      ],
+      "modules": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "Representation.isProj_averageMap",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "assessment": "EXACT_FOR_ABSTRACT_SUBCLAIM",
+          "use": "Can replace the proof body of the abstract projection endpoint; project wrappers may remain for source alignment and stable naming."
+        },
+        {
+          "declaration": "Representation.averageMap_invariant",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "assessment": "EXACT_FOR_ABSTRACT_SUBCLAIM",
+          "use": "Already used by AgtXIv.Gottesman.groupAverage_mem_commonFixed."
+        },
+        {
+          "declaration": "Representation.averageMap_id",
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "assessment": "EXACT_FOR_ABSTRACT_SUBCLAIM",
+          "use": "Already used to prove fixed-point and idempotence wrappers."
+        }
+      ],
+      "verification_references": [
+        "verification:9705052v1:source-freeze",
+        "verification:9705052v1:specialization-review",
+        "verification:9705052v1:lean-group-average",
+        "verification:9705052v1:lean-qubit-stabilizer-code-kernel"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "root:gottesman-knill-simulation",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "root:bravyi-kitaev-magic-model",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "root:veitch-stabilizer-resource-theory",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+        "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+        "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+        "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+        "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit"
+      ],
+      "modules": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:1307.7171v1:source-freeze",
+        "verification:1307.7171v1:semantic-audit",
+        "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "root:howard-campbell-rom",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.RoM.coeff_sum_eq_one",
+        "AgtXIv.RoM.exists_l1Minimizer",
+        "AgtXIv.RoM.feasible_faithful",
+        "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+        "AgtXIv.RoM.kernelOfAtomImages",
+        "AgtXIv.RoM.normalized_l1",
+        "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+        "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+        "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+        "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+        "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+        "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+        "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+        "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+      ],
+      "modules": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:1609.07488v2:source-freeze",
+        "verification:1609.07488v2:derivation-audit",
+        "verification:1609.07488v2:lean-finite-atom-kernel",
+        "verification:1609.07488v2:lean-qubit-full-rom-kernel"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "root:varela-reduced-polytope",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+        "AgtXIv.Varela.MeasurementWindow.mem_projectedStabilizerPolytope_iff",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.abs_vector_le_one",
+        "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+        "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+      ],
+      "modules": [
+        "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+        "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+        "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+        "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2602.18939v1:source-freeze",
+        "verification:2602.18939v1:vrep-proof-audit",
+        "verification:2602.18939v1:vrep-repair-review",
+        "verification:2602.18939v1:fixed-window-monotonicity-audit",
+        "verification:2602.18939v1:lean-vrep-conditional",
+        "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "foundation:finite-lp-strong-duality",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "root:perfect-graph-weighted-duality",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "SimpleGraph.isMaximumIndepSet_compl",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "assessment": "INSUFFICIENT_NEARBY_API",
+          "use": "Only complement/independent-set infrastructure was retrieved; no weighted perfect-graph duality replacement was found."
+        }
+      ],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "foundation:perfect-graph-complement-and-algorithm",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "root:xu-quadratic-pauli-graph",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "root:leone-stabilizer-renyi-entropy",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "root:full-pauli-symplectic-graph",
+      "status": "EXTERNAL_OR_UNMAPPED",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:resource-interpretation",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:full-stabilizer-polytope",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+        "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+        "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+        "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+        "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit"
+      ],
+      "modules": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:1307.7171v1:source-freeze",
+        "verification:1307.7171v1:semantic-audit",
+        "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:full-rom",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.RoM.coeff_sum_eq_one",
+        "AgtXIv.RoM.exists_l1Minimizer",
+        "AgtXIv.RoM.feasible_faithful",
+        "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+        "AgtXIv.RoM.kernelOfAtomImages",
+        "AgtXIv.RoM.normalized_l1",
+        "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+        "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+        "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+        "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+        "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+        "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+        "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+        "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+      ],
+      "modules": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+        "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "IsCompact.exists_isMinOn",
+          "module": "Mathlib.Topology.Order.Compact",
+          "assessment": "EXACT_FOUNDATIONAL_LEMMA",
+          "use": "Already used in FiniteAtomAttainment.lean; no need to reprove compact minimum attainment."
+        }
+      ],
+      "verification_references": [
+        "verification:1609.07488v2:source-freeze",
+        "verification:1609.07488v2:derivation-audit",
+        "verification:1609.07488v2:lean-finite-atom-kernel",
+        "verification:1609.07488v2:lean-qubit-full-rom-kernel"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:pauli-window",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:reduced-stabilizer-polytope",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "LinearMap.image_convexHull",
+          "module": "Mathlib.Analysis.Convex.Hull",
+          "assessment": "ADAPTABLE_GENERIC_API",
+          "use": "Can simplify the generic fact that linear projection commutes with convex hull; does not establish the stabilizer-specific V-representation."
+        }
+      ],
+      "verification_references": [
+        "verification:2602.18939v1:source-freeze",
+        "verification:2602.18939v1:vrep-proof-audit",
+        "verification:2602.18939v1:vrep-repair-review",
+        "verification:2602.18939v1:fixed-window-monotonicity-audit",
+        "verification:2602.18939v1:lean-vrep-conditional",
+        "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:reduced-rom",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2602.18939v1:source-freeze",
+        "verification:2602.18939v1:vrep-proof-audit",
+        "verification:2602.18939v1:vrep-repair-review",
+        "verification:2602.18939v1:fixed-window-monotonicity-audit",
+        "verification:2602.18939v1:lean-vrep-conditional",
+        "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:frustration-graph",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:exact-reduced-vrep",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+        "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+      ],
+      "modules": [
+        "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+        "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "LinearMap.image_convexHull",
+          "module": "Mathlib.Analysis.Convex.Hull",
+          "assessment": "ADAPTABLE_GENERIC_API",
+          "use": "Useful for top-down projected-polytope semantics, but not a substitute for candidate physicality, refinement, or extremality."
+        }
+      ],
+      "verification_references": [
+        "verification:2602.18939v1:source-freeze",
+        "verification:2602.18939v1:vrep-proof-audit",
+        "verification:2602.18939v1:vrep-repair-review",
+        "verification:2602.18939v1:fixed-window-monotonicity-audit",
+        "verification:2602.18939v1:lean-vrep-conditional",
+        "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:fixed-window-monotonicity",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2602.18939v1:source-freeze",
+        "verification:2602.18939v1:vrep-proof-audit",
+        "verification:2602.18939v1:vrep-repair-review",
+        "verification:2602.18939v1:fixed-window-monotonicity-audit",
+        "verification:2602.18939v1:lean-vrep-conditional",
+        "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:exact-vertex-dual",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:general-reduced-hardness",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:sign-syndrome-linear-consistent",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:dependency-affine-code",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:sign-relaxed-polytope",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:relaxed-rom",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:mwis-definition",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.GraphFoundation.independentFinsets",
+        "AgtXIv.GraphFoundation.maxWeightIndependent"
+      ],
+      "modules": [
+        "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "lean-verification:varela-vrep:2026-08-16",
+        "lean-verification:stabilizerness-local-delta:2026-08-16"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:relaxed-rom-lower-bound",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:pauli-active-dependency",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:no-active-free-signs",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:relaxation-exactness",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:relaxed-affine-span",
+      "status": "PLANNED_DELTA",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [
+        "Stabilizerness.relaxed_vertices_affineSpan"
+      ],
+      "candidate_reuse": [
+        {
+          "declaration": "AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs",
+          "assessment": "STRONG_NEAR_MATCH",
+          "use": "Reduces the planned target delta to proving nonemptiness and that selected vertex differences span the coordinate space."
+        },
+        {
+          "declaration": "affineSpan_singleton_union_vadd_eq_top_of_span_eq_top",
+          "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic",
+          "assessment": "STRONG_NEAR_MATCH",
+          "use": "May package the chosen basepoint plus coordinate-difference spanning argument."
+        }
+      ],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:relaxed-lp-dual",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:sign-alignment-identity",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+        "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+        "AgtXIv.Stabilizerness.max_abs_signed_sum"
+      ],
+      "modules": [
+        "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "Finset.abs_sum_le_sum_abs",
+          "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+          "assessment": "PARTIAL_EXACT_BOUND",
+          "use": "Provides the upper bound. The sign choice attaining equality remains a small local delta."
+        }
+      ],
+      "verification_references": [
+        "lean-verification:stabilizerness-local-delta:2026-08-16"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:relaxed-mwis-dual",
+      "status": "PLANNED_DELTA",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [
+        "Stabilizerness.max_abs_signed_sum"
+      ],
+      "candidate_reuse": [
+        {
+          "declaration": "Finset.abs_sum_le_sum_abs",
+          "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+          "assessment": "PARTIAL_EXACT_BOUND",
+          "use": "Useful inside free-sign maximization; does not by itself identify the MWIS separation oracle."
+        }
+      ],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:exact-graph-program",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:perfect-graph-definition",
+      "status": "EXISTING_PROJECT_DECLARATIONS",
+      "existing_declarations": [
+        "AgtXIv.GraphFoundation.IsPerfect"
+      ],
+      "modules": [
+        "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean"
+      ],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "lean-verification:varela-vrep:2026-08-16",
+        "lean-verification:stabilizerness-local-delta:2026-08-16"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:lovasz-sandwich",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:perfect-graph-antiblocker",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "SimpleGraph.isMaximumIndepSet_compl",
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "assessment": "INSUFFICIENT_NEARBY_API",
+          "use": "Basic graph API only; the weighted antiblocker theorem remains a local/external obligation."
+        }
+      ],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:perfect-graph-weighted-collapse",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:closed-form-rom",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:anticommuting-l2-bound",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [
+        {
+          "declaration": "Orthonormal.sum_inner_products_le",
+          "module": "Mathlib.Analysis.InnerProductSpace.Orthonormal",
+          "assessment": "ANALOGOUS_NOT_SUBSTITUTE",
+          "use": "Bessel inequality has the same l2-bound shape, but a semantic bridge from anticommuting observables to an orthonormal family is still required."
+        },
+        {
+          "declaration": "CliffordAlgebra.\u03b9_mul_\u03b9_mul_of_isOrtho",
+          "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+          "assessment": "STRUCTURAL_NEAR_MATCH",
+          "use": "Provides a generic anticommutation identity in Clifford algebras; not a direct density-operator expectation theorem."
+        }
+      ],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:capacity-upper-bound",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:capacity-attainment",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:witness-capacity",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:max-anticommuting-size",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:jordan-wigner-extremal-set",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:universal-ceiling",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:polynomial-evaluation",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:measurement-setting-bound",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:four-solvable-families",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:clifford-rom-covariance",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean declaration is mapped to this node."
+    },
+    {
+      "dag_node_id": "claim:clifford-structure-invariance",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:rotated-closed-form",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:detection-coverage-definition",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:figure2-protocol",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:figure2-haar-input",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:figure2-variational-input",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:figure2-coverage-gain",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:figure2-reproduction-blocker",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:squared-pauli-profile",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:squared-stabilizer-support",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:quadratic-stabilizer-mwis",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:hbar-perfect-quadratic-witness",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:pauli-parseval",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:full-pauli-independent-sets",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:pure-sre-graph-identity",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:mixed-sre-identity-limitation",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:dephased-purity-mwis",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:mixed-state-graph-bound-open",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:full-pauli-obstructions",
+      "status": "GAP",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [
+        "verification:2607.26154v1:source-freeze",
+        "verification:2607.26154v1:source-derivation-review",
+        "verification:prototype:finite-instances",
+        "verification:prototype:active-dependency-negative-control",
+        "verification:2607.26154v1:physical-semantics",
+        "verification:2607.26154v1:figure2"
+      ],
+      "gap": "No current Lean mapping."
+    },
+    {
+      "dag_node_id": "claim:active-dependency-coset-decoding-open",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    },
+    {
+      "dag_node_id": "claim:imperfect-graph-theta-lower-bound-open",
+      "status": "NOT_APPLICABLE",
+      "existing_declarations": [],
+      "modules": [],
+      "planned_declarations": [],
+      "candidate_reuse": [],
+      "verification_references": [],
+      "gap": null
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+
+% Define spacing for use on titlepage
+%
+\def\titleskip{\vskip 4\bigskipamount}		%% Whitespace after title
+\def\authorskip{\vskip 2\bigskipamount}		%% Whitespace after author
+%
+% Additional titlepage definitions
+%
+\def\degreeaward{\gdef\@degreeaward}
+\degreeaward{Doctor of Philosophy}			% Default is Ph.D.
+
+\def\university{\gdef\@university}
+\university{California Institute of Technology}		% Default is Caltech
+
+\def\address{\gdef\@address}
+\address{Pasadena, California}				% Default is Caltech
+
+\def\copyyear{\gdef\@copyyear}
+\copyyear{\the\year}					% Default is today
+
+\def\pubnum{\gdef\@pubnum}
+\pubnum{}						% No publication number
+%
+% The titlepage must conform to CIT requirements
+%
+\def\maketitle{%
+ {\parindent=0pt
+ \begin{titlepage}
+   \let\footnotesize\small \let\footnoterule\relax \setcounter{page}{1}
+   \vskip-\headsep
+   \begin{center}
+     {\Large\bf \@title\par}
+     \titleskip
+     Thesis by\\
+     {\large \@author\par}
+     \authorskip
+     In Partial Fulfillment of the Requirements\\
+     for the Degree of\\
+     \@degreeaward\par
+     \vfill
+     \@university\\ 
+     \@address\par
+     \authorskip
+     \@copyyear\par
+     {\normalsize (Submitted \@date)\par}
+   \end{center}
+   \vspace*{.5in}
+ \end{titlepage}}
+}				%% End of \maketitle
+%
+% The chapter command without redefining the page style
+%
+\renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
+                    \global\@topnum\z@
+                    \@afterindentfalse
+                    \secdef\@chapter\@schapter}
+%
+% The abstract environment with page numbers
+%
+\if@titlepage
+  \renewenvironment{abstract}{%
+      \titlepage
+      \thispagestyle{headings}
+      \markright{ABSTRACT}
+      \null\vfil
+      \begin{center}%
+        \bfseries \abstractname
+        \@endparpenalty\@M
+      \end{center}}%
+     {\par\vfil\null\endtitlepage}
+\else
+  \renewenvironment{abstract}{%
+      \if@twocolumn
+        \section*{\abstractname}%
+      \else
+        \small
+        \begin{center}%
+          {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+        \end{center}%
+        \quotation
+      \fi}
+      {\if@twocolumn\else\endquotation\fi}
+\fi
+%
+% Acknowledgements page
+%
+\newenvironment{acknowledgements}{%
+    \titlepage
+    \thispagestyle{headings}
+    \markright{ACKNOWLEDGEMENTS}
+    \null\vfil
+    \begin{center}%
+      \bfseries Acknowledgements
+      \@endparpenalty\@M
+    \end{center}}%
+   {\par\vfil\null\endtitlepage}
+%
+% The copyright page is new, must conform to CIT requirements
+%
+\def\makecopyright{%
+ \markright{COPYRIGHT}
+ {\parindent=0pt
+ \null				% Forces rest to bottom of page
+ \vfill
+ \begin{center}
+   \copyright\quad \@copyyear\\
+   \@author\\
+   All Rights Reserved
+ \end{center}}
+ \newpage
+}				%% End of \makecopyright
+%
+% Titlepage should not reset the page number
+%
+\renewenvironment{titlepage}
+    {%
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}%
+      }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+    }
+

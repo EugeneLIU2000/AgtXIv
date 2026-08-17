@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.local/schemas/root-verification-partition.schema.json",
+  "title": "AgtXIv Root verification partition",
+  "type": "object",
+  "required": ["schema_version", "id", "agent", "route_catalog", "objects"],
+  "properties": {
+    "schema_version": {"const": "0.1.0-prototype"},
+    "id": {"type": "string", "pattern": "^verification-partition:"},
+    "agent": {"type": "string", "pattern": "^agent:"},
+    "route_catalog": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "enum": [
+          "SOURCE_ALIGNMENT",
+          "LEAN_KERNEL",
+          "EXACT_PHYSICAL_SEMANTICS",
+          "PHYSICAL_APPROXIMATION",
+          "EMPIRICAL"
+        ]
+      }
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "object_id",
+          "object_kind",
+          "approximation_introduced",
+          "verification_obligations",
+          "not_applicable"
+        ],
+        "properties": {
+          "object_id": {"type": "string"},
+          "object_kind": {"enum": ["CLAIM", "ASSUMPTION", "REASONING_STEP"]},
+          "approximation_introduced": {"type": "boolean"},
+          "verification_obligations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["route", "status", "evidence"],
+              "properties": {
+                "route": {
+                  "enum": [
+                    "SOURCE_ALIGNMENT",
+                    "LEAN_KERNEL",
+                    "EXACT_PHYSICAL_SEMANTICS",
+                    "PHYSICAL_APPROXIMATION",
+                    "EMPIRICAL"
+                  ]
+                },
+                "status": {"type": "string", "minLength": 1},
+                "evidence": {"type": "array", "items": {"type": "string"}},
+                "scope_relation": {"type": "string"},
+                "formalization_contracts": {"type": "array", "items": {"type": "string"}},
+                "declarations": {"type": "array", "items": {"type": "string"}},
+                "subclaims_kernel_checked": {"type": "array", "items": {"type": "string"}},
+                "exact_parent": {"type": "string"},
+                "approximation_map": {"type": "string"},
+                "control_parameters": {"type": "array", "items": {"type": "string"}},
+                "error_model": {"type": "string"},
+                "validity_regime": {"type": "string"},
+                "propagates_to": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": true
+            }
+          },
+          "not_applicable": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["route", "reason"],
+              "properties": {
+                "route": {
+                  "enum": [
+                    "SOURCE_ALIGNMENT",
+                    "LEAN_KERNEL",
+                    "EXACT_PHYSICAL_SEMANTICS",
+                    "PHYSICAL_APPROXIMATION",
+                    "EMPIRICAL"
+                  ]
+                },
+                "reason": {"type": "string", "minLength": 1}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

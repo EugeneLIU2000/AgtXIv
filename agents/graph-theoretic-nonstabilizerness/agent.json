@@ -1,0 +1,52 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "agent": {
+    "id": "agent:graph-theoretic-nonstabilizerness",
+    "paper_id": "arxiv:2607.26154v1",
+    "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
+    "role": [
+      "target"
+    ],
+    "lifecycle_status": "PARTIALLY_VERIFIED"
+  },
+  "source": {
+    "canonical_artifact": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+    "artifacts": "agents/graph-theoretic-nonstabilizerness/source/artifacts.json",
+    "source_hashes": "agents/graph-theoretic-nonstabilizerness/source/source-hashes.json",
+    "anchors": "agents/graph-theoretic-nonstabilizerness/source/anchors.jsonl"
+  },
+  "imports": [
+    {
+      "contract": "contract:2602.18939v1:reduced-polytope-vrep",
+      "assumption_match": "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl"
+    },
+    {
+      "contract": "statement:foundation:perfect-graph-weighted-duality",
+      "assumption_match": "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl"
+    },
+    {
+      "contract": "statement:foundation:finite-lp-strong-duality",
+      "assumption_match": "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl"
+    }
+  ],
+  "local_delta": {
+    "statements": "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+    "symbols": "agents/graph-theoretic-nonstabilizerness/knowledge/symbols.json",
+    "chains": "agents/graph-theoretic-nonstabilizerness/reasoning/chains.jsonl"
+  },
+  "verification": {
+    "records": "agents/graph-theoretic-nonstabilizerness/verification/records.jsonl",
+    "formalization_contract": "agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json",
+    "numerics": "agents/graph-theoretic-nonstabilizerness/computational",
+    "reviews": "agents/graph-theoretic-nonstabilizerness/reviews"
+  },
+  "exports": [
+    "agents/graph-theoretic-nonstabilizerness/exports/closed-form-equality.json"
+  ],
+  "unresolved": [
+    "agents/graph-theoretic-nonstabilizerness/blockers/root-contract-not-accepted.json",
+    "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+    "agents/graph-theoretic-nonstabilizerness/blockers/lean-environment-missing.json",
+    "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json"
+  ]
+}

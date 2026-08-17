@@ -1,0 +1,2630 @@
+{
+  "schema_version": "0.1.0-overlay",
+  "role_definitions": {
+    "ROOT_EXPORT": "Suggested stable Root API endpoint; this is an overlay recommendation, not a changed Lean visibility guarantee.",
+    "ROOT_INTERNAL_LEMMA": "Root proof support that downstream deltas should avoid importing directly.",
+    "INTERMEDIATE_DELTA_CANDIDATE": "Varela/local intermediate theorem or structure layered on Root imports.",
+    "TARGET_DELTA_CANDIDATE": "Target-paper local theorem planned after Root/intermediate imports.",
+    "AUDIT_ONLY": "Audit surface, not a mathematical dependency API.",
+    "UNMAPPED": "No supported role mapping."
+  },
+  "source_policy": "Only source-explicit module imports and existing formalization/verification records are indexed. No theorem dependency extraction or compilation was performed.",
+  "modules": [
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.RootMathCompletion",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.FiniteAtomAttainment",
+          "visibility": "public"
+        },
+        {
+          "module": "AgtXIvRootMath.StochasticContraction",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/CanonicalStabilizerAtoms.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.StabilizerRoMInstantiation",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "CanonicalAtomAux"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/DensityStabilizerRoM.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.CanonicalStabilizerAtoms",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "DensityStabilizerAtomMap"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/F2Coordinates.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliF2Support",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.BilinearForm.Properties",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "F2Bits"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/F2SymplecticNondegenerate.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliF2Support",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.BilinearForm.Properties",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "F2Bits",
+        "F2Support"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.FiniteAtomRoM",
+          "visibility": "public"
+        },
+        {
+          "module": "Mathlib.Topology.MetricSpace.Bounded",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomConvexHull.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.FiniteAtomRoM",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Analysis.Convex.Combination",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "Mathlib",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.AtomPreservingMonotonicity",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanCharacterDimension.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanGroupAverage",
+          "visibility": "public"
+        },
+        {
+          "module": "Mathlib.RepresentationTheory.Character",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Gottesman"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanConcretePauliFrame.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliAdjoint",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanRankPauliFrame",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanPauliGenerators",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.RepresentationTheory.Character",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame",
+        "IndependentSignedPauliGenerators"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.PauliAdjoint",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Analysis.Matrix.PosDef",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Matrix.Rank",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanUniqueRay",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Algebra.Group.Submonoid.BigOperators",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "CommutingInvolutivePauliGenerators",
+        "IndependentSignedPauliGenerators"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "Mathlib.RepresentationTheory.Invariants",
+          "visibility": "public"
+        },
+        {
+          "module": "Mathlib.Data.Complex.Basic",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Gottesman"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanRankNProjector",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Data.Finset.NoncommProd",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "CommutingInvolutivePauliGenerators",
+        "IndependentSignedPauliGenerators"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Analysis.Matrix.PosDef",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Matrix.Rank",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankPauliFrame.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanCharacterDimension",
+          "visibility": "public"
+        },
+        {
+          "module": "Mathlib.Data.Fintype.BigOperators",
+          "visibility": "public"
+        },
+        {
+          "module": "Mathlib.Data.ZMod.Basic",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Gottesman",
+        "RankPauliFrame"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanPauliGenerators",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Analysis.Complex.Norm",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.FiniteDimensional.Basic",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/HermitianAffineFeasibility.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.FiniteAtomRoM",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanRankNProjector",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Algebra.Star.Module",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.AffineSpace.Combination",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM",
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/HermitianPauliBasis.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.HermitianAffineFeasibility",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.PauliAdjoint",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Basis.VectorSpace",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Matrix.StdBasis",
+          "visibility": "default"
+        },
+        {
+          "module": "Init.Data.BitVec.Lemmas",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliAdjoint.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliTrace",
+          "visibility": "default"
+        },
+        {
+          "module": "Quantumlib.ForMathlib.Data.Matrix.Unitary",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliSyndromeIntertwiner",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.SemanticCliffordFrames",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.StandardZIndependentFrame",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliDualFrame.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliSupportWord",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliF2Support.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.BilinearForm.Basic",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "F2Bits",
+        "F2Support"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFaithful.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliAdjoint",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameNormalForm.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliDualFrame",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.PauliFaithful",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSupportCompletion.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.F2SymplecticNondegenerate",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.SymplecticCompletion",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.StdBasis",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSymplecticBasis.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliFrameSupportCompletion",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliSupportWord.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliFrameSymplecticBasis",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.HermitianPauliBasis",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanPauliGenerators",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "CommutingInvolutivePauliGenerators"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeData.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanUniqueRay",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.SyndromeBasis",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.PauliFrameNormalForm",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeIntertwiner.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliSyndromeData",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "SyndromeBasisData",
+        "IndependentSignedPauliFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.RepresentationTheory.Character",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/ProductStabilizerFrames.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.QubitStabilizerAffineComplete",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.StandardZProjectorBridge",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.PauliFrameSupportCompletion",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/QubitStabilizerAffineComplete.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.HermitianAffineFeasibility",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.PauliF2Support",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanGeneralRankProjector",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.UnconditionalStabilizerRoM",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.VeitchOrbitPolytope",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/SemanticClifford.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "visibility": "default"
+        },
+        {
+          "module": "Quantumlib.ForMathlib.Data.Matrix.Unitary",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "SemanticClifford"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/SemanticCliffordFrames.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliFaithful",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.SemanticClifford",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanRankNProjector",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "SemanticClifford"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.HermitianPauliBasis",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.ProductStabilizerFrames",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.StabilizerAtomMaps",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAtomMaps.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.HermitianAffineFeasibility",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.VeitchStabilizerPolytope",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Analysis.CStarAlgebra.Matrix",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "StabilizerAtomMap"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerFrameProjector.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliF2Support",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.SemanticClifford",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Matrix.Hermitian",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "PauliFrame",
+        "StandardFrame"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerRoMInstantiation.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.StabilizerAtomMaps",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StandardZIndependentFrame.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StandardZProjectorBridge.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.StandardZIndependentFrame",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.StabilizerFrameProjector",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.GottesmanRankNProjector",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/StochasticContraction.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.FiniteAtomRoM",
+          "visibility": "public"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.RoM",
+        "FiniteStochasticKernel"
+      ],
+      "public_expose_section": true,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/SymplecticCompletion.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.F2Coordinates",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Basis.VectorSpace",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.BilinearForm.Properties",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/SyndromeBasis.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.SemanticClifford",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.LinearAlgebra.Matrix.ConjTranspose",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer",
+        "SyndromeBasisData"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.StabilizerAffineComplete",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.DensityStabilizerRoM",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchConvexHull.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.FiniteAtomConvexHull",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.VeitchStabilizerPolytope",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitBridge.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.StandardZProjectorBridge",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.SemanticCliffordFrames",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.VeitchStabilizerPolytope",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.PauliCliffordTransitivity",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.VeitchOrbitBridge",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.VeitchConvexHull",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.VeitchOrbitEquivalence",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchStabilizerPolytope.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.GottesmanPauliGenerators",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvRootMath.FiniteAtomTotalRoM",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Stabilizer"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY"
+    },
+    {
+      "module_path": "formal/AgtXIvRootMath/Audit.lean",
+      "project": "formal/AgtXIvRootMath",
+      "suggested_role": "AUDIT_ONLY",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [],
+      "public_expose_section": false,
+      "stability_for_downstream": "AUDIT_ONLY"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/AgtXIvVarela.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvVarela.VRepConditional",
+          "visibility": "default"
+        },
+        {
+          "module": "AgtXIvVarela.ExternalPerfectGraphFoundation",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [],
+      "public_expose_section": false,
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvVarela.MaximalContext",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Varela",
+        "VRepRepairObligations"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_imports": [
+        {
+          "module": "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Combinatorics.SimpleGraph.Coloring.VertexColoring",
+          "visibility": "default"
+        },
+        {
+          "module": "Mathlib.Data.Real.Archimedean",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.GraphFoundation"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvVarela.MeasurementProjection",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Varela",
+        "MeasurementWindow",
+        "MaximalSignedContext"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvRootMath.RootMathCompletion",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Varela",
+        "MeasurementWindow"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvVarela.ContextReconstruction",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [
+        "AgtXIv.Varela"
+      ],
+      "public_expose_section": false,
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE"
+    },
+    {
+      "module_path": "formal/AgtXIvVarela/Audit.lean",
+      "project": "formal/AgtXIvVarela",
+      "suggested_role": "AUDIT_ONLY",
+      "explicit_imports": [
+        {
+          "module": "AgtXIvVarela",
+          "visibility": "default"
+        }
+      ],
+      "namespaces": [],
+      "public_expose_section": false,
+      "stability_for_downstream": "AUDIT_ONLY"
+    }
+  ],
+  "declarations": [
+    {
+      "declaration": "AgtXIv.RoM.coeff_sum_eq_one",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.RoM.normalized_l1",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.RoM.exists_l1Minimizer",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.FiniteAtomRoM",
+        "Mathlib.Topology.MetricSpace.Bounded"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.RoM.feasible_faithful",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.FiniteAtomRoM",
+        "Mathlib.Topology.MetricSpace.Bounded"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.RoM.kernelOfAtomImages",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.FiniteAtomAttainment",
+        "AgtXIvRootMath.StochasticContraction"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.FiniteAtomAttainment",
+        "AgtXIvRootMath.StochasticContraction"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.AtomPreservingMonotonicity"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Gottesman.groupAverage_mem_commonFixed",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib.RepresentationTheory.Invariants",
+        "Mathlib.Data.Complex.Basic"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Gottesman.groupAverage_eq_self_iff",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib.RepresentationTheory.Invariants",
+        "Mathlib.Data.Complex.Basic"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Gottesman.groupAverage_idempotent",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib.RepresentationTheory.Invariants",
+        "Mathlib.Data.Complex.Basic"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Gottesman.range_groupAverageMap",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib.RepresentationTheory.Invariants",
+        "Mathlib.Data.Complex.Basic"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Gottesman.groupAverage_isProjection",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Mathlib.RepresentationTheory.Invariants",
+        "Mathlib.Data.Complex.Basic"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "Quantumlib.Data.Gate.Pauli.Lemmas",
+        "Mathlib.RepresentationTheory.Character"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliFrame.finrank_commonFixed_eq_two_pow_sub",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanPauliGenerators",
+        "Mathlib.RepresentationTheory.Character"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanPauliGenerators",
+        "Mathlib.RepresentationTheory.Character"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_generalRankCommonFixed",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanUniqueRay",
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "Mathlib.Algebra.Group.Submonoid.BigOperators"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.toLin_stabilizerCodeProjectorMatrix",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.PauliAdjoint",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_isHermitian",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.PauliAdjoint",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_idempotent",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.PauliAdjoint",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.PauliAdjoint",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_trace",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.PauliAdjoint",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_range_finrank",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.PauliAdjoint",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanUniqueRay",
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "Mathlib.Algebra.Group.Submonoid.BigOperators"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanUniqueRay",
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "Mathlib.Algebra.Group.Submonoid.BigOperators"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanPauliGenerators",
+        "Mathlib.Analysis.Complex.Norm",
+        "Mathlib.LinearAlgebra.FiniteDimensional.Basic"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerProjectorMatrix_idempotent",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean"
+      ],
+      "suggested_role": "ROOT_INTERNAL_LEMMA",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "INTERNAL_DO_NOT_IMPORT_DIRECTLY",
+      "gap": "This audited declaration is not identified by an existing narrow stable-export manifest.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "Mathlib.Analysis.Matrix.PosDef",
+        "Mathlib.LinearAlgebra.Matrix.Rank"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:gottesman-stabilizer-formalism"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:9705052v1:pure-stabilizer-state"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanRankNProjector",
+        "Mathlib.Data.Finset.NoncommProd"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:veitch-stabilizer-resource-theory",
+        "claim:full-stabilizer-polytope"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.PauliSyndromeIntertwiner",
+        "AgtXIvRootMath.SemanticCliffordFrames",
+        "AgtXIvRootMath.StandardZIndependentFrame"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:veitch-stabilizer-resource-theory",
+        "claim:full-stabilizer-polytope"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.PauliCliffordTransitivity",
+        "AgtXIvRootMath.VeitchOrbitBridge"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:veitch-stabilizer-resource-theory",
+        "claim:full-stabilizer-polytope"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.VeitchConvexHull",
+        "AgtXIvRootMath.VeitchOrbitEquivalence"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:veitch-stabilizer-resource-theory",
+        "claim:full-stabilizer-polytope"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.VeitchConvexHull",
+        "AgtXIvRootMath.VeitchOrbitEquivalence"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:veitch-stabilizer-resource-theory",
+        "claim:full-stabilizer-polytope"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.VeitchConvexHull",
+        "AgtXIvRootMath.VeitchOrbitEquivalence"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.HermitianPauliBasis",
+        "AgtXIvRootMath.ProductStabilizerFrames",
+        "AgtXIvRootMath.StabilizerAtomMaps"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.StabilizerAffineComplete",
+        "AgtXIvRootMath.DensityStabilizerRoM"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.StabilizerAffineComplete",
+        "AgtXIvRootMath.DensityStabilizerRoM"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.StabilizerAffineComplete",
+        "AgtXIvRootMath.DensityStabilizerRoM"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.StabilizerAffineComplete",
+        "AgtXIvRootMath.DensityStabilizerRoM"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.GottesmanGeneralRankProjector",
+        "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+        "AgtXIvRootMath.UnconditionalStabilizerRoM",
+        "AgtXIvRootMath.VeitchOrbitPolytope"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+      "project": "formal/AgtXIvRootMath",
+      "module": "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+      "module_candidates": [
+        "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean"
+      ],
+      "suggested_role": "ROOT_EXPORT",
+      "explicit_dependencies": "See module explicit_imports; theorem-level dependencies are not inferred by this overlay.",
+      "claim_node_ids": [
+        "root:howard-campbell-rom",
+        "claim:full-rom"
+      ],
+      "statement_ids": [],
+      "export_ids": [
+        "contract:1609.07488v2:rom-definition",
+        "contract:1609.07488v2:rom-faithfulness",
+        "contract:1609.07488v2:rom-monotonicity"
+      ],
+      "verification_reference": "lean-verification:root-math:2026-08-16",
+      "stability_for_downstream": "STABLE_CANDIDATE_NOT_FROZEN",
+      "gap": null,
+      "module_explicit_imports": [
+        "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "AgtXIvRootMath.GottesmanGeneralRankProjector",
+        "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+        "AgtXIvRootMath.UnconditionalStabilizerRoM",
+        "AgtXIvRootMath.VeitchOrbitPolytope"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+      "project": "formal/AgtXIvVarela",
+      "module": "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+      "module_candidates": [
+        "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean"
+      ],
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_dependencies": "See module explicit_imports; MeasurementProjection explicitly imports AgtXIvRootMath.RootMathCompletion.",
+      "claim_node_ids": [
+        "root:varela-reduced-polytope",
+        "claim:exact-reduced-vrep"
+      ],
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-vrep-normalized"
+      ],
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "verification_reference": "lean-verification:varela-vrep:2026-08-16",
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE_CONDITIONAL",
+      "gap": "Existing records keep the V-representation conditional and the graph foundation truth/source alignment external.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.RootMathCompletion"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Varela.MeasurementWindow.mem_projectedStabilizerPolytope_iff",
+      "project": "formal/AgtXIvVarela",
+      "module": "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+      "module_candidates": [
+        "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean"
+      ],
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_dependencies": "See module explicit_imports; MeasurementProjection explicitly imports AgtXIvRootMath.RootMathCompletion.",
+      "claim_node_ids": [
+        "root:varela-reduced-polytope",
+        "claim:exact-reduced-vrep"
+      ],
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-vrep-normalized"
+      ],
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "verification_reference": "lean-verification:varela-vrep:2026-08-16",
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE_CONDITIONAL",
+      "gap": "Existing records keep the V-representation conditional and the graph foundation truth/source alignment external.",
+      "module_explicit_imports": [
+        "AgtXIvRootMath.RootMathCompletion"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.abs_vector_le_one",
+      "project": "formal/AgtXIvVarela",
+      "module": "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+      "module_candidates": [
+        "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean"
+      ],
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_dependencies": "See module explicit_imports; MeasurementProjection explicitly imports AgtXIvRootMath.RootMathCompletion.",
+      "claim_node_ids": [
+        "root:varela-reduced-polytope",
+        "claim:exact-reduced-vrep"
+      ],
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-vrep-normalized"
+      ],
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "verification_reference": "lean-verification:varela-vrep:2026-08-16",
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE_CONDITIONAL",
+      "gap": "Existing records keep the V-representation conditional and the graph foundation truth/source alignment external.",
+      "module_explicit_imports": [
+        "AgtXIvVarela.MeasurementProjection"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+      "project": "formal/AgtXIvVarela",
+      "module": "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+      "module_candidates": [
+        "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean"
+      ],
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_dependencies": "See module explicit_imports; MeasurementProjection explicitly imports AgtXIvRootMath.RootMathCompletion.",
+      "claim_node_ids": [
+        "root:varela-reduced-polytope",
+        "claim:exact-reduced-vrep"
+      ],
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-vrep-normalized"
+      ],
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "verification_reference": "lean-verification:varela-vrep:2026-08-16",
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE_CONDITIONAL",
+      "gap": "Existing records keep the V-representation conditional and the graph foundation truth/source alignment external.",
+      "module_explicit_imports": [
+        "AgtXIvVarela.MaximalContext"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional",
+      "project": "formal/AgtXIvVarela",
+      "module": "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+      "module_candidates": [
+        "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean"
+      ],
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_dependencies": "See module explicit_imports; MeasurementProjection explicitly imports AgtXIvRootMath.RootMathCompletion.",
+      "claim_node_ids": [
+        "root:varela-reduced-polytope",
+        "claim:exact-reduced-vrep"
+      ],
+      "statement_ids": [
+        "statement:2602.18939v1:reduced-polytope-vrep-normalized"
+      ],
+      "export_ids": [
+        "contract:2602.18939v1:reduced-polytope-vrep"
+      ],
+      "verification_reference": "lean-verification:varela-vrep:2026-08-16",
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE_CONDITIONAL",
+      "gap": "Existing records keep the V-representation conditional and the graph foundation truth/source alignment external.",
+      "module_explicit_imports": [
+        "AgtXIvVarela.ContextReconstruction"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.GraphFoundation.weighted_duality_of_foundation",
+      "project": "formal/AgtXIvVarela",
+      "module": "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+      "module_candidates": [
+        "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean"
+      ],
+      "suggested_role": "INTERMEDIATE_DELTA_CANDIDATE",
+      "explicit_dependencies": "See module explicit_imports; MeasurementProjection explicitly imports AgtXIvRootMath.RootMathCompletion.",
+      "claim_node_ids": [
+        "root:perfect-graph-weighted-duality"
+      ],
+      "statement_ids": [
+        "statement:foundation:perfect-graph-weighted-duality"
+      ],
+      "export_ids": [],
+      "verification_reference": "lean-verification:varela-vrep:2026-08-16",
+      "stability_for_downstream": "LOCAL_TO_INTERMEDIATE_CONDITIONAL",
+      "gap": "Existing records keep the V-representation conditional and the graph foundation truth/source alignment external.",
+      "module_explicit_imports": [
+        "Mathlib.Combinatorics.SimpleGraph.Clique",
+        "Mathlib.Combinatorics.SimpleGraph.Coloring.VertexColoring",
+        "Mathlib.Data.Real.Archimedean"
+      ]
+    },
+    {
+      "declaration": "Stabilizerness.max_abs_signed_sum",
+      "project": "formal/AgtXIvRootMath",
+      "module": "GAP_NOT_IMPLEMENTED",
+      "module_candidates": [],
+      "suggested_role": "TARGET_DELTA_CANDIDATE",
+      "explicit_dependencies": "Planned only; no source declaration exists.",
+      "claim_node_ids": [
+        "claim:relaxed-mwis-dual"
+      ],
+      "statement_ids": [
+        "statement:2607.26154v1:dual-mwis"
+      ],
+      "export_ids": [],
+      "verification_reference": null,
+      "stability_for_downstream": "GAP",
+      "gap": "Listed as intended_lean_declarations in agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json; current file states they are not implemented.",
+      "module_explicit_imports": []
+    },
+    {
+      "declaration": "Stabilizerness.relaxed_vertices_affineSpan",
+      "project": "formal/AgtXIvRootMath",
+      "module": "GAP_NOT_IMPLEMENTED",
+      "module_candidates": [],
+      "suggested_role": "TARGET_DELTA_CANDIDATE",
+      "explicit_dependencies": "Planned only; no source declaration exists.",
+      "claim_node_ids": [
+        "claim:relaxed-affine-span"
+      ],
+      "statement_ids": [
+        "statement:2607.26154v1:relaxed-affine-span"
+      ],
+      "export_ids": [],
+      "verification_reference": null,
+      "stability_for_downstream": "GAP",
+      "gap": "Listed as intended_lean_declarations in agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json; current file states they are not implemented.",
+      "module_explicit_imports": []
+    }
+  ]
+}

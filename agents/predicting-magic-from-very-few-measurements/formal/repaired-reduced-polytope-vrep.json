@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "formalization-contract:2602.18939v1:repaired-reduced-polytope-vrep",
+  "provider_agent": "agent:predicting-magic-from-very-few-measurements",
+  "source_statement": "statement:2602.18939v1:reduced-polytope-vrep",
+  "normalized_statement": "statement:2602.18939v1:reduced-polytope-vrep-normalized",
+  "source_derivation_status": "GAP_FOUND",
+  "repair_origin": "AGENT_RECONSTRUCTED",
+  "formal_project": {
+    "path": "formal/AgtXIvVarela",
+    "system": "Lean 4",
+    "toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "root_dependency": "formal/AgtXIvRootMath",
+    "default_import": "AgtXIvVarela"
+  },
+  "assumptions_made_explicit": [
+    "the measurement window is finite and nonempty",
+    "each coordinate uses a fixed nonidentity Hermitian involutive n-qubit Pauli representative",
+    "measurement representatives are distinct modulo phase, so duplicate and plus/minus-duplicate classes are excluded",
+    "contexts are inclusion-maximal commuting subsets of the fixed window, not maximum-cardinality subsets",
+    "admissible signs are phase-aware and exclude minus identity from the generated signed Pauli subgroup"
+  ],
+  "declarations_kernel_checked": [
+    "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+    "AgtXIv.Varela.MeasurementWindow.mem_projectedStabilizerPolytope_iff",
+    "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.abs_vector_le_one",
+    "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+    "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+  ],
+  "conditional_theorem_inputs": [
+    "candidatePhysical: every normalized maximal-context candidate belongs to the projected stabilizer polytope",
+    "atomRefinement: every projected pure stabilizer atom is a convex mixture of maximal-context candidates"
+  ],
+  "missing_declarations": [
+    "context_to_partial_signed_frame",
+    "complete_signed_frame_extending_context",
+    "context_vertex_physical_realization",
+    "projection_maximal_mixture",
+    "normalized_vrep_extremality"
+  ],
+  "graph_policy": {
+    "vrep_graph_usage": "Only the elementary anticommutation-edge/commuting-context dictionary is used here.",
+    "perfect_graph_results": "Outside the V-representation theorem. The same Lean package fixes exact finite weighted graph quantities and exposes WeightedPerfectGraphFoundation as an explicit external theorem parameter; it does not prove or axiomatically assert Chvatal's theorem."
+  },
+  "non_inheritance_guards": [
+    "A kernel-checked implication does not kernel-check its unproved premises.",
+    "The aggregate normalized V-representation remains PARTIALLY_FORMALIZED.",
+    "The failed published proof remains permanently recorded and is not overwritten by the repair chain.",
+    "No physical approximation or empirical evidence is involved."
+  ],
+  "verification_record": "verification:2602.18939v1:lean-vrep-conditional",
+  "verification_evidence": "formal/AgtXIvVarela/verification-result.json",
+  "status": "PARTIALLY_FORMALIZED",
+  "parent_contract_effect": {
+    "contract:2602.18939v1:reduced-polytope-vrep": "mathematics PARTIALLY_FORMALIZED; accepted=false",
+    "agent:predicting-magic-from-very-few-measurements": "remains PARTIALLY_VERIFIED"
+  }
+}

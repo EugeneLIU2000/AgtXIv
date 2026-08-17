@@ -1,0 +1,12 @@
+name = "AgtXIvVarela"
+version = "0.1.0"
+defaultTargets = ["AgtXIvVarela"]
+packagesDir = "../AgtXIvRootMath/.lake/packages"
+
+[[require]]
+name = "AgtXIvRootMath"
+path = "../AgtXIvRootMath"
+
+[[lean_lib]]
+name = "AgtXIvVarela"
+moreLeanArgs = ["-DautoImplicit=false"]

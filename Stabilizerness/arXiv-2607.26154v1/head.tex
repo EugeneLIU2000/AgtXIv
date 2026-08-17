@@ -1,0 +1,126 @@
+ % *********** GENERAL PACKAGES ***********
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float}
+\usepackage[]{xcolor}
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{quantikz}
+% \usetikzlibrary{quantikz2}
+\usepackage{bm}
+\usepackage{bbold} % \mathbb{1}
+\usepackage{siunitx}
+\usepackage{physics}
+\usepackage[version=4]{mhchem}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage[ruled,lined,linesnumbered]{algorithm2e}
+\usepackage{mdframed}
+\usepackage{bibunits}
+
+
+% \usepackage{qcircuit}
+
+% *********** Colors ***********
+
+\definecolor{LEI-blue}{cmyk}{1,.75,0,.35} % Leiden blue
+\definecolor{LEI-orange}{cmyk}{0,.62,.97,0} % Leiden Science orange
+\definecolor{niceblue}{rgb}{.1, .25, .8}
+
+
+% *********** hyperlinks ***********
+
+\usepackage[colorlinks=true, linkcolor=niceblue, citecolor=gray]{hyperref}
+\usepackage{orcidlink}
+
+% *********** Commands ***********
+
+\newcommand{\topic}[1]{
+	%\textcolor{LEI-orange}{\emph{#1} ---}
+}
+% *********** Theorems ***********
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{observation}[theorem]{Observation}
+% \newtheorem{algorithm}[theorem]{Algorithm}
+
+
+
+% *********** Symbols ***********
+
+\renewcommand{\Im}{\operatorname{Im}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\RI}{\operatorname{Re/Im}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\newcommand{\clnum}{\operatorname{cl}}
+%\DeclareMathOperator{\Tr}{Tr}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+
+
+% ***** Affiliations *****
+
+\newcommand{\equalcontrib}{
+	\altaffiliation{These authors contributed equally to this work}
+}
+
+
+
+\newcommand{\google}{
+	\affiliation{Google Quantum AI}
+}
+
+\newcommand{\covestro}{
+	\affiliation{Covestro Deutschland AG, Leverkusen 51373, Germany}
+}
+
+\newcommand{\lorentz}[0]{%
+	\affiliation{Instituut-Lorentz, Universiteit Leiden, P.O. Box 9506, 2300 RA Leiden, The Netherlands.}
+}
+\newcommand{\aQa}[0]{%
+	\affiliation{$\langle \textit{aQa}^\textit{L} \rangle$ Applied Quantum Algorithms, Leiden University, The Netherlands.}
+}
+\newcommand{\uva}[0]{%
+	\affiliation{HIMS, IvI \& QuSoft, Universiteit van Amsterdam, The Netherlands}
+}
+
+\newcommand{\cqt}[0]{%
+	\affiliation{Centre for Quantum Technologies, National University of Singapore, 3 Science Drive 2, Singapore 117543, Singapore}
+}
+
+\newcommand{\hkust}[0]{%
+	\affiliation{The Hong Kong University of Science and Technology, Clear Water Bay, Kowloon, Hong Kong.}
+}
+
+\newcommand{\padova}[0]{%
+	\affiliation{Dipartimento di Fisica e Astronomia ``G. Galilei'', Università di Padova, I-35131 Padova, Italy}
+	\affiliation{Padua Quantum Technologies Research Center, Università degli Studi di Padova, I-35131 Padova, Italy}
+}
+
+\newcommand{\ketfix}[1]{\mathinner{\lvert #1\rangle}}
+\newcommand{\brafix}[1]{\mathinner{\langle #1\rvert}}
+\newcommand{\braketfix}[2]{\mathinner{\langle #1 \mid #2\rangle}}
+
+% Keep double-column float-only pages top aligned; collect unused space below.
+\makeatletter
+\setlength{\@dblfptop}{0pt}
+\setlength{\@dblfpbot}{0pt plus 1fil}
+\makeatother

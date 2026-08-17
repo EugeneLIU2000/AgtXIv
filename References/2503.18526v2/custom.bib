@@ -1,0 +1,347 @@
+% Use this file for citations not found in the ACL Anthology (contained in "anthology.bib").
+
+@misc{vladika2023scientificfactcheckingsurveyresources,
+      title={Scientific Fact-Checking: A Survey of Resources and Approaches}, 
+      author={Juraj Vladika and Florian Matthes},
+      year={2023},
+      eprint={2305.16859},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2305.16859}, 
+}
+
+@inproceedings{eldifrawi-etal-2024-automated,
+    title = "Automated Justification Production for Claim Veracity in Fact Checking: A Survey on Architectures and Approaches",
+    author = "Eldifrawi, Islam  and
+      Wang, Shengrui  and
+      Trabelsi, Amine",
+    editor = "Ku, Lun-Wei  and
+      Martins, Andre  and
+      Srikumar, Vivek",
+    booktitle = "Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = aug,
+    year = "2024",
+    address = "Bangkok, Thailand",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.acl-long.361/",
+    doi = "10.18653/v1/2024.acl-long.361",
+    pages = "6679--6692",
+    abstract = "Automated Fact-Checking (AFC) is the automated verification of claim accuracy. AFC is crucial in discerning truth from misinformation, especially given the huge amounts of content are generated online daily. Current research focuses on predicting claim veracity through metadata analysis and language scrutiny, with an emphasis on justifying verdicts. This paper surveys recent methodologies, proposinga comprehensive taxonomy and presenting the evolution of research in that landscape. A comparative analysis of methodologies and futuredirections for improving fact-checking explainability are also discussed."
+}
+
+@misc{jafari2024robustclaimverificationfact,
+      title={Robust Claim Verification Through Fact Detection}, 
+      author={Nazanin Jafari and James Allan},
+      year={2024},
+      eprint={2407.18367},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2407.18367}, 
+}
+
+@article{10.1093/jamiaopen/ooae021,
+    author = {Liu, Hao and Soroush, Ali and Nestor, Jordan G and Park, Elizabeth and Idnay, Betina and Fang, Yilu and Pan, Jane and Liao, Stan and Bernard, Marguerite and Peng, Yifan and Weng, Chunhua},
+    title = {Retrieval augmented scientific claim verification},
+    journal = {JAMIA Open},
+    volume = {7},
+    number = {1},
+    pages = {ooae021},
+    year = {2024},
+    month = {02},
+    abstract = {To automate scientific claim verification using PubMed abstracts.We developed CliVER, an end-to-end scientific Claim VERification system that leverages retrieval-augmented techniques to automatically retrieve relevant clinical trial abstracts, extract pertinent sentences, and use the PICO framework to support or refute a scientific claim. We also created an ensemble of three state-of-the-art deep learning models to classify rationale of support, refute, and neutral. We then constructed CoVERt, a new COVID VERification dataset comprising 15 PICO-encoded drug claims accompanied by 96 manually selected and labeled clinical trial abstracts that either support or refute each claim. We used CoVERt and SciFact (a public scientific claim verification dataset) to assess CliVER’s performance in predicting labels. Finally, we compared CliVER to clinicians in the verification of 19 claims from 6 disease domains, using 189 648 PubMed abstracts extracted from January 2010 to October 2021.In the evaluation of label prediction accuracy on CoVERt, CliVER achieved a notable F1 score of 0.92, highlighting the efficacy of the retrieval-augmented models. The ensemble model outperforms each individual state-of-the-art model by an absolute increase from 3\% to 11\% in the F1 score. Moreover, when compared with four clinicians, CliVER achieved a precision of 79.0\% for abstract retrieval, 67.4\% for sentence selection, and 63.2\% for label prediction, respectively.CliVER demonstrates its early potential to automate scientific claim verification using retrieval-augmented strategies to harness the wealth of clinical trial abstracts in PubMed. Future studies are warranted to further test its clinical utility.},
+    issn = {2574-2531},
+    doi = {10.1093/jamiaopen/ooae021},
+    url = {https://doi.org/10.1093/jamiaopen/ooae021},
+    eprint = {https://academic.oup.com/jamiaopen/article-pdf/7/1/ooae021/56904263/ooae021.pdf},
+}
+
+@inproceedings{pradeep-etal-2021-scientific,
+    title = "Scientific Claim Verification with {V}er{T}5erini",
+    author = "Pradeep, Ronak  and
+      Ma, Xueguang  and
+      Nogueira, Rodrigo  and
+      Lin, Jimmy",
+    editor = "Holderness, Eben  and
+      Jimeno Yepes, Antonio  and
+      Lavelli, Alberto  and
+      Minard, Anne-Lyse  and
+      Pustejovsky, James  and
+      Rinaldi, Fabio",
+    booktitle = "Proceedings of the 12th International Workshop on Health Text Mining and Information Analysis",
+    month = apr,
+    year = "2021",
+    address = "online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.louhi-1.11/",
+    pages = "94--103",
+    abstract = "This work describes the adaptation of a pretrained sequence-to-sequence model to the task of scientific claim verification in the biomedical domain. We propose a system called VerT5erini that exploits T5 for abstract retrieval, sentence selection, and label prediction, which are three critical sub-tasks of claim verification. We evaluate our pipeline on SciFACT, a newly curated dataset that requires models to not just predict the veracity of claims but also provide relevant sentences from a corpus of scientific literature that support the prediction. Empirically, our system outperforms a strong baseline in each of the three sub-tasks. We further show VerT5erini`s ability to generalize to two new datasets of COVID-19 claims using evidence from the CORD-19 corpus."
+}
+
+@inproceedings{min-etal-2023-factscore,
+    title = "{FA}ct{S}core: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation",
+    author = "Min, Sewon  and
+      Krishna, Kalpesh  and
+      Lyu, Xinxi  and
+      Lewis, Mike  and
+      Yih, Wen-tau  and
+      Koh, Pang  and
+      Iyyer, Mohit  and
+      Zettlemoyer, Luke  and
+      Hajishirzi, Hannaneh",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.741/",
+    doi = "10.18653/v1/2023.emnlp-main.741",
+    pages = "12076--12100",
+    abstract = "Evaluating the factuality of long-form text generated by large language models (LMs) is non-trivial because (1) generations often contain a mixture of supported and unsupported pieces of information, making binary judgments of quality inadequate, and (2) human evaluation is time-consuming and costly. In this paper, we introduce FACTSCORE, a new evaluation that breaks a generation into a series of atomic facts and computes the percentage of atomic facts supported by a reliable knowledge source. We conduct an extensive human evaluation to obtain FACTSCOREs of people biographies generated by several state-of-the-art commercial LMs{---}InstructGPT, ChatGPT, and the retrieval-augmented PerplexityAI{---}and report new analysis demonstrating the need for such a fine-grained score (e.g., ChatGPT only achieves 58{\%}). Since human evaluation is costly, we also introduce an automated model that estimates FACTSCORE using retrieval and a strong language model, with less than a 2{\%} error rate. Finally, we use this automated metric to evaluate 6,500 generations from a new set of 13 recent LMs that would have cost {\$}26K if evaluated by humans, with various findings: GPT-4 and ChatGPT are more factual than public models, and Vicuna and Alpaca are some of the best public models. FACTSCORE is available for public use via {\textquoteleft}pip install factscore{\textquoteleft}."
+}
+
+@misc{chern2023factoolfactualitydetectiongenerative,
+      title={FacTool: Factuality Detection in Generative AI -- A Tool Augmented Framework for Multi-Task and Multi-Domain Scenarios}, 
+      author={I-Chun Chern and Steffi Chern and Shiqi Chen and Weizhe Yuan and Kehua Feng and Chunting Zhou and Junxian He and Graham Neubig and Pengfei Liu},
+      year={2023},
+      eprint={2307.13528},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2307.13528}, 
+}
+
+@misc{scirè2024truthmirageendtoendfactuality,
+      title={Truth or Mirage? Towards End-to-End Factuality Evaluation with LLM-Oasis}, 
+      author={Alessandro Scirè and Andrei Stefan Bejgu and Simone Tedeschi and Karim Ghonim and Federico Martelli and Roberto Navigli},
+      year={2024},
+      eprint={2411.19655},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2411.19655}, 
+}
+
+@inproceedings{pan-etal-2021-zero,
+    title = "Zero-shot Fact Verification by Claim Generation",
+    author = "Pan, Liangming  and
+      Chen, Wenhu  and
+      Xiong, Wenhan  and
+      Kan, Min-Yen  and
+      Wang, William Yang",
+    editor = "Zong, Chengqing  and
+      Xia, Fei  and
+      Li, Wenjie  and
+      Navigli, Roberto",
+    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 2: Short Papers)",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.acl-short.61/",
+    doi = "10.18653/v1/2021.acl-short.61",
+    pages = "476--483",
+    abstract = "Neural models for automated fact verification have achieved promising results thanks to the availability of large, human-annotated datasets. However, for each new domain that requires fact verification, creating a dataset by manually writing claims and linking them to their supporting evidence is expensive. We develop QACG, a framework for training a robust fact verification model by using automatically generated claims that can be supported, refuted, or unverifiable from evidence from Wikipedia. QACG generates question-answer pairs from the evidence and then converts them into different types of claims. Experiments on the FEVER dataset show that our QACG framework significantly reduces the demand for human-annotated training data. In a zero-shot scenario, QACG improves a RoBERTa model`s F1 from 50{\%} to 77{\%}, equivalent in performance to 2K+ manually-curated examples. Our QACG code is publicly available."
+}
+
+@inproceedings{wright-etal-2022-generating,
+    title = "Generating Scientific Claims for Zero-Shot Scientific Fact Checking",
+    author = "Wright, Dustin  and
+      Wadden, David  and
+      Lo, Kyle  and
+      Kuehl, Bailey  and
+      Cohan, Arman  and
+      Augenstein, Isabelle  and
+      Wang, Lucy Lu",
+    editor = "Muresan, Smaranda  and
+      Nakov, Preslav  and
+      Villavicencio, Aline",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.175/",
+    doi = "10.18653/v1/2022.acl-long.175",
+    pages = "2448--2460",
+    abstract = "Automated scientific fact checking is difficult due to the complexity of scientific language and a lack of significant amounts of training data, as annotation requires domain expertise. To address this challenge, we propose scientific claim generation, the task of generating one or more atomic and verifiable claims from scientific sentences, and demonstrate its usefulness in zero-shot fact checking for biomedical claims. We propose CLAIMGEN-BART, a new supervised method for generating claims supported by the literature, as well as KBIN, a novel method for generating claim negations. Additionally, we adapt an existing unsupervised entity-centric method of claim generation to biomedical claims, which we call CLAIMGEN-ENTITY. Experiments on zero-shot fact checking demonstrate that both CLAIMGEN-ENTITY and CLAIMGEN-BART, coupled with KBIN, achieve up to 90{\%} performance of fully supervised models trained on manually annotated claims and evidence. A rigorous evaluation study demonstrates significant improvement in generated claim and negation quality over existing baselines"
+}
+
+@misc{khattab2020colbertefficienteffectivepassage,
+      title={ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT}, 
+      author={Omar Khattab and Matei Zaharia},
+      year={2020},
+      eprint={2004.12832},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR},
+      url={https://arxiv.org/abs/2004.12832}, 
+}
+
+@misc{wadden2022multiversimprovingscientificclaim,
+      title={MultiVerS: Improving scientific claim verification with weak supervision and full-document context}, 
+      author={David Wadden and Kyle Lo and Lucy Lu Wang and Arman Cohan and Iz Beltagy and Hannaneh Hajishirzi},
+      year={2022},
+      eprint={2112.01640},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2112.01640}, 
+}
+
+@inproceedings{wadden-etal-2020-fact,
+    title = "Fact or Fiction: Verifying Scientific Claims",
+    author = "Wadden, David  and
+      Lin, Shanchuan  and
+      Lo, Kyle  and
+      Wang, Lucy Lu  and
+      van Zuylen, Madeleine  and
+      Cohan, Arman  and
+      Hajishirzi, Hannaneh",
+    editor = "Webber, Bonnie  and
+      Cohn, Trevor  and
+      He, Yulan  and
+      Liu, Yang",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-main.609/",
+    doi = "10.18653/v1/2020.emnlp-main.609",
+    pages = "7534--7550",
+    abstract = "We introduce scientific claim verification, a new task to select abstracts from the research literature containing evidence that SUPPORTS or REFUTES a given scientific claim, and to identify rationales justifying each decision. To study this task, we construct SciFact, a dataset of 1.4K expert-written scientific claims paired with evidence-containing abstracts annotated with labels and rationales. We develop baseline models for SciFact, and demonstrate that simple domain adaptation techniques substantially improve performance compared to models trained on Wikipedia or political news. We show that our system is able to verify claims related to COVID-19 by identifying evidence from the CORD-19 corpus. Our experiments indicate that SciFact will provide a challenging testbed for the development of new systems designed to retrieve and reason over corpora containing specialized domain knowledge. Data and code for this new task are publicly available at \url{https://github.com/allenai/scifact}. A leaderboard and COVID-19 fact-checking demo are available at \url{https://scifact.apps.allenai.org}."
+}
+
+@misc{li2021paragraphlevelmultitasklearningmodel,
+      title={A Paragraph-level Multi-task Learning Model for Scientific Fact-Verification}, 
+      author={Xiangci Li and Gully Burns and Nanyun Peng},
+      year={2021},
+      eprint={2012.14500},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2012.14500}, 
+}
+
+@misc{diggelmann2021climatefeverdatasetverificationrealworld,
+      title={CLIMATE-FEVER: A Dataset for Verification of Real-World Climate Claims}, 
+      author={Thomas Diggelmann and Jordan Boyd-Graber and Jannis Bulian and Massimiliano Ciaramita and Markus Leippold},
+      year={2021},
+      eprint={2012.00614},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2012.00614}, 
+}
+
+@misc{grattafiori2024llama3herdmodels,
+      title={The Llama 3 Herd of Models}, 
+      author={Aaron Grattafiori and Abhimanyu Dubey and Abhinav Jauhri and Abhinav Pandey and Abhishek Kadian and Ahmad Al-Dahle and Aiesha Letman and Akhil Mathur and Alan Schelten and Alex Vaughan and Amy Yang and Angela Fan and Anirudh Goyal and Anthony Hartshorn and Aobo Yang and Archi Mitra and Archie Sravankumar and Artem Korenev and Arthur Hinsvark and Arun Rao and Aston Zhang and Aurelien Rodriguez and Austen Gregerson and Ava Spataru and Baptiste Roziere and Bethany Biron and Binh Tang and Bobbie Chern and Charlotte Caucheteux and Chaya Nayak and Chloe Bi and Chris Marra and Chris McConnell and Christian Keller and Christophe Touret and Chunyang Wu and Corinne Wong and Cristian Canton Ferrer and Cyrus Nikolaidis and Damien Allonsius and Daniel Song and Danielle Pintz and Danny Livshits and Danny Wyatt and David Esiobu and Dhruv Choudhary and Dhruv Mahajan and Diego Garcia-Olano and Diego Perino and Dieuwke Hupkes and Egor Lakomkin and Ehab AlBadawy and Elina Lobanova and Emily Dinan and Eric Michael Smith and Filip Radenovic and Francisco Guzmán and Frank Zhang and Gabriel Synnaeve and Gabrielle Lee and Georgia Lewis Anderson and Govind Thattai and Graeme Nail and Gregoire Mialon and Guan Pang and Guillem Cucurell and Hailey Nguyen and Hannah Korevaar and Hu Xu and Hugo Touvron and Iliyan Zarov and Imanol Arrieta Ibarra and Isabel Kloumann and Ishan Misra and Ivan Evtimov and Jack Zhang and Jade Copet and Jaewon Lee and Jan Geffert and Jana Vranes and Jason Park and Jay Mahadeokar and Jeet Shah and Jelmer van der Linde and Jennifer Billock and Jenny Hong and Jenya Lee and Jeremy Fu and Jianfeng Chi and Jianyu Huang and Jiawen Liu and Jie Wang and Jiecao Yu and Joanna Bitton and Joe Spisak and Jongsoo Park and Joseph Rocca and Joshua Johnstun and Joshua Saxe and Junteng Jia and Kalyan Vasuden Alwala and Karthik Prasad and Kartikeya Upasani and Kate Plawiak and Ke Li and Kenneth Heafield and Kevin Stone and Khalid El-Arini and Krithika Iyer and Kshitiz Malik and Kuenley Chiu and Kunal Bhalla and Kushal Lakhotia and Lauren Rantala-Yeary and Laurens van der Maaten and Lawrence Chen and Liang Tan and Liz Jenkins and Louis Martin and Lovish Madaan and Lubo Malo and Lukas Blecher and Lukas Landzaat and Luke de Oliveira and Madeline Muzzi and Mahesh Pasupuleti and Mannat Singh and Manohar Paluri and Marcin Kardas and Maria Tsimpoukelli and Mathew Oldham and Mathieu Rita and Maya Pavlova and Melanie Kambadur and Mike Lewis and Min Si and Mitesh Kumar Singh and Mona Hassan and Naman Goyal and Narjes Torabi and Nikolay Bashlykov and Nikolay Bogoychev and Niladri Chatterji and Ning Zhang and Olivier Duchenne and Onur Çelebi and Patrick Alrassy and Pengchuan Zhang and Pengwei Li and Petar Vasic and Peter Weng and Prajjwal Bhargava and Pratik Dubal and Praveen Krishnan and Punit Singh Koura and Puxin Xu and Qing He and Qingxiao Dong and Ragavan Srinivasan and Raj Ganapathy and Ramon Calderer and Ricardo Silveira Cabral and Robert Stojnic and Roberta Raileanu and Rohan Maheswari and Rohit Girdhar and Rohit Patel and Romain Sauvestre and Ronnie Polidoro and Roshan Sumbaly and Ross Taylor and Ruan Silva and Rui Hou and Rui Wang and Saghar Hosseini and Sahana Chennabasappa and Sanjay Singh and Sean Bell and Seohyun Sonia Kim and Sergey Edunov and Shaoliang Nie and Sharan Narang and Sharath Raparthy and Sheng Shen and Shengye Wan and Shruti Bhosale and Shun Zhang and Simon Vandenhende and Soumya Batra and Spencer Whitman and Sten Sootla and Stephane Collot and Suchin Gururangan and Sydney Borodinsky and Tamar Herman and Tara Fowler and Tarek Sheasha and Thomas Georgiou and Thomas Scialom and Tobias Speckbacher and Todor Mihaylov and Tong Xiao and Ujjwal Karn and Vedanuj Goswami and Vibhor Gupta and Vignesh Ramanathan and Viktor Kerkez and Vincent Gonguet and Virginie Do and Vish Vogeti and Vítor Albiero and Vladan Petrovic and Weiwei Chu and Wenhan Xiong and Wenyin Fu and Whitney Meers and Xavier Martinet and Xiaodong Wang and Xiaofang Wang and Xiaoqing Ellen Tan and Xide Xia and Xinfeng Xie and Xuchao Jia and Xuewei Wang and Yaelle Goldschlag and Yashesh Gaur and Yasmine Babaei and Yi Wen and Yiwen Song and Yuchen Zhang and Yue Li and Yuning Mao and Zacharie Delpierre Coudert and Zheng Yan and Zhengxing Chen and Zoe Papakipos and Aaditya Singh and Aayushi Srivastava and Abha Jain and Adam Kelsey and Adam Shajnfeld and Adithya Gangidi and Adolfo Victoria and Ahuva Goldstand and Ajay Menon and Ajay Sharma and Alex Boesenberg and Alexei Baevski and Allie Feinstein and Amanda Kallet and Amit Sangani and Amos Teo and Anam Yunus and Andrei Lupu and Andres Alvarado and Andrew Caples and Andrew Gu and Andrew Ho and Andrew Poulton and Andrew Ryan and Ankit Ramchandani and Annie Dong and Annie Franco and Anuj Goyal and Aparajita Saraf and Arkabandhu Chowdhury and Ashley Gabriel and Ashwin Bharambe and Assaf Eisenman and Azadeh Yazdan and Beau James and Ben Maurer and Benjamin Leonhardi and Bernie Huang and Beth Loyd and Beto De Paola and Bhargavi Paranjape and Bing Liu and Bo Wu and Boyu Ni and Braden Hancock and Bram Wasti and Brandon Spence and Brani Stojkovic and Brian Gamido and Britt Montalvo and Carl Parker and Carly Burton and Catalina Mejia and Ce Liu and Changhan Wang and Changkyu Kim and Chao Zhou and Chester Hu and Ching-Hsiang Chu and Chris Cai and Chris Tindal and Christoph Feichtenhofer and Cynthia Gao and Damon Civin and Dana Beaty and Daniel Kreymer and Daniel Li and David Adkins and David Xu and Davide Testuggine and Delia David and Devi Parikh and Diana Liskovich and Didem Foss and Dingkang Wang and Duc Le and Dustin Holland and Edward Dowling and Eissa Jamil and Elaine Montgomery and Eleonora Presani and Emily Hahn and Emily Wood and Eric-Tuan Le and Erik Brinkman and Esteban Arcaute and Evan Dunbar and Evan Smothers and Fei Sun and Felix Kreuk and Feng Tian and Filippos Kokkinos and Firat Ozgenel and Francesco Caggioni and Frank Kanayet and Frank Seide and Gabriela Medina Florez and Gabriella Schwarz and Gada Badeer and Georgia Swee and Gil Halpern and Grant Herman and Grigory Sizov and Guangyi and Zhang and Guna Lakshminarayanan and Hakan Inan and Hamid Shojanazeri and Han Zou and Hannah Wang and Hanwen Zha and Haroun Habeeb and Harrison Rudolph and Helen Suk and Henry Aspegren and Hunter Goldman and Hongyuan Zhan and Ibrahim Damlaj and Igor Molybog and Igor Tufanov and Ilias Leontiadis and Irina-Elena Veliche and Itai Gat and Jake Weissman and James Geboski and James Kohli and Janice Lam and Japhet Asher and Jean-Baptiste Gaya and Jeff Marcus and Jeff Tang and Jennifer Chan and Jenny Zhen and Jeremy Reizenstein and Jeremy Teboul and Jessica Zhong and Jian Jin and Jingyi Yang and Joe Cummings and Jon Carvill and Jon Shepard and Jonathan McPhie and Jonathan Torres and Josh Ginsburg and Junjie Wang and Kai Wu and Kam Hou U and Karan Saxena and Kartikay Khandelwal and Katayoun Zand and Kathy Matosich and Kaushik Veeraraghavan and Kelly Michelena and Keqian Li and Kiran Jagadeesh and Kun Huang and Kunal Chawla and Kyle Huang and Lailin Chen and Lakshya Garg and Lavender A and Leandro Silva and Lee Bell and Lei Zhang and Liangpeng Guo and Licheng Yu and Liron Moshkovich and Luca Wehrstedt and Madian Khabsa and Manav Avalani and Manish Bhatt and Martynas Mankus and Matan Hasson and Matthew Lennie and Matthias Reso and Maxim Groshev and Maxim Naumov and Maya Lathi and Meghan Keneally and Miao Liu and Michael L. Seltzer and Michal Valko and Michelle Restrepo and Mihir Patel and Mik Vyatskov and Mikayel Samvelyan and Mike Clark and Mike Macey and Mike Wang and Miquel Jubert Hermoso and Mo Metanat and Mohammad Rastegari and Munish Bansal and Nandhini Santhanam and Natascha Parks and Natasha White and Navyata Bawa and Nayan Singhal and Nick Egebo and Nicolas Usunier and Nikhil Mehta and Nikolay Pavlovich Laptev and Ning Dong and Norman Cheng and Oleg Chernoguz and Olivia Hart and Omkar Salpekar and Ozlem Kalinli and Parkin Kent and Parth Parekh and Paul Saab and Pavan Balaji and Pedro Rittner and Philip Bontrager and Pierre Roux and Piotr Dollar and Polina Zvyagina and Prashant Ratanchandani and Pritish Yuvraj and Qian Liang and Rachad Alao and Rachel Rodriguez and Rafi Ayub and Raghotham Murthy and Raghu Nayani and Rahul Mitra and Rangaprabhu Parthasarathy and Raymond Li and Rebekkah Hogan and Robin Battey and Rocky Wang and Russ Howes and Ruty Rinott and Sachin Mehta and Sachin Siby and Sai Jayesh Bondu and Samyak Datta and Sara Chugh and Sara Hunt and Sargun Dhillon and Sasha Sidorov and Satadru Pan and Saurabh Mahajan and Saurabh Verma and Seiji Yamamoto and Sharadh Ramaswamy and Shaun Lindsay and Shaun Lindsay and Sheng Feng and Shenghao Lin and Shengxin Cindy Zha and Shishir Patil and Shiva Shankar and Shuqiang Zhang and Shuqiang Zhang and Sinong Wang and Sneha Agarwal and Soji Sajuyigbe and Soumith Chintala and Stephanie Max and Stephen Chen and Steve Kehoe and Steve Satterfield and Sudarshan Govindaprasad and Sumit Gupta and Summer Deng and Sungmin Cho and Sunny Virk and Suraj Subramanian and Sy Choudhury and Sydney Goldman and Tal Remez and Tamar Glaser and Tamara Best and Thilo Koehler and Thomas Robinson and Tianhe Li and Tianjun Zhang and Tim Matthews and Timothy Chou and Tzook Shaked and Varun Vontimitta and Victoria Ajayi and Victoria Montanez and Vijai Mohan and Vinay Satish Kumar and Vishal Mangla and Vlad Ionescu and Vlad Poenaru and Vlad Tiberiu Mihailescu and Vladimir Ivanov and Wei Li and Wenchen Wang and Wenwen Jiang and Wes Bouaziz and Will Constable and Xiaocheng Tang and Xiaojian Wu and Xiaolan Wang and Xilun Wu and Xinbo Gao and Yaniv Kleinman and Yanjun Chen and Ye Hu and Ye Jia and Ye Qi and Yenda Li and Yilin Zhang and Ying Zhang and Yossi Adi and Youngjin Nam and Yu and Wang and Yu Zhao and Yuchen Hao and Yundi Qian and Yunlu Li and Yuzi He and Zach Rait and Zachary DeVito and Zef Rosnbrick and Zhaoduo Wen and Zhenyu Yang and Zhiwei Zhao and Zhiyu Ma},
+      year={2024},
+      eprint={2407.21783},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2407.21783}, 
+}
+
+@misc{kwon2023efficientmemorymanagementlarge,
+      title={Efficient Memory Management for Large Language Model Serving with PagedAttention}, 
+      author={Woosuk Kwon and Zhuohan Li and Siyuan Zhuang and Ying Sheng and Lianmin Zheng and Cody Hao Yu and Joseph E. Gonzalez and Hao Zhang and Ion Stoica},
+      year={2023},
+      eprint={2309.06180},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2309.06180}, 
+}
+
+@inproceedings{thorne-etal-2018-fever,
+    title = "{FEVER}: a Large-scale Dataset for Fact Extraction and {VER}ification",
+    author = "Thorne, James  and
+      Vlachos, Andreas  and
+      Christodoulopoulos, Christos  and
+      Mittal, Arpit",
+    editor = "Walker, Marilyn  and
+      Ji, Heng  and
+      Stent, Amanda",
+    booktitle = "Proceedings of the 2018 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers)",
+    month = jun,
+    year = "2018",
+    address = "New Orleans, Louisiana",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N18-1074/",
+    doi = "10.18653/v1/N18-1074",
+    pages = "809--819",
+    abstract = "In this paper we introduce a new publicly available dataset for verification against textual sources, FEVER: Fact Extraction and VERification. It consists of 185,445 claims generated by altering sentences extracted from Wikipedia and subsequently verified without knowledge of the sentence they were derived from. The claims are classified as Supported, Refuted or NotEnoughInfo by annotators achieving 0.6841 in Fleiss kappa. For the first two classes, the annotators also recorded the sentence(s) forming the necessary evidence for their judgment. To characterize the challenge of the dataset presented, we develop a pipeline approach and compare it to suitably designed oracles. The best accuracy we achieve on labeling a claim accompanied by the correct evidence is 31.87{\%}, while if we ignore the evidence we achieve 50.91{\%}. Thus we believe that FEVER is a challenging testbed that will help stimulate progress on claim verification against textual sources."
+}
+
+@misc{liu2023revisitinggoldstandardgrounding,
+      title={Revisiting the Gold Standard: Grounding Summarization Evaluation with Robust Human Evaluation}, 
+      author={Yixin Liu and Alexander R. Fabbri and Pengfei Liu and Yilun Zhao and Linyong Nan and Ruilin Han and Simeng Han and Shafiq Joty and Chien-Sheng Wu and Caiming Xiong and Dragomir Radev},
+      year={2023},
+      eprint={2212.07981},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2212.07981}, 
+}
+
+@misc{liu2019robertarobustlyoptimizedbert,
+      title={RoBERTa: A Robustly Optimized BERT Pretraining Approach}, 
+      author={Yinhan Liu and Myle Ott and Naman Goyal and Jingfei Du and Mandar Joshi and Danqi Chen and Omer Levy and Mike Lewis and Luke Zettlemoyer and Veselin Stoyanov},
+      year={2019},
+      eprint={1907.11692},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/1907.11692}, 
+}
+
+@article{Robertson2009ThePR,
+  title={The Probabilistic Relevance Framework: BM25 and Beyond},
+  author={Stephen E. Robertson and Hugo Zaragoza},
+  journal={Found. Trends Inf. Retr.},
+  year={2009},
+  volume={3},
+  pages={333-389},
+  url={https://api.semanticscholar.org/CorpusID:207178704}
+}
+
+@inproceedings{valenzuela2015identifying,
+  abstract = {We introduce the novel task of identifying important citations in scholarly literature, i.e., citations that indicate that the cited work is used or extended in the new effort. We believe this task is a crucial component in algorithms that detect and follow research topics and in methods that measure the quality of publications.We model this task as a supervised classification problem at two levels of detail: a coarse one with classes (important vs. non-important), and a more detailed one with four importance classes. We annotate a dataset of approximately 450 citations with this information, and release it publicly. We propose a supervised classification approach that addresses this task with a battery of features that range from citation counts to where the citation appears in the body of the paper, and show that,our approach achieves a precision of 65% for a recall of 90%.},
+  added-at = {2015-11-03T18:01:21.000+0100},
+  author = {Valenzuela, Marco and Ha, Vu and Etzioni, Oren},
+  biburl = {https://www.bibsonomy.org/bibtex/2d81475ff345e7aa8f4fb0c3bff9e9ba7/jaeschke},
+  booktitle = {AAAI Workshops},
+  description = {Valenzuela},
+  interhash = {6fb4132fcf04a0d66b31ed98e858d9c5},
+  intrahash = {d81475ff345e7aa8f4fb0c3bff9e9ba7},
+  keywords = {citation classification scientometrics type},
+  timestamp = {2015-11-03T18:01:21.000+0100},
+  title = {Identifying Meaningful Citations},
+  url = {http://www.aaai.org/ocs/index.php/WS/AAAIW15/paper/view/10185},
+  year = 2015
+}
+
+@inproceedings{liang2025,
+author = {Liang, Siting and Sonntag, Daniel},
+year = {2025},
+month = {02},
+pages = {},
+title = {Explainable Biomedical Claim Verification with Large Language Models},
+doi = {10.48550/arXiv.2502.21014}
+}
+
+@inproceedings{vladika-etal-2025-step,
+    title = "Step-by-Step Fact Verification System for Medical Claims with Explainable Reasoning",
+    author = "Vladika, Juraj  and
+      Hacajova, Ivana  and
+      Matthes, Florian",
+    editor = "Chiruzzo, Luis  and
+      Ritter, Alan  and
+      Wang, Lu",
+    booktitle = "Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 2: Short Papers)",
+    month = apr,
+    year = "2025",
+    address = "Albuquerque, New Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.naacl-short.68/",
+    doi = "10.18653/v1/2025.naacl-short.68",
+    pages = "805--816",
+    ISBN = "979-8-89176-190-2",
+    abstract = "Fact verification (FV) aims to assess the veracity of a claim based on relevant evidence. The traditional approach for automated FV includes a three-part pipeline relying on short evidence snippets and encoder-only inference models. More recent approaches leverage the multi-turn nature of LLMs to address FV as a step-by-step problem where questions inquiring additional context are generated and answered until there is enough information to make a decision. This iterative method makes the verification process rational and explainable. While these methods have been tested for encyclopedic claims, exploration on domain-specific and realistic claims is missing. In this work, we apply an iterative FV system on three medical fact-checking datasets and evaluate it with multiple settings, including different LLMs, external web search, and structured reasoning using logic predicates. We demonstrate improvements in the final performance over traditional approaches and the high potential of step-by-step FV systems for domain-specific claims."
+}

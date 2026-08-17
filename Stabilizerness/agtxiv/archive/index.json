@@ -1,0 +1,212 @@
+{
+  "schema_version": "0.1.0-overlay",
+  "policy": "Path classification only; no file is copied, moved, renamed, deleted, or scientifically reclassified.",
+  "canonical_dependency_dag": [
+    "Stabilizerness/dag/claim-dag.json"
+  ],
+  "domain_specific_graph_artifacts": [
+    "Stabilizerness/arXiv-2607.26154v1/fig1.pdf",
+    "Stabilizerness/reader/assets/fig1.png"
+  ],
+  "reader_artifacts": [
+    "Stabilizerness/reader/assets/fig1.png",
+    "Stabilizerness/reader/assets/fig2.png",
+    "Stabilizerness/reader/assets/fig3.png",
+    "Stabilizerness/reader/assets/table1.png",
+    "Stabilizerness/reader/paper.md",
+    "Stabilizerness/reader/source_map.json",
+    "Stabilizerness/reader/translation_notes.md"
+  ],
+  "source_artifacts": [
+    "Stabilizerness/arXiv-2607.26154v1/00README.json",
+    "Stabilizerness/arXiv-2607.26154v1/appendix.bbl",
+    "Stabilizerness/arXiv-2607.26154v1/draft.bbl",
+    "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+    "Stabilizerness/arXiv-2607.26154v1/fig1.pdf",
+    "Stabilizerness/arXiv-2607.26154v1/fig2.pdf",
+    "Stabilizerness/arXiv-2607.26154v1/head.tex"
+  ],
+  "paper_agent_artifacts": {
+    "manifests": [
+      "agents/graph-theoretic-nonstabilizerness/agent.json",
+      "agents/predicting-magic-from-very-few-measurements/agent.json",
+      "agents/resource-theory-of-stabilizer-computation/agent.json",
+      "agents/robustness-of-magic/agent.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/agent.json"
+    ],
+    "source": [
+      "agents/graph-theoretic-nonstabilizerness/source/anchors.jsonl",
+      "agents/graph-theoretic-nonstabilizerness/source/artifacts.json",
+      "agents/graph-theoretic-nonstabilizerness/source/source-hashes.json",
+      "agents/predicting-magic-from-very-few-measurements/source/anchors.jsonl",
+      "agents/predicting-magic-from-very-few-measurements/source/artifacts.json",
+      "agents/predicting-magic-from-very-few-measurements/source/source-hashes.json",
+      "agents/resource-theory-of-stabilizer-computation/source/anchors.jsonl",
+      "agents/resource-theory-of-stabilizer-computation/source/artifacts.json",
+      "agents/resource-theory-of-stabilizer-computation/source/source-hashes.json",
+      "agents/robustness-of-magic/source/anchors.jsonl",
+      "agents/robustness-of-magic/source/artifacts.json",
+      "agents/robustness-of-magic/source/source-hashes.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/source/anchors.jsonl",
+      "agents/stabilizer-codes-and-quantum-error-correction/source/source-hashes.json"
+    ],
+    "statements": [
+      "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+      "agents/graph-theoretic-nonstabilizerness/knowledge/symbols.json",
+      "agents/predicting-magic-from-very-few-measurements/knowledge/statements.jsonl",
+      "agents/resource-theory-of-stabilizer-computation/knowledge/statements.jsonl",
+      "agents/robustness-of-magic/knowledge/statements.jsonl",
+      "agents/stabilizer-codes-and-quantum-error-correction/knowledge/statements.jsonl"
+    ],
+    "reasoning": [
+      "agents/graph-theoretic-nonstabilizerness/reasoning/chains.jsonl",
+      "agents/predicting-magic-from-very-few-measurements/reasoning/artifact-hashes.json",
+      "agents/predicting-magic-from-very-few-measurements/reasoning/chains.jsonl",
+      "agents/predicting-magic-from-very-few-measurements/reasoning/repaired-vrep-proof-candidate.md",
+      "agents/resource-theory-of-stabilizer-computation/reasoning/chains.jsonl",
+      "agents/robustness-of-magic/reasoning/chains.jsonl",
+      "agents/stabilizer-codes-and-quantum-error-correction/reasoning/chains.jsonl"
+    ],
+    "formal_contracts": [
+      "agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json",
+      "agents/predicting-magic-from-very-few-measurements/formal/repaired-reduced-polytope-vrep.json",
+      "agents/resource-theory-of-stabilizer-computation/formal/qubit-stabilizer-polytope-kernel.json",
+      "agents/robustness-of-magic/formal/finite-atom-rom-kernel.json",
+      "agents/robustness-of-magic/formal/qubit-full-rom-kernel.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/formal/group-average-fixed-space.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/formal/qubit-stabilizer-code-kernel.json"
+    ],
+    "exports": [
+      "agents/graph-theoretic-nonstabilizerness/exports/closed-form-equality.json",
+      "agents/predicting-magic-from-very-few-measurements/exports/reduced-polytope-vrep.json",
+      "agents/resource-theory-of-stabilizer-computation/exports/stabilizer-polytope-and-magic-membership.json",
+      "agents/robustness-of-magic/exports/rom-definition.json",
+      "agents/robustness-of-magic/exports/rom-faithfulness.json",
+      "agents/robustness-of-magic/exports/rom-monotonicity.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/exports/pure-stabilizer-state.json"
+    ],
+    "verification": [
+      "agents/graph-theoretic-nonstabilizerness/verification/logs/finite-instance-results.json",
+      "agents/graph-theoretic-nonstabilizerness/verification/records.jsonl",
+      "agents/predicting-magic-from-very-few-measurements/verification/records.jsonl",
+      "agents/resource-theory-of-stabilizer-computation/verification/partition.json",
+      "agents/resource-theory-of-stabilizer-computation/verification/records.jsonl",
+      "agents/robustness-of-magic/verification/partition.json",
+      "agents/robustness-of-magic/verification/records.jsonl",
+      "agents/stabilizer-codes-and-quantum-error-correction/verification/partition.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/verification/records.jsonl"
+    ],
+    "blockers": [
+      "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json",
+      "agents/graph-theoretic-nonstabilizerness/blockers/lean-environment-missing.json",
+      "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+      "agents/graph-theoretic-nonstabilizerness/blockers/root-contract-not-accepted.json",
+      "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json",
+      "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+      "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json",
+      "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json",
+      "agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json"
+    ],
+    "reviews": [
+      "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl",
+      "agents/graph-theoretic-nonstabilizerness/reviews/physical-semantics.md",
+      "agents/predicting-magic-from-very-few-measurements/reviews/reduced-rom-monotonicity-counterexample.md",
+      "agents/predicting-magic-from-very-few-measurements/reviews/source-alignment.md",
+      "agents/predicting-magic-from-very-few-measurements/reviews/vrep-proof-gap.md"
+    ],
+    "computational": [
+      "agents/graph-theoretic-nonstabilizerness/computational/artifact-hashes.json",
+      "agents/graph-theoretic-nonstabilizerness/computational/environment.json",
+      "agents/graph-theoretic-nonstabilizerness/computational/requirements.txt",
+      "agents/graph-theoretic-nonstabilizerness/computational/verify_closed_form.py"
+    ]
+  },
+  "lean_artifacts": {
+    "root_project": [
+      "formal/AgtXIvRootMath/AgtXIvRootMath.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/CanonicalStabilizerAtoms.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/DensityStabilizerRoM.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/F2Coordinates.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/F2SymplecticNondegenerate.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomConvexHull.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanCharacterDimension.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanConcretePauliFrame.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankPauliFrame.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/HermitianAffineFeasibility.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/HermitianPauliBasis.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliAdjoint.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliDualFrame.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliF2Support.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFaithful.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameNormalForm.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSupportCompletion.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSymplecticBasis.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliSupportWord.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeData.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeIntertwiner.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/ProductStabilizerFrames.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/QubitStabilizerAffineComplete.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/SemanticClifford.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/SemanticCliffordFrames.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAtomMaps.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerFrameProjector.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerRoMInstantiation.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StandardZIndependentFrame.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StandardZProjectorBridge.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/StochasticContraction.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/SymplecticCompletion.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/SyndromeBasis.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchConvexHull.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitBridge.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+      "formal/AgtXIvRootMath/AgtXIvRootMath/VeitchStabilizerPolytope.lean",
+      "formal/AgtXIvRootMath/Audit.lean",
+      "formal/AgtXIvRootMath/README.md",
+      "formal/AgtXIvRootMath/lake-manifest.json",
+      "formal/AgtXIvRootMath/lakefile.toml",
+      "formal/AgtXIvRootMath/lean-toolchain",
+      "formal/AgtXIvRootMath/verification-result.json"
+    ],
+    "intermediate_project": [
+      "formal/AgtXIvVarela/AgtXIvVarela.lean",
+      "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+      "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+      "formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+      "formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+      "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+      "formal/AgtXIvVarela/Audit.lean",
+      "formal/AgtXIvVarela/README.md",
+      "formal/AgtXIvVarela/lake-manifest.json",
+      "formal/AgtXIvVarela/lakefile.toml",
+      "formal/AgtXIvVarela/lean-toolchain",
+      "formal/AgtXIvVarela/verification-result.json"
+    ]
+  },
+  "historical_or_auxiliary_artifacts": [
+    "Stabilizerness/AGTXIV_IMPLEMENTATION.md",
+    "Stabilizerness/DAG_AND_ROOTS.md",
+    "graph/claim-dependencies.json",
+    "graph/paper-dependencies.json",
+    "roots.json",
+    "pilot-scope.json",
+    "coverage.json",
+    "release-manifest.json"
+  ]
+}

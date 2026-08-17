@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgtXIv Mathematics Contract",
+  "type": "object",
+  "required": [
+    "id",
+    "dag_node_id",
+    "interface_class",
+    "dag_kind",
+    "dag_status",
+    "branch",
+    "normalized_mathematical_statement",
+    "source_reference",
+    "paper_agent",
+    "statement_ids",
+    "reasoning_step_ids",
+    "assumption_nodes",
+    "definition_imports",
+    "theorem_imports",
+    "data_imports",
+    "downstream_nodes",
+    "lean_binding",
+    "export_ids",
+    "blocker_ids",
+    "mapping_status",
+    "acceptance_effect"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "dag_node_id": {
+      "type": "string"
+    },
+    "interface_class": {
+      "enum": [
+        "MATHEMATICAL",
+        "EXTERNAL_MATHEMATICAL_INTERFACE",
+        "NON_MATHEMATICAL"
+      ]
+    },
+    "dag_kind": {
+      "type": "string"
+    },
+    "dag_status": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "branch": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "normalized_mathematical_statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_reference": {},
+    "paper_agent": {
+      "type": "string"
+    },
+    "statement_ids": {
+      "type": "array"
+    },
+    "reasoning_step_ids": {
+      "type": "array"
+    },
+    "assumption_nodes": {
+      "type": "array"
+    },
+    "definition_imports": {
+      "type": "array"
+    },
+    "theorem_imports": {
+      "type": "array"
+    },
+    "data_imports": {
+      "type": "array"
+    },
+    "downstream_nodes": {
+      "type": "array"
+    },
+    "lean_binding": {
+      "type": "object",
+      "required": [
+        "status",
+        "existing_declarations",
+        "modules",
+        "planned_declarations",
+        "candidate_reuse",
+        "verification_references",
+        "gap"
+      ]
+    },
+    "export_ids": {
+      "type": "array"
+    },
+    "blocker_ids": {
+      "type": "array"
+    },
+    "mapping_status": {
+      "type": "string"
+    },
+    "acceptance_effect": {
+      "const": "NONE_FROM_REGISTRY"
+    }
+  }
+}

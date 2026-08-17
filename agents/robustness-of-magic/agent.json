@@ -1,0 +1,46 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "agent": {
+    "id": "agent:robustness-of-magic",
+    "paper_id": "arxiv:1609.07488v2",
+    "title": "Application of a Resource Theory for Magic States to Fault-Tolerant Quantum Computing",
+    "role": [
+      "primary_measure_root",
+      "full_robustness_provider"
+    ],
+    "lifecycle_status": "PARTIALLY_VERIFIED"
+  },
+  "source": {
+    "canonical_artifact": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+    "artifacts": "agents/robustness-of-magic/source/artifacts.json",
+    "source_hashes": "agents/robustness-of-magic/source/source-hashes.json",
+    "anchors": "agents/robustness-of-magic/source/anchors.jsonl"
+  },
+  "imports": [
+    {
+      "contract": "contract:1307.7171v1:stabilizer-polytope-and-magic-membership",
+      "purpose": "supply the n-qubit free-state polytope and stabilizer-operation convention",
+      "status": "MATHEMATICALLY_ALIGNED_UPSTREAM_UNACCEPTED_AND_OPERATION_SEMANTICS_PENDING"
+    }
+  ],
+  "local_delta": {
+    "statements": "agents/robustness-of-magic/knowledge/statements.jsonl",
+    "chains": "agents/robustness-of-magic/reasoning/chains.jsonl"
+  },
+  "verification": {
+    "records": "agents/robustness-of-magic/verification/records.jsonl",
+    "verification_partition": "agents/robustness-of-magic/verification/partition.json"
+  },
+  "formalization_contract": "agents/robustness-of-magic/formal/qubit-full-rom-kernel.json",
+  "supporting_formalization_contracts": [
+    "agents/robustness-of-magic/formal/finite-atom-rom-kernel.json"
+  ],
+  "exports": [
+    "agents/robustness-of-magic/exports/rom-definition.json",
+    "agents/robustness-of-magic/exports/rom-faithfulness.json",
+    "agents/robustness-of-magic/exports/rom-monotonicity.json"
+  ],
+  "unresolved": [
+    "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json"
+  ]
+}

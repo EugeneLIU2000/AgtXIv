@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "pilot_id": "pilot:stabilizerness:closed-form-equality",
+  "status": "PARTIALLY_VERIFIED",
+  "target_paper": "arxiv:2607.26154v1",
+  "target_agent": "agent:graph-theoretic-nonstabilizerness",
+  "target_claim": "statement:2607.26154v1:closed-form-equality",
+  "question": "Why does the reduced robustness of magic collapse to a maximum over anticommuting cliques when the measurement set has no Pauli-active dependency and its frustration graph is perfect?",
+  "included_dependency_types": [
+    "definition",
+    "theorem",
+    "citation_import",
+    "linear_program_duality",
+    "graph_theoretic_foundation",
+    "finite_instance_computational_check"
+  ],
+  "excluded_branches": [
+    "Clifford-rotation detection rates in Figure 2",
+    "stabilizer Renyi entropy appendix",
+    "full proof of the perfect graph theorem",
+    "universal 2n+1 clique ceiling"
+  ],
+  "stopping_budget": {
+    "maximum_active_papers": 3,
+    "maximum_root_agents": 2,
+    "maximum_target_statements": 12
+  },
+  "release_semantics": "This is a runnable vertical-slice prototype, not an accepted AgtXIv release. Structural validation passing does not close the scientific verification axes."
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "edge_type": "scientific_claim_dependency",
+  "scope": "Closed-form vertical slice only. The whole-paper claim DAG and conceptual-root lineage live in Stabilizerness/dag/claim-dag.json.",
+  "nodes": [
+    {
+      "id": "agent:predicting-magic-from-very-few-measurements",
+      "paper_id": "arxiv:2602.18939v1",
+      "role": "direct_technical_dependency"
+    },
+    {
+      "id": "foundation:perfect-graph-weighted-duality",
+      "role": "external_foundation"
+    },
+    {
+      "id": "foundation:isotropic-pauli-extension",
+      "role": "external_foundation"
+    },
+    {
+      "id": "agent:graph-theoretic-nonstabilizerness",
+      "paper_id": "arxiv:2607.26154v1",
+      "role": "target"
+    }
+  ],
+  "edges": [
+    {
+      "from": "foundation:isotropic-pauli-extension",
+      "to": "agent:predicting-magic-from-very-few-measurements",
+      "claim": "statement:foundation:isotropic-pauli-extension"
+    },
+    {
+      "from": "agent:predicting-magic-from-very-few-measurements",
+      "to": "agent:graph-theoretic-nonstabilizerness",
+      "claim": "contract:2602.18939v1:reduced-polytope-vrep"
+    },
+    {
+      "from": "foundation:perfect-graph-weighted-duality",
+      "to": "agent:graph-theoretic-nonstabilizerness",
+      "claim": "statement:foundation:perfect-graph-weighted-duality"
+    }
+  ],
+  "note": "This graph records scientific claim imports. Pauli product relations are domain objects and never appear as dependency edges here."
+}

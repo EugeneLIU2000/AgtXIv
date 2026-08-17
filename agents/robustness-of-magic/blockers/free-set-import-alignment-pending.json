@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "blocker:1609.07488v2:free-set-import-alignment-pending",
+  "affects": [
+    "contract:1609.07488v2:rom-definition",
+    "contract:1609.07488v2:rom-faithfulness",
+    "contract:1609.07488v2:rom-monotonicity"
+  ],
+  "status": "OPEN",
+  "reason": "The full n-qubit stabilizer atom set, affine feasibility, finite minimum attainment, faithfulness, and deterministic atom-preserving linear/density-map monotonicity are now kernel-checked. Scientific acceptance remains open because the Veitch free-set export is still accepted=false, independent human source/physical-semantic review is pending, and the source-level stabilizer-protocol/channel syntax has not been proved to induce the exact atom-preserving map interface; selective on-average branches are also scoped out.",
+  "resolved_mathematics": [
+    "all-n stabilizer-atom affine spanning and normalized signed feasibility",
+    "finite l1 minimum attainment",
+    "full robustness faithfulness and strict outside-polytope characterization",
+    "construction of the coefficient kernel from atom-image convex witnesses",
+    "exact deterministic atom-preserving linear and density-map monotonicity"
+  ],
+  "next_action": "Accept the upstream free-set contract, obtain human source/physical-semantic sign-off, and close the physical stabilizer-protocol-to-atom-preserving-map bridge plus selective on-average semantics."
+}

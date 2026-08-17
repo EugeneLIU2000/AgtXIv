@@ -1,0 +1,2508 @@
+{
+  "schema_version": "0.1.0-overlay",
+  "canonical_dag": "Stabilizerness/dag/claim-dag.json",
+  "process_order": [
+    "source statement",
+    "normalized statement",
+    "imported declarations",
+    "local Lean declaration",
+    "verification/export/blocker"
+  ],
+  "no_agent_fabrication_policy": "A node without an existing agent artifact remains UNMAPPED; this index does not create one agent per node.",
+  "nodes": [
+    {
+      "node_id": "root:gottesman-stabilizer-formalism",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ANCHORED",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:stabilizer-codes-and-quantum-error-correction",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.Gottesman.groupAverage_eq_self_iff",
+          "AgtXIv.Gottesman.groupAverage_idempotent",
+          "AgtXIv.Gottesman.groupAverage_isProjection",
+          "AgtXIv.Gottesman.groupAverage_mem_commonFixed",
+          "AgtXIv.Gottesman.range_groupAverageMap",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.finrank_commonFixed_eq_two_pow_sub",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.exists_normalized_generator_fixed_vector",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.finrank_commonFixed_eq_two_pow_codeDimension",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_commonFixed",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.generatorsFix_iff_mem_generalRankCommonFixed",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.normalized_fixed_vectors_differ_by_phase",
+          "AgtXIv.Stabilizer.IndependentSignedPauliGenerators.pureStabilizerDensity",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_idempotent",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_isHermitian",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_range_finrank",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_trace",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_idempotent",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_isHermitian",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_posSemidef",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_range_finrank_one",
+          "AgtXIv.Stabilizer.stabilizerProjectorMatrix_trace_one",
+          "AgtXIv.Stabilizer.toLin_stabilizerCodeProjectorMatrix",
+          "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero"
+        ],
+        "verification_references": [
+          "verification:9705052v1:source-freeze",
+          "verification:9705052v1:specialization-review",
+          "verification:9705052v1:lean-group-average",
+          "verification:9705052v1:lean-qubit-stabilizer-code-kernel"
+        ],
+        "export_ids": [
+          "contract:9705052v1:pure-stabilizer-state"
+        ],
+        "blocker_ids": [
+          "blocker:9705052v1:root-review-open"
+        ],
+        "gap": null,
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "An existing Paper Agent or root contract corresponds to this coarse root node, but the node is not one-to-one with a normalized Statement.",
+      "dag_source_reference": {
+        "paper_id": "arxiv:quant-ph/9705052v1",
+        "artifact": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+        "lines": "980-998"
+      }
+    },
+    {
+      "node_id": "root:gottesman-knill-simulation",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ANCHORED",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "paper_id": "arxiv:quant-ph/9807006v1",
+        "artifact": "Reference/The Heisenberg Representation of Quantum Computers/HeisRep.tex",
+        "lines": "1238-1260"
+      }
+    },
+    {
+      "node_id": "root:bravyi-kitaev-magic-model",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ANCHORED",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "paper_id": "arxiv:quant-ph/0403025v2",
+        "artifact": "Reference/Universal quantum computation with ideal Clifford gates and noisy ancillas/final.tex",
+        "lines": "166-190,256-300,389-403"
+      }
+    },
+    {
+      "node_id": "root:veitch-stabilizer-resource-theory",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ANCHORED",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:resource-theory-of-stabilizer-computation",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+          "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+          "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+          "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit"
+        ],
+        "verification_references": [
+          "verification:1307.7171v1:source-freeze",
+          "verification:1307.7171v1:semantic-audit",
+          "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel"
+        ],
+        "export_ids": [
+          "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+        ],
+        "blocker_ids": [
+          "blocker:1307.7171v1:formalism-alignment-pending"
+        ],
+        "gap": null,
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "An existing Paper Agent or root contract corresponds to this coarse root node, but the node is not one-to-one with a normalized Statement.",
+      "dag_source_reference": {
+        "paper_id": "arxiv:1307.7171v1",
+        "artifact": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+        "lines": "269-280,331-367,425-482"
+      }
+    },
+    {
+      "node_id": "root:howard-campbell-rom",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ANCHORED",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:robustness-of-magic",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.RoM.coeff_sum_eq_one",
+          "AgtXIv.RoM.exists_l1Minimizer",
+          "AgtXIv.RoM.feasible_faithful",
+          "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+          "AgtXIv.RoM.kernelOfAtomImages",
+          "AgtXIv.RoM.normalized_l1",
+          "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+          "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+          "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+          "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+          "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+        ],
+        "verification_references": [
+          "verification:1609.07488v2:source-freeze",
+          "verification:1609.07488v2:derivation-audit",
+          "verification:1609.07488v2:lean-finite-atom-kernel",
+          "verification:1609.07488v2:lean-qubit-full-rom-kernel"
+        ],
+        "export_ids": [
+          "contract:1609.07488v2:rom-definition",
+          "contract:1609.07488v2:rom-faithfulness",
+          "contract:1609.07488v2:rom-monotonicity"
+        ],
+        "blocker_ids": [
+          "blocker:1609.07488v2:free-set-import-alignment-pending"
+        ],
+        "gap": null,
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "An existing Paper Agent or root contract corresponds to this coarse root node, but the node is not one-to-one with a normalized Statement.",
+      "dag_source_reference": {
+        "paper_id": "arxiv:1609.07488v2",
+        "artifact": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+        "lines": "75-119,208-232"
+      }
+    },
+    {
+      "node_id": "root:varela-reduced-polytope",
+      "node_kind": "external_contract",
+      "node_status": "BLOCKED_BY_VREP_PROOF_GAP",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+          "AgtXIv.Varela.MeasurementWindow.mem_projectedStabilizerPolytope_iff",
+          "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.abs_vector_le_one",
+          "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+          "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+        ],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "export_ids": [
+          "contract:2602.18939v1:reduced-polytope-vrep"
+        ],
+        "blocker_ids": [
+          "blocker:2602.18939v1:root-reconstruction-pending",
+          "blocker:2602.18939v1:fixed-window-monotonicity-false"
+        ],
+        "gap": null,
+        "imported_lean_modules": [
+          "AgtXIvRootMath.RootMathCompletion"
+        ],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "An existing Paper Agent or root contract corresponds to this coarse root node, but the node is not one-to-one with a normalized Statement.",
+      "dag_source_reference": {
+        "paper_id": "arxiv:2602.18939v1",
+        "artifact": "Reference/Predicting magic from very few measurements/pra_version.tex",
+        "lines": "188-260,279-309,691-808"
+      }
+    },
+    {
+      "node_id": "foundation:finite-lp-strong-duality",
+      "node_kind": "standard_foundation",
+      "node_status": "DECLARED_BACKGROUND_NOT_RECONSTRUCTED",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "citation_key": "hamaguchi2024handbook",
+        "target_anchor": "draft.tex:607-614"
+      }
+    },
+    {
+      "node_id": "root:perfect-graph-weighted-duality",
+      "node_kind": "external_contract",
+      "node_status": "PRIMARY_SOURCE_ALIGNMENT_PENDING",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "primary_candidates": [
+          "Chvatal 1975",
+          "Fulkerson 1971/1972"
+        ],
+        "target_anchor": "draft.tex:639-684"
+      }
+    },
+    {
+      "node_id": "foundation:perfect-graph-complement-and-algorithm",
+      "node_kind": "standard_foundation",
+      "node_status": "PRIMARY_SOURCE_ALIGNMENT_PENDING",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "primary_candidates": [
+          "Lovasz weak perfect graph theorem",
+          "Groetschel-Lovasz-Schrijver 1981"
+        ],
+        "target_anchor": "draft.tex:267-284,677-684"
+      }
+    },
+    {
+      "node_id": "root:xu-quadratic-pauli-graph",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "citation_keys": [
+          "xu2024bounding",
+          "xu2025simultaneous"
+        ],
+        "target_anchor": "draft.tex:923-933"
+      }
+    },
+    {
+      "node_id": "root:leone-stabilizer-renyi-entropy",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "citation_key": "leone2022stabilizer",
+        "target_anchor": "draft.tex:960-979"
+      }
+    },
+    {
+      "node_id": "root:full-pauli-symplectic-graph",
+      "node_kind": "external_contract",
+      "node_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+      "classification": "UNMAPPED",
+      "paper_agent": "UNMAPPED",
+      "mapping_status": "UNMAPPED",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "Current files contain no explicit Paper Agent/Statement/Lean mapping for this whole-paper node.",
+      "dag_source_reference": {
+        "citation_keys": [
+          "brouwer2012spectra",
+          "sarkar2021sets"
+        ],
+        "target_anchor": "draft.tex:935-958"
+      }
+    },
+    {
+      "node_id": "claim:resource-interpretation",
+      "node_kind": "definition",
+      "node_status": "SOURCE_ANCHORED_WITH_EXTERNAL_IMPORTS",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:79-88"
+    },
+    {
+      "node_id": "claim:full-stabilizer-polytope",
+      "node_kind": "definition",
+      "node_status": "IMPORTED_CONCEPT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:resource-theory-of-stabilizer-computation",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:1307.7171v1:resource-split",
+          "anchor:1307.7171v1:stabilizer-free-set"
+        ],
+        "normalized_statement_ids": [
+          "statement:1307.7171v1:n-qubit-stabilizer-polytope"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:1307.7171v1:fixed-space-clifford-orbit-equivalence",
+          "statement:1307.7171v1:magic-membership",
+          "statement:1307.7171v1:stabilizer-convex-hull"
+        ],
+        "reasoning_step_ids": [
+          "step:1307.7171v1:001"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+          "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+          "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+          "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit"
+        ],
+        "verification_references": [
+          "verification:1307.7171v1:source-freeze",
+          "verification:1307.7171v1:semantic-audit",
+          "verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel"
+        ],
+        "export_ids": [
+          "contract:1307.7171v1:stabilizer-polytope-and-magic-membership"
+        ],
+        "blocker_ids": [
+          "blocker:1307.7171v1:formalism-alignment-pending"
+        ],
+        "gap": null,
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:81-86,111-114"
+    },
+    {
+      "node_id": "claim:full-rom",
+      "node_kind": "definition",
+      "node_status": "IMPORTED_CONCEPT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:robustness-of-magic",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:1609.07488v2:rom-definition"
+        ],
+        "normalized_statement_ids": [
+          "statement:1609.07488v2:rom-definition-normalized"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:1307.7171v1:n-qubit-stabilizer-polytope",
+          "statement:1609.07488v2:rom-definition-source"
+        ],
+        "reasoning_step_ids": [
+          "step:1609.07488v2:001"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.RoM.coeff_sum_eq_one",
+          "AgtXIv.RoM.exists_l1Minimizer",
+          "AgtXIv.RoM.feasible_faithful",
+          "AgtXIv.RoM.finiteRoM_mono_of_atomImages",
+          "AgtXIv.RoM.kernelOfAtomImages",
+          "AgtXIv.RoM.normalized_l1",
+          "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+          "AgtXIv.Stabilizer.DensityStabilizerAtomMap.densityFullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.StabilizerAtomMap.fullStabilizerRoM_mono",
+          "AgtXIv.Stabilizer.densityFullStabilizerRoM_eq_one_iff_mem_cliffordOrbitPolytope",
+          "AgtXIv.Stabilizer.fullStabilizerRoM_eq_one_iff_free",
+          "AgtXIv.Stabilizer.one_lt_densityFullStabilizerRoM_iff_magicByCliffordOrbit",
+          "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+          "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+        ],
+        "verification_references": [
+          "verification:1609.07488v2:source-freeze",
+          "verification:1609.07488v2:derivation-audit",
+          "verification:1609.07488v2:lean-finite-atom-kernel",
+          "verification:1609.07488v2:lean-qubit-full-rom-kernel"
+        ],
+        "export_ids": [
+          "contract:1609.07488v2:rom-definition",
+          "contract:1609.07488v2:rom-faithfulness",
+          "contract:1609.07488v2:rom-monotonicity"
+        ],
+        "blocker_ids": [
+          "blocker:1609.07488v2:free-set-import-alignment-pending"
+        ],
+        "gap": null,
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:83-88,111-114"
+    },
+    {
+      "node_id": "claim:pauli-window",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT_AGENT_NORMALIZED_DOMAIN",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:113-115"
+    },
+    {
+      "node_id": "claim:reduced-stabilizer-polytope",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT_IMPORTED_ORIGIN",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2602.18939v1:reduced-polytope-definition"
+        ],
+        "normalized_statement_ids": [
+          "statement:2602.18939v1:reduced-polytope-definition"
+        ],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:115-121,496-500"
+    },
+    {
+      "node_id": "claim:reduced-rom",
+      "node_kind": "definition",
+      "node_status": "DEFINITION_VALID_MONOTONICITY_LABEL_FALSE",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2602.18939v1:reduced-rom-definition"
+        ],
+        "normalized_statement_ids": [
+          "statement:2602.18939v1:reduced-rom-definition"
+        ],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:122-131,496-500"
+    },
+    {
+      "node_id": "claim:frustration-graph",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:89-91,133-141"
+    },
+    {
+      "node_id": "claim:exact-reduced-vrep",
+      "node_kind": "theorem",
+      "node_status": "BLOCKED_BY_ROOT_CONTRACT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2602.18939v1:vrep-theorem",
+          "anchor:2602.18939v1:vrep-proof"
+        ],
+        "normalized_statement_ids": [
+          "statement:2602.18939v1:reduced-polytope-vrep"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2602.18939v1:reduced-polytope-definition"
+        ],
+        "reasoning_step_ids": [
+          "step:2602.18939v1:001"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [
+          "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+          "AgtXIv.Varela.reducedStabilizerPolytope_vrep_conditional"
+        ],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "export_ids": [
+          "contract:2602.18939v1:reduced-polytope-vrep"
+        ],
+        "blocker_ids": [
+          "blocker:2602.18939v1:root-reconstruction-pending"
+        ],
+        "gap": null,
+        "imported_lean_modules": [
+          "AgtXIvRootMath.RootMathCompletion"
+        ],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:137-150,499-510"
+    },
+    {
+      "node_id": "claim:fixed-window-monotonicity",
+      "node_kind": "proposition",
+      "node_status": "CLAIM_FALSE",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:predicting-magic-from-very-few-measurements",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2602.18939v1:fixed-window-monotonicity-claim",
+          "anchor:2602.18939v1:fixed-window-monotonicity-proof"
+        ],
+        "normalized_statement_ids": [
+          "statement:2602.18939v1:fixed-window-monotonicity-claimed"
+        ],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2602.18939v1:source-freeze",
+          "verification:2602.18939v1:vrep-proof-audit",
+          "verification:2602.18939v1:vrep-repair-review",
+          "verification:2602.18939v1:fixed-window-monotonicity-audit",
+          "verification:2602.18939v1:lean-vrep-conditional",
+          "verification:foundation:perfect-graph-weighted-duality-lean-interface"
+        ],
+        "export_ids": [],
+        "blocker_ids": [
+          "blocker:2602.18939v1:fixed-window-monotonicity-false"
+        ],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:87,122,499; Varela pra_version.tex:241-254,657-665"
+    },
+    {
+      "node_id": "claim:exact-vertex-dual",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_DUALIZATION_BLOCKED_BY_VREP_IMPORT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:150-157"
+    },
+    {
+      "node_id": "claim:general-reduced-hardness",
+      "node_kind": "proposition",
+      "node_status": "IMPORTED_FROM_VARELA_SOURCE_ALIGNMENT_PENDING",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:93-97,157,499-512"
+    },
+    {
+      "node_id": "claim:sign-syndrome-linear-consistent",
+      "node_kind": "lemma",
+      "node_status": "AGENT_EXPLICITATION_REQUIRES_PROOF_AUDIT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:522-535 (implicit load-bearing lemma)"
+    },
+    {
+      "node_id": "claim:dependency-affine-code",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:514-538"
+    },
+    {
+      "node_id": "claim:sign-relaxed-polytope",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:sign-relaxation"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:sign-relaxed-polytope"
+        ],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:196-207"
+    },
+    {
+      "node_id": "claim:relaxed-rom",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:208-215"
+    },
+    {
+      "node_id": "claim:mwis-definition",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT_STANDARD_DEFINITION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:245-251"
+    },
+    {
+      "node_id": "claim:relaxed-rom-lower-bound",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:207-220"
+    },
+    {
+      "node_id": "claim:pauli-active-dependency",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:222-233"
+    },
+    {
+      "node_id": "claim:no-active-free-signs",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:pauli-active-dependency",
+          "anchor:2607.26154v1:relaxation-proofs"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:sign-set-collapse"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "assumption:2607.26154v1:measurement-set-normalized"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:001"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:228-233,546-570"
+    },
+    {
+      "node_id": "claim:relaxation-exactness",
+      "node_kind": "theorem",
+      "node_status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:pauli-active-dependency",
+          "anchor:2607.26154v1:relaxation-proofs"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:relaxation-exactness"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2602.18939v1:reduced-polytope-vrep-normalized",
+          "statement:2607.26154v1:sign-relaxed-polytope",
+          "statement:2607.26154v1:sign-set-collapse"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:002"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:234-244,572-594"
+    },
+    {
+      "node_id": "claim:relaxed-affine-span",
+      "node_kind": "lemma",
+      "node_status": "HIDDEN_LOCAL_LEMMA_RECONSTRUCTED",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:relaxation-proofs"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:relaxed-affine-span"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:sign-relaxed-polytope"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:003"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:607-609"
+    },
+    {
+      "node_id": "claim:relaxed-lp-dual",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_DERIVATION_WITH_STANDARD_FOUNDATION",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:relaxation-proofs"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:relaxed-dual-vertex-form"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:relaxed-affine-span",
+          "statement:foundation:finite-lp-strong-duality"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:004"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:606-614"
+    },
+    {
+      "node_id": "claim:sign-alignment-identity",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:615-620"
+    },
+    {
+      "node_id": "claim:relaxed-mwis-dual",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:dual-mwis",
+          "anchor:2607.26154v1:relaxation-proofs"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:dual-mwis"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:relaxed-dual-vertex-form"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:005"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:245-264,596-626"
+    },
+    {
+      "node_id": "claim:exact-graph-program",
+      "node_kind": "theorem",
+      "node_status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:relaxation-proofs"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:exact-graph-dual"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:dual-mwis",
+          "statement:2607.26154v1:relaxation-exactness"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:006"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:628-632"
+    },
+    {
+      "node_id": "claim:perfect-graph-definition",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT_STANDARD_DEFINITION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:265-268"
+    },
+    {
+      "node_id": "claim:lovasz-sandwich",
+      "node_kind": "lemma",
+      "node_status": "CITATION_REPORTED_SOURCE_UNCHECKED",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:634-662"
+    },
+    {
+      "node_id": "claim:perfect-graph-antiblocker",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SYNTHESIS_BLOCKED_BY_WEIGHTED_DUALITY_ALIGNMENT",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:perfect-antiblocker-report"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:perfect-antiblocker-local"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:foundation:perfect-graph-weighted-duality"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:007"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:671-675,680-684"
+    },
+    {
+      "node_id": "claim:perfect-graph-weighted-collapse",
+      "node_kind": "lemma",
+      "node_status": "CITATION_REPORTED_SOURCE_ALIGNMENT_PENDING",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:664-681"
+    },
+    {
+      "node_id": "claim:closed-form-rom",
+      "node_kind": "theorem",
+      "node_status": "LOCAL_DERIVATION_WITH_BLOCKED_IMPORTS",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:closed-form-theorem",
+          "anchor:2607.26154v1:closed-form-proof"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:closed-form-equality"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:exact-graph-dual",
+          "statement:2607.26154v1:perfect-antiblocker-local"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:008"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [
+          "contract:2607.26154v1:closed-form-equality"
+        ],
+        "blocker_ids": [
+          "blocker:2607.26154v1:root-contract-not-accepted",
+          "blocker:2607.26154v1:perfect-graph-foundation-unchecked"
+        ],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:270-283,687-723"
+    },
+    {
+      "node_id": "claim:anticommuting-l2-bound",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SELF_CONTAINED_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:725-755"
+    },
+    {
+      "node_id": "claim:capacity-upper-bound",
+      "node_kind": "theorem",
+      "node_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:closed-form-theorem",
+          "anchor:2607.26154v1:closed-form-proof"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:clique-upper-bound"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:closed-form-equality"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:009"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:274-283,755-763"
+    },
+    {
+      "node_id": "claim:capacity-attainment",
+      "node_kind": "construction",
+      "node_status": "LOCAL_SELF_CONTAINED_DERIVATION_WITH_UPSTREAM_USE",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:closed-form-theorem",
+          "anchor:2607.26154v1:closed-form-proof"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:capacity-attained"
+        ],
+        "imported_statement_or_foundation_ids": [
+          "statement:2607.26154v1:clique-upper-bound"
+        ],
+        "reasoning_step_ids": [
+          "step:2607.26154v1:010"
+        ],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:281-283,765-793"
+    },
+    {
+      "node_id": "claim:witness-capacity",
+      "node_kind": "theorem",
+      "node_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:99-101,809-815"
+    },
+    {
+      "node_id": "claim:max-anticommuting-size",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SELF_CONTAINED_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:815-862"
+    },
+    {
+      "node_id": "claim:jordan-wigner-extremal-set",
+      "node_kind": "construction",
+      "node_status": "LOCAL_DERIVATION_CITATION_SUPPORTED",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:289-295,863-884"
+    },
+    {
+      "node_id": "claim:universal-ceiling",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:287-295,796-884"
+    },
+    {
+      "node_id": "claim:polynomial-evaluation",
+      "node_kind": "proposition",
+      "node_status": "PROMISE_PROBLEM_DEPENDS_ON_UNCHECKED_GRAPH_ROOT_RECOGNITION_COMPLEXITY_OPEN",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:284"
+    },
+    {
+      "node_id": "claim:measurement-setting-bound",
+      "node_kind": "proposition",
+      "node_status": "SOURCE_DERIVED_WITH_EXPERIMENTAL_IDEALIZATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:285-287"
+    },
+    {
+      "node_id": "claim:four-solvable-families",
+      "node_kind": "construction",
+      "node_status": "SOURCE_CLAIM_PARTIALLY_REGRESSION_TESTED",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:289-299,340-450"
+    },
+    {
+      "node_id": "claim:clifford-rom-covariance",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:clifford-covariance"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:clifford-covariance"
+        ],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean declaration is mapped to this node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:302-324"
+    },
+    {
+      "node_id": "claim:clifford-structure-invariance",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:322-326"
+    },
+    {
+      "node_id": "claim:rotated-closed-form",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:310-326"
+    },
+    {
+      "node_id": "claim:detection-coverage-definition",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:454-458"
+    },
+    {
+      "node_id": "claim:figure2-protocol",
+      "node_kind": "empirical_protocol",
+      "node_status": "SOURCE_REPORTED_INCOMPLETE_REPRODUCTION_METADATA",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:328-338,454-459"
+    },
+    {
+      "node_id": "claim:figure2-haar-input",
+      "node_kind": "empirical_protocol",
+      "node_status": "SOURCE_REPORTED_MISSING_RNG_AND_SAMPLER_CONTRACT",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:457"
+    },
+    {
+      "node_id": "claim:figure2-variational-input",
+      "node_kind": "empirical_protocol",
+      "node_status": "SOURCE_REPORTED_MISSING_ANGLE_ROTATION_AND_RNG_CONTRACT",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:458"
+    },
+    {
+      "node_id": "claim:figure2-coverage-gain",
+      "node_kind": "empirical_claim",
+      "node_status": "NOT_REPRODUCED_MISSING_CODE_DATA_SEED_TOLERANCE",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [
+          "anchor:2607.26154v1:figure-2",
+          "anchor:2607.26154v1:figure-2-interpretation"
+        ],
+        "normalized_statement_ids": [
+          "statement:2607.26154v1:figure2-detection"
+        ],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [
+          "blocker:2607.26154v1:figure2-code-unavailable"
+        ],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "Semantic correspondence is recoverable from existing labels and agent records, but no explicit same_as field links the whole-paper node ID to the Statement ID.",
+      "dag_source_reference": "draft.tex:454-459"
+    },
+    {
+      "node_id": "claim:figure2-reproduction-blocker",
+      "node_kind": "limitation",
+      "node_status": "BLOCKED",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [
+          "blocker:2607.26154v1:figure2-code-unavailable"
+        ],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "agent audit of Stabilizerness/arXiv-2607.26154v1 source bundle"
+    },
+    {
+      "node_id": "claim:squared-pauli-profile",
+      "node_kind": "definition",
+      "node_status": "SOURCE_EXPLICIT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:911-913"
+    },
+    {
+      "node_id": "claim:squared-stabilizer-support",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:912-916"
+    },
+    {
+      "node_id": "claim:quadratic-stabilizer-mwis",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:916-921"
+    },
+    {
+      "node_id": "claim:hbar-perfect-quadratic-witness",
+      "node_kind": "proposition",
+      "node_status": "IMPORTED_EXTENSION_SOURCE_UNCHECKED",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:923-933"
+    },
+    {
+      "node_id": "claim:pauli-parseval",
+      "node_kind": "lemma",
+      "node_status": "LOCAL_STANDARD_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:935-942"
+    },
+    {
+      "node_id": "claim:full-pauli-independent-sets",
+      "node_kind": "proposition",
+      "node_status": "IMPORTED_STRUCTURE_WITH_LOCAL_SYNTHESIS",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:942-959"
+    },
+    {
+      "node_id": "claim:pure-sre-graph-identity",
+      "node_kind": "theorem",
+      "node_status": "LOCAL_DERIVATION_WITH_EXTENSION_IMPORT",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:960-979"
+    },
+    {
+      "node_id": "claim:mixed-sre-identity-limitation",
+      "node_kind": "limitation",
+      "node_status": "LOCAL_ALGEBRAIC_DERIVATION",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:981-989"
+    },
+    {
+      "node_id": "claim:dephased-purity-mwis",
+      "node_kind": "proposition",
+      "node_status": "LOCAL_SOURCE_DERIVATION",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:991-997"
+    },
+    {
+      "node_id": "claim:mixed-state-graph-bound-open",
+      "node_kind": "open_problem",
+      "node_status": "OPEN",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:997-998"
+    },
+    {
+      "node_id": "claim:full-pauli-obstructions",
+      "node_kind": "proposition",
+      "node_status": "IMPORTED_COMPOSITE_CLAIM_SOURCE_ALIGNMENT_PENDING",
+      "classification": "MAPPED_TO_PAPER_AGENT_ONLY",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "PARTIAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [
+          "verification:2607.26154v1:source-freeze",
+          "verification:2607.26154v1:source-derivation-review",
+          "verification:prototype:finite-instances",
+          "verification:prototype:active-dependency-negative-control",
+          "verification:2607.26154v1:physical-semantics",
+          "verification:2607.26154v1:figure2"
+        ],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "No current Lean mapping.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "AGENT_LEVEL_NOT_CLAIM_SPECIFIC"
+      },
+      "note": "The node belongs to the target paper and is assigned to its existing paper-level agent, but no normalized Statement or one-to-one Lean mapping exists in current files.",
+      "dag_source_reference": "draft.tex:460-462"
+    },
+    {
+      "node_id": "claim:active-dependency-coset-decoding-open",
+      "node_kind": "open_problem",
+      "node_status": "OPEN",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:464-466"
+    },
+    {
+      "node_id": "claim:imperfect-graph-theta-lower-bound-open",
+      "node_kind": "open_problem",
+      "node_status": "OPEN",
+      "classification": "NON_MATHEMATICAL",
+      "paper_agent": "agent:graph-theoretic-nonstabilizerness",
+      "mapping_status": "NON_MATHEMATICAL",
+      "lean_process": {
+        "source_anchor_ids": [],
+        "normalized_statement_ids": [],
+        "imported_statement_or_foundation_ids": [],
+        "reasoning_step_ids": [],
+        "imported_lean_declarations": [],
+        "local_lean_declarations": [],
+        "verification_references": [],
+        "export_ids": [],
+        "blocker_ids": [],
+        "gap": "Not applicable to this non-mathematical node.",
+        "imported_lean_modules": [],
+        "verification_reference_scope": "NONE"
+      },
+      "note": "No Lean mapping is expected at this layer; the object is empirical, a limitation, or an open-problem marker.",
+      "dag_source_reference": "draft.tex:464-466"
+    }
+  ]
+}

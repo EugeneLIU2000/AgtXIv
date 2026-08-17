@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:1307.7171v1:stabilizer-polytope-and-magic-membership",
+  "provider_agent": "agent:resource-theory-of-stabilizer-computation",
+  "statement": "statement:1307.7171v1:n-qubit-stabilizer-polytope",
+  "assumptions": [
+    "n is finite and at least one",
+    "rho is an n-qubit density operator",
+    "pure stabilizer states use the standard n-qubit Clifford-orbit/common-eigenspace convention",
+    "mixing is classical convex mixing, not coherent superposition"
+  ],
+  "conclusion": "STAB_n is the convex hull of pure n-qubit stabilizer states; rho is a nonstabilizer resource exactly when rho is outside STAB_n.",
+  "semantic_guards": [
+    "pure stabilizer state is not synonymous with a mixed free stabilizer state",
+    "stabilizerness membership is not itself a unique scalar monotone",
+    "do not call this object a Clifford polytope; that phrase is commonly used for a different channel/gate polytope"
+  ],
+  "imports": [
+    {
+      "contract": "contract:9705052v1:pure-stabilizer-state",
+      "status": "MATHEMATICALLY_ALIGNED_UPSTREAM_UNACCEPTED"
+    }
+  ],
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvRootMath",
+    "contract": "formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel",
+    "declarations": [
+      "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame",
+      "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit",
+      "AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms",
+      "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit",
+      "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope"
+    ],
+    "status": "KERNEL_CHECKED",
+    "scope_relation": "EXACT_N_QUBIT_ATOM_SET_AND_CONVEX_HULL_EQUIVALENCE",
+    "not_covered": "The source's full stabilizer-protocol syntax, ancilla/measurement/discard/conditioning semantics, and selective on-average monotonicity are scoped out."
+  },
+  "verification": {
+    "source_fidelity": "PASSED",
+    "dependency_closure": "INCOMPLETE_UPSTREAM_SCIENTIFIC_ACCEPTANCE",
+    "mathematics": "KERNEL_CHECKED",
+    "mathematics_detail": "COMMON_EIGENSPACE_TO_CLIFFORD_ORBIT_ATOM_SET_AND_CONVEX_HULL_EQUIVALENCE",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "AGENT_REVIEWED_PENDING_HUMAN",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:1307.7171v1:formalism-alignment-pending"
+  ],
+  "blocking_reason": "The n-qubit atom and convex-hull equivalence is kernel-checked, but the imported Gottesman contract remains scientifically unaccepted and independent human source/physical-semantic review plus the separate operation-class alignment remain open."
+}

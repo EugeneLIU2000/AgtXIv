@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "agent": {
+    "id": "agent:stabilizer-codes-and-quantum-error-correction",
+    "paper_id": "arxiv:quant-ph/9705052v1",
+    "title": "Stabilizer Codes and Quantum Error Correction",
+    "role": [
+      "foundational_concept_root",
+      "pure_stabilizer_state_provider"
+    ],
+    "lifecycle_status": "PARTIALLY_VERIFIED"
+  },
+  "source": {
+    "canonical_artifact": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+    "bundle_artifact": "Reference/Stabilizer Codes and Quantum Error Correction/source.tar",
+    "version_evidence": "The official arXiv record lists only quant-ph/9705052v1; the canonical TeX is byte-identical to Thesis.tex inside the frozen source.tar.",
+    "artifacts": [
+      "Reference/Stabilizer Codes and Quantum Error Correction/source.tar",
+      "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+      "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.sty",
+      "Reference/Stabilizer Codes and Quantum Error Correction/Capacity.eps"
+    ],
+    "source_hashes": "agents/stabilizer-codes-and-quantum-error-correction/source/source-hashes.json",
+    "anchors": "agents/stabilizer-codes-and-quantum-error-correction/source/anchors.jsonl"
+  },
+  "imports": [],
+  "local_delta": {
+    "statements": "agents/stabilizer-codes-and-quantum-error-correction/knowledge/statements.jsonl",
+    "chains": "agents/stabilizer-codes-and-quantum-error-correction/reasoning/chains.jsonl"
+  },
+  "verification": {
+    "records": "agents/stabilizer-codes-and-quantum-error-correction/verification/records.jsonl",
+    "verification_partition": "agents/stabilizer-codes-and-quantum-error-correction/verification/partition.json"
+  },
+  "formalization_contract": "agents/stabilizer-codes-and-quantum-error-correction/formal/qubit-stabilizer-code-kernel.json",
+  "supporting_formalization_contracts": [
+    "agents/stabilizer-codes-and-quantum-error-correction/formal/group-average-fixed-space.json"
+  ],
+  "exports": [
+    "agents/stabilizer-codes-and-quantum-error-correction/exports/pure-stabilizer-state.json"
+  ],
+  "unresolved": [
+    "agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json"
+  ]
+}

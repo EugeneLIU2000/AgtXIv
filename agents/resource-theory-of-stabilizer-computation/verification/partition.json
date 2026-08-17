@@ -1,0 +1,134 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "verification-partition:1307.7171v1:root",
+  "agent": "agent:resource-theory-of-stabilizer-computation",
+  "route_catalog": ["SOURCE_ALIGNMENT", "LEAN_KERNEL", "EXACT_PHYSICAL_SEMANTICS", "PHYSICAL_APPROXIMATION", "EMPIRICAL"],
+  "objects": [
+    {
+      "object_id": "statement:1307.7171v1:pure-stabilizer-clifford-orbit",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1307.7171v1:stabilizer-free-set"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_GATE_GENERATION_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The Clifford-orbit definition is exact in the ideal model."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "statement:1307.7171v1:fixed-space-clifford-orbit-equivalence",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PENDING_CROSS_SOURCE_HUMAN_ALIGNMENT", "scope_relation": "EXACT_CROSS_SOURCE_DEFINITION_BRIDGE_KERNEL_PROVED_PENDING_HUMAN_ALIGNMENT", "evidence": ["anchor:9705052v1:general-stabilizer-code", "anchor:1307.7171v1:stabilizer-free-set"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame", "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_PHASE_AND_GATE_CONVENTION_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "This is an exact equivalence theorem between two definitions, not an approximation."},
+        {"route": "EMPIRICAL", "reason": "No finite test can replace the universal bridge proof."}
+      ]
+    },
+    {
+      "object_id": "statement:1307.7171v1:stabilizer-convex-hull",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1307.7171v1:stabilizer-free-set"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms", "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit", "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Classical convex mixing is exact and is distinct from coherent superposition or noisy preparation."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "statement:1307.7171v1:magic-membership",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1307.7171v1:resource-split"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "Membership in the ideal free-state convex set is exact."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "statement:1307.7171v1:stabilizer-operations",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1307.7171v1:stabilizer-operations", "anchor:1307.7171v1:stabilizer-protocol-and-monotone"]},
+        {"route": "LEAN_KERNEL", "status": "SCOPED_OUT_OPERATION_PROTOCOL_SYNTAX_AND_SEMANTICS", "evidence": ["agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "PENDING_OPERATION_CLASS_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The ideal operation class is exact; hardware noise would be a separate downstream contract."},
+        {"route": "EMPIRICAL", "reason": "No empirical protocol performance is claimed."}
+      ]
+    },
+    {
+      "object_id": "statement:1307.7171v1:magic-monotone-definition",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PASSED", "evidence": ["anchor:1307.7171v1:magic-monotone", "anchor:1307.7171v1:stabilizer-protocol-and-monotone"]},
+        {"route": "LEAN_KERNEL", "status": "SCOPED_OUT_SELECTIVE_BRANCH_AND_ON_AVERAGE_PROTOCOL_SEMANTICS", "evidence": ["agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_PROTOCOL_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "On-average monotonicity is an exact probabilistic statement; it is not a finite-sampling approximation."},
+        {"route": "EMPIRICAL", "reason": "No sampled estimate is used."}
+      ]
+    },
+    {
+      "object_id": "statement:1307.7171v1:n-qubit-stabilizer-polytope",
+      "object_kind": "CLAIM",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "QUBIT_SPECIALIZATION_AND_TERMINOLOGY_NORMALIZATION", "evidence": ["anchor:1307.7171v1:resource-split", "anchor:1307.7171v1:stabilizer-free-set"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms", "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit", "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["verification:1307.7171v1:semantic-audit", "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "This is the exact finite-dimensional free-state polytope contract."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "step:1307.7171v1:000",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "PENDING_CROSS_SOURCE_HUMAN_ALIGNMENT", "scope_relation": "EXACT_CROSS_SOURCE_DEFINITION_BRIDGE_KERNEL_PROVED_PENDING_HUMAN_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_semanticClifford_map_standardIndependentZFrame", "AgtXIv.Stabilizer.pureStabilizerByFrame_iff_byCliffordOrbit"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_PHASE_AND_GATE_CONVENTION_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The cross-source bridge is exact mathematics and semantics."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    },
+    {
+      "object_id": "step:1307.7171v1:001",
+      "object_kind": "REASONING_STEP",
+      "approximation_introduced": false,
+      "verification_obligations": [
+        {"route": "SOURCE_ALIGNMENT", "status": "CONDITIONAL_PASS", "scope_relation": "QUBIT_SPECIALIZATION_REQUIRING_IMPORTED_ATOM_ALIGNMENT", "evidence": ["verification:1307.7171v1:semantic-audit"]},
+        {"route": "LEAN_KERNEL", "status": "KERNEL_CHECKED", "formalization_contracts": ["formalization-contract:1307.7171v1:qubit-stabilizer-polytope-kernel"], "declarations": ["AgtXIv.Stabilizer.range_frameAtom_eq_cliffordOrbitAtoms", "AgtXIv.Stabilizer.stabilizerPolytopeByFrames_eq_byCliffordOrbit", "AgtXIv.Stabilizer.stabilizerFreeByFrames_iff_mem_cliffordOrbitPolytope"], "evidence": ["verification:1307.7171v1:lean-qubit-stabilizer-polytope-kernel", "formal/AgtXIvRootMath/verification-result.json"]},
+        {"route": "EXACT_PHYSICAL_SEMANTICS", "status": "AGENT_REVIEWED_PENDING_HUMAN_AND_UPSTREAM_ACCEPTANCE", "evidence": ["verification:1307.7171v1:semantic-audit"]}
+      ],
+      "not_applicable": [
+        {"route": "PHYSICAL_APPROXIMATION", "reason": "The atom-set and convex-hull equivalence is exact."},
+        {"route": "EMPIRICAL", "reason": "No empirical input occurs."}
+      ]
+    }
+  ]
+}

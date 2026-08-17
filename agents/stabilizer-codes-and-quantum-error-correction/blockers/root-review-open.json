@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "blocker:9705052v1:root-review-open",
+  "affects": [
+    "contract:9705052v1:pure-stabilizer-state"
+  ],
+  "status": "OPEN",
+  "reason": "The exact phase-aware n-qubit mathematics is now kernel-checked, including the general-r fixed-space dimension and projector and the rank-n pure density specialization. Scientific acceptance remains open because the normalized rank/phase contract, source wording, and modern pure-stabilizer-state interpretation still lack independent human source and physical-semantic sign-off.",
+  "resolved_mathematics": [
+    "binary subgroup cardinality and nonidentity Pauli trace profile",
+    "general-r generator fixed space equals subgroup invariants and has dimension 2^(n-r)",
+    "general-r Hermitian idempotent positive-semidefinite projector with exact trace and range",
+    "rank-n normalized ray and trace-one rank-one pure density projector"
+  ],
+  "next_action": "Obtain independent human source-alignment and exact physical-semantic review; do not infer encoding circuits, code distance, noise robustness, or qudit coverage from the kernel result."
+}

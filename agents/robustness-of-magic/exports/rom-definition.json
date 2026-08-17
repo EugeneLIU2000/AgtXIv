@@ -1,0 +1,51 @@
+{
+  "schema_version": "0.1.0-prototype",
+  "id": "contract:1609.07488v2:rom-definition",
+  "provider_agent": "agent:robustness-of-magic",
+  "statement": "statement:1609.07488v2:rom-definition-normalized",
+  "assumptions": [
+    "n is finite and at least one",
+    "rho is an n-qubit density operator",
+    "the free atom set consists of all pure n-qubit stabilizer states"
+  ],
+  "normalization": "l1_pseudomixture_free_value_1",
+  "convention_guards": [
+    "This is not the negative weight (R-1)/2 and not log R.",
+    "This is full-state RoM, not a fixed-window reduced functional.",
+    "RoM is an l1 signed-decomposition cost, not Euclidean distance to STAB_n."
+  ],
+  "imports": [
+    {
+      "contract": "contract:1307.7171v1:stabilizer-polytope-and-magic-membership",
+      "status": "MATHEMATICALLY_ALIGNED_UPSTREAM_UNACCEPTED"
+    }
+  ],
+  "formalization": {
+    "system": "Lean 4",
+    "project": "formal/AgtXIvRootMath",
+    "contract": "formalization-contract:1609.07488v2:qubit-full-rom-kernel",
+    "declarations": [
+      "AgtXIv.RoM.exists_l1Minimizer",
+      "AgtXIv.Stabilizer.traceOneHermitianAffine_le_completeFrame_affineSpan",
+      "AgtXIv.Stabilizer.traceOne_canonicalStabilizer_feasible"
+    ],
+    "status": "KERNEL_CHECKED",
+    "scope_relation": "EXACT_FULL_N_QUBIT_STABILIZER_ATOM_FEASIBILITY_AND_ATTAINED_L1_MINIMUM"
+  },
+  "verification": {
+    "source_fidelity": "PASSED",
+    "dependency_closure": "INCOMPLETE_UPSTREAM_SCIENTIFIC_ACCEPTANCE",
+    "mathematics": "KERNEL_CHECKED",
+    "mathematics_detail": "ALL_N_STABILIZER_ATOM_AFFINE_FEASIBILITY_AND_FINITE_MINIMUM_ATTAINMENT",
+    "computation": "NOT_APPLICABLE",
+    "physical_semantics": "AGENT_REVIEWED_PENDING_HUMAN",
+    "approximation_regime": "NOT_APPLICABLE"
+  },
+  "version": "0.1.0",
+  "lifecycle_status": "PARTIALLY_VERIFIED",
+  "accepted": false,
+  "blockers": [
+    "blocker:1609.07488v2:free-set-import-alignment-pending"
+  ],
+  "blocking_reason": "The full n-qubit mathematical definition is total and kernel-checked, but the upstream free-set export remains scientifically unaccepted and human source/physical-semantic review is open."
+}
