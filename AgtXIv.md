@@ -86,7 +86,7 @@ The pilot does not attempt to:
 
 ### 1.4 Math-first pilot boundary
 
-The pilot standardizes mathematical interfaces before attempting a universal Paper Agent schema. Its primary graph is a `MathematicsDependencyDAG` whose nodes are definitions, assumptions, lemmas, theorems, constructions, and external mathematical foundations. Its edge types are deliberately narrow:
+The pilot standardizes mathematical interfaces before attempting a universal Paper Agent schema. Its primary graph is a `MathematicsDependencyDAG` whose nodes are definitions, assumptions, lemmas, theorems, constructions, and external mathematical foundations. The normative decomposition, Oracle search, Lean proof, proof-guided optimization, fixed-point iteration, and cross-Target reuse procedure is specified in the [AgtXIv Mathematics Pipeline](AgtXIv_math.md). Its edge types are deliberately narrow:
 
 ```text
 definition_dependency
