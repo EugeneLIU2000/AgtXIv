@@ -18,6 +18,9 @@ def validate(path: Path) -> dict[str, object]:
     edges = data.get("edges", [])
     errors: list[str] = []
 
+    if data.get("graph_view") != "ORACLE_CANDIDATE":
+        errors.append("graph_view must explicitly remain ORACLE_CANDIDATE")
+
     ids = [node.get("id") for node in nodes]
     duplicate_ids = sorted(key for key, count in Counter(ids).items() if count > 1)
     if duplicate_ids:
@@ -49,6 +52,24 @@ def validate(path: Path) -> dict[str, object]:
             continue
         if edge_type not in allowed_edges:
             errors.append(f"edge {index}: unknown type {edge_type}")
+        evidence = edge.get("evidence")
+        if not evidence:
+            errors.append(f"edge {index}: missing evidence state")
+        else:
+            if evidence.get("oracle_status") != "ORACLE_PROPOSED":
+                errors.append(f"edge {index}: Oracle provenance was not preserved")
+            if evidence.get("disposition") not in {
+                "CANDIDATE",
+                "ACCEPTED",
+                "CONDITIONAL",
+                "REJECTED",
+                "REDUNDANT_IN_QUERY_VIEW",
+                "BLOCKED",
+                "DISPUTED",
+            }:
+                errors.append(f"edge {index}: invalid evidence disposition")
+            if not evidence.get("source_alignment") or not evidence.get("lean_support"):
+                errors.append(f"edge {index}: incomplete evidence axes")
         if source == target:
             errors.append(f"edge {index}: self-loop at {source}")
         edge_keys[(source, target, edge_type)] += 1

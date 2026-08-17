@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgtXIv Mathematics Dependency Edge Evidence",
+  "type": "object",
+  "required": [
+    "from",
+    "to",
+    "type",
+    "reason",
+    "evidence"
+  ],
+  "properties": {
+    "from": {
+      "type": "string"
+    },
+    "to": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "scientific_claim_dependency",
+        "definition_dependency",
+        "scope_dependency",
+        "data_dependency"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "oracle_status",
+        "source_alignment",
+        "lean_support",
+        "disposition"
+      ],
+      "properties": {
+        "oracle_status": {
+          "enum": [
+            "ORACLE_PROPOSED"
+          ]
+        },
+        "source_alignment": {
+          "enum": [
+            "UNREVIEWED_AT_EDGE_LEVEL",
+            "PASSED",
+            "PARTIAL",
+            "FAILED",
+            "BLOCKED"
+          ]
+        },
+        "lean_support": {
+          "enum": [
+            "NOT_EXTRACTED",
+            "PRESENT",
+            "ABSENT",
+            "NOT_APPLICABLE",
+            "BLOCKED"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "CANDIDATE",
+            "ACCEPTED",
+            "CONDITIONAL",
+            "REJECTED",
+            "REDUNDANT_IN_QUERY_VIEW",
+            "BLOCKED",
+            "DISPUTED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

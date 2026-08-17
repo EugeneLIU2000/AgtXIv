@@ -1,5 +1,7 @@
 {
-  "schema_version": "0.1.0-prototype",
+  "schema_version": "0.2.0-prototype",
+  "graph_view": "ORACLE_CANDIDATE",
+  "edge_verification_policy": "Every displayed dependency is a typed Oracle candidate until an evidence record promotes its disposition. Candidate edges do not imply source alignment, Lean support, or acceptance.",
   "paper": {
     "id": "arxiv:2607.26154v1",
     "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
@@ -774,7 +776,11 @@
       "label_zh": "完整 Pauli 基的 Parseval 恒等式",
       "contract": "For d=2^n, sum_P tr(P rho)^2=d tr(rho^2), defining a normalized Pauli distribution.",
       "anchor": "draft.tex:935-942",
-      "domain": {"system":"n_qubits","d":"2^n","includes_identity":true},
+      "domain": {
+        "system": "n_qubits",
+        "d": "2^n",
+        "includes_identity": true
+      },
       "status": "LOCAL_STANDARD_DERIVATION"
     },
     {
@@ -859,135 +865,1554 @@
     }
   ],
   "edges": [
-    {"from":"root:bravyi-kitaev-magic-model","to":"claim:resource-interpretation","type":"scientific_claim_dependency","reason":"Supplies the operational meaning of a nonstabilizer ancilla as a computational resource."},
-    {"from":"root:gottesman-knill-simulation","to":"claim:resource-interpretation","type":"scientific_claim_dependency","reason":"Supplies the restricted-operation classical-simulation boundary that makes extra resources meaningful."},
-    {"from":"root:veitch-stabilizer-resource-theory","to":"claim:resource-interpretation","type":"scientific_claim_dependency","reason":"Supplies the free-state/free-operation resource-theory boundary."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:full-stabilizer-polytope","type":"definition_dependency","reason":"Defines the pure stabilizer states whose convex hull is taken."},
-    {"from":"root:veitch-stabilizer-resource-theory","to":"claim:full-stabilizer-polytope","type":"scientific_claim_dependency","reason":"Explicitly defines the full stabilizer free set as a convex hull."},
-    {"from":"claim:full-stabilizer-polytope","to":"claim:full-rom","type":"definition_dependency","reason":"RoM decomposes the state over pure vertices of this free polytope."},
-    {"from":"root:howard-campbell-rom","to":"claim:full-rom","type":"scientific_claim_dependency","reason":"Provides the RoM definition and faithfulness contract."},
-    {"from":"claim:pauli-window","to":"claim:reduced-stabilizer-polytope","type":"definition_dependency","reason":"Defines the projection map."},
-    {"from":"claim:full-stabilizer-polytope","to":"claim:reduced-stabilizer-polytope","type":"definition_dependency","reason":"Defines the set being projected."},
-    {"from":"root:varela-reduced-polytope","to":"claim:reduced-stabilizer-polytope","type":"scientific_claim_dependency","reason":"Target imports the reduced-polytope framework from Varela et al."},
-    {"from":"claim:reduced-stabilizer-polytope","to":"claim:reduced-rom","type":"definition_dependency","reason":"Reduced RoM is a signed affine gauge of the projected polytope."},
-    {"from":"claim:full-rom","to":"claim:reduced-rom","type":"scientific_claim_dependency","reason":"Projection yields the stated lower-bound relation to full RoM."},
-    {"from":"root:varela-reduced-polytope","to":"claim:reduced-rom","type":"scientific_claim_dependency","reason":"Imports the reduced functional and valid projection bound; its stronger fixed-window monotonicity claim is tracked separately as false."},
-    {"from":"claim:reduced-rom","to":"claim:fixed-window-monotonicity","type":"definition_dependency","reason":"Supplies the functional for the monotonicity claim."},
-    {"from":"root:varela-reduced-polytope","to":"claim:fixed-window-monotonicity","type":"scientific_claim_dependency","reason":"Varela states and attempts to prove the claim imported by the target."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:frustration-graph","type":"definition_dependency","reason":"Supplies Pauli commutation and joint eigenspaces."},
-    {"from":"claim:pauli-window","to":"claim:frustration-graph","type":"definition_dependency","reason":"Supplies graph vertices."},
-    {"from":"claim:reduced-stabilizer-polytope","to":"claim:exact-reduced-vrep","type":"definition_dependency","reason":"The V-representation describes this polytope."},
-    {"from":"claim:frustration-graph","to":"claim:exact-reduced-vrep","type":"definition_dependency","reason":"Supplies maximal commuting supports."},
-    {"from":"root:varela-reduced-polytope","to":"claim:exact-reduced-vrep","type":"scientific_claim_dependency","reason":"This is the load-bearing imported theorem."},
-    {"from":"claim:reduced-rom","to":"claim:exact-vertex-dual","type":"definition_dependency","reason":"Supplies the exact primal objective."},
-    {"from":"claim:exact-reduced-vrep","to":"claim:exact-vertex-dual","type":"scientific_claim_dependency","reason":"Supplies the admissible atoms indexing the dual constraints."},
-    {"from":"foundation:finite-lp-strong-duality","to":"claim:exact-vertex-dual","type":"scientific_claim_dependency","reason":"Justifies equality of exact primal and dual optima."},
-    {"from":"root:varela-reduced-polytope","to":"claim:general-reduced-hardness","type":"scientific_claim_dependency","reason":"The representation size and NP-hardness are imported rather than proved locally."},
-    {"from":"claim:exact-reduced-vrep","to":"claim:general-reduced-hardness","type":"scope_dependency","reason":"The size statement concerns this representation."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:dependency-affine-code","type":"definition_dependency","reason":"Supplies Pauli multiplication and binary symplectic representation."},
-    {"from":"claim:frustration-graph","to":"claim:dependency-affine-code","type":"scope_dependency","reason":"The parity syndrome is order-independent only inside commuting contexts."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:sign-syndrome-linear-consistent","type":"definition_dependency","reason":"Supplies commuting Pauli generators and their joint eigenspaces."},
-    {"from":"claim:frustration-graph","to":"claim:sign-syndrome-linear-consistent","type":"scope_dependency","reason":"Restricts the relation space to a commuting context."},
-    {"from":"claim:sign-syndrome-linear-consistent","to":"claim:dependency-affine-code","type":"scientific_claim_dependency","reason":"Makes the affine-code syndrome linear and the coset nonempty."},
-    {"from":"claim:exact-reduced-vrep","to":"claim:sign-relaxed-polytope","type":"definition_dependency","reason":"The relaxation replaces admissible signs in the exact candidate representation by all signs."},
-    {"from":"claim:sign-relaxed-polytope","to":"claim:relaxed-rom","type":"definition_dependency","reason":"Supplies the relaxed atom set for the l1 functional."},
-    {"from":"claim:reduced-rom","to":"claim:relaxed-rom","type":"definition_dependency","reason":"Supplies the signed-affine normalization convention being relaxed."},
-    {"from":"claim:relaxed-rom","to":"claim:relaxed-rom-lower-bound","type":"definition_dependency","reason":"Supplies the relaxed value compared with exact reduced RoM."},
-    {"from":"claim:reduced-stabilizer-polytope","to":"claim:relaxed-rom-lower-bound","type":"definition_dependency","reason":"Supplies the exact feasible polytope."},
-    {"from":"claim:sign-relaxed-polytope","to":"claim:relaxed-rom-lower-bound","type":"scientific_claim_dependency","reason":"Outer inclusion enlarges the feasible atom set."},
-    {"from":"claim:dependency-affine-code","to":"claim:pauli-active-dependency","type":"definition_dependency","reason":"Active dependencies are the minimal commuting parity checks of the code."},
-    {"from":"claim:dependency-affine-code","to":"claim:no-active-free-signs","type":"scientific_claim_dependency","reason":"The affine parity checks characterize precisely when signs are restricted."},
-    {"from":"claim:pauli-active-dependency","to":"claim:no-active-free-signs","type":"definition_dependency","reason":"States the condition whose equivalence is proved."},
-    {"from":"claim:no-active-free-signs","to":"claim:relaxation-exactness","type":"scientific_claim_dependency","reason":"Identifies when exact and relaxed sign sets coincide."},
-    {"from":"claim:exact-reduced-vrep","to":"claim:relaxation-exactness","type":"scientific_claim_dependency","reason":"Needed for both the forward equality and saturated-coordinate converse."},
-    {"from":"claim:sign-relaxed-polytope","to":"claim:relaxed-affine-span","type":"definition_dependency","reason":"Supplies the vertices used in the sign-flip argument."},
-    {"from":"claim:relaxed-affine-span","to":"claim:relaxed-lp-dual","type":"scope_dependency","reason":"Establishes feasibility and boundedness before invoking strong duality."},
-    {"from":"claim:relaxed-rom","to":"claim:relaxed-lp-dual","type":"definition_dependency","reason":"Supplies the primal optimization problem."},
-    {"from":"claim:sign-relaxed-polytope","to":"claim:relaxed-lp-dual","type":"definition_dependency","reason":"Supplies the primal atom set."},
-    {"from":"foundation:finite-lp-strong-duality","to":"claim:relaxed-lp-dual","type":"scientific_claim_dependency","reason":"Converts the finite l1 primal to the stated dual."},
-    {"from":"claim:sign-relaxed-polytope","to":"claim:sign-alignment-identity","type":"definition_dependency","reason":"Supplies unrestricted signs on each context."},
-    {"from":"claim:relaxed-lp-dual","to":"claim:relaxed-mwis-dual","type":"scientific_claim_dependency","reason":"Starting point for collapsing all vertex constraints."},
-    {"from":"claim:sign-alignment-identity","to":"claim:relaxed-mwis-dual","type":"scientific_claim_dependency","reason":"Turns sign maximization into a sum of absolute weights."},
-    {"from":"claim:frustration-graph","to":"claim:relaxed-mwis-dual","type":"definition_dependency","reason":"Independent-set maximization defines MWIS."},
-    {"from":"claim:mwis-definition","to":"claim:relaxed-mwis-dual","type":"definition_dependency","reason":"Supplies alpha_|y|(G)."},
-    {"from":"claim:relaxation-exactness","to":"claim:exact-graph-program","type":"scientific_claim_dependency","reason":"Identifies exact reduced RoM with relaxed RoM."},
-    {"from":"claim:relaxed-mwis-dual","to":"claim:exact-graph-program","type":"scientific_claim_dependency","reason":"Supplies the graph-only dual."},
-    {"from":"root:perfect-graph-weighted-duality","to":"claim:lovasz-sandwich","type":"scientific_claim_dependency","reason":"Supplies the cited weighted graph-theory comparison."},
-    {"from":"claim:perfect-graph-definition","to":"claim:perfect-graph-antiblocker","type":"scope_dependency","reason":"Perfectness is the weighted duality hypothesis."},
-    {"from":"root:perfect-graph-weighted-duality","to":"claim:perfect-graph-antiblocker","type":"scientific_claim_dependency","reason":"Weighted stable-set/fractional-cover duality is the load-bearing external theorem."},
-    {"from":"claim:perfect-graph-definition","to":"claim:perfect-graph-weighted-collapse","type":"scope_dependency","reason":"Perfectness is the collapse hypothesis."},
-    {"from":"claim:lovasz-sandwich","to":"claim:perfect-graph-weighted-collapse","type":"scientific_claim_dependency","reason":"Theta is squeezed between equal weighted endpoints."},
-    {"from":"root:perfect-graph-weighted-duality","to":"claim:perfect-graph-weighted-collapse","type":"scientific_claim_dependency","reason":"Supplies equality of weighted stable set and fractional clique cover."},
-    {"from":"claim:exact-graph-program","to":"claim:closed-form-rom","type":"scientific_claim_dependency","reason":"Supplies the exact feasible set for (y,mu)."},
-    {"from":"claim:perfect-graph-antiblocker","to":"claim:closed-form-rom","type":"scientific_claim_dependency","reason":"Expresses feasible absolute weights as convex combinations of clique indicators."},
-    {"from":"claim:perfect-graph-definition","to":"claim:closed-form-rom","type":"scope_dependency","reason":"States the required graph regime."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:anticommuting-l2-bound","type":"definition_dependency","reason":"Supplies Hermitian Pauli involutions and anticommutation."},
-    {"from":"claim:frustration-graph","to":"claim:anticommuting-l2-bound","type":"definition_dependency","reason":"Cliques identify pairwise anticommuting sets."},
-    {"from":"claim:closed-form-rom","to":"claim:capacity-upper-bound","type":"scientific_claim_dependency","reason":"Reduces reduced RoM to clique l1 sums."},
-    {"from":"claim:anticommuting-l2-bound","to":"claim:capacity-upper-bound","type":"scientific_claim_dependency","reason":"Cauchy-Schwarz converts the l2 uncertainty bound to sqrt(|Q|)."},
-    {"from":"claim:closed-form-rom","to":"claim:capacity-attainment","type":"scientific_claim_dependency","reason":"Turns the constructed clique expectations into an attained RoM value."},
-    {"from":"claim:anticommuting-l2-bound","to":"claim:capacity-attainment","type":"definition_dependency","reason":"The same Clifford-algebra square identity constructs the involution."},
-    {"from":"claim:capacity-upper-bound","to":"claim:witness-capacity","type":"scientific_claim_dependency","reason":"Supplies the upper half of the supremum equality."},
-    {"from":"claim:capacity-attainment","to":"claim:witness-capacity","type":"scientific_claim_dependency","reason":"Supplies the matching lower half."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:max-anticommuting-size","type":"definition_dependency","reason":"Supplies the binary symplectic representation."},
-    {"from":"claim:frustration-graph","to":"claim:max-anticommuting-size","type":"definition_dependency","reason":"A graph clique is the pairwise anticommuting family being bounded."},
-    {"from":"claim:max-anticommuting-size","to":"claim:jordan-wigner-extremal-set","type":"scope_dependency","reason":"Identifies the size that the construction must attain."},
-    {"from":"claim:pauli-active-dependency","to":"claim:jordan-wigner-extremal-set","type":"definition_dependency","reason":"Classifies the unique full-support relation as inactive."},
-    {"from":"claim:perfect-graph-definition","to":"claim:jordan-wigner-extremal-set","type":"scope_dependency","reason":"Complete graphs certify the graph hypothesis."},
-    {"from":"claim:witness-capacity","to":"claim:universal-ceiling","type":"scientific_claim_dependency","reason":"Relates capacity to clique number for each window."},
-    {"from":"claim:max-anticommuting-size","to":"claim:universal-ceiling","type":"scientific_claim_dependency","reason":"Supplies the universal upper bound."},
-    {"from":"claim:jordan-wigner-extremal-set","to":"claim:universal-ceiling","type":"scientific_claim_dependency","reason":"Supplies an attaining solvable window."},
-    {"from":"claim:closed-form-rom","to":"claim:polynomial-evaluation","type":"scientific_claim_dependency","reason":"Evaluation becomes maximum-weight clique."},
-    {"from":"foundation:perfect-graph-complement-and-algorithm","to":"claim:polynomial-evaluation","type":"scientific_claim_dependency","reason":"Supplies complement closure and rational weighted optimization complexity under the promise."},
-    {"from":"claim:frustration-graph","to":"claim:measurement-setting-bound","type":"definition_dependency","reason":"Independent color classes are commuting contexts."},
-    {"from":"claim:perfect-graph-definition","to":"claim:measurement-setting-bound","type":"scientific_claim_dependency","reason":"Perfectness gives chi=omega for the full graph."},
-    {"from":"claim:witness-capacity","to":"claim:four-solvable-families","type":"scientific_claim_dependency","reason":"Computes the tabulated capacities once graph and dependency hypotheses are checked."},
-    {"from":"claim:jordan-wigner-extremal-set","to":"claim:four-solvable-families","type":"scientific_claim_dependency","reason":"Supplies one of the four constructions and Majorana ingredients."},
-    {"from":"claim:perfect-graph-definition","to":"claim:four-solvable-families","type":"scope_dependency","reason":"Each displayed graph must be certified perfect."},
-    {"from":"claim:pauli-active-dependency","to":"claim:four-solvable-families","type":"scope_dependency","reason":"Each measurement family must be checked for no active relation."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:clifford-rom-covariance","type":"definition_dependency","reason":"Clifford conjugation preserves Pauli and pure stabilizer states."},
-    {"from":"claim:reduced-stabilizer-polytope","to":"claim:clifford-rom-covariance","type":"definition_dependency","reason":"The coordinate projection is identified under conjugation."},
-    {"from":"claim:reduced-rom","to":"claim:clifford-rom-covariance","type":"definition_dependency","reason":"The two affine optimization problems are compared."},
-    {"from":"claim:frustration-graph","to":"claim:clifford-structure-invariance","type":"definition_dependency","reason":"Commutation edges are invariant under conjugation."},
-    {"from":"claim:pauli-active-dependency","to":"claim:clifford-structure-invariance","type":"definition_dependency","reason":"Product relations and their active support are invariant."},
-    {"from":"claim:clifford-rom-covariance","to":"claim:rotated-closed-form","type":"scientific_claim_dependency","reason":"Transfers values between a rotated window and rotated state."},
-    {"from":"claim:clifford-structure-invariance","to":"claim:rotated-closed-form","type":"scientific_claim_dependency","reason":"Transfers the solvability hypotheses."},
-    {"from":"claim:closed-form-rom","to":"claim:rotated-closed-form","type":"scientific_claim_dependency","reason":"Supplies the formula inherited by every rotation."},
-    {"from":"claim:witness-capacity","to":"claim:rotated-closed-form","type":"scientific_claim_dependency","reason":"Shows rotation does not enlarge the capacity of a single window."},
-    {"from":"claim:rotated-closed-form","to":"claim:detection-coverage-definition","type":"definition_dependency","reason":"Defines the ensemble maximum used for detection."},
-    {"from":"claim:four-solvable-families","to":"claim:figure2-protocol","type":"definition_dependency","reason":"Supplies the four seed windows evaluated."},
-    {"from":"claim:detection-coverage-definition","to":"claim:figure2-protocol","type":"definition_dependency","reason":"Supplies the reported response variable."},
-    {"from":"claim:figure2-haar-input","to":"claim:figure2-protocol","type":"data_dependency","reason":"Supplies panel-a ensemble and rotation counts."},
-    {"from":"claim:figure2-variational-input","to":"claim:figure2-protocol","type":"data_dependency","reason":"Supplies panel-b circuit ensemble and depths."},
-    {"from":"claim:figure2-protocol","to":"claim:figure2-coverage-gain","type":"data_dependency","reason":"The empirical statement is conditional on this sample and rotation protocol."},
-    {"from":"claim:witness-capacity","to":"claim:figure2-coverage-gain","type":"scope_dependency","reason":"Capacity is compared with, but must not be conflated with, empirical coverage."},
-    {"from":"claim:figure2-protocol","to":"claim:figure2-reproduction-blocker","type":"data_dependency","reason":"Auditing the stated protocol reveals the missing reproducibility artifacts."},
-    {"from":"claim:squared-pauli-profile","to":"claim:squared-stabilizer-support","type":"definition_dependency","reason":"Supplies the squared coordinates whose support is characterized."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:squared-stabilizer-support","type":"definition_dependency","reason":"Pure stabilizer Pauli expectations are 0 or +/-1 on a commuting stabilizer support."},
-    {"from":"claim:frustration-graph","to":"claim:squared-stabilizer-support","type":"definition_dependency","reason":"Commuting support becomes an independent set."},
-    {"from":"claim:squared-stabilizer-support","to":"claim:quadratic-stabilizer-mwis","type":"scientific_claim_dependency","reason":"Convexity reduces the stabilizer optimum to weighted independent supports."},
-    {"from":"claim:frustration-graph","to":"claim:quadratic-stabilizer-mwis","type":"definition_dependency","reason":"Defines alpha_w."},
-    {"from":"claim:quadratic-stabilizer-mwis","to":"claim:hbar-perfect-quadratic-witness","type":"scientific_claim_dependency","reason":"Supplies the stabilizer benchmark."},
-    {"from":"root:xu-quadratic-pauli-graph","to":"claim:hbar-perfect-quadratic-witness","type":"scientific_claim_dependency","reason":"Supplies the quantum beta value and hbar-perfectness results."},
-    {"from":"root:gottesman-stabilizer-formalism","to":"claim:pauli-parseval","type":"definition_dependency","reason":"Supplies the orthogonal Pauli operator basis."},
-    {"from":"root:full-pauli-symplectic-graph","to":"claim:full-pauli-independent-sets","type":"scientific_claim_dependency","reason":"Supplies the full graph and maximal-support classification."},
-    {"from":"claim:pauli-parseval","to":"claim:full-pauli-independent-sets","type":"definition_dependency","reason":"Normalizes the Pauli distribution on those supports."},
-    {"from":"root:leone-stabilizer-renyi-entropy","to":"claim:pure-sre-graph-identity","type":"definition_dependency","reason":"Supplies the order-2 stabilizer entropy definition."},
-    {"from":"claim:pauli-parseval","to":"claim:pure-sre-graph-identity","type":"scientific_claim_dependency","reason":"Normalizes the pure-state Pauli distribution."},
-    {"from":"claim:full-pauli-independent-sets","to":"claim:pure-sre-graph-identity","type":"scientific_claim_dependency","reason":"Supplies the graph-defined uniform stabilizer reference scale."},
-    {"from":"root:leone-stabilizer-renyi-entropy","to":"claim:mixed-sre-identity-limitation","type":"definition_dependency","reason":"Provides the pure-state moment convention being extended algebraically."},
-    {"from":"claim:pauli-parseval","to":"claim:mixed-sre-identity-limitation","type":"scientific_claim_dependency","reason":"Produces the purity correction term."},
-    {"from":"claim:full-pauli-independent-sets","to":"claim:dephased-purity-mwis","type":"definition_dependency","reason":"Maximum independent sets label stabilizer dephasing bases."},
-    {"from":"claim:pauli-parseval","to":"claim:dephased-purity-mwis","type":"scientific_claim_dependency","reason":"Relates squared expectations to dephased purity."},
-    {"from":"claim:mixed-sre-identity-limitation","to":"claim:mixed-state-graph-bound-open","type":"scope_dependency","reason":"Shows why the pure-state support argument fails for mixtures."},
-    {"from":"claim:dephased-purity-mwis","to":"claim:mixed-state-graph-bound-open","type":"scientific_claim_dependency","reason":"Provides a complementary graph statistic but not the missing stabilizer bound."},
-    {"from":"root:full-pauli-symplectic-graph","to":"claim:full-pauli-obstructions","type":"scientific_claim_dependency","reason":"Supplies the symplectic graph parameters and coloring facts."},
-    {"from":"root:varela-reduced-polytope","to":"claim:full-pauli-obstructions","type":"scientific_claim_dependency","reason":"Supplies the independent sign-constraint count."},
-    {"from":"claim:dependency-affine-code","to":"claim:full-pauli-obstructions","type":"definition_dependency","reason":"Explains the sign-code obstruction."},
-    {"from":"claim:dependency-affine-code","to":"claim:active-dependency-coset-decoding-open","type":"definition_dependency","reason":"Admissible signs form the affine code to be decoded."},
-    {"from":"claim:relaxed-mwis-dual","to":"claim:active-dependency-coset-decoding-open","type":"scope_dependency","reason":"The graph part remains tractable while sign decoding does not collapse."},
-    {"from":"claim:exact-graph-program","to":"claim:imperfect-graph-theta-lower-bound-open","type":"scientific_claim_dependency","reason":"Identifies the MWIS term to be relaxed."},
-    {"from":"claim:lovasz-sandwich","to":"claim:imperfect-graph-theta-lower-bound-open","type":"scientific_claim_dependency","reason":"Replacing alpha by theta gives the sound relaxation direction."}
+    {
+      "from": "root:bravyi-kitaev-magic-model",
+      "to": "claim:resource-interpretation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the operational meaning of a nonstabilizer ancilla as a computational resource.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-knill-simulation",
+      "to": "claim:resource-interpretation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the restricted-operation classical-simulation boundary that makes extra resources meaningful.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:veitch-stabilizer-resource-theory",
+      "to": "claim:resource-interpretation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the free-state/free-operation resource-theory boundary.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:full-stabilizer-polytope",
+      "type": "definition_dependency",
+      "reason": "Defines the pure stabilizer states whose convex hull is taken.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:veitch-stabilizer-resource-theory",
+      "to": "claim:full-stabilizer-polytope",
+      "type": "scientific_claim_dependency",
+      "reason": "Explicitly defines the full stabilizer free set as a convex hull.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:full-stabilizer-polytope",
+      "to": "claim:full-rom",
+      "type": "definition_dependency",
+      "reason": "RoM decomposes the state over pure vertices of this free polytope.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:howard-campbell-rom",
+      "to": "claim:full-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Provides the RoM definition and faithfulness contract.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-window",
+      "to": "claim:reduced-stabilizer-polytope",
+      "type": "definition_dependency",
+      "reason": "Defines the projection map.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:full-stabilizer-polytope",
+      "to": "claim:reduced-stabilizer-polytope",
+      "type": "definition_dependency",
+      "reason": "Defines the set being projected.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:reduced-stabilizer-polytope",
+      "type": "scientific_claim_dependency",
+      "reason": "Target imports the reduced-polytope framework from Varela et al.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:reduced-rom",
+      "type": "definition_dependency",
+      "reason": "Reduced RoM is a signed affine gauge of the projected polytope.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:full-rom",
+      "to": "claim:reduced-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Projection yields the stated lower-bound relation to full RoM.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:reduced-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Imports the reduced functional and valid projection bound; its stronger fixed-window monotonicity claim is tracked separately as false.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:fixed-window-monotonicity",
+      "type": "definition_dependency",
+      "reason": "Supplies the functional for the monotonicity claim.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:fixed-window-monotonicity",
+      "type": "scientific_claim_dependency",
+      "reason": "Varela states and attempts to prove the claim imported by the target.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:frustration-graph",
+      "type": "definition_dependency",
+      "reason": "Supplies Pauli commutation and joint eigenspaces.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-window",
+      "to": "claim:frustration-graph",
+      "type": "definition_dependency",
+      "reason": "Supplies graph vertices.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:exact-reduced-vrep",
+      "type": "definition_dependency",
+      "reason": "The V-representation describes this polytope.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:exact-reduced-vrep",
+      "type": "definition_dependency",
+      "reason": "Supplies maximal commuting supports.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:exact-reduced-vrep",
+      "type": "scientific_claim_dependency",
+      "reason": "This is the load-bearing imported theorem.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:exact-vertex-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies the exact primal objective.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:exact-vertex-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the admissible atoms indexing the dual constraints.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "foundation:finite-lp-strong-duality",
+      "to": "claim:exact-vertex-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Justifies equality of exact primal and dual optima.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:general-reduced-hardness",
+      "type": "scientific_claim_dependency",
+      "reason": "The representation size and NP-hardness are imported rather than proved locally.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:general-reduced-hardness",
+      "type": "scope_dependency",
+      "reason": "The size statement concerns this representation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:dependency-affine-code",
+      "type": "definition_dependency",
+      "reason": "Supplies Pauli multiplication and binary symplectic representation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:dependency-affine-code",
+      "type": "scope_dependency",
+      "reason": "The parity syndrome is order-independent only inside commuting contexts.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:sign-syndrome-linear-consistent",
+      "type": "definition_dependency",
+      "reason": "Supplies commuting Pauli generators and their joint eigenspaces.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:sign-syndrome-linear-consistent",
+      "type": "scope_dependency",
+      "reason": "Restricts the relation space to a commuting context.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-syndrome-linear-consistent",
+      "to": "claim:dependency-affine-code",
+      "type": "scientific_claim_dependency",
+      "reason": "Makes the affine-code syndrome linear and the coset nonempty.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:sign-relaxed-polytope",
+      "type": "definition_dependency",
+      "reason": "The relaxation replaces admissible signs in the exact candidate representation by all signs.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-rom",
+      "type": "definition_dependency",
+      "reason": "Supplies the relaxed atom set for the l1 functional.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:relaxed-rom",
+      "type": "definition_dependency",
+      "reason": "Supplies the signed-affine normalization convention being relaxed.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxed-rom",
+      "to": "claim:relaxed-rom-lower-bound",
+      "type": "definition_dependency",
+      "reason": "Supplies the relaxed value compared with exact reduced RoM.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:relaxed-rom-lower-bound",
+      "type": "definition_dependency",
+      "reason": "Supplies the exact feasible polytope.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-rom-lower-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Outer inclusion enlarges the feasible atom set.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:pauli-active-dependency",
+      "type": "definition_dependency",
+      "reason": "Active dependencies are the minimal commuting parity checks of the code.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:no-active-free-signs",
+      "type": "scientific_claim_dependency",
+      "reason": "The affine parity checks characterize precisely when signs are restricted.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:no-active-free-signs",
+      "type": "definition_dependency",
+      "reason": "States the condition whose equivalence is proved.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:no-active-free-signs",
+      "to": "claim:relaxation-exactness",
+      "type": "scientific_claim_dependency",
+      "reason": "Identifies when exact and relaxed sign sets coincide.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:exact-reduced-vrep",
+      "to": "claim:relaxation-exactness",
+      "type": "scientific_claim_dependency",
+      "reason": "Needed for both the forward equality and saturated-coordinate converse.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-affine-span",
+      "type": "definition_dependency",
+      "reason": "Supplies the vertices used in the sign-flip argument.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxed-affine-span",
+      "to": "claim:relaxed-lp-dual",
+      "type": "scope_dependency",
+      "reason": "Establishes feasibility and boundedness before invoking strong duality.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxed-rom",
+      "to": "claim:relaxed-lp-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies the primal optimization problem.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:relaxed-lp-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies the primal atom set.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "foundation:finite-lp-strong-duality",
+      "to": "claim:relaxed-lp-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Converts the finite l1 primal to the stated dual.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-relaxed-polytope",
+      "to": "claim:sign-alignment-identity",
+      "type": "definition_dependency",
+      "reason": "Supplies unrestricted signs on each context.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxed-lp-dual",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Starting point for collapsing all vertex constraints.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:sign-alignment-identity",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "scientific_claim_dependency",
+      "reason": "Turns sign maximization into a sum of absolute weights.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "definition_dependency",
+      "reason": "Independent-set maximization defines MWIS.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:mwis-definition",
+      "to": "claim:relaxed-mwis-dual",
+      "type": "definition_dependency",
+      "reason": "Supplies alpha_|y|(G).",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxation-exactness",
+      "to": "claim:exact-graph-program",
+      "type": "scientific_claim_dependency",
+      "reason": "Identifies exact reduced RoM with relaxed RoM.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxed-mwis-dual",
+      "to": "claim:exact-graph-program",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the graph-only dual.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:perfect-graph-weighted-duality",
+      "to": "claim:lovasz-sandwich",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the cited weighted graph-theory comparison.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:perfect-graph-antiblocker",
+      "type": "scope_dependency",
+      "reason": "Perfectness is the weighted duality hypothesis.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:perfect-graph-weighted-duality",
+      "to": "claim:perfect-graph-antiblocker",
+      "type": "scientific_claim_dependency",
+      "reason": "Weighted stable-set/fractional-cover duality is the load-bearing external theorem.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:perfect-graph-weighted-collapse",
+      "type": "scope_dependency",
+      "reason": "Perfectness is the collapse hypothesis.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:lovasz-sandwich",
+      "to": "claim:perfect-graph-weighted-collapse",
+      "type": "scientific_claim_dependency",
+      "reason": "Theta is squeezed between equal weighted endpoints.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:perfect-graph-weighted-duality",
+      "to": "claim:perfect-graph-weighted-collapse",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies equality of weighted stable set and fractional clique cover.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:exact-graph-program",
+      "to": "claim:closed-form-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the exact feasible set for (y,mu).",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-antiblocker",
+      "to": "claim:closed-form-rom",
+      "type": "scientific_claim_dependency",
+      "reason": "Expresses feasible absolute weights as convex combinations of clique indicators.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:closed-form-rom",
+      "type": "scope_dependency",
+      "reason": "States the required graph regime.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:anticommuting-l2-bound",
+      "type": "definition_dependency",
+      "reason": "Supplies Hermitian Pauli involutions and anticommutation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:anticommuting-l2-bound",
+      "type": "definition_dependency",
+      "reason": "Cliques identify pairwise anticommuting sets.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:capacity-upper-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Reduces reduced RoM to clique l1 sums.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:anticommuting-l2-bound",
+      "to": "claim:capacity-upper-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Cauchy-Schwarz converts the l2 uncertainty bound to sqrt(|Q|).",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:capacity-attainment",
+      "type": "scientific_claim_dependency",
+      "reason": "Turns the constructed clique expectations into an attained RoM value.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:anticommuting-l2-bound",
+      "to": "claim:capacity-attainment",
+      "type": "definition_dependency",
+      "reason": "The same Clifford-algebra square identity constructs the involution.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:capacity-upper-bound",
+      "to": "claim:witness-capacity",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the upper half of the supremum equality.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:capacity-attainment",
+      "to": "claim:witness-capacity",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the matching lower half.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:max-anticommuting-size",
+      "type": "definition_dependency",
+      "reason": "Supplies the binary symplectic representation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:max-anticommuting-size",
+      "type": "definition_dependency",
+      "reason": "A graph clique is the pairwise anticommuting family being bounded.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:max-anticommuting-size",
+      "to": "claim:jordan-wigner-extremal-set",
+      "type": "scope_dependency",
+      "reason": "Identifies the size that the construction must attain.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:jordan-wigner-extremal-set",
+      "type": "definition_dependency",
+      "reason": "Classifies the unique full-support relation as inactive.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:jordan-wigner-extremal-set",
+      "type": "scope_dependency",
+      "reason": "Complete graphs certify the graph hypothesis.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:universal-ceiling",
+      "type": "scientific_claim_dependency",
+      "reason": "Relates capacity to clique number for each window.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:max-anticommuting-size",
+      "to": "claim:universal-ceiling",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the universal upper bound.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:jordan-wigner-extremal-set",
+      "to": "claim:universal-ceiling",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies an attaining solvable window.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:polynomial-evaluation",
+      "type": "scientific_claim_dependency",
+      "reason": "Evaluation becomes maximum-weight clique.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "foundation:perfect-graph-complement-and-algorithm",
+      "to": "claim:polynomial-evaluation",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies complement closure and rational weighted optimization complexity under the promise.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:measurement-setting-bound",
+      "type": "definition_dependency",
+      "reason": "Independent color classes are commuting contexts.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:measurement-setting-bound",
+      "type": "scientific_claim_dependency",
+      "reason": "Perfectness gives chi=omega for the full graph.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:four-solvable-families",
+      "type": "scientific_claim_dependency",
+      "reason": "Computes the tabulated capacities once graph and dependency hypotheses are checked.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:jordan-wigner-extremal-set",
+      "to": "claim:four-solvable-families",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies one of the four constructions and Majorana ingredients.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:perfect-graph-definition",
+      "to": "claim:four-solvable-families",
+      "type": "scope_dependency",
+      "reason": "Each displayed graph must be certified perfect.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:four-solvable-families",
+      "type": "scope_dependency",
+      "reason": "Each measurement family must be checked for no active relation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:clifford-rom-covariance",
+      "type": "definition_dependency",
+      "reason": "Clifford conjugation preserves Pauli and pure stabilizer states.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-stabilizer-polytope",
+      "to": "claim:clifford-rom-covariance",
+      "type": "definition_dependency",
+      "reason": "The coordinate projection is identified under conjugation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:reduced-rom",
+      "to": "claim:clifford-rom-covariance",
+      "type": "definition_dependency",
+      "reason": "The two affine optimization problems are compared.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:clifford-structure-invariance",
+      "type": "definition_dependency",
+      "reason": "Commutation edges are invariant under conjugation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-active-dependency",
+      "to": "claim:clifford-structure-invariance",
+      "type": "definition_dependency",
+      "reason": "Product relations and their active support are invariant.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:clifford-rom-covariance",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Transfers values between a rotated window and rotated state.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:clifford-structure-invariance",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Transfers the solvability hypotheses.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:closed-form-rom",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the formula inherited by every rotation.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:rotated-closed-form",
+      "type": "scientific_claim_dependency",
+      "reason": "Shows rotation does not enlarge the capacity of a single window.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:rotated-closed-form",
+      "to": "claim:detection-coverage-definition",
+      "type": "definition_dependency",
+      "reason": "Defines the ensemble maximum used for detection.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:four-solvable-families",
+      "to": "claim:figure2-protocol",
+      "type": "definition_dependency",
+      "reason": "Supplies the four seed windows evaluated.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:detection-coverage-definition",
+      "to": "claim:figure2-protocol",
+      "type": "definition_dependency",
+      "reason": "Supplies the reported response variable.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:figure2-haar-input",
+      "to": "claim:figure2-protocol",
+      "type": "data_dependency",
+      "reason": "Supplies panel-a ensemble and rotation counts.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:figure2-variational-input",
+      "to": "claim:figure2-protocol",
+      "type": "data_dependency",
+      "reason": "Supplies panel-b circuit ensemble and depths.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:figure2-protocol",
+      "to": "claim:figure2-coverage-gain",
+      "type": "data_dependency",
+      "reason": "The empirical statement is conditional on this sample and rotation protocol.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:witness-capacity",
+      "to": "claim:figure2-coverage-gain",
+      "type": "scope_dependency",
+      "reason": "Capacity is compared with, but must not be conflated with, empirical coverage.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:figure2-protocol",
+      "to": "claim:figure2-reproduction-blocker",
+      "type": "data_dependency",
+      "reason": "Auditing the stated protocol reveals the missing reproducibility artifacts.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:squared-pauli-profile",
+      "to": "claim:squared-stabilizer-support",
+      "type": "definition_dependency",
+      "reason": "Supplies the squared coordinates whose support is characterized.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:squared-stabilizer-support",
+      "type": "definition_dependency",
+      "reason": "Pure stabilizer Pauli expectations are 0 or +/-1 on a commuting stabilizer support.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:squared-stabilizer-support",
+      "type": "definition_dependency",
+      "reason": "Commuting support becomes an independent set.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:squared-stabilizer-support",
+      "to": "claim:quadratic-stabilizer-mwis",
+      "type": "scientific_claim_dependency",
+      "reason": "Convexity reduces the stabilizer optimum to weighted independent supports.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:frustration-graph",
+      "to": "claim:quadratic-stabilizer-mwis",
+      "type": "definition_dependency",
+      "reason": "Defines alpha_w.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:quadratic-stabilizer-mwis",
+      "to": "claim:hbar-perfect-quadratic-witness",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the stabilizer benchmark.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:xu-quadratic-pauli-graph",
+      "to": "claim:hbar-perfect-quadratic-witness",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the quantum beta value and hbar-perfectness results.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:gottesman-stabilizer-formalism",
+      "to": "claim:pauli-parseval",
+      "type": "definition_dependency",
+      "reason": "Supplies the orthogonal Pauli operator basis.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:full-pauli-symplectic-graph",
+      "to": "claim:full-pauli-independent-sets",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the full graph and maximal-support classification.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:full-pauli-independent-sets",
+      "type": "definition_dependency",
+      "reason": "Normalizes the Pauli distribution on those supports.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:leone-stabilizer-renyi-entropy",
+      "to": "claim:pure-sre-graph-identity",
+      "type": "definition_dependency",
+      "reason": "Supplies the order-2 stabilizer entropy definition.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:pure-sre-graph-identity",
+      "type": "scientific_claim_dependency",
+      "reason": "Normalizes the pure-state Pauli distribution.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:full-pauli-independent-sets",
+      "to": "claim:pure-sre-graph-identity",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the graph-defined uniform stabilizer reference scale.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:leone-stabilizer-renyi-entropy",
+      "to": "claim:mixed-sre-identity-limitation",
+      "type": "definition_dependency",
+      "reason": "Provides the pure-state moment convention being extended algebraically.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:mixed-sre-identity-limitation",
+      "type": "scientific_claim_dependency",
+      "reason": "Produces the purity correction term.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:full-pauli-independent-sets",
+      "to": "claim:dephased-purity-mwis",
+      "type": "definition_dependency",
+      "reason": "Maximum independent sets label stabilizer dephasing bases.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:pauli-parseval",
+      "to": "claim:dephased-purity-mwis",
+      "type": "scientific_claim_dependency",
+      "reason": "Relates squared expectations to dephased purity.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:mixed-sre-identity-limitation",
+      "to": "claim:mixed-state-graph-bound-open",
+      "type": "scope_dependency",
+      "reason": "Shows why the pure-state support argument fails for mixtures.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:dephased-purity-mwis",
+      "to": "claim:mixed-state-graph-bound-open",
+      "type": "scientific_claim_dependency",
+      "reason": "Provides a complementary graph statistic but not the missing stabilizer bound.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:full-pauli-symplectic-graph",
+      "to": "claim:full-pauli-obstructions",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the symplectic graph parameters and coloring facts.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "root:varela-reduced-polytope",
+      "to": "claim:full-pauli-obstructions",
+      "type": "scientific_claim_dependency",
+      "reason": "Supplies the independent sign-constraint count.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:full-pauli-obstructions",
+      "type": "definition_dependency",
+      "reason": "Explains the sign-code obstruction.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:dependency-affine-code",
+      "to": "claim:active-dependency-coset-decoding-open",
+      "type": "definition_dependency",
+      "reason": "Admissible signs form the affine code to be decoded.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:relaxed-mwis-dual",
+      "to": "claim:active-dependency-coset-decoding-open",
+      "type": "scope_dependency",
+      "reason": "The graph part remains tractable while sign decoding does not collapse.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:exact-graph-program",
+      "to": "claim:imperfect-graph-theta-lower-bound-open",
+      "type": "scientific_claim_dependency",
+      "reason": "Identifies the MWIS term to be relaxed.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    },
+    {
+      "from": "claim:lovasz-sandwich",
+      "to": "claim:imperfect-graph-theta-lower-bound-open",
+      "type": "scientific_claim_dependency",
+      "reason": "Replacing alpha by theta gives the sound relaxation direction.",
+      "evidence": {
+        "oracle_status": "ORACLE_PROPOSED",
+        "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+        "lean_support": "NOT_EXTRACTED",
+        "disposition": "CANDIDATE"
+      }
+    }
   ],
   "root_standardization_priority": [
     {

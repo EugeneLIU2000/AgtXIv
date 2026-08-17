@@ -17,7 +17,8 @@ MathContractRegistry/
 ├── README.md
 ├── manifest.json
 ├── schema/
-│   └── math-contract.schema.json
+│   ├── math-contract.schema.json
+│   └── dependency-edge-evidence.schema.json
 ├── contracts/
 │   └── contracts.json
 ├── mappings/
@@ -49,7 +50,21 @@ MathContractRegistry/
 - downstream nodes；
 - 现有 Lean declarations、源码模块、计划声明、LeanSearch v2 候选和 verification references；
 - exports、blockers、mapping status；
+- query-relative external resolution state；
 - `acceptance_effect=NONE_FROM_REGISTRY`。
+
+## Unresolved External Mathematical Source
+
+`external_resolution.status` 只能取：
+
+- `NOT_APPLICABLE`；
+- `SOURCE_FOUND_AND_VERIFIED`；
+- `INDEPENDENT_LEAN_PROOF_COMPLETED`；
+- `BLOCKING_UNRESOLVED_CLAIM`。
+
+当前 8 个 unmapped external mathematical interfaces 均保守标为 `BLOCKING_UNRESOLVED_CLAIM`。它们仍是 claim-level interfaces，不会自动生成虚拟 Root Agent。只有当该节点进入选定 query 的 backward closure 时，才进入该 query 的 $U(q)$ 并阻断 `DAGComplete`。
+
+每条 DAG edge 还包含 `evidence`，分别记录 Oracle、source alignment、Lean support 和 disposition。当前 whole-paper edge set 全部保持 `ORACLE_PROPOSED`、`UNREVIEWED_AT_EDGE_LEVEL`、`NOT_EXTRACTED` 和 `CANDIDATE`；这批字段使 Demo 可以明确展示尚未完成 edge-level verification，而不是把结构化边误作 accepted dependencies。
 
 ## Lean 状态
 
@@ -93,4 +108,8 @@ MathContractRegistry/
 python3 -m http.server 8000
 ```
 
-然后打开 `http://localhost:8000/Stabilizerness/MathContractRegistry/demo/`。Demo 使用 vendored `d3-dag` 1.2.2 Sugiyama layout，在同一张 Mathematics 主图中展示全部 65 个 mathematical interfaces、13 个 query-level Agent/root nodes 和 114 条 canonical mathematical dependencies。所有 interface 始终按真实 Registry status 着色；不存在 dependency 的节点仍显示，但不会生成推测边。Agent 与 interface 的包含关系使用稳定 owner code `A01`--`A13` 编码：Agent 圆和其所有 interface dots 显示同一 code，悬停任一侧会联动强调 owner 与全部 sibling interfaces；该 membership 编码没有箭头，也不表示逻辑推导。Target Agent 和 Query Interface 下拉框可以切换查询视角，系统沿 canonical incoming edges 计算 backward ancestor closure，只加亮当前线路，其他节点保持原状态颜色并降低视觉权重。每条有向边都必须在运行时通过三项检查后才显示：edge type 属于 definition/theorem/scope dependency，方向与 target contract 的对应 import field 一致，并且有非空 reason；整个 65-node graph 还必须通过 acyclicity 检查。因此图中箭头严格解释为 prerequisite `->` dependent conclusion，而不是 Agent ownership 或经验因果。Agent 圆内只显示 `ROOT AGENT` 或 `TARGET AGENT`；外圈绿色 progress arc 按该 Agent 所有 mathematical interfaces 中 `EXISTING_PROJECT_DECLARATIONS` 的比例填充，精确百分比只在 hover/focus 时显示。绿色 interface tooltip 保证至少包含一个 Lean module source link；点击 interface 可以固定 tooltip 并打开 `.lean` 源文件。完整身份和数学内容仅在鼠标悬停或键盘聚焦时显示。顶部还可以切换 Mathematics、Computation、Physical Semantics 和 Empirical Evidence；第一版只为 Mathematics 注册真实关系，其余 profile 显示明确空状态，不生成推测边。Demo 只读展示工件，不执行 Lean，也不修改任何验收状态。
+然后打开 `http://localhost:8000/Stabilizerness/MathContractRegistry/demo/`。Demo 使用 vendored `d3-dag` 1.2.2 Sugiyama layout，展示 65 个 mathematical interfaces、5 个 mapped Paper Agents 和 114 条 typed Oracle candidate dependencies。8 个 unresolved external mathematical interfaces 保持 claim 节点，不再伪装成 query-level Root Agents，也不进入 Target Agent 下拉框。
+
+Target Agent 和 Query Interface 下拉框沿 candidate incoming edges 计算 backward closure。query status panel 显示 closure size、candidate edges、Lean-linked nodes、GAP、PLANNED_DELTA、visible blockers、$U(q)$、`DAGComplete` 和 `VerificationClosed`。`DAGComplete` 仅在 unresolved frontier 非空时安全地显示 `FALSE`；如果 frontier 为空但 edge review 仍处于 Oracle candidate 阶段，则显示 `NOT EVALUABLE`，不会提前宣称完成。
+
+Agent 外圈表示 `Lean-linked coverage`，只统计 `EXISTING_PROJECT_DECLARATIONS`，不再命名为 verified coverage。interface tooltip 显示 DAG、mapping、Lean 和 external resolution states，并公开 blockers、verification references、Mathlib/project reuse candidates 与 Lean source links。每条 edge 在运行时检查 type、方向、reason 和 evidence state；图中高亮只改变视觉权重，仍保留 claim/theorem、definition 和 scope 三种语义。Demo 是只读的 Oracle-candidate Registry projection，不执行 Lean、不做 proof-guided pruning，也不修改 acceptance status。

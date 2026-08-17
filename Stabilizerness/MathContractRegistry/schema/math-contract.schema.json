@@ -23,7 +23,8 @@
     "export_ids",
     "blocker_ids",
     "mapping_status",
-    "acceptance_effect"
+    "acceptance_effect",
+    "external_resolution"
   ],
   "properties": {
     "id": {
@@ -108,6 +109,44 @@
     },
     "acceptance_effect": {
       "const": "NONE_FROM_REGISTRY"
+    },
+    "external_resolution": {
+      "type": "object",
+      "required": [
+        "status",
+        "source_status",
+        "evidence",
+        "effect"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_APPLICABLE",
+            "SOURCE_FOUND_AND_VERIFIED",
+            "INDEPENDENT_LEAN_PROOF_COMPLETED",
+            "BLOCKING_UNRESOLVED_CLAIM"
+          ]
+        },
+        "source_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "effect": {
+          "enum": [
+            "NONE",
+            "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+          ]
+        }
+      },
+      "additionalProperties": false
     }
   }
 }

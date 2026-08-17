@@ -1,8 +1,8 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "canonical_dag": "Stabilizerness/dag/claim-dag.json",
   "node_count": 74,
-  "policy": "Every DAG node has one registry record. NON_MATHEMATICAL and GAP are explicit states; no proof is fabricated.",
+  "policy": "Every DAG node has one registry record. NON_MATHEMATICAL, GAP, and unresolved external mathematical sources are explicit states; no proof or acceptance is fabricated.",
   "contracts": [
     {
       "id": "math-contract:root.gottesman-stabilizer-formalism",
@@ -109,7 +109,13 @@
         "blocker:9705052v1:root-review-open"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_ANCHORED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:root.gottesman-knill-simulation",
@@ -146,7 +152,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "SOURCE_ANCHORED",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:root.bravyi-kitaev-magic-model",
@@ -183,7 +195,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "SOURCE_ANCHORED",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:root.veitch-stabilizer-resource-theory",
@@ -239,7 +257,13 @@
         "blocker:1307.7171v1:formalism-alignment-pending"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_ANCHORED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:root.howard-campbell-rom",
@@ -310,7 +334,13 @@
         "blocker:1609.07488v2:free-set-import-alignment-pending"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_ANCHORED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:root.varela-reduced-polytope",
@@ -375,7 +405,13 @@
         "blocker:2602.18939v1:fixed-window-monotonicity-false"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "BLOCKED_BY_VREP_PROOF_GAP",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:foundation.finite-lp-strong-duality",
@@ -412,7 +448,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "DECLARED_BACKGROUND_NOT_RECONSTRUCTED",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:root.perfect-graph-weighted-duality",
@@ -460,7 +502,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "PRIMARY_SOURCE_ALIGNMENT_PENDING",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:foundation.perfect-graph-complement-and-algorithm",
@@ -499,7 +547,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "PRIMARY_SOURCE_ALIGNMENT_PENDING",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:root.xu-quadratic-pauli-graph",
@@ -538,7 +592,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:root.leone-stabilizer-renyi-entropy",
@@ -575,7 +635,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:root.full-pauli-symplectic-graph",
@@ -615,7 +681,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "UNMAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "BLOCKING_UNRESOLVED_CLAIM",
+        "source_status": "SOURCE_ALIGNMENT_NOT_STARTED",
+        "evidence": [],
+        "effect": "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED"
+      }
     },
     {
       "id": "math-contract:claim.resource-interpretation",
@@ -657,7 +729,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_ANCHORED_WITH_EXTERNAL_IMPORTS",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.full-stabilizer-polytope",
@@ -717,7 +795,13 @@
         "blocker:1307.7171v1:formalism-alignment-pending"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "IMPORTED_CONCEPT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.full-rom",
@@ -799,7 +883,13 @@
         "blocker:1609.07488v2:free-set-import-alignment-pending"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "IMPORTED_CONCEPT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.pauli-window",
@@ -840,7 +930,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT_AGENT_NORMALIZED_DOMAIN",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.reduced-stabilizer-polytope",
@@ -897,7 +993,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT_IMPORTED_ORIGIN",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.reduced-rom",
@@ -947,7 +1049,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "DEFINITION_VALID_MONOTONICITY_LABEL_FALSE",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.frustration-graph",
@@ -999,7 +1107,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.exact-reduced-vrep",
@@ -1068,7 +1182,13 @@
         "blocker:2602.18939v1:root-reconstruction-pending"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "BLOCKED_BY_ROOT_CONTRACT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.fixed-window-monotonicity",
@@ -1114,7 +1234,13 @@
         "blocker:2602.18939v1:fixed-window-monotonicity-false"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "CLAIM_FALSE",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.exact-vertex-dual",
@@ -1157,7 +1283,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DUALIZATION_BLOCKED_BY_VREP_IMPORT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.general-reduced-hardness",
@@ -1199,7 +1331,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "IMPORTED_FROM_VARELA_SOURCE_ALIGNMENT_PENDING",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.sign-syndrome-linear-consistent",
@@ -1243,7 +1381,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "AGENT_EXPLICITATION_REQUIRES_PROOF_AUDIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.dependency-affine-code",
@@ -1292,7 +1436,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.sign-relaxed-polytope",
@@ -1340,7 +1490,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.relaxed-rom",
@@ -1384,7 +1540,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.mwis-definition",
@@ -1425,7 +1587,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "MAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT_STANDARD_DEFINITION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.relaxed-rom-lower-bound",
@@ -1468,7 +1636,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.pauli-active-dependency",
@@ -1513,7 +1687,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.no-active-free-signs",
@@ -1561,7 +1741,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.relaxation-exactness",
@@ -1608,7 +1794,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.relaxed-affine-span",
@@ -1669,7 +1861,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "HIDDEN_LOCAL_LEMMA_RECONSTRUCTED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.relaxed-lp-dual",
@@ -1720,7 +1918,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_STANDARD_FOUNDATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.sign-alignment-identity",
@@ -1770,7 +1974,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "MAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.relaxed-mwis-dual",
@@ -1830,7 +2040,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.exact-graph-program",
@@ -1878,7 +2094,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.perfect-graph-definition",
@@ -1923,7 +2145,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "MAPPED",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT_STANDARD_DEFINITION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.lovasz-sandwich",
@@ -1966,7 +2194,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "CITATION_REPORTED_SOURCE_UNCHECKED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.perfect-graph-antiblocker",
@@ -2021,7 +2255,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SYNTHESIS_BLOCKED_BY_WEIGHTED_DUALITY_ALIGNMENT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.perfect-graph-weighted-collapse",
@@ -2064,7 +2304,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "CITATION_REPORTED_SOURCE_ALIGNMENT_PENDING",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.closed-form-rom",
@@ -2121,7 +2367,13 @@
         "blocker:2607.26154v1:perfect-graph-foundation-unchecked"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_BLOCKED_IMPORTS",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.anticommuting-l2-bound",
@@ -2159,7 +2411,7 @@
             "use": "Bessel inequality has the same l2-bound shape, but a semantic bridge from anticommuting observables to an orthonormal family is still required."
           },
           {
-            "declaration": "CliffordAlgebra.\u03b9_mul_\u03b9_mul_of_isOrtho",
+            "declaration": "CliffordAlgebra.ι_mul_ι_mul_of_isOrtho",
             "module": "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
             "assessment": "STRUCTURAL_NEAR_MATCH",
             "use": "Provides a generic anticommutation identity in Clifford algebras; not a direct density-operator expectation theorem."
@@ -2178,7 +2430,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SELF_CONTAINED_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.capacity-upper-bound",
@@ -2225,7 +2483,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.capacity-attainment",
@@ -2273,7 +2537,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SELF_CONTAINED_DERIVATION_WITH_UPSTREAM_USE",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.witness-capacity",
@@ -2319,7 +2589,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.max-anticommuting-size",
@@ -2363,7 +2639,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SELF_CONTAINED_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.jordan-wigner-extremal-set",
@@ -2409,7 +2691,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_CITATION_SUPPORTED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.universal-ceiling",
@@ -2451,7 +2739,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.polynomial-evaluation",
@@ -2492,7 +2786,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "PROMISE_PROBLEM_DEPENDS_ON_UNCHECKED_GRAPH_ROOT_RECOGNITION_COMPLEXITY_OPEN",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.measurement-setting-bound",
@@ -2534,7 +2834,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_DERIVED_WITH_EXPERIMENTAL_IDEALIZATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.four-solvable-families",
@@ -2580,7 +2886,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_CLAIM_PARTIALLY_REGRESSION_TESTED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.clifford-rom-covariance",
@@ -2626,7 +2938,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.clifford-structure-invariance",
@@ -2669,7 +2987,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.rotated-closed-form",
@@ -2714,7 +3038,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_BLOCKED_UPSTREAM",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.detection-coverage-definition",
@@ -2756,7 +3086,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.figure2-protocol",
@@ -2796,7 +3132,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_REPORTED_INCOMPLETE_REPRODUCTION_METADATA",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.figure2-haar-input",
@@ -2829,7 +3171,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_REPORTED_MISSING_RNG_AND_SAMPLER_CONTRACT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.figure2-variational-input",
@@ -2862,7 +3210,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_REPORTED_MISSING_ANGLE_ROTATION_AND_RNG_CONTRACT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.figure2-coverage-gain",
@@ -2908,7 +3262,13 @@
         "blocker:2607.26154v1:figure2-code-unavailable"
       ],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "NOT_REPRODUCED_MISSING_CODE_DATA_SEED_TOLERANCE",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.figure2-reproduction-blocker",
@@ -2943,7 +3303,13 @@
         "blocker:2607.26154v1:figure2-code-unavailable"
       ],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "BLOCKED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.squared-pauli-profile",
@@ -2983,7 +3349,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "SOURCE_EXPLICIT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.squared-stabilizer-support",
@@ -3027,7 +3399,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.quadratic-stabilizer-mwis",
@@ -3071,7 +3449,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.hbar-perfect-quadratic-witness",
@@ -3112,7 +3496,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "IMPORTED_EXTENSION_SOURCE_UNCHECKED",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.pauli-parseval",
@@ -3157,7 +3547,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_STANDARD_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.full-pauli-independent-sets",
@@ -3202,7 +3598,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "IMPORTED_STRUCTURE_WITH_LOCAL_SYNTHESIS",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.pure-sre-graph-identity",
@@ -3245,7 +3647,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_DERIVATION_WITH_EXTENSION_IMPORT",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.mixed-sre-identity-limitation",
@@ -3282,7 +3690,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_ALGEBRAIC_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.dephased-purity-mwis",
@@ -3326,7 +3740,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "LOCAL_SOURCE_DERIVATION",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.mixed-state-graph-bound-open",
@@ -3361,7 +3781,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "OPEN",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.full-pauli-obstructions",
@@ -3404,7 +3830,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "PARTIAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "IMPORTED_COMPOSITE_CLAIM_SOURCE_ALIGNMENT_PENDING",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.active-dependency-coset-decoding-open",
@@ -3439,7 +3871,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "OPEN",
+        "evidence": [],
+        "effect": "NONE"
+      }
     },
     {
       "id": "math-contract:claim.imperfect-graph-theta-lower-bound-open",
@@ -3473,7 +3911,13 @@
       "export_ids": [],
       "blocker_ids": [],
       "mapping_status": "NON_MATHEMATICAL",
-      "acceptance_effect": "NONE_FROM_REGISTRY"
+      "acceptance_effect": "NONE_FROM_REGISTRY",
+      "external_resolution": {
+        "status": "NOT_APPLICABLE",
+        "source_status": "OPEN",
+        "evidence": [],
+        "effect": "NONE"
+      }
     }
   ]
 }

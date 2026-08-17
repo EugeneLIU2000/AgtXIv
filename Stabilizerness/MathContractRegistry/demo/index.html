@@ -11,9 +11,9 @@
     <div class="brand-lockup">
       <div class="brand-mark" aria-hidden="true"><span>A</span><i></i><i></i><i></i></div>
       <div>
-        <p class="eyebrow">AGTXIV | INTERFACE DAG</p>
-        <h1>Closed-Form Chain</h1>
-        <p class="subtitle">A verification-aware view of reusable scientific interfaces.</p>
+        <p class="eyebrow">AGTXIV | MATHEMATICS PIPELINE V0.2</p>
+        <h1>Mathematics Query DAG</h1>
+        <p class="subtitle">An Oracle-aware view of reusable interfaces, unresolved sources, and Lean links.</p>
       </div>
     </div>
     <div class="release-pill"><i></i><span><strong>PARTIALLY_VERIFIED</strong>Not an accepted release</span></div>
@@ -25,7 +25,7 @@
         <div>
           <p class="eyebrow">SELECT AN INTERFACE PROFILE</p>
           <h2 id="profileTitle">Mathematics</h2>
-          <p id="profileDescription">All registered mathematical interfaces and dependencies. The selected target highlights one backward query closure.</p>
+          <p id="profileDescription">Oracle-candidate dependency view over registered mathematical interfaces. The selected target highlights one candidate backward query closure without promoting any edge.</p>
         </div>
         <nav id="profileTabs" class="profile-tabs" aria-label="Interface profiles">
           <button type="button" data-profile="mathematics" aria-selected="true">Mathematics</button>
@@ -33,6 +33,11 @@
           <button type="button" data-profile="physical" aria-selected="false">Physical Semantics</button>
           <button type="button" data-profile="empirical" aria-selected="false">Empirical Evidence</button>
         </nav>
+      </div>
+
+      <div id="graphEvidenceBanner" class="graph-evidence-banner" role="status">
+        <strong>Graph view: ORACLE CANDIDATE</strong>
+        <span>Edges are typed proposals, not accepted dependencies. Source alignment and Lean proof support have not yet been extracted at edge level.</span>
       </div>
 
       <div id="queryBar" class="query-bar">
@@ -47,23 +52,26 @@
         <p id="querySummary"></p>
       </div>
 
+      <div id="queryStatusPanel" class="query-status-panel" aria-label="Query completion state"></div>
+
       <div class="relationship-key" aria-label="Relationship semantics">
-        <strong>Directed arrow: prerequisite -&gt; dependent conclusion</strong>
+        <strong>Oracle candidate arrow: prerequisite -&gt; dependent conclusion</strong>
         <span><i class="edge-key-solid"></i>Claim or theorem premise</span>
         <span><i class="edge-key-dashed"></i>Definition prerequisite</span>
         <span><i class="edge-key-scope"></i>Scope assumption</span>
-        <span><b>A01</b>Agent membership code; never a directed dependency</span>
+        <span><b>A01</b>Mapped Agent membership; never a directed dependency</span>
+        <span><b>UEMS</b>Unresolved source claim; never a virtual Agent</span>
         <em>Highlighting increases weight and opacity only; each dependency keeps its semantic color and line pattern.</em>
       </div>
 
       <div class="graph-toolbar">
         <div class="legend" aria-label="Verification legend">
-          <span><i class="agent-root"></i>Root Agent</span>
+          <span><i class="agent-root"></i>Mapped Source Agent</span>
           <span><i class="agent-target"></i>Target Agent</span>
-          <span><i class="status existing"></i>Existing Lean</span>
+          <span><i class="status existing"></i>Lean-linked</span>
           <span><i class="status planned"></i>Planned Delta</span>
           <span><i class="status gap"></i>Gap</span>
-          <span><i class="status external"></i>External</span>
+          <span><i class="status external"></i>Unresolved external source</span>
           <span><i class="query-route"></i>Highlighted dependency (type preserved)</span>
         </div>
         <span id="profileMeta" class="profile-meta"></span>
@@ -85,7 +93,7 @@
   <footer>
     <span>Layout: <a href="https://github.com/erikbrinkman/d3-dag" rel="noreferrer">d3-dag 1.2.2</a></span>
     <span>Hover over any node to inspect its registered content.</span>
-    <span>No Registry view promotes verification or acceptance status.</span>
+    <span>Oracle edges, Registry records, and Lean links do not promote verification or acceptance status.</span>
   </footer>
 
   <script src="vendor/d3-dag-1.2.2.iife.min.js"></script>

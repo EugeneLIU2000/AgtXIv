@@ -5,17 +5,34 @@ const paths = {
 };
 
 const statusLabels = {
-  EXISTING_PROJECT_DECLARATIONS: "Existing Lean",
+  EXISTING_PROJECT_DECLARATIONS: "Lean-linked",
   PLANNED_DELTA: "Planned Delta",
   GAP: "Gap",
   EXTERNAL_OR_UNMAPPED: "External or Unmapped",
   NOT_APPLICABLE: "Not Applicable"
 };
 
+const resolutionLabels = {
+  NOT_APPLICABLE: "Not applicable",
+  SOURCE_FOUND_AND_VERIFIED: "Source found and verified",
+  INDEPENDENT_LEAN_PROOF_COMPLETED: "Independent Lean proof completed",
+  BLOCKING_UNRESOLVED_CLAIM: "Unresolved External Mathematical Source"
+};
+
+const edgeEvidenceLabels = {
+  CANDIDATE: "Oracle candidate",
+  ACCEPTED: "Accepted dependency",
+  CONDITIONAL: "Conditional dependency",
+  REJECTED: "Rejected candidate",
+  REDUNDANT_IN_QUERY_VIEW: "Redundant in query view",
+  BLOCKED: "Blocked dependency",
+  DISPUTED: "Disputed dependency"
+};
+
 const profiles = {
   mathematics: {
     title: "Mathematics",
-    description: "All registered mathematical interfaces and dependencies. The selected target highlights one backward query closure.",
+    description: "Oracle-candidate dependency view over registered mathematical interfaces. The selected target highlights one candidate backward query closure without promoting any edge.",
     available: true
   },
   computation: {
@@ -90,7 +107,7 @@ function svgElement(name, attributes = {}) {
 
 function ownerId(contract) {
   if (contract.paper_agent && contract.paper_agent !== "UNMAPPED") return contract.paper_agent;
-  return `profile-agent:${contract.dag_node_id}`;
+  return null;
 }
 
 function sourceIdentifier(contract) {
@@ -105,12 +122,12 @@ function buildAgentCatalog() {
   mathematicsContracts.forEach(contract => {
     const owner = ownerId(contract);
     ownerByInterface.set(contract.dag_node_id, owner);
-    if (agentCatalog.has(owner)) return;
+    if (!owner || agentCatalog.has(owner)) return;
     const mapped = mappedAgentDetails[owner];
     agentCatalog.set(owner, mapped ? { ...mapped } : {
-      title: "External Mathematical Root",
+      title: "Mapped Mathematical Source",
       identifier: sourceIdentifier(contract),
-      role: "Unmapped external root or foundation represented as a query-level Agent."
+      role: "Source-bounded mathematical package mapped to an explicit Agent."
     });
   });
   [...agentCatalog.entries()]
@@ -125,6 +142,24 @@ function buildIncomingIndex() {
   mathematicsEdges.forEach(edge => {
     if (!incomingEdges.has(edge.to)) incomingEdges.set(edge.to, []);
     incomingEdges.get(edge.to).push(edge);
+  });
+}
+
+function validateContractPipelineState() {
+  const allowedResolutionStates = new Set(Object.keys(resolutionLabels));
+  mathematicsContracts.forEach(contract => {
+    const resolution = contract.external_resolution;
+    if (!resolution
+        || !allowedResolutionStates.has(resolution.status)
+        || !Array.isArray(resolution.evidence)
+        || !resolution.effect) {
+      throw new Error(`Contract lacks a valid external resolution state: ${contract.dag_node_id}`);
+    }
+    if (resolution.status === "BLOCKING_UNRESOLVED_CLAIM"
+        && (contract.paper_agent !== "UNMAPPED"
+          || resolution.effect !== "BLOCKS_DAG_COMPLETION_WHEN_REQUIRED")) {
+      throw new Error(`Unresolved source is incorrectly represented as an Agent or nonblocking claim: ${contract.dag_node_id}`);
+    }
   });
 }
 
@@ -150,6 +185,13 @@ function validateMathematicsDag() {
     }
     if (!edge.reason?.trim()) {
       throw new Error(`Dependency edge lacks a recorded reason: ${pair}`);
+    }
+    if (!edge.evidence
+        || edge.evidence.oracle_status !== "ORACLE_PROPOSED"
+        || !edgeEvidenceLabels[edge.evidence.disposition]
+        || !edge.evidence.source_alignment
+        || !edge.evidence.lean_support) {
+      throw new Error(`Dependency edge lacks a valid evidence state: ${pair}`);
     }
     if (edge.from === edge.to || seenPairs.has(pair)) {
       throw new Error(`Invalid self-loop or duplicate dependency: ${pair}`);
@@ -191,11 +233,15 @@ async function load() {
     contractMap = new Map(mathematicsContracts.map(contract => [contract.dag_node_id, contract]));
     dag = await dagResponse.json();
     paperDag = await paperDagResponse.json();
+    if (dag.graph_view !== "ORACLE_CANDIDATE") {
+      throw new Error(`Unsupported or missing graph evidence view: ${dag.graph_view || "UNDECLARED"}`);
+    }
     mathematicsEdges = dag.edges.filter(edge =>
       contractMap.has(edge.from) && contractMap.has(edge.to)
     );
     buildAgentCatalog();
     buildIncomingIndex();
+    validateContractPipelineState();
     validateMathematicsDag();
     bindProfiles();
     bindQueryControls();
@@ -313,16 +359,22 @@ function setProfile(profileId) {
   const svg = document.getElementById("dag");
   const empty = document.getElementById("emptyState");
   const queryBar = document.getElementById("queryBar");
+  const queryStatusPanel = document.getElementById("queryStatusPanel");
+  const graphEvidenceBanner = document.getElementById("graphEvidenceBanner");
   if (profile.available) {
     svg.hidden = false;
     empty.hidden = true;
     queryBar.hidden = false;
+    queryStatusPanel.hidden = false;
+    graphEvidenceBanner.hidden = false;
     if (!graphRendered) renderMathematicsGraph();
     applyQueryHighlight();
   } else {
     svg.hidden = true;
     empty.hidden = false;
     queryBar.hidden = true;
+    queryStatusPanel.hidden = true;
+    graphEvidenceBanner.hidden = true;
     document.getElementById("profileMeta").textContent = "0 registered nodes | 0 registered links";
   }
 }
@@ -338,11 +390,13 @@ function dependencyMarker(type, active = false) {
 
 function renderMathematicsGraph() {
   const svg = document.getElementById("dag");
-  const ownershipEdges = mathematicsContracts.map(contract => ({
-    from: ownerByInterface.get(contract.dag_node_id),
-    to: contract.dag_node_id,
-    type: "layout_ownership"
-  }));
+  const ownershipEdges = mathematicsContracts
+    .filter(contract => ownerByInterface.get(contract.dag_node_id))
+    .map(contract => ({
+      from: ownerByInterface.get(contract.dag_node_id),
+      to: contract.dag_node_id,
+      type: "layout_ownership"
+    }));
   const layoutEdges = [...ownershipEdges, ...mathematicsEdges];
   const dependencyMap = new Map(mathematicsEdges.map(edge => [`${edge.from}->${edge.to}`, edge]));
   const graph = d3.graphConnect()(layoutEdges.map(edge => [edge.from, edge.to]));
@@ -406,8 +460,10 @@ function renderMathematicsGraph() {
     path.dataset.from = from;
     path.dataset.to = to;
     path.dataset.type = dependency.type;
+    path.dataset.disposition = dependency.evidence.disposition;
+    path.dataset.oracleStatus = dependency.evidence.oracle_status;
     const title = svgElement("title");
-    title.textContent = `${dependency.type}: ${from} -> ${to}. ${dependency.reason}`;
+    title.textContent = `${dependency.type}: ${from} -> ${to}. ${dependency.reason} Evidence: ${edgeEvidenceLabels[dependency.evidence.disposition]}; ${dependency.evidence.oracle_status}; source ${dependency.evidence.source_alignment}; Lean ${dependency.evidence.lean_support}.`;
     path.appendChild(title);
     underlayLayer.appendChild(underlay);
     linkLayer.appendChild(path);
@@ -430,8 +486,11 @@ function renderMathematicsGraph() {
   svg.appendChild(nodeLayer);
 
   graphRendered = true;
+  const unresolvedCount = mathematicsContracts.filter(contract =>
+    contract.external_resolution?.status === "BLOCKING_UNRESOLVED_CLAIM"
+  ).length;
   document.getElementById("profileMeta").textContent =
-    `${mathematicsContracts.length} interfaces | ${agentCatalog.size} agents | ${mathematicsEdges.length} dependencies`;
+    `${mathematicsContracts.length} interfaces | ${agentCatalog.size} mapped agents | ${unresolvedCount} unresolved sources | ${mathematicsEdges.length} Oracle candidate dependencies`;
 }
 
 function smoothPath(points) {
@@ -446,20 +505,20 @@ function smoothPath(points) {
   return path;
 }
 
-function agentVerificationStats(agentId) {
+function agentLeanLinkStats(agentId) {
   const owned = mathematicsContracts
     .filter(contract => ownerByInterface.get(contract.dag_node_id) === agentId);
-  const verified = owned
+  const linked = owned
     .filter(contract => contract.lean_binding.status === "EXISTING_PROJECT_DECLARATIONS").length;
-  const percentage = owned.length ? Math.round(100 * verified / owned.length) : 0;
-  return { verified, total: owned.length, percentage };
+  const percentage = owned.length ? Math.round(100 * linked / owned.length) : 0;
+  return { linked, total: owned.length, percentage };
 }
 
 function renderAgentNode(id, agent, x, y) {
-  const verification = agentVerificationStats(id);
+  const leanLinks = agentLeanLinkStats(id);
   const radius = 40;
   const circumference = 2 * Math.PI * radius;
-  const progress = circumference * verification.percentage / 100;
+  const progress = circumference * leanLinks.percentage / 100;
   const group = svgElement("g", {
     class: "agent-node agent-root",
     transform: `translate(${x},${y})`,
@@ -468,7 +527,7 @@ function renderAgentNode(id, agent, x, y) {
     "aria-label": `Agent: ${agent.title}`
   });
   group.dataset.id = id;
-  group.dataset.verifiedPercentage = verification.percentage;
+  group.dataset.leanLinkedPercentage = leanLinks.percentage;
   group.appendChild(svgElement("circle", { r: radius, class: "agent-progress-track" }));
   group.appendChild(svgElement("circle", {
     r: radius,
@@ -479,13 +538,13 @@ function renderAgentNode(id, agent, x, y) {
   group.appendChild(svgElement("circle", { r: 36, class: "agent-outline" }));
   group.appendChild(svgElement("circle", { r: 32, class: "agent-disc", filter: "url(#nodeShadow)" }));
   const firstLine = svgElement("text", { x: 0, y: -3, class: "agent-label agent-label-first" });
-  firstLine.textContent = "ROOT";
+  firstLine.textContent = "SOURCE";
   const secondLine = svgElement("text", { x: 0, y: 11, class: "agent-label agent-label-small" });
   secondLine.textContent = "AGENT";
   const codeLine = svgElement("text", { x: 0, y: 24, class: "agent-code" });
   codeLine.textContent = agent.code;
   const progressLabel = svgElement("text", { x: 0, y: -47, class: "agent-progress-label" });
-  progressLabel.textContent = `${verification.percentage}% verified`;
+  progressLabel.textContent = `${leanLinks.percentage}% Lean-linked`;
   group.appendChild(firstLine);
   group.appendChild(secondLine);
   group.appendChild(codeLine);
@@ -519,20 +578,29 @@ function renderInterfaceNode(contract, x, y) {
     "aria-label": `${contract.dag_node_id}: ${statusLabels[contract.lean_binding.status]}`
   });
   const owner = ownerByInterface.get(contract.dag_node_id);
-  const agent = agentCatalog.get(owner);
+  const agent = owner ? agentCatalog.get(owner) : null;
+  const resolutionStatus = contract.external_resolution?.status || "NOT_APPLICABLE";
   group.dataset.id = contract.dag_node_id;
-  group.dataset.owner = owner;
+  group.dataset.owner = owner || "";
   group.dataset.status = contract.lean_binding.status;
+  group.dataset.resolution = resolutionStatus;
   group.appendChild(svgElement("circle", { r: 20, class: "node-hit-area" }));
   group.appendChild(svgElement("circle", { r: 12.5, class: "membership-ring" }));
   group.appendChild(svgElement("circle", { r: 10.5, class: "interface-shell", filter: "url(#nodeShadow)" }));
   group.appendChild(svgElement("circle", { r: 7.5, class: "interface-dot" }));
   group.appendChild(svgElement("circle", { r: 14, class: "interface-focus" }));
-  const ownerCode = svgElement("text", { x: 13, y: -13, class: "owner-code" });
-  ownerCode.textContent = agent.code;
-  group.appendChild(ownerCode);
+  const nodeCode = agent?.code || (resolutionStatus === "BLOCKING_UNRESOLVED_CLAIM" ? "UEMS" : "");
+  if (nodeCode) {
+    const ownerCode = svgElement("text", {
+      x: 13,
+      y: -13,
+      class: `owner-code${agent ? "" : " unresolved-code"}`
+    });
+    ownerCode.textContent = nodeCode;
+    group.appendChild(ownerCode);
+  }
   group.addEventListener("pointerenter", event => {
-    applyMembershipHighlight(owner);
+    if (owner) applyMembershipHighlight(owner);
     showInterfaceTooltip(contract, event);
   });
   group.addEventListener("pointermove", moveTooltip);
@@ -541,7 +609,7 @@ function renderInterfaceNode(contract, x, y) {
     hideTooltip();
   });
   group.addEventListener("focus", () => {
-    applyMembershipHighlight(owner);
+    if (owner) applyMembershipHighlight(owner);
     showInterfaceTooltipAtNode(contract, group);
   });
   group.addEventListener("blur", () => {
@@ -568,6 +636,74 @@ function clearMembershipHighlight() {
   document.querySelectorAll("#dag .membership-owner, #dag .membership-related").forEach(node => {
     node.classList.remove("membership-owner", "membership-related");
   });
+}
+
+function queryState() {
+  const contracts = [...currentClosure].map(id => contractMap.get(id)).filter(Boolean);
+  const statusCounts = Object.fromEntries(Object.keys(statusLabels).map(status => [status, 0]));
+  contracts.forEach(contract => {
+    statusCounts[contract.lean_binding.status] = (statusCounts[contract.lean_binding.status] || 0) + 1;
+  });
+  const unresolved = contracts
+    .filter(contract => contract.external_resolution?.status === "BLOCKING_UNRESOLVED_CLAIM")
+    .sort((left, right) => left.dag_node_id.localeCompare(right.dag_node_id));
+  const blockerReferences = contracts.flatMap(contract => contract.blocker_ids || []);
+  const blockerIds = [...new Set(blockerReferences)];
+  const edges = mathematicsEdges.filter(edge =>
+    currentClosure.has(edge.from) && currentClosure.has(edge.to)
+  );
+  const candidateEdges = edges.filter(edge => edge.evidence.disposition === "CANDIDATE");
+  const pendingEdgeReviews = edges.filter(edge =>
+    !["ACCEPTED", "CONDITIONAL"].includes(edge.evidence.disposition)
+  );
+  const dagComplete = unresolved.length
+    ? "FALSE"
+    : pendingEdgeReviews.length
+      ? "NOT EVALUABLE"
+      : "TRUE";
+  const explicitVerificationBlock = blockerIds.length
+    || statusCounts.GAP
+    || statusCounts.PLANNED_DELTA
+    || statusCounts.EXTERNAL_OR_UNMAPPED;
+  const verificationClosed = explicitVerificationBlock ? "FALSE" : "NOT ESTABLISHED";
+  return {
+    contracts,
+    statusCounts,
+    unresolved,
+    blockerIds,
+    blockerReferences,
+    edges,
+    candidateEdges,
+    pendingEdgeReviews,
+    dagComplete,
+    verificationClosed
+  };
+}
+
+function renderQueryState() {
+  const state = queryState();
+  const panel = document.getElementById("queryStatusPanel");
+  const completionClass = state.dagComplete === "TRUE"
+    ? "complete"
+    : state.dagComplete === "FALSE"
+      ? "blocked"
+      : "pending";
+  const verificationClass = state.verificationClosed === "FALSE" ? "blocked" : "pending";
+  panel.innerHTML = `
+    <div class="query-metric"><span>Required closure</span><strong>${state.contracts.length}</strong></div>
+    <div class="query-metric"><span>Candidate edges</span><strong>${state.candidateEdges.length} / ${state.edges.length}</strong></div>
+    <div class="query-metric"><span>Lean-linked</span><strong>${state.statusCounts.EXISTING_PROJECT_DECLARATIONS}</strong></div>
+    <div class="query-metric"><span>Gap / planned</span><strong>${state.statusCounts.GAP} / ${state.statusCounts.PLANNED_DELTA}</strong></div>
+    <div class="query-metric unresolved"><span>Unresolved external sources</span><strong>${state.unresolved.length}</strong></div>
+    <div class="query-metric"><span>Visible blockers</span><strong>${state.blockerIds.length} / ${state.blockerReferences.length} refs</strong></div>
+    <div class="query-metric state ${completionClass}"><span>DAGComplete</span><strong>${state.dagComplete}</strong></div>
+    <div class="query-metric state ${verificationClass}"><span>VerificationClosed</span><strong>${state.verificationClosed}</strong></div>
+    <div class="query-frontier">
+      <span>Candidate U(q)</span>
+      <p>${state.unresolved.length
+        ? state.unresolved.map(contract => `<code>${esc(contract.dag_node_id)}</code>`).join("")
+        : "No blocking unresolved external source is registered in the current closure."}</p>
+    </div>`;
 }
 
 function applyQueryHighlight() {
@@ -600,12 +736,13 @@ function applyQueryHighlight() {
     node.classList.toggle("agent-root", !target);
     node.classList.toggle("query-active", active || target);
     node.classList.toggle("query-muted", !active && !target);
-    node.querySelector(".agent-label-first").textContent = target ? "TARGET" : "ROOT";
+    node.querySelector(".agent-label-first").textContent = target ? "TARGET" : "SOURCE";
   });
 
   const agent = agentCatalog.get(selectedAgent);
   document.getElementById("querySummary").textContent =
-    `${agent?.title || selectedAgent} | ${selectedTarget} | ${currentClosure.size} interfaces in query closure`;
+    `${agent?.title || selectedAgent} | ${selectedTarget} | candidate backward closure`;
+  renderQueryState();
 }
 
 function listSection(title, items, emptyText) {
@@ -619,7 +756,7 @@ function leanSourceSection(contract) {
   if (contract.lean_binding.status !== "EXISTING_PROJECT_DECLARATIONS") return "";
   const modules = [...new Set(contract.lean_binding.modules || [])];
   if (!modules.length) {
-    throw new Error(`Verified claim lacks a Lean source module link: ${contract.dag_node_id}`);
+    throw new Error(`Lean-linked claim lacks a source module link: ${contract.dag_node_id}`);
   }
   const links = modules.map(module => {
     const href = encodeURI(`../../../${module}`);
@@ -632,20 +769,29 @@ function leanSourceSection(contract) {
 function agentTooltipContent(id, agent) {
   const selected = id === selectedAgent;
   const paperNode = paperDag.nodes.find(node => node.id === id);
-  const verification = agentVerificationStats(id);
+  const leanLinks = agentLeanLinkStats(id);
   return `
-    <div class="tooltip-head ${selected ? "target" : "root"}"><span>${selected ? "Target Agent" : "Root Agent"}</span><span>${esc(paperNode?.role || "registry owner")}</span></div>
+    <div class="tooltip-head ${selected ? "target" : "root"}"><span>${selected ? "Target Agent" : "Mapped Source Agent"}</span><span>${esc(paperNode?.role || "registry owner")}</span></div>
     <h3>${esc(agent.title)}</h3>
-    <section><h4>Membership code</h4><code>${esc(agent.code)} | ${verification.total} owned interface${verification.total === 1 ? "" : "s"}</code></section>
-    <section><h4>Lean verification coverage</h4><code>${verification.verified} / ${verification.total} = ${verification.percentage}%</code></section>
+    <section><h4>Membership code</h4><code>${esc(agent.code)} | ${leanLinks.total} owned interface${leanLinks.total === 1 ? "" : "s"}</code></section>
+    <section><h4>Lean-linked coverage</h4><code>${leanLinks.linked} / ${leanLinks.total} = ${leanLinks.percentage}%</code><p>Counts Registry declaration links only; it does not imply statement alignment, unconditional proof, verification closure, or scientific acceptance.</p></section>
     <section><h4>Identifier</h4><code>${esc(agent.identifier)}</code></section>
     <section><h4>Role in this view</h4><p>${esc(agent.role)}</p></section>
-    <section><h4>Query state</h4><p>${selected ? "Selected as the current Target Agent." : "Available as a Root Agent or alternate Target Agent."}</p></section>`;
+    <section><h4>Query state</h4><p>${selected ? "Selected as the current Target Agent." : "Available as an upstream source or alternate Target Agent; root status is query-relative."}</p></section>`;
 }
 
 function interfaceTooltipContent(contract) {
   const owner = ownerByInterface.get(contract.dag_node_id);
-  const agent = agentCatalog.get(owner);
+  const agent = owner ? agentCatalog.get(owner) : null;
+  const resolution = contract.external_resolution || {
+    status: "NOT_APPLICABLE",
+    source_status: contract.dag_status,
+    evidence: [],
+    effect: "NONE"
+  };
+  const ownership = agent
+    ? `<section><h4>Contained by Agent</h4><code>${esc(agent.code)} | ${esc(agent.title)} | ${esc(agent.identifier)}</code></section>`
+    : `<section class="unresolved-section"><h4>Agent ownership</h4><p>UNMAPPED. This claim is not converted into a virtual Root Agent.</p></section>`;
   const inClosure = currentClosure.has(contract.dag_node_id);
   const isTarget = contract.dag_node_id === selectedTarget;
   return `
@@ -653,7 +799,9 @@ function interfaceTooltipContent(contract) {
       <span>${esc(statusLabels[contract.lean_binding.status])}</span><span>${isTarget ? "Query target" : inClosure ? "Highlighted route" : "Outside current route"}</span>
     </div>
     <h3>${esc(contract.dag_node_id)}</h3>
-    <section><h4>Contained by Agent</h4><code>${esc(agent.code)} | ${esc(agent.title)} | ${esc(agent.identifier)}</code></section>
+    ${ownership}
+    <section><h4>Pipeline state</h4><div class="state-grid"><code>DAG: ${esc(contract.dag_status)}</code><code>Mapping: ${esc(contract.mapping_status)}</code><code>Lean: ${esc(statusLabels[contract.lean_binding.status])}</code><code>Resolution: ${esc(resolutionLabels[resolution.status] || resolution.status)}</code></div></section>
+    <section><h4>Resolution effect</h4><p>${esc(resolution.effect)}</p></section>
     <section><h4>Mathematical content</h4><p>${esc(contract.normalized_mathematical_statement || "No mathematical theorem is required for this node.")}</p></section>
     ${listSection("Claim or theorem premises", contract.theorem_imports, "No claim or theorem premise is recorded.")}
     ${listSection("Definition prerequisites", contract.definition_imports, "No definition prerequisite is recorded.")}
@@ -661,9 +809,12 @@ function interfaceTooltipContent(contract) {
     ${contract.data_imports?.length ? listSection("Data prerequisites", contract.data_imports, "") : ""}
     ${listSection("Existing Lean declarations", contract.lean_binding.existing_declarations, "No existing Lean declaration is mapped.")}
     ${leanSourceSection(contract)}
+    ${listSection("Mathlib and project reuse candidates", contract.lean_binding.candidate_reuse, "No reuse candidate is recorded.")}
+    ${listSection("Verification references", contract.lean_binding.verification_references, "No verification reference is recorded.")}
     ${listSection("Planned local delta", contract.lean_binding.planned_declarations, contract.lean_binding.gap || "No planned declaration is recorded.")}
+    ${listSection("Blockers", contract.blocker_ids, "No explicit blocker ID is recorded.")}
     <section><h4>Source</h4><code>${esc(typeof contract.source_reference === "string" ? contract.source_reference : JSON.stringify(contract.source_reference))}</code></section>
-    <p class="tooltip-policy">Every node retains its Registry status; query selection changes highlighting only. Click the node to pin this card and use its source links.</p>`;
+    <p class="tooltip-policy">Every node retains its Registry status. Query selection changes highlighting only; Oracle candidate edges, Registry normalization, and Lean links do not promote verification or acceptance. Click the node to pin this card and use its source links.</p>`;
 }
 
 function showAgentTooltip(id, agent, event) {
