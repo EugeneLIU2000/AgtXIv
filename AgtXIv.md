@@ -769,7 +769,48 @@ This rule applies to mathematical claims, lemmas, theorems, and load-bearing mat
 
 The Registry and Demo must expose the selected resolution path, its evidence, and its effect on downstream targets. Agent ownership, query relevance, source availability, and mathematical verification are separate fields. No virtual owner, graph highlight, or Registry normalization may promote an unresolved claim.
 
-### 6.3 Verification axes
+### 6.3 DAG completion and iterative resolution
+
+**Definition (query-relative DAG completion).** For a query $q$, let $C(q)$ be the required backward dependency closure of its selected target, and let $U(q)\subseteq C(q)$ be the mathematical claims currently classified as `Unresolved External Mathematical Source`. A query, or the Target Agent relative to that query, has completed its DAG if and only if this unresolved set is empty:
+
+$$
+\begin{align}
+\operatorname{DAGComplete}(q)
+&\iff U(q)=\varnothing .
+\end{align}
+$$
+
+This is the first mandatory completion criterion for a query DAG. It is query-relative: the same external claim may belong to $U(q_1)$ but not to $U(q_2)$. It is also distinct from `VERIFICATION_CLOSED` and scientific acceptance. `DAGComplete` states that every required external mathematical source has taken either the source-verified path or the independent-Lean-proof path; remaining target-local deltas, scope review, computation, physical semantics, and empirical evidence retain their own gates.
+
+DAG construction is therefore iterative rather than a one-pass extraction. At iteration $k$, let $R_k\subseteq U_k(q)$ be the unresolved claims resolved during that iteration, and let $N_k(q)$ be newly discovered external mathematical prerequisites exposed by source checking or Lean proof construction. The next frontier is
+
+$$
+\begin{align}
+U_{k+1}(q)
+&=\bigl(U_k(q)\setminus R_k\bigr)\cup N_k(q),\\
+\operatorname{DAGComplete}(q)
+&\iff U_k(q)=\varnothing
+\quad\text{at a recomputed fixed point.}
+\end{align}
+$$
+
+Each iteration must update the dependency closure, blockers, verification records, and affected query-cache entries. Resolving one node does not complete the DAG if its proof or source reconstruction reveals another required unresolved premise.
+
+#### Mathlib-first unresolved-source reduction
+
+Before creating a new Root Agent for an unresolved mathematical claim, run a bounded search-and-proof pass against the pinned project declarations and Mathlib environment. This order reduces both the number of Root Agents and the amount of source reconstruction:
+
+1. normalize the unresolved claim as an exact Lean type, including quantifiers, assumptions, domains, and conventions;
+2. search the pinned project and Mathlib by declaration name, type shape, and mathematical content, using local search tools first and remote theorem search only for candidate retrieval;
+3. check every candidate in the pinned environment and compare its hypotheses and conclusion with the `MathContract`;
+4. when an exact theorem or a short transparent bridge suffices, construct the smallest local Lean proof, audit it, and record `INDEPENDENT_LEAN_PROOF_COMPLETED` without creating a new Root Agent;
+5. promote a broadly reusable checked result to a versioned shared `MathContract`, while keeping Agent creation separate from theorem reuse;
+6. only when the bounded Mathlib pass does not close the claim should the workflow expand source archaeology, create a dedicated Root Agent, or retain `BLOCKING_UNRESOLVED_CLAIM`;
+7. recompute $C(q)$ and $U(q)$ after every successful or failed resolution attempt.
+
+A theorem-search hit is not a resolution by itself. The unresolved node leaves $U(q)$ only after the exact declaration or bridge proof compiles without `sorry`, `admit`, or new unverified axioms, appears in the audit surface, and has a verification record whose assumptions match the contract. This policy implements ``search before proving'' and ``prove locally before creating another Root Agent'' without allowing retrieval confidence to become verification status.
+
+### 6.4 Verification axes
 
 Recommended axis values are:
 
@@ -837,7 +878,7 @@ FAILED
 BLOCKED
 ```
 
-### 6.4 Overall lifecycle status
+### 6.5 Overall lifecycle status
 
 A node, chain, or export may have one of the following lifecycle states:
 
@@ -854,7 +895,7 @@ SUPERSEDED
 
 `VERIFICATION_CLOSED` means only that all dependencies relevant to the declared scope have acceptable statuses. It does not mean universal scientific certainty.
 
-### 6.5 Public justification rule
+### 6.6 Public justification rule
 
 A verification record should expose only concise, independently inspectable reasoning:
 
