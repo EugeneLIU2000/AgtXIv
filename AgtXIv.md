@@ -743,7 +743,33 @@ HUMAN_INTERPRETED
 
 A derived statement must not inherit `SOURCE_EXPLICIT` merely because its premises are source-explicit.
 
-### 6.2 Verification axes
+### 6.2 Unresolved External Mathematical Source
+
+An `Unresolved External Mathematical Source` is a mathematical claim that is required by at least one target dependency closure but has neither a verified source manifestation nor a completed independent Lean proof. The label records unresolved provenance and verification; it does not mean that the claim is unrelated to all Target Agents, and it does not denote an accepted Root. A claim may be upstream of one or several targets while remaining unmapped to a Paper Agent.
+
+Every such mathematical claim must follow exactly one of three resolution paths:
+
+1. **Source found and verified.** Freeze an authoritative source version, record an exact source anchor, match the normalized statement and hypotheses to the source, and check the cited proof or derivation to the level required by the contract. The claim may then receive `SOURCE_FOUND_AND_VERIFIED`. Finding a citation or matching title alone is insufficient.
+2. **Independent Lean proof completed.** State the claim precisely in Lean and complete a kernel-checked proof in the pinned environment. The proof must contain no `sorry` or `admit`, must not replace the claim with an `axiom`, and must not import the same unresolved claim through a circular dependency. The verification record must name the checked declaration, modules, Lean and Mathlib versions, assumptions, audit entry, and source-to-formal alignment review. The claim may then receive `INDEPENDENT_LEAN_PROOF_COMPLETED`; the missing historical source remains recorded as a provenance limitation.
+3. **Blocking unresolved claim.** If neither of the first two paths succeeds, retain `BLOCKING_UNRESOLVED_CLAIM`. The node remains a `GAP` or `EXTERNAL_UNVERIFIED` frontier, and every target whose required closure contains it must remain `BLOCKED_BY_UNVERIFIED_DEPENDENCY`. A downstream Lean theorem proved only by assuming this claim is `CONDITIONAL_ON_UNVERIFIED_FOUNDATION`, not verification-closed.
+
+The trust gate for a mathematical claim is therefore:
+
+```text
+ADMISSIBLE_MATHEMATICAL_CLAIM(c) =
+    SOURCE_FOUND_AND_VERIFIED(c)
+    OR INDEPENDENT_LEAN_PROOF_COMPLETED(c)
+
+TRUSTWORTHY_REQUIRED_CLOSURE(target) =
+    every required mathematical claim c in ancestors(target)
+    satisfies ADMISSIBLE_MATHEMATICAL_CLAIM(c)
+```
+
+This rule applies to mathematical claims, lemmas, theorems, and load-bearing mathematical foundations. Definitions require precise formalization and type checking rather than a proof that the definition is ``true''. Scope assumptions must remain explicit and scientifically justified; merely declaring an assumption in Lean does not verify it. Empirical and computational claims require their own evidence and reproduction workflows and cannot be promoted solely by Lean type checking.
+
+The Registry and Demo must expose the selected resolution path, its evidence, and its effect on downstream targets. Agent ownership, query relevance, source availability, and mathematical verification are separate fields. No virtual owner, graph highlight, or Registry normalization may promote an unresolved claim.
+
+### 6.3 Verification axes
 
 Recommended axis values are:
 
@@ -811,7 +837,7 @@ FAILED
 BLOCKED
 ```
 
-### 6.3 Overall lifecycle status
+### 6.4 Overall lifecycle status
 
 A node, chain, or export may have one of the following lifecycle states:
 
@@ -828,7 +854,7 @@ SUPERSEDED
 
 `VERIFICATION_CLOSED` means only that all dependencies relevant to the declared scope have acceptable statuses. It does not mean universal scientific certainty.
 
-### 6.4 Public justification rule
+### 6.5 Public justification rule
 
 A verification record should expose only concise, independently inspectable reasoning:
 
