@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">AgtXIv: From Paper to VerificationClosed</title>
+  <desc id="desc">A three-panel workflow from a paper corpus to a candidate DAG, per-paper Agentization and MathContracts, iterative claim verification, and VerificationClosed.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#34525c" flood-opacity="0.16"/></filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#34525c" flood-opacity="0.13"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#5f7076"/></marker>
+    <marker id="blueArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#377b8e"/></marker>
+    <marker id="orangeArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#b8732f"/></marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill:#17252b; letter-spacing:0; }
+      .panel-title { font-size:27px; font-weight:760; }
+      .title { font-size:20px; font-weight:720; }
+      .label { font-size:17px; font-weight:640; }
+      .small { font-size:14px; font-weight:520; fill:#53666d; }
+      .tiny { font-size:12px; font-weight:560; fill:#53666d; }
+      .center { text-anchor:middle; dominant-baseline:middle; }
+      .blue-panel { fill:#e9f4f6; stroke:#4f8794; stroke-width:2.5; }
+      .orange-panel { fill:#fff0df; stroke:#d69853; stroke-width:2.5; }
+      .white-card { fill:#fffefd; stroke:#84aeb7; stroke-width:1.8; }
+      .orange-card { fill:#fffaf4; stroke:#dda66c; stroke-width:1.8; }
+      .math-card { fill:#d9edf1; stroke:#4f8794; stroke-width:1.7; }
+      .step-card { fill:#fffaf4; stroke:#d69853; stroke-width:1.7; }
+      .flow { fill:none; stroke:#5f7076; stroke-width:3; marker-end:url(#arrow); }
+      .blue-flow { fill:none; stroke:#377b8e; stroke-width:3; marker-end:url(#blueArrow); }
+      .orange-flow { fill:none; stroke:#b8732f; stroke-width:3; marker-end:url(#orangeArrow); }
+      .dashed { fill:none; stroke:#7d8a8f; stroke-width:2.3; stroke-dasharray:8 7; marker-end:url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1000" fill="#fff"/>
+  <text x="900" y="46" class="center" style="font-size:34px;font-weight:780;">AgtXIv: From Paper to VerificationClosed</text>
+  <text x="900" y="82" class="center" style="font-size:16px;fill:#607178;">Paper corpus → candidate dependencies → per-paper Agentization → iterative claim verification</text>
+
+  <!-- A: paper corpus to candidate DAG -->
+  <g filter="url(#shadow)"><rect x="30" y="115" width="505" height="835" rx="34" class="blue-panel"/></g>
+  <text x="282" y="145" class="panel-title center" style="font-size:25px;">(A) FROZEN PAPER CORPUS</text>
+  <text x="282" y="173" class="panel-title center" style="font-size:25px;">→ CANDIDATE DAG</text>
+
+  <g filter="url(#softShadow)">
+    <rect x="62" y="190" width="132" height="145" rx="14" class="white-card"/>
+    <rect x="216" y="190" width="132" height="145" rx="14" class="white-card"/>
+    <rect x="370" y="190" width="132" height="145" rx="14" class="white-card"/>
+  </g>
+  <text x="128" y="213" class="label center">Paper 1</text><text x="282" y="213" class="label center">Paper 2</text><text x="436" y="213" class="label center">Paper 3</text>
+  <g stroke="#557f89" stroke-width="2.5" stroke-linecap="round">
+    <path d="M85 243 H169 M85 258 H169 M85 273 H157 M239 243 H323 M239 258 H323 M239 273 H311 M393 243 H477 M393 258 H477 M393 273 H465"/>
+    <path d="M85 303 H145 M239 303 H299 M393 303 H453"/>
+  </g>
+  <g fill="#78b8c5" stroke="#447b88" stroke-width="1.3"><rect x="153" y="290" width="16" height="16" rx="3"/><rect x="307" y="290" width="16" height="16" rx="3"/><rect x="461" y="290" width="16" height="16" rx="3"/></g>
+  <path d="M128 336 V371 M282 336 V371 M436 336 V371" stroke="#377b8e" stroke-width="3"/>
+  <path d="M128 371 H436" stroke="#377b8e" stroke-width="3"/>
+  <path d="M282 371 V397" class="blue-flow"/>
+  <g filter="url(#softShadow)"><rect x="104" y="398" width="356" height="88" rx="18" class="math-card"/></g>
+  <text x="282" y="429" class="title center">DAG Oracle</text>
+  <text x="282" y="459" class="small center">candidate proposer — not a verifier</text>
+  <path d="M282 487 V529" class="blue-flow"/>
+
+  <g filter="url(#softShadow)"><rect x="61" y="532" width="444" height="327" rx="20" class="white-card"/></g>
+  <text x="282" y="558" class="title center">Candidate DAG output</text>
+  <g stroke="#557f89" stroke-width="2.4" fill="none">
+    <path d="M111 691 L166 630 L234 704 L303 636 L380 703 L452 648"/>
+    <path d="M111 691 L184 745 L234 704 M166 630 L184 745 M234 704 L303 636 M303 636 L380 703 M380 703 L452 648"/>
+  </g>
+  <g fill="#72b3c1" stroke="#3e7684" stroke-width="1.5"><circle cx="111" cy="691" r="11"/><circle cx="166" cy="630" r="11"/><circle cx="184" cy="745" r="11"/><circle cx="234" cy="704" r="11"/><circle cx="303" cy="636" r="11"/><circle cx="380" cy="703" r="11"/><circle cx="452" cy="648" r="11"/></g>
+  <circle cx="303" cy="636" r="11" fill="#e3a158" stroke="#a46628" stroke-width="1.5"/>
+  <rect x="113" y="794" width="338" height="36" rx="16" fill="#fff0df" stroke="#d69853" stroke-width="1.5"/>
+  <text x="282" y="812" class="tiny center" style="fill:#925b24;font-weight:760;">ORACLE_PROPOSED / UNVERIFIED</text>
+
+  <!-- B: per-paper Agentization -->
+  <path d="M535 520 H560" class="flow"/>
+  <g filter="url(#shadow)"><rect x="560" y="115" width="555" height="835" rx="34" class="blue-panel"/></g>
+  <text x="837" y="155" class="panel-title center">(B) AGENTIZE EACH PAPER</text>
+  <text x="837" y="181" class="small center">each source gets its own provenance container</text>
+
+  <!-- row 1 -->
+  <text x="593" y="224" class="label">Paper 1</text>
+  <g filter="url(#softShadow)"><rect x="585" y="239" width="103" height="108" rx="13" class="white-card"/><rect x="715" y="239" width="123" height="108" rx="15" class="white-card"/><rect x="858" y="239" width="242" height="108" rx="15" class="orange-card"/></g>
+  <path d="M688 293 H710" class="blue-flow"/><path d="M838 293 H852" class="blue-flow"/>
+  <path d="M607 273 H666 M607 287 H666 M607 301 H658 M607 323 H650" stroke="#557f89" stroke-width="2" stroke-linecap="round"/>
+  <text x="776" y="272" class="label center">Paper Agent 1</text><circle cx="776" cy="307" r="13" fill="#72b3c1"/><circle cx="776" cy="307" r="5" fill="#fff"/>
+  <text x="979" y="267" class="title center">MathContract</text><text x="979" y="294" class="tiny center">normalized mathematical claim</text><text x="979" y="315" class="tiny center">assumptions  •  source anchors</text><text x="979" y="335" class="tiny center">Lean binding</text>
+
+  <!-- row 2 -->
+  <text x="593" y="407" class="label">Paper 2</text>
+  <g filter="url(#softShadow)"><rect x="585" y="422" width="103" height="108" rx="13" class="white-card"/><rect x="715" y="422" width="123" height="108" rx="15" class="white-card"/><rect x="858" y="422" width="242" height="108" rx="15" class="orange-card"/></g>
+  <path d="M688 476 H710" class="blue-flow"/><path d="M838 476 H852" class="blue-flow"/>
+  <path d="M607 456 H666 M607 470 H666 M607 484 H658 M607 506 H650" stroke="#557f89" stroke-width="2" stroke-linecap="round"/>
+  <text x="776" y="455" class="label center">Paper Agent 2</text><circle cx="776" cy="490" r="13" fill="#72b3c1"/><circle cx="776" cy="490" r="5" fill="#fff"/>
+  <text x="979" y="450" class="title center">MathContract</text><text x="979" y="477" class="tiny center">normalized mathematical claim</text><text x="979" y="498" class="tiny center">assumptions  •  source anchors</text><text x="979" y="518" class="tiny center">Lean binding</text>
+
+  <!-- row 3 -->
+  <text x="593" y="590" class="label">Target paper</text>
+  <g filter="url(#softShadow)"><rect x="585" y="605" width="103" height="108" rx="13" class="white-card"/><rect x="715" y="605" width="123" height="108" rx="15" class="white-card"/><rect x="858" y="605" width="242" height="108" rx="15" class="orange-card"/></g>
+  <path d="M688 659 H710" class="blue-flow"/><path d="M838 659 H852" class="blue-flow"/>
+  <path d="M607 639 H666 M607 653 H666 M607 667 H658 M607 689 H650" stroke="#557f89" stroke-width="2" stroke-linecap="round"/>
+  <text x="776" y="638" class="label center">Target Paper Agent</text><circle cx="776" cy="673" r="13" fill="#e3a158"/><circle cx="776" cy="673" r="5" fill="#fff"/>
+  <text x="979" y="633" class="title center">MathContract</text><text x="979" y="660" class="tiny center">normalized mathematical claim</text><text x="979" y="681" class="tiny center">assumptions  •  source anchors</text><text x="979" y="701" class="tiny center">Lean binding</text>
+
+  <rect x="610" y="780" width="454" height="110" rx="18" fill="#f6fbfc" stroke="#84aeb7" stroke-width="1.5"/>
+  <text x="837" y="810" class="small center">Separate mathematical claims from</text>
+  <text x="837" y="836" class="small center">physical, computational, and empirical evidence</text>
+  <text x="837" y="865" class="tiny center" style="font-weight:700;">Agent ownership is provenance, not a proof edge</text>
+
+  <!-- C: iterative loop -->
+  <path d="M1115 520 H1140" class="flow"/>
+  <g filter="url(#shadow)"><rect x="1140" y="115" width="625" height="835" rx="34" class="orange-panel"/></g>
+  <text x="1452" y="155" class="panel-title center">(C) ITERATIVE CLAIM VERIFICATION</text>
+
+  <g filter="url(#softShadow)"><rect x="1323" y="257" width="258" height="84" rx="19" fill="#fff7ed" stroke="#d69853" stroke-width="2"/></g>
+  <text x="1452" y="286" class="label center">U(q): unresolved</text><text x="1452" y="315" class="label center">external frontier</text>
+  <g filter="url(#softShadow)">
+    <rect x="1190" y="177" width="198" height="65" rx="15" class="step-card"/>
+    <rect x="1170" y="308" width="210" height="65" rx="15" class="step-card"/>
+    <rect x="1185" y="433" width="220" height="71" rx="15" class="step-card"/>
+    <rect x="1480" y="433" width="210" height="71" rx="15" class="step-card"/>
+    <rect x="1530" y="308" width="207" height="65" rx="15" class="step-card"/>
+  </g>
+  <text x="1289" y="209" class="small center" style="font-weight:720;">1  Select unresolved frontier</text>
+  <text x="1275" y="340" class="small center" style="font-weight:720;">2  Registry / Mathlib search</text>
+  <text x="1295" y="461" class="small center" style="font-weight:720;"><tspan x="1295">3  Checked Lean proof</tspan><tspan x="1295" dy="22">or verified source</tspan></text>
+  <text x="1585" y="461" class="small center" style="font-weight:720;">4  Reconcile evidence</text>
+  <text x="1633" y="340" class="small center" style="font-weight:720;"><tspan x="1633">5  Recompute closure</tspan><tspan x="1633" dy="20">and reuse</tspan></text>
+  <path d="M1388 209 C1474 170 1578 200 1628 307" class="orange-flow"/>
+  <path d="M1635 373 C1655 405 1640 423 1602 436" class="orange-flow"/>
+  <path d="M1481 470 C1458 492 1435 492 1405 470" class="orange-flow"/>
+  <path d="M1186 468 C1149 438 1149 400 1172 368" class="orange-flow"/>
+  <path d="M1202 308 C1198 279 1228 247 1261 242" class="orange-flow"/>
+  <text x="1452" y="535" class="tiny center">Resolving one claim may expose a deeper prerequisite.</text>
+
+  <path d="M1634 373 V547 H1490" class="orange-flow"/>
+  <polygon points="1452,547 1522,600 1452,653 1382,600" fill="#fffaf4" stroke="#d69853" stroke-width="2" filter="url(#softShadow)"/>
+  <text x="1452" y="589" class="label center">U(q) =</text><text x="1452" y="614" class="label center">empty?</text>
+  <text x="1358" y="587" class="tiny center" style="fill:#a65d21;font-weight:760;">NO</text>
+  <path d="M1382 600 H1160 V210 H1190" class="orange-flow"/>
+  <text x="1220" y="626" class="tiny center" style="fill:#925b24;">new prerequisites may appear</text>
+  <text x="1542" y="587" class="tiny center" style="fill:#39798a;font-weight:760;">YES</text>
+  <path d="M1522 600 H1580 V674" class="blue-flow"/>
+
+  <g filter="url(#softShadow)"><rect x="1475" y="676" width="210" height="73" rx="18" fill="#dceff3" stroke="#4f8794" stroke-width="2"/></g>
+  <text x="1580" y="702" class="title center">DAGComplete</text><text x="1580" y="730" class="tiny center">external sources resolved</text>
+
+  <path d="M1475 712 H1190 V768" class="dashed"/>
+  <text x="1305" y="704" class="tiny center">separate verification gates</text>
+  <rect x="1166" y="774" width="163" height="47" rx="12" class="white-card"/>
+  <rect x="1344" y="774" width="180" height="47" rx="12" class="white-card"/>
+  <rect x="1539" y="774" width="177" height="47" rx="12" class="white-card"/>
+  <text x="1248" y="798" class="tiny center">target local delta</text>
+  <text x="1434" y="798" class="tiny center">source / assumption alignment</text>
+  <text x="1627" y="798" class="tiny center">scope and evidence gates</text>
+  <path d="M1248 821 V848 H1452 M1434 821 V848 M1627 821 V848 H1452 V860" stroke="#5f7076" stroke-width="2.3" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#softShadow)"><rect x="1328" y="861" width="248" height="67" rx="18" fill="#dceee4" stroke="#4c8a68" stroke-width="2.2"/></g>
+  <text x="1452" y="886" class="title center" style="fill:#245b3d;">VerificationClosed</text><text x="1452" y="912" class="tiny center" style="fill:#3f6d53;">all in-scope gates closed</text>
+  <rect x="1167" y="875" width="138" height="44" rx="12" fill="#fff2dc" stroke="#d69853" stroke-width="1.5"/>
+  <text x="1236" y="891" class="tiny center" style="fill:#8d5724;"><tspan x="1236">Not automatic</tspan><tspan x="1236" dy="17">scientific acceptance</tspan></text>
+</svg>

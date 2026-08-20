@@ -1,0 +1,92 @@
+% fig_gauge_innerproduct.tex  --  canonical forms and pairings.
+% Requires: \usepackage{tikz}; \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}.
+\begin{figure*}[t]
+    \centering
+    \begin{tikzpicture}[
+            font=\scriptsize,
+            >={Stealth[length=3pt]},
+            % TN conventions as in Figs. 2-3: bonds 0.5pt, physical legs 0.7pt
+            bond/.style ={line width=0.5pt},
+            phys/.style ={line width=0.7pt},
+            tnA/.style  ={draw, fill=black, circle, inner sep=1.6pt},
+            tnAc/.style ={draw, fill=white, circle, inner sep=1.6pt},
+            opf/.style  ={draw, fill=black!15, minimum size=0.34cm, inner sep=0pt},
+            opc/.style  ={draw, fill=white, minimum size=0.34cm, inner sep=0pt},
+            nlabel/.style={font=\scriptsize\bfseries, align=center},
+            note/.style ={font=\scriptsize\itshape, text=black!70, align=center},
+            x=1cm, y=1cm
+        ]
+
+        %% ===== Panel (a): GAUGE (TN) =====
+        \node[nlabel, text width=3.6cm] at (1.4,5.4) {(a) gauge of $E_A$};
+
+        \begin{scope}[shift={(0,4.0)}]
+            \node[tnA] (A) at (0,0.28) {}; \node[tnAc] (Ac) at (0,-0.28) {};
+            \draw[phys] (A)--(Ac);
+            \draw[bond] (A.west)--(-0.55,0.28); \draw[bond] (Ac.west)--(-0.55,-0.28);
+            \draw[bond] (A.east)--(0.4,0.28);   \draw[bond] (Ac.east)--(0.4,-0.28);
+            \draw[bond] (0.4,0.28) to[out=0,in=0] (0.4,-0.28);
+            \node at (1.15,0) {$=$};
+            \draw[bond] (1.5,0.28)--(2.0,0.28); \draw[bond] (1.5,-0.28)--(2.0,-0.28);
+            \draw[bond] (2.0,0.28) to[out=0,in=0] (2.0,-0.28);
+        \end{scope}
+        \node[nlabel] at (1.1,3.35) {right-canonical (unital)};
+
+        \begin{scope}[shift={(0,2.0)}]
+            \node[tnA] (B) at (0,0.28) {}; \node[tnAc] (Bc) at (0,-0.28) {};
+            \draw[phys] (B)--(Bc);
+            \draw[bond] (B.east)--(0.55,0.28); \draw[bond] (Bc.east)--(0.55,-0.28);
+            \draw[bond] (B.west)--(-0.4,0.28); \draw[bond] (Bc.west)--(-0.4,-0.28);
+            \draw[bond] (-0.4,0.28) to[out=180,in=180] (-0.4,-0.28);
+            % '=' at 1.05 (at 1.15 it nearly touched the left-bulging identity arc)
+            \node at (1.05,0) {$=$};
+            \draw[bond] (1.5,0.28)--(2.0,0.28); \draw[bond] (1.5,-0.28)--(2.0,-0.28);
+            \draw[bond] (1.5,0.28) to[out=180,in=180] (1.5,-0.28);
+        \end{scope}
+        \node[nlabel] at (1.1,1.35) {left-canonical (trace-preserving)};
+        \node[note, text width=3.6cm] at (1.1,0.5) {filled $=A$, open $=\bar A$, arc $=$ identity};
+
+        \draw[draw=black!35, line width=0.4pt] (3.9,-0.1) -- (3.9,5.6);
+
+        % Resolved (\SL{cut panel b}): the old panel (b), the CF/biCF block
+        % canonical forms, was removed as fully covered by the cascade figure
+        % after the notation sync (same squares, shades, and direct sums
+        % there); the caption now points to \cref{fig:cascade} instead.
+
+        %% ===== Panel (b): two pairings (TN loops) =====
+        \node[nlabel, text width=3.8cm] at (6.0,5.4) {(b) two pairings on $M_D(\C)$};
+
+        \begin{scope}[shift={(6.0,3.95)}]
+            \node[opf] (M) at (-0.65,0) {$X$}; \node[opf] (N) at (0.65,0) {$Y$};
+            \draw[bond] (M.east) -- (N.west);
+            \draw[bond] (N.east) to[out=50,in=130,looseness=1.6] (M.west);
+        \end{scope}
+        \node[align=center, text width=3.8cm] at (6.0,3.0)
+            {$\mathrm{Tr}(XY)$: \textbf{bilinear}\\ (algebraic single-block FT)};
+
+        \begin{scope}[shift={(6.0,1.65)}]
+            \node[opc] (X) at (-0.65,0) {$\bar X$}; \node[opf] (Y) at (0.65,0) {$Y$};
+            \draw[bond] (X.north) to[out=90,in=90] (Y.north);
+            \draw[bond] (X.south) to[out=-90,in=-90] (Y.south);
+        \end{scope}
+        \node[align=center, text width=4.0cm] at (6.0,0.6)
+            {$\langle X,Y\rangle=\mathrm{Tr}(Y X^\dagger)$: \textbf{sesquilinear}\\ (blocking / spectral; open $=\bar X$)};
+
+    \end{tikzpicture}
+    \caption{Two notions that the terms ``canonical form'' and ``inner
+        product'' overload in this development: (a) The gauge of the transfer
+        operator $E_A(X)=\sum_i A^i X {(A^i)}^\dagger$, as tensor-network
+        identities (filled $=A$, open $=\bar A$, an arc $=$ the identity):
+        closing the right bonds gives the identity on the left, the unital
+        right-canonical gauge $\sum_i A^i {(A^i)}^\dagger=I$; closing the left bonds
+        gives the identity on the right, the trace-preserving left-canonical
+        gauge $\sum_i {(A^i)}^\dagger A^i=I$. A gauge realizes one or the other;
+        both at once, the doubly stochastic gauge discussed in the main text, holds only for a non-generic family.
+        (b) The two
+        pairings on bond operators the proofs use: the bilinear trace pairing
+        $\mathrm{Tr}(XY)$, on which the algebraic single-block argument rests, and
+        the sesquilinear Hilbert--Schmidt inner product
+        $\langle X,Y\rangle=\mathrm{Tr}(Y X^\dagger)$, which defines the
+        transfer-operator adjoint used in the blocking and spectral arguments.}\label{fig:gauge_innerproduct}
+\end{figure*}
+

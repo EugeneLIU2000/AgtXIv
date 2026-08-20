@@ -1,0 +1,358 @@
+\appendix
+
+%======================================================================
+\section{Agent architecture and Lean interface}\label{app:architecture}
+%======================================================================
+
+The formalization system is organized as a human-directed multi-agent architecture. Here an \emph{agent} is a large language model equipped with a system prompt that defines its role and a fixed set of tools that we programmed and supplied, such as editing a file or querying the Lean compiler. Once dispatched, the agent runs autonomously, calling commands and reading their results until it reports completion, failure, or a partial result. When the orchestrator dispatches tasks to sub-agents, each sub-agent reports its findings back to the orchestrator on completion.
+
+
+The system is implemented in TeXRA~\cite{TeXRA}, which works as a command-line program and Visual~Studio~Code extension; the Lean-specific roles and commands described here are project-specific additions.
+A human supervisor works with a pool of such agents through a shared repository of Lean code and \LaTeX{} sources, a persistent memory directory of notes, and the Lean~4 compiler accessed in real time.
+
+\subsection{Agent roles}\label{sec:roles}
+
+The specialized roles listed in \cref{tab:roles} were introduced incrementally over the first month of the project. The earliest sessions used generic, undifferentiated agents; the supervisor introduced each new specialization as the bottlenecks of that setup became visible.
+Scouting, proof writing, and proof simplification became distinct roles by late February, and the full role list was codified in a pinned strategy memo in mid-March.
+Each agent interacts with the Lean compiler and the file system through a fixed set of commands.
+
+\begin{table*}[htbp]
+    \caption{\label{tab:roles}Agent roles: the model tier each typically uses, its function, and the tools it is granted beyond the shared core. All are tool-using agents. The shared core of the interactive roles is the Lean~4 server interface of \cref{sec:lean_tools}, file editing and shell access, and the persistent memory of \cref{app:memory}; the last column lists what each role adds. ``Tier'' is the model class the role typically runs on, expensive (E) or inexpensive (I); roles were not preassigned to models, and the supervisor set the tier per task at dispatch (\cref{sec:model_selection}). The code names correspond to the roles named in the End Matter: \texttt{lean} is the proof writer, \texttt{leanSearch} the library scout, \texttt{leanSimplifier} the simplifier, and \texttt{leanBlueprint} the blueprint synchronizer. The reviewer runs as an automated review agent on each proposed repository change (\cref{sec:audit_fix}); its review prompts are released with TNLean.}
+    \small
+    \centering
+    \setlength{\tabcolsep}{4pt}%
+    \begin{tabular}{@{}lcll@{}}
+        \toprule
+        {Role}                  & {Tier} & {Function}                                                                       & {Tools beyond the shared core}                                                                                    \\
+        \midrule
+        \texttt{leanOrchestrator} & E      & \begin{tabular}[t]{@{}l@{}}Task decomposition,\\ dispatch\end{tabular}           & \begin{tabular}[t]{@{}l@{}}sub-agent dispatch, run management,\\ repository and code-review access\end{tabular} \\[0.9em]
+        \texttt{lean}             & E      & \begin{tabular}[t]{@{}l@{}}Proof writing,\\ closure of placeholders\end{tabular} & ---                                                                                                             \\
+        \texttt{leanSearch}       & I      & Mathlib scouting, feasibility                                                    & Web search, arXiv lookup                                                                                        \\
+        \texttt{leanSimplifier}   & I      & Style checking, proof simplification                                             & ---                                                                                                             \\
+        \texttt{leanBlueprint}    & I      & Blueprint-Lean sync                                                              & Web/arXiv, bibliography                                                                                         \\
+        reviewer                  & I      & Literature-Lean cross-checking                                                   & runs on proposed repository changes                                                                             \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+
+All agents draw on a common core of tools: the Lean~4 server interface of \cref{sec:lean_tools}, file editing and shell access, and the persistent memory of \cref{app:memory}. They differ only in the additional tools they are granted (last column of \cref{tab:roles}), their system prompt, and their model tier.
+
+\subsection{Delegation}\label{sec:delegation}
+
+When the orchestrator, the \texttt{leanOrchestrator} role of \cref{tab:roles}, dispatches a task to a sub-agent (a separate agent session launched to carry out that one task), it fixes the properties of the session: the sub-agent's role, the task instructions and background notes it starts with, the files it works on, and the model tier it runs on. A sub-agent runs in isolation, with no access to the orchestrator's conversation, so it acts only on the instructions, notes, files, and model it is given.
+
+\emph{Attach instructions and background notes.} Beyond the task instructions, the orchestrator may place one or more memory files in the sub-agent's initial context as read-only background: a style guide, a list of statements already known to be false together with their counterexamples, or the memo an earlier scouting agent left behind, so that a later proof-writing agent reuses the Mathlib lemmas the scout located instead of searching again. The life cycle that produces and reuses these notes is described in \cref{app:memory}.
+
+\emph{Assign files.} Each sub-agent is assigned a set of files to edit and a set to read as background; vision-capable sub-agents additionally receive figures, screenshots, or PDFs. Parallel sub-agents are assigned disjoint sets of files to edit, a working convention rather than an enforced restriction, so that no two work on the same part of the Lean source tree (\cref{app:orchestration}). When the task finishes, the sub-agent's output is either copied back into the project by the orchestrator or, for sub-agents editing project files in place, already there.
+
+
+\emph{Choose the model tier.} The orchestrator selects one model tier per task; the reasoning behind each choice, and the specific models used, are given in \cref{sec:model_selection}.
+
+\subsection{Lean~4 integration and related tools}\label{sec:lean_tools}
+
+Agents interact with Lean~4 through a programming interface that lets external tools query the compiler for errors and type information in real time, without rebuilding the project. The interface drives the same Lean~4 language server that human developers use in editors such as VS~Code~\cite{MicrosoftCorporation2024Visual}: inside the editor it routes through the running Lean~4 extension, and on the command line it spawns its own server process, so the agent sees the same diagnostics and proof state the developer does. It exposes the five tools listed below, each set in typewriter font.
+
+\begin{enumerate}[label={(\roman*)},leftmargin=*]
+    \item \texttt{lean\_diagnostics} returns the compilation errors, warnings, and hints for a given file, either in full or as severity counts only. It checks whether a proof step compiles, and is the first tool invoked after a proof attempt.
+
+    \item \texttt{lean\_inspect} reports the proof state and available declarations at a specified position, given by line and column, in one of three modes. The \texttt{hover} mode reproduces the information shown when a user places the cursor over an identifier in the Lean editor: its full type and any associated documentation. For example, inspecting the single-block fundamental theorem returns a signature stating that an injective tensor $A$ and a tensor $B$ generating the same matrix product vectors are gauge-equivalent. The \texttt{goal} mode returns the current tactic state, namely the assumptions in scope and the goal that remains to be proved. The \texttt{term\_goal} mode returns the type expected at the position within a proof term, that is, within a proof written as an expression rather than as a tactic block.
+
+    \item \texttt{lean\_loogle} searches Mathlib for a named result. It wraps Loogle, a community-developed search engine for Mathlib, querying it over its public interface, and accepts queries by declaration name, by the constants a result mentions, or by type pattern, such as lemmas of the form $f(x+y)=f(x)+f(y)$, several at once in one batched call.
+
+    \item \texttt{lean\_file} runs file-scoped commands that refresh the server when the editor state becomes stale: restarting the Lean server for one file, or performing a lighter refresh of its dependencies, used when a file's diagnostics no longer reflect the latest edits.
+
+    \item \texttt{lean\_project} runs project-wide commands that take no target file and manage the build and the language server: building the library through Lake, fetching the precompiled Mathlib cache (for the whole project or for the current file's imports alone), cleaning build artifacts, restarting or stopping the language server, and installing or selecting the Lean toolchain. The build command does not capture its output, so compilation errors are read back afterward with \texttt{lean\_diagnostics}.
+\end{enumerate}
+
+Together, these tools support the same iterative cycle followed by a human Lean user: attempt a proof, inspect the resulting error or goal state, search the library for the missing result, edit the proof, and recheck.
+
+
+
+\subsection{Model selection}\label{sec:model_selection}
+
+The system draws on multiple models at different capability and cost tiers, including Claude Opus and Sonnet, the GPT-5 family, DeepSeek, and Gemini, each run at an explicitly chosen maximum reasoning effort that is raised for hard proofs and lowered for routine work. Proof-writing tasks, such as closing a Lean \texttt{sorry} (an unproved placeholder) or repairing a broken proof chain, are assigned to an expensive, high-effort model, since a wrong attempt is costly to detect and can affect later tasks. Scouting, simplification, and blueprint synchronization use cheaper models, where failures are inexpensive to retry; orchestration typically uses higher-tier models such as Claude Opus. Empirically, we found Claude Opus 4.6 to be a better orchestrator than GPT 5.2, which we attribute to differences in token usage (see \cref{fig:role_model}); GPT 5.5 later closed this gap, and its share of the work grew accordingly.
+The allocation was not fixed upfront but settled over the project as it became clear which task profiles needed the expensive tier. The resulting cost per model (Fig.~\ref{fig:model_spend}) concentrates on a few high-capability models, with the total cost analyzed in \cref{app:cost}.
+
+
+\subsection{Context management}
+
+Within a session, the orchestrator's conversation grows until it nears the model's context-window limit, at which point the system compacts it, summarizing the older exchanges to free space (\cref{fig:compaction}). On each compaction the orchestrator is handed back a summary of its still-running sub-agents, any background computations, and its current task list, and the recorded results of completed sub-agents stay retrievable, so it continues the work in progress rather than relaunching it.
+
+\input{figures/fig_compaction}
+
+
+%======================================================================
+\section{The blueprint}\label{app:blueprint}
+%======================================================================
+
+The blueprint is a synchronized mathematical \LaTeX{} document that serves as an intermediate layer between the primary literature and the Lean codebase. Every definition, lemma, and theorem carries machine-readable metadata that links it to the formal proof, records its status, and tracks its logical dependencies. The blueprint toolkit itself is Massot's \texttt{leanblueprint} package~\cite{Massot2021Leanblueprint}; our contribution is the FT-MPS content. We also document some learnings and extensions from the project for using the blueprint as the media for the multi-agent autoformazations below.
+
+The results quoted in this paper, in the Letter as well as in this Supplementary Material, are stated in the informal style of the physics literature; we do not link them one by one to the Lean declarations that formalize them. That correspondence, together with the precise formal hypotheses and the proof status of each statement, lives in the blueprint~\cite{TNLeanBlueprint}, and we encourage the reader who wants the formal counterpart of any result discussed here to read the blueprint alongside this paper.
+
+Two checks keep the layers in agreement through the review-repair cycles of \cref{app:orchestration}:
+The \texttt{checkdecls} command from \texttt{leanblueprint} package  checks via a program that every \texttt{\textbackslash{}lean} and \texttt{\textbackslash{}leanok} link to the theorem and lemma labels in the \LaTeX{} version of the blueprint resolves and compiles. For the \texttt{leanBlueprint} agent we also prompt them to write blueprint contents to be consistent with the lean label, and they also get feedback by running \texttt{checkdecls} themselves. The blueprint contents produced by the \texttt{leanBlueprint} agent should match what is formalized in the Lean code. However, sometimes they may get staled. Therefore, we use automated reviewers who check the semantic correspondence that no syntactic tool can verify: that the Lean theorem proves the blueprint statement with hypotheses no stronger than the cited source's.
+
+\subsection{Chapter structure}\label{sec:bp_chapters}
+
+
+The formalized proof is organized around the canonical-form construction and reduces to three steps:
+\begin{enumerate}[label={(\roman*)},leftmargin=*]
+    \item \textit{Canonical-form reduction.} The spectral theory of the transfer operator $E_A$ is used to reduce an arbitrary tensor to canonical form (CF). First, quantum Perron-Frobenius theory and Kadison-Schwarz inequalities are used to decompose the virtual space into minimal invariant subspaces of the matrices $\{A^i\}$. This puts the tensor in block-upper-triangular form. The off-diagonal triangular blocks do not contribute to periodic traces and can therefore be discarded, leaving a block-diagonal tensor with irreducible blocks. These blocks may still be \textit{periodic}, in the sense that their transfer maps can have nontrivial peripheral eigenvalues; blocking by a common period removes this periodicity~\cite{Fannes1992Finitely}. The resulting tensor is a block-diagonal direct sum of normal blocks, each with a scalar weight, and is in CF as defined in the main text. One may then choose a further gauge normalization of the CF blocks, giving canonical form~II (CFII) in the terminology of~\cite{Cirac2017Matrixa}. Separately, a normal block becomes injective only after a further finite blocking, with the required blocking length controlled by the quantum Wielandt bound~\cite{Sanz2010Quantum}. This produces the block-injective canonical form (biCF in~\cite{Cirac2017Matrixa}). 
+
+    \item \textit{Block separation.} After the tensors are in CF, the proof compares their normal blocks by first grouping repeated copies of the same normal tensor into a basis of normal tensors. For large enough system size, the MPVs generated by distinct basis elements are linearly independent. Since the two full MPV families are equal, the independent normal-block sectors on the two sides must match. The transfer-operator gap then identifies the possible matches: if the mixed overlap of two normal blocks does not decay, the blocks are gauge-equivalent up to a phase; if the overlap decays, they cannot represent the same sector. In the equal-MPV case, these block phases must be compatible with the scalar weights in the CF decomposition, so that after absorbing the phases into the weights the full block-diagonal tensors are gauge-equivalent. The comparison is made at finite system sizes, not through an asymptotic limit, which is why equal-modulus and oscillating cases, such as GHZ-type phase copies, are included.
+
+    \item \textit{Equal-MPV fundamental theorem.} Combining canonical-form reduction with block separation gives the equal case of the fundamental theorem: two CF representatives generate the same MPV family exactly when their normal-block sector data match and the corresponding blocks are gauge-equivalent after the scalar weights and block phases are aligned.
+\end{enumerate}
+
+
+\cref{fig:cascade} summarizes this reduction. Starting from an arbitrary tensor, one first obtains a block-diagonal tensor with irreducible blocks by discarding the off-diagonal triangular terms. A common blocking removes the periods of these irreducible blocks and gives CF, whose blocks are normal; \cref{fig:block_spectrum} shows this step at the level of a single block's transfer-operator spectrum. A further gauge normalization gives CFII, while a separate finite blocking, controlled by the quantum Wielandt bound, gives the block-injective canonical form (biCF).
+
+
+\input{figures/fig_cascade}
+
+
+\input{figures/fig_block_spectrum}
+
+\cref{tab:chapters} lists the blueprint chapters analyzed in this paper. These chapters contain the proof chain for the equal-MPV fundamental theorem, its prerequisites, and the symmetry result used as a first application. The full TNLean repository contains additional material beyond this chain, including channel representations, matrix product operators and density operators, quantum entropy, quantum dynamical semigroups, parent Hamiltonians, exponential decay of correlations, concrete examples, and alternative formulations of MPS fundamental theorems. These parts are useful for the broader TNLean library, but they are not part of the formalization analyzed here. Some deep inputs used only outside the FT-MPS and symmetry chains are currently assumed rather than proved; they do not enter the results discussed in this paper. The chapters are listed in the blueprint's order of presentation, not in a strict prerequisite order.
+
+
+\begin{table*}[h]
+    \caption{\label{tab:chapters}The \nChapters{} blueprint chapters covered in this paper.}
+    \begin{tabular}{cl}
+        \toprule
+        {Ch.} & {Topic}                                               \\
+        \midrule
+        1        & Introduction                                       \\
+        2        & Matrix product vectors                             \\
+        3        & Single-block fundamental theorem                   \\
+        4        & Quantum channels                                   \\
+        5        & Schwarz inequalities and the multiplicative domain \\
+        6        & Quantum Perron-Frobenius theory                    \\
+        7        & Transfer-operator gap and block separation         \\
+        8        & Wielandt bound                                     \\
+        9        & Canonical form reduction                           \\
+        10       & Basis of normal tensors                            \\
+        11       & Proof of the fundamental theorem                   \\
+        12       & Symmetries and string order                        \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+
+
+\cref{fig:references} summarizes how the source literature was distributed across the blueprint. The point of the figure is not only bibliographic: it shows that the formalization was not driven by a single FT-MPS paper, but by a network of inputs from quantum channels, Perron-Frobenius theory, Wielandt bounds, canonical forms, and symmetry analysis. These sources use slightly different physical and mathematical notations, which the agent team had to reconcile.
+This source structure is reflected in the organization of the blueprint chapters and in the separation between operator-theoretic infrastructure and tensor-network-specific arguments.
+
+\input{figures/fig_references}
+
+\subsection{Build modes}\label{sec:bp_build}
+
+The same chapter sources compile both as a PDF monograph and as an HTML document with an interactive dependency graph. The PDF provides the conventional mathematical presentation, while the HTML version lets readers inspect theorem dependencies and proof status directly.
+The repository README documents the technical setup used to compile both outputs from the shared source files, including Tikz figure handling, common macros, and output-specific formatting choices.
+
+
+\subsection{The tag system}\label{sec:bp_tags}
+
+The tags below are part of Massot's \texttt{leanblueprint} package~\cite{Massot2021Leanblueprint}; we list them here for completeness.
+The \texttt{\textbackslash{}lean} tag links a blueprint item to one or more full Lean declaration names. The \texttt{\textbackslash{}leanok} marker indicates that the corresponding statement or proof has been implemented in Lean, and may appear on the statement, on the proof, or on both. The \texttt{\textbackslash{}notready} marker flags items that are not yet ready for formalization, typically because prerequisite material is still missing. The \texttt{\textbackslash{}uses} tag records logical dependencies between blueprint items. Its arguments are blueprint labels, and a theorem statement and its proof may carry different dependency lists: the statement lists the
+definitions needed to parse it, while the proof lists the lemmas the proof
+actually invokes.
+
+\subsection{Dependency graph and status tracking}\label{sec:bp_depgraph}
+
+The HTML build of the blueprint~\cite{TNLeanBlueprint} renders all labeled items as nodes in a directed acyclic graph, with edges drawn from the \texttt{\textbackslash{}uses} declarations. Each node is colored according to its formalization status: dark green for theorems whose proofs are implemented and verified, green for theorems with Lean statements marked as complete, light green for definitions linked to Lean, blue for items that are ready to be stated or proved, and orange for items marked as not ready. The graph shows where work can proceed: orange nodes identify the next layer of prerequisite work. These status are generated from the tags in the blueprint and the dependency relations of the theorem and lemma labels.
+
+\cref{fig:depgraph} shows the part of the formalization dependency graph surrounding the Fundamental Theorem, redrawn for print. Green nodes are Lean-verified results, using the same status convention as the dark-green ``proof verified'' nodes in the HTML graph; the grey node marks an intended application outside the present formalization. The lower part of the figure displays the theorem's prerequisites. In particular, the canonical-form argument depends on two largely independent inputs: quantum Perron-Frobenius theory, which supplies the spectral fixed-point and primitivity results, and the Wielandt bound, which supplies the finite-length spanning estimates. The upper part records what the theorem is then used to obtain: the virtual projective representation and its cohomology class, the formalized first step toward the one-dimensional symmetry-protected topological classification.
+
+
+\input{figures/fig_depgraph}
+
+\subsection{Blueprint writing conventions}\label{sec:bp_sync}
+
+
+
+Left to its defaults, the agents' writing style is often too obscure for a human reader to audit, and the obscurity has real costs. One episode produced roughly $2{,}000$ lines of Lean code and an entire blueprint chapter devoted solely to the $D=0$ and $N=0$ edge cases; in others, the agents pursued long unintended proof paths whose success could not be judged without additional hypotheses.
+We therefore require, and enforce in review, that the blueprint be written as self-contained, human-readable mathematical prose: Lean identifiers must not appear in prose, proof sketches must follow the actual Lean proof structure, and software-engineering vocabulary is avoided in chapter titles and mathematical statements.
+Agent-written drafts often violated these conventions, for example by leaking Lean names into prose, replacing statements by source-paper theorem numbers, or using terms such as ``helper lemma'', ``wrapper'',
+and ``refactor''. Correcting these issues was one of the recurring tasks during
+the \nReviewRounds{} review rounds.
+
+
+
+%======================================================================
+\section{Persistent memory and project knowledge}\label{app:memory}
+%======================================================================
+
+
+The multi-agent system maintains a persistent project memory across sessions.
+These files play the role of accumulated research notes, much like those a graduate student keeps over the course of a project: they record what has been tried, which proof routes worked, which statements were found to be false, and which conventions must be followed. This memory prevents the same mathematical mistakes from recurring across independent agent sessions.
+The memory also mediates cross-agent handoffs: when the orchestrator delegates a task, it can place selected memory files in the sub-agent's initial context. The most frequent handoff is scout-then-prove (\cref{sec:scout_impl}), in which the memo written by an inexpensive search agent is attached to the context of the proof-writing agent that follows, so that the Mathlib search is done once rather than repeated in every session.
+The full session archive, and the distilled files described below, are kept in the project's persistent memory system; a curated selection of the ones judged most broadly reusable is released with TNLean under \texttt{docs/audits/} and \texttt{docs/paper-gaps/} so that the reusable parts of the process can be inspected and reused.
+
+\subsection{Organization}\label{sec:mem_arch}
+
+
+The knowledge base consists of roughly 450 Markdown files, accumulated across the project's successive working directories. Files are named by task and date, for example \texttt{2026-02-07\_initial-mathlib-audit.md} or \texttt{aperiodic-ft-assembly-gap-2026-06-02.md}, so that retrieval is by filename convention and keyword search rather than by deep hierarchy. Many files also carry metadata recording the agent that last modified them and a timestamp, so that files can be filtered by role and time period.
+
+\subsection{Categories of memory files}
+
+The archive falls into seven principal categories, summarized in \cref{tab:memory_types}. The category counts are approximate and not exhaustive; the remaining files are cross-cutting analyses and one-off notes.
+
+\begin{table*}[h]
+    \caption{\label{tab:memory_types}Memory categories with approximate counts and representative filename patterns.}
+    \begin{tabular}{lcl}
+        \toprule
+        {Category}                       & {Count}  & {Typical patterns}                          \\
+        \midrule
+        Progress / status                & $\sim$80 & \texttt{session\_*}, \texttt{*\_progress*}  \\
+        Design / scout                   & $\sim$60 & \texttt{*\_plan*}, \texttt{*\_scout*}       \\
+        Cleanup / reorganization         & $\sim$50 & \texttt{*\_cleanup*}, \texttt{*\_linter*}   \\
+        Audit / review                   & $\sim$40 & \texttt{*\_audit*}, \texttt{*\_crosscheck*} \\
+        Blueprint sync                   & $\sim$30 & \texttt{blueprint\_*}, \texttt{chXX\_*}     \\
+        Errata / counterexample          & $\sim$15 & \texttt{counterexample\_*}                  \\
+        Pinned references / style guides & 10       & style guides, technique compendia           \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+Each memory file also carries a label identifying the agent role that last
+modified it. The distribution across role families is shown in
+\cref{fig:by_labels}. The proof-writing agent and the orchestration family
+together account for more than half of all entries, consistent with how much of
+the work is proof construction and task coordination.
+
+\input{figures/fig_creator_stats}
+
+
+\subsection{From session notes to pinned reference files}\label{sec:knowledge_lifecycle}
+
+Session notes record local operational information, including proof status, build results, unfinished steps, and task completion notes. These notes are periodically distilled by the orchestrator, or by a dedicated agent, into durable lessons: proof techniques, known false statements with counterexamples, Mathlib gap lists, and coordination policies. Distillation is usually requested by the supervisor, and the orchestrator carries a standing instruction to consolidate notes as they accumulate. The most reusable notes are then promoted to pinned status and made available to all future sessions without explicit search. This prevents previously encountered obstacles from being re-investigated independently.
+
+Up to ten memory files may be pinned, and every agent is directed to consult them at the start of a session. This limit reserves pins for durable guidance rather than temporary status notes. At the final project state, the pinned files covered five kinds of information: writing conventions for the blueprint and paper; Lean~4 and Mathlib techniques; source-literature alignment, including lecture-note numbering and coverage audits for Wolf's notes~\cite{Wolf2012Quantum}; review and orchestration policy, including when an automatic reviewer should comment on or approve code changes; and project-specific mathematical guidance, including the paper-vs-formalization gap analysis and the MPS/SPT analysis that was the active effort at that time.
+
+
+%======================================================================
+\section{Orchestration patterns}\label{app:orchestration}
+%======================================================================
+
+The orchestrator coordinates sub-agents through three recurring patterns: dispatching independent tasks in parallel, staging proof work through scout-then-prove handoffs, and alternating between review and repair phases. Note that we did not enforce or hint these patterns; the orchestration agent came up withthe orchestrator arrived at them on its own.
+
+\subsection{Parallel dispatch}\label{sec:fanout}
+
+The dominant orchestration pattern is \textit{parallel dispatch}. The orchestrator classifies the remaining work, assigns it to disjoint groups of files, and launches three to five sub-agents concurrently, each with its own file set and task-specific instructions.
+The sub-agents run independently while the orchestrator continues supervising other work. As results return, the orchestrator merges the changes and validates the combined state with a full build.
+The orchestrator assigns disjoint file sets at dispatch, since two agents editing the same file produce conflicting edits that are expensive to reconcile.
+
+\subsection{Scout-then-prove}\label{sec:scout_impl}
+
+Before attempting a difficult proof, the system deploys an inexpensive scouting agent to assess feasibility. A \texttt{leanSearch} agent searches Mathlib for relevant lemmas, checks whether the needed definition or lemma already exists, and writes a design memo with exact theorem signatures. The memo is not held in the orchestrator's conversation but written to the persistent memory (\cref{app:memory}); the orchestrator reviews it and, if the route is feasible, dispatches an expensive \texttt{lean} agent with that memo attached as read-only context. In practice, finding the right existing Mathlib lemma was often the step that saved the most effort.
+
+\emph{Failure modes.} Several recurring failure modes appear in such sessions. First, an agent may produce a proof that compiles but establishes only a weaker version of the intended theorem; these are caught by the agent team's self review or the human review of the blueprint, as discussed in the main text. Second, a proof term may grow too large for Lean's computation budget: Lean caps the work spent on a single proof by counting internal steps, which it calls ``heartbeats'', and aborts the attempt once their number exceeds the budget, by default $200{,}000$, so the compiler does not hang on a runaway expression. The remedy is to factor the proof into smaller lemmas with named intermediate results; in one case this cut a single proof's count roughly sixfold, from $1{,}600{,}000$ to $250{,}000$ heartbeats. Third, diagnostics can become outdated after edits and require a file-specific server restart. A scouting agent can also propose a lemma whose type does not match the goal; checking the lemma's full type signature with the \texttt{lean\_inspect} command of \cref{sec:lean_tools} catches this before the lemma is used later.
+
+\subsection{Review-repair cycles}\label{sec:audit_fix}
+
+Review and repair phases in alternating fashion. A review agent, typically the automated reviewer or \texttt{leanBlueprint}, identifies discrepancies: paper-vs-Lean mismatches, missing hypotheses, style violations, or blueprint drift. Repair agents address the identified issues, and the review is repeated to verify the fixes and catch regressions. This cycle typically converges in two or three rounds. The most important instance was the paper-vs-Lean cross-check, which discovered several errors during formalization (see \cref{app:gaps}).
+
+A related review step runs when an agent proposes changes to the Lean source tree. An automated reviewer, a language model following a fixed review prompt, examines the proposed changes and posts comments on style violations, proof-integrity issues, or missing documentation; a repair agent then reads the unresolved comments, applies corrections, and submits a revised version. The revised change does not itself trigger a fresh review, which would risk an unending review loop; instead the loop repeats while unresolved comments remain and stops once they are cleared or after a safety cap of five iterations. The review and repair prompts are released with TNLean; the system prompts of the agent roles in \cref{tab:roles} are reproduced in \cref{app:prompts}.
+
+
+%======================================================================
+\section{Paper-to-formalization gap analysis}\label{app:gaps}
+%======================================================================
+
+
+The formalization process revealed several discrepancies between the primary literature and the formal proofs: divergences in proof strategy, differences in hypothesis strength, and gaps between formal correctness and mathematical intent.
+The main text briefly discusses two such errors, the doubly-stochastic ``gauge'' and the asymptotic reformulation of the finite statement; this appendix records the remaining case in more detail.
+Another mismatch of the same kind concerned repeated copies in the canonical form. Several blocks can represent the same normal tensor up to gauge and phase. If these copies have weights $\mu_{j,1},\ldots,\mu_{j,r_j}$, then their total contribution at length $N$ is multiplied by
+$\sum_{q=1}^{r_j}\mu_{j,q}^N$.
+The agents had initially treated this factor as if it behaved like a single scalar power, or as if it converged to a nonzero limit after normalization. This is false in general: for two copies with weights $\mu_{j,1}=+1$ and $\mu_{j,2}=-1$, the factor is $1+{(-1)}^N$, which oscillates and vanishes for every odd $N$. The proof therefore covered only a narrower case than the intended FT-MPS\@.
+
+The correction was to avoid a limiting argument at this point. After equivalent normal blocks have been grouped together, the remaining distinct normal blocks produce MPVs that are linearly independent for all sufficiently large system sizes. Equality of the full MPVs therefore forces equality of the corresponding scalar factors, exactly and at each sufficiently large length. These scalar factors are finite sums of powers of nonzero complex numbers. A geometric extrapolation step extends equality from all sufficiently large exponents to all exponents, and Newton-Girard identities then recover the multisets of weights attached to each repeated block. This treats the oscillating case $\mu_{j,1}=+1$, $\mu_{j,2}=-1$ and general repeated-copy cases on the same footing, without assuming convergence.
+
+
+
+
+
+
+
+\subsection{Proof strategy divergences}
+
+The injective-case route via the Skolem--Noether theorem, described in the main text and reproduced in \cref{app:ftsb_walkthrough}, is one example of a divergence between the formal proof and the standard MPS literature; the divergences below cover the remaining cases.
+
+When autoformalization is carried out across different resources with different conventions and terminologies, some care may be needed to ensure that the agents do not conflate these themselves. Otherwise they may lead to possibly extensive detour and failed attempts that can be expensive to fix or retries.
+\cref{fig:gauge_innerproduct} clarifies two distinctions we encountered. First, the gauge of the transfer operator can be chosen to be unital/right-canonical or trace-preserving/left-canonical, but not both in general. Second, the proofs use two different pairings on bond operators: the bilinear trace pairing in the algebraic single-block argument, and the sesquilinear Hilbert-Schmidt inner product used to define transfer-operator adjoints in the spectral arguments. The distinction between the block canonical forms CF and biCF is shown in \cref{fig:cascade}: CF has normal blocks, while biCF is obtained only after a further blocking makes each block injective.  
+
+
+
+\input{figures/fig_gauge_innerproduct}
+
+
+Even the classical Perron-Frobenius theorem for non-negative matrices is not available in Mathlib: the version pinned by the project contains only the definitions of irreducible and primitive matrices, and the theorem itself exists, at the time of writing, only in proposed contributions under review.
+For quantum Perron-Frobenius theory, the literature invokes the Perron-Frobenius theorem for positive maps~\cite{Wolf2012Quantum}. The formal proof instead builds the needed consequences directly. For an irreducible CP map $E$ on $M_D(\C)$, a positive semidefinite Perron eigenvector is obtained by a Brouwer fixed-point argument on the compact convex set of density matrices; the Brouwer step was assumed as an axiom in the project's first weeks and later proved by transporting an external Lean formalization of the simplex case along an explicit retraction.
+For trace-preserving maps, the Ces\`aro average
+\begin{equation}
+    S_N(\rho)=\frac{1}{N}\sum_{k=0}^{N-1}E^k(\rho)\label{eq: cesaro}
+\end{equation}
+gives a fixed point by sequential compactness alone, with no fixed-point theorem. Irreducibility upgrades the resulting eigenvector to a positive-definite one, and uniqueness follows from a critical-scalar comparison combined with the dual trace. This direct chain replaces every later invocation of the Perron-Frobenius theorem in the formalization.
+
+
+\subsection{Formal correctness vs.\ mathematical intent}
+
+As discussed in the main text, the system can produce formally correct proofs of statements that are weaker or more special than the intended theorem. Lean checks the theorem as stated; by type checking alone, it does not verify that the statement matches the result intended from the literature. This occurred when statements assumed structural data that the intended theorem should derive, when definitions were too restrictive and excluded intended cases, or when intermediate lemmas were proved under assumptions not available in the target theorem. In each case the proof was formally valid, but the mathematical statement had drifted from the intended one. The human review loop was designed to catch this drift by checking the blueprint for mathematical meaning, not only for formal consistency.
+
+
+\subsection{Paper-to-Lean expansion}\label{sec:expansion}
+
+A persistent feature of the formalization is that short arguments in the paper expand into longer chains of intermediate Lean lemmas. The expansion is uneven: algebraic arguments usually grow by a small factor, while spectral arguments requiring new supporting lemmas can grow by an order of magnitude.
+
+
+Several representative examples illustrate the scaling. The step proving that the gauge matrix $X$ in the FT-MPS (cf. Theorem~1 in the main text) is invertible expands to more than $200$ lines of Lean. A paper invocation of Perron-Frobenius expands to more than $150$ lines, covering existence, positive-definiteness, and uniqueness of the relevant fixed point. The block-separation argument expands to more than $800$ lines, because the formal proof must compare finite-length MPVs, establish the needed linear independence, and control the scalar weights attached to repeated blocks. An algebraic generation step based on Burnside's theorem expands to more than $400$ lines, since the proof passes through irreducibility of the natural action and the finite-dimensional generation of the full matrix algebra.
+
+
+
+
+
+The contrast is smaller for purely algebraic parts. The single-block fundamental theorem has a ten-line proof sketch in the blueprint and a $70$-line Lean file. The Skolem-Noether theorem has a four-line blueprint proof and a $40$-line Lean proof, namely \texttt{skolemNoether\_matrix}. At chapter level, the comparison is roughly $240$ lines of blueprint mathematics against roughly $650$ lines of Lean.
+
+
+
+\subsection{Mathlib gaps and workarounds}\label{sec:mathlib_gaps}
+
+The formalization encountered five gaps in the Mathlib library, each requiring a custom replacement (\cref{tab:mathlib_gaps}).
+
+
+\begin{table*}[h]
+    \caption{\label{tab:mathlib_gaps}Mathlib gaps encountered and their replacements.}
+    \begin{tabular}{ll}
+        \toprule
+        {Missing from Mathlib}                        & {Replacement used}                                                        \\
+        \midrule
+        Jordan normal form                            & Generalized eigenspaces and an invertible/nilpotent decomposition         \\
+        Burnside's theorem for matrix algebras        & Jacobson density theorem plus finite-dimensional span arguments           \\
+        Kadison--Schwarz inequality                   & Direct proof for completely positive maps, following Wolf's notes         \\
+        Perron-Frobenius for completely positive maps & Direct fixed-point and irreducibility arguments                           \\
+        Brouwer's fixed-point theorem                 & Brouwer for a simplex (external library), transferred to density matrices \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+
+Jordan normal form is not available in Mathlib. The standard proof of the Wielandt bound, as well as several decay estimates in the literature, uses Jordan blocks to control the growth of matrix powers. The formalization replaces this step with generalized eigenspaces, which are available in Mathlib, and proves the needed decomposition into invertible and nilpotent parts directly. The nilpotent estimates then reduce to elementary finite-dimensional arguments, such as the finite geometric-series inverse for $1+N$ when $N$ is nilpotent, which Mathlib provides.
+
+Burnside's theorem for matrix algebras is also absent: Mathlib does not provide the statement that every irreducible subalgebra of $M_D(\C)$ is the full algebra. The formalization derives it from the Jacobson density theorem, passing through irreducibility of the natural module, its simplicity, density of the algebra action, and finally stabilization of the finite-dimensional word spans. The fundamental theorem itself does not need this result. It arises in the quantum Wielandt inequality paper of Sanz et al.~\cite{Sanz2010Quantum}, which the project formalizes as well: there it shows that irreducibly acting aperiodic tensors are normal, connecting the algebraic definition of normality to the spectral one common in the literature. The results reported in this paper focus on what the fundamental theorem requires.
+
+The Kadison--Schwarz inequality is likewise absent. The formalization proves it for completely positive maps, together with its equality case and the multiplicative domain, following Wolf's notes~\cite{Wolf2012Quantum}. These results enter the fundamental theorem directly: equality in a weighted Kadison--Schwarz inequality yields the intertwining relations between gauged Kraus operators that establish the transfer-operator gap separating distinct blocks, and the multiplicative domain underlies the decomposition of the virtual space into minimal invariant subspaces during the canonical-form reduction.
+
+Perron-Frobenius theory for completely positive maps is not available in the form used by the MPS literature. The formalization therefore proves the required quantum Perron-Frobenius consequences internally. In the trace-preserving case, the Ces\`aro averages~\eqref{eq: cesaro} produce a fixed point by compactness, avoiding any fixed-point theorem; for a general positive map, which need not preserve the trace, the fixed-point step uses Brouwer's theorem on density matrices, described below, and this is how an irreducible tensor is brought into trace-preserving gauge. Irreducibility then supplies the two Perron-Frobenius consequences needed later: that the fixed point is positive-definite, and that it is unique after normalization. This direct argument replaces later invocations of Perron-Frobenius theory in the formalization.
+
+Finally, Brouwer's fixed-point theorem itself was not available in Mathlib. The project imports an external Lean formalization (forked from \url{https://github.com/math-xmum/Brouwer} to \url{https://github.com/LionSR/Brouwer}), which proves the theorem for a standard simplex, and for finite products of simplices, via Scarf's combinatorial lemma. From the product case the formalization derives the theorem for a cube, since a cube is a product of intervals and each interval is homeomorphic to a one-dimensional simplex, and in turn for any compact retract of a finite-dimensional normed space. The density-matrix case then follows from an explicit continuous retraction of the space of all matrices onto the density matrices, built from the Hermitian part, a trace-fixing shift, the positive part, and normalization. The Ces\`aro construction above avoids Brouwer for trace-preserving maps; Brouwer remains in use for the Perron-Frobenius eigenvector of a general positive map, which need not preserve the trace.
+
+\input{cost/cost_section}
+
+
+\clearpage
+\input{excerpts/proofExcerpt-SingleBlock}
+
+\clearpage
+\input{agentPrompts}

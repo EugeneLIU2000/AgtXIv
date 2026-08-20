@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">AgtXIv: From Paper to VerificationClosed</title>
+  <desc id="desc">A three-panel scientific workflow showing claim extraction, candidate DAG and Paper Agent construction, and iterative resolution toward DAGComplete and VerificationClosed.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#34525c" flood-opacity="0.16"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#34525c" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5f7076"/>
+    </marker>
+    <marker id="blueArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#377b8e"/>
+    </marker>
+    <marker id="orangeArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8732f"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #17252b; letter-spacing: 0; }
+      .panel-title { font-size: 27px; font-weight: 760; }
+      .box-title { font-size: 20px; font-weight: 720; }
+      .label { font-size: 17px; font-weight: 620; }
+      .small { font-size: 14px; font-weight: 520; fill: #53666d; }
+      .tiny { font-size: 12px; font-weight: 560; fill: #53666d; }
+      .center { text-anchor: middle; dominant-baseline: middle; }
+      .blue-panel { fill: #e9f4f6; stroke: #4f8794; stroke-width: 2.5; }
+      .orange-panel { fill: #fff0df; stroke: #d69853; stroke-width: 2.5; }
+      .white-card { fill: #fffefd; stroke: #84aeb7; stroke-width: 1.8; }
+      .orange-card { fill: #fffaf4; stroke: #dda66c; stroke-width: 1.8; }
+      .math-card { fill: #d9edf1; stroke: #4f8794; stroke-width: 1.7; }
+      .step-card { fill: #fffaf4; stroke: #d69853; stroke-width: 1.7; }
+      .flow { fill: none; stroke: #5f7076; stroke-width: 3; marker-end: url(#arrow); }
+      .blue-flow { fill: none; stroke: #377b8e; stroke-width: 3; marker-end: url(#blueArrow); }
+      .orange-flow { fill: none; stroke: #b8732f; stroke-width: 3; marker-end: url(#orangeArrow); }
+      .dash-flow { fill: none; stroke: #7d8a8f; stroke-width: 2.3; stroke-dasharray: 8 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1000" fill="#ffffff"/>
+  <text x="900" y="48" class="center" style="font-size:34px;font-weight:780;">AgtXIv: From Paper to VerificationClosed</text>
+  <text x="900" y="83" class="center" style="font-size:16px;fill:#607178;">Candidate dependency discovery, claim-level formalization, iterative resolution, and evidence closure</text>
+
+  <!-- Panel A -->
+  <g filter="url(#shadow)">
+    <rect x="35" y="115" width="500" height="835" rx="34" class="blue-panel"/>
+  </g>
+  <text x="285" y="155" class="panel-title center">(A) CLAIM EXTRACTION</text>
+
+  <g filter="url(#softShadow)">
+    <rect x="120" y="195" width="330" height="105" rx="18" class="white-card"/>
+  </g>
+  <rect x="148" y="216" width="60" height="66" rx="6" fill="#eef7f9" stroke="#4f8794" stroke-width="2"/>
+  <path d="M158 231 H198 M158 243 H198 M158 255 H192 M158 267 H186" stroke="#4f8794" stroke-width="3" stroke-linecap="round"/>
+  <text x="320" y="247" class="box-title center">Frozen Paper Source</text>
+  <text x="320" y="274" class="small center">versioned source + exact anchors</text>
+
+  <path d="M285 301 V348" class="blue-flow"/>
+  <g filter="url(#softShadow)">
+    <rect x="112" y="350" width="346" height="78" rx="18" class="math-card"/>
+  </g>
+  <text x="285" y="389" class="box-title center">Decompose Claims</text>
+
+  <path d="M285 429 V477" class="blue-flow"/>
+  <path d="M112 477 H458" stroke="#377b8e" stroke-width="3"/>
+  <path d="M112 477 V505 M285 477 V505 M458 477 V505" stroke="#377b8e" stroke-width="3" marker-end="url(#blueArrow)"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="67" y="508" width="142" height="112" rx="17" class="white-card"/>
+    <rect x="214" y="508" width="142" height="112" rx="17" class="white-card"/>
+    <rect x="361" y="508" width="142" height="112" rx="17" class="white-card"/>
+  </g>
+  <circle cx="138" cy="542" r="13" fill="#6fb5c4"/><text x="138" y="543" class="center" style="font-size:15px;font-weight:800;fill:white;">D</text>
+  <circle cx="285" cy="542" r="13" fill="#e3a158"/><text x="285" y="543" class="center" style="font-size:15px;font-weight:800;fill:white;">A</text>
+  <circle cx="432" cy="542" r="13" fill="#5c99a8"/><text x="432" y="543" class="center" style="font-size:15px;font-weight:800;fill:white;">M</text>
+  <text x="138" y="582" class="label center">Definitions</text>
+  <text x="285" y="582" class="label center">Assumptions</text>
+  <text x="432" y="574" class="label center"><tspan x="432" dy="0">Mathematical</tspan><tspan x="432" dy="21">Claims</tspan></text>
+
+  <path d="M285 622 V680" class="blue-flow"/>
+  <g filter="url(#softShadow)">
+    <rect x="87" y="683" width="396" height="118" rx="18" class="white-card"/>
+  </g>
+  <text x="285" y="718" class="box-title center">Claim-Level Interfaces</text>
+  <text x="285" y="754" class="small center">source anchors  •  symbols  •  scope</text>
+  <text x="285" y="779" class="small center">quantifiers  •  conventions  •  exactness</text>
+
+  <rect x="92" y="850" width="386" height="55" rx="15" fill="#d9edf1" stroke="#4f8794" stroke-width="1.5"/>
+  <text x="285" y="878" class="label center">Output: typed MathClaim records</text>
+
+  <!-- Between A and B -->
+  <path d="M535 520 H565" class="flow"/>
+
+  <!-- Panel B -->
+  <g filter="url(#shadow)">
+    <rect x="565" y="115" width="535" height="835" rx="34" class="blue-panel"/>
+  </g>
+  <text x="832" y="155" class="panel-title center">(B) CANDIDATE DAG + PAPER AGENTS</text>
+
+  <g filter="url(#softShadow)">
+    <rect x="615" y="187" width="435" height="184" rx="21" class="white-card"/>
+  </g>
+  <text x="832" y="216" class="box-title center">Propose Candidate Dependencies (Oracle)</text>
+  <rect x="695" y="232" width="275" height="30" rx="15" fill="#fff0df" stroke="#d69853" stroke-width="1.4"/>
+  <text x="832" y="247" class="tiny center" style="fill:#925b24;font-weight:760;">ORACLE_PROPOSED / UNVERIFIED</text>
+
+  <g stroke="#557f89" stroke-width="2.2">
+    <path d="M686 318 L747 280 L814 325 L884 282 L972 327" fill="none"/>
+    <path d="M686 318 L770 341 L814 325 M747 280 L770 341 M814 325 L916 342 M884 282 L916 342 L972 327" fill="none"/>
+  </g>
+  <g fill="#72b3c1" stroke="#3e7684" stroke-width="1.5">
+    <circle cx="686" cy="318" r="10"/><circle cx="747" cy="280" r="10"/><circle cx="770" cy="341" r="10"/>
+    <circle cx="814" cy="325" r="10"/><circle cx="884" cy="282" r="10"/><circle cx="916" cy="342" r="10"/><circle cx="972" cy="327" r="10"/>
+  </g>
+  <circle cx="814" cy="325" r="10" fill="#e3a158" stroke="#a46628" stroke-width="1.5"/>
+
+  <path d="M832 372 V410" class="blue-flow"/>
+  <path d="M665 410 H999" stroke="#377b8e" stroke-width="3"/>
+  <path d="M665 410 V443 M832 410 V443 M999 410 V443" stroke="#377b8e" stroke-width="3" marker-end="url(#blueArrow)"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="594" y="447" width="143" height="305" rx="19" class="white-card"/>
+    <rect x="761" y="447" width="143" height="305" rx="19" class="white-card"/>
+    <rect x="928" y="447" width="143" height="305" rx="19" class="white-card"/>
+  </g>
+  <text x="665" y="483" class="label center">Paper Agent A</text>
+  <text x="832" y="483" class="label center">Paper Agent B</text>
+  <text x="999" y="477" class="label center"><tspan x="999">Target Paper</tspan><tspan x="999" dy="21">Agent</tspan></text>
+
+  <g>
+    <rect x="609" y="514" width="113" height="198" rx="15" class="math-card"/>
+    <rect x="776" y="514" width="113" height="198" rx="15" class="math-card"/>
+    <rect x="943" y="514" width="113" height="198" rx="15" class="math-card"/>
+  </g>
+  <text x="665" y="543" class="label center">MathContract</text>
+  <text x="832" y="543" class="label center">MathContract</text>
+  <text x="999" y="543" class="label center">MathContract</text>
+  <g class="small">
+    <text x="665" y="586" class="small center">statement</text><text x="665" y="624" class="small center">assumptions</text><text x="665" y="662" class="small center">Lean support</text>
+    <text x="832" y="586" class="small center">statement</text><text x="832" y="624" class="small center">assumptions</text><text x="832" y="662" class="small center">Lean support</text>
+    <text x="999" y="586" class="small center">statement</text><text x="999" y="624" class="small center">assumptions</text><text x="999" y="662" class="small center">Lean support</text>
+  </g>
+  <g stroke="#8eb4bd" stroke-width="1.3">
+    <path d="M620 600 H710 M620 638 H710 M787 600 H877 M787 638 H877 M954 600 H1044 M954 638 H1044"/>
+  </g>
+
+  <rect x="618" y="790" width="428" height="92" rx="17" fill="#f6fbfc" stroke="#84aeb7" stroke-width="1.5"/>
+  <text x="832" y="817" class="small center">Separate mathematical claims from</text>
+  <text x="832" y="843" class="small center">physical, computational, and empirical evidence</text>
+  <text x="832" y="868" class="tiny center">Agent ownership is provenance, not a proof edge</text>
+
+  <!-- Between B and C -->
+  <path d="M1100 520 H1130" class="flow"/>
+
+  <!-- Panel C -->
+  <g filter="url(#shadow)">
+    <rect x="1130" y="115" width="635" height="835" rx="34" class="orange-panel"/>
+  </g>
+  <text x="1447" y="155" class="panel-title center">(C) ITERATIVE RESOLUTION</text>
+
+  <!-- Iteration loop -->
+  <g filter="url(#softShadow)">
+    <rect x="1321" y="262" width="252" height="84" rx="20" fill="#fff7ed" stroke="#d69853" stroke-width="2"/>
+  </g>
+  <text x="1447" y="291" class="label center">U(q): unresolved</text>
+  <text x="1447" y="318" class="label center">external frontier</text>
+
+  <g filter="url(#softShadow)">
+    <rect x="1190" y="190" width="200" height="62" rx="15" class="step-card"/>
+    <rect x="1166" y="306" width="200" height="62" rx="15" class="step-card"/>
+    <rect x="1191" y="423" width="220" height="72" rx="15" class="step-card"/>
+    <rect x="1450" y="436" width="210" height="62" rx="15" class="step-card"/>
+    <rect x="1510" y="314" width="207" height="62" rx="15" class="step-card"/>
+  </g>
+  <text x="1290" y="221" class="small center" style="font-weight:720;">1  Resolve external frontier</text>
+  <text x="1266" y="337" class="small center" style="font-weight:720;">2  Registry / Mathlib search</text>
+  <text x="1301" y="450" class="small center" style="font-weight:720;"><tspan x="1301">3  Checked Lean proof</tspan><tspan x="1301" dy="22">or source check</tspan></text>
+  <text x="1555" y="467" class="small center" style="font-weight:720;">4  Reconcile evidence</text>
+  <text x="1613" y="338" class="small center" style="font-weight:720;"><tspan x="1613">5  Recompute closure</tspan><tspan x="1613" dy="20">and reuse</tspan></text>
+
+  <path d="M1390 221 C1480 193 1570 218 1602 305" class="orange-flow"/>
+  <path d="M1615 377 C1627 401 1612 422 1578 435" class="orange-flow"/>
+  <path d="M1450 469 C1429 487 1419 487 1411 476" class="orange-flow"/>
+  <path d="M1192 456 C1148 425 1148 390 1192 366" class="orange-flow"/>
+  <path d="M1218 306 C1215 278 1242 254 1265 250" class="orange-flow"/>
+
+  <text x="1447" y="531" class="tiny center">Resolving one claim may expose a deeper prerequisite.</text>
+
+  <!-- Decision -->
+  <path d="M1613 377 V548 H1487" class="orange-flow"/>
+  <polygon points="1447,548 1517,600 1447,652 1377,600" fill="#fffaf4" stroke="#d69853" stroke-width="2" filter="url(#softShadow)"/>
+  <text x="1447" y="590" class="label center">U(q) =</text>
+  <text x="1447" y="613" class="label center">empty?</text>
+  <text x="1353" y="586" class="tiny center" style="fill:#a65d21;font-weight:760;">NO</text>
+  <path d="M1377 600 H1167 V221 H1190" class="orange-flow"/>
+  <text x="1220" y="626" class="tiny center" style="fill:#925b24;">new prerequisites may appear</text>
+
+  <text x="1536" y="586" class="tiny center" style="fill:#39798a;font-weight:760;">YES</text>
+  <path d="M1517 600 H1562 V670" class="blue-flow"/>
+  <g filter="url(#softShadow)">
+    <rect x="1465" y="672" width="194" height="74" rx="18" fill="#dceff3" stroke="#4f8794" stroke-width="2"/>
+  </g>
+  <text x="1562" y="698" class="box-title center">DAGComplete</text>
+  <text x="1562" y="727" class="tiny center">external mathematical sources resolved</text>
+
+  <!-- Separate verification lane -->
+  <path d="M1465 709 H1218 V773" class="dash-flow"/>
+  <text x="1317" y="692" class="tiny center">separate verification gates</text>
+  <g>
+    <rect x="1176" y="777" width="164" height="45" rx="12" class="white-card"/>
+    <rect x="1352" y="777" width="176" height="45" rx="12" class="white-card"/>
+    <rect x="1540" y="777" width="171" height="45" rx="12" class="white-card"/>
+  </g>
+  <text x="1258" y="800" class="tiny center">target local delta</text>
+  <text x="1440" y="800" class="tiny center">source / assumption alignment</text>
+  <text x="1625" y="800" class="tiny center">scope and evidence gates</text>
+  <path d="M1258 823 V848 H1447 M1440 823 V848 M1625 823 V848 H1447 V860" stroke="#5f7076" stroke-width="2.3" fill="none" marker-end="url(#arrow)"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="1327" y="860" width="240" height="66" rx="18" fill="#dceee4" stroke="#4c8a68" stroke-width="2.2"/>
+  </g>
+  <text x="1447" y="884" class="box-title center" style="fill:#245b3d;">VerificationClosed</text>
+  <text x="1447" y="909" class="tiny center" style="fill:#3f6d53;">all in-scope gates closed</text>
+
+  <rect x="1169" y="875" width="140" height="42" rx="12" fill="#fff2dc" stroke="#d69853" stroke-width="1.5"/>
+  <text x="1239" y="890" class="tiny center" style="fill:#8d5724;"><tspan x="1239">Not automatic</tspan><tspan x="1239" dy="17">scientific acceptance</tspan></text>
+</svg>

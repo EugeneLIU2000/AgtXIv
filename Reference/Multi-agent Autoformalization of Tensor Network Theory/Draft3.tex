@@ -1,0 +1,210 @@
+\documentclass[aps,prl,twocolumn,superscriptaddress,longbibliography,10pt,footinbib]{revtex4-2}
+\input{preamble}
+
+\pdfoutput=1
+
+
+\begin{document}
+
+\title{Multi-agent Autoformalization of Tensor Network Theory}
+
+\author{Sirui Lu}
+\affiliation{Max-Planck-Institut f\"ur Quantenoptik, Hans-Kopfermann-Stra\ss{}e 1, D-85748 Garching, Germany}
+\affiliation{Munich Center for Quantum Science and Technology (MCQST), Schellingstraße 4, D-80799 Munich, Germany}
+\email{sirui.lu@mpq.mpg.de}
+
+\author{Erickson Tjoa}
+\affiliation{Max-Planck-Institut f\"ur Quantenoptik, Hans-Kopfermann-Stra\ss{}e 1, D-85748 Garching, Germany}
+\affiliation{Munich Center for Quantum Science and Technology (MCQST), Schellingstraße 4, D-80799 Munich, Germany}
+\email{erickson.tjoa@mpq.mpg.de}
+
+\author{J. Ignacio Cirac}
+\affiliation{Max-Planck-Institut f\"ur Quantenoptik, Hans-Kopfermann-Stra\ss{}e 1, D-85748 Garching, Germany}
+\affiliation{Munich Center for Quantum Science and Technology (MCQST), Schellingstraße 4, D-80799 Munich, Germany}
+\email{ignacio.cirac@mpq.mpg.de}
+
+
+
+\begin{abstract}
+    We build a team of specialized large language-model agents and present an agent-driven workflow for research-level formalization in theoretical physics, with the autoformalization of the fundamental theorem of matrix-product states as a demonstration. The agents, coordinated through a structured mathematical blueprint and periodic human review,  orchestrated and executed the full formalization autonomously. For some statements,
+    the agents were able to explore new proof routes that are not part of the standard literature. Along the way the agents produced extensive tensor-network and quantum-information libraries not previously available in Mathlib, Lean's mathematical library. As a physical application, the formalization also extends towards symmetry-protected topological phases in one dimension. We find that the main bottleneck in large-scale autoformalization is enforcing mathematical intent and we provide a detailed study of the full process and various subtleties involved. We release the codebase as the library \href{https://github.com/LionSR/TNLean}{TNLean}, together with a \nChapters{}-chapter \href{https://lionsr.github.io/TNLean/blueprint/}{blueprint} of the formalization effort.
+\end{abstract}
+
+
+\maketitle
+
+\let\SMrealaddcontentsline\addcontentsline{}
+\renewcommand{\addcontentsline}[3]{}
+
+%======================================================================
+\prlsection{Introduction}%
+%======================================================================
+Proof assistants are software systems that check every logical step of a mathematical argument. They have certified results from the four-color theorem~\cite{Gonthier2008Formal} to the Kepler conjecture~\cite{Hales2017Formal}, and AI systems can now find Lean~4 proofs automatically for many mathematical targets~\cite{Moura2021Lean,Hubert2026Olympiadlevel,Ren2025DeepSeekproverV2,Wang2025Kiminaprover,Lin2025GoedelproverV2}.
+Most automated targets, however, remain competition problems or isolated lemmas, with research-level and textbook formalizations starting to grow in mathematics~\cite{MathInc.2025Strong,Rammal2026Formalizing}. Research-level theoretical physics poses a different challenge: since physics results outside mathematical physics are often not subject to the same mathematical rigor as pure mathematics~\cite{Lu2026Position}, formalization would need to fill in the informal parts as rigorous, Lean-checkable statements.
+
+Large-scale formalizations have so far mostly been human-led, with projects such as the Liquid Tensor Experiment and Fermat's Last Theorem requiring teams of experts over months or years~\cite{Commelin2023Liquid,Gowers2025Conjecture,Best2025Complete,Buzzard2024Lean}. AI systems have begun to reduce this burden, from competition-style proving~\cite{Hubert2026Olympiadlevel,Axiom2025AxiomProver,Harmonic2025Aristotle} to autoformalization, local proof assistance, and short reasoning chains~\cite{Wu2022Autoformalization,Wang2025MALoT,Yang2023LeanDojo}; the AI system Gauss~\cite{2025Introducing,MathInc.2025Strong} recently produced a blueprint-guided formalization of the strong Prime Number Theorem.
+In physics, PhysLib provides early Lean infrastructure~\cite{PhyslibContributors2024PhysLib}, while in quantum information the generalized quantum Stein's lemma~\cite{Brandao2010Generalization,Berta2023Gap,Hayashi2025Generalized,Lami2025Solution} has been partially formalized in a human-led effort~\cite{Meiburg2024LeanQuantumInfo,Meiburg2025Formalization}. These developments motivate the question we address here: how far can an agent-driven system carry a research-level formalization in theoretical physics?
+
+
+In this work we build and apply an agent-driven workflow in which a team of specialized AI agents (language-model programs with distinct roles and tools), coordinated through a shared mathematical `blueprint' with sporadic human supervision, autonomously formalizes the fundamental theorem of matrix-product states (FT-MPS)~\cite{Perez-Garcia2007Matrix,Cirac2017Matrixa,Cirac2021Matrix} via the Lean~4 proof assistant. FT-MPS is chosen as it is one of the core results of tensor-network theory~\cite{Cirac2021Matrix} that lies at the intersection of quantum many-body physics, quantum information, and condensed-matter physics. Consequently, this task required us to develop a library well beyond FT-MPS itself. Our work is, to our knowledge, the first autonomous formalization that combines multi-agent coordination, persistent memory, and blueprint-guided planning for a research-level theorem in mathematical physics. As a byproduct, we have produced a \nPagesBluePrint{}-page formalization \textit{blueprint} of these \nChapters{} chapters~\cite{Massot2021Leanblueprint,TNLeanBlueprint} (a human-readable translation of the proof linked to the Lean code), developed several libraries adjacent to quantum information theory, and applied the fundamental theorem to physically relevant questions, such as the classification of one-dimensional symmetry-protected topological phases~\cite{Chen2011Classification,Schuch2011Classifying,Pollmann2010Entanglement,Pollmann2012Symmetry}. The codebase is released as a Lean~4 library, TNLean~\cite{TNLean}.
+
+Our work reveals that, for research-level theoretical physics, the core challenge in autonomous formalization is no longer only the proof of individual lemmas, but also the faithful management of a large argument: breaking a published proof into hundreds of formal steps, deciding where to deviate from the literature's route, and tracking dependencies that span quantum mechanics, operator algebras, and spectral theory. In particular, the bounded context window of large language models (LLMs; the fixed amount of text a model can process at once) and the reliability with which agents follow instructions constrain how far LLM-based formalization can scale at present. We address these constraints through orchestration, the blueprint, automated review, and regular human review, as illustrated in \cref{fig:alignment}.
+
+
+\input{figures/fig_alignment}
+
+
+%======================================================================
+\prlsection{The fundamental theorem and its formalization}%
+%======================================================================
+A translationally invariant matrix-product state (hereafter simply an MPS) is a family of quantum states on a one-dimensional chain~\cite{Verstraete2006Matrix}, parameterized by a single rank-3 tensor $A$ with $A = \sum_{i=0}^{d-1}A^{i}\ket{i}$ and $A^i\in M_D(\C)$ for each $i=0,1,\ldots,d-1$. Here $d$ is the local Hilbert-space dimension and $D$ is the bond dimension. An MPS on $N$ sites with periodic boundary conditions reads
+
+\begin{equation}\label{eq:mps}
+    \ket{\psi_N(A)} = \sum_{i_1,\ldots,i_N=0}^{d-1} \tr\!\left(A^{i_1} A^{i_2} \cdots A^{i_N}\right) \ket{i_1 \cdots i_N}.
+\end{equation}
+Eq.~\eqref{eq:mps} is not normalized as they are also relevant for studying matrix-product operators (see, e.g.,~\cite{Cirac2017Matrix,Liu2026Parent}), thus they are also called \textit{matrix-product vectors} (MPVs)~\cite{Cirac2017Matrixa}. To each tensor $A$ we associate a completely-positive (CP) map called the \textit{transfer operator} $E_A \colon M_D(\C) \to M_D(\C)$, defined by $E_A(X) = \sum_{i=0}^{d-1} A^{i} X {(A^{i})}^\dagger$, whose spectral information govern the properties of the MPV family.
+
+Since $\ket{\psi_N(A)}$ depends only on traces of products of the matrices $A^i$, the map $A \mapsto \ket{\psi_N(A)}$ is many-to-one. A natural question is when two tensors generate MPV families that are proportional or equal to one another. The fundamental theorem of MPS states that a full characterization is possible after putting the tensors in canonical form~\cite{Perez-Garcia2007Matrix,Cirac2017Matrixa}.
+We say that a tensor $A$ is \textit{normal} if its transfer operator $E_A$ has spectral radius $1$ and a unique eigenvalue $\lambda$ with $|\lambda|=1$ (all other eigenvalues have $|\lambda|<1$). Then $A$ is said to be in a canonical form~(CF) if $A^i = \bigoplus_{k=1}^r \mu_k A^i_k$, where $\mu_{k}\in\C$ and $A_k$ are normal tensors.
+One of the central theorems we formalized is the following~\cite{Perez-Garcia2007Matrix,Cirac2017Matrixa,Cirac2021Matrix}:
+\begin{theorem}[Fundamental theorem of MPS, equal case]\label{thm:bnt-equivalence}
+    Let $A$ and $B$ be two tensors in CF\@. Then $A,B$ generate the same MPV family, $\ket{\psi_N(A)} = \ket{\psi_N(B)}$ for every $N\geq 1$, if and only if there exists an invertible matrix $X$ such that for all $i=0,1,\ldots,d-1$:
+    \begin{equation}
+        B^i=X A^i X^{-1}.\label{eq:equal-MPV-tensor}
+    \end{equation}
+\end{theorem}
+\noindent Note that given any tensor $A$ generating an MPV $\ket{\psi_N(A)}$, it is always possible to bring it into a canonical form after blocking a sufficient number of sites to remove the so-called $p$-periodic subspaces~\cite{Cirac2017Matrixa,Fannes1992Finitely}. Thus our starting point is that the tensors are in CF\@.
+
+
+We began the formalization effort by querying the orchestrator agent to prove FT-MPS without specifying any literature. Interestingly, in the early phase the system proved the special case of \cref{thm:bnt-equivalence} (when $A$ is \textit{injective}) through the \emph{Skolem-Noether theorem} (Sec.~\ref{app:ftsb_walkthrough} of Supplementary Material), a classical result about automorphisms of central simple algebras. This approach is not a standard in the literature and was chosen autonomously as the agents can directly make use of the existing Mathlib's ring-theory library~\cite{Supp}. This suggests that autoformalization is able to accommodate novel approaches based on the system's ability to make wide connections between different fields.
+
+The injective case is the simplest instance of FT-MPS, as normal tensors only become injective after blocking sufficiently many sites%.
+\footnote{The formalization follows the $(D^2-d+1)D^2 = O(D^4)$ blocking bound of the quantum Wielandt inequality~\cite{Sanz2010Quantum}; whether this can be improved to the optimal scaling remains an interesting open question~\cite{Michalek2019Quantum,Shitov2023Growth}.}.
+To prove \cref{thm:bnt-equivalence}, we need to first put the tensors into CF after sufficient \emph{blocking} (\cref{fig:blocking}) and then find a `minimal' collection of normal tensors $A_k$, called \textit{basis of normal tensors}, or BNT, ${\{A_k^i\}}_{k=1}^g$, that always exists for any tensor and accounts for repeated blocks in $A$. The global gauge transformation $X$ can then be constructed by proving the following result: two tensors $A,B$ generating the same MPV must have the same number of BNT elements and, up to permutations, the BNTs are related by gauge transformation $B_k=X_k A_{\pi(k)}X_k^{-1}$ where $\pi$ is some permutation.
+
+Our earliest attempt used only the review paper~\cite{Cirac2021Matrix}, which proved insufficient to provide the full proof for \cref{thm:bnt-equivalence} fully autonomously. Thus we supplied the agents with the arXiv preprint \LaTeX{} source, rather than the typeset PDF, of the primary references~\cite{Perez-Garcia2007Matrix,Cirac2017Matrixa}, together with the review~\cite{Cirac2021Matrix} and the most relevant quantum-information sources~\cite{Wolf2012Quantum,Sanz2010Quantum}; the system regenerated its proof strategy.
+This regenerated strategy made clear that the task was not just a short linear-algebra formalization. FT-MPS depends on a substantial quantum-information infrastructure around transfer operators, such as CP maps, quantum Perron-Frobenius theory, and the quantum Wielandt bound~\footnote{After the formalization for the fundamental theorem has been completed, the positive and completely positive maps between $C^*$-algebras were added to Mathlib 4.31; TNLean has since been updated to build on them, where it had previously constructed these notions itself.}, itself the subject of a separate paper~\cite{Sanz2010Quantum}.
+As these dependencies grew, the development had to be split into smaller proof files and bounded agent tasks, with the blueprint and persistent memory tracking the global structure; the detailed dependency graph and workflow are given in the Supplementary Material~\cite{Supp}.
+
+
+\input{figures/fig_blocking}
+
+This splitting was carried out by a team of specialized agents, coordinated by an orchestrator that assigns tasks to sub-agents and combines their results; the agent roles, tools, and coordination patterns are described in the End Matter.
+As the project grew, it also became important to periodically refactor the code, extracting reusable proof strategies and retiring unsuccessful attempts, to keep the agents from getting stuck; this is the responsibility of the simplifier agent.
+
+
+The project produced a formalization codebase, accompanied by a \nChapters{}-chapter blueprint spanning \nPagesBluePrint pages (see Supplementary Material~\cite{Supp}).
+Every step of the FT-MPS proof chain was verified, with no placeholders (Lean's \texttt{sorry} markers for unfinished steps) remaining in the core argument.
+Statements occupying a few lines in the literature can require several hundred lines of Lean~\cite{Supp}.
+In total, the recorded model-API cost of the interactive sessions was \$\nCost{} for the whole library (an estimated \$\nCostFT{} for the FT-MPS alone, scaled by code size), chiefly
+on proof writing and orchestration (see End Matter).
+
+
+%======================================================================
+\prlsection{Catching unintended formalizations}%
+%======================================================================
+There are at least two aspects of the autonomous Lean formalization process that require some care. First, the agents may only formalize a statement whose proof can pass the Lean kernel but deviates from the intended one, e.g., by weakening the theorem, as we discuss below, or by proving it vacuously from hypotheses that are never satisfied.
+Second, physics arguments rely on many conventions and implicit assumptions, which must be made explicit under rigorous formalization.
+While the second problem can many times be dealt with autonomously, at present the first problem requires more human intervention in the form of a review.
+
+The blueprint is a human-readable mathematical specification that links definitions, theorem statements, and dependency structure to the underlying Lean code, since auditing all of the Lean proofs directly is impractical for a human reviewer.
+We performed \nReviewRounds{} rounds of review of the blueprint for the FT-MPS formalization~\cite{TNLeanBlueprint}, from which reports were generated. These reports were fed back to the orchestrator agent, which dispatched suitable sub-agents to correct the issues they identified.
+We emphasize that the human intervention is \textit{strategic} rather than \textit{tactical}: the human supervisor pointed out the unintended version of the statement being proved, but not \textit{how} it should be formalized by the agents. The agents then re-derived the intended statement and removed the incorrect or outdated versions (somewhat reluctantly), without further guidance. Below we mention some instances where this intervention was required.
+
+
+\paragraph*{Weakening of the theorem.}%
+The most expensive corrections were those in which an unintended hypothesis entered early and many later lemmas were built on top of it.
+In the first formalization round, the agents attempted to prove FT-MPS under what they called a \textit{doubly stochastic (DS) ``gauge''}. In MPS theory, one may normalize the transfer operator $E_A$ to have spectral radius $1$. One can then choose a right-canonical form, in which $E_A$ is unital, or a left-canonical form, in which $E_A$ is trace-preserving. For a generic MPS tensor, however, one cannot impose both conditions simultaneously. The DS assumption therefore gave a formally correct theorem which is easier to prove and formalize, but only for a much smaller class of tensors. Removing this extra assumption required reorganizing many earlier arguments around one-sided canonical forms.
+This example shows that Lean checks the proof but not the choice of statement: the theorem proved was correct, only narrower than the one intended and do not support the later proof of the full theorem.
+After the corrected statement was specified, the agents carried out this restructuring autonomously.
+
+\paragraph*{Finite vs asymptotic limit.}%
+A second class of issues arose when the autoformalization replaced the intended definitions with a superficially related statement that is not merely a weakening, but may not hold in the setting of interest. In our case, the finite statement of FT-MPS was replaced by an asymptotic one. The vectors in Eq.~\eqref{eq:mps} are unnormalized MPVs: their coefficients are traces of products of tensor matrices at a fixed length $N$. The theorem compares these vectors for every finite $N$, either by equality or by nonzero proportionality. It does not compare normalized states, nor does it assume that the norms of the MPVs have any limiting behavior as $N\to\infty$. Early formalization attempts based on asymptotic norm comparisons therefore proved statements with the wrong hypotheses and failed to recover the needed finite information. The same finite issue appears when comparing multiplicities of canonical blocks, where coefficients at finite length can oscillate rather than converge.
+Here the team could not patch the proof directly and only found the correct route after being reminded by us after reading the blueprint that the underlying asymptotic definition, rather than the proof strategy, was at fault.
+The final proof keeps the comparison at fixed finite $N$, matching the statement of FT-MPS\@.
+
+\paragraph*{Edge cases.}%
+Some corrections were mathematically minor but still costly because proof assistants require every edge case to be stated explicitly. The physically relevant MPS statements always have positive bond dimension and nonempty chains.
+If this is not included in the theorem statement, Lean may have to consider artificial cases such as $D=0$ or $N=0$. The case $D=0$ carries no physical state, while for $N=0$ the empty-word convention produces the coefficient $\tr(\openone_D)=D$, which is not part of the usual FT-MPS comparison. Adding the intended assumptions $D\geq 1$ and $N\geq 1$ removed large irrelevant branches of the proof.
+
+\paragraph*{Lean code-Blueprint alignment.}%
+Several reviews found discrepancies between the blueprint and the Lean declarations: in some cases the Lean statement was correct, while the blueprint prose had drifted across successive edits. We then introduced explicit synchronization and review steps to keep the blueprint aligned with the formal statements (see~\cref{fig:alignment}). We also adjusted the prompts and review criteria so that the blueprint followed the source papers more closely and uses reader-friendly prose to facilitate auditing \cite{Supp}.
+
+
+\input{figures/fig_spt}%
+
+%======================================================================
+\prlsection{Physical application}%
+%======================================================================
+FT-MPS provides the mechanism behind virtual symmetry actions in 1D tensor networks and the cohomology invariant used in the classification of 1D bosonic SPT phases~\cite{Chen2011Classification,Schuch2011Classifying,Pollmann2010Entanglement,Pollmann2012Symmetry,Perez-Garcia2008String} (\cref{fig:spt}). After the formalization of FT-MPS, we fed the agents with the following article \cite{Perez-Garcia2008String} about string order and symmetries in spin chains, and they autonomously pursued the formalization that led to the following result.
+
+\begin{theorem}[A cohomological invariant from injective symmetric MPS]\label{thm:spt-invariant}
+    Let $A$ be an injective MPS tensor of bond dimension $D\geq 1$, and let
+    $U:G\to GL_d(\C)$ be an on-site linear representation of a finite group
+    $G$. Define $\tilde A_g^i \coloneqq \sum_j {U(g)}_{ij}A^j$.
+    Suppose that $A$ is invariant under $U$, in the sense that
+    $\ket{\psi_N(A)}=\ket{\psi_N(\tilde A_g)}$ for every $g\in G$ and every
+    $N\geq 1$. Then for each $g\in G$ there is an invertible matrix
+    $X(g)\in \mathrm{GL}_D(\mathbb C)$, unique up to a nonzero scalar, such that
+    \begin{equation}
+        \tilde A_g^i = X(g)\,A^i\,{X(g)}^{-1}
+    \end{equation}
+    for all physical indices $i$. With the convention $\rho(g)\coloneqq X(g^{-1})$,
+    the maps $\rho(g)$ form a projective representation of $G$: $\rho(g)\rho(h)=\omega(g,h)\rho(gh)$, $\omega(g,h)\in\mathbb C^\times$.
+    The cohomology class $[\omega]\in H^2(G,\mathbb C^\times)$ is unchanged
+    by rescaling the gauges $X(g)$, and therefore depends only on the
+    symmetric tensor $A$ together with the on-site action $U$.
+\end{theorem}
+\noindent We note that the autoformalized theorem is proven for a linear representation $U:G\to {GL}_d(\C)$, since the formal argument only uses the equality of MPV families and does not require unitarity. In practice, the physical on-site symmetry is taken to be a unitary representation $U:G\to\mathrm{U}(d)$, in which case the virtual gauges can be chosen unitary up to phase. Therefore,  $\omega$ can then be taken to be $U(1)$-valued and the standard invariant $[\omega]\in H^2(G,U(1))$ is recovered. The full SPT classification also involves symmetric parent Hamiltonians and gapped paths; while we do not formalize the full classification here, the TNLean library and existing Mathlib provide very natural starting points to complete the autoformalization in this setting.
+
+
+
+%======================================================================
+\prlsection{Discussion and outlook}%
+%======================================================================
+In this work we have built and presented an agent-driven workflow for research-level formalization in theoretical physics, with the autoformalization of the FT-MPS to demonstrate the system's capabilities. The agents are coordinated through a shared mathematical `blueprint' intermittent human review. The core development consists of approximately \nLOC{} lines of code, \nDecls{} declarations, and \nFiles{} files, within a broader Lean~4 tensor-network library of about \nLOCfull{} lines. Building on Mathlib's foundation~\cite{2026Leanprovercommunity,TheMathlibCommunity2020Lean}, TNLean develops verified statements within tensor-network theory as well as quantum information theory required for the FT-MPS, e.g., completely positive maps and quantum Perron-Frobenius theory. We observed that enforcement of the correct mathematical intent is the main bottleneck in large-scale autoformalization that requires us to navigate several technical complications.
+
+These observations clarify why the blueprint and review steps were not auxiliary to the proof search. In a project of this size, correctness depends not only on proving lemmas, but on controlling how the target statement is formulated. A single agent session cannot reliably carry the source papers, the current Lean library, the proof state, and the intended theorem statement at once (see End Matter). It is therefore necessary for the project to be split into separate proof tasks, and the blueprint is used to record the global mathematical specification (e.g., the canonical-form assumptions, the normalization conventions, and consistency with the literature). Between sessions, the persistent memory carried the corrected conventions and the rejected proof routes. The review stage checks whether the formal declarations still expressed the intended theorem faithfully before the Lean kernel checks the proof. This is the setting in which Buzzard's warning that ``definitions are more dangerous than proofs'' is most concrete~\cite{Buzzard2025Formal}.
+
+Along with TNLean library, we release the blueprint, review reports, and perhaps most importantly, ``technique notes'' produced during the project~\cite{TNLean,TNLeanBlueprint}. These materials document the choices that are not visible from the final Lean files alone and facilitate audits: which hypotheses were required, which plausible formulations had to be rejected, and where the formal statements differ from the informal presentation in the literature. We also release a curated selection of the distilled memory files used during the project. We note that the distilled memory files and the agent role specifications are not specific to tensor network formalizations: they record project-independent formalization techniques and conventions, and can seed other autoformalization targets.
+
+We expect that a reusable formal library (like ours), together with the multi-agent workflow that we developed, will help in both the formalization of existing modern results, such as the low individual degree test and the quantum-complexity theorem $\mathrm{MIP}^*=\mathrm{RE}$~\cite{Ji2020LowIndividualDegree,LDTLeanPaper,Ji2021Mip}, as well as attacking conjectures in quantum many-body physics and quantum information and computation~\cite{Meiburg2024LeanQuantumInfo,Meiburg2025Formalization,Ren2026MerLean,Li2026MerLeanprover,Ehatamm2026Endtoend}. Within tensor-network theory itself, the current TNLean also supports broader formalization targets: FT-MPS with boundaries~\cite{Florido-Llinas2025Uniform}, FT for a subclass of higher-dimensional tensor-network states~\cite{Molnar2018Normal}, parent Hamiltonians~\cite{Garre-Rubio2025MPS,Schuch2025Simple}, matrix-product operators, renormalization fixed points~\cite{Cirac2017Matrixa}, and classification of phases of matter~\cite{Chen2011Classification,Schuch2011Classifying,Pollmann2012Symmetry,Chen2012Symmetryprotected}. We leave these further developments of TNLean for future work.\\
+
+\begin{acknowledgments}
+    \paragraph*{Data availability}%
+    The Lean~4 source code, the formalization blueprint, and the review reports and technique notes that support this study are openly available in the TNLean repository~\cite{TNLean,TNLeanBlueprint}. The multi-agent system was built within the TeXRA software~\cite{TeXRA}, through which it can be used; the system prompts of the five interactive agent (see End Matter) are reproduced in the Supplementary Material~\cite{Supp}, and the reviewer's prompts are released with TNLean.
+
+    \paragraph*{AI Disclosure}
+    The Lean~4 code and the blueprint have been fully generated by the multi-agent AI system we developed under our supervision.
+    We used LLM-based tools for editing parts of the manuscript text and figures;
+    all scientific content was checked by the authors, who take responsibility for it.
+
+    \paragraph*{Acknowledgments}%
+    We thank X.-L. Qi for helpful discussion.
+    E.T.\ acknowledges support from the Alexander von Humboldt Foundation.
+    The work is partially supported by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under Germany's Excellence Strategy -- EXC-2111 -- 390814868.
+    This research is part of the Munich Quantum Valley, which is supported by the Bavarian state government with funds from the Hightech Agenda Bayern Plus.
+\end{acknowledgments}
+
+\FloatBarrier
+\bibliography{additional_references,library}
+
+%======================================================================
+% End Matter (part of the Letter) - kept in endmatter.tex
+%======================================================================
+\clearpage
+\appendix
+\input{endmatter}
+
+%======================================================================
+% Supplementary Material (separate document; standalone wrapper Draft3SM.tex)
+%======================================================================
+\clearpage
+\onecolumngrid
+\begin{center}
+    {\large \bf Supplementary Material}
+\end{center}
+
+\input{supp}
+
+\end{document}

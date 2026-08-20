@@ -1,0 +1,176 @@
+% fig_architecture_combined.tex  -  Architecture (left, 7) + orchestration
+% patterns (right, 3), combined into a single full-width (figure*) row so
+% both fit one figure in the end matter, separated by a vertical rule
+% (a tabular column rule spans the full row height automatically).  The
+% architecture panel is the original three-tier layout from
+% fig_architecture.tex (human on top, orchestrator, five agents), just
+% resized to share the row with the orchestration-pattern panel.
+% Requires:  \usepackage{tikz}
+%            \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+
+% Pinned page-wide block instead of a figure* float: placed at the very top
+% of the End Matter's first page (see note in endmatter.tex). The caption
+% still numbers as a figure via \def\@captype{figure}.
+\onecolumngrid
+\begin{center}
+% 6pt gutters (8pt overflowed \textwidth by 1.1pt with the 0.63+0.34 panels)
+\begin{tabular}{@{}c@{\hspace{12pt}}c@{}}
+\resizebox{0.63\linewidth}{!}{%
+\begin{tikzpicture}[
+    >={Stealth[length=3.2pt]},
+    every node/.style ={font=\footnotesize},
+    box/.style    ={draw, rounded corners=1.5pt, inner sep=2pt,
+                    align=center, font=\scriptsize, minimum height=0.50cm},
+    agent/.style  ={box, agentbox, minimum width=1.95cm},
+    human/.style  ={box, humanbox},
+    sandbox/.style={resourcebox, rounded corners=3pt, inner sep=10pt},
+    chip/.style   ={font=\small\itshape, fill=white, inner sep=1.5pt,
+                    rounded corners=1pt, draw=black!40, dashed},
+    legsw/.style  ={draw, minimum size=0.26cm, inner sep=0pt,
+                    rounded corners=0.5pt},
+    flow/.style   ={->, semithick, draw=black!80}
+  ]
+
+  %% --- Top: human supervisor (grey, not an agent) ---------------------
+  \node[human, font=\footnotesize\itshape, minimum width=2.2cm] (human) at (0,2.55)
+      {Human \scriptsize(mathematical oversight)};
+
+  %% --- Orchestrator (lead AI agent) -----------------------------------
+  \node[agent, minimum width=3.6cm] (orch) at (0,1.40)
+      {\texttt{leanOrchestrator}\\\scriptsize planning, delegation, integration};
+
+  %% --- Five front-line AI agents --------------------------------------
+  \node[agent] (scout) at (-5.4,0)
+      {\texttt{leanSearch}\\\scriptsize Mathlib search};
+  \node[agent] (proof) at (-2.7,0)
+      {\texttt{lean}\\\scriptsize proofs, sorry closure};
+  \node[agent] (clean) at (0,0)
+      {\texttt{leanSimplifier}\\\scriptsize lint, simplify};
+  \node[agent] (bp) at (2.7,0)
+      {\texttt{leanBlueprint}\\\scriptsize \LaTeX{} sync};
+  \node[agent] (audit) at (5.4,0)
+      {reviewer\\\scriptsize hypothesis audit};
+
+  %% --- Shared sandbox (drawn behind so it does not overpaint nodes);
+  %%     a phantom coordinate below the agents gives the chip extra
+  %%     room without pushing the top edge into the human box ---------
+  \coordinate (padbottom) at ($(scout.south)+(0,-16pt)$);
+  \begin{pgfonlayer}{background}
+    \node[sandbox, fit=(orch)(scout)(audit)(padbottom)] (sandbox) {};
+  \end{pgfonlayer}
+  \node[chip, anchor=south]
+      at ([yshift=-5pt]sandbox.south)
+      {shared by every agent: persistent memory $\cdot$ Lean 4 server (\texttt{diagnostics}, \texttt{inspect}, \texttt{loogle})};
+
+  %% --- Legend: role is encoded by box fill/outline (sits in the empty
+  %%     upper-right of the sandbox interior) ----------------------------
+  \node[legsw, agentbox] (lg1) at (4.0,1.6) {};
+  \node[anchor=west, font=\scriptsize] (lg1t) at (lg1.east) {AI agent};
+  \node[legsw, humanbox,
+        below=3pt of lg1.south, anchor=north] (lg2) {};
+  \node[anchor=west, font=\scriptsize] (lg2t) at (lg2.east) {human supervisor};
+  \node[legsw, resourcebox,
+        below=3pt of lg2.south, anchor=north] (lg3) {};
+  \node[anchor=west, font=\scriptsize] (lg3t) at (lg3.east) {shared resource};
+  \begin{pgfonlayer}{background}
+    \node[draw=black!20, rounded corners=2pt, fill=white, inner sep=4pt,
+          fit=(lg1)(lg1t)(lg2t)(lg3)(lg3t)] {};
+  \end{pgfonlayer}
+
+  %% --- Control edges (solid): human -> orch -> agents -----------------
+  \draw[flow] (human) -- (orch);
+  \foreach \n in {scout,proof,clean,bp,audit}
+      \draw[flow] (orch.south) -- (\n.north);
+\end{tikzpicture}%
+}
+&
+\resizebox{0.34\linewidth}{!}{%
+\begin{tikzpicture}[
+        >={Stealth[length=3.2pt]},
+        every node/.style={font=\footnotesize},
+        box/.style   ={draw, rounded corners=1pt, minimum width=1.05cm,
+                minimum height=0.42cm, inner sep=1.5pt, font=\footnotesize},
+        agent/.style ={box, agentbox},
+        % white fill: a grey fill here read as the legend's "human" encoding
+        op/.style    ={box, draw=black!70, fill=white, font=\footnotesize\itshape},
+        flow/.style  ={->, semithick, draw=black!75},
+        caplbl/.style={font=\footnotesize\bfseries},
+        sub/.style   ={font=\footnotesize\itshape, text=black!65},
+        edgelbl/.style={font=\scriptsize, inner sep=1pt, fill=white}
+    ]
+
+    %% --- Panel A: Parallel dispatch (left half) ------------------------
+    \begin{scope}[local bounding box=panelA]
+        \node[agent] (orchA) at (0,1.25) {orchestrator};
+        % 1.22cm pitch: at the old 1.10 the three boxes nearly abutted after
+        % the 0.34\linewidth resize and read as one subdivided bar
+        \node[agent] (a1) at (-1.22,0.20) {$T_1$};
+        \node[agent] (a2) at ( 0.00,0.20) {$T_2$};
+        \node[agent] (a3) at ( 1.22,0.20) {$T_3$};
+        \node[op] (mg) at ( 0.00,-0.85) {merge};
+        \foreach \n in {a1,a2,a3} \draw[flow] (orchA) -- (\n);
+        \foreach \n in {a1,a2,a3} \draw[flow] (\n) -- (mg);
+        \node[caplbl] at (0,-1.55) {(a) Parallel dispatch};
+        \node[sub]    at (0,-1.92) {disjoint scopes};
+    \end{scope}
+
+    %% --- Panel B: Scout-then-prove (top right); named as in the End
+    %%     Matter text, which cites the panels individually ---------------
+    \begin{scope}[shift={(3.95,0.95)}, local bounding box=panelB]
+        \node[caplbl] at (0,0.70) {(b) Scout--then--prove};
+        \node[agent] (sc) at (-1.05,0) {scout};
+        \node[agent] (im) at ( 1.05,0) {prover};
+        % unfilled label lifted clear of the box tops: a white-filled 'memo'
+        % here erased the corners of the scout/implementer outlines
+        \draw[flow] (sc) -- node[edgelbl, fill=none, above=3pt]{memo} (im);
+        \node[sub] at (-1.05,-0.40) {cheap};
+        \node[sub] at ( 1.05,-0.40) {expensive};
+    \end{scope}
+
+    %% --- Panel C: Review-repair loop (bottom right) --------------------
+    \begin{scope}[shift={(3.95,-1.05)}, local bounding box=panelC]
+        \node[caplbl] at (0,0.75) {(c) Review--repair loop};
+        \node[agent] (aud) at (-0.95,0) {reviewer};
+        \node[agent] (fix) at ( 0.95,0) {fixer};
+        \draw[flow] (aud) to[bend left=28]
+        node[edgelbl, above]{issues} (fix);
+        \draw[flow] (fix) to[bend left=28]
+        node[edgelbl, below]{patch} (aud);
+        \draw[flow, dashed] (aud.south) -- ++(0,-0.55)
+        node[edgelbl, below, fill=none]{accept};
+        \node[sub] at (0.55,-0.85) {$\le 5$ iterations};
+    \end{scope}
+
+\end{tikzpicture}%
+}
+\end{tabular}
+\end{center}
+\begingroup
+\makeatletter\def\@captype{figure}\makeatother
+\caption{%
+    System architecture and orchestration patterns.
+    \emph{Left}: a human
+    supervisor sets mathematical intent; the orchestrator dispatches to
+    four specialized interactive agents: a library scout (\texttt{leanSearch}), a
+    proof writer (\texttt{lean}), a simplifier (\texttt{leanSimplifier}), and
+    a blueprint synchronizer (\texttt{leanBlueprint}), together with an
+    automated reviewer that also runs on each change proposed to the shared
+    repository. All interactive agents
+    (including the orchestrator) share a persistent memory and the
+    Lean~4 server's \texttt{diagnostics}, \texttt{inspect}, and
+    \texttt{loogle} tools (Supplementary Material~\cite{Supp}), drawn as a single
+    dashed region rather than one connection per agent per service.
+    \emph{Right}: the three recurring orchestration patterns.
+    \textbf{(a)} The orchestrator dispatches independent subtasks
+    $T_1,\dots,T_n$ to workers on disjoint scopes and merges their
+    outputs. \textbf{(b)} A cheap scout surveys the library and emits a
+    design memo which a stronger prover consumes, so the expensive
+    proof agent is invoked only after a feasible route is
+    identified. \textbf{(c)} A
+    reviewer flags issues and a fixer applies patches; the loop
+    terminates when the reviewer accepts (dashed) or after a cap of
+    five iterations.%
+}\label{fig:architecture}\label{fig:orchestration}
+\endgroup
+\vspace{0.5\baselineskip}
+\twocolumngrid

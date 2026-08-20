@@ -1,0 +1,214 @@
+% T1 font encoding: makes \textquotedbl/\textquotesingle available so the
+% straight quotes in the verbatim agent prompts (via listings+upquote) render
+% instead of erroring with "Command \textquotedbl unavailable in encoding OT1".
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{rotating}
+\usepackage{pbox}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{leftidx}
+\usepackage{lmodern}
+\usepackage[normalem]{ulem}
+\usepackage{braket}
+\usepackage{tensor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{footnote}
+\usepackage{setspace}
+\usepackage{CJKutf8}
+\usepackage{dsfont}
+\usepackage{mathrsfs}
+\usepackage[many]{tcolorbox}
+%\usepackage{enumerate}
+\usepackage{palatino}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+% --- Shared figure palette --------------------------------------------------
+% Every AI agent across the system figures (alignment, architecture,
+% orchestration) is drawn in one accent colour; humans, artifacts, and layers
+% stay neutral grey.  Using a single meaningful hue against greys - reinforced
+% by a thicker agent outline and per-figure legends - keeps the encoding
+% legible for colour-blind readers and in greyscale.  The blue sits well clear
+% of grey for all common colour-vision deficiencies.
+\definecolor{agentaccent}{HTML}{2F6FAF}
+% Role fills/outlines, shared across every system figure (single source of
+% truth).  Distinguished by lightness AND border style (not hue alone): agents
+% carry the blue accent + a thicker outline, the human is a clearly darker
+% solid grey, shared resources are dashed, artifact layers are the lightest
+% solid grey - so the encoding survives greyscale and colour-vision deficiency.
+\tikzset{
+  agentbox/.style    = {draw=agentaccent, line width=0.6pt, fill=agentaccent!12},
+  humanbox/.style    = {draw=black, fill=black!22},
+  resourcebox/.style = {draw=black, dashed, fill=black!2},
+  layerbox/.style    = {draw=black, fill=black!4},
+}
+% Blueprint dependency-graph status colours (fig_depgraph), taken directly
+% from the generated HTML graph (blueprint/web/dep_graph_document.html in
+% the TNLean repo) rather than approximated: SVG green borders mark every
+% Lean-verified node; the fill distinguishes "this proof is formalized"
+% (lighter) from "this proof and every ancestor shown are formalized"
+% (darker), the same two shades the interactive graph itself uses.
+\definecolor{bpVerified}{HTML}{008000}
+\definecolor{bpProofDone}{HTML}{9CEC8B}
+\definecolor{bpChainDone}{HTML}{1CAC78}
+\usepackage[colorlinks,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+
+% revtex4-2 with prl style suppresses section numbering by default; re-enable
+% so \ref{sec:...} produces section numbers instead of empty links.
+\setcounter{secnumdepth}{3}
+
+% Lean identifiers: typeset verbatim in typewriter, breaking at `.` and `_`
+% (via the url package, loaded by hyperref).  Use \leanid{Namespace.foo_bar}
+% with RAW underscores - no \_ and no \allowbreak needed.
+\DeclareUrlCommand\leanid{\urlstyle{tt}}
+
+% Verbatim listing of the agent system prompts (Appendix~\ref{app:prompts}).
+% pdflatex cannot render the Lean Unicode glyphs that appear in the prompts, so
+% each is mapped to a math-mode equivalent through the literate option below.
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{upquote}
+\lstdefinestyle{agentprompt}{%
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  breakindent=0pt,
+  breakautoindent=false,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  showstringspaces=false,
+  xleftmargin=0pt,
+  aboveskip=0.4\baselineskip,
+  belowskip=0.8\baselineskip,
+  literate=%
+    {—}{{\textrm{\textemdash}}}1
+    {–}{{\textrm{\textendash}}}1
+    {→}{{$\rightarrow$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {α}{{$\alpha$}}1
+    {β}{{$\beta$}}1
+    {λ}{{$\lambda$}}1
+    {·}{{$\cdot$}}1
+    {≤}{{$\leq$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℤ}{{$\mathbb{Z}$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+    {ₗ}{{$_{\mathrm{l}}$}}1
+    {…}{{$\ldots$}}1
+    {Č}{{\v{C}}}1
+}
+
+% cleveref: smart cross-references (loaded after hyperref).  Names use the PRL
+% abbreviations (Fig., Eq., Sec., App., Table); [capitalize] keeps \cref forms
+% capitalized.  Loaded before \newtheorem so theorem refs are recognized.
+\usepackage[capitalize]{cleveref}
+\crefname{figure}{Fig.}{Figs.}
+\crefname{equation}{Eq.}{Eqs.}
+\crefname{section}{Sec.}{Secs.}
+\crefname{subsection}{Sec.}{Secs.}
+\crefname{appendix}{App.}{Apps.}
+\crefname{table}{Table}{Tables}
+\Crefname{figure}{Fig.}{Figs.}
+\Crefname{equation}{Eq.}{Eqs.}
+\Crefname{section}{Sec.}{Secs.}
+\Crefname{subsection}{Sec.}{Secs.}
+\Crefname{appendix}{App.}{Apps.}
+\Crefname{table}{Table}{Tables}
+
+
+% Editorial annotation command
+
+% Colored-text review commands. All uses in the sources are resolved; the
+% definitions stay active so that any newly added markup remains visible.
+\newcommand{\eri}[1]{\ifshowcomments\leavevmode{\color{Purple}{[\textbf{ET:} #1]}}\fi}
+\newcommand{\tcb}[1]{\leavevmode{\color{Blue}{#1}}}
+\newcommand{\tcr}[1]{\leavevmode{\color{Red}{#1}}}
+\newcommand{\tco}[1]{#1}
+
+% Headline-number macros (edit values here to update throughout the paper)
+% FT-MPS counts: the 12-chapter proof chain and its prerequisites (git-tracked
+% Lean files in the import closure of the single-block, multi-block, canonical-form
+% reduction, Wielandt, and symmetry endpoints).  The full TNLean library (with the
+% companion chapters) is given by the *full macros.
+\newcommand{\nLOC}{62{,}000}
+\newcommand{\nFiles}{233}
+\newcommand{\nDecls}{2{,}300}
+% Full-library snapshot taken 2026-07-08 against TNLean main, excluding
+% Archive/ (legacy, excluded from root imports per TNLean's CLAUDE.md):
+%   find TNLean -name "*.lean" -not -path "*/Archive/*" | wc -l
+%   find TNLean -name "*.lean" -not -path "*/Archive/*" -exec cat {} + | wc -l
+\newcommand{\nLOCfull}{227{,}000}
+\newcommand{\nFilesfull}{705}
+\newcommand{\nChapters}{12}
+\newcommand{\nSorries}{4}
+% Development span 6 Feb - 29 Jun 2026 (~4.8 months); currently used only in
+% archived abstract drafts.
+\newcommand{\nMonths}{five}
+\newcommand{\nReviewRounds}{six}
+\newcommand{\nPagesBluePrint}{150}
+
+% Computational-cost constants (PRELIMINARY, a lower bound). Every dollar figure
+% is a generated macro in cost_macros.tex - regenerate via the texra-cost-toolkit
+% (python3 gen_tables.py <db> cost_tables.tex). Do not hand-edit the values.
+\input{cost/cost_macros}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\W}{\mathcal{W}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand*\dd{\mathop{}\!\mathrm{d}}
+\newcommand{\rr}[1]{\left(#1\right)}
+\newcommand{\bx}{{\bm{x}}}
+\newcommand{\bk}{{\bm{k}}}
+\newcommand{\ii}{\text{i}}
+\DeclareMathOperator{\supp}{{supp}}
+\DeclareMathOperator{\Alg}{{alg}}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator{\vectorize}{vec}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\bar}{\overline}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\rsout}[1]{\tcr{\sout{#1}}}
+
+% Lightweight theorem environments for the appendix walk-through.
+\theoremstyle{plain}
+\newtheorem{appthm}{Theorem}
+\newtheorem{applem}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+
+% PRL-style run-in section heading (italic title, em-dash, runs into the text).
+\newcommand{\prlsection}[1]{\emph{#1}.---}
+
+\newif\ifshowcomments{}
+    \showcommentstrue{} % Show comments
+    % \showcommentsfalse % Hide comments
+
+\newcommand{\SL}[1]{\ifshowcomments{\color{teal}[{Sirui: \normalfont{#1}}]}\fi}
+\newcommand{\SLadded}[1]{{\color{blue}{\normalfont{#1}}}}
+
+
+
+% % Allow \input paths to resolve when the compiler's working directory is the
+% % workspace root rather than Draft/LeanMPSPaper/. The extra search prefix is
+% % harmless when compiling from the source directory itself.
+% \makeatletter
+% \ifdefined\input@path\else\let\input@path\@empty\fi
+% \g@addto@macro\input@path{{Draft/LeanMPSPaper/}}
+% \makeatother

@@ -1,0 +1,58 @@
+\clearpage
+\onecolumngrid
+
+%======================================================================
+\section{System prompts and tools for agents}\label{app:prompts}
+%======================================================================
+
+This appendix reproduces the configuration of the five interactive
+agent roles of Table~\ref{tab:roles}. Each listing is the full YAML
+agent-definition file used by TeXRA~\cite{TeXRA}: it contains the role name, the tool grant,
+the system prompt, and the task-message template. These are drop-in TeXRA agent
+definitions and can be loaded into TeXRA unchanged. Beyond the role-specific
+tools shown, each tool name denotes one of the commands described in
+Appendix~\ref{app:architecture} (the Lean~4 server tools of
+Sec.~\ref{sec:lean_tools}, file editing and shell access, web and literature
+search, and the persistent memory). At dispatch the field
+\texttt{prompts.userRequest} is instantiated with the task-specific
+instruction, written by the human supervisor or, for sub-agents, by the
+orchestrator.
+The reviewer's prompts, which drive the automated review and
+repair of proposed repository changes (Appendix~\ref{app:orchestration}), are
+released with TNLean~\cite{TNLean}.
+
+
+\subsection{Agent~\texttt{leanOrchestrator}: task decomposition and dispatch}\label{sec:prompt_leanorchestrator}
+
+The orchestrator plans the formalization, decomposes it into bounded tasks, and
+dispatches them to the specialized roles below.
+
+\lstinputlisting[style=agentprompt]{prompts/leanOrchestrator.yaml}
+
+\subsection{Agent~\texttt{lean}: proof writing}\label{sec:prompt_lean}
+
+The proof writer develops formal proofs through iterative refinement, closing
+unfinished steps and repairing broken proof chains.
+
+\lstinputlisting[style=agentprompt]{prompts/lean.yaml}
+
+\subsection{Agent~\texttt{leanSearch}: Mathlib scouting and research}\label{sec:prompt_leansearch}
+
+The library scout locates existing lemmas in Mathlib and the wider literature,
+its purpose being to prevent duplicate formalization work.
+
+\lstinputlisting[style=agentprompt]{prompts/leanSearch.yaml}
+
+\subsection{Agent~\texttt{leanSimplifier}: proof simplification and style}\label{sec:prompt_leansimplifier}
+
+The simplifier refactors proofs toward the readability, generality, and naming
+conventions of the Mathlib library while preserving every statement.
+
+\lstinputlisting[style=agentprompt]{prompts/leanSimplifier.yaml}
+
+\subsection{Agent~\texttt{leanBlueprint}: blueprint authoring and synchronization}\label{sec:prompt_leanblueprint}
+
+The blueprint synchronizer writes and maintains the mathematical blueprint,
+keeping its prose and dependency graph in step with the Lean code.
+
+\lstinputlisting[style=agentprompt]{prompts/leanBlueprint.yaml}

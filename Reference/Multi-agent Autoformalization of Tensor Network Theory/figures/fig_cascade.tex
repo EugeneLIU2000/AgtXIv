@@ -1,0 +1,111 @@
+% fig_cascade.tex  --  canonical-form reduction (step (i) of the appendix
+% proof outline), at the level of the global tensor. The single-block
+% spectrum picture behind the +p step is figures/fig_block_spectrum.tex.
+% Requires:  \usepackage{tikz, bm}
+%            \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+\begin{figure*}[htbp]
+    \centering
+    \begin{tikzpicture}[
+            font=\scriptsize,
+            >={Stealth[length=3pt]},
+            mfill/.style   ={fill=black!20},
+            mfill2/.style  ={fill=black!34},
+            mfill3/.style  ={fill=black!50},
+            moff/.style    ={fill=black!8},
+            mborder/.style ={draw=black, line width=0.5pt},
+            grid/.style    ={draw=black!55, line width=0.2pt},
+            flow/.style    ={->, semithick, draw=black!80},
+            elbl/.style    ={font=\scriptsize, fill=white, inner sep=1pt},
+            stage/.style   ={font=\scriptsize\bfseries},
+            sub/.style     ={font=\scriptsize\itshape, text=black!65},
+            x=1cm, y=1cm
+        ]
+
+        \begin{scope}[shift={(0,0)}]
+            \fill[mfill] (0,0) rectangle (1.6,1.6);
+            \draw[grid,step=0.4] (0,0) grid (1.6,1.6);
+            \draw[mborder] (0,0) rectangle (1.6,1.6);
+            \node[stage] at (0.8,-0.34) {general $A^i$};
+        \end{scope}
+
+        \begin{scope}[shift={(3.0,0)}]
+            \fill[mfill]  (0,0.8) rectangle (0.8,1.6);
+            \fill[mfill]  (0.8,0) rectangle (1.6,0.8);
+            \fill[moff]   (0.8,0.8) rectangle (1.6,1.6);
+            \draw[draw=black!45,line width=0.4pt] (0.8,0.8)--(1.6,1.6);
+            \draw[grid,step=0.4] (0,0) grid (1.6,1.6);
+            \draw[mborder] (0,0) rectangle (1.6,1.6);
+            \draw[mborder, line width=0.4pt] (0.8,0)--(0.8,1.6) (0,0.8)--(1.6,0.8);
+            \node[font=\tiny] at (1.2,1.2) {drop};
+            \node[font=\tiny] at (0.4,0.4) {$0$};
+            \node[stage] at (0.8,-0.34) {block-triangular};
+        \end{scope}
+
+        \begin{scope}[shift={(6.25,0)}]
+            \fill[mfill]  (0,0.8) rectangle (0.8,1.6);
+            \fill[mfill2] (0.8,0) rectangle (1.6,0.8);
+            \draw[grid,step=0.4] (0,0) grid (1.6,1.6);
+            \draw[mborder] (0,0) rectangle (1.6,1.6);
+            \draw[mborder, line width=0.4pt] (0.8,0)--(0.8,1.6) (0,0.8)--(1.6,0.8);
+            \node[font=\scriptsize] at (0.4,1.2) {$A_0^i$};
+            \node[font=\scriptsize] at (1.2,0.4) {$A_1^i$};
+            \node[stage] at (0.8,-0.34) {irreducible: $\textstyle\bigoplus_k A_k^i$};
+            \draw[densely dashed, draw=black!60] (-0.05,0.78) rectangle (0.85,1.63);
+            \node[sub, anchor=south] at (0.4,1.66) {$A_k^i$};
+        \end{scope}
+
+        % CF and biCF squares use the block-canonical-form iconography:
+        % light plain blocks = normal, solid dark blocks = injective (the
+        % block's matrices span M_{D_k}(C)); grids are reserved for matrix
+        % entries in the first three squares
+        \begin{scope}[shift={(9.5,0)}]
+            \fill[mfill] (0,0.8) rectangle (0.8,1.6);
+            \fill[mfill] (0.8,0) rectangle (1.6,0.8);
+            \draw[mborder] (0,0) rectangle (1.6,1.6);
+            \draw[mborder, line width=0.4pt] (0.8,0)--(0.8,1.6) (0,0.8)--(1.6,0.8);
+        \end{scope}
+        \node[stage, align=center] at (10.3,-0.5)
+              {normal (CF):\\$\textstyle\bigoplus_k \mu_k A_k^i$};
+
+        \begin{scope}[shift={(12.75,0)}]
+            \fill[mfill3] (0,0.8) rectangle (0.8,1.6);
+            \fill[mfill3] (0.8,0) rectangle (1.6,0.8);
+            \draw[mborder] (0,0) rectangle (1.6,1.6);
+            \draw[mborder, line width=0.4pt] (0.8,0)--(0.8,1.6) (0,0.8)--(1.6,0.8);
+        \end{scope}
+        \node[stage, align=center] at (13.55,-0.5)
+              {injective (biCF):\\$\textstyle\bigoplus_k \mu_k^L A_k^{(L)}$};
+        \node[sub] at (13.55,-1.05) {blocks $\{A_k^{(L)}\}$ span $M_{D_k}(\C)$};
+
+        \draw[flow] (1.7,0.8) -- node[sub, above, align=center, yshift=-1pt]
+              {invariant\\subspaces\\of $\{A^i\}$} (2.95,0.8);
+        \draw[flow] (4.7,0.8) -- node[sub, above, align=center, yshift=-1pt]
+              {discard\\off-diagonal}
+              node[sub, below, align=center, yshift=1pt]
+              {no contr.\\to the trace} (6.12,0.8);
+        \draw[flow] (7.95,0.8) -- node[elbl, above]{$+p$ sites}
+              node[sub, below, align=center, yshift=1pt]
+              {removes\\periodicity} (9.4,0.8);
+        % blocking length renamed k -> L (k is the block index in the same
+        % row) and the bound corrected to the cited O(D^4)
+        \draw[flow] (11.2,0.8) -- node[elbl, above]{$+L$ sites}
+              node[sub, below, yshift=1pt]{$L=O(D^4)$} (12.65,0.8);
+
+    \end{tikzpicture}
+    \caption{Canonical-form reduction (step~(i) of the proof outline in this
+        appendix), at the level of the global tensor. The common invariant
+        subspaces of the matrices $\{A^i\}$ put the tensor in block-triangular
+        form; the off-diagonal blocks do not contribute to the trace and are
+        discarded, giving a block-diagonal tensor with \emph{irreducible}
+        blocks $A^i=\bigoplus_k A_k^i$, which need not yet be normal. Blocking
+        $p$ sites removes the residual periodicity
+        (\cref{fig:block_spectrum}) and gives the canonical
+        form (CF), a direct sum of normal blocks, each carrying a scalar
+        weight $\mu_k$. A further blocking of $L=O(D^4)$ sites, controlled by
+        the quantum Wielandt bound, makes each block injective: the blocked
+        matrices $\{A_k^{(L)}\}$ span the block algebra $M_{D_k}(\C)$. The
+        result, $\bigoplus_k \mu_k^L A_k^{(L)}$, has the same block-diagonal
+        shape as CF and is the block-injective canonical form (biCF).
+        }\label{fig:cascade}
+\end{figure*}
+

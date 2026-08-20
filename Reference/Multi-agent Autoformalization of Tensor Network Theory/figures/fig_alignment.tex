@@ -1,0 +1,137 @@
+% fig_alignment.tex  --  literature <-> blueprint <-> Lean alignment loop.
+%
+%   Forward (solid): several sources, in different notations, are transcribed
+%   into one blueprint statement (with \lean / \leanok links) and then proved
+%   in Lean.  leanSearch scouts Mathlib; lean closes the proof.
+%   Audit (dashed): leanBlueprint checks the mechanical blueprint<->Lean links
+%   (checkdecls); the reviewer checks the two semantic correspondences,
+%   blueprint-vs-Lean and literature-vs-Lean.  A mismatch sends the statement
+%   back for restatement and re-proof.
+%
+%   Layout: compressed vertically (tier gaps tightened, legend flattened to a
+%   single row in the empty bottom-right) and spread wider horizontally,
+%   trading unused page width for column height.
+%
+% Requires:  \usepackage{tikz}
+%            \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+
+\begin{figure*}[t]
+    \centering
+    \begin{tikzpicture}[
+            >={Stealth[length=3.2pt]},
+            every node/.style={font=\footnotesize},
+            layer/.style ={layerbox, rounded corners=1.5pt, align=center, inner sep=3pt,
+                    font=\scriptsize, minimum height=1.3cm,
+                    minimum width=3.3cm},
+            human/.style ={humanbox, rounded corners=1.5pt, align=center,
+                    font=\scriptsize\itshape, inner sep=3pt},
+            agent/.style ={agentbox, rounded corners=1pt, align=center,
+                    font=\scriptsize\ttfamily, inner sep=2.5pt, minimum height=0.42cm},
+            fwd/.style   ={->, semithick, draw=black!80},
+            aud/.style   ={->, semithick, draw=black!70, densely dashed},
+            tick/.style  ={-, thin, draw=black!45, densely dotted},
+            legsw/.style ={draw, minimum size=0.26cm, inner sep=0pt,
+                    rounded corners=0.5pt},
+            elbl/.style  ={font=\scriptsize, fill=white, inner sep=1.5pt},
+            sub/.style   ={font=\scriptsize\itshape, text=black!60,
+                    fill=white, inner sep=1.5pt},
+            x=1cm, y=1cm
+        ]
+
+        %% --- Layer 1: primary literature (several sources) ----------------
+        \node[layer] (litB) at (0.22,0.16) {};
+        \node[layer] (litA) at (0.11,0.08) {};
+        \node[layer] (lit)  at (0,0) {%
+            \textbf{Primary literature}\\[1.5pt]
+            several sources,\\ one theorem\\[2pt]
+            \scriptsize\itshape differing notation:\\
+            $A_i$ vs.\ $A^{i}$ \quad $\Gamma_L$ vs.\ span};
+        \node[font=\scriptsize\ttfamily, text=black!55, align=center,
+                above=1.5pt of litB.north]
+        {arXiv:~quant-ph/0608197\\ 1606.00608\quad 2011.12127};
+
+        %% --- Layer 2: blueprint -------------------------------------------
+        \node[layer] (bp) at (6.0,0) {%
+            \textbf{Blueprint} (\LaTeX)\\[1.5pt]
+            one statement,\\ unified notation\\[2pt]
+            {\ttfamily\textbackslash{}lean} \ {\ttfamily\textbackslash{}leanok} \ {\ttfamily\textbackslash{}uses}};
+
+        %% --- Layer 3: Lean -------------------------------------------------
+        \node[layer] (lean) at (12.0,0) {%
+            \textbf{Lean\,4} (Mathlib)\\[1.5pt]
+            machine-checked\\ {\ttfamily theorem}\\[2pt]
+            \scriptsize no {\ttfamily sorry} placeholders};
+
+        %% --- Forward construction (solid) ---------------------------------
+        \draw[fwd] (lit.east) -- node[elbl, above]{transcribe,}
+        node[elbl, below]{unify notation} (bp.west);
+        \draw[fwd] (bp.east) -- node[elbl, above]{formalize}
+        node[elbl, below]{\& prove} (lean.west);
+
+        \node[agent] (scout) at (3.0,1.02) {leanSearch};
+        \node[agent] (prove) at (9.0,1.02) {lean};
+        % ticks on the background layer, so the white-filled edge labels
+        % ("transcribe,"/"formalize") mask them instead of being overprinted
+        \begin{pgfonlayer}{background}
+            \draw[tick] (scout.south) -- (3.0,0.04);
+            \draw[tick] (prove.south) -- (9.0,0.04);
+        \end{pgfonlayer}
+
+        \node[human] (human) at (6.0,1.42)
+        {Human supervisor\\\scriptsize sets \& audits intent};
+        \draw[fwd] (human) -- (bp.north);
+
+        %% --- Audit loop (dashed) ------------------------------------------
+        % leanBlueprint: mechanical blueprint <-> Lean link check
+        \node[agent] (sync) at (9.4,-1.05) {leanBlueprint};
+        \draw[aud] ([xshift=-5mm]lean.south) to[bend left=14] (sync.east);
+        \draw[aud] (sync.west)  to[bend left=14] ([xshift=8mm]bp.south);
+        \node[sub] at (9.3,-1.45) {link sync (\texttt{checkdecls})};
+
+        % reviewer: two semantic checks (blueprint-vs-Lean, literature-vs-Lean)
+        \node[agent] (rev) at (5.2,-1.75) {reviewer};
+        \draw[aud] ([xshift=-3mm]bp.south) -- (rev.north);
+        \draw[aud] ([xshift=2mm]lean.south) to[bend left=20] (rev.east);
+        \draw[aud] (lit.south)  to[bend right=16] (rev.west);
+        \node[sub] at (4.6,-1.18) {blueprint vs Lean};
+        \node[sub] at (1.5,-1.50) {literature vs Lean};
+        % return path: a mismatch sends the statement back to the blueprint,
+        % drawn as an explicit reviewer -> blueprint arrow; the note sits
+        % under the reviewer box, in open space
+        \draw[aud] ([xshift=4mm]rev.north) -- ([xshift=4mm]bp.south);
+        \node[sub, fill=none] at (5.2,-2.13)
+        {mismatch $\Rightarrow$ restate \& re-prove};
+
+        %% --- Legend: one row in the empty bottom-right (box fill encodes
+        %%     role); flattened from a framed 3-row block to save height ----
+        \node[legsw, agentbox] (lg1) at (7.9,-2.13) {};
+        \node[anchor=west, font=\scriptsize, inner sep=2pt] (lg1t) at (lg1.east) {AI agent};
+        \node[legsw, humanbox, right=8pt of lg1t] (lg2) {};
+        \node[anchor=west, font=\scriptsize, inner sep=2pt] (lg2t) at (lg2.east) {human supervisor};
+        \node[legsw, layerbox, right=8pt of lg2t] (lg3) {};
+        \node[anchor=west, font=\scriptsize, inner sep=2pt] (lg3t) at (lg3.east) {artifact layer};
+
+    \end{tikzpicture}
+    \caption{%
+        Maintaining consistency across the literature, Lean, and the blueprint.
+        A theorem stated in several sources under
+        different notations (the matrices written $A_i$~\cite{Perez-Garcia2007Matrix}
+        or $A^{i}$~\cite{Cirac2017Matrixa,Cirac2021Matrix}, injectivity phrased
+        through the map $\Gamma_L$~\cite{Perez-Garcia2007Matrix} or as a spanning
+        condition~\cite{Cirac2017Matrixa}) is transcribed once into
+        the blueprint, in a single notation and with machine-readable links to
+        the Lean declaration, and then proved in Lean (solid arrows;
+        \texttt{leanSearch} scouts Mathlib, \texttt{lean} closes the proof;
+        dotted lines attach each agent to the step it carries out).
+        Two agents keep the layers consistent (dashed). \texttt{leanBlueprint}
+        checks the mechanical links (every \texttt{\textbackslash{}lean}
+        reference resolves to a declaration and every
+        \texttt{\textbackslash{}leanok} to a finished proof) via
+        \texttt{checkdecls}. An automated reviewer checks the two semantic
+        correspondences: blueprint versus Lean (the Lean theorem proves the
+        stated result) and literature versus Lean (its hypotheses are no
+        stronger than the cited source's). A mismatch returns the statement
+        for restatement and re-proof.
+    }\label{fig:alignment}
+\end{figure*}
+

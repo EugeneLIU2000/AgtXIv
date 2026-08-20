@@ -1,0 +1,84 @@
+% fig_depgraph.tex  --  curated sub-region of the blueprint dependency graph
+% around the fundamental theorem.  Requires: \usepackage{tikz};
+% \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}.
+\begin{figure*}[htbp]
+    \centering
+    \begin{tikzpicture}[
+            >={Stealth[length=3.2pt]},
+            % verified (proved) blueprint results are shown in green, using the
+            % actual HTML dependency graph's status colours (bpVerified border;
+            % bpProofDone/bpChainDone fill, per node, defined in preamble.tex):
+            % the lighter fill is the graph's "this proof is formalized" shade,
+            % the darker one "this proof and all its ancestors are formalized".
+            n/.style    ={draw=bpVerified, rounded corners=2pt, fill=bpProofDone!55, align=center,
+                    font=\scriptsize, minimum height=0.72cm, text width=2.5cm, inner sep=3pt},
+            % ft depends on the whole verified chain shown here, so it gets the
+            % graph's darker "chain done" shade rather than just "proof done".
+            % blocking length: L (not k) and O(D^4), matching Figs. 2/S2
+            % (cited Sanz et al. bound (D^2-d+1)D^2, the version formalized)
+            ft/.style   ={n, draw=bpVerified, fill=bpChainDone!55, line width=1.1pt, text width=2.7cm},
+            card/.style ={draw=black!50, rounded corners=2pt, fill=black!3,
+                    minimum width=2.6cm, text width=2.2cm, minimum height=0.95cm,
+                    align=center, font=\scriptsize, inner sep=3pt},
+            up/.style   ={->, semithick, draw=black!65, shorten >=1.5pt, shorten <=1.5pt},
+            x=1cm, y=1cm
+        ]
+
+        \node[n] (cesaro)  at (0,0)      {Ces\`aro fixed point};
+        \node[n] (schwarz) at (3.6,0)    {Kadison--Schwarz inequalities};
+        \node[n] (wiel)    at (7.2,0)    {Wielandt bound, blocking length $L=O(D^4)$};
+        \node[n] (qpf)     at (0,1.15)   {quantum Perron--Frobenius theory};
+        \node[n] (canon)   at (3.6,2.3)  {canonical-form reduction (CF\,$\to$\,biCF)};
+        \node[n] (block)   at (1.9,3.45) {block separation (exact matching)};
+        \node[n] (bnt)     at (5.7,3.45) {basis of normal tensors};
+        \node[ft] (ft)     at (3.6,4.6)  {\textbf{fundamental theorem of MPS} (multi-block)};
+        % wider than the other "n" boxes: wraps to 2 lines instead of 3, so
+        % its top edge does not crowd the "intended application" label above
+        \node[n, text width=3.4cm] (single)  at (9.2,4.6)  {single-block theorem (Skolem--Noether)};
+        % Invariant stated in H^2(G,\C^\times), matching the formalized quotient
+        % (blueprint ch. 12); the U(1) form follows after unitary normalization.
+        \node[n] (spt)     at (3.6,6.15) {SPT phase invariant $[\omega]\in H^2(G,\C^\times)$};
+
+        \node[card] at (9.46,6.4) {};
+        \node[card] at (9.33,6.27) {};
+        \node[card] (land) at (9.2,6.15) {1D SPT phases:\\ AKLT, cluster,\\ Haldane, \dots};
+        % annotation sits beside the card stack (not above it), so the top
+        % tier does not need extra vertical clearance for a two-line label
+        \node[font=\scriptsize\itshape, text=black!65, align=left, anchor=west]
+              at (11.05,6.27) {a family of phases,\\ one per cohomology class};
+
+        \draw[up] (cesaro)  -- (qpf);
+        \draw[up] (qpf)     -- (canon);
+        \draw[up] (schwarz) -- (canon);
+        \draw[up] (wiel)    -- (canon);
+        \draw[up] (canon)   -- (block);
+        \draw[up] (canon)   -- (bnt);
+        \draw[up] (block)   -- (ft);
+        \draw[up] (bnt)     -- (ft);
+        \draw[up] (single)  -- (ft);
+        \draw[up] (single)  -- (spt);
+        % label above the dashed edge (clear of the single->spt diagonal,
+        % which approaches spt from below); unfilled, so it doesn't paint
+        % over the SPT node's corner or the card border
+        \draw[up, dashed] (spt.east) -- node[font=\scriptsize, above, inner sep=2pt, pos=0.5]{intended application} (land.west);
+
+    \end{tikzpicture}
+    \caption{A curated sub-region of the blueprint dependency graph around the
+        fundamental theorem, redrawn for print. Each green box is a formalized
+        result; an arrow points from a result to the one that uses it. The verified chain
+        runs from the Ces\`aro fixed point and the Kadison--Schwarz inequalities,
+        through quantum Perron--Frobenius theory and the Wielandt bound, to
+        canonical-form reduction,
+        block separation, the
+        basis of normal tensors,
+        and the multi-block fundamental theorem; the single-block theorem feeds
+        both the multi-block theorem and the symmetry construction, which
+        yields the symmetry-protected-topological phase invariant
+        $[\omega]\in H^2(G,\C^\times)$.
+        The card stack at the top right is the intended application (dashed arrow), the classification of
+        one-dimensional symmetry-protected phases; it is not part of the formalization, which ends at the invariant.
+        Quantum Perron--Frobenius theory and the
+        Wielandt bound are independent prerequisites of the canonical form: the
+        former is spectral, the latter a span-growth argument.}\label{fig:depgraph}
+\end{figure*}
+

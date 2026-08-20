@@ -6,7 +6,8 @@
 
 **Date:** 2026-08-16
 
-**Parent specification:** [AgtXIv](AgtXIv.md)
+**Parent specification:** [AgtXIv](../../AgtXIv.md)
+**Implementation roadmap:** [AgtXIv v1 vertical-slice checklist](../roadmaps/v1-implementation-checklist.md)
 
 ## 0. Purpose
 
@@ -23,7 +24,9 @@ Math Claims Decomposition
 
 The pipeline converts a target mathematical claim into a typed dependency DAG, resolves its load-bearing mathematical frontier, checks formal claims in Lean where appropriate, optimizes the active DAG using proof evidence, and stores reusable contracts for later Target Agents.
 
-`AgtXIv.md` remains the system-wide specification. This document refines its mathematics profile. The non-promotion, provenance, source-alignment, and scientific-acceptance rules in `AgtXIv.md` remain mandatory. A successful Lean build does not establish physical applicability, empirical support, or scientific acceptance.
+[AgtXIv.md](../../AgtXIv.md) remains the system-wide specification. This document refines its mathematics profile. The non-promotion, provenance, source-alignment, and scientific-acceptance rules in the parent specification remain mandatory. A successful Lean build does not establish physical applicability, empirical support, or scientific acceptance.
+
+The parent specification calls the accepted query-relative mathematical build graph `MathClaimDependencyDAG(q)`. In this document, the Oracle, registered-semantic, Lean-support, and optimized-query graphs are evidence and lifecycle views around that graph; the [normative crosswalk](../../AgtXIv.md#crosswalk-to-the-mathematics-pipeline-graph-views) defines their relationship. Older references to `MathematicsDependencyDAG` should be read as compatibility terminology, not as a second authoritative build graph.
 
 The present implementation does not train or fine-tune a DAG-search model. DAG search is an Oracle stage. In practical runs, a general-purpose language model proposes the initial graph. Every Oracle output remains `ORACLE_PROPOSED / UNVERIFIED` until independent gates accept its nodes and edges.
 

@@ -1,0 +1,41 @@
+% Cost tables - auto-generated (gen_tables.py). Dollars are macros from cost_macros.tex.
+
+\begin{table}[htbp]
+    \caption{\label{tab:cost_model}Recorded interactive model-API cost by language model (total $\sim$\$\nCost{} across the development; see text). Input is dominated by cached prompt tokens; OpenAI Codex ran on a ChatGPT subscription, billed at \$0 per token (parenthesized: its equivalent metered cost on GPT-5.4 at the \texttt{llm-zoo} rate \$2.5/\$15 per 1M tokens).}
+    \begin{ruledtabular}\begin{tabular}{llrrr}
+            Model             & Provider  & Input & Output & Cost (share)                           \\ \colrule
+            Claude Opus 4.6   & Anthropic & 6.0B  & 24M    & \$\costMdlClaudeOpusFourSix{} (32\%)   \\
+            GPT-5.5           & OpenAI    & 5.8B  & 11M    & \$\costMdlGPTFiveFive{} (23\%)         \\
+            GPT-5.4           & OpenAI    & 6.7B  & 21M    & \$\costMdlGPTFiveFour{} (17\%)         \\
+            Claude Opus 4.7   & Anthropic & 2.9B  & 9M     & \$\costMdlClaudeOpusFourSeven{} (14\%) \\
+            GPT-5.2           & OpenAI    & 2.2B  & 21M    & \$\costMdlGPTFiveTwo{} (7\%)           \\
+            Claude Sonnet 4.6 & Anthropic & 1.8B  & 8M     & \$\costMdlClaudeSonnetFourSix{} (4\%)  \\
+            Claude Opus 4.8   & Anthropic & 755M  & 4M     & \$\costMdlClaudeOpusFourEight{} (3\%)  \\
+            DeepSeek-pro      & DeepSeek  & 1.6B  & 6M     & \$\costMdlDeepSeekpro{} (1\%)          \\
+            Gemini 3.1 Pro    & Google    & 22M   & 74k    & \$\costMdlGeminiThreeOnePro{} (0\%)    \\
+            GPT-5.4-mini      & OpenAI    & 115M  & 580k   & \$\costMdlGPTFiveFourmini{} (0\%)      \\
+            Other models (7)  & ---       & 50M   & 353k   & \$\costMdlOther{} (0\%)                \\
+            OpenAI Codex      & OpenAI    & 617M  & 3M     & \$0 ($\approx$\$\nCodexEq{} eq.)       \\
+            \colrule
+            Total             &           & 28.6B & 108M   & \$\nCost{} (100\%)                     \\
+        \end{tabular}
+    \end{ruledtabular}
+\end{table}
+
+\begin{table}[htbp]
+    \caption{\label{tab:cost_role}Recorded cost by agent role. Proof writing and orchestration absorb four-fifths of the cost; orchestration is costly per call because each session carries a large context. Workflow agents run single-pass transformations and make no tool calls, so they are shown separately from the tool-using roles.}
+    \begin{ruledtabular}\begin{tabular}{lrrr}
+            Role             & Calls   & Cost (share)                     & \$/call                           \\ \colrule
+            Orchestrator     & 219     & \$\costRoleOrchestrator{} (43\%) & \$\costRoleOrchestratorPerCall{}  \\
+            Proof writer     & 967     & \$\costRoleProofwriter{} (37\%)  & \$\costRoleProofwriterPerCall{}   \\
+            Simplifier       & 218     & \$\costRoleSimplifier{} (6\%)    & \$\costRoleSimplifierPerCall{}    \\
+            Library scout    & 269     & \$\costRoleLibraryscout{} (5\%)  & \$\costRoleLibraryscoutPerCall{}  \\
+            Blueprint sync   & 95      & \$\costRoleBlueprintsync{} (5\%) & \$\costRoleBlueprintsyncPerCall{} \\
+            Other tool-using & 486     & \$\costRoleOtherTU{} (3\%)       & \$\costRoleOtherTUPerCall{}       \\
+            Workflow agents  & 65      & \$\costRoleWorkflow{} (1\%)      & \$\costRoleWorkflowPerCall{}      \\
+            \colrule
+            Total            & 2{,}319 & \$\nCost{} (100\%)               &                                   \\
+        \end{tabular}
+    \end{ruledtabular}
+\end{table}
+

@@ -1,0 +1,57 @@
+% fig_compaction.tex  -  Context management within a session.
+%   Context reads top to bottom: the system prompt sits at the top and new
+%   turns are appended downward toward the context-window limit at the bottom.
+%   Left:  the conversation grows downward until it nearly fills the window.
+%   Right: on compaction the older turns collapse into one summary block,
+%          the active state is preserved, and a large freed region below
+%          lets the session continue.
+% Requires: \usepackage{tikz}; \usetikzlibrary{arrows.meta} (loaded in preamble).
+\begin{figure}[htbp]
+    \centering
+    \resizebox{0.66\textwidth}{!}{%
+        \begin{tikzpicture}[
+                >={Stealth[length=3pt]},
+                blk/.style  ={draw, rounded corners=1.5pt, minimum width=2.7cm,
+                        minimum height=0.40cm, inner sep=1.5pt, font=\scriptsize,
+                        align=center, fill=black!4},
+                sum/.style  ={blk, fill=black!12},
+                keep/.style ={blk, fill=black!22},
+                cont/.style ={blk, dashed, fill=white},
+                lim/.style  ={draw=black!55, dashed, thick},
+                lbl/.style  ={font=\scriptsize\itshape, align=center}
+            ]
+
+            %% ---- LEFT: conversation grows downward, nearly filling the window -
+            \node[blk] (l1) at (0,3.55) {system prompt};
+            \node[blk] (l2) at (0,3.05) {instruction, tool calls};
+            \node[blk] (l3) at (0,2.55) {subagent result};
+            \node[blk] (l4) at (0,2.05) {instruction, tool calls};
+            \node[blk] (l5) at (0,1.55) {subagent result};
+            \node[blk] (l6) at (0,1.05) {instruction, tool calls};
+            \node[blk] (l7) at (0,0.55) {subagent result};
+            \node[font=\scriptsize] at (0,0.28) {$\vdots$};
+            \draw[lim] (-1.55,-0.05) -- (1.55,-0.05);
+            \node[lbl, anchor=north] at (0,-0.18) {context-window limit};
+            \draw[->, draw=black!45] (-1.98,3.45) -- (-1.98,0.35);
+            \node[lbl, text=black!55, rotate=90] at (-2.30,1.90) {conversation grows};
+
+            %% ---- COMPACT (summarize) -----------------------------------------
+            \draw[->, semithick, draw=black!80] (1.75,2.00)
+            -- node[lbl, anchor=south] {compact}
+            node[lbl, anchor=north, text=black!60] {summarize}
+            (3.85,2.00);
+
+            %% ---- RIGHT: compacted; large freed region; session continues -----
+            \node[blk]  (r1) at (5.6,3.55) {system prompt};
+            \node[sum]  (r2) at (5.6,2.88) {summary of\\earlier exchanges};
+            \node[keep] (r3) at (5.6,2.12) {active state:\\subagents, jobs, to-dos};
+            \node[cont] (r4) at (5.6,1.48) {session continues};
+            \node[lbl, text=black!55] at (5.6,0.70) {space freed};
+            \draw[lim] (4.05,-0.05) -- (7.15,-0.05);
+            \node[lbl, anchor=north] at (5.6,-0.18) {context-window limit};
+
+        \end{tikzpicture}%
+    }
+    \caption{\label{fig:compaction}Context management within a session. Context reads top to bottom: the system prompt sits at the top and new turns (task instructions, tool calls, returned subagent results) are appended downward as work proceeds, until they nearly fill the model's context-window limit (left). On compaction the older exchanges are summarized into a single block while the active state (running subagents, background jobs, and the current task list) is carried over, freeing much of the window so the session can continue (right). Durable knowledge is held separately, in the persistent archive of this appendix.}
+\end{figure}
+

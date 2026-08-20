@@ -1,0 +1,46 @@
+% !TEX root = Draft3SM.tex
+%======================================================================
+% Supplementary Material body. Shared (\input) by Draft3.tex and the
+% standalone wrapper Draft3SM.tex. (End Matter is NOT here; see endmatter.tex.)
+%
+% Supplementary Material numbering: figures, equations, and tables get an
+% "S" prefix (S1, S2, ...). Defining it here means both the combined
+% Draft3.tex build and the standalone Draft3SM.tex build pick it up.
+%======================================================================
+\makeatletter
+\setcounter{figure}{0}
+\setcounter{equation}{0}
+\setcounter{table}{0}
+\renewcommand{\thefigure}{S\@arabic\c@figure}
+\renewcommand{\theequation}{S\@arabic\c@equation}
+\renewcommand{\thetable}{S\@arabic\c@table}
+% Give the S-numbered floats their own hyperref anchors; otherwise the
+% combined Draft3 build reuses the Letter's figure.N/table.N/equation.N
+% destinations and links to S-figures jump to the main-text ones.
+\renewcommand{\theHfigure}{S\@arabic\c@figure}
+\renewcommand{\theHequation}{S\@arabic\c@equation}
+\renewcommand{\theHtable}{S\@arabic\c@table}
+\makeatother
+
+
+This Supplementary Material expands the method summary given in the End Matter of the Letter: the agent
+roles and their Lean~4 interface (\cref{app:architecture}), the blueprint that connects source theorems to Lean declarations (\cref{app:blueprint}), the
+persistent memory that carries mathematical knowledge across bounded sessions
+(\cref{app:memory}), the coordination patterns used by the agents
+(\cref{app:orchestration}), and the paper-to-formalization gap analysis
+(\cref{app:gaps}). It also records the computational cost (\cref{app:cost}), presents a representative proof excerpt (\cref{app:ftsb_walkthrough}), and reproduces the system prompts that defined the agent roles (\cref{app:prompts}).
+
+% SM contents: list only the appendix sections. The wrappers (Draft3.tex /
+% Draft3SM.tex) inject a tocdepth=-10 into the .toc before \maketitle to hide
+% everything (title, abstract, acknowledgments, references, End Matter); the
+% brackets below raise the depth for the appendices only, then hide again.
+\tableofcontents
+
+
+
+
+% Re-enable TOC entries for the appendices only (disabled in the wrapper after
+% \maketitle), then disable again so any trailing references stay out.
+\let\addcontentsline\SMrealaddcontentsline{}
+\input{appendices}
+\renewcommand{\addcontentsline}[3]{}

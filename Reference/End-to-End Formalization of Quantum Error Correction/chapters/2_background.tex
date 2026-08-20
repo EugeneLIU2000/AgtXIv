@@ -1,0 +1,278 @@
+%----------------------------------------------------------------------
+\section{Background}\label{sec:setting}
+%----------------------------------------------------------------------
+\label{sec:fv}
+
+% Lean~4~\cite{demoura2021} is an interactive theorem prover and programming
+% language built on a theory known as the Calculus of Inductive Constructions.
+% Essentially, this allows it to represent mathematical structures and arguments
+% in type theory (as opposed to the standard Set Theory) and verify the
+% correctness of statements. Once Lean has verified that a statement is correct,
+% to be fully confident in its output you must only believe two things:
+%
+% \begin{enumerate}[leftmargin=1.5em]
+%     \item That the formal statement in Lean is equivalent to the informal
+% counterpart
+%     \item That Lean's small, independently verified proof kernel is correct.
+% \end{enumerate}
+% Thus, verifying mathematical statements in Lean gives you significantly more
+% confidence in the truth of the statement. So long as the statements match,
+% there is no need for a human to check the arguments used to prove the
+% statements.
+%
+% One of the main reasons for using Lean is its robust and wide-ranging Mathlib
+% library, which provides nearly 2 million lines of code across many branches of
+% mathematics. Mathlib is able to define an increasing amount of research
+% mathematics, and underpins all major Lean formalization projects like the
+% Prime Number Theorem \cite{Kontorovich_Prime_Number_Theorem_2024} and Fermat's
+% Last Theorem projects \cite{FLT_Lean}. For our project, Mathlib provides a
+% number of indispensable algebraic objects that support the theory of Quantum
+% Error Collection, and any large Lean project must plan to have some of its
+% work eventually adopted into Mathlib for use by others.
+%
+% To provide an intuition on interactive theorem proving, we will sketch one of
+% our lemmas and provide a side-by-side comparison with the Lean formalization.
+% In general, Lean formalizations follow the same structure as pen-and-paper
+% arguments, except all minor details must be fleshed out.
+% For example, while formalizing code distances,
+% since we cannot take a minimum over the empty set,
+% we must explicitly handle an edge case for when there are no undetectable
+% Pauli errors.
+% (That is, when the only valid codeword is $0^n$.)
+% Concretely, we define the \emph{distance} of a quantum error correcting code
+% as follows.
+%
+
+This section gives some background Lean and formal verification for
+\Cref{sec:QECBackground,sec:smt}. We assume familiarity with quantum error
+correction and standard linear algebra.
+For more details please refer to \cite{avigad2020mathematics}.
+
+\paragraph{Lean 4 and Mathlib.} Lean~4~\cite{demoura2021} is an interactive
+theorem prover (ITP) and a dependently typed functional programming language
+whose underlying logic is the Calculus of Inductive Constructions. Statements
+and proofs are both first-class objects: a proof of a proposition $P$ is a value
+whose type is $P$. Once Lean has accepted a proof, the only assumptions a reader
+needs to discharge are (i)~that the Lean statement faithfully captures the
+intended informal claim and (ii)~that Lean's small, independently audited kernel
+is correct.
+
+The standard library \emph{Mathlib}~\cite{mathlib2020} now contains close to two
+million lines of formalized mathematics and underpins large efforts such as the
+Prime Number Theorem~\cite{Kontorovich_Prime_Number_Theorem_2024} and Fermat's
+Last Theorem~\cite{FLT_Lean} projects. We rely on Mathlib for matrices,
+finite-dimensional vector spaces, group theory, unitary groups, and the
+Kronecker product; conversely, our development is designed to be portable back
+into Mathlib as quantum-information content matures there.
+
+\paragraph{Formalizing Math with an ITP.} A Lean proof is a sequence of \emph{tactics} that incrementally transforms the goal, and any informal pen-and-paper argument can be translated by spelling out the steps the human reader would otherwise fill in. The friction sits in those omitted steps: edge cases that the prose dismisses with ``clearly,'' implicit coercions between mathematically equivalent representations, and definitions whose set-theoretic phrasing is awkward in type theory.
+
+\begin{mybox}{\textbf{Example: Proving Distance in Lean}}
+
+For a concrete Lean example we revisit a definitional edge case that arises in our own
+development. The distance of a quantum error-correcting code is the minimum
+Pauli weight of an undetectable error, but a minimum over the empty set is
+undefined; we must pick a convention for codes whose only valid codeword is
+$0^n$. We follow the standard ``$n+1$'' convention, which makes the distance
+well-defined while reserving the literal value $n+1$ as a sentinel for the
+trivial case.
+
+\textbf{Definition:} Given an error-correcting code $\mathsf{C}$, let $S\subseteq \mathbb{P}_n$
+    be the set of undetectable Pauli errors.
+    We then define the distance by
+    \begin{equation}
+        d = \begin{cases}
+            \min_{P\in S}(\mathsf{weight}(P)) & \textnormal{if } S\ne\emptyset \\
+            n+1 & \textnormal{if } S = \emptyset
+        \end{cases}
+    \end{equation}
+
+
+The sentinel value makes the following sanity check immediate, but only
+\emph{after} the case split is made explicit.
+
+\textbf{Lemma:} If the distance $d$ of a code over $n$ qubits satisfies $d \leq n$, then its
+    set $S$ of undetectable errors is nonempty.
+\begin{proof}
+    Suppose $S = \emptyset$ for contradiction. By the definition of code distance, we
+    have $d = n+1$, contradicting $d \leq n$.
+\end{proof}
+
+A corresponding Lean proof mirroring step-by-step the above informal argument would be written as:
+
+\begin{lstlisting}
+lemma BinSympMatrix.undetectable_set_nonempty {k n : ℕ}
+    (B : BinSympMatrix k n) (hk : 0 < k)
+    (h_dist : B.distance hk ≤ n) :
+  B.undetectable_set.Nonempty := by
+  by_contra h_empty
+  rw [Finset.not_nonempty_iff_eq_empty] at h_empty
+  unfold BinSympMatrix.distance at h_dist
+  rw [h_empty] at h_dist
+  simp at h_dist
+\end{lstlisting}    
+
+This proof may be read as follows: \lstinline{by_contra} introduces the
+contradiction hypothesis; \lstinline{Finset.not_nonempty_iff_eq_empty} converts
+``non-emptiness'' into a Finset-level equation that Mathlib has lemmas about;
+\lstinline{unfold} and \lstinline{rw} apply the definition and the empty-set
+hypothesis; \lstinline{simp} discharges the residual arithmetic against $d \le
+n$. The mechanical overhead, which involves naming the empty-set lemma and finding the right lemmas to rewrite with, is representative of what formalizing a pen-and-paper QEC
+argument feels like in practice. 
+
+
+\end{mybox}
+
+
+%
+% Lean proofs are composed of a series of "tactics", which perform mathematical
+% proof techniques like deductive logic identities, syntactic rewriting, and
+% more complex simplification procedures. The theorem is stated as:
+%
+% \begin{lstlisting}
+%     theorem dual_dual_eq {C : CodeSpace n} : (C.dualCode).dualCode = C
+% \end{lstlisting}
+%
+% As an Interactive Theorem Prover, Lean provides a ``context window`` the
+% displays the user's slate of current hypotheses, and the ``goal'' they are
+% trying to prove in the proof environment. For this theorem, it looks like:
+%
+% \begin{lstlisting}
+% n : ℕ
+% C : CodeSpace n
+% ⊢ C.dualCode.dualCode = C
+% \end{lstlisting}
+%
+% We plan to prove it by way of the Mathlib lemma
+% \lstinline{Submodule.eq_of_le_of_finrank_eq}, which has statement:
+%
+% \begin{lstlisting}
+% Submodule.eq_of_le_of_finrank_eq.{u, v} {K : Type u} {V : Type v}
+%   [DivisionRing K] [AddCommGroup V] [Module K V]
+%   {S₁ S₂ : Submodule K V} [FiniteDimensional K ↥S₂] (hle : S₁ ≤ S₂)
+%   (hd : Module.finrank K ↥S₁ = Module.finrank K ↥S₂) :
+%   S₁ = S₂
+% \end{lstlisting}
+%
+% This may be read as follows: beginning with \lstinline|{K : Type u}| are the
+% arguments for the lemma, which requires types \lstinline{K} and \lstinline{U}
+% with \lstinline{K} being a Division Ring, and \lstinline{V} being a
+% commutative module over $K$. With types specified, submodules \lstinline{S₁, % S₂} are then
+% defined, and \lstinline{S₂} is required to be finite dimensional.
+% The two main hypotheses are that \lstinline{S₁} is a submodule of
+% \lstinline{S₂}, and that \lstinline{S₁} and \lstinline{S₂} have equal rank.
+% After the colon is the ``type'' of the lemma, or the proposition it
+% ``produces'' a proof object for (by the Curry-Howard isomorphism, Lean proofs
+% are functions in a functional programming language).
+% \Ethan{I feel like either the reader already knows Curry-Howard or they don't.
+% In the latter case, we have no chance of successfully conveying the idea.}
+% Note that the lemma arguments are variously provided in square brackets, curly
+% braces, and parentheses. The parentheses-closed arguments are explicitly
+% provided to the function, while the remainder of the arguments are
+% automatically synthesized.
+%
+% Running the following tactics:
+%
+% \begin{lstlisting}
+% symm
+% apply Submodule.eq_of_le_of_finrank_eq
+% \end{lstlisting}
+%
+% First reverses the order of the equality in the goal, then ``applies'' the
+% lemma, synthesizing its arguments with the goal and seeking explicit
+% instantiations of the goal's arguments. The context window then looks like:
+%
+% \begin{lstlisting}
+% 2 goals
+% case hle
+% n : ℕ
+% C : CodeSpace n
+% ⊢ C ≤ C.dualCode.dualCode
+% case hd
+% n : ℕ
+% C : CodeSpace n
+% ⊢ Module.finrank (ZMod 2) ↥C = Module.finrank (ZMod 2) ↥C.dualCode.dualCode
+% \end{lstlisting}
+%
+% To dispatch the first goal, we need to prove that \lstinline{S ≤ % S.dualCode.dualCode}.
+% \Ethan{I feel anything beyond this is too much.
+% We should probably refer to some standard course/textbook instead.
+% We aren't here to teach the readers how interactive theorem provers work.}
+% An earlier definition specifies the dual as the orthogonal submodule with
+% respect to the dot product, so we apply another Mathlib lemma about submodules
+% defined as:
+%
+% \begin{lstlisting}
+% Submodule.le_orthogonalBilin_orthogonalBilin.{u_1, u_2, u_5, u_6} {R : Type
+% u_1} {R₁ : Type u_2} {M : Type u_5}
+%   {M₁ : Type u_6} [CommRing R] [CommRing R₁] [AddCommGroup M₁] [Module R₁ M₁]
+% [AddCommGroup M] [Module R M]
+%   {I₁ I₂ : R₁ →+* R} {B : M₁ →ₛₗ[I₁] M₁ →ₛₗ[I₂] M} {N : Submodule R₁ M₁} (b :
+% B.IsRefl) :
+%   N ≤ (N.orthogonalBilin B).orthogonalBilin B
+% \end{lstlisting}
+%
+% The other goal about equal rank is proved using an earlier lemma defining the
+% rank of the dual code, \lstinline{dual_finrank_eq}.
+%
+% \begin{lstlisting}
+% lemma dual_finrank_eq {C : CodeSpace n} : Module.finrank (ZMod 2) C.dualCode =
+% n - (Module.finrank (ZMod 2) C)
+% \end{lstlisting}
+%
+% Rewriting this twice, the goal is now:
+%
+% \begin{lstlisting}
+% ⊢ Module.finrank (ZMod 2) ↥C = n - (n - Module.finrank (ZMod 2) ↥C)
+% \end{lstlisting}
+%
+% Which is proven by simplification tactics after asserting that \lstinline{C}
+% has rank at most $n$, as the subtraction is occurring over the natural numbers
+% and would be false otherwise.
+%
+%
+
+%This example demonstrates Lean's expressive power as well as the benefits
+%gained from working with Mathlib.
+
+%\subsection{Satisfiability Modulo Theories}
+
+%\emph{Satisfiability modulo theories} (``SMT'') is a natural generalization of
+%the Boolean satisfiability (``SAT'') problem.
+%Instead of working with only Boolean variables, SMT allows formulas to include
+%various data types and structures.
+%Similar to SAT, SMT is NP-hard in general,
+%thus SMT instances are usually treated using specialized solvers such as cvc5
+%\cite{barbosa2022}, alt-ergo \cite{conchon2018alt}, and Z3 \cite{de2008z3}.
+%The comparisons and inner workings of these solvers are out of the scope of our
+%discussions.
+%For the purpose of our project,
+%we will treat solvers as black-boxes that run in (at worst) asymptotically
+%exponential time.
+
+%Most popular proof assistant software include various levels of solver support.
+%In Lean, we use CaDiCaL \cite{biere2024cadical} for SAT instances, and Lean-SMT
+%(based on cvc5) \cite{mohamed2025lean} for SMT instances.
+%In these integrations,
+%the solver should ideally not be included within the trusted computing base
+%(TCB).
+%Instead, the solver could return proofs of (un)satisfiability, which are then
+%translated and verified using standard techniques such as Curry-Howard
+%isomorphism. For cvc5, the standard solver contains a flag which causes it to
+%return a "proof" of its reasoning in the Cooperating Proof Calculus (CPC),
+%which may be verified by its checker Ethos and is compatible with the Eunoia
+%framework. Unfortunately, this translation step from proof calculi to Lean, due
+%to the overhead of being performed within Lean, becomes computationally
+%prohibitive for larger and more complex SMT instances.
+%As a result, frameworks such as EasyCrypt have chosen to absorb their solvers
+%into their TCB, and to accept their external solvers' outputs without
+%verification.
+
+%On the proof engineering side, SMT solvers are often treated similarly to
+%\emph{hammer} tactics.
+%In other words, they are designed for goals that seem more tedious than
+%complex.
+%As a result, it is conventional to set a timeout of well under one minute per
+%SMT invocation.
+%As we discuss in \Cref{sec:smt} however,
+%some of our project's goals require hours-long SMT runs.

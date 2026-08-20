@@ -1,0 +1,271 @@
+%----------------------------------------------------------------------
+\section{Case Studies}\label{sec:casestudies}
+%----------------------------------------------------------------------
+
+% We demonstrate the pipeline on several concrete quantum error-correcting
+% codes.
+%
+
+This section instantiates the pipeline of \Cref{sec:smt} on three CSS codes of
+increasing size: the $[[7,1,3]]$ Steane code, the $[[23,1,7]]$ Golay code, and
+the $[[90,8,10]]$ Bivariate Bicycle code. Each case study follows the same
+template --- input matrices, kernel certification, distance SAT query --- so the
+development is reusable: instantiating the framework on a new CSS code amounts
+to supplying the parity-check matrices, their kernel bases (computed offline),
+and the chosen distance bound, and renaming. We close the section by reporting
+the resource envelope outside Lean for the $[[144, 12, 12]]$ BB code.
+
+\subsection{The Steane Code}
+
+% The $\llbracket 7, 1, 3 \rrbracket$ Steane Code is a CSS code constructed
+% using the $[7, 4, 3]$ classical Binary Hamming Code for both stabilizer
+% generators. This matrix is defined as:
+%
+
+The $[[7,1,3]]$ Steane code is the simplest non-trivial case study. It is a CSS
+code with $H_X = H_Z$, both equal to the parity-check matrix of the $[7,4,3]$
+binary Hamming code; consequently $d_X = d_Z$ and the distance argument is
+carried out once.
+
+$$H_x = H_z = \begin{pmatrix}
+    1 & 0 & 0 & 1 & 0 & 1 & 1 \\ 
+    0 & 1 & 0 & 1 & 1 & 0 & 1 \\
+    0 & 0 & 1 & 0 & 1 & 1 & 1
+\end{pmatrix}$$
+
+% Because $H_x=H_z$ and therefore $d_X=d_Z$, we only have to prove the distance
+% properties of the matrix once. We may directly enter this matrix into Lean
+% like so:
+%
+
+The matrix is entered directly as a Mathlib \lstinline{Matrix} for human
+readability:
+
+\begin{lstlisting}
+def steane_mat' : Matrix (Fin 3) (Fin 7) (ZMod 2) :=
+  !![1, 0, 0, 1, 0, 1, 1;
+    0, 1, 0, 1, 1, 0, 1;
+    0, 0, 1, 0, 1, 1, 1]
+\end{lstlisting}
+
+% Computation of matrix properties is done in the \lstinline{BitVec} setting for
+% more efficiency. We calculate (in a Python script) the hexadecimal
+% representation of the flattened \lstinline{BitVec} form of this matrix to be
+% 0x1d2d69, and prove the equivalence by having Lean directly evaluate the
+% \lstinline{flatten_matrix} function.
+%
+
+All subsequent operations happen on the \lstinline{BitVec}-flattened form
+(\Cref{sec:translation}). An external Python script computes the hexadecimal
+flattening (\texttt{0x1d2d69} for the Steane matrix) and we discharge the
+equivalence to the \lstinline{Matrix} form by Lean evaluation of the verified
+\lstinline{flatten_matrix} function.
+
+\begin{lstlisting}
+def steane_mat : BitVec (3 * 7) :=
+  0x1d2d69
+lemma steane_mat_correct : steane_mat = flatten_matrix steane_mat' := by decide
+\end{lstlisting}
+
+% Also through a Python script, we generate the kernel of the Matrix and its
+% hexadecimal representation.
+%
+
+The kernel basis is computed by the same script and entered alongside its
+hexadecimal flattening.
+
+\begin{lstlisting}
+def steane_ker' : Matrix (Fin 4) (Fin 7) (ZMod 2) :=
+ !![1, 1, 0, 1, 0, 0, 0;
+ 0, 1, 1, 0, 1, 0, 0;
+ 1, 0, 1, 0, 0, 1, 0;
+ 1, 1, 1, 0, 0, 0, 1;]
+def steane_ker : BitVec (4 * 7) :=
+  0x8e94b0b
+lemma steane_ker_correct : steane_ker = flatten_matrix steane_ker' := by decide
+\end{lstlisting}
+
+% In order to prove the correctness of the kernel, we need to lower bound the
+% rank of these matrices. This is done by proving the independence of a row
+% submatrix of the matrices, which as both of these are independent will be the
+% identity submatrix. Thus, it is necessary to prove the independence of the
+% matrices.
+%
+% In our framework, independence is proved for a Matrix through SAT-solving all
+% possible row sums to check that none are zero. We rewrite the matrices as
+% their \lstinline{BitVec} equivalences and perform simplification to a
+% SAT-friendly input.
+%
+
+\Cref{lma41} demands a rank lower bound on both the parity-check matrix and the
+supplied kernel. For the Steane code both matrices have full row rank, so the
+witness submatrix is the matrix itself and the rank bound reduces to
+row-independence. We discharge independence via the SAT route of
+\Cref{sec:rank-check}: rewrite to the \lstinline{BitVec} form, normalize to the
+shape \lstinline{bv_decide} accepts, and let CaDiCaL verify that no nontrivial
+$\mathbb{F}_2$-combination of rows is zero.
+
+\begin{lstlisting}
+lemma steane_ind : LinearIndependent (ZMod 2) steane_mat' := by
+  rw [linear_indep_SAT_correct, ←steane_mat_correct, steane_mat]
+  simp only [... long lemma list ...]
+  bv_decide
+lemma steane_ker_ind : LinearIndependent (ZMod 2) steane_ker' := by
+  rw [linear_indep_SAT_correct, ←steane_ker_correct, steane_ker]
+  simp only [... long lemma list ...]
+  bv_decide
+\end{lstlisting}
+
+% From the independence, we obtain the lower bound on rank which underlies our
+% kernel correctness proof.
+%
+
+Linear independence then yields the rank bound used in \Cref{lma41}.
+
+\begin{lstlisting}
+lemma steane_mat_rank : 3 ≤ steane_mat'.rank := by
+  apply Matrix.rank_le_of_submatrix_independent _ id (strictMono_id)
+  rw [Matrix.submatrix_id_id]
+  apply steane_ind
+
+lemma steane_ker_rank : 4 ≤ steane_ker'.rank := by
+  apply Matrix.rank_le_of_submatrix_independent _ id (strictMono_id)
+  rw [Matrix.submatrix_id_id]
+  apply steane_ker_ind
+\end{lstlisting}
+
+% In order for a pair of parity-check matrices to yield a valid CSS code, they
+% must have mutually orthogonal rows. For the Steane Code, we must show that the
+% parity-check matrix's rows are orthogonal to each other. The expanded formula
+% here lacks independent variables, so SAT solving is not necessary. The same
+% predicate is required to prove the correctness of the kernel, so we prove it
+% as well.
+%
+
+The two orthogonality conditions from \Cref{sec:orth-check} are the CSS
+dual-containment ($H_X$'s rows mutually orthogonal --- here against themselves)
+and the parity-check-vs-kernel orthogonality from \Cref{lma41}. Both expand to
+fully-concrete $\mathbb{F}_2$ dot products with no free variables, so SAT is
+unnecessary; \lstinline{simp} on the \lstinline{BitVec} unfoldings suffices.
+
+\begin{lstlisting}
+lemma steane_orth : steane_mat'.mutually_orth_rows steane_mat' := by
+  rw [←mutually_orth_correct, ←steane_mat_correct, steane_mat]
+  simp [bitvec_mutually_orth, mutually_orth_sat_aux,
+  BitVec.row, BitVec.dot_product, dot_product_aux]
+
+lemma steane_mat_ker_orth : steane_mat'.mutually_orth_rows steane_ker' := by
+  rw [←mutually_orth_correct, ←steane_mat_correct, ←steane_ker_correct, steane_mat, steane_ker]
+  simp [bitvec_mutually_orth, mutually_orth_sat_aux,
+  BitVec.row, BitVec.dot_product, dot_product_aux]
+\end{lstlisting}
+
+% We also must prove the main part of the code distance statement, which
+% certifies that all error vectors under a certain weight fail to simultaneously
+% lie in the kernel and outside the rowspace of the parity-check matrix.
+%
+
+The core distance lemma is the SAT query proper: every error vector under the
+weight bound either fails commutation with the kernel basis (i.e.\ lies in the
+row space) or is the zero error. We rewrite into the location-indexed
+\lstinline{BitVec} form and dispatch \lstinline{bv_decide}.
+
+\begin{lstlisting}
+set_option maxHeartbeats 0 in
+lemma steane_dist : lt_dist_sat (flatten_matrix steane_mat') (flatten_matrix steane_ker') 2 3
+  := by
+  rw [←steane_mat_correct, ←steane_ker_correct, steane_mat, steane_ker]
+  simp only [... long lemma list ...]
+  bv_decide (timeout := 999)
+\end{lstlisting}
+
+% We then prove that the kernel we provided is actually the parity-check
+% matrix's kernel. This involves application of a theorem relating rank lower
+% bounds and orthogonality to being the kernel, and uses several statements we
+% have proven so far.
+%
+
+With rank bounds and orthogonality in place, \Cref{lma41} certifies that the
+externally-supplied basis is in fact a basis of $\ker H$.
+
+\begin{lstlisting}
+lemma steane_ker_mat_correct : steane_ker'.is_ker_for steane_mat' := by
+  apply Matrix.is_ker_for_of_rank_sum_mutually_orth _ _ steane_mat_rank steane_ker_rank (by norm_num) steane_mat_ker_orth
+\end{lstlisting}
+
+% Finally, we define the CSS code from the stabilizer generators and prove its
+% distance using our theorem about the correctness of the SAT formulation.
+%
+
+The final step assembles the CSS code from its stabilizer generators and applies
+the verified SAT-translation soundness theorem to lift the BSM-level UNSAT
+result to a quantum-theoretic distance bound on \lstinline{steane_css}.
+
+\begin{lstlisting}
+theorem steane_dist_3 : 3 ≤ steane_css.toBSM.distance (by norm_num) := by
+  apply bitvec_sat_translation_correct steane_css steane_ker' steane_ker_mat_correct steane_ker' steane_ker_mat_correct (by norm_num) _ _
+  all_goals rw [steane_css, CSS_pair.of_matrices]
+  all_goals exact steane_dist
+\end{lstlisting}
+
+% \subsection{Other Codes:}
+%
+% Expanding this to other weakly self-dual CSS codes, like the $\llbracket 23,
+% 1, 7 \rrbracket$ Golay Code, is as simple as generating the kernel and
+% hexadecimal representations and replacing every instance of ``Steane'' in the
+% above code with ``Golay''.
+%
+% For codes with two separate parity-check matrices, like the 72-qubit Bivariate
+% Bicycle Code, the distance lemma has to be proven twice for $X$ and $Z$ error
+% distances, and that lower-bounding by the rank of the parity-check matrices
+% requires pre-generating sets of independent rows to feed into the independence
+% checker.
+% Though these steps are performed outside of Lean, their correctness is
+% verified entirely within Lean, allowing for true end-to-end distance
+% verification.
+%
+% Altogether, thanks to the reusability of our building blocks, the main files
+% for Steane and Golay code (i.e. ``Stean.lean'' and ``Golay.lean'') are just
+% over 100 lines of proof script each, while the main proof for the 72-qubit BB
+% code (``BB72.lean'') is just under 200 lines.
+% Moreover, the three files follow a similar structure, and can potentially be
+% used as a template for other codes.
+% This provides evidence that it is straightforward to instantiate and analyze
+% any other CSS codes using our framework, given the corresponding parity-check
+% matrices as inputs.
+%
+
+\subsection{Beyond Steane}
+
+\paragraph{Golay $[[23,1,7]]$.} The $[[23,1,7]]$ Golay code is another weakly
+self-dual CSS code ($H_X = H_Z$), so its Lean development is, mechanically, a
+rename of the Steane case study: regenerate the kernel and hexadecimal
+flattening with the Python script, swap every ``Steane'' identifier for
+``Golay,'' and the proofs go through unchanged. The script and the Lean file
+together are under 110 lines.
+
+\paragraph{Bivariate Bicycle $[[90,8,10]]$.} The $[[90,8,10]]$ BB code is the
+first case study with two genuinely different parity-check matrices ($H_X \neq
+H_Z$). Two distance queries are needed, one for $d_X$ and one for $d_Z$. The
+parity-check matrices also have $4$ dependent rows each, so the rank-bound step
+from \Cref{sec:rank-check} cannot collapse to row-independence as in the Steane
+case; instead, the Python preprocessor selects an independent row subset to feed
+into the SAT-based independence checker. Every preprocessor output is re-checked
+inside Lean, so although the preprocessing happens outside the kernel, the
+resulting distance certificate remains end-to-end. The main proof file is just
+under 200 lines. We autogenerate similar proofs for BB codes of size 18, 30, 36, 54, 60, 72, and 108 with the same format using a Python script. 
+
+\paragraph{$[[144,12,12]]$ outside Lean.} The 144-qubit BB instance pushes
+Lean's certificate-replay budget beyond what we can verify in the kernel. Under
+the location-indexed encoding with symmetry breaking of \Cref{sec:translation}, however, an external call to the SMT solver cvc5 dispatches this goal in minutes. We report
+this number to show that the SAT encoding itself scales, and we view kernel-side
+replay at this size as the next concrete engineering target (cf.\
+\Cref{sec:future}).
+
+\paragraph{Template summary.} The three Lean case studies share a common
+skeleton: matrix entry, \lstinline{BitVec}-flattening equivalence, kernel basis
+entry, rank/independence via SAT, mutual orthogonality, distance SAT query, and
+the final lift through \lstinline{bitvec_sat_translation_correct}. Adding a new
+CSS code requires only its parity-check matrices and a Python preprocessor
+invocation. We provide a python script that generates a Lean file verifying the distance of a CSS code given only a NumPy description of the code stabilizers, demonstrating the flexibility of this template.
+

@@ -1,0 +1,170 @@
+%----------------------------------------------------------------------
+\section{Discussion and Conclusion}\label{sec:Conclusion and Discussion}
+%----------------------------------------------------------------------
+
+% Formal verification of quantum error correction is a necessary component of
+% trustworthy quantum computation. We have presented a Lean~4 framework that
+% combines interactive theorem proving with SAT-based computation to verify
+% nontrivial code properties, including distance claims for practical CSS and
+% Bivariate Bicycle code instances. The framework includes a reusable formal
+% library for stabilizer-code theory, a verified translation from code-distance
+% problems to Boolean satisfiability, and demonstrated verification of several
+% concrete codes.
+%
+% The result is a stronger trust story than either testing-only or solver-only
+% workflows: every step from quantum-theoretic definitions through matrix-level
+% computations to final distance claims is checked by Lean's proof kernel. As
+% quantum hardware matures and fault-tolerance becomes critical, such formally
+% verified foundations will play an increasingly important role in ensuring the
+% reliability of quantum computations.
+%
+
+We presented \textsc{Lean-QEC}, a Lean 4 framework that combines interactive
+theorem proving with SAT-based computation to deliver end-to-end,
+machine-checked distance certificates for practical CSS and Bivariate Bicycle
+codes. The library contributes a reusable stabilizer-code stack, a verified
+reduction from code distance to Boolean satisfiability, two scalability
+techniques (\lstinline{BitVec} flattening and location-indexed error encoding),
+and case studies covering the Steane, Golay, and a family of Bivariate Bicycle codes up to $[[90, 8, 10]]$ inside
+the kernel and the $[[144,12,12]]$ instance outside it.
+
+The result narrows the gap that has separated the testing-only and solver-only
+options for QEC verification. Every step from the quantum-theoretic definition
+of distance, through the binary symplectic representation, through the
+\lstinline{BitVec} encoding, to the final SAT certificate is connected by a
+Lean-checked theorem. Either the kernel accepts the artifact or it does not; no
+informal mathematical glue sits in between.
+
+\subsection{Methodological Takeaways}\label{sec:method}
+
+% The key contribution of this work is methodological: an end-to-end,
+% proof-aware verification path that encompasses both abstract QEC theory and
+% computationally intensive property checks. This narrows the gap between
+% mathematically sound reasoning and practical verification for real code
+% families.
+%
+%
+%
+% The formalization effort revealed several design insights:
+%
+% \begin{itemize}[leftmargin=1.5em]
+%   \item \textbf{Bridging Representations.} The binary symplectic
+% representation serves as a critical bridge between the quantum-theoretic
+% notion of stabilizer codes and a cleaner, more algebraically manipulable
+% layer. The binary symplectic representation is further bridged by a boolean
+% representation which allows compatibility with SAT solving. The formal
+% verification of these bridges allows for greater end-to-end confidence in
+% results.
+%   \item \textbf{Computer Algebra.} The SAT pipeline requires explicit kernel
+% bases as input. Computing these kernels is itself a linear-algebra task that
+% must be verified or trusted. Our current approach pre-computes kernels
+% externally and includes them as definitions, with their kernel property stated
+% as a lemma to be verified. Lean largely lacks preexisting capability for
+% verified algebraic computations, which emerges as an interesting direction for
+% future research if Lean is to become more widely useful.
+% \end{itemize}
+%
+
+The build process surfaced two design lessons that we expect to transfer to
+future quantum formalizations.
+
+\paragraph{Representation bridges are first-class objects.} The binary
+symplectic representation is the obvious algebraic bridge between the
+quantum-theoretic stabilizer code and the matrix-level SAT query. The
+non-obvious step is that this bridge must itself be a formalized object, not an
+informal correspondence, if the resulting certificate is to be end-to-end. We
+further bridged the BSR to a \lstinline{BitVec} representation tuned for the
+solver. Each bridge is one Lean theorem and, once written, is invisible at the
+call site; without it, every downstream lemma would carry an unverified
+soundness gap.
+
+\paragraph{Verified linear algebra is the missing piece.} The pipeline still
+admits one externally computed input: a kernel basis for each parity-check
+matrix. We discharge its correctness via a rank/orthogonality argument, but the
+kernel itself is supplied as a definition rather than computed. A verified
+Gaussian-elimination implementation in Lean would let the framework take
+parity-check matrices alone as input. More broadly, the absence of efficient
+verified algebraic computation is the consistent friction point in this
+development; closing it would benefit many Lean formalizations beyond QEC.
+
+\subsection{Related Work}\label{sec:related}
+
+% Formal verification of quantum computing has seen growing interest. Efforts in
+% Coq and other proof assistants have addressed quantum circuit verification and
+% quantum information theory. The SQIR framework~\cite{hietala2021} provides
+% verified quantum circuit optimization in Coq. QHLProver~\cite{liu2019}
+% formalizes quantum Hoare logic. On the Lean side, projects such as
+% Lean-QuantumInfo have begun formalizing quantum information primitives
+% \cite{meiburg2025formalization}. Other work has verified properties of
+% Error-Corrected programs, but outside of Interactive Theorem Provers
+% \cite{huang2025efficient, wu2021qecv}. Our work is distinguished by its use of
+% an Interactive Theorem Prover, focus on the error-correction layer
+% specifically, and by the integration of SAT solving for computational
+% verification tasks that resist concise hand proofs. Additionally, our
+% end-to-end approach gives us more confidence in our results, which we argue
+% are more completely formalized than other similar efforts.
+%
+% \Ethan{TODO cite concurrent work.
+% Even if they don't have paper yet, we can cite github.}
+%
+
+\paragraph{Quantum verification in proof assistants.} The SQIR
+development~\cite{hietala2021} and CoqQ~\cite{coqq} formalize quantum circuits
+and circuit optimizations in Rocq, and Peng et
+al.~\cite{peng2022formallycertifiedendtoendimplementation} verify end-to-end
+correctness of algorithms such as Shor's. QHLProver~\cite{liu2019} formalizes
+quantum Hoare logic. On the Lean side,
+Lean-QuantumInfo~\cite{meiburg2025formalization} formalizes finite-dimensional
+quantum-information primitives but does not specialize to qubit systems or QEC;
+we build on the same Mathlib foundations but specialize to the qubit space and
+develop the stabilizer-code stack.
+
+\paragraph{Verification of QEC.} The 9-qubit Shor-code verification
+of~\cite{feng-9-qubits} closes the trust loop on a single small code but
+enumerates Pauli errors explicitly and does not scale beyond it. Other
+verified-QEC efforts~\cite{huang2025efficient, wu2021qecv} sit outside ITPs and
+target program-level properties rather than code-distance certification. To our
+knowledge, \textsc{Lean-QEC} is the first development that combines a
+kernel-checked stabilizer stack with a solver-backed distance pipeline that
+scales to industrial code sizes.
+
+\paragraph{Solver-assisted ITP.} The strategy of reducing a hard subgoal to SAT,
+dispatching it to an external solver, and reconstructing the certificate inside
+the kernel is well established in classical verification. Our contribution to
+this idiom is the verified reduction from a quantum-theoretic distance statement
+to a SAT formula, the \lstinline{BitVec}-flattened encoding that makes the
+formula tractable to instantiate, and the location-indexed variable scheme that
+makes the formula tractable to solve.
+
+Concurrent work by Jain~\cite{qeclean} also explores formalization of quantum
+error-correcting codes in Lean but focuses on the toric code family.
+
+\subsection{Limitations and Future Work}\label{sec:future}
+
+\paragraph{Solver scaling.}
+The SAT pipeline scales by orders of magnitude over hand-written ITP distance
+proofs --- our 144-qubit instance handles roughly $2^{40}$ candidate errors ---
+but it is not unbounded. Codes substantially larger than the BB family
+($\mathrm{BB}_{360}$ and beyond) push the SAT query itself out of reach.
+Decomposition strategies and specialized solvers for
+linear codes are natural directions for extending the envelope.
+
+\paragraph{Broader code families.}
+The development targets CSS codes, with BB as the headline family. Extending to
+general non-CSS stabilizer codes is mostly a matter of dropping the $X$/$Z$
+split and reusing the full BSR pipeline; subsystem codes and codes from the
+broader stabilizer formalism require more substantial additions. Note that
+surface and color codes are themselves CSS and should fit the existing framework
+directly.
+
+\paragraph{Verified kernel computation.}
+The kernel basis for each parity-check matrix is currently produced by an
+external Python script and certified inside Lean. A verified row-reduction
+routine would close this remaining preprocessor step. Doing so cleanly is the
+most concrete piece of follow-on engineering implied by this work.
+
+\paragraph{Integration with quantum-circuit verification.}
+The QEC layer is one component of the verified quantum-computation stack.
+Connecting it to verified circuit compilers such as SQIR would yield an
+integrated, end-to-end pipeline from algorithm specification to fault-tolerant
+physical implementation.

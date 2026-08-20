@@ -1,0 +1,97 @@
+% fig_references.tex  --  provenance: which primary sources fed which blueprint
+% chapters.  Complementary to fig_alignment (the abstract literature/blueprint/
+% Lean loop): this one names the actual sources.  Two-column float.
+% Chapter numbers follow \cref{tab:chapters} (paper numbering); ch. 1 is the
+% introduction and has no source, every other chapter appears in one topic box.
+% Requires:  \usepackage{tikz}
+%            \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+\begin{figure*}[htbp]
+    \centering
+    \begin{tikzpicture}[
+            font=\scriptsize,
+            >={Stealth[length=3pt]},
+            src/.style    ={draw, rounded corners=2pt, align=center, inner sep=3pt,
+                    fill=black!5, minimum height=0.78cm, text width=2.8cm},
+            topic/.style  ={draw, rounded corners=2pt, align=center, inner sep=3pt,
+                    fill=black!8, minimum height=0.72cm, text width=3.5cm},
+            we/.style     ={->, semithick, draw=black!75},
+            oe/.style     ={->, thin, draw=black!45},
+            head/.style   ={font=\footnotesize\bfseries},
+            x=1cm, y=1cm
+        ]
+
+        % headers sit the same distance above their first box
+        \node[head] at (0,6.25) {primary sources};
+        \node[head] at (8.0,7.0) {blueprint chapters (paper numbering)};
+
+        %% --- sources (left) ---
+        \node[src] (wolf) at (0,5.5)
+              {Wolf (2012)\\[1pt]{\scriptsize\itshape Quantum Channels\\ \& Operations}};
+        % the 2021 RMP review gets its own box (was bundled with the 2017 MPV
+        % paper): it fed most chapters and the string-order paper alone does
+        % not cover the SPT material of ch. 12
+        \node[src] (pvwc) at (0,4.15) {P\'erez-Garc\'{\i}a et al.\ (2007)\\[1pt]{\scriptsize\itshape the FT-MPS paper}};
+        \node[src] (cirac) at (0,3.1) {Cirac et al.\ (2017)\\[1pt]{\scriptsize\itshape the MPV paper}};
+        \node[src] (rmp) at (0,2.05) {Cirac et al.\ (2021)\\[1pt]{\scriptsize\itshape the RMP review}};
+        \node[src] (sanz) at (0,1.0) {Sanz et al.\ (2010)\\[1pt]{\scriptsize\itshape quantum Wielandt}};
+        \node[src] (so) at (0,-0.05) {P\'erez-Garc\'{\i}a et al.\ (2008)\\[1pt]{\scriptsize\itshape string order (0802.0447)}};
+
+        %% --- topics (right): PAPER chapter numbers (\cref{tab:chapters}) ---
+        \node[topic] (chan) at (8.0,6.3)  {quantum channels (ch.\,4)};
+        \node[topic] (pf)   at (8.0,5.25) {Perron--Frobenius \& Schwarz (ch.\,5--6)};
+        \node[topic] (wlt)  at (8.0,4.2)  {Wielandt bound (ch.\,8)};
+        \node[topic] (cf)   at (8.0,3.15) {canonical form \& block separation (ch.\,7, 9)};
+        \node[topic] (mpv)  at (8.0,2.1)  {matrix product vectors \& single-block theorem (ch.\,2--3)};
+        \node[topic] (ft)   at (8.0,1.05) {normal tensors \&\\ fundamental theorem\\ (ch.\,10--11)};
+        \node[topic] (sym)  at (8.0,0.0)  {symmetries \& string order (ch.\,12)};
+
+        %% --- edges; multi-input boxes take each edge at a vertically offset
+        %%     anchor so the arrowheads do not stack on one point ---
+        %% Wolf edges (heavier)
+        \draw[we] (wolf.east) to[out=5,in=180]   ([yshift=1.2mm]chan.west);
+        \draw[we] (wolf.east) to[out=0,in=180]   (pf.west);
+        \draw[we] (wolf.east) to[out=-15,in=180] ([yshift=1.5mm]wlt.west);
+        \draw[we] (wolf.east) to[out=-30,in=180] ([yshift=1.5mm]cf.west);
+
+        %% other sources (lighter)
+        \draw[oe] (pvwc.east)  to[out=2,in=184]   (wlt.west);
+        \draw[oe] (pvwc.east)  to[out=-14,in=180] ([yshift=0.5mm]cf.west);
+        \draw[oe] (pvwc.east)  to[out=-28,in=178] ([yshift=1.2mm]mpv.west);
+        \draw[we] (pvwc.east)  to[out=-42,in=180] ([yshift=1.2mm]ft.west);
+        \draw[oe] (pvwc.east)  to[out=-55,in=180] ([yshift=1.4mm]sym.west);
+        \draw[oe] (cirac.east) to[out=2,in=182]   ([yshift=-0.5mm]cf.west);
+        \draw[we] (cirac.east) to[out=-16,in=182] ([yshift=-0.2mm]mpv.west);
+        \draw[we] (cirac.east) to[out=-32,in=182] ([yshift=-0.2mm]ft.west);
+        %% review fan (thin): it fed most chapters, the system's first input;
+        %% heavy (principal) credit stays with the theorem papers
+        \draw[oe] (rmp.east)   to[out=55,in=186]  ([yshift=-1.2mm]chan.west);
+        \draw[oe] (rmp.east)   to[out=22,in=178]  ([yshift=-1.8mm]cf.west);
+        \draw[oe] (rmp.east)   to[out=0,in=180]   ([yshift=-1.6mm]mpv.west);
+        \draw[oe] (rmp.east)   to[out=-22,in=178] ([yshift=-1.6mm]ft.west);
+        \draw[oe] (rmp.east)   to[out=-42,in=178] ([yshift=0.2mm]sym.west);
+        \draw[oe] (sanz.east)  to[out=32,in=188]  ([yshift=-1.5mm]wlt.west);
+        \draw[we] (so.east)    to[out=0,in=180]   ([yshift=-1.2mm]sym.west);
+
+    \end{tikzpicture}
+    \caption{Primary sources and the blueprint chapters they feed, with chapter
+        numbers as in \cref{tab:chapters}. Wolf's lecture notes on quantum
+        channels and operations~\cite{Wolf2012Quantum} are the principal source
+        for the operator-theoretic chapters (quantum channels, the
+        Perron--Frobenius and Schwarz theory, the Wielandt bound, and
+        canonical-form reduction). The
+        matrix-product-state results of P\'erez-Garc\'{\i}a et
+        al.~\cite{Perez-Garcia2007Matrix} and of Cirac et
+        al.~\cite{Cirac2017Matrixa} supply the tensor-network chapters, and the
+        review of Cirac et al.~\cite{Cirac2021Matrix} feeds most chapters; the
+        quantum Wielandt inequality of Sanz et al.~\cite{Sanz2010Quantum} feeds
+        the Wielandt bound, and the symmetry chapter rests on the string-order
+        analysis of P\'erez-Garc\'{\i}a et al.~\cite{Perez-Garcia2008String}
+        together with the review. Heavier
+        lines mark each chapter's principal sources: Wolf's notes supply the
+        operator-theoretic groundwork (ch.~4--9), while the
+        matrix-product-vector, fundamental-theorem, and symmetry chapters
+        (ch.~2--3 and 10--12) rest on the matrix-product-state
+        literature.
+        }\label{fig:references}
+\end{figure*}
+

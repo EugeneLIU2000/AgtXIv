@@ -1,0 +1,29 @@
+\newcommand{\Draft}{}
+
+\ifdefined\Draft
+\newcommand{\Ethan}[1]{{\color{magenta} [Yi: #1]}}
+\newcommand{\RT}[1]{{\color{red} [Runzhou: #1]}}
+\newcommand{\ME}[1]{{\color{blue} [Mati: #1]}}
+
+\else
+\newcommand{\Ethan}[1]{}
+\newcommand{\RT}[1]{}
+\newcommand{ME}[1]{}
+\fi
+
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\PauliFold}{\mathsf{PauliFold}}
+%\DeclareMathOperator{\PauliFold}{PauliFold}
+\DeclareMathOperator{\Image}{Image}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand{\bbC}{\mathbb{C}}

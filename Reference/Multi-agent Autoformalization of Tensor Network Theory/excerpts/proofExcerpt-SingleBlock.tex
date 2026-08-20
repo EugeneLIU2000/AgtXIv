@@ -1,0 +1,118 @@
+%======================================================================
+\section{Single-block fundamental theorem: excerpt from the blueprint}\label{app:ftsb_walkthrough}
+
+The purpose of this appendix is to record a proof route that differs from the standard MPS literature. The formalized proof of the single-block theorem extends the assignment $A^i\mapsto B^i$ to an algebra automorphism of $M_D(\C)$ and then applies the Skolem-Noether theorem. This route was selected during the autonomous formalization process because the relevant ring-theoretic infrastructure was closer to Mathlib than the canonical-form and spectral arguments used in the usual MPS proof. We reproduce the argument here in the lightweight statement-and-proof style of the blueprint (\leanid{MPSTensor.fundamentalTheorem_singleBlock}, blueprint Theorem~\texttt{thm:ft\_single}, ch.\,3; a $70$-line Lean file, \texttt{MPS/FundamentalTheorem/Basic.lean}, resting on some $590$ lines of supporting algebra). Minor editings have been made by us to match the writing style of the paper.\\
+
+
+\paragraph*{Setup.} Throughout this subsection $A = {(A^i)}_{i=0}^{d-1}$ and $B = {(B^i)}_{i=0}^{d-1}$ are MPS tensors of common bond dimension $D \ge 1$ (the formalized theorem also handles the ``degenerate case'' $D = 0$ that is allowed by Lean), so each $A^i, B^i \in M_D(\C)$. We assume $A$ is \emph{injective} in the MPS sense, which we take to mean that the $d$ matrices $\{A^0, A^1, \ldots, A^{d-1}\}$ span the full algebra $M_D(\C)$ as a $\C$-vector space. (Necessarily $d \ge D^2$; we make no other assumption on $d$.) We assume $A$ and $B$ generate the same MPV family, so the cyclic-trace identities
+\begin{equation}\label{eq:trace_id}
+    \Tr\left(A^{i_1} A^{i_2} \cdots A^{i_L}\right) = \Tr\left(B^{i_1} B^{i_2} \cdots B^{i_L}\right)
+\end{equation}
+hold for every $L \ge 1$ and every word ${(i_1, \ldots, i_L)} \in {\{0, \ldots, d-1\}}^L$. The conclusion to be proved is the existence of an invertible $X \in \mathrm{GL}_D(\C)$ with $B^i = X A^i X^{-1}$ for all $i$.
+
+We will use one structural fact about $M_D(\C)$ throughout: the trace pairing $(M,N)\longmapsto \Tr(MN)$ is non-degenerate. In other words, if $\Tr(MN)=0$ for every $N\in M_D(\C)$, then $M=0$. Indeed, let $E_{ji}$ be the matrix unit with a single nonzero entry in position $(j,i)$. Then $\Tr(ME_{ji})=M_{ij}$ for all $i,j$, and hence $M=0$.
+
+
+\begin{applem}[The $\{B^i\}$ also span $M_D(\C)$]\label{applem:b_spans}
+    Under the setup above, the $d$ matrices $\{B^0, B^1, \ldots, B^{d-1}\}$ also span $M_D(\C)$ as a $\C$-vector space.
+\end{applem}
+
+\begin{proof}
+    Consider the linear maps $\Phi_A, \Phi_B : M_D(\C) \to \C^d$ given by
+    \begin{align}
+        {\Phi_A(M)}_i := \Tr(M A^i), \quad {\Phi_B(M)}_i := \Tr(M B^i),
+    \end{align}
+    and also the linear maps $ \ell_A, \ell_B : \C^d \to M_D(\C)$ given by
+    \begin{align}
+        \ell_A(c) := \textstyle\sum_i c_i A^i, \quad \ell_B(c) := \textstyle\sum_i c_i B^i\,.
+    \end{align}
+    By the assumption that the $\{A^i\}$ span $M_D(\C)$, the map $\ell_A$ is surjective. Also, $\Phi_A$ is injective: if $\Phi_A(M) = 0$ then $\Tr(M A^i) = 0$ for every $i$; expanding any $N \in M_D(\C)$ as $N = \sum_i c_i A^i$ and using linearity gives $\Tr(M N) = 0$ for every $N$, so $M = 0$ by non-degeneracy of the trace pairing. In particular $\dim \operatorname{range}(\Phi_A) = D^2$.
+
+    The trace identity \cref{eq:trace_id} at length $2$ gives $\Tr(A^i A^j) = \Tr(B^i B^j)$ for every pair $(i, j)$, which by the definitions of $\Phi_A$ and $\Phi_B$ gives ${\Phi_A(A^i)}_j = {\Phi_B(B^i)}_j$, i.e., $\Phi_A \circ \ell_A = \Phi_B \circ \ell_B$ as maps on $\C^d$. Since $\ell_A$ is surjective,
+    \[
+        \begin{aligned}
+            \operatorname{range}(\Phi_A)
+             & = \operatorname{range}(\Phi_A \circ \ell_A) = \operatorname{range}(\Phi_B \circ \ell_B) \subseteq \operatorname{range}(\Phi_B),
+        \end{aligned}
+    \]
+    so $\dim \operatorname{range}(\Phi_B) \ge D^2$. The domain of $\Phi_B$ has dimension $D^2$, so this forces $\dim \operatorname{range}(\Phi_B) = D^2$ and $\Phi_B$ is also injective.
+
+    To conclude that the $\{B^i\}$ span $M_D(\C)$: if they did not, some nonzero $M$ would annihilate $\Span\{B^i\}$ under the non-degenerate trace pairing, giving $\Tr(M B^i) = 0$ for every $i$, i.e., $\Phi_B(M) = 0$ with $M \ne 0$, contradicting the injectivity of $\Phi_B$ proved above.
+\end{proof}
+
+\begin{applem}[Linear extension]\label{applem:lin_ext}
+    There exists a unique $\C$-linear map $T : M_D(\C) \to M_D(\C)$ such that $T(A^i) = B^i$ for every $i$.
+\end{applem}
+
+\begin{proof}
+    Since the $\{A^i\}$ span $M_D(\C)$, every $M \in M_D(\C)$ can be written as $M = \sum_i c_i A^i$ for some coefficients $c_i \in \C$. Define $T(M) := \sum_i c_i B^i$ and check well-definedness: if $\sum_i c_i A^i = 0$ we must show $\sum_i c_i B^i = 0$. For each $j$, summing the trace identity~\eqref{eq:trace_id} at length~$2$ against the coefficients $c_i$ gives
+    \begin{align}
+        \Tr\left((\textstyle\sum_i c_i B^i)\, B^j\right)
+         &=  \sum_i c_i \Tr(B^i B^j)
+        \stackrel{\eqref{eq:trace_id}}{=}  \sum_i c_i \Tr(A^i A^j)
+        =  \Tr\left((\textstyle\sum_i c_i A^i)\, A^j\right) =  0.
+    \end{align}
+    By \cref{applem:b_spans} the $\{B^j\}$ span $M_D(\C)$, so $\Tr((\sum_i c_i B^i)\, N) = 0$ for every $N \in M_D(\C)$, and non-degeneracy of the trace pairing forces $\sum_i c_i B^i = 0$. Uniqueness follows because the $\{A^i\}$ span $M_D(\C)$: any $\C$-linear map agreeing with $T$ on $\{A^i\}$ agrees with it on the whole spanning set, hence everywhere.
+\end{proof}
+
+\begin{applem}[Multiplicativity]\label{applem:mult}
+    The map $T$ of \cref{applem:lin_ext} satisfies $T(MN) = T(M)\,T(N)$ for all $M, N \in M_D(\C)$.
+\end{applem}
+
+\begin{proof}
+    We first show $T(A^i A^j) = B^i B^j$ for every $i, j$. Since the $\{A^i\}$ span $M_D(\C)$, we may write $A^i A^j = \sum_\ell d_\ell A^\ell$ for some scalars $d_\ell = d_\ell(i, j) \in \C$; by linearity and the construction of $T$, we have $T(A^i A^j) = \sum_\ell d_\ell B^\ell$. Then, for each $k$,
+    \begin{align}
+        \Tr(T(A^i A^j)\, B^k)
+         &=  \sum_\ell d_\ell \Tr(B^\ell B^k)                                \stackrel{\eqref{eq:trace_id}}{=}  \sum_\ell d_\ell \Tr(A^\ell A^k)
+        =  \Tr(A^i A^j A^k)
+        \stackrel{\eqref{eq:trace_id}}{=}  \Tr(B^i B^j B^k)\,,
+    \end{align}
+    where the middle equality reassembles $\sum_\ell d_\ell A^\ell = A^i A^j$. Hence $\Tr((T(A^i A^j) - B^i B^j)\, B^k) = 0$ for every $k$. By \cref{applem:b_spans} the $\{B^k\}$ span $M_D(\C)$, so non-degeneracy of the trace pairing gives $T(A^i A^j) = B^i B^j$; since $T(A^i) = B^i$ and $T(A^j) = B^j$ by construction, this is $T(A^i)\,T(A^j)$.
+
+    For general $M,N\in M_D(\C)$, define
+    \begin{align}
+        F(M,N)\coloneqq T(MN)-T(M)T(N)\,.
+    \end{align}
+    The map $F$ is $\C$-bilinear. The first part of the proof shows that
+    $F(A^i,A^j)=0$ for every $i,j$. Since the matrices $\{A^i\}$ span
+    $M_D(\C)$, bilinearity implies $F(M,N)=0$ for all $M,N\in M_D(\C)$.
+    Thus $T(MN)=T(M)T(N)$ for all $M,N$.
+\end{proof}
+
+\begin{applem}[Nonvanishing]\label{applem:nonzero}
+    $T \ne 0$.
+\end{applem}
+
+\begin{proof}
+    If $T = 0$ then $B^i = T(A^i) = 0$ for every $i$, and the trace identities \cref{eq:trace_id} at length $1$ would give $\Tr(A^i) = 0$ for every $i$. Since the $\{A^i\}$ span $M_D(\C)$, every $N \in M_D(\C)$ is a $\C$-linear combination of the $\{A^i\}$, so this would force $\Tr(N) = 0$ for every $N \in M_D(\C)$. But $\Tr(\openone_D) = D \ne 0$, a contradiction.
+\end{proof}
+
+\begin{applem}[Bijectivity]\label{applem:bij}
+    $T$ is a bijection of $M_D(\C)$.
+\end{applem}
+
+\begin{proof}
+    By \cref{applem:mult} the map $T$ is multiplicative. The kernel of a multiplicative $\C$-linear map is closed under both left and right multiplication (if $T(M) = 0$ then $T(MN) = T(M)\,T(N) = 0$ and $T(NM) = T(N)\,T(M) = 0$), hence is a two-sided ideal of $M_D(\C)$. The matrix algebra $M_D(\C)$ is \emph{simple}, meaning its only two-sided ideals are $\{0\}$ and $M_D(\C)$ itself: this is the matrix-algebra case of the Artin-Wedderburn classification, and can be verified directly by showing that any nonzero ideal contains some matrix unit $E_{ij}$ and then, via left and right multiplication by other matrix units, all $E_{k\ell}$. The kernel of $T$ cannot be all of $M_D(\C)$ (\cref{applem:nonzero}), so it is $\{0\}$ and $T$ is injective. As a $\C$-linear injection between two finite-dimensional spaces of equal dimension, $T$ is also surjective.
+\end{proof}
+
+\begin{applem}[Unitality]\label{applem:unit}
+    $T(\openone_D) = \openone_D$. Consequently $T$ is a unital $\C$-algebra automorphism of $M_D(\C)$.
+\end{applem}
+
+\begin{proof}
+    By \cref{applem:bij}, $T$ is surjective, so there exists some $Y \in M_D(\C)$ with $T(Y) = \openone_D$. Multiplicativity then gives
+    \[
+        T(\openone_D) =  T(Y) \cdot T(\openone_D) =  T(Y \cdot \openone_D) =  T(Y) =  \openone_D,
+    \]
+    where the first equality rewrites $T(\openone_D) = \openone_D \cdot T(\openone_D)$ and substitutes $\openone_D = T(Y)$, the second applies multiplicativity to factor $T(Y \cdot \openone_D) = T(Y) \cdot T(\openone_D)$, the third uses $Y \cdot \openone_D = Y$, and the fourth substitutes $T(Y) = \openone_D$. Together with linearity and multiplicativity, $T(\openone_D) = \openone_D$ makes $T$ a unital $\C$-algebra homomorphism of $M_D(\C)$; combined with the bijectivity of \cref{applem:bij} this is a unital $\C$-algebra automorphism.
+\end{proof}
+
+\begin{appthm}[Single-block FT-MPS via the Skolem-Noether theorem]\label{appthm:ftsb}
+    With the setup above, there exists an invertible matrix $X \in \mathrm{GL}_D(\C)$ such that $B^i = X A^i X^{-1}$ for every $i$.
+\end{appthm}
+
+\begin{proof}
+    The Skolem-Noether theorem, specialized to the matrix algebra $M_D(\C)$, states that every unital $\C$-algebra automorphism $\varphi$ of $M_D(\C)$ is \emph{inner}: there exists an invertible matrix $X \in \mathrm{GL}_D(\C)$ such that $\varphi(M) = X M X^{-1}$ for all $M \in M_D(\C)$. This is the matrix-algebra case of the general Skolem-Noether theorem for finite-dimensional central simple algebras. Applying this to the unital automorphism $T$ of \cref{applem:unit} produces such an $X$, and evaluating at $M = A^i$ gives $B^i = T(A^i) = X A^i X^{-1}$.
+\end{proof}
+
+This proof is entirely algebraic: it uses neither quantum Perron-Frobenius theory, nor analytic or spectral arguments. It produces gauge equivalence by an invertible, not necessarily unitary, matrix, in agreement with the gauge-equivalence notion used throughout the formalization. The corresponding paper-to-Lean expansion is recorded in \cref{sec:expansion}.

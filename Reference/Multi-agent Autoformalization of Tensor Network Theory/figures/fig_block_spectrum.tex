@@ -1,0 +1,67 @@
+% fig_block_spectrum.tex  --  the single-block spectrum picture behind the
+% +p step of the canonical-form reduction (figures/fig_cascade.tex), plus
+% the CFII branch.
+% Requires:  \usepackage{tikz, bm}
+%            \usetikzlibrary{arrows.meta, positioning, calc, fit, backgrounds}
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+            font=\scriptsize,
+            >={Stealth[length=3pt]},
+            flow/.style    ={->, semithick, draw=black!80},
+            elbl/.style    ={font=\scriptsize, fill=white, inner sep=1pt},
+            stage/.style   ={font=\scriptsize\bfseries},
+            sub/.style     ={font=\scriptsize\itshape, text=black!65},
+            eig/.style     ={fill=black, draw=none},
+            x=1cm, y=1cm
+        ]
+
+        \node[sub] at (2.35,0.55) {spectrum of $E_{A_k}$ in the unit disk};
+
+        \coordinate (P) at (0.7,-1.05);
+        \draw[draw=black!35,line width=0.2pt] ($(P)+(-0.7,0)$)--($(P)+(0.7,0)$)
+                                              ($(P)+(0,-0.7)$)--($(P)+(0,0.7)$);
+        \draw[thin] (P) circle (0.55);
+        \foreach \a in {90,210,330}{\fill[eig] ($(P)+(\a:0.55)$) circle (0.045);}
+        \fill[eig] ($(P)+(25:0.20)$) circle (0.03);
+        \fill[eig] ($(P)+(165:0.24)$) circle (0.028);
+        \fill[eig] ($(P)+(270:0.16)$) circle (0.026);
+        \node[stage] at (0.7,-1.85) {periodic};
+
+        \coordinate (N) at (3.95,-1.05);
+        \draw[draw=black!35,line width=0.2pt] ($(N)+(-0.7,0)$)--($(N)+(0.7,0)$)
+                                              ($(N)+(0,-0.7)$)--($(N)+(0,0.7)$);
+        \draw[thin] (N) circle (0.55);
+        \draw[densely dashed, draw=black!50] (N) circle (0.30);
+        % the largest subdominant eigenvalue sits ON the dashed circle, so the
+        % gap arrow measures exactly |lambda_1|-|lambda_2| of the drawn spectrum
+        \fill[eig] ($(N)+(0:0.55)$) circle (0.055);
+        \fill[eig] ($(N)+(150:0.17)$) circle (0.03);
+        \fill[eig] ($(N)+(215:0.30)$) circle (0.028);
+        \fill[eig] ($(N)+(95:0.12)$) circle (0.026);
+        % gap measured vertically at the top; label outside the disk so no
+        % white box masks the spectrum
+        \draw[<->, line width=0.4pt] ($(N)+(90:0.30)$) -- ($(N)+(90:0.55)$);
+        \node[font=\tiny] at ($(N)+(-0.28,0.73)$)
+              {$|\lambda_1|{-}|\lambda_2|$};
+        \node[stage] at (3.95,-1.85) {normal};
+
+        \draw[flow] ($(P)+(0.62,0)$) -- node[elbl, above]{$+p$ sites} ($(N)+(-0.62,0)$);
+
+        \draw[flow] ($(N)+(0.30,0.46)$) to[out=50,in=250]
+              node[elbl, right, pos=0.3]{gauge norm.} (5.35,0.20);
+        \node[stage] at (5.35,0.48) {CFII};
+
+    \end{tikzpicture}
+    \caption{Refining one irreducible block $A_k^i$: the single-block picture
+        behind the $+p$ step of \cref{fig:cascade}. The transfer operator
+        $E_{A_k}$ of an irreducible block may have several peripheral
+        eigenvalues, the roots of unity (periodic); blocking $p$ sites leaves
+        a single peripheral eigenvalue $1$, with a gap $|\lambda_1|-|\lambda_2|$
+        to the rest of the spectrum, so the block is normal and its transfer
+        operator primitive. Separately, a gauge normalization of the CF
+        blocks gives canonical form~II (CFII); CFII and biCF are distinct
+        refinements of CF and should not be identified with each
+        other.}\label{fig:block_spectrum}
+\end{figure}
+

@@ -1,0 +1,56 @@
+%======================================================================
+% End Matter (part of the Letter, NOT the Supplementary Material).
+% \input by the main file Draft3.tex.
+%======================================================================
+% The combined architecture/orchestration figure is pinned as a full-width
+% block so it appears at the start of the End Matter; REVTeX figure* floats
+% otherwise tend to move it onto a later or isolated float page.
+\input{figures/fig_architecture_combined}
+
+\section*{Method: Multi-agent autoformalization}
+%======================================================================
+
+
+The formalization was produced by a team of specialized language-model agents coordinated through the shared blueprint and a persistent memory; here an agent is a language-model program that edits files and responds to Lean's type-checking feedback until its task is complete. This End Matter describes the agent roles, the blueprint and memory that coordinate them, and the software built to run them; the Supplementary Material~\cite{Supp} expands each part, reproduces the agent prompts, and reports the full cost analysis.
+
+\prlsection{Multi-agent architecture and implementation}
+The proof development is organized around six specialized agent roles: proof writer, library scout, simplifier, blueprint synchronizer, orchestrator, and reviewer; the last runs automatically on each change proposed to the shared repository. The other five agents work in interactive sessions and share the blueprint and a persistent memory of notes on what has been tried, what worked, and what failed; \cref{fig:architecture} shows the resulting system architecture. Each of these five agents interacts with Lean~4 through file editing and real-time type-checking feedback, the same interface a human developer uses in editors such as VS Code~\cite{MicrosoftCorporation2024Visual}. Proof writing is assigned to the most capable, most expensive language models, since proof errors propagate downstream; scouting, cleanup, and auditing use less expensive models, since failed attempts are cheap to retry; orchestration uses either class of model, according to the complexity of the task. The resulting usage by role is shown in \cref{fig:role_model_main}, and \cref{fig:model_gantt_main} shows when each model was in use over the project; the full cost analysis appears in the Supplementary Material~\cite{Supp}.
+
+These six roles were not fixed from the start: whenever a recurring bottleneck appeared, often reported by the agents themselves, the supervisor introduced a new role for the missing function, and the full set was in place within the first six weeks of the project.
+
+The agents interact through a small set of recurring coordination patterns: parallel dispatch, shown in panel~(a) of \cref{fig:orchestration}, where the orchestrator sends out many independent tasks; scout-then-prove, shown in panel~(b) of \cref{fig:orchestration}, where a scout runs an inexpensive library search before the prover attempts a costly proof; and review-repair cycles, shown in panel~(c) of \cref{fig:orchestration}, where a reviewer-fixer pair cycles through review and repair. Scout-then-prove was reused most often: a fast, inexpensive agent first identifies the relevant existing results in Mathlib, and a more capable agent then uses them to construct the proof. The remaining agents audit and reorganize in review-repair cycles: the blueprint synchronizer keeps the blueprint and the Lean code in step, the simplifier compresses long proofs, and the reviewer cross-checks claims against the primary literature.
+
+The system we build and use is not an off-the-shelf coding assistant like Claude Code or Codex.
+The system is built from the language-model interfaces (API calls) as a software that runs the agents, TeXRA~\cite{TeXRA}; the Lean-specific roles, tools, and prompts are additions built for this project.
+The agent prompts and role definitions are released with TNLean~\cite{TNLean}; TeXRA itself is available separately, and the system prompts of the interactive roles are reproduced in the Supplementary Material~\cite{Supp}.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figures/costs/fig_role_model_tokens.pdf}
+    \caption{Token usage by agent role, each bar broken down by the
+        language models that role used. Proof writing and orchestration
+        dominate, consistent with assigning the most capable models to the
+        tasks where an error is most expensive.}\label{fig:role_model_main}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\linewidth]{figures/costs/fig_model_gantt_tokens.pdf}
+    \caption{Model usage over the project. Newer model releases
+        progressively replaced older ones within each provider family, and the
+        token usage concentrated on the most capable models available at each
+        time. Each model's period of use is shown as a ribbon, sorted by first
+        use: one color family per provider, shade distinguishing models within a
+        family, and ribbon width tracing the daily token usage on one scale
+        shared across every model; the number at the end of each ribbon is that
+        model's total. The dashed vertical lines mark the dates the injective
+        case of FT-MPS, the SPT cohomological invariant, and the FT-MPS proof
+        chains reported in this work became fully verified.}\label{fig:model_gantt_main}
+\end{figure}
+
+\prlsection{Blueprint, memory, and human oversight}
+Two shared elements support this architecture: the blueprint and the persistent memory. Every definition, lemma, and theorem in the blueprint carries a proof sketch, a proof status, and its logical dependencies, and is linked to the Lean declarations that formalize it~\cite{Massot2021Leanblueprint}. A theorem stated across several sources in different notations is written once in the blueprint and then proved in Lean, so the blueprint sits between the primary literature and the Lean code (\cref{fig:alignment}). The blueprint is publicly available~\cite{TNLeanBlueprint}, and the Supplementary Material~\cite{Supp} reproduces the portion of its dependency graph around the fundamental theorem at print scale. The persistent memory separately records scouting results, proof strategies, counterexamples, and technique notes across sessions (the bounded working periods after which an agent's conversation is set aside and no longer read by later agents); without it, each dead end would be re-investigated from scratch.
+
+The blueprint is also where the project separates \textit{tactical} from \textit{strategic} decisions. Tactical decisions belong to the agents: which Mathlib lemmas to invoke, when to abandon a failed approach, how to decompose a long argument into intermediate lemmas, and what definitions to try for MPS tensors and transfer operators, down to how the \nFilesfull{} source files of the full library are organized. Strategic decisions remain with the human supervisor: whether the formal statement is the theorem intended by the primary literature, and whether its hypotheses are correct. The supervisor acts through blueprint review and by steering the orchestrator (assigning stronger or more economical models to each task, redirecting the orchestrator away from unproductive routes), never by writing Lean code or choosing proof tactics; the supervision effort therefore does not grow with the length of individual proofs, since Lean already checks each proof. The supervisor reviewed the blueprint in \nReviewRounds{} rounds, each assisted by separate review agents that cross-checked chapters against the primary literature~\cite{Perez-Garcia2007Matrix,Cirac2017Matrixa,Cirac2021Matrix,Sanz2010Quantum}; each round surfaced 10--30 issues, chiefly missing hypotheses, mismatched definitions, and overly general claims, of which the doubly-stochastic gauge and the asymptotic reformulation traced in the main text are representative. This division of labor proved effective: most tactical decisions survived blueprint review, and where they did not, the review traced the error to a definition or an unintended hypothesis, which the agents then corrected.
+
+As anticipated in the Introduction, no language-model context window can hold the source literature, the growing blueprint, and the expanding formal library at once; the work is therefore split into the many bounded sessions coordinated above. Within a session, too, the orchestrator's own conversation grows until it must be condensed: older exchanges are replaced by summaries while the list of running agents and open tasks is retained, so durable knowledge resides in the persistent memory rather than in any one conversation. This memory is what lets a fixed context window, and a fixed amount of supervisor effort, span a project far larger than either could otherwise hold.

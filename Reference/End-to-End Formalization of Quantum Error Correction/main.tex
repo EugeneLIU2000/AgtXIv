@@ -1,0 +1,151 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{stmaryrd}
+\usepackage[table]{xcolor}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{braket}
+\usepackage{microtype}
+\usepackage{authblk}
+\usepackage{blkarray}
+\usepackage{thmtools}
+\usepackage{tikz-cd}
+\usepackage{physics}
+\usepackage[most]{tcolorbox}
+%\usepackage{unicode-math}
+
+\newtcolorbox{mybox}[1][]{
+    breakable,                % This allows the box to split across pages
+    colback=blue!5!white,      % Background color
+    colframe=blue!75!black,    % Border and title bar color
+    % fonttitle controls the style of the title text
+    fonttitle=\bfseries\large,
+    title={#1},       % Title text
+    enhanced,                  % Allows for more styling
+    attach boxed title to top left={yshift=-2mm, xshift=2mm},
+    boxed title style={colback=blue!75!black},
+    #1                         % Allows for additional local arguments
+}
+
+\DeclareMathOperator{\Fun}{Fun}
+
+
+\lstdefinelanguage{Lean}{
+  morekeywords={def,theorem,lemma,structure,where,abbrev,noncomputable,let,fun,if,then,else,by,sorry,import,variable,instance,section,end,open,set_option,example,class,inductive,namespace,match,with,do,return,have,show,calc,suffices,obtain,rcases,refine,exact,apply,intro,intros,rw,simp,unfold,dsimp,constructor,cases,induction},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]",
+  literate={:=}{$\coloneqq$}2
+}
+
+\lstset{
+  language=Lean,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{red!60!black},
+  breaklines=true,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{gray!50},
+  backgroundcolor=\color{gray!5},
+  xleftmargin=2em,
+  xrightmargin=1em,
+  aboveskip=0.8em,
+  belowskip=0.8em,
+  columns=flexible,
+  mathescape=true,
+  keepspaces=true,
+  showstringspaces=false,
+  escapeinside={(*@}{@*)},
+  extendedchars=true,
+  literate={↥}{{$\uparrow$}}1
+           {≤}{{$\le$}}1
+           {≥}{{$\ge$}}1
+           {→}{{$\to$}}1
+           {ℕ}{{$\mathbb{N}$}}1
+           {⊢}{{$\vdash$}}1
+           {₁}{{$_1$}}1
+           {₂}{{$_2$}}1
+           {ₛₗ}{{$_{\text{sl}}$}}1
+           {ℂ}{{$\mathbb{C}$}}1
+           {∑}{{$\sum$}}1
+           {‖}{{$||$}}1
+           {ₙ}{{$_n$}}1
+           {α}{{$\alpha$}}1
+           {β}{{$\beta$}}1
+           {γ}{{$\gamma$}}1
+           {×}{{$\times$}}1
+           {ψ}{{$\psi$}}1
+           {⟨}{{$\langle$}}1
+           {⟩}{{$\rangle$}}1
+           {•}{{$\bullet$}}1
+           {∈}{{$\in$}}1
+           {∀}{{$\forall$}}1
+           {←}{{$\leftarrow$}}1
+           {₀}{{$_0$}}1
+           {λ}{{$\lambda$}}1
+           {↥}{{$\uparrow$}}1
+           {↪}{{$\hookrightarrow$}}1
+           {∧}{{$\wedge$}}1
+           {≃}{{$\simeq$}}1
+           {ₘ}{{$_m$}}1
+           {∃}{{$\exists$}}1
+           {⊗}{{$\otimes$}}1
+           {ₚ}{{$_p$}}1
+           {⁻¹}{{$^{-1}$}}1
+           {∉}{{$\notin$}}1
+           {⊆}{{$\subseteq$}}1
+           {¬}{{$\neg$}}1
+           {ₓ}{{$_x$}}1
+}
+
+
+
+\include{macros}
+
+\title{\textbf{End-to-End Formalization of Quantum Error Correction}}
+\author[ ]{Mattias Ehatamm}
+\author[ ]{Yi Lee}
+\author[ ]{Xiaodi Wu}
+\author[ ]{Runzhou Tao}
+\affil[ ]
+{Joint Center for Quantum Information and Computer Science, University of Maryland, College Park}
+\affil[ ]{\texttt{\{mehatamm, ylee1228, xiaodiwu, rztao\}@umd.edu}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{chapters/0_abstract}
+
+\input{chapters/1_introduction}
+
+\input{chapters/2_background}
+
+\input{chapters/3_qec_background}
+
+\input{chapters/5_distance}
+
+\input{chapters/6_case_studies}
+
+\input{chapters/7_discussion}
+
+\input{chapters/8_acknowledgements}
+
+%----------------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

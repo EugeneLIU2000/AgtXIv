@@ -1,0 +1,47 @@
+\begin{abstract}
+% Quantum computing promises exponential advantages on a number of classically
+% intractable problems. However, quantum computers face large amounts of noise
+% and must be accompanied by robust error correction to work properly. When
+% running quantum computations, we cannot perform testing: unlike classical
+% programs, quantum program outputs are costly to sample, may have non-classical
+% output, and are produced on noisy hardware. Building end-to-end confidence in
+% the correctness of quantum computations therefore requires verified
+% error-correction guarantees at the foundation.
+%
+% We present a formalization of the theory of quantum error correction (QEC) in
+% the Lean interactive theorem prover. Our library formalizes the linear algebra
+% underlying quantum computing, the theory of the Pauli group, stabilizer codes,
+% the binary symplectic representation, classical coding theory, and a number of
+% well-studied QEC code families. A central contribution is an end-to-end
+% framework for verifying code distance through an integrated SAT solver: code
+% distance conditions are translated into Boolean satisfiability constraints via
+% a verified reduction, exported to an external SAT solver, and the solver's
+% result is reconstructed as a Lean-checked proof artifact. We demonstrate this
+% pipeline on concrete code instances, including some from the practically
+% relevant Bivariate Bicycle Code family, successfully verifying their distance
+% properties within the proof assistant. We also demonstrate extensibility for
+% larger code instances. Our work provides a reusable, machine-checked library
+% for quantum error correction that fits into broader Lean-based quantum
+% formalization efforts.
+%
+Quantum error-correcting codes (QECCs) sit between noisy quantum hardware and
+reliable computation, so the code parameters used in practice must be
+trustworthy. The single number that summarizes a code's strength is its
+\emph{distance}, yet certifying a distance lower bound is NP-hard in general,
+placing it beyond the reach of pen-and-paper proofs as well as direct
+proof-assistant scripting. As a result, distance values in the literature
+come either from non-scaling hand proofs, or from
+unverified solvers that leave a trust gap exactly where the code is supposed to
+provide a guarantee.
+We present \textsc{Lean-QEC}, the first Lean 4 formalization of stabilizer-code
+theory that delivers end-to-end, machine-checked distance certificates at
+industrial code sizes. \textsc{Lean-QEC} formalizes the linear algebra of qubit
+states, the Pauli group, stabilizer codes, the binary symplectic representation,
+classical coding theory, and the CSS and Bivariate Bicycle families. To break the combinatorial barrier, \textsc{Lean-QEC} translates the distance
+condition into a Boolean satisfiability formula through a verified reduction. The pipeline scales through a \textsc{BitVec}-flattened
+encoding that replaces Lean's \textsc{Matrix} representation, and an
+error-\emph{location} encoding that reduces the variable count from $n$ to
+$k\lceil \log_2 n\rceil$. With these, we obtain automatically-generated Lean-checked distance proofs for a large range of industrially viable qLDPC codes within the Bivariate Bicycle and Generalized Bicycle families, including $\llbracket 90, 8, 10 \rrbracket$ and $\llbracket 70, 6, 9 \rrbracket$ BB codes, with the formulation scaling up to 144 qubits when performed outside the Lean kernel. The resulting library is reusable and is designed to
+plug into broader Lean-based efforts toward end-to-end verification of
+fault-tolerant quantum computation.
+\end{abstract}

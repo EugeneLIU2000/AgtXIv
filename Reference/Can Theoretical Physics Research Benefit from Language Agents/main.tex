@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage[preprint]{icml2026}
+% \usepackage[nohyperref]{icml2026}
+% \usepackage[accepted]{icml2026}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\usepackage[textsize=tiny,disable]{todonotes}
+\icmltitlerunning{Can Theoretical Physics Research Benefit from Language Agents?}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tcolorbox}
+\usepackage[compat=1.1.0]{tikz-feynman} % for Feynman diagrams
+
+% For latexdiff-style markup
+\usepackage{soul}
+\definecolor{DIFadd}{RGB}{0,127,0}
+\definecolor{DIFdel}{RGB}{220,20,60}
+\newcommand{\DIFadd}[1]{{\color{DIFadd}\textbf{#1}}}
+\newcommand{\DIFdel}[1]{{\color{DIFdel}\st{#1}}}
+% For code listings
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\small,
+    columns=flexible,
+    breaklines=true
+}
+
+\usepackage{tikz}
+\usetikzlibrary{calc,chains,positioning,backgrounds}
+\usetikzlibrary{arrows.meta, positioning, shapes, chains, backgrounds, calc}
+% from hand-waving dance of TN
+\tikzset{ten/.style={fill=tensorblue}}
+\tikzset{tenred/.style={fill=tensorred}}
+\tikzset{tengreen/.style={fill=green!50!black!50}}
+\tikzset{tenpurp/.style={fill=tensorpurp}}
+\tikzset{tengrey/.style={fill=black!20}}
+\tikzset{tenorange/.style={fill=orange!30}}
+\tikzset{u/.style={fill=blue!20,draw=black}}
+\tikzset{w/.style={fill=green!50!black!80,draw=black}}
+\definecolor{tensorblue}{rgb}{0.8,0.8,1}
+\definecolor{tensorred}{rgb}{1,0.5,0.5}
+\definecolor{tensorpurp}{rgb}{1,0.5,1}
+
+\newcommand{\diagram}[1]{ \begin{array}{cc}\begin{tikzpicture}[scale=.5,every node/.style={sloped,allow upside down},baseline={([yshift=+0ex]current bounding box.center)}] #1 \end{tikzpicture} \end{array} }
+
+
+
+
+
+\begin{document}
+
+\twocolumn[
+  \icmltitle{Can Theoretical Physics Research Benefit from Language Agents?}
+
+  \icmlsetsymbol{equal}{*}
+  \icmlsetsymbol{eqsup}{\textsuperscript{\dag}}
+
+  \begin{icmlauthorlist}
+    \icmlauthor{Sirui Lu}{mpq,mcqst}
+    \icmlauthor{Zhijing Jin}{mpi}
+    \icmlauthor{Terry Jingchen Zhang}{eth}
+    \icmlauthor{Pavel Kos}{mpq,mcqst}
+    \icmlauthor{J. Ignacio Cirac}{eqsup,mpq,mcqst}
+    \icmlauthor{Bernhard Sch\"olkopf}{eqsup,mpi,eth}
+  \end{icmlauthorlist}
+
+  \icmlaffiliation{mpq}{Max-Planck-Institut f\"ur Quantenoptik, Garching, Germany}
+  \icmlaffiliation{mcqst}{Munich Center for Quantum Science and Technology, M\"unchen, Germany}
+  \icmlaffiliation{mpi}{Max-Planck-Institut f\"ur Intelligente Systeme, T\"ubingen, Germany}
+  \icmlaffiliation{eth}{ETH Z\"urich, Z\"urich, Switzerland}
+  \icmlcorrespondingauthor{Sirui Lu}{sirui.lu@mpq.mpg.de}
+
+  \vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ 
+\printAffiliationsAndNotice{$^\dag$ Equal Supervision}
+
+
+\input{Sections/MainText}
+
+\section*{Acknowledgments}
+S.L. thanks Tao Shi, Xingyan Chen, and Xiao-Liang Qi for helpful discussion.
+This work is partially supported by the T\"ubingen AI Center
+and by the Machine Learning Cluster of Excellence, EXC number 2064/1 - Project number 390727645.
+
+\newpage
+\appendix
+\onecolumn
+\end{document}

@@ -1,0 +1,295 @@
+%========================================================
+% Package Imports
+%========================================================
+\usepackage{mathtools, amssymb, mathrsfs, amsthm, amsmath} % Mathematical symbols and formatting
+\usepackage[margin=1in]{geometry} % Set page margins
+\usepackage{graphicx} % Include graphics
+\usepackage{bm} % Bold math symbols
+\graphicspath{{images/}} % Default image path
+\usepackage{caption, subcaption} % Captioning for figures and tables
+\usepackage{enumitem} % Customizable lists
+\usepackage{titlesec} % Section title customization
+\usepackage[utf8]{inputenc} % UTF-8 encoding
+\usepackage[english]{babel} % Language support
+\usepackage{multirow} % Multirow tables
+\usepackage[numbers,sort&compress]{natbib} % Bibliography management
+\usepackage{makecell} % Advanced table formatting
+\usepackage{booktabs} % Table formatting enhancements
+\usepackage{array} % Array formatting
+\usepackage{dsfont} % Double-stroke font
+\usepackage{algorithm} % Algorithm environment
+\usepackage[noend]{algpseudocode} % Pseudocode form\atting
+\usepackage{hyperref} % Hyperlinks
+\usepackage[dvipsnames]{xcolor} % Extended color options
+\usepackage{cleveref} % Smart referencing
+\usepackage{autonum} % Automatic equation numbering
+\usepackage{sectsty} % Section style customization
+\usepackage{physics} % Physics notation, including \dd for integrals
+\usepackage{comment} % Comment blocks
+\usepackage{parskip} % Adjust paragraph spacing
+\setlength{\parskip}{0.3em} % Paragraph spacing
+\setlength{\parindent}{15pt} % Paragraph indentation
+\usepackage{tikz} % TikZ graphics
+\usetikzlibrary{positioning} % TikZ positioning
+\usepackage{authblk} % Author and affiliation formatting
+\usepackage{etex}
+
+%========================================================
+% Hyperlink Setup
+%========================================================
+\hypersetup{colorlinks, linkcolor={RoyalBlue}, citecolor={RoyalBlue}, urlcolor={RoyalBlue}}
+
+%========================================================
+% Custom Algorithm Commands
+%========================================================
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+%========================================================
+% Theorem-like Environments
+%========================================================
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{definition}  % Definition-style theorem environments
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+
+
+% General
+\def\wh{\widehat}
+\def\inv{^{-1}}
+\def\0{\mathbf{0}}
+\def\1{\mathbf{1}}
+\def\trans{^{\mathrm{T}}}
+\def\star{^{*}}
+\def\pr{\hbox{pr}}
+\newcommand{\diag}{{\mathrm{diag}}}
+
+% \POPGWAS
+\newcommand{\betaylab}{\hat{\beta}_{Y, j}^{\textnormal{lab}}}
+\newcommand{\betayhatlab}{\hat{\beta}_{\wh Y, j}^{\textnormal{lab}}}
+\newcommand{\betayhatunlab}{\hat{\beta}_{\wh Y, j}^{\textnormal{unlab}}}
+\newcommand{\Xlabj}{\bm{G}_{\textnormal{lab}, j}}
+\newcommand{\Xunlabj}{\bm{G}_{\textnormal{unlab}, j}}
+\newcommand{\Ylab}{\bm{Y}_\textnormal{lab}}
+\newcommand{\Yhatlab}{\hat{\bm{Y}}_\textnormal{lab}}
+\newcommand{\Yhatunlab}{\hat{\bm{Y}}_\textnormal{unlab}}
+\newcommand{\betapop}{\hat{\beta}_{\textnormal{POP}, j}}
+\newcommand{\zylab}{z_{Y, j}^{\textnormal{lab}}}
+\newcommand{\zyhatlab}{z_{\wh Y, j}^{\textnormal{lab}}}
+\newcommand{\zyhatunlab}{z_{\wh Y, j}^{\textnormal{unlab}}}
+\newcommand{\zpop}{z_{\textnormal{POP}, j}}
+\newcommand{\ppop}{p_{\textnormal{POP}, j}}
+\newcommand{\Nlab}{N_{\textnormal{lab}}}
+\newcommand{\Nunlab}{N_{\textnormal{unlab}}}
+\newcommand{\Neff}{N_{\textnormal{eff}}}
+\newcommand{\Novp}{N_{\textnormal{ovp}}}
+\def\POPGWAS{\texttt{POP-GWAS}}
+\newcommand{\myVar}{\operatorname{Var}}
+\newcommand{\myCor}{\operatorname{Cor}}
+\newcommand{\mySE}{\operatorname{SE}}
+\newcommand{\myCov}{\operatorname{Cov}}
+
+\def\aphjone{\alpha_1^j}
+\def\aphjzero{\alpha_0^j}
+
+\def\bthjone{\wh\beta^1_j}
+\def\bthjzero{\wh\beta^0_j}
+\def\btjone{\beta^1_j}
+\def\btjzero{\beta^0_j}
+\def\btj{\beta_j}
+\newcommand{\iid}{\stackrel{\text{i.i.d.}}{\sim}}
+\renewcommand{\P}{\textup{Pr}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Eone}{\E_{\D_1}}
+\newcommand{\Etwo}{\E_{\D_2}}
+\newcommand{\estPopInf}{\wh{p}_{{\textnormal{\PopInf}}}}
+\newcommand{\estPopInfj}{\wh{p}_{{\mathrm{\PopInf}}_j}}
+\newcommand{\ipw}{^{\textnormal{(IPW)}}}
+\newcommand{\PopInf}{\texttt{POP-Inf}}
+
+
+%%%%% convergence
+\newcommand{\coP}{\stackrel{P}{\rightarrow}}
+\newcommand{\coD}{\stackrel{D}{\rightarrow}}
+
+
+
+%----- blackboard bold fonts-----%
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\BB}{\mathbb{B}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\VV}{\mathbb{V}}
+\newcommand{\GG}{\mathbb{G}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\KK}{\mathbb{K}}
+\newcommand{\LL}{\mathbb{L}}
+\newcommand{\MM}{\mathbb{M}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\SSS}{\mathbb{S}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\XX}{\mathbb{X}}
+\newcommand{\YY}{\mathbb{Y}}
+\newcommand{\OOmega}{\mathbb{\Omega}}
+\newcommand{\E}{{\mathbb E}}
+\newcommand{\B}{{\mathbb B}}
+
+
+% Bold face letters
+
+%----- bold fonts -----%
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bb}{\bm{b}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\bd}{\bm{d}}
+\newcommand{\be}{\bm{e}}
+\newcommand{\bbf}{\bm{f}}
+\newcommand{\bg}{\bm{g}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bi}{\bmf{i}}
+\newcommand{\bj}{\bm{j}}
+\newcommand{\bk}{\bm{k}}
+\newcommand{\bl}{\bm{l}}
+\newcommand{\bbm}{\bm{m}}
+\newcommand{\bn}{\bm{n}}
+\newcommand{\bo}{\bm{o}}
+\newcommand{\bp}{\bm{p}}
+\newcommand{\bq}{\bm{q}}
+\newcommand{\br}{\bm{r}}
+\newcommand{\bu}{\bm{u}}
+\newcommand{\bv}{\bm{v}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bz}{\bm{z}}
+
+\newcommand{\bA}{\bm{A}}
+\newcommand{\bB}{\bm{B}}
+\newcommand{\bC}{\bm{C}}
+\newcommand{\bD}{\bm{D}}
+\newcommand{\bE}{\bm{E}}
+\newcommand{\bF}{\bm{F}}
+\newcommand{\bG}{\bm{G}}
+\newcommand{\bH}{\bm{H}}
+\newcommand{\bI}{\bm{I}}
+\newcommand{\bJ}{\bm{J}}
+\newcommand{\bK}{\bm{K}}
+\newcommand{\bL}{\bm{L}}
+\newcommand{\bM}{\bm{M}}
+\newcommand{\bN}{\bm{N}}
+\newcommand{\bO}{\bm{O}}
+\newcommand{\bP}{\bm{P}}
+\newcommand{\bQ}{\bm{Q}}
+\newcommand{\bR}{\bm{R}}
+\newcommand{\bS}{\bm{S}}
+\newcommand{\bT}{\bm{T}}
+\newcommand{\bU}{\bm{U}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bZ}{\bm{Z}}
+
+% Bold face letters
+\def\A{\mathbf{A}}
+\def\a{\mathbf{a}}
+\def\B{\mathbf{B}}
+\def\b{\mathbf{b}}
+\def\C{\mathbf{C}}
+\def\c{\mathbf{c}}
+\def\D{\mathbf{D}}
+\def\d{\mathbf{d}}
+\def\e{\mathbf{e}}
+\def\F{\mathbf{F}}
+\def\f{\mathbf{f}}
+\def\G{\mathbf{G}}
+\def\g{\mathbf{g}}
+\def\H{\mathbf{H}}
+\def\h{\mathbf{h}}
+\def\I{\mathbf{I}}
+\def\l{\mathbf{l}}
+\def\M{\mathbf{M}}
+\def\O{\mathbf{O}}
+\def\o{\mathbf{o}}
+\def\R{\mathbf{R}}
+\def\s{\mathbf{s}}
+\def\S{\mathbf{S}}
+\def\U{\mathbf{U}}
+\def\u{\mathbf{u}}
+\def\V{\mathbf{V}}
+\def\v{\mathbf{v}}
+\def\X{\mathbf{X}}
+\def\x{\mathbf{x}}
+\def\Y{\mathbf{Y}}
+\def\y{\mathbf{y}}
+\def\Z{\mathbf{Z}}
+\def\z{\mathbf{z}}
+
+
+%----- calligraphic fonts -----%
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calS}{{\mathcal{S}}}
+\newcommand{\calT}{{\mathcal{T}}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calV}{\mathcal{V}}
+\newcommand{\calW}{\mathcal{W}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calY}{\mathcal{Y}}
+\newcommand{\calZ}{\mathcal{Z}}
+
+
+
+% Bold face Greek letters
+\def\bpsi{\boldsymbol\psi}
+\def\bOmega{{\boldsymbol\Omega}}
+\def\bomega{{\boldsymbol\omega}}
+\def\bzeta{{\boldsymbol\zeta}}
+\def\bSigma{{\boldsymbol{\Sigma}}}
+\def\btheta{{\boldsymbol{\theta}}}
+\def\bTheta{{\boldsymbol{\Theta}}}
+\def\bta{{\boldsymbol{\eta}}}
+\def\bmeta{\boldsymbol\eta}
+\def\bbeta{\boldsymbol\beta}
+\def\bmu{\boldsymbol\mu}
+
+% variance and covariance
+\def\hcovl{\wh{\textnormal{Cov}}_{l}}
+\def\covl{\textnormal{Cov}_{l}}
+\def\varl{\textnormal{Var}_{l}}
+\def\varu{\textnormal{Var}_{u}}
+\def\hvarl{\wh{\textnormal{Var}}_{l}}
+\def\hvaru{\wh{\textnormal{Var}}_{l}}
+
+\def\convp{\stackrel{P}{\rightarrow}}
+
+
+\def\bbR{\mathbb{R}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
