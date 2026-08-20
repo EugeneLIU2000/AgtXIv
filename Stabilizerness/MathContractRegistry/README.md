@@ -36,7 +36,10 @@ MathContractRegistry/
     │   └── manifest.json
     ├── index.html
     ├── styles.css
-    └── app.js
+    ├── app.js
+    ├── pauli-active.html
+    ├── pauli-active.css
+    └── pauli-active.js
 ```
 
 ## 每个节点的统一接口
@@ -109,6 +112,8 @@ python3 -m http.server 8000
 ```
 
 然后打开 `http://localhost:8000/Stabilizerness/MathContractRegistry/demo/`。Demo 使用 vendored `d3-dag` 1.2.2 Sugiyama layout，展示 65 个 mathematical interfaces、5 个 mapped Paper Agents 和 114 条 typed Oracle candidate dependencies。8 个 unresolved external mathematical interfaces 保持 claim 节点，不再伪装成 query-level Root Agents，也不进入 Target Agent 下拉框。
+
+主页面还链接到 `pauli-active.html`，这是一个四步只读审计视图：它从 citation/prose candidate graph 开始，逐步加入 Pauli product parity、`Pauli-active dependency`、relaxation exactness 和有限实例证书，最后展示 graph-only value `1` 与 exact projected RoM `5/4` 的不一致。该视图只解释已有记录，不修改 Registry、DAG 或任何 acceptance 状态。
 
 Target Agent 和 Query Interface 下拉框沿 candidate incoming edges 计算 backward closure。query status panel 显示 closure size、candidate edges、Lean-linked nodes、GAP、PLANNED_DELTA、visible blockers、$U(q)$、`DAGComplete` 和 `VerificationClosed`。`DAGComplete` 仅在 unresolved frontier 非空时安全地显示 `FALSE`；如果 frontier 为空但 edge review 仍处于 Oracle candidate 阶段，则显示 `NOT EVALUABLE`，不会提前宣称完成。
 
