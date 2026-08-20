@@ -20,7 +20,7 @@
   white-space: nowrap;
 }
 #stepBadge.import { color: var(--green); }
-#stepBadge.rejected { color: var(--red); background: var(--red-soft); }
+#stepBadge.rejected { color: var(--ink); background: #efeee8; border-style: double; }
 #stepBadge.foundation { color: var(--purple); background: var(--purple-soft); }
 
 .lineage-query-bar { grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) minmax(280px, 1.1fr); }
@@ -44,19 +44,35 @@
 .lineage-status-panel { grid-template-columns: repeat(5, minmax(150px, 1fr)); }
 .lineage-status-panel .query-metric span { min-height: 22px; }
 .lineage-status-panel .query-metric strong { overflow-wrap: anywhere; font-size: 13px; }
-.lineage-status-panel .query-metric.state strong { color: var(--amber); }
-.lineage-status-panel .query-metric.state.rejected strong { color: var(--red); }
+.lineage-status-panel .query-metric.state strong { color: var(--ink); }
+.lineage-status-panel .query-metric.state.rejected strong { color: var(--ink); text-decoration: line-through; }
 
-.relationship-key .edge-key-citation { border-top-color: var(--blue); border-top-style: dashed; }
-.relationship-key .edge-key-citation::after { border-left-color: var(--blue); }
-.relationship-key .edge-key-import { border-top-color: var(--green); border-top-style: solid; }
-.relationship-key .edge-key-import::after { border-left-color: var(--green); }
-.relationship-key .edge-key-foundation { border-top: 2.5px dotted var(--purple); }
-.relationship-key .edge-key-foundation::after { border-left-color: var(--purple); }
-.relationship-key .edge-key-derive { border-top-color: var(--amber); border-top-style: solid; }
-.relationship-key .edge-key-derive::after { border-left-color: var(--amber); }
-.relationship-key .edge-key-rejected { border-top-color: var(--red); border-top-style: dashed; }
-.relationship-key .edge-key-rejected::after { border-left-color: var(--red); }
+.relationship-key .edge-key-citation,
+.relationship-key .edge-key-import,
+.relationship-key .edge-key-foundation,
+.relationship-key .edge-key-derive,
+.relationship-key .edge-key-rejected { border-top-color: #40554b; }
+.relationship-key .edge-key-citation { border-top-style: dashed; }
+.relationship-key .edge-key-import { border-top-width: 3px; border-top-style: solid; }
+.relationship-key .edge-key-foundation { border-top-style: dotted; }
+.relationship-key .edge-key-derive { border-top-style: double; }
+.relationship-key .edge-key-citation::after,
+.relationship-key .edge-key-import::after,
+.relationship-key .edge-key-foundation::after,
+.relationship-key .edge-key-derive::after { border-left-color: #40554b; }
+.relationship-key .edge-key-rejected { border-top-style: dashed; }
+.relationship-key .edge-key-rejected::after {
+  right: -8px;
+  top: -13px;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  color: var(--ink);
+  background: var(--panel);
+  content: "×";
+  font: 900 19px/17px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+}
 
 .legend .lineage-agent { width: 14px; height: 14px; background: var(--blue); }
 .legend .lineage-source { background: var(--green); }
@@ -157,21 +173,56 @@
 .lineage-edge,
 .lineage-edge-hit { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .lineage-edge-underlay { stroke: rgba(255, 253, 248, 0.96); stroke-width: 5.5; }
-.lineage-edge { stroke: #8f9e96; stroke-width: 1.6; opacity: 0.72; transition: opacity 150ms ease, stroke-width 150ms ease; }
+.lineage-edge { stroke: #40554b; stroke-width: 1.6; opacity: 0.68; transition: opacity 150ms ease, stroke-width 150ms ease; }
 .lineage-edge-hit { stroke: transparent; stroke-width: 16; cursor: help; pointer-events: stroke; }
-.lineage-edge.paper_cites { stroke: var(--blue); stroke-dasharray: 9 6; }
-.lineage-edge.theorem_import { stroke: var(--green); stroke-width: 2.4; }
-.lineage-edge.local_derivation { stroke: var(--amber); }
-.lineage-edge.shared_foundation { stroke: var(--purple); stroke-dasharray: 2 6; }
-.lineage-edge.derives { stroke: var(--amber); stroke-width: 2.2; }
-.lineage-edge.rejected_shortcut { stroke: var(--red); stroke-dasharray: 8 6; }
+.lineage-edge.paper_cites { stroke-dasharray: 10 7; }
+.lineage-edge.theorem_import { stroke-width: 2.4; }
+.lineage-edge.local_derivation { stroke-dasharray: 14 4 2 4; }
+.lineage-edge.shared_foundation { stroke-dasharray: 2 7; }
+.lineage-edge.derives { stroke-width: 2.2; stroke-dasharray: 16 4; }
+.lineage-edge.rejected_shortcut { stroke-dasharray: 9 7; }
 .lineage-edge.membership { stroke: #aeb7b2; stroke-width: 1.1; stroke-dasharray: 2 8; }
-.lineage-edge-group.step-current .lineage-edge { stroke-width: 3.3; opacity: 1; }
+.lineage-edge-group.step-current .lineage-edge {
+  stroke-width: 3.3;
+  opacity: 1;
+  animation: lineage-edge-pulse 900ms ease-in-out infinite alternate;
+}
+.lineage-edge-group.step-current .lineage-edge.paper_cites,
+.lineage-edge-group.step-current .lineage-edge.shared_foundation,
+.lineage-edge-group.step-current .lineage-edge.derives,
+.lineage-edge-group.step-current .lineage-edge.local_derivation,
+.lineage-edge-group.step-current .lineage-edge.rejected_shortcut {
+  animation: lineage-edge-flow 1150ms linear infinite, lineage-edge-pulse 900ms ease-in-out infinite alternate;
+}
+.lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .lineage-edge-underlay {
+  stroke: rgba(23, 33, 28, 0.16);
+  stroke-width: 13;
+  animation: shortcut-halo 850ms ease-in-out infinite alternate;
+}
 .lineage-edge-group.step-context .lineage-edge { opacity: 0.28; }
 .lineage-edge-group.step-muted { opacity: 0.07; pointer-events: none; }
 .lineage-edge-group.hover-active { opacity: 1; }
 .lineage-edge-group.hover-active .lineage-edge { stroke-width: 4; opacity: 1; }
 .lineage-edge-group.hover-muted { opacity: 0.035; }
+
+.edge-cancel-symbol { opacity: 0; pointer-events: none; }
+.edge-cancel-mark { opacity: 1; transform-box: fill-box; transform-origin: center; }
+.edge-cancel-symbol circle { fill: var(--panel); stroke: var(--ink); stroke-width: 2.5; }
+.edge-cancel-symbol line { stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; }
+.lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .edge-cancel-symbol { opacity: 1; }
+.lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .edge-cancel-mark {
+  animation: cancel-pop 460ms cubic-bezier(0.2, 1.5, 0.45, 1) 520ms both;
+}
+.lineage-edge-group[data-edge-id="wrong-shortcut"].step-context .edge-cancel-symbol { opacity: 0.58; }
+
+@keyframes lineage-edge-flow { to { stroke-dashoffset: -32; } }
+@keyframes lineage-edge-pulse { from { opacity: 0.72; } to { opacity: 1; } }
+@keyframes shortcut-halo { from { stroke-width: 8; stroke-opacity: 0.08; } to { stroke-width: 15; stroke-opacity: 0.22; } }
+@keyframes cancel-pop {
+  0% { opacity: 0; transform: scale(0.25) rotate(-25deg); }
+  70% { opacity: 1; transform: scale(1.2) rotate(4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
 
 .lineage-explanation {
   display: grid;
@@ -227,6 +278,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lineage-node, .lineage-edge, .lane-band { transition: none; }
+  .lineage-edge-group.step-current .lineage-edge,
+  .lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .lineage-edge-underlay,
+  .lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .edge-cancel-mark { animation: none !important; }
+  .lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .edge-cancel-symbol,
+  .lineage-edge-group[data-edge-id="wrong-shortcut"].step-current .edge-cancel-mark { opacity: 1; }
 }
 @media (max-width: 1250px) {
   .lineage-status-panel { grid-template-columns: repeat(3, minmax(150px, 1fr)); }

@@ -312,17 +312,36 @@ function edgePath(edge) {
   return `M ${startX} ${startY} C ${startX + Math.sign(dx || 1) * bend} ${startY}, ${endX - Math.sign(dx || 1) * bend} ${endY}, ${endX} ${endY}`;
 }
 
+function renderCancelSymbol(edge) {
+  const from = nodeCatalog[edge.from];
+  const to = nodeCatalog[edge.to];
+  const x = from.x + (to.x - from.x) * 0.34;
+  const y = from.y + (to.y - from.y) * 0.25;
+  const symbol = svgElement("g", {
+    class: "edge-cancel-symbol",
+    transform: `translate(${x},${y})`,
+    "aria-hidden": "true"
+  });
+  const mark = svgElement("g", { class: "edge-cancel-mark" });
+  mark.appendChild(svgElement("circle", { r: 15 }));
+  mark.appendChild(svgElement("line", { x1: -6.5, y1: -6.5, x2: 6.5, y2: 6.5 }));
+  mark.appendChild(svgElement("line", { x1: 6.5, y1: -6.5, x2: -6.5, y2: 6.5 }));
+  symbol.appendChild(mark);
+  return symbol;
+}
+
 function drawDefs() {
   const defs = svgElement("defs");
-  const colors = {
-    paper_cites: "#315f78",
-    theorem_import: "#1f6b4f",
-    local_derivation: "#b06b20",
-    shared_foundation: "#695283",
-    derives: "#b06b20",
-    rejected_shortcut: "#9c3f39"
-  };
-  Object.entries(colors).forEach(([type, fill]) => {
+  const markerTypes = [
+    "paper_cites",
+    "theorem_import",
+    "local_derivation",
+    "shared_foundation",
+    "derives",
+    "rejected_shortcut"
+  ];
+  markerTypes.forEach(type => {
+    const fill = "#40554b";
     const marker = svgElement("marker", {
       id: `lineage-arrow-${type}`,
       viewBox: "0 0 10 10",
@@ -391,6 +410,7 @@ function renderEdges() {
     group.appendChild(path);
     const hit = svgElement("path", { d: pathData, class: "lineage-edge-hit" });
     group.appendChild(hit);
+    if (edge.type === "rejected_shortcut") group.appendChild(renderCancelSymbol(edge));
     const showAtPointer = event => {
       highlightEdge(edge.id);
       showEdgeTooltip(edge, event.clientX + 18, event.clientY + 18);
