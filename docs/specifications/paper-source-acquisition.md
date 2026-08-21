@@ -4,21 +4,26 @@
 
 **Schema version:** `agtxiv.paper-source/0.1`
 
-**Scope:** Paper queries and canonical full-text acquisition
+**Scope:** PAPER queries, canonical full-text acquisition, LaTeX preprocessing, source anchoring, and publication-witness alignment
 
 ## 1. Purpose
 
-This specification defines the first step after a user submits a paper query. The purpose of this step is to obtain one authoritative full-text artifact, extract its content, and record source locations that later claim-processing steps can cite.
+This specification defines the first stage after a user submits a paper query. The stage resolves one paper, obtains its highest-priority full-text artifact, extracts source-grounded content, expands paper-defined mathematical macros when LaTeX source is available, and records locations that later pipeline stages can cite.
 
-This step does not assess whether the paper is correct. It only answers:
+Source resolution, macro expansion, and publication alignment establish content identity and source fidelity. They do not establish scientific correctness.
+
+This stage answers:
 
 1. Which paper does the query identify?
-2. What is the highest-priority full-text artifact currently available?
-3. Where does each extracted passage occur in that artifact?
+2. Which artifact is canonical under the AgtXIv source policy?
+3. Which additional publication artifact, if any, serves as a witness?
+4. Where does each extracted passage occur?
+5. Which mathematical passages have been expanded into the approved standard LaTeX vocabulary?
+6. Which publication differences were matched, applied to derived content, deferred for review, or superseded by a later arXiv version?
 
 ## 2. Supported Query
 
-AgtXIv v0.1 supports only `PAPER` queries. A `PAPER` query requests complete ingestion and processing of one paper. It does not ask the acquisition or analysis stages to answer a research question.
+AgtXIv v0.1 supports only `PAPER` queries. A `PAPER` query requests complete ingestion and processing of one paper. It does not ask the acquisition, extraction, claim-processing, dependency, or verification stages to answer a research question.
 
 A query may identify a paper by:
 
@@ -27,7 +32,7 @@ A query may identify a paper by:
 3. publisher article URL; or
 4. title search.
 
-DOI and arXiv identifiers are preferred because they identify papers more reliably than titles. A title search must first resolve to a single paper record before source acquisition begins.
+DOI and arXiv identifiers are preferred because they identify papers more reliably than titles. A title search must resolve to one paper record before source acquisition begins.
 
 A minimal query record is:
 
@@ -52,7 +57,7 @@ TITLE
 
 ### 2.1 Optional deferred question
 
-A user may include a question about the paper. AgtXIv stores that question verbatim but does not use it to guide paper processing:
+A user may include a question about the paper:
 
 ```json
 {
@@ -67,20 +72,38 @@ A user may include a question about the paper. AgtXIv stores that question verba
 }
 ```
 
-While the pipeline is running, the deferred question must not influence:
+AgtXIv stores the question verbatim in the query service. The question text must be physically excluded from every input supplied to:
 
+- paper resolution;
 - canonical-source selection;
-- content extraction;
-- anchor generation;
-- claim extraction;
+- source extraction;
+- macro classification and expansion;
+- anchor generation and alignment;
+- claim detection and classification;
+- class-specific normalization;
+- claim merging and pruning;
 - dependency construction;
-- verification scope or outcome.
+- verification planning, scope, and execution.
 
-The complete paper is processed in the same way whether the deferred question is present or absent. This prevents the question from causing selective reading, omitted assumptions, confirmation bias, or premature summarization.
+The processing projection of the query contains only paper-identification fields and an indication that a deferred question exists:
 
-The question is considered only after the paper has completed the configured AgtXIv pipeline. Pipeline completion means that every configured stage has produced an explicit result, including blocked, unresolved, or not-applicable results; it does not mean that every claim is fully verified.
+```json
+{
+  "query_type": "PAPER",
+  "identifier_type": "ARXIV",
+  "identifier": "1609.07488",
+  "submitted_at": "2026-08-21T14:00:00Z",
+  "deferred_question_present": true
+}
+```
 
-A deferred question has the following lifecycle:
+Pipeline components must not retrieve the deferred-question text from the query service. The source manifest records only whether a deferred question exists and its lifecycle status; it does not copy the question text into the source package.
+
+The paper is processed in the same way whether a deferred question is present or absent. This isolation prevents selective reading, omitted assumptions, confirmation bias, and question-driven verification.
+
+The question is considered only after every configured pipeline stage has produced a final explicit result. A blocked, unresolved, failed, or not-applicable result is explicit and final for this purpose. Pipeline completion does not mean that every claim is verified.
+
+A deferred question has the lifecycle:
 
 ```text
 DEFERRED
@@ -88,21 +111,33 @@ ANSWERED
 BLOCKED
 ```
 
-`ANSWERED` means that the final claims, source anchors, dependencies, and verification records produced by the completed configured pipeline support a grounded response. The response must be derived only from those final records; intermediate records and outside knowledge must not supply the answer. `BLOCKED` means that the completed final records do not support a reliable answer. A blocked question must not be answered by guessing. The final answer record is produced by the end-of-pipeline query-response stage; its detailed format is outside the scope of this source-acquisition specification.
+`ANSWERED` means that final claims, anchors, dependencies, and verification records support a grounded response. The response may use only final pipeline records. It must not use intermediate records, direct rereading of source artifacts, or outside knowledge.
 
-## 3. Canonical Artifact
+`BLOCKED` means that the final records do not support a reliable answer. A blocked question must not be answered by guessing. The final answer record belongs to the end-of-pipeline query-response stage and is outside the scope of this specification.
 
-A canonical artifact is the full-text object from which AgtXIv treats the paper's content as authoritative. Canonical status concerns the identity and content of the paper, not its scientific correctness.
+## 3. Canonical Artifact and Publication Witness
 
-AgtXIv v0.1 uses the following strict priority order:
+A canonical artifact is the full-text object from which AgtXIv derives the paper's active structured content. Canonical status concerns paper identity and content, not scientific correctness.
 
-1. **Publisher PDF.** If the publisher-provided PDF can be obtained, it is the canonical artifact.
-2. **Latest arXiv source.** If the publisher PDF cannot be obtained, the source bundle of the latest available arXiv version is the canonical artifact.
-3. **Unavailable.** If neither source can be obtained, canonical resolution is unavailable.
+AgtXIv v0.1 uses this strict priority order:
 
-The MVP does not compare the publisher PDF against the arXiv source and does not maintain separate authority and extraction artifacts.
+1. **Latest arXiv source bundle.** If an arXiv source bundle exists, the latest available version is canonical, including when a publisher PDF also exists.
+2. **Publisher PDF fallback.** If no arXiv source bundle exists but a publisher PDF can be obtained, the publisher PDF is canonical.
+3. **Unavailable.** If neither artifact can be obtained, canonical resolution is unavailable.
 
-When an arXiv source bundle is canonical, the bundle is the canonical artifact. The manifest also records the root LaTeX entry point used to read the manuscript.
+When arXiv source is canonical:
+
+- the complete source bundle is the canonical artifact;
+- the manifest records the arXiv version and submission date;
+- the extractor identifies the root LaTeX entry point;
+- relevant macro, environment, and package context is extracted into `head.tex`;
+- a publisher PDF, when available, is stored as a `publication_witness`.
+
+A publication witness provides evidence for locating and comparing the published presentation. It is not canonical while arXiv source is available. Alignment must not modify the arXiv bundle or publisher PDF.
+
+When only a publisher PDF is available, it is canonical and is read using `PDF_TEXT` or `OCR`. OCR output is derived evidence and never replaces the original PDF.
+
+The MVP does not introduce authority-conflict, multi-canonical, or archival version states.
 
 ## 4. Canonical Resolution Status
 
@@ -115,64 +150,230 @@ UNAVAILABLE
 
 ### 4.1 `RESOLVED`
 
-`RESOLVED` means that AgtXIv obtained either:
+`RESOLVED` means that AgtXIv obtained exactly one active canonical artifact:
 
-- the publisher PDF; or
-- if that PDF was unavailable, the latest arXiv source bundle.
+- the latest arXiv source bundle; or
+- if no arXiv source bundle exists, a publisher PDF.
 
 Only a resolved paper may proceed to content extraction and anchor generation.
 
 ### 4.2 `UNAVAILABLE`
 
-`UNAVAILABLE` means that AgtXIv could obtain neither the publisher PDF nor an arXiv source bundle. No canonical artifact or authoritative anchors are produced in this state.
+`UNAVAILABLE` means that AgtXIv could obtain neither an arXiv source bundle nor a publisher PDF. No canonical artifact, extracted content, or authoritative anchors are produced.
 
-## 5. Content Extraction
+Canonical resolution status is separate from anchor-alignment status. A paper can be canonically resolved while individual anchors require alignment review.
 
-Content extraction is the process of reading the canonical artifact. The extraction method does not change which artifact is canonical.
+## 5. LaTeX Source Preprocessing
 
-For a publisher PDF, AgtXIv may use:
+### 5.1 Root document
+
+When arXiv source is canonical, the extractor must identify the root LaTeX document and follow the manuscript's included source files. The manifest records the root entry point.
+
+If no unique root document can be identified, canonical resolution remains `RESOLVED`, but `source_preprocessing.status` is `REVIEW_REQUIRED`, `canonical_artifact.entrypoint` and `source_preprocessing.head_file` are `null`, and anchor generation is blocked. No anchor may be emitted until review identifies the active root and preprocessing is rerun with status `READY`. This review state does not permit downstream claim processing.
+
+### 5.2 Source-derived `head.tex`
+
+When source preprocessing reaches `READY`, the extractor creates a source-derived `head.tex` containing the definitions and package context needed to interpret the paper's mathematical content. Relevant material includes:
+
+- `\newcommand`;
+- `\renewcommand`;
+- `\def`;
+- `\DeclareMathOperator`;
+- custom theorem environments;
+- relevant package imports and options;
+- relevant notation and environment configuration.
+
+The extractor must preserve provenance for each copied definition, including its source file and lines. This provenance may be stored as comments in `head.tex` or in a linked source map. Definitions unrelated to mathematical interpretation may be omitted.
+
+`head.tex` is preprocessing and audit material. It is not canonical paper content, must not modify the original source bundle, and must not be required by downstream claim or verification stages.
+
+The source-derived file remains in the existing reference or source structure. `manifest.json` records its path and SHA-256 hash.
+
+### 5.3 Macro classes
+
+Every nonstandard command relevant to extracted content is classified as one of:
+
+```text
+SEMANTIC_MATH
+FORMATTING
+DOCUMENT_CONTROL
+UNRESOLVED
+```
+
+`SEMANTIC_MATH` macros encode mathematical objects, operators, relations, delimiters, or structured expressions. They must be recursively expanded.
+
+`FORMATTING` macros alter presentation without changing the retained content. Their wrappers are removed while their arguments are preserved.
+
+`DOCUMENT_CONTROL` macros control layout, headings, counters, references, floats, or manuscript structure. They must not be converted into scientific claims.
+
+`UNRESOLVED` macros cannot be interpreted safely from the available source and context. The system must preserve them and must not guess their meaning.
+
+### 5.4 Expansion output
+
+Every arXiv-derived mathematical anchor preserves:
+
+- `raw_latex`, copied exactly from the canonical source span;
+- `raw_latex_sha256`;
+- the macro-expansion status;
+- `expanded_latex` and `expanded_latex_sha256` for successful expansion;
+- partial-expansion audit fields when expansion is incomplete.
+
+Macro expansion has the status:
+
+```text
+EXPANDED
+PARTIALLY_EXPANDED
+EXPANSION_FAILED
+```
+
+For `EXPANDED`, `expanded_latex` is non-null, is derived recursively from `raw_latex` and `head.tex`, and uses only the approved vocabulary. `expanded_latex_sha256` is the SHA-256 of that exact UTF-8 string. `partial_expansion_latex` and `unresolved_macros` are empty or `null`.
+
+For `PARTIALLY_EXPANDED`, `expanded_latex` and `expanded_latex_sha256` are `null`. `partial_expansion_latex` preserves the best faithful intermediate representation, including every unresolved author-defined command or environment, and `unresolved_macros` lists those unresolved names. Partial output is audit evidence and must not be supplied as approved-vocabulary mathematical input downstream.
+
+For `EXPANSION_FAILED`, `expanded_latex`, `expanded_latex_sha256`, and `partial_expansion_latex` are `null`; `unresolved_macros` lists known blockers when available. `raw_latex` remains the complete source representation.
+
+The minimum approved vocabulary consists of standard mathematical LaTeX tokens and control sequences whose meaning is fixed without the paper's preamble, including grouping, superscripts, subscripts, standard symbols and relations, standard delimiter commands, `\frac`, `\sqrt`, `\mathcal`, `\mathrm`, `\mathbf`, `\operatorname`, and standard display structures. It excludes every author-defined command and environment and every construct whose meaning depends on `head.tex`. Implementations may support a larger versioned vocabulary, but the manifest identifier must resolve to a fixed list with the same no-preamble property.
+
+Custom theorem and proof wrappers are structural metadata, not mathematical macro output. Their type, label, and source extent remain in anchor metadata; the `\begin{theorem}` or other author-defined wrapper need not survive in `expanded_latex`. Removing a wrapper must not remove or reorder its mathematical body.
+
+Expansion may remove formatting wrappers, but it must preserve mathematical meaning and source order. Only `EXPANDED` mathematical anchors are eligible for automatic math-claim normalization. `PARTIALLY_EXPANDED` and `EXPANSION_FAILED` anchors require preprocessing review, independently of source-witness alignment. Mathematical content obtained only from a PDF also requires review before math-claim normalization unless a reviewed transcription later produces an approved standard-LaTeX representation.
+
+The system must never discard or overwrite `raw_latex`.
+
+### 5.5 Downstream boundary
+
+Downstream claim detection, classification, class-specific normalization, merging, pruning, dependency construction, and verification consume `aligned_content` and its linked expanded representation. These stages must not require:
+
+- `head.tex`;
+- author-defined macros;
+- direct interpretation of the source preamble.
+
+The original source, `head.tex`, and `raw_latex` remain available for provenance and audit.
+
+## 6. Publisher-PDF Extraction and Alignment
+
+### 6.1 PDF extraction
+
+A publisher PDF is read using:
 
 ```text
 PDF_TEXT
 OCR
 ```
 
-`PDF_TEXT` reads an existing text layer. `OCR` uses an available OCR skill when the PDF has no reliable text layer or when mathematical or layout content requires image-based recognition. OCR output is derived text; the publisher PDF remains canonical.
+`PDF_TEXT` reads the PDF's text layer. `OCR` is used when the text layer is absent or unreliable, or when image-based recognition is needed for mathematical or layout content.
 
-For an arXiv source bundle, AgtXIv uses:
+The PDF remains unchanged. Extracted text and OCR output are derived evidence. Every PDF location must retain the artifact hash, extraction method, page, and region when available.
+
+### 6.2 Derived aligned content
+
+`aligned_content` is the derived representation supplied to downstream processing when its content is non-null. It must remain linked to:
+
+- the canonical artifact;
+- the canonical source span or PDF location;
+- macro-expanded content when available;
+- the publication-witness location when available;
+- the alignment decision and its basis.
+
+Corrections are stored only in `aligned_content`. The system must not edit the canonical arXiv source, publisher PDF, `raw_latex`, `expanded_latex`, or witness extraction.
+
+### 6.3 Temporal alignment policy
+
+Let the latest arXiv submission time be $d_{\mathrm{arXiv}}$ and the publisher publication time be $d_{\mathrm{pub}}$. The manifest field `alignment.temporal_policy` has exactly one of these values:
 
 ```text
-LATEX_SOURCE
+ARXIV_NEWER
+ARXIV_NOT_LATER
+ORDER_UNRESOLVED
+NO_PUBLICATION_WITNESS
+PDF_ONLY
 ```
 
-The extractor identifies the root LaTeX file, follows its included source files, and preserves enough file and line information to return to the original text.
+`ARXIV_NEWER` means $d_{\mathrm{arXiv}} > d_{\mathrm{pub}}$. `ARXIV_NOT_LATER` means $d_{\mathrm{arXiv}} \leq d_{\mathrm{pub}}$. `ORDER_UNRESOLVED` means that both artifacts exist but their order cannot be established safely. `NO_PUBLICATION_WITNESS` means arXiv source is canonical and no publisher PDF is available. `PDF_ONLY` means no arXiv source exists.
 
-The MVP prioritizes recovery of usable scientific content. It does not prescribe one universal PDF parser or OCR implementation.
+#### Later arXiv source
 
-## 6. Replacement Policy
+If $d_{\mathrm{arXiv}} > d_{\mathrm{pub}}$, the latest arXiv expanded content is used directly. The publisher PDF may be linked as a witness, but it must not override the later arXiv content.
 
-AgtXIv v0.1 keeps only the current canonical version in its active source package.
+Differences must be recorded. The system must not correct the later arXiv version back to the older publication.
 
-A canonical artifact is replaced when:
+#### ArXiv source not later than publication
 
-1. a publisher PDF becomes available for a paper currently represented by arXiv source; or
-2. a newer arXiv source version becomes available while arXiv remains the highest available source.
+If $d_{\mathrm{arXiv}} \leq d_{\mathrm{pub}}$, corresponding arXiv and publisher passages are compared.
 
-The MVP does not retain the previous artifact as an active historical version. Replacement must trigger:
+A clear and unambiguous publication change may be applied only to derived `aligned_content`. The source and witness representations remain unchanged.
+
+An ambiguous, mathematically substantial, or poorly aligned difference must receive `REVIEW_REQUIRED`. It must not be resolved automatically.
+
+If either timestamp is unavailable or too imprecise to establish the ordering, the system must not apply a PDF correction automatically unless independent metadata establishes that the publisher artifact is later. Otherwise, discrepancies require review.
+
+#### Publisher-PDF-only source
+
+If no arXiv source exists, `aligned_content` is derived from `PDF_TEXT` or `OCR` and remains tied to page or region evidence. OCR uncertainty must remain visible.
+
+## 7. Anchor-Alignment Status
+
+Each anchor has exactly one alignment status:
+
+```text
+SOURCE_ONLY
+MATCHED
+PDF_CORRECTION_APPLIED
+ARXIV_NEWER_PREFERRED
+PDF_ONLY
+REVIEW_REQUIRED
+```
+
+`SOURCE_ONLY` means that the anchor comes from canonical arXiv source and has no corresponding publisher-witness passage. This includes cases in which no publisher PDF exists or no reliable witness match was found and no material discrepancy is known.
+
+`MATCHED` means that the arXiv-derived content and publisher-witness passage clearly correspond and contain no material content difference.
+
+`PDF_CORRECTION_APPLIED` means that the arXiv version is not later than publication and a clear, unambiguous publication change was applied to derived `aligned_content`.
+
+`ARXIV_NEWER_PREFERRED` means that the latest arXiv version postdates publication. The arXiv-derived content is retained even though the publisher witness differs.
+
+`PDF_ONLY` means that no arXiv source exists and the anchor was extracted from the canonical publisher PDF.
+
+`REVIEW_REQUIRED` is restricted to source-versus-witness alignment: the passages may correspond, but their relationship or discrepancy cannot be resolved safely. It does not report root detection, macro expansion, or PDF transcription quality; those concerns retain their own preprocessing, expansion, and extraction fields.
+
+Alignment status is chosen independently of macro-expansion status, in this precedence order: `PDF_ONLY` when no arXiv source exists; `SOURCE_ONLY` when no corresponding witness passage is available; `MATCHED` when corresponding passages have no material difference; `ARXIV_NEWER_PREFERRED` when they differ and arXiv is later; `PDF_CORRECTION_APPLIED` when arXiv is not later and the publication change is clear and unambiguous; otherwise `REVIEW_REQUIRED`. A failed or partial macro expansion does not change that alignment result.
+
+For `SOURCE_ONLY`, `MATCHED`, and `ARXIV_NEWER_PREFERRED`, `aligned_content.content` contains the unchanged canonical representation when a downstream-safe representation exists. For `PDF_CORRECTION_APPLIED`, it contains only the clear publication correction derived from the unchanged source and witness representations. For `PDF_ONLY`, it contains the PDF extraction or a reviewed transcription. If no downstream-safe representation exists because preprocessing, expansion, or transcription is incomplete, `aligned_content.content`, `content_format`, and `content_sha256` are `null` until that separate review is complete. For alignment status `REVIEW_REQUIRED`, those three fields are always `null` until alignment review resolves the discrepancy; the canonical arXiv representation remains preserved but is not silently presented as aligned content.
+
+These statuses describe individual anchor alignment. They do not replace canonical resolution status, preprocessing status, macro-expansion status, or extraction confidence.
+
+## 8. Replacement Policy
+
+AgtXIv v0.1 retains only the current active canonical artifact.
+
+The canonical artifact is replaced when:
+
+1. a newer arXiv source version becomes available;
+2. arXiv source becomes available for a paper currently represented by a publisher PDF; or
+3. a corrected retrieval replaces a corrupt or incorrectly identified active artifact.
+
+If arXiv source becomes available for a PDF-only paper, the arXiv source becomes canonical and the existing publisher PDF becomes a publication witness.
+
+Replacement must trigger:
 
 ```text
 replace canonical artifact
-→ recompute the artifact hash
-→ regenerate extracted content
-→ regenerate anchors
+→ recompute artifact hashes
+→ identify the root LaTeX document when applicable
+→ regenerate head.tex when applicable
+→ regenerate macro classification and expansion
+→ regenerate anchors and witness alignment
+→ regenerate aligned content
 → invalidate and regenerate all derived claims and relations
 ```
 
-Old anchors must never be reused after replacement because pages, files, line numbers, labels, and wording may have changed.
+Old anchors must never be reused after replacement. Files, lines, pages, labels, macros, wording, and alignment decisions may have changed.
 
-## 7. Source Package
+The MVP does not retain the replaced artifact as an active historical canonical version.
 
-Each resolved paper source is represented by two files:
+## 9. Source Package
+
+Each paper source is represented by:
 
 ```text
 source/
@@ -180,54 +381,15 @@ source/
 └── anchors.jsonl
 ```
 
-`manifest.json` records paper identity, query provenance, canonical resolution, the canonical artifact, and the extraction method. `anchors.jsonl` records individual source passages and their locations.
+`manifest.json` records paper identity, sanitized query provenance, canonical resolution, artifacts, dates, extraction tools, macro-expansion policy, and alignment policy.
 
-The original PDF or arXiv source bundle is stored separately under the project's existing reference-material directory. The manifest points to that artifact rather than duplicating it.
+`anchors.jsonl` records source passages, expanded mathematical content, publication-witness locations, and derived aligned content. It is empty or absent when canonical resolution is `UNAVAILABLE` or while unresolved-root preprocessing has status `REVIEW_REQUIRED`.
 
-## 8. `manifest.json`
+Original arXiv bundles and publisher PDFs remain under the project's existing reference-material structure. Source-derived `head.tex` remains in the existing source or reference structure. The manifest points to these objects rather than duplicating them in the source package.
 
-### 8.1 Resolved publisher PDF
+## 10. `manifest.json`
 
-```json
-{
-  "schema_version": "agtxiv.paper-source/0.1",
-  "paper_id": "doi:10.xxxx/example",
-  "document_type": "PAPER",
-  "query": {
-    "query_type": "PAPER",
-    "identifier_type": "DOI",
-    "identifier": "10.xxxx/example",
-    "submitted_at": "2026-08-21T14:00:00Z",
-    "deferred_question": null
-  },
-  "metadata": {
-    "title": "Example Paper",
-    "authors": ["First Author", "Second Author"],
-    "doi": "10.xxxx/example",
-    "arxiv_id": "1609.07488"
-  },
-  "canonical_resolution": {
-    "status": "RESOLVED",
-    "source_type": "PUBLISHER_PDF",
-    "resolved_at": "2026-08-21T10:00:00Z"
-  },
-  "canonical_artifact": {
-    "path": "Reference/example-paper/publisher.pdf",
-    "media_type": "application/pdf",
-    "source_url": "https://publisher.example/paper.pdf",
-    "sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d"
-  },
-  "extraction": {
-    "method": "PDF_TEXT",
-    "tool": "pdf-extraction-skill",
-    "generated_at": "2026-08-21T10:05:00Z"
-  }
-}
-```
-
-If OCR is used, `extraction.method` is `OCR` and `extraction.tool` identifies the OCR skill.
-
-### 8.2 Resolved arXiv source
+### 10.1 Canonical arXiv source with publication witness
 
 ```json
 {
@@ -239,13 +401,18 @@ If OCR is used, `extraction.method` is `OCR` and `extraction.tool` identifies th
     "identifier_type": "ARXIV",
     "identifier": "1609.07488",
     "submitted_at": "2026-08-21T14:00:00Z",
-    "deferred_question": null
+    "deferred_question_present": true,
+    "deferred_question_status": "DEFERRED"
   },
   "metadata": {
     "title": "Example Paper",
-    "authors": ["First Author", "Second Author"],
-    "doi": null,
-    "arxiv_id": "1609.07488"
+    "authors": [
+      "First Author",
+      "Second Author"
+    ],
+    "doi": "10.xxxx/example",
+    "arxiv_id": "1609.07488",
+    "publisher_publication_date": "2017-03-15"
   },
   "canonical_resolution": {
     "status": "RESOLVED",
@@ -253,22 +420,99 @@ If OCR is used, `extraction.method` is `OCR` and `extraction.tool` identifies th
     "resolved_at": "2026-08-21T10:00:00Z"
   },
   "canonical_artifact": {
-    "path": "Reference/example-paper/arxiv-source.tar",
+    "path": "Reference/example-paper/arxiv-source-v3.tar",
     "media_type": "application/x-tar",
     "source_url": "https://arxiv.org/e-print/1609.07488v3",
     "arxiv_version": 3,
+    "arxiv_submitted_at": "2017-06-02T11:30:00Z",
     "entrypoint": "main.tex",
     "sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d"
   },
-  "extraction": {
+  "source_preprocessing": {
+    "status": "READY",
     "method": "LATEX_SOURCE",
     "tool": "agtxiv-latex-reader",
-    "generated_at": "2026-08-21T10:05:00Z"
+    "generated_at": "2026-08-21T10:05:00Z",
+    "head_file": {
+      "path": "Reference/example-paper/derived/head.tex",
+      "sha256": "dcad2aeb52798a585f8f15d72d1bffceb911b4e91a54104d71f5f955632f0f85",
+      "role": "PREPROCESSING_AND_AUDIT_ONLY"
+    },
+    "macro_expansion": {
+      "tool": "agtxiv-latex-expander",
+      "approved_vocabulary": "agtxiv-standard-latex/0.1",
+      "semantic_math": "RECURSIVELY_EXPAND",
+      "formatting": "REMOVE_WRAPPER_RETAIN_CONTENT",
+      "document_control": "EXCLUDE_FROM_CLAIMS",
+      "unresolved": "PRESERVE_AND_REQUIRE_REVIEW"
+    }
+  },
+  "publication_witness": {
+    "path": "Reference/example-paper/publisher.pdf",
+    "media_type": "application/pdf",
+    "source_url": "https://publisher.example/paper.pdf",
+    "publication_date": "2017-03-15",
+    "sha256": "93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135",
+    "extraction": {
+      "method": "PDF_TEXT",
+      "tool": "pdf-extraction-skill",
+      "generated_at": "2026-08-21T10:07:00Z"
+    }
+  },
+  "alignment": {
+    "tool": "agtxiv-source-aligner",
+    "generated_at": "2026-08-21T10:10:00Z",
+    "temporal_policy": "ARXIV_NEWER",
+    "corrections_target": "ALIGNED_CONTENT_ONLY",
+    "anchor_statuses_present": [
+      "SOURCE_ONLY",
+      "MATCHED",
+      "ARXIV_NEWER_PREFERRED"
+    ],
+    "status_vocabulary": [
+      "SOURCE_ONLY",
+      "MATCHED",
+      "PDF_CORRECTION_APPLIED",
+      "ARXIV_NEWER_PREFERRED",
+      "PDF_ONLY",
+      "REVIEW_REQUIRED"
+    ]
   }
 }
 ```
 
-### 8.3 Unavailable source
+For the clear-publication-correction branch, the same arXiv-canonical manifest structure records the following complete temporal and alignment decision. The publisher remains a witness, and only derived aligned content may change:
+
+```json
+{
+  "canonical_artifact": {
+    "arxiv_submitted_at": "2023-01-10T09:00:00Z"
+  },
+  "metadata": {
+    "publisher_publication_date": "2023-04-20"
+  },
+  "alignment": {
+    "tool": "agtxiv-source-aligner",
+    "generated_at": "2026-08-21T10:10:00Z",
+    "temporal_policy": "ARXIV_NOT_LATER",
+    "corrections_target": "ALIGNED_CONTENT_ONLY",
+    "anchor_statuses_present": [
+      "MATCHED",
+      "PDF_CORRECTION_APPLIED"
+    ],
+    "status_vocabulary": [
+      "SOURCE_ONLY",
+      "MATCHED",
+      "PDF_CORRECTION_APPLIED",
+      "ARXIV_NEWER_PREFERRED",
+      "PDF_ONLY",
+      "REVIEW_REQUIRED"
+    ]
+  }
+}
+```
+
+### 10.2 Publisher-PDF-only fallback
 
 ```json
 {
@@ -280,71 +524,204 @@ If OCR is used, `extraction.method` is `OCR` and `extraction.tool` identifies th
     "identifier_type": "DOI",
     "identifier": "10.xxxx/example",
     "submitted_at": "2026-08-21T14:00:00Z",
-    "deferred_question": null
+    "deferred_question_present": false,
+    "deferred_question_status": null
+  },
+  "metadata": {
+    "title": "Example Paper",
+    "authors": [
+      "First Author",
+      "Second Author"
+    ],
+    "doi": "10.xxxx/example",
+    "arxiv_id": null,
+    "publisher_publication_date": "2024-05-17"
+  },
+  "canonical_resolution": {
+    "status": "RESOLVED",
+    "source_type": "PUBLISHER_PDF",
+    "resolved_at": "2026-08-21T10:00:00Z"
+  },
+  "canonical_artifact": {
+    "path": "Reference/example-paper/publisher.pdf",
+    "media_type": "application/pdf",
+    "source_url": "https://publisher.example/paper.pdf",
+    "publication_date": "2024-05-17",
+    "sha256": "93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135"
+  },
+  "source_preprocessing": {
+    "status": "READY",
+    "method": "OCR",
+    "tool": "existing-ocr-skill",
+    "generated_at": "2026-08-21T10:05:00Z",
+    "head_file": null,
+    "macro_expansion": null
+  },
+  "publication_witness": null,
+  "alignment": {
+    "tool": null,
+    "generated_at": "2026-08-21T10:05:00Z",
+    "temporal_policy": "PDF_ONLY",
+    "corrections_target": "ALIGNED_CONTENT_ONLY",
+    "anchor_statuses_present": [
+      "PDF_ONLY"
+    ],
+    "status_vocabulary": [
+      "SOURCE_ONLY",
+      "MATCHED",
+      "PDF_CORRECTION_APPLIED",
+      "ARXIV_NEWER_PREFERRED",
+      "PDF_ONLY",
+      "REVIEW_REQUIRED"
+    ]
+  }
+}
+```
+
+If the PDF has a reliable text layer, `source_preprocessing.method` is `PDF_TEXT`. OCR use must identify the OCR tool and must not replace the canonical PDF.
+
+### 10.3 Unavailable source
+
+```json
+{
+  "schema_version": "agtxiv.paper-source/0.1",
+  "paper_id": "doi:10.xxxx/example",
+  "document_type": "PAPER",
+  "query": {
+    "query_type": "PAPER",
+    "identifier_type": "DOI",
+    "identifier": "10.xxxx/example",
+    "submitted_at": "2026-08-21T14:00:00Z",
+    "deferred_question_present": false,
+    "deferred_question_status": null
+  },
+  "metadata": {
+    "title": "Example Paper",
+    "authors": [],
+    "doi": "10.xxxx/example",
+    "arxiv_id": null,
+    "publisher_publication_date": null
   },
   "canonical_resolution": {
     "status": "UNAVAILABLE",
     "resolved_at": "2026-08-21T10:00:00Z",
-    "reason": "Publisher PDF and arXiv source could not be obtained."
+    "reason": "No arXiv source bundle or publisher PDF could be obtained."
   },
   "canonical_artifact": null,
-  "extraction": null
+  "source_preprocessing": null,
+  "publication_witness": null,
+  "alignment": null
 }
 ```
 
-## 9. `anchors.jsonl`
+## 11. `anchors.jsonl`
 
-Each line of `anchors.jsonl` is one JSON object. An anchor connects an extracted passage to a location in the current canonical artifact.
+Each line of `anchors.jsonl` is one JSON object. An anchor connects derived content to exact evidence in the current canonical artifact and, when available, the publication witness.
 
-### 9.1 PDF anchor
+Every anchor must contain:
+
+- a stable anchor identifier within the current source package;
+- the paper identifier;
+- the current canonical artifact hash;
+- a canonical location;
+- a content kind;
+- derived aligned content and its alignment status;
+- hashes for stored content representations;
+- publication-witness evidence when used.
+
+ArXiv-derived mathematical anchors must also contain exact `raw_latex` and a macro-expansion object. `expanded_latex` is non-null only for `EXPANDED`; partial and failed cases use the fields defined in Section 5.4. PDF-only anchors do not have source LaTeX; their `raw_latex` and macro-expansion fields are `null`.
+
+### 11.1 Matched arXiv and publisher content
 
 ```json
-{"anchor_id":"anchor:example-paper:001","paper_id":"doi:10.xxxx/example","artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","location":{"type":"PDF_PAGE","page":5},"text":"The central result of this paper is ...","text_sha256":"7eff4a6f84a6341409c8cbbf93c2013f96d443f2bc8cc5589246aa36216dd858"}
+{"anchor_id":"anchor:example-paper:001","paper_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"main.tex","line_start":120,"line_end":124,"section":"Main Result","structural_type":"theorem","label":"thm:main"},"raw_latex":"\\begin{theorem}\\label{thm:main} For every $\\rho\\in\\Dens(\\cH)$, $\\RoM(\\rho)\\geq 1$. \\end{theorem}","raw_latex_sha256":"8a8e84652117d16d3fc821cf33139fd4b7bb7952327a979955d28f22fc98180e","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"For every $\\rho\\in\\mathcal{D}(\\mathcal{H})$, $\\operatorname{RoM}(\\rho)\\geq 1$.","expanded_latex_sha256":"b378095fd4c67e1d42e062806268152e8f635db0d4a2552f1fc83df965ea2532","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":5,"bounding_box":[72,214,510,328]},"extraction_method":"PDF_TEXT","extracted_text":"Theorem 1. For every rho in D(H), RoM(rho) is at least 1.","extracted_text_sha256":"40ea2b694d7b795260e216115249703e391abbeb2b32fad72390f860efdc9e0d"},"aligned_content":{"status":"MATCHED","content_format":"STANDARD_LATEX","content":"For every $\\rho\\in\\mathcal{D}(\\mathcal{H})$, $\\operatorname{RoM}(\\rho)\\geq 1$.","content_sha256":"b378095fd4c67e1d42e062806268152e8f635db0d4a2552f1fc83df965ea2532","resolution_basis":"The arXiv source and publisher witness state the same mathematical claim."},"automatic_math_normalization_eligible":true}
 ```
 
-If the extraction skill reports page coordinates, the location may be more precise:
+### 11.2 Later arXiv content preferred
 
 ```json
-{"anchor_id":"anchor:example-paper:001","paper_id":"doi:10.xxxx/example","artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","location":{"type":"PDF_REGION","page":5,"bounding_box":[72,214,510,328]},"text":"The central result of this paper is ...","text_sha256":"7eff4a6f84a6341409c8cbbf93c2013f96d443f2bc8cc5589246aa36216dd858"}
+{"anchor_id":"anchor:example-paper:002","paper_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"appendix.tex","line_start":42,"line_end":46,"section":"Corrections","structural_type":"lemma","label":"lem:corrected-bound"},"raw_latex":"\\begin{lemma}\\label{lem:corrected-bound} If $n\\geq 2$, then $f(n)\\leq n^2+1$. \\end{lemma}","raw_latex_sha256":"6924e8d4dd97238a47bcf1352db872ecca05b07637d51f85603b9f5120ec776d","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","expanded_latex_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":11,"bounding_box":[70,180,515,260]},"extraction_method":"PDF_TEXT","extracted_text":"Lemma 4. If n is at least 1, then f(n) is at most n squared.","extracted_text_sha256":"6cad1e57978ef22c616080741e1c5f3614969c537e0c1e77e7d721898b73fd85"},"aligned_content":{"status":"ARXIV_NEWER_PREFERRED","content_format":"STANDARD_LATEX","content":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","content_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","resolution_basis":"The canonical arXiv version was submitted after publication; the older publisher wording does not override it."},"automatic_math_normalization_eligible":true}
 ```
 
-### 9.2 LaTeX anchor
+### 11.3 Clear publisher correction applied to derived content
 
 ```json
-{"anchor_id":"anchor:example-paper:001","paper_id":"arxiv:1609.07488v3","artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","location":{"type":"LATEX_LINES","file":"main.tex","line_start":120,"line_end":128,"section":"Main Result","label":"thm:main"},"text":"The central result of this paper is ...","text_sha256":"7eff4a6f84a6341409c8cbbf93c2013f96d443f2bc8cc5589246aa36216dd858"}
+{"anchor_id":"anchor:example-paper:003","paper_id":"arxiv:examplev1","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"main.tex","line_start":210,"line_end":214,"section":"Bounds","structural_type":"lemma","label":"lem:published-bound"},"raw_latex":"\\begin{lemma}\\label{lem:published-bound} If $n\\geq 2$, then $f(n)\\leq n^2$. \\end{lemma}","raw_latex_sha256":"347f5ac8c0c5a8abb016bd83b6ee80d33c59d5c14937ff55fc81b1338157bac9","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"If $n\\geq 2$, then $f(n)\\leq n^2$.","expanded_latex_sha256":"e2fe75db00794480221d612689e7b69ae5cd275cea21ca46d57ad5b1e81e207c","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":8,"bounding_box":[70,180,515,260]},"extraction_method":"PDF_TEXT","extracted_text":"Lemma 3. If n is at least 2, then f(n) is at most n squared plus 1.","extracted_text_sha256":"e79afe926010c028c2765501db0d385fb4a7f0d55549290c2871ba589804c0ba"},"aligned_content":{"status":"PDF_CORRECTION_APPLIED","content_format":"STANDARD_LATEX","content":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","content_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","resolution_basis":"The arXiv source predates publication, and the publisher witness unambiguously adds the term +1 to the bound; only aligned_content applies that change."},"automatic_math_normalization_eligible":true}
 ```
 
-The `artifact_sha256` field ties every anchor to the current canonical file. The `text_sha256` field allows the stored passage to be checked for accidental changes. These hashes establish content identity; they do not establish scientific correctness.
+The manifest branch for this anchor uses `ARXIV_NOT_LATER`. The canonical arXiv source, its `raw_latex`, its expanded source representation, and the publisher witness remain unchanged.
 
-## 10. Minimum Validation Rules
+### 11.4 ArXiv source without a matched witness passage
+
+```json
+{"anchor_id":"anchor:example-paper:004","paper_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"supplement.tex","line_start":88,"line_end":91,"section":"Supplementary Lemmas","structural_type":"lemma","label":"lem:aux"},"raw_latex":"\\begin{lemma}\\label{lem:aux} $g(0)=0$. \\end{lemma}","raw_latex_sha256":"2c82d1b9356e84182a7a184dac8a377f508a234f6f8061a16929102aacc9cb10","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"$g(0)=0$.","expanded_latex_sha256":"6e8d4ad71b4f72804e82bfb07ed1e6e9b25895fa55d0d87812da2be73738ddce","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":null,"aligned_content":{"status":"SOURCE_ONLY","content_format":"STANDARD_LATEX","content":"$g(0)=0$.","content_sha256":"6e8d4ad71b4f72804e82bfb07ed1e6e9b25895fa55d0d87812da2be73738ddce","resolution_basis":"The canonical arXiv source contains the passage, and no corresponding publisher-witness passage is available."},"automatic_math_normalization_eligible":true}
+```
+
+### 11.5 Publisher-PDF-only content
+
+```json
+{"anchor_id":"anchor:example-paper:005","paper_id":"doi:10.xxxx/example","canonical_artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","content_kind":"MATHEMATICS","source_location":{"type":"PDF_REGION","page":7,"bounding_box":[72,214,510,328]},"raw_latex":null,"raw_latex_sha256":null,"macro_expansion":null,"pdf_extraction":{"method":"OCR","tool":"existing-ocr-skill","extracted_text":"For every state rho, F of rho is less than or equal to g of n.","extracted_text_sha256":"85020f1d94b670fc6252bdefe4a78cf40ddcb110362a8b76f2f894bb06d9fe87","confidence":0.97},"publication_witness":null,"aligned_content":{"status":"PDF_ONLY","content_format":"EXTRACTED_TEXT","content":"For every state rho, F of rho is less than or equal to g of n.","content_sha256":"85020f1d94b670fc6252bdefe4a78cf40ddcb110362a8b76f2f894bb06d9fe87","resolution_basis":"No arXiv source exists; content was extracted from the canonical publisher PDF."},"automatic_math_normalization_eligible":false}
+```
+
+A `PDF_CORRECTION_APPLIED` anchor contains both arXiv and publisher evidence. Its `aligned_content.content` contains the clear publication correction, and its `resolution_basis` records the exact difference and why automatic application was unambiguous.
+
+An alignment-`REVIEW_REQUIRED` anchor preserves every available representation, sets the aligned content fields to `null`, and sets `automatic_math_normalization_eligible` to `false` until alignment review completes.
+
+## 12. Minimum Validation Rules
 
 A source package is valid only if:
 
 1. `query.query_type` is `PAPER`;
-2. `query.deferred_question` is either `null` or a verbatim question with status `DEFERRED` during acquisition;
-3. the deferred question does not influence any paper-processing stage;
-4. `document_type` is `PAPER`;
-5. `canonical_resolution.status` is `RESOLVED` or `UNAVAILABLE`;
-6. a resolved record has exactly one `canonical_artifact`;
-7. `canonical_resolution.source_type` is `PUBLISHER_PDF` or `ARXIV_SOURCE`;
-8. the canonical artifact has a path, source URL, media type, and SHA-256 hash;
-9. publisher PDF extraction uses `PDF_TEXT` or `OCR`;
-10. arXiv source extraction uses `LATEX_SOURCE` and records an entry point;
-11. every anchor refers to the hash of the current canonical artifact;
-12. no anchors are present for an unavailable source; and
-13. replacement of the canonical artifact invalidates all previous anchors and derived content.
+2. processing inputs do not contain deferred-question text;
+3. the source manifest records only deferred-question presence and lifecycle status;
+4. the deferred question does not influence acquisition, extraction, claim processing, dependency construction, or verification;
+5. `document_type` is `PAPER`;
+6. `canonical_resolution.status` is `RESOLVED` or `UNAVAILABLE`;
+7. a resolved record has exactly one active `canonical_artifact`;
+8. arXiv source is canonical whenever an arXiv source bundle is available;
+9. a publisher PDF is canonical only when no arXiv source bundle is available;
+10. `canonical_resolution.source_type` is `ARXIV_SOURCE` or `PUBLISHER_PDF` for a resolved record;
+11. every canonical artifact has a path, source URL, media type, and SHA-256 hash;
+12. canonical arXiv source records its version and submission date;
+13. `source_preprocessing.status` is `READY` or `REVIEW_REQUIRED` for canonical arXiv source;
+14. `READY` preprocessing records a non-null root entry point and source-derived `head.tex`;
+15. `REVIEW_REQUIRED` preprocessing for an unresolved root records null `entrypoint` and `head_file` and produces no anchors;
+16. `head.tex` is marked as preprocessing and audit material rather than canonical content;
+17. every arXiv-derived mathematical anchor preserves exact `raw_latex`;
+18. an `EXPANDED` anchor has non-null approved-vocabulary `expanded_latex`, while partial or failed expansion has null `expanded_latex`;
+19. `PARTIALLY_EXPANDED` preserves its audit output and unresolved names in `partial_expansion_latex` and `unresolved_macros`;
+20. unresolved macros are preserved and never guessed;
+21. only `EXPANDED` mathematical anchors are automatically eligible for math-claim normalization;
+22. publisher PDF extraction uses `PDF_TEXT` or `OCR`;
+23. OCR output remains derived evidence tied to the original PDF hash;
+24. a publisher PDF accompanying canonical arXiv source is a `publication_witness`, not a second canonical artifact;
+25. `alignment.temporal_policy` uses exactly the vocabulary defined in Section 6.3;
+26. every anchor refers to the current canonical artifact hash;
+27. every witness location refers to the publication-witness artifact hash;
+28. macro-expansion and alignment statuses are validated independently;
+29. alignment changes appear only in derived `aligned_content`;
+30. later arXiv content is not overwritten by an older publisher witness;
+31. ambiguous or substantial source-witness discrepancies receive alignment status `REVIEW_REQUIRED` with null aligned content fields;
+32. no anchors are present for an unavailable source; and
+33. canonical replacement invalidates all prior anchors, aligned content, claims, and relations.
 
-## 11. MVP Boundary
+## 13. MVP Boundary
 
 AgtXIv v0.1 deliberately does not:
 
 - support thesis, book, dataset, or software queries;
 - preserve an active archive of earlier canonical versions;
-- compare publisher and arXiv text for discrepancies;
-- assess scientific correctness during source acquisition;
-- prescribe a single OCR or PDF extraction implementation;
+- maintain multiple canonical artifacts;
+- treat publisher presentation as automatically authoritative over arXiv source;
+- modify an original arXiv bundle or publisher PDF;
+- guess unresolved macro meanings;
+- treat `head.tex` as canonical paper content;
+- require downstream stages to interpret author-defined commands;
+- apply ambiguous or substantial publication differences automatically;
+- assess scientific correctness during source acquisition or alignment;
+- prescribe one universal PDF parser or OCR implementation;
 - extract claims before canonical resolution succeeds;
-- answer or use a deferred question before the configured pipeline completes; or
-- treat OCR output as a canonical artifact.
+- use or answer a deferred question before every configured stage has produced a final explicit result; or
+- treat OCR output as a replacement for the source PDF.
 
-The next pipeline stage begins only after a resolved source package and its anchors are available. Any deferred question remains stored and inactive until all configured AgtXIv stages have returned explicit results.
+The next pipeline stage begins only after a resolved source package and its anchors are available. Downstream processing uses derived aligned content while retaining links to canonical source, raw LaTeX, macro expansion, publication-witness evidence, and alignment decisions. Any deferred question remains isolated until the completed pipeline exposes final records to the query-response stage.
