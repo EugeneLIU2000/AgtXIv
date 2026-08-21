@@ -18,7 +18,9 @@ This step does not assess whether the paper is correct. It only answers:
 
 ## 2. Supported Query
 
-AgtXIv v0.1 supports only `PAPER` queries. A query may identify a paper by:
+AgtXIv v0.1 supports only `PAPER` queries. A `PAPER` query requests complete ingestion and processing of one paper. It does not ask the acquisition or analysis stages to answer a research question.
+
+A query may identify a paper by:
 
 1. DOI;
 2. arXiv identifier;
@@ -33,7 +35,9 @@ A minimal query record is:
 {
   "query_type": "PAPER",
   "identifier_type": "DOI",
-  "identifier": "10.xxxx/example"
+  "identifier": "10.xxxx/example",
+  "submitted_at": "2026-08-21T14:00:00Z",
+  "deferred_question": null
 }
 ```
 
@@ -45,6 +49,46 @@ ARXIV
 PUBLISHER_URL
 TITLE
 ```
+
+### 2.1 Optional deferred question
+
+A user may include a question about the paper. AgtXIv stores that question verbatim but does not use it to guide paper processing:
+
+```json
+{
+  "query_type": "PAPER",
+  "identifier_type": "ARXIV",
+  "identifier": "1609.07488",
+  "submitted_at": "2026-08-21T14:00:00Z",
+  "deferred_question": {
+    "text": "What is the definition of robustness of magic and which properties are proved?",
+    "status": "DEFERRED"
+  }
+}
+```
+
+While the pipeline is running, the deferred question must not influence:
+
+- canonical-source selection;
+- content extraction;
+- anchor generation;
+- claim extraction;
+- dependency construction;
+- verification scope or outcome.
+
+The complete paper is processed in the same way whether the deferred question is present or absent. This prevents the question from causing selective reading, omitted assumptions, confirmation bias, or premature summarization.
+
+The question is considered only after the paper has completed the configured AgtXIv pipeline. Pipeline completion means that every configured stage has produced an explicit result, including blocked, unresolved, or not-applicable results; it does not mean that every claim is fully verified.
+
+A deferred question has the following lifecycle:
+
+```text
+DEFERRED
+ANSWERED
+BLOCKED
+```
+
+`ANSWERED` means that the final claims, source anchors, dependencies, and verification records produced by the completed configured pipeline support a grounded response. The response must be derived only from those final records; intermediate records and outside knowledge must not supply the answer. `BLOCKED` means that the completed final records do not support a reliable answer. A blocked question must not be answered by guessing. The final answer record is produced by the end-of-pipeline query-response stage; its detailed format is outside the scope of this source-acquisition specification.
 
 ## 3. Canonical Artifact
 
@@ -152,7 +196,9 @@ The original PDF or arXiv source bundle is stored separately under the project's
   "query": {
     "query_type": "PAPER",
     "identifier_type": "DOI",
-    "identifier": "10.xxxx/example"
+    "identifier": "10.xxxx/example",
+    "submitted_at": "2026-08-21T14:00:00Z",
+    "deferred_question": null
   },
   "metadata": {
     "title": "Example Paper",
@@ -191,7 +237,9 @@ If OCR is used, `extraction.method` is `OCR` and `extraction.tool` identifies th
   "query": {
     "query_type": "PAPER",
     "identifier_type": "ARXIV",
-    "identifier": "1609.07488"
+    "identifier": "1609.07488",
+    "submitted_at": "2026-08-21T14:00:00Z",
+    "deferred_question": null
   },
   "metadata": {
     "title": "Example Paper",
@@ -230,7 +278,9 @@ If OCR is used, `extraction.method` is `OCR` and `extraction.tool` identifies th
   "query": {
     "query_type": "PAPER",
     "identifier_type": "DOI",
-    "identifier": "10.xxxx/example"
+    "identifier": "10.xxxx/example",
+    "submitted_at": "2026-08-21T14:00:00Z",
+    "deferred_question": null
   },
   "canonical_resolution": {
     "status": "UNAVAILABLE",
@@ -271,16 +321,18 @@ The `artifact_sha256` field ties every anchor to the current canonical file. The
 A source package is valid only if:
 
 1. `query.query_type` is `PAPER`;
-2. `document_type` is `PAPER`;
-3. `canonical_resolution.status` is `RESOLVED` or `UNAVAILABLE`;
-4. a resolved record has exactly one `canonical_artifact`;
-5. `canonical_resolution.source_type` is `PUBLISHER_PDF` or `ARXIV_SOURCE`;
-6. the canonical artifact has a path, source URL, media type, and SHA-256 hash;
-7. publisher PDF extraction uses `PDF_TEXT` or `OCR`;
-8. arXiv source extraction uses `LATEX_SOURCE` and records an entry point;
-9. every anchor refers to the hash of the current canonical artifact;
-10. no anchors are present for an unavailable source; and
-11. replacement of the canonical artifact invalidates all previous anchors and derived content.
+2. `query.deferred_question` is either `null` or a verbatim question with status `DEFERRED` during acquisition;
+3. the deferred question does not influence any paper-processing stage;
+4. `document_type` is `PAPER`;
+5. `canonical_resolution.status` is `RESOLVED` or `UNAVAILABLE`;
+6. a resolved record has exactly one `canonical_artifact`;
+7. `canonical_resolution.source_type` is `PUBLISHER_PDF` or `ARXIV_SOURCE`;
+8. the canonical artifact has a path, source URL, media type, and SHA-256 hash;
+9. publisher PDF extraction uses `PDF_TEXT` or `OCR`;
+10. arXiv source extraction uses `LATEX_SOURCE` and records an entry point;
+11. every anchor refers to the hash of the current canonical artifact;
+12. no anchors are present for an unavailable source; and
+13. replacement of the canonical artifact invalidates all previous anchors and derived content.
 
 ## 11. MVP Boundary
 
@@ -291,7 +343,8 @@ AgtXIv v0.1 deliberately does not:
 - compare publisher and arXiv text for discrepancies;
 - assess scientific correctness during source acquisition;
 - prescribe a single OCR or PDF extraction implementation;
-- extract claims before canonical resolution succeeds; or
+- extract claims before canonical resolution succeeds;
+- answer or use a deferred question before the configured pipeline completes; or
 - treat OCR output as a canonical artifact.
 
-The next pipeline stage begins only after a resolved source package and its anchors are available.
+The next pipeline stage begins only after a resolved source package and its anchors are available. Any deferred question remains stored and inactive until all configured AgtXIv stages have returned explicit results.
