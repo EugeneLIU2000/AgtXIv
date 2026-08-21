@@ -4,11 +4,12 @@
 **Version:** 0.4
 **Date:** 2026-08-18
 **Primary target:** Mathematical claims in theoretical physics and mathematically structured sciences
+**Normative paper-source acquisition:** [AgtXIv Paper Source Acquisition](docs/specifications/paper-source-acquisition.md)
 **Normative mathematics detail:** [AgtXIv Mathematics Pipeline](docs/specifications/mathematics-pipeline.md)
 **Implementation roadmap:** [AgtXIv v1 vertical-slice checklist](docs/roadmaps/v1-implementation-checklist.md)
 **Revision note:** [Architecture changes from v0.3 to v0.4](docs/specifications/v0.3-to-v0.4-architecture-changes.md)
 
-`AgtXIv.md` is the system-wide specification. The mathematics pipeline refines the mathematics profile and is normative within that scope; if wording appears to conflict, the system-wide safety and non-promotion rules in this document take precedence.
+`AgtXIv.md` is the system-wide specification. The paper-source acquisition specification governs canonical full-text acquisition, and the mathematics pipeline refines the mathematics profile. Each document is normative within its stated scope; if wording appears to conflict, the system-wide safety and non-promotion rules in this document take precedence.
 
 ## Abstract
 
