@@ -122,8 +122,9 @@ A canonical artifact is the full-text object from which AgtXIv derives the paper
 AgtXIv v0.1 uses this strict priority order:
 
 1. **Latest arXiv source bundle.** If an arXiv source bundle exists, the latest available version is canonical, including when a publisher PDF also exists.
-2. **Publisher PDF fallback.** If no arXiv source bundle exists but a publisher PDF can be obtained, the publisher PDF is canonical.
-3. **Unavailable.** If neither artifact can be obtained, canonical resolution is unavailable.
+2. **Publisher PDF fallback.** Only after authoritative evidence establishes that no arXiv record or source bundle exists, a publisher PDF may become canonical.
+3. **Blocked.** A transient failure or unresolved source-candidate conflict blocks canonical activation rather than lowering artifact priority.
+4. **Unavailable.** Only deterministic absence of both arXiv source and publisher PDF makes canonical resolution unavailable.
 
 When arXiv source is canonical:
 
@@ -139,29 +140,67 @@ When only a publisher PDF is available, it is canonical and is read using `PDF_T
 
 The MVP does not introduce authority-conflict, multi-canonical, or archival version states.
 
+### 3.1 Retrieval backend policy
+
+Retrieval backend selection does not change canonical authority. A configured arXiv Kaggle dataset and the official arXiv e-print/source endpoint are transports for obtaining `ARXIV_SOURCE`; neither is a new canonical source type. A metadata-only Kaggle dataset is not a source backend: the configured dataset must contain source archives.
+
+Acquisition first resolves the paper arXiv identifier and exact latest version from authoritative arXiv metadata. `latest_version_resolution` records the authority and URL, observation time, resolved identifier and version, and status. Its status is `RESOLVED`, `NOT_FOUND`, or `TRANSIENT_FAILURE`. Timeout, rate limiting, service unavailability, or temporarily unavailable metadata produces `TRANSIENT_FAILURE`, not evidence of absence.
+
+For a resolved arXiv record, retrieval proceeds in this order:
+
+1. attempt the configured Kaggle source dataset for the exact resolved version;
+2. if that attempt is `NOT_FOUND` or `INVALID_CANDIDATE`, attempt the official arXiv e-print/source endpoint for the same exact version; and
+3. enter publisher-PDF fallback only when no valid exact-version arXiv candidate exists and the official endpoint deterministically returns `NOT_FOUND` for that source, or when authoritative metadata deterministically establishes that no arXiv record exists.
+
+Every entry in the ordered `retrieval.attempts` array has one result:
+
+```text
+SUCCEEDED
+NOT_FOUND
+INVALID_CANDIDATE
+TRANSIENT_FAILURE
+NOT_APPLICABLE
+NOT_ATTEMPTED
+```
+
+`NOT_FOUND` means a deterministic negative response from the named backend. Kaggle `NOT_FOUND` alone never proves that arXiv source does not exist. `INVALID_CANDIDATE` is reserved for deterministic identity, version, content, or safety validation failure. Suspected truncation, transport corruption, incomplete download, or another plausibly retryable validation failure is `TRANSIENT_FAILURE`, not `INVALID_CANDIDATE`. `TRANSIENT_FAILURE` also includes timeout, rate limiting, temporary service or metadata failure, and indeterminate responses; it requires retry and blocks publisher fallback. `NOT_APPLICABLE` and `NOT_ATTEMPTED` must include reasons.
+
+A Kaggle `INVALID_CANDIDATE` triggers the official endpoint, which may resolve that lower-priority candidate failure by succeeding. An official `INVALID_CANDIDATE` never permits publisher fallback: deterministic official identity, version, or content conflict produces canonical `REVIEW_REQUIRED`, while suspected transport damage is classified as `TRANSIENT_FAILURE` and produces `RETRY_REQUIRED`. Publisher fallback remains permitted only at the deterministic `NOT_FOUND` boundary above.
+
+Every arXiv candidate must match the resolved paper identifier and exact requested version. A Kaggle attempt records `version_evidence`; unproved version identity makes the candidate invalid. The archive must be readable and extractable, contain a non-empty source payload, reject absolute paths and `..` traversal, and reject every symbolic link and hard link. Every attempt that obtains any bytes, including an invalid or partial candidate, records a retained `candidate_path`.
+
+Each obtained archive records a locally computed `archive_sha256` for transport provenance and a deterministic `source_tree_sha256` for content comparison after successful extraction. The MVP source-tree manifest is an array containing only regular files; directories and all links are excluded because links are rejected. Each object has exactly `path`, `type`, and `sha256`, where `type` is `file`, `path` is a relative POSIX path encoded as valid UTF-8, and `sha256` is the file-byte SHA-256. Paths must not undergo Unicode normalization or case folding. Sort objects by the UTF-8 bytes of `path`, encode the array as UTF-8 using the RFC 8785 JSON Canonicalization Scheme, and SHA-256 those bytes. Outer compression, tar ordering, timestamps, ownership, or other container metadata can change `archive_sha256` without creating a source-content conflict.
+
+By default, a successful Kaggle attempt may be selected without calling the official endpoint. `official_cross_check.mode` is `DISABLED`, `ALWAYS`, or `FIRST_SEEN_DATASET_REVISION`; the latter two call the official endpoint after Kaggle `SUCCEEDED` for configured audit. The official attempt records its cross-check trigger and reason. When both backends succeed for the exact version, equal `source_tree_sha256` values produce comparison status `MATCHED`, even if archive hashes differ, and selection may follow backend order. Different tree hashes produce canonical `REVIEW_REQUIRED`; the comparison records both attempt identifiers, candidate paths, and hashes, no attempt is selected, and canonical activation remains blocked. If the cross-check returns `NOT_FOUND` after Kaggle produced a valid exact-version candidate, the validated Kaggle candidate remains selected and the publisher PDF cannot become canonical; the negative cross-check is retained as provenance.
+
+A Kaggle locator must contain either an immutable dataset version or revision, or a locally retained snapshot path and SHA-256. A mutable dataset slug plus a date is not reproducible. Dataset identifier, member path, and version-evidence values are dataset-specific and must not assume a universal Kaggle layout.
+
 ## 4. Canonical Resolution Status
 
-Canonical resolution has exactly two states:
+Canonical resolution has exactly four states:
 
 ```text
 RESOLVED
 UNAVAILABLE
+RETRY_REQUIRED
+REVIEW_REQUIRED
 ```
 
 ### 4.1 `RESOLVED`
 
-`RESOLVED` means that AgtXIv obtained exactly one active canonical artifact:
-
-- the latest arXiv source bundle; or
-- if no arXiv source bundle exists, a publisher PDF.
-
-Only a resolved paper may proceed to content extraction and anchor generation.
+`RESOLVED` means that AgtXIv obtained exactly one active canonical artifact: the latest arXiv source bundle, or a publisher PDF after the fallback boundary in Section 3.1 was satisfied. Only a resolved paper may proceed to preprocessing, content extraction, and anchor generation.
 
 ### 4.2 `UNAVAILABLE`
 
-`UNAVAILABLE` means that AgtXIv could obtain neither an arXiv source bundle nor a publisher PDF. No canonical artifact, extracted content, or authoritative anchors are produced.
+`UNAVAILABLE` means deterministic results established that neither an arXiv source bundle nor a publisher PDF is available. No canonical artifact, preprocessing output, or anchors are produced.
 
-Canonical resolution status is separate from anchor-alignment status. A paper can be canonically resolved while individual anchors require alignment review.
+### 4.3 `RETRY_REQUIRED`
+
+`RETRY_REQUIRED` means latest-version resolution or an acquisition attempt had a transient failure, including timeout, rate limiting, temporary service unavailability, or indeterminate metadata. `canonical_artifact`, `source_preprocessing`, and `alignment` are `null`; no anchors are produced. Attempts and candidate provenance remain in the manifest, and acquisition must be retried rather than falling back to a publisher PDF.
+
+### 4.4 `REVIEW_REQUIRED`
+
+Canonical-resolution `REVIEW_REQUIRED` means valid candidates for the same exact arXiv version have different source-tree hashes or another acquisition conflict prevents safe selection. `canonical_artifact`, `source_preprocessing`, and `alignment` are `null`; no anchors are produced. Candidate paths, hashes, validation, and comparison provenance remain available for review. This state is distinct from preprocessing review and anchor-alignment `REVIEW_REQUIRED`.
 
 ## 5. LaTeX Source Preprocessing
 
@@ -381,9 +420,9 @@ source/
 └── anchors.jsonl
 ```
 
-`manifest.json` records paper identity, sanitized query provenance, canonical resolution, artifacts, dates, extraction tools, macro-expansion policy, and alignment policy.
+`manifest.json` records paper identity, sanitized query provenance, latest-version resolution, canonical resolution, ordered retrieval attempts, stable locators, candidate validation and hashes, selected-attempt or comparison decisions, dates, extraction tools, macro-expansion policy, and alignment policy. Retrieval provenance must locate retained objects without treating a transport backend as a canonical source type.
 
-`anchors.jsonl` records source passages, expanded mathematical content, publication-witness locations, and derived aligned content. It is empty or absent when canonical resolution is `UNAVAILABLE` or while unresolved-root preprocessing has status `REVIEW_REQUIRED`.
+`anchors.jsonl` records source passages, expanded mathematical content, publication-witness locations, and derived aligned content. It is empty or absent unless canonical resolution is `RESOLVED`; unresolved-root preprocessing with status `REVIEW_REQUIRED` also produces no anchors.
 
 Original arXiv bundles and publisher PDFs remain under the project's existing reference-material structure. Source-derived `head.tex` remains in the existing source or reference structure. The manifest points to these objects rather than duplicating them in the source package.
 
@@ -414,6 +453,14 @@ Original arXiv bundles and publisher PDFs remain under the project's existing re
     "arxiv_id": "1609.07488",
     "publisher_publication_date": "2017-03-15"
   },
+  "latest_version_resolution": {
+    "authority": "ARXIV_METADATA",
+    "source_url": "https://export.arxiv.org/api/query?id_list=1609.07488",
+    "observed_at": "2026-08-21T09:55:00Z",
+    "resolved_arxiv_id": "1609.07488",
+    "resolved_arxiv_version": "v3",
+    "status": "RESOLVED"
+  },
   "canonical_resolution": {
     "status": "RESOLVED",
     "source_type": "ARXIV_SOURCE",
@@ -422,11 +469,67 @@ Original arXiv bundles and publisher PDFs remain under the project's existing re
   "canonical_artifact": {
     "path": "Reference/example-paper/arxiv-source-v3.tar",
     "media_type": "application/x-tar",
-    "source_url": "https://arxiv.org/e-print/1609.07488v3",
     "arxiv_version": 3,
     "arxiv_submitted_at": "2017-06-02T11:30:00Z",
     "entrypoint": "main.tex",
-    "sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d"
+    "sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+    "source_tree_sha256": "2ff8b234e1a86351c3c2c3529b94083bb08bd559cc4988b217e5fb9bb7d48e38"
+  },
+  "retrieval": {
+    "official_cross_check": {
+      "mode": "DISABLED",
+      "trigger": null,
+      "reason": "The default retrieval path accepts a validated dataset candidate."
+    },
+    "attempts": [
+      {
+        "attempt_id": "attempt:kaggle:1",
+        "backend": "ARXIV_KAGGLE_DATASET",
+        "locator": {
+          "dataset_identifier": "<configured-source-dataset>",
+          "dataset_revision": "<immutable-dataset-revision>",
+          "snapshot_path": null,
+          "snapshot_sha256": null,
+          "member_path": "<member-for-1609.07488v3>",
+          "source_url": null
+        },
+        "requested_arxiv_version": "v3",
+        "attempted_at": "2026-08-21T09:58:00Z",
+        "result": "SUCCEEDED",
+        "candidate_path": "Reference/example-paper/candidates/kaggle-v3.tar",
+        "version_evidence": {
+          "arxiv_id": "1609.07488",
+          "arxiv_version": "v3",
+          "basis": "<dataset-specific-version-evidence>"
+        },
+        "validation": {
+          "status": "PASSED",
+          "paper_arxiv_id": "MATCH",
+          "arxiv_version": "MATCH",
+          "archive_readable": true,
+          "archive_extractable": true,
+          "safe_paths": true,
+          "source_payload_nonempty": true,
+          "archive_sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+          "source_tree_sha256": "2ff8b234e1a86351c3c2c3529b94083bb08bd559cc4988b217e5fb9bb7d48e38"
+        }
+      },
+      {
+        "attempt_id": "attempt:arxiv:2",
+        "backend": "ARXIV_OFFICIAL_EPRINT",
+        "locator": {
+          "source_url": "https://arxiv.org/e-print/1609.07488v3"
+        },
+        "requested_arxiv_version": "v3",
+        "attempted_at": null,
+        "result": "NOT_ATTEMPTED",
+        "reason": "The preferred dataset attempt succeeded.",
+        "version_evidence": null,
+        "validation": null
+      }
+    ],
+    "selected_attempt": "attempt:kaggle:1",
+    "comparison": null
   },
   "source_preprocessing": {
     "status": "READY",
@@ -529,13 +632,18 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
   },
   "metadata": {
     "title": "Example Paper",
-    "authors": [
-      "First Author",
-      "Second Author"
-    ],
+    "authors": ["First Author", "Second Author"],
     "doi": "10.xxxx/example",
-    "arxiv_id": null,
+    "arxiv_id": "<arxiv-id>",
     "publisher_publication_date": "2024-05-17"
+  },
+  "latest_version_resolution": {
+    "authority": "ARXIV_METADATA",
+    "source_url": "<authoritative-arxiv-metadata-url>",
+    "observed_at": "2026-08-21T09:55:00Z",
+    "resolved_arxiv_id": "<arxiv-id>",
+    "resolved_arxiv_version": "v2",
+    "status": "RESOLVED"
   },
   "canonical_resolution": {
     "status": "RESOLVED",
@@ -548,6 +656,57 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
     "source_url": "https://publisher.example/paper.pdf",
     "publication_date": "2024-05-17",
     "sha256": "93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135"
+  },
+  "retrieval": {
+    "attempts": [
+      {
+        "attempt_id": "attempt:kaggle:1",
+        "backend": "ARXIV_KAGGLE_DATASET",
+        "locator": {
+          "dataset_identifier": "<configured-source-dataset>",
+          "dataset_revision": "<immutable-dataset-revision>",
+          "snapshot_path": null,
+          "snapshot_sha256": null,
+          "member_path": "<member-for-requested-version>",
+          "source_url": null
+        },
+        "requested_arxiv_version": "v2",
+        "attempted_at": "2026-08-21T09:56:00Z",
+        "result": "NOT_FOUND",
+        "reason": "The immutable dataset revision contains no member for the exact version.",
+        "version_evidence": null,
+        "validation": null
+      },
+      {
+        "attempt_id": "attempt:arxiv:2",
+        "backend": "ARXIV_OFFICIAL_EPRINT",
+        "locator": {"source_url": "<official-eprint-url-for-v2>"},
+        "requested_arxiv_version": "v2",
+        "attempted_at": "2026-08-21T09:57:00Z",
+        "result": "NOT_FOUND",
+        "reason": "The official endpoint deterministically reported no source for the exact version.",
+        "version_evidence": null,
+        "validation": null
+      },
+      {
+        "attempt_id": "attempt:publisher:3",
+        "backend": "PUBLISHER_URL",
+        "locator": {"source_url": "https://publisher.example/paper.pdf"},
+        "requested_arxiv_version": null,
+        "attempted_at": "2026-08-21T09:58:00Z",
+        "result": "SUCCEEDED",
+        "candidate_path": "Reference/example-paper/candidates/publisher.pdf",
+        "version_evidence": null,
+        "validation": {
+          "status": "PASSED",
+          "document_readable": true,
+          "payload_nonempty": true,
+          "document_sha256": "93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135"
+        }
+      }
+    ],
+    "selected_attempt": "attempt:publisher:3",
+    "comparison": null
   },
   "source_preprocessing": {
     "status": "READY",
@@ -563,9 +722,7 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
     "generated_at": "2026-08-21T10:05:00Z",
     "temporal_policy": "PDF_ONLY",
     "corrections_target": "ALIGNED_CONTENT_ONLY",
-    "anchor_statuses_present": [
-      "PDF_ONLY"
-    ],
+    "anchor_statuses_present": ["PDF_ONLY"],
     "status_vocabulary": [
       "SOURCE_ONLY",
       "MATCHED",
@@ -579,6 +736,12 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
 ```
 
 If the PDF has a reliable text layer, `source_preprocessing.method` is `PDF_TEXT`. OCR use must identify the OCR tool and must not replace the canonical PDF.
+
+`retrieval.attempts` is ordered and includes successful, failed, inapplicable, and skipped attempts. Each attempt records a backend, stable locator, requested version when applicable, time, result, and validation and hashes when bytes were obtained. An attempt that obtains bytes also records `candidate_path`. `selected_attempt` is the successful attempt that supplied the canonical artifact; it is `null` for blocked and unavailable states. `comparison` references attempt identifiers rather than copying implicit backend state. `official_cross_check` records whether post-success official verification is disabled or enabled and why.
+
+For Kaggle, either `locator.dataset_revision` is an immutable dataset version or revision, or both `snapshot_path` and `snapshot_sha256` identify a retained local snapshot. At least one of those alternatives must be complete. Angle-bracket strings in these examples are neutral placeholders, not claims about a real dataset identifier, member layout, or URL. A mutable slug and observation date alone are insufficient.
+
+For arXiv source, `validation.archive_sha256` is locally computed over retrieved archive bytes and `validation.source_tree_sha256` is the basis for backend comparison. Publisher attempts instead record a local `document_sha256`. These fields do not imply a Kaggle-provided checksum or real-time dataset freshness. Publisher retrieval uses `PUBLISHER_URL` and may proceed only after the ordered arXiv evidence satisfies Section 3.1.
 
 ### 10.3 Unavailable source
 
@@ -602,15 +765,243 @@ If the PDF has a reliable text layer, `source_preprocessing.method` is `PDF_TEXT
     "arxiv_id": null,
     "publisher_publication_date": null
   },
+  "latest_version_resolution": {
+    "authority": "ARXIV_METADATA",
+    "source_url": "<authoritative-arxiv-metadata-url>",
+    "observed_at": "2026-08-21T09:55:00Z",
+    "resolved_arxiv_id": null,
+    "resolved_arxiv_version": null,
+    "status": "NOT_FOUND"
+  },
   "canonical_resolution": {
     "status": "UNAVAILABLE",
     "resolved_at": "2026-08-21T10:00:00Z",
-    "reason": "No arXiv source bundle or publisher PDF could be obtained."
+    "reason": "Authoritative metadata found no arXiv record, and no publisher PDF was available."
   },
   "canonical_artifact": null,
+  "retrieval": {
+    "attempts": [
+      {
+        "attempt_id": "attempt:kaggle:1",
+        "backend": "ARXIV_KAGGLE_DATASET",
+        "locator": null,
+        "requested_arxiv_version": null,
+        "attempted_at": null,
+        "result": "NOT_APPLICABLE",
+        "reason": "Authoritative metadata found no arXiv record.",
+        "version_evidence": null,
+        "validation": null
+      },
+      {
+        "attempt_id": "attempt:arxiv:2",
+        "backend": "ARXIV_OFFICIAL_EPRINT",
+        "locator": null,
+        "requested_arxiv_version": null,
+        "attempted_at": null,
+        "result": "NOT_APPLICABLE",
+        "reason": "Authoritative metadata found no arXiv record.",
+        "version_evidence": null,
+        "validation": null
+      },
+      {
+        "attempt_id": "attempt:publisher:3",
+        "backend": "PUBLISHER_URL",
+        "locator": {"source_url": "https://publisher.example/paper.pdf"},
+        "requested_arxiv_version": null,
+        "attempted_at": "2026-08-21T09:58:00Z",
+        "result": "NOT_FOUND",
+        "reason": "The publisher deterministically reported no PDF at the resolved article location.",
+        "version_evidence": null,
+        "validation": null
+      }
+    ],
+    "selected_attempt": null,
+    "comparison": null
+  },
   "source_preprocessing": null,
   "publication_witness": null,
   "alignment": null
+}
+```
+
+### 10.4 Blocked acquisition branches
+
+A transient metadata or backend failure blocks fallback and produces a retryable manifest branch:
+
+```json
+{
+  "latest_version_resolution": {
+    "authority": "ARXIV_METADATA",
+    "source_url": "<authoritative-arxiv-metadata-url>",
+    "observed_at": "2026-08-21T09:55:00Z",
+    "resolved_arxiv_id": null,
+    "resolved_arxiv_version": null,
+    "status": "TRANSIENT_FAILURE"
+  },
+  "canonical_resolution": {"status": "RETRY_REQUIRED", "reason": "Authoritative arXiv metadata timed out."},
+  "canonical_artifact": null,
+  "retrieval": {
+    "attempts": [
+      {"attempt_id": "attempt:kaggle:1", "backend": "ARXIV_KAGGLE_DATASET", "locator": null, "requested_arxiv_version": null, "attempted_at": null, "result": "NOT_ATTEMPTED", "reason": "Latest-version resolution must be retried.", "version_evidence": null, "validation": null}
+    ],
+    "selected_attempt": null,
+    "comparison": null
+  },
+  "source_preprocessing": null,
+  "alignment": null
+}
+```
+
+Different source trees for the same exact version require review. This branch is reachable when an enabled official cross-check follows a successful Kaggle attempt:
+
+```json
+{
+  "latest_version_resolution": {
+    "authority": "ARXIV_METADATA",
+    "source_url": "<authoritative-arxiv-metadata-url>",
+    "observed_at": "2026-08-21T09:55:00Z",
+    "resolved_arxiv_id": "<arxiv-id>",
+    "resolved_arxiv_version": "v2",
+    "status": "RESOLVED"
+  },
+  "canonical_resolution": {"status": "REVIEW_REQUIRED", "reason": "Cross-checked exact-version candidates have different source trees."},
+  "canonical_artifact": null,
+  "retrieval": {
+    "official_cross_check": {
+      "mode": "FIRST_SEEN_DATASET_REVISION",
+      "trigger": "FIRST_CANDIDATE_FROM_REVISION",
+      "reason": "Audit the first successful candidate from this immutable dataset revision."
+    },
+    "attempts": [
+      {
+        "attempt_id": "attempt:kaggle:1",
+        "backend": "ARXIV_KAGGLE_DATASET",
+        "locator": {"dataset_identifier": "<configured-source-dataset>", "dataset_revision": "<immutable-dataset-revision>", "snapshot_path": null, "snapshot_sha256": null, "member_path": "<member-for-requested-version>", "source_url": null},
+        "requested_arxiv_version": "v2",
+        "attempted_at": "2026-08-21T09:56:00Z",
+        "result": "SUCCEEDED",
+        "candidate_path": "Reference/example-paper/candidates/kaggle-v2.tar",
+        "version_evidence": {"arxiv_id": "<arxiv-id>", "arxiv_version": "v2", "basis": "<dataset-specific-version-evidence>"},
+        "validation": {
+          "status": "PASSED",
+          "paper_arxiv_id": "MATCH",
+          "arxiv_version": "MATCH",
+          "archive_readable": true,
+          "archive_extractable": true,
+          "safe_paths": true,
+          "source_payload_nonempty": true,
+          "archive_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source_tree_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      },
+      {
+        "attempt_id": "attempt:arxiv:2",
+        "backend": "ARXIV_OFFICIAL_EPRINT",
+        "locator": {"source_url": "<official-eprint-url-for-v2>"},
+        "requested_arxiv_version": "v2",
+        "attempted_at": "2026-08-21T09:57:00Z",
+        "result": "SUCCEEDED",
+        "trigger": "OFFICIAL_CROSS_CHECK",
+        "reason": "The configured mode cross-checks the first candidate from this dataset revision.",
+        "candidate_path": "Reference/example-paper/candidates/official-v2.tar",
+        "version_evidence": {"arxiv_id": "<arxiv-id>", "arxiv_version": "v2", "basis": "OFFICIAL_VERSIONED_ENDPOINT"},
+        "validation": {
+          "status": "PASSED",
+          "paper_arxiv_id": "MATCH",
+          "arxiv_version": "MATCH",
+          "archive_readable": true,
+          "archive_extractable": true,
+          "safe_paths": true,
+          "source_payload_nonempty": true,
+          "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "source_tree_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        }
+      }
+    ],
+    "selected_attempt": null,
+    "comparison": {
+      "status": "REVIEW_REQUIRED",
+      "candidates": [
+        {"attempt_id": "attempt:kaggle:1", "candidate_path": "Reference/example-paper/candidates/kaggle-v2.tar", "archive_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source_tree_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        {"attempt_id": "attempt:arxiv:2", "candidate_path": "Reference/example-paper/candidates/official-v2.tar", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "source_tree_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}
+      ]
+    }
+  },
+  "source_preprocessing": null,
+  "publication_witness": null,
+  "alignment": null
+}
+```
+
+### 10.5 Official endpoint succeeds after dataset miss
+
+The following complete retrieval and canonical fragment shows the official endpoint becoming the selected transport after deterministic Kaggle `NOT_FOUND`. The same structure applies after a deterministic Kaggle `INVALID_CANDIDATE`, with its retained candidate and validation evidence added to the first attempt.
+
+```json
+{
+  "latest_version_resolution": {
+    "authority": "ARXIV_METADATA",
+    "source_url": "<authoritative-arxiv-metadata-url>",
+    "observed_at": "2026-08-21T09:55:00Z",
+    "resolved_arxiv_id": "<arxiv-id>",
+    "resolved_arxiv_version": "v2",
+    "status": "RESOLVED"
+  },
+  "canonical_resolution": {
+    "status": "RESOLVED",
+    "source_type": "ARXIV_SOURCE",
+    "resolved_at": "2026-08-21T10:00:00Z"
+  },
+  "canonical_artifact": {
+    "path": "Reference/example-paper/arxiv-source-v2.tar",
+    "media_type": "application/x-tar",
+    "arxiv_version": 2,
+    "arxiv_submitted_at": "2024-05-01T12:00:00Z",
+    "entrypoint": "main.tex",
+    "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_tree_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  "retrieval": {
+    "official_cross_check": {"mode": "DISABLED", "trigger": null, "reason": "The official request is required fallback, not a post-success cross-check."},
+    "attempts": [
+      {
+        "attempt_id": "attempt:kaggle:1",
+        "backend": "ARXIV_KAGGLE_DATASET",
+        "locator": {"dataset_identifier": "<configured-source-dataset>", "dataset_revision": "<immutable-dataset-revision>", "snapshot_path": null, "snapshot_sha256": null, "member_path": "<member-for-requested-version>", "source_url": null},
+        "requested_arxiv_version": "v2",
+        "attempted_at": "2026-08-21T09:56:00Z",
+        "result": "NOT_FOUND",
+        "reason": "The immutable dataset revision contains no member for the exact version.",
+        "version_evidence": null,
+        "validation": null
+      },
+      {
+        "attempt_id": "attempt:arxiv:2",
+        "backend": "ARXIV_OFFICIAL_EPRINT",
+        "locator": {"source_url": "<official-eprint-url-for-v2>"},
+        "requested_arxiv_version": "v2",
+        "attempted_at": "2026-08-21T09:57:00Z",
+        "result": "SUCCEEDED",
+        "trigger": "FALLBACK_AFTER_KAGGLE_NOT_FOUND",
+        "reason": "The dataset had no exact-version member.",
+        "candidate_path": "Reference/example-paper/candidates/official-v2.tar",
+        "version_evidence": {"arxiv_id": "<arxiv-id>", "arxiv_version": "v2", "basis": "OFFICIAL_VERSIONED_ENDPOINT"},
+        "validation": {
+          "status": "PASSED",
+          "paper_arxiv_id": "MATCH",
+          "arxiv_version": "MATCH",
+          "archive_readable": true,
+          "archive_extractable": true,
+          "safe_paths": true,
+          "source_payload_nonempty": true,
+          "archive_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "source_tree_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+      }
+    ],
+    "selected_attempt": "attempt:arxiv:2",
+    "comparison": null
+  }
 }
 ```
 
@@ -671,39 +1062,35 @@ An alignment-`REVIEW_REQUIRED` anchor preserves every available representation, 
 
 A source package is valid only if:
 
-1. `query.query_type` is `PAPER`;
-2. processing inputs do not contain deferred-question text;
-3. the source manifest records only deferred-question presence and lifecycle status;
-4. the deferred question does not influence acquisition, extraction, claim processing, dependency construction, or verification;
-5. `document_type` is `PAPER`;
-6. `canonical_resolution.status` is `RESOLVED` or `UNAVAILABLE`;
-7. a resolved record has exactly one active `canonical_artifact`;
-8. arXiv source is canonical whenever an arXiv source bundle is available;
-9. a publisher PDF is canonical only when no arXiv source bundle is available;
-10. `canonical_resolution.source_type` is `ARXIV_SOURCE` or `PUBLISHER_PDF` for a resolved record;
-11. every canonical artifact has a path, source URL, media type, and SHA-256 hash;
-12. canonical arXiv source records its version and submission date;
-13. `source_preprocessing.status` is `READY` or `REVIEW_REQUIRED` for canonical arXiv source;
-14. `READY` preprocessing records a non-null root entry point and source-derived `head.tex`;
-15. `REVIEW_REQUIRED` preprocessing for an unresolved root records null `entrypoint` and `head_file` and produces no anchors;
-16. `head.tex` is marked as preprocessing and audit material rather than canonical content;
-17. every arXiv-derived mathematical anchor preserves exact `raw_latex`;
-18. an `EXPANDED` anchor has non-null approved-vocabulary `expanded_latex`, while partial or failed expansion has null `expanded_latex`;
-19. `PARTIALLY_EXPANDED` preserves its audit output and unresolved names in `partial_expansion_latex` and `unresolved_macros`;
-20. unresolved macros are preserved and never guessed;
-21. only `EXPANDED` mathematical anchors are automatically eligible for math-claim normalization;
-22. publisher PDF extraction uses `PDF_TEXT` or `OCR`;
-23. OCR output remains derived evidence tied to the original PDF hash;
-24. a publisher PDF accompanying canonical arXiv source is a `publication_witness`, not a second canonical artifact;
-25. `alignment.temporal_policy` uses exactly the vocabulary defined in Section 6.3;
-26. every anchor refers to the current canonical artifact hash;
-27. every witness location refers to the publication-witness artifact hash;
-28. macro-expansion and alignment statuses are validated independently;
-29. alignment changes appear only in derived `aligned_content`;
-30. later arXiv content is not overwritten by an older publisher witness;
-31. ambiguous or substantial source-witness discrepancies receive alignment status `REVIEW_REQUIRED` with null aligned content fields;
-32. no anchors are present for an unavailable source; and
-33. canonical replacement invalidates all prior anchors, aligned content, claims, and relations.
+1. `query.query_type` and `document_type` are `PAPER`, and processing inputs exclude deferred-question text;
+2. `canonical_resolution.status` is `RESOLVED`, `UNAVAILABLE`, `RETRY_REQUIRED`, or `REVIEW_REQUIRED`;
+3. only `RESOLVED` has exactly one active `canonical_artifact` and a non-null `retrieval.selected_attempt`;
+4. `UNAVAILABLE`, canonical `RETRY_REQUIRED`, and canonical `REVIEW_REQUIRED` have null canonical artifact, preprocessing, and alignment and produce no anchors;
+5. `latest_version_resolution` records authority, URL, observation time, resolved arXiv identity and exact version when found, and `RESOLVED`, `NOT_FOUND`, or `TRANSIENT_FAILURE` status;
+6. metadata or backend `TRANSIENT_FAILURE`, including suspected truncation, transport corruption, or retryable validation failure, produces `RETRY_REQUIRED`, blocks publisher fallback, and preserves attempt provenance;
+7. every retrieval attempt uses `SUCCEEDED`, `NOT_FOUND`, `INVALID_CANDIDATE`, `TRANSIENT_FAILURE`, `NOT_APPLICABLE`, or `NOT_ATTEMPTED` and records a reason when it does not succeed;
+8. an official `INVALID_CANDIDATE` never permits publisher fallback: deterministic official identity, version, or content conflict produces canonical `REVIEW_REQUIRED`, while suspected transport damage is `TRANSIENT_FAILURE`;
+9. arXiv source remains canonical regardless of transport, and a configured Kaggle source backend actually contains source archives rather than metadata alone;
+10. each Kaggle attempt that is actually requested or obtains a candidate has an immutable dataset revision, or a retained snapshot path and SHA-256, plus its dataset-specific member location; `NOT_APPLICABLE` and `NOT_ATTEMPTED` may have null locator and version evidence but must have a reason;
+11. a mutable dataset slug and date alone are not accepted as a stable locator, and each obtained Kaggle candidate records version evidence;
+12. every attempt that obtains any bytes records a retained `candidate_path`; canonical `REVIEW_REQUIRED` preserves all conflicting candidate paths;
+13. each valid arXiv candidate matches the paper identifier and exact requested latest version, is readable and extractable, contains a non-empty source payload, rejects absolute and traversing paths, and rejects every symbolic and hard link;
+14. each obtained arXiv archive records local `archive_sha256`, and each successfully extracted archive records deterministic `source_tree_sha256`;
+15. the source-tree manifest contains only regular files as fixed `path`/`type: "file"`/`sha256` objects; paths are relative POSIX, valid UTF-8, neither normalized nor case-folded, and sorted by UTF-8 bytes before RFC 8785 canonical JSON encoding and SHA-256;
+16. same-version comparison uses source-tree hashes: equal trees are `MATCHED`, while different trees are canonical `REVIEW_REQUIRED`; archive-byte differences alone are not a conflict;
+17. `official_cross_check` may cause an official attempt after Kaggle `SUCCEEDED`; its mode and trigger are recorded, and the official attempt records its trigger and reason;
+18. Kaggle `NOT_FOUND` or deterministic `INVALID_CANDIDATE` triggers the official endpoint and never independently permits publisher fallback;
+19. publisher fallback is allowed only if no valid exact-version arXiv candidate exists and either authoritative metadata confirms no arXiv record or the official endpoint deterministically returns `NOT_FOUND`; a cross-check `NOT_FOUND` never displaces a validated Kaggle candidate;
+20. a resolved canonical artifact records its path, media type, locally computed SHA-256, and selected-attempt locator; canonical arXiv source also records version, submission date, and source-tree hash matching the selected attempt;
+21. canonical arXiv preprocessing is `READY` or `REVIEW_REQUIRED`; `READY` records a root entry point and source-derived `head.tex`, while unresolved-root review has null entry point and head file and no anchors;
+22. `head.tex` is preprocessing and audit material, not canonical content;
+23. every arXiv-derived mathematical anchor preserves exact `raw_latex`; only `EXPANDED` approved-vocabulary mathematics is automatically eligible for math-claim normalization;
+24. unresolved macros are preserved and never guessed, and partial or failed expansion has null `expanded_latex`;
+25. publisher PDF extraction uses `PDF_TEXT` or `OCR`, and OCR remains derived evidence tied to the PDF hash;
+26. a publisher PDF accompanying canonical arXiv source is a publication witness, not a second canonical artifact;
+27. alignment changes appear only in derived `aligned_content`; later arXiv content is not overwritten by an older witness, and ambiguous source-witness discrepancies receive alignment `REVIEW_REQUIRED` with null aligned content;
+28. every anchor and witness location refers to the current corresponding artifact hash; and
+29. canonical replacement invalidates all prior anchors, aligned content, claims, and relations.
 
 ## 13. MVP Boundary
 
@@ -712,6 +1099,7 @@ AgtXIv v0.1 deliberately does not:
 - support thesis, book, dataset, or software queries;
 - preserve an active archive of earlier canonical versions;
 - maintain multiple canonical artifacts;
+- treat a retrieval backend, including the arXiv Kaggle dataset, as a canonical source type or authority;
 - treat publisher presentation as automatically authoritative over arXiv source;
 - modify an original arXiv bundle or publisher PDF;
 - guess unresolved macro meanings;
