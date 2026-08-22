@@ -1,8 +1,8 @@
 # AgtXIv: Verification-Aware Incremental Search over Scientific Claims
 
 **Status:** Math-first pilot specification
-**Version:** 0.4
-**Date:** 2026-08-18
+**Version:** 0.5
+**Date:** 2026-08-22
 **Primary target:** Mathematical claims in theoretical physics and mathematically structured sciences
 **Normative paper-source acquisition:** [AgtXIv Paper Source Acquisition](docs/specifications/paper-source-acquisition.md)
 **Normative mathematics detail:** [AgtXIv Mathematics Pipeline](docs/specifications/mathematics-pipeline.md)
@@ -34,7 +34,7 @@ Candidate retrieval, symbolic algebra, theorem search, and language-model genera
 
 The formalization loop is designed for high automation. It uses a structured `MathClaimIR`, package and declaration retrieval, a formalizer or blueprint agent, Lean kernel checking, a source-blind backtranslation agent, an alignment auditor, and a source-aware refiner. Round-trip consistency is evidence of stability but not by itself proof of source fidelity; the system therefore compares quantifiers, object types, assumptions, domains, exactness, approximation status, and conclusion strength across the source claim, `MathClaimIR`, Lean declaration, and backtranslation.
 
-Physical interpretation, model assumptions, approximation regimes, operational definitions, and empirical support are represented in one `SemanticContract`. They share a natural-language interface but retain distinct internal status axes, especially `semantic_alignment`, `approximation_regime`, and `empirical_support`. Numerical reproduction is an optional claim-attached `ReproductionRecord`; the pilot does not require a computational DAG or Lean verification of numerical software.
+Physical interpretation, model assumptions, approximation regimes, operational definitions, and empirical support are represented in one `SemanticContract`. They share a natural-language interface but produce evidence for distinct externally derived axes, especially `semantic_alignment`, `approximation_regime`, and `empirical_support`. Numerical reproduction is an optional claim-attached `ReproductionRecord`; the pilot does not require a computational DAG or Lean verification of numerical software.
 
 Verification proceeds backward and forward. A target is traced backward to query-relative Root Agents or reusable root contracts. Verification then runs forward, proving only the residual local deltas. Failed proof construction, semantic misalignment, or missing foundations trigger local graph refinement. The resulting registry is intended to reduce marginal formalization cost as accepted contracts are reused across later targets; the pilot records reuse and repair telemetry even before cost-aware scheduling is introduced.
 
@@ -202,7 +202,7 @@ are stored beside the DAG but are not themselves topological build edges. Only a
 
 #### PaperBuildDAG(q)
 
-A query-relative projection of the mathematical claim DAG to PaperAgents. If the projection creates a paper-level cycle, the involved papers are grouped into a `CompanionBundle`. The condensation graph of these bundles is the actual build DAG.
+A query-relative projection of the mathematical claim DAG to PaperAgents. If the projection creates a paper-level cycle, the involved papers are grouped into a `CompanionBundle`. The condensation graph of these bundles is the actual build DAG. Construction uses only the normative `PaperBuildDAG` request, result, mapping snapshot, SCC algorithm, and artifact interface in Section 5.11.
 
 #### InferenceStep nodes
 
@@ -234,12 +234,13 @@ paper_package:
     - semantic-contract:...
   reproduction_records:
     - reproduction:...
-  unmodeled_profiles:
+  profile_association_refs: []
+  unmodeled_profile_kinds:
     - semantics
     - computation
 ```
 
-`unmodeled_profiles` means that the pilot has not modeled those interfaces. It must not be interpreted as `PASSED` or `NOT_APPLICABLE`.
+`unmodeled_profile_kinds` means that the pilot has not modeled those interfaces. It must not be interpreted as `PASSED` or `NOT_APPLICABLE`.
 
 Cross-profile relations include:
 
@@ -337,21 +338,7 @@ Such a cycle is a graph-audit failure and must be repaired before the graph is u
 
 #### Paper build graph
 
-Projecting a claim DAG to papers can produce a cycle even when the claim DAG is acyclic. Therefore AgtXIv computes strongly connected components after projection and treats each component as a build unit:
-
-```yaml
-companion_bundle:
-  id: bundle:...
-  query: resolution:...
-  agents:
-    - agent:paper-A
-    - agent:paper-B
-  internal_claim_dependencies: []
-  external_imports: []
-  external_exports: []
-```
-
-The condensation graph of these bundles is acyclic.
+Projecting a claim DAG to papers can produce a cycle even when the claim DAG is acyclic. Therefore AgtXIv uses the normative `PaperBuildDAG` construction interface in Section 5.11, computes strongly connected components after projection, and publishes each multi-agent component using the immutable `CompanionBundle` schema there. The condensation graph of these bundles is acyclic.
 
 #### Crosswalk to the mathematics-pipeline graph views
 
@@ -364,7 +351,7 @@ The [mathematics-pipeline specification](docs/specifications/mathematics-pipelin
 | Lean support graph $G^{L}$ | Kernel-checked declaration dependencies and source-to-formal bindings used as evidence. It supports, but does not replace, source fidelity or semantic alignment. |
 | Optimized query graph $G^{Q}$ | The proof-guided, query-relative mathematical view after reversible rejection, redundancy marking, reuse, splitting, or premise expansion. |
 
-`PaperBuildDAG(q)` is a separate paper-level projection of the accepted query-relative claim DAG, followed by strongly connected-component condensation. No candidate, paper-level, or Lean-support edge is silently promoted into that build order.
+`PaperBuildDAG(q)` is a separate paper-level projection of the accepted query-relative claim DAG, followed by strongly connected-component condensation through the exact interface in Section 5.11. No candidate, paper-level, or Lean-support edge is silently promoted into that build order.
 
 ### 2.3 Architecture diagram
 
@@ -507,41 +494,127 @@ The global store is not required to be a single DAG. It contains:
 
 Search and verification remain separate. Theorem search, premise retrieval, informal/formal matching, symbolic inference, and LLM generation may propose candidates. Only exact checking in the pinned environment, source alignment, relation validation, and the configured contract gates can promote them.
 
-### 2.6 QueryResolution cache
+### 2.6 QueryResolution, DependencyManifest, and invalidation
 
-A query result is preserved as a path receipt:
+```yaml
+query_resolution_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.query-resolution-request/1.0.0
+  normalized_query_artifact_hash: sha256:...
+  requested_target: <TargetRef or null>
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  required_scope: {id: verification-scope:query, revision: 1, content_hash: 'sha256:...'}
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+```
+
+```yaml
+query_resolution_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.query-resolution-result/1.0.0
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  query_resolution: null
+  candidate_targets: []
+```
+
+`SUCCEEDED` requires one immutable resolution; ambiguity or unresolved target is `BLOCKED`, invalid query/scope/profile is `REJECTED`, and execution failure emits none.
+
+```yaml
+dependency_manifest:
+  schema: agtxiv.dependency-manifest/1.0.0
+  id: dependency-manifest:resolution-id
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  policies:
+    - {id: status-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  verification_scope: {id: verification-scope:query, revision: 1, content_hash: 'sha256:...'}
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  evidence_snapshot: {id: evidence-index:snapshot-7, record_revision: 1, content_hash: 'sha256:...'}
+  blocker_snapshot: {id: blocker-index:snapshot-4, record_revision: 1, content_hash: 'sha256:...'}
+  schema_artifacts:
+    - {schema_uri: 'https://agtxiv.org/schema/math-claimir/1.0.0', schema_version: 1.0.0, artifact_hash: 'sha256:...'}
+  graph_inputs:
+    root_set: [<TargetRef values>]
+    accepted_relation_snapshot: {id: relation-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+    node_manifest: {id: dependency-node-manifest:..., record_revision: 1, content_hash: 'sha256:...'}
+    import_receipt_snapshot: {id: import-receipt-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+    build_policy: {id: graph-build-policy:math-dag/1.0.0, record_revision: 1, content_hash: 'sha256:...'}
+    algorithm: {id: agtxiv.reverse-dependency-fixed-point/1.0.0, content_hash: 'sha256:...'}
+  formal_environment: {id: formal-env:..., record_revision: 1, content_hash: 'sha256:...', artifact_hash: 'sha256:...'}
+  contracts: []
+  import_receipts: []
+  outputs:
+    graph_artifacts: []
+    closure_artifacts: []
+    status_views: []
+    export_artifacts: []
+  snapshot_expansions:
+    - snapshot_ref: {id: evidence-index:snapshot-7, record_revision: 1, content_hash: 'sha256:...'}
+      snapshot_role: evidence_snapshot
+      manifest_ref: {id: index-entry-manifest:evidence-7, record_revision: 1, content_hash: 'sha256:...'}
+      consumed_record_refs: []
+      expansion_hash: sha256:...
+  expanded_consumed_refs: []
+  dependency_edges:
+    - edge_type: INPUT_CONSUMED_BY_OUTPUT
+      from_ref: <exact consumed record, snapshot, policy, schema artifact, environment, or TargetRef>
+      to_ref: <exact produced output record or TargetRef>
+    - edge_type: OUTPUT_CONSUMED_BY_OUTPUT
+      from_ref: <exact upstream output record or TargetRef>
+      to_ref: <exact downstream output record or TargetRef>
+  content_hash: sha256:...
+```
+
+Every reference is exact. Set-valued arrays are sorted by canonical bytes and reject duplicates. Evidence, blocker, relation, receipt, and other index snapshots must derive from the same composite snapshot. `acceptance_profile` must equal the pinned scope profile. This manifest is the complete cache key and transitive invalidation basis.
+
+`expanded_consumed_refs` is the sorted, duplicate-free union of every direct input reference, every snapshot container and manifest reference, and every individual immutable record reference obtained from `snapshot_expansions`. Expansion resolves the pinned composite snapshot first, verifies the index snapshot's registry manifest revision, append-log prefix and content hash, then emits visible exact member references in ascending canonical-reference bytes. It never follows a floating head. Each expansion stores the hash of this ordered sequence. `dependency_edges` is complete: it contains one `INPUT_CONSUMED_BY_OUTPUT` edge from every expanded consumed reference to every output that directly consumed it, and one `OUTPUT_CONSUMED_BY_OUTPUT` edge for every produced output consumed by a downstream output. Edges are sorted by `(edge_type, canonical(from_ref), canonical(to_ref))`; duplicates, self-edges, unresolved refs, omitted direct inputs, and output-edge cycles invalidate the manifest. These typed edges, not prose or directory scans, define the computable reverse dependency relation.
 
 ```yaml
 query_resolution:
+  schema: agtxiv.query-resolution/1.0.0
   id: resolution:...
-  query: "..."
-  target_agent: agent:...
-  resolved_target: math-contract:...
-
-  graph_views:
-    paper_interaction_subgraph: graph:...
-    math_claim_dag: graph:...
-    paper_build_dag: graph:...
-
-  accepted_imports: []
-  conditional_imports: []
-  dependency_closure: []
-  local_delta: []
-  blocked_frontier: []
-  companion_bundles: []
-
-  dependency_versions: {}
-  formal_environment: formal-env:...
-  reused_from:
-    - resolution:earlier-query
-
-  metrics:
-    reused_contracts: 0
-    new_contracts: 0
-    repair_rounds: 0
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  resolved_target: <TargetRef>
+  dependency_manifest: {id: dependency-manifest:resolution-id, record_revision: 1, content_hash: 'sha256:...'}
+  reused_from: []
+  content_hash: sha256:...
 ```
 
-A cached path may be reused only when its normalized target, assumptions, imported contract versions, formal package versions, and verification requirements remain compatible. A breaking upstream change invalidates only the affected downstream closure.
+```yaml
+query_invalidation_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.query-invalidation-request/1.0.0
+  applies_to: <exact QueryResolution TargetRef>
+  old_dependency_manifest: {id: dependency-manifest:resolution-id, record_revision: 1, content_hash: 'sha256:...'}
+  new_composite_registry_snapshot: {id: composite-snapshot:release-18, record_revision: 1, content_hash: 'sha256:...'}
+  proposed_changed_refs:
+    - ref: <exact old or new record, snapshot, or TargetRef>
+      change_kind: SUPERSEDED | REMOVED | ADDED | CONTENT_CHANGED
+      old_hash: sha256:... | null
+      new_hash: sha256:... | null
+  invalidation_policy: {id: query-invalidation-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  snapshot_diff_algorithm: {id: agtxiv.snapshot-manifest-diff/1.0.0, content_hash: 'sha256:...'}
+  algorithm: {id: agtxiv.transitive-query-invalidation/1.0.0, content_hash: 'sha256:...'}
+```
+
+```yaml
+query_invalidation_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.query-invalidation-result/1.0.0
+  applies_to: <same QueryResolution TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  computed_changed_refs: []
+  invalidated_refs: []
+  invalidation_trace_hash: null
+  superseding_resolution: null
+```
+
+The invalidation algorithm expands the old manifest's composite and index snapshots and the corresponding snapshots selected from the new composite snapshot by the same `snapshot_role`. It compares the two sorted exact member-reference sequences by canonical merge: an old-only tuple is `REMOVED`, a new-only tuple is `ADDED`, equal logical IDs with different revisions or hashes are `SUPERSEDED` or `CONTENT_CHANGED` according to registry lineage, and identical tuples are unchanged. It also compares each old/new snapshot container and manifest reference. `computed_changed_refs` is the sorted, duplicate-free result. If `proposed_changed_refs` is nonempty, it must equal that result exactly.
+
+The traversal seeds a canonical FIFO queue with every changed exact reference and, for an addition or replacement, the old snapshot and manifest refs for the affected role. It then follows the old `DependencyManifest.dependency_edges` in reverse-dependency direction, from each `from_ref` to its `to_ref`, including `OUTPUT_CONSUMED_BY_OUTPUT` edges. Each reached output is invalidated exactly once; outgoing edges are visited in canonical order. This snapshot-role seeding ensures that a newly added record invalidates an output whose earlier computation consumed the old complete snapshot even though that record did not yet occur in the old member set. The result sorts invalidated refs, hashes the complete change-detection and traversal trace, recomputes only the affected closure, and emits a new resolution whose `supersedes` pins the old one. A stale or incomplete proposed change set, incomplete expansion, or incomplete edge set is `BLOCKED`; invalid refs or policies are `REJECTED`; execution failure emits no superseding resolution. Old resolutions remain replayable.
 
 ### 2.7 Progressive standardization
 
@@ -553,12 +626,12 @@ INDEXED
 → NORMALIZED
 → RELATION_VALIDATED
 → DEPENDENCY_MAPPED
-→ FORMALLY_CONNECTED
+→ PARTIALLY_VERIFIED
 → AUTO_ALIGNMENT_PASSED
-→ ACCEPTED_CONTRACT
+→ MATH_CLOSED
 ```
 
-`HUMAN_SEMANTIC_REVIEWED` is an additional review status, not a mandatory predecessor of every automated contract. An automatically accepted contract must not be labeled as human-reviewed.
+`semantic_alignment: HUMAN_REVIEWED` together with `human_review: PERFORMED` is additional evidence-derived review state, not a mandatory predecessor of every automated profile. Automated acceptance must not be labeled as human-reviewed.
 
 The query planner upgrades only load-bearing frontier nodes. Broad extraction can remain candidate-level. Formalization and review effort are reserved for claims that block the selected query or have high expected reuse.
 
@@ -648,7 +721,7 @@ The project records both expected and observed reuse. The number of verified Roo
 
 ## 3. Trusted Verification Layers
 
-AgtXIv uses several verification layers. They answer different questions and retain separate status axes.
+AgtXIv uses several verification layers. They answer different questions and supply evidence to separate externally derived status axes.
 
 ### 3.1 Source and provenance layer
 
@@ -745,7 +818,7 @@ Physical interpretation and empirical support are represented in one `SemanticCo
 - physical interpretation of formal claims;
 - evidence records linked to assumptions, regimes, or conclusions.
 
-The object is unified, but the statuses are not:
+The object is unified, but external status views derive separate axes:
 
 ```text
 semantic_alignment
@@ -785,25 +858,7 @@ Failure to reproduce an illustrative result does not automatically block a mathe
 
 ### 3.6 No global Boolean verification
 
-A claim should not be stored simply as `VERIFIED`.
-
-Instead, it has a verification vector, for example:
-
-```yaml
-verification:
-  source_fidelity: PASSED
-  relation_validation: PASSED
-  dependency_closure: COMPLETE
-  mathematics: KERNEL_CHECKED
-  formal_alignment: AUTO_ALIGNMENT_PASSED
-  semantic_alignment: AGENT_REVIEWED
-  approximation_regime: PARTIALLY_CHECKED
-  empirical_support: PARTIAL
-  computation: NOT_ATTEMPTED
-  human_review: NOT_PERFORMED
-```
-
-A downstream system must state which coordinates are required for its claim of closure.
+No claim or contract stores a Boolean or aggregate verification vector. A consumer requests an immutable `StatusView` for an exact `TargetRef`, policy, required scope, evidence snapshot, and blocker snapshot. For example, a ClaimIR-target view may derive the separate axes `source_fidelity`, `relation_validation`, `dependency_closure`, `mathematics`, `formal_alignment`, `semantic_alignment`, `approximation_regime`, `empirical_support`, `computation`, and `human_review`. The values and every overall label belong only to that external view. A downstream system must pin the exact view or `ClaimImportReceipt` on which it relies.
 
 ---
 
@@ -911,27 +966,49 @@ Every stop must have a recorded reason. Root status never suppresses source, pro
 
 ## 5. Minimal Data Model
 
-The math-first pilot treats `ScientificClaim`, `MathClaimIR`, `MathContract`, `ClaimContract`, and `QueryResolution` as primary reusable objects. PaperAgents, semantic records, reproduction records, package-capability records, and graph-repair records provide provenance and lifecycle context.
+The math-first pilot treats `ScientificClaim`, `MathClaimIR`, `MathContract`, `ClaimContract`, and `QueryResolution` as primary reusable objects. `AttributionRecord`, `FormalizationRecord`, `BacktranslationRecord`, `VerificationEvidenceRecord`, `AlignmentRecord`, `BlockerRecord`, index snapshots, `StatusPolicy`, `StatusView`, and `ClaimImportReceipt` are independently versioned external records around those stable objects. PaperAgents, semantic records, reproduction records, package-capability records, and graph-repair records provide additional provenance and lifecycle context.
 
 ### 5.0 ScientificClaim
 
-A `ScientificClaim` is the cross-profile identity of one atomic source-bounded claim.
+A `ScientificClaim` is the stable cross-profile identity of one atomic source occurrence, derived claim, or source-independent proposition. Source anchors are mandatory only for `origin.class: SOURCE_OCCURRENCE`; the record never owns aggregate status or a mutable profile map.
 
 ```yaml
+schema: agtxiv.scientific-claim/1.0.0
 id: claim:paper-id:main-bound
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
 paper_id: arxiv:xxxx.xxxxxv2
 kind: theorem
 text: >
-  Under assumptions A and B, the quantity F is bounded by g(n).
+  For every finite-dimensional complex Hilbert space H of dimension n and every
+  density operator rho on H, define F(rho) as tr(rho^2) and g(n) as 1; then
+  F(rho) is at most g(n).
 source_anchors:
-  - anchor:paper-id:theorem-2
-origin: SOURCE_EXPLICIT
-profiles:
-  mathematics: math-claim-ir:paper-id:main-bound
-  semantics: semantic-contract:paper-id:main-bound
-  computation: reproduction:paper-id:main-bound
-status: NORMALIZED
+  - id: anchor:paper-id:theorem-2
+    record_revision: 1
+    content_hash: sha256:...
+origin:
+  class: SOURCE_OCCURRENCE
+  assertion_mode: SOURCE_EXPLICIT
+content_hash: sha256:...
 ```
+
+Profile association is an immutable external record. A new semantic or computational profile creates another association revision and does not mutate the `ScientificClaim`.
+
+```yaml
+schema: agtxiv.profile-association/1.0.0
+id: profile-association:paper-id:main-bound:mathematics
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
+applies_to: <exact ScientificClaim TargetRef; no governing ClaimIR before association>
+profile_kind: mathematics
+profile_target: <exact ClaimIR TargetRef with semantic_content_hash>
+content_hash: sha256:...
+```
+
+Verification and lifecycle labels are not stored in either identity record. They are derived in external status views.
 
 Recommended `kind` values are:
 
@@ -953,104 +1030,1223 @@ counterexample
 
 ### 5.1 MathClaimIR
 
-`MathClaimIR` is the structured bridge between a source mathematical claim and Lean.
+`IR` means **intermediate representation**. `MathClaimIR` is the immutable, prover-independent record of what one frozen source occurrence mathematically asserts. It contains no formalization artifact, backtranslation, verification evidence, alignment result, intellectual-priority judgment, blocker, or policy-derived status.
 
-```yaml
-id: math-claim-ir:paper-id:main-bound
-claim: claim:paper-id:main-bound
-source_anchors:
-  - anchor:paper-id:theorem-2
+The normative boundary is:
 
-quantifiers:
-  - binder: rho
-    mode: forall
-    domain: density_operators_on_H
-
-objects:
-  - symbol: H
-    semantic_type: finite_dimensional_complex_hilbert_space
-  - symbol: rho
-    semantic_type: density_operator
-    carrier: H
-  - symbol: F
-    semantic_type: real_valued_functional
-
-assumptions:
-  - id: assumption:finite-dimensional
-  - id: assumption:rho-normalized
-
-conclusion:
-  relation: le
-  lhs: F(rho)
-  rhs: g(n)
-
-statement_mode:
-  exactness: exact
-  finite_or_asymptotic: finite
-  equality_notions: []
-
-conventions:
-  - trace_normalization: standard
-
-unresolved_symbols: []
+```text
+frozen source occurrence and SourceAnchor
+→ source preprocessing and macro expansion
+→ immutable MathClaimIR revision
+→ immutable, independently versioned external records
+→ immutable policy-versioned StatusView
 ```
 
-The object type fields are required to detect notational collapse and abstraction elevation. A source state vector must not silently become a complex scalar merely because the resulting Lean theorem is easier to prove.
+Only a change in represented mathematical meaning creates a semantic ClaimIR revision. A new attribution judgment, formalization, verification run, blocker resolution, index snapshot, or status policy never revises ClaimIR.
+
+#### 5.1.1 Layer ownership
+
+| Layer | Authoritative object | Owns | Must not own |
+|---|---|---|---|
+| 0. Frozen source | `SourceAnchor`, raw and expanded source artifacts | exact occurrence, source location, raw and expanded LaTeX, artifact hashes | normalized meaning, intellectual priority, proof status |
+| 1. Stable mathematical meaning | `MathClaimIR` | source statement, typed objects, quantifiers, assumptions, one atomic conclusion, conventions | attribution priority, prover syntax, graph edges, evidence, blockers, statuses |
+| 2. External interpretation and artifacts | `AttributionRecord`, `FormalizationRecord`, `BacktranslationRecord`, adapter records | one versioned outward interpretation or artifact | authority to mutate ClaimIR |
+| 3. Check evidence | `VerificationEvidenceRecord`, `AlignmentRecord`, `BlockerRecord` | one scoped observation or workflow event | aggregate truth or silent ClaimIR correction |
+| 4. Derived presentation | `StatusView` under `StatusPolicy` | deterministic aggregation over pinned snapshots | new evidence or source meaning |
+
+External records point inward through the canonical `TargetRef`; authoritative reverse links are never embedded in their targets.
+
+#### 5.1.2 Immutable envelopes and canonical `TargetRef`
+
+Every normative request inherits `RequestEnvelope`; every normative result inherits `ResultEnvelope`. ``Inherits'' means that all fields below are required in the serialized object and are validated before operation-specific fields. Examples may write `extends` to avoid repetition, but conforming wire objects contain the inherited fields after schema expansion.
+
+```yaml
+request_envelope:
+  schema: agtxiv.request-envelope/1.0.0
+  id: request:<operation>:...
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  producer:
+    implementation: ...
+    version: ...
+    implementation_hash: sha256:...
+  content_hash: sha256:...
+```
+
+```yaml
+result_envelope:
+  schema: agtxiv.result-envelope/1.0.0
+  id: result:<operation>:...
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  producer:
+    implementation: ...
+    version: ...
+    implementation_hash: sha256:...
+  request_ref:
+    id: request:<operation>:...
+    record_revision: 1
+    content_hash: sha256:...
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  reason_codes: []
+  content_hash: sha256:...
+```
+
+Envelope `content_hash` uses `agtxiv.record-canonical-json/1.0.0`: Unicode NFC, LF line endings, RFC 8785 canonical JSON, schema-declared array order, and SHA-256 over the entire UTF-8 record with only the envelope `content_hash` field omitted. Requests and results are immutable. A corrected request or result increments `record_revision`, pins the previous ID, revision, and hash in `supersedes`, and never overwrites it. `REJECTED` means valid execution found an inadmissible proposal; `BLOCKED` means execution completed but a declared prerequisite is unresolved; `FAILED_TO_RUN` means no domain verdict was produced.
+
+Only target-bearing requests and records require `applies_to`. Policies, registry snapshots, manifests, and other non-target objects use immutable envelopes without a fabricated target.
+
+Normative object types without a specialized construction operation use the generic interface below. It covers ScientificClaims, anchors, contracts, inference steps, blueprint nodes, semantic contracts, reproductions, package capabilities, and manifests.
+
+```yaml
+object_construction_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.object-construction-request/1.0.0
+  applies_to: <parent TargetRef; omitted when the object has no target>
+  object_type_schema: {uri: 'https://agtxiv.org/schema/...', content_hash: 'sha256:...'}
+  candidate_artifact_hash: sha256:...
+  authoritative_registry: ...
+  validation_policy: {id: object-validation-policy:..., record_revision: 1, content_hash: 'sha256:...'}
+```
+
+```yaml
+object_construction_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.object-construction-result/1.0.0
+  applies_to: <same parent TargetRef; omitted when absent in request>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  constructed_object: null
+  validation_findings: []
+```
+
+`SUCCEEDED` requires an exact object ID, revision, content hash, artifact hash, and pending registry-transaction write. Schema or policy invalidity is `REJECTED`; unresolved references are `BLOCKED`; execution failure creates no object. Visibility still requires the atomic transaction in Section 10.1.
+
+In examples, `<... TargetRef>` is a schema macro requiring the complete object below; it is never a literal wire value. `TargetRef` is extensible. `target_kind` is a namespaced identifier, not a closed enum, and `type_schema` pins its interpretation.
+
+```yaml
+target_ref:
+  target_kind: org.agtxiv.claim_ir
+  type_schema:
+    uri: https://agtxiv.org/schema/math-claimir/1.0.0
+    content_hash: sha256:...
+  target_id: math-claim-ir:paper-id:main-bound
+  target_revision: 1
+  target_content_hash: sha256:<semantic-content-hash>
+  target_artifact:
+    schema_uri: https://agtxiv.org/schema/math-claimir/1.0.0
+    schema_version: 1.0.0
+    serialization_profile:
+      id: agtxiv.canonical-yaml/1.0.0
+      content_hash: sha256:...
+    artifact_hash: sha256:...
+  component_path: null
+  claim_ir:
+    id: math-claim-ir:paper-id:main-bound
+    revision: 1
+    semantic_content_hash: sha256:...
+  claim_ir_members: []
+```
+
+`target_content_hash` is the target record's canonical content hash, except for `org.agtxiv.claim_ir`, where it is `semantic_content_hash`. For a ClaimIR target, `target_artifact` is the separate exact serialization address and never substitutes for mathematical identity. It is mandatory whenever an operation parses, migrates, formalizes, backtranslates from, aligns against, exports, or otherwise consumes serialized ClaimIR bytes. It may be `null` only for semantic-only identity operations such as equality grouping, graph membership, dependency traversal, attribution to mathematical content, or index lookup that neither reads nor emits ClaimIR serialization. For a multi-ClaimIR operation that consumes serialized members, every `claim_ir_members` entry carries its own `artifact` subobject with the same four artifact fields. Other target kinds use `target_artifact` when their type schema requires serialized bytes. `component_path` is either `null` or an RFC 6901 JSON Pointer interpreted under `type_schema`. A semantic assumption, approximation regime, or conclusion is targeted as `target_kind: org.agtxiv.semantic_contract.component`, with the parent semantic-contract ID, revision, content hash, and a component path such as `/assumptions/0`, `/approximations/0`, or `/conclusion`.
+
+The governing-ClaimIR rules are mechanical:
+
+1. If exactly one ClaimIR governs the target, `claim_ir` is mandatory and `claim_ir_members` is empty.
+2. If two or more ClaimIR revisions govern it, `claim_ir: null` and nonempty `claim_ir_members` are mandatory.
+3. If no ClaimIR exists or governs the target, `claim_ir: null` and `claim_ir_members: []` are mandatory. Preprocessing and failed pre-ClaimIR construction use this case.
+4. `claim_ir_members` is sorted lexicographically by `(id, revision, semantic_content_hash)`, contains no duplicate tuple, and must contain every governing ClaimIR.
+5. A single ClaimIR must never be duplicated in `claim_ir_members`. Relations, chains, graph closures, exports, and query resolutions use the singular or member form according to their exact membership.
+6. An artifact-bearing ClaimIR reference is valid only when registry resolution finds exactly one immutable artifact matching `(id, revision, semantic_content_hash, schema_uri, schema_version, serialization_profile.id, serialization_profile.content_hash, artifact_hash)`. A semantic-only reference cannot be passed to a serialized-content consumer.
+
+#### 5.1.3 Canonical ClaimIR semantic hashing
+
+ClaimIR distinguishes mathematical identity from serialization:
+
+```yaml
+hashes:
+  semantic_content_hash: sha256:...
+  artifact:
+    schema_uri: https://agtxiv.org/schema/math-claimir/1.0.0
+    schema_version: 1.0.0
+    serialization_profile:
+      id: agtxiv.canonical-yaml/1.0.0
+      content_hash: sha256:...
+    artifact_hash: sha256:...
+```
+
+The normative `agtxiv.claimir-semantic-canonical/1.0.0` profile computes `semantic_content_hash` as follows:
+
+- include `statement_kind`, source occurrence identity and anchor content hashes, normalized expanded-LaTeX statement, structured typed objects, quantifiers, assumptions, local binders, conclusion, mathematical mode, conventions, and normalization relation to source;
+- exclude schema URI, serialization metadata, record IDs, semantic revision number, `produced_at`, `supersedes`, producer, artifact paths, migration records, and all external attribution, evidence, status, and blocker data;
+- encode UTF-8 after Unicode NFC normalization and LF line-ending normalization;
+- sort map keys by Unicode code-point order;
+- preserve order for semantically ordered arrays, including quantifiers, binders, assumptions, expression operands, and source spans; sort set-valued arrays by their canonical encoded bytes and reject duplicates;
+- encode `null` as JSON `null`, booleans as JSON lowercase literals, integers in minimal base-10 form, and non-integral numbers using RFC 8785 JSON number serialization; NaN and infinities are forbidden;
+- normalize expanded LaTeX by LF line endings, NFC text, removal of comments outside verbatim contexts, collapse of non-significant whitespace to one ASCII space, no whitespace adjacent to braces where insignificant, and preservation of token, brace, environment, and expression order; author macros are forbidden;
+- hash the resulting RFC 8785 canonical JSON bytes with SHA-256.
+
+`artifact_hash` hashes the complete canonical serialization under its named schema and serialization profile. A meaning-preserving migration preserves `semantic_content_hash` but creates a new schema-pinned `artifact_hash`. Registry resolution of serialized ClaimIR requires ClaimIR ID, semantic revision, `semantic_content_hash`, schema URI and version, serialization-profile ID and hash, and exact `artifact_hash`; ambiguity or absence is a failed resolution, never a ``latest artifact'' fallback. Migration consumes an artifact-bearing TargetRef and emits a new artifact address with the same semantic identity; semantic-only TargetRefs are insufficient migration inputs.
+
+#### 5.1.4 Stable core schema
+
+The following ClaimIR is self-contained. Expanded LaTeX fields are normative mathematical text; structured fields make binder scope and types machine-checkable.
+
+```yaml
+schema: agtxiv.math-claimir/1.0.0
+id: math-claim-ir:paper-id:main-bound
+revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
+claim:
+  id: claim:paper-id:main-bound
+  record_revision: 1
+  content_hash: sha256:...
+source:
+  statement_anchors:
+    - id: anchor:paper-id:theorem-2
+      record_revision: 1
+      content_hash: sha256:...
+  proof_anchors:
+    - id: anchor:paper-id:proof-of-theorem-2
+      record_revision: 1
+      content_hash: sha256:...
+  occurrence_work: arxiv:xxxx.xxxxxv2
+  source_statement_expanded_latex: >
+    Let $H$ be a finite-dimensional complex Hilbert space with
+    $n=\dim_{\mathbb{C}}H$. Define $F(\sigma)=\operatorname{tr}(\sigma^2)$
+    for density operators $\sigma$ on $H$, and define $g(k)=1$ for
+    $k\in\mathbb{N}$. For every density operator $\rho$ on $H$,
+    $F(\rho)\leq g(n)$.
+statement_kind: theorem
+normalized_statement_expanded_latex: >
+  For every finite-dimensional complex Hilbert space $H$, every natural number
+  $n$ satisfying $n=\dim_{\mathbb{C}}H$, and every density operator $\rho$ on
+  $H$, define $F(\sigma)=\operatorname{tr}(\sigma^2)$ for every density
+  operator $\sigma$ on $H$ and define $g(k)=1$ for every $k\in\mathbb{N}$.
+  Then $F(\rho)\leq g(n)$.
+structured_statement:
+  typed_objects:
+    - symbol_latex: H
+      semantic_type: finite_dimensional_complex_hilbert_space
+    - symbol_latex: n
+      semantic_type: natural_number
+    - symbol_latex: \rho
+      semantic_type: density_operator
+      carrier_latex: H
+    - symbol_latex: F
+      semantic_type: function
+      domain_latex: \{\sigma\mid\sigma\text{ is a density operator on }H\}
+      codomain_latex: \mathbb{R}
+    - symbol_latex: g
+      semantic_type: function
+      domain_latex: \mathbb{N}
+      codomain_latex: \mathbb{R}
+  quantifiers:
+    - binder: forall
+      variable_latex: H
+      domain_latex: \{K\mid K\text{ is a finite-dimensional complex Hilbert space}\}
+    - binder: forall
+      variable_latex: n
+      domain_latex: \mathbb{N}
+    - binder: forall
+      variable_latex: \rho
+      domain_latex: \{\sigma\mid\sigma\text{ is a density operator on }H\}
+  assumptions:
+    explicit:
+      - expression_latex: n=\dim_{\mathbb{C}}H
+    source_implicit: []
+  local_binders:
+    - binder: let
+      variable_latex: F
+      value_latex: \left(\sigma\mapsto\operatorname{tr}(\sigma^2)\right)
+      scope: conclusion
+    - binder: let
+      variable_latex: g
+      value_latex: \left(k\mapsto 1\right)
+      scope: conclusion
+  conclusion:
+    relation: less_than_or_equal
+    left_expression_latex: F(\rho)
+    right_expression_latex: g(n)
+  mathematical_mode:
+    exactness: exact
+    finite_or_asymptotic: finite
+  conventions:
+    - density_operator_means_positive_semidefinite_trace_one_operator
+normalization:
+  profile: agtxiv.expanded-standard-latex/1.0.0
+  relation_to_source: LOGICAL_FORM_EXPANDED
+  unresolved_symbols: []
+hashes:
+  semantic_content_hash: sha256:...
+  artifact:
+    schema_uri: https://agtxiv.org/schema/math-claimir/1.0.0
+    schema_version: 1.0.0
+    serialization_profile:
+      id: agtxiv.canonical-yaml/1.0.0
+      content_hash: sha256:...
+    artifact_hash: sha256:...
+```
+
+`id` is stable across semantic revisions; `revision` selects one immutable source interpretation. `source` fixes the occurrence, while intellectual priority is external. Unknown types, binders, assumptions, or conventions are represented explicitly as unknown only where the schema permits it; otherwise construction fails.
+
+#### 5.1.5 Attribution interface
+
+Attribution is external, scoped, and may remain ambiguous or disputed.
+
+```yaml
+attribution_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.attribution-request/1.0.0
+  applies_to: <exact ClaimIR TargetRef>
+  candidate_attributions:
+    - work_ref: work:earlier-primary-source@1
+      priority_scope:
+        component_path: /structured_statement/conclusion
+        statement: mathematical conclusion
+      evidence_anchors: [anchor:paper-id:priority-note]
+  comparison_policy:
+    id: attribution-policy:priority/1.0.0
+    record_revision: 1
+    content_hash: sha256:...
+```
+
+```yaml
+attribution_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.attribution-result/1.0.0
+  applies_to: <same exact ClaimIR TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  attribution_record: null
+  alternatives: []
+```
+
+On `SUCCEEDED`, `attribution_record` is mandatory and the immutable record contains one or more entries of `(work_ref, priority_scope, evidence_anchors, position)`, where `position` is `ATTRIBUTED | CO_ATTRIBUTED | AMBIGUOUS | DISPUTED`. Scopes may overlap; overlapping incompatible entries must be `DISPUTED`, while unresolved alternatives are `AMBIGUOUS`. Multiple works are permitted and no artificial single winner is selected. On `BLOCKED`, the record is null and `alternatives` plus missing-evidence reasons are mandatory. `REJECTED` means the proposed scope or evidence is invalid. `FAILED_TO_RUN` contains no attribution disposition. A correction creates a new `AttributionRecord` revision. The ClaimIR source occurrence and semantic revision remain unchanged unless a separate semantic-revision operation changes the mathematical statement.
+
+```yaml
+attribution_record:
+  schema: agtxiv.attribution/1.0.0
+  id: attribution:paper-id:main-bound
+  record_revision: 2
+  supersedes:
+    id: attribution:paper-id:main-bound
+    record_revision: 1
+    content_hash: sha256:...
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <exact ClaimIR TargetRef>
+  entries:
+    - work_ref: work:earlier-primary-source@1
+      priority_scope:
+        component_path: /structured_statement/conclusion
+      evidence_anchors: [anchor:paper-id:priority-note]
+      position: ATTRIBUTED
+  producer:
+    implementation: attribution-auditor
+    version: 1.0.0
+    implementation_hash: sha256:...
+  content_hash: sha256:...
+```
+
+#### 5.1.6 Source preprocessing
+
+All mathematical text uses recursively expanded standard LaTeX. Raw and expanded artifacts are immutable and use `artifact_hash`.
+
+```yaml
+source_preprocessing_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.source-preprocessing-request/1.0.0
+  applies_to: <source-artifact TargetRef with no governing ClaimIR>
+  target_anchors: [anchor:...]
+  preprocessing_context:
+    manifest_ref: source-context:...@1
+    manifest_artifact_hash: sha256:...
+  expansion_profile:
+    id: agtxiv.macro-expansion/1.0.0
+    content_hash: sha256:...
+```
+
+```yaml
+source_preprocessing_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.source-preprocessing-result/1.0.0
+  applies_to: <same source-artifact TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  raw_artifact: null
+  expanded_artifact: null
+  partial_audit_artifact: null
+  unresolved_macros: []
+```
+
+`SUCCEEDED` requires both raw and expanded artifact IDs and `artifact_hash` values and an empty unresolved list. `BLOCKED` requires the raw artifact when readable, `expanded_artifact: null`, unresolved macros, and a partial audit artifact when any output exists. `REJECTED` identifies invalid anchors or context. `FAILED_TO_RUN` has no expanded artifact and reports execution diagnostics. No outcome fabricates a ClaimIR.
+
+#### 5.1.7 Atomicity and ClaimIR construction
+
+One ClaimIR revision has one principal conclusion. Compound source statements decompose through immutable, independently versioned `DecompositionRecord` objects.
+
+```yaml
+claim_ir_build_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.claim-ir-build-request/1.0.0
+  applies_to: <successful source-preprocessing-result TargetRef with no ClaimIR>
+  scientific_claim_ref:
+    id: claim:paper-id:main-bound
+    record_revision: 1
+    content_hash: sha256:...
+  expanded_source_artifact:
+    id: source:expanded:...
+    artifact_hash: sha256:...
+  context_refs: []
+  normalization_profile:
+    id: agtxiv.expanded-standard-latex/1.0.0
+    content_hash: sha256:...
+```
+
+```yaml
+claim_ir_build_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.claim-ir-build-result/1.0.0
+  applies_to: <same preprocessing-result TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  claim_ir: null
+  normalization_record: null
+  decomposition_records: []
+  attempt_artifact: null
+```
+
+`SUCCEEDED` requires the exact new ClaimIR ID, semantic revision, `semantic_content_hash`, schema URI, `artifact_hash`, normalization record, and any decomposition records. `BLOCKED` requires no ClaimIR and identifies unresolved symbols, types, binders, or assumptions in the immutable attempt artifact. `REJECTED` means the proposed extraction is non-atomic or unsupported by the source. `FAILED_TO_RUN` produces no ClaimIR. Authoritative success records publish atomically to `MathClaimIRRegistry`; Agent directories retain only payloads and transaction references.
+
+#### 5.1.8 Semantic revision and schema migration
+
+```yaml
+claim_ir_revision_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.claim-ir-revision-request/1.0.0
+  applies_to: <exact artifact-bearing ClaimIR TargetRef>
+  proposed_semantic_artifact:
+    id: revision-candidate:...
+    artifact_hash: sha256:...
+  change_reason: SOURCE_MEANING_CORRECTION
+  changed_fields: [structured_statement.assumptions]
+```
+
+```yaml
+claim_ir_revision_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.claim-ir-revision-result/1.0.0
+  applies_to: <old exact ClaimIR TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  new_claim_ir: null
+  semantic_diff_artifact: null
+```
+
+`SUCCEEDED` requires a new semantic revision, new `semantic_content_hash`, artifact reference, and semantic diff. Attribution-only and evidence-only proposals are `REJECTED`. Missing source support is `BLOCKED`; execution failure emits no new ClaimIR.
+
+```yaml
+schema_migration_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.schema-migration-request/1.0.0
+  applies_to: <exact artifact-bearing ClaimIR TargetRef>
+  source_artifact:
+    schema_uri: https://agtxiv.org/schema/math-claimir/1.0.0
+    schema_version: 1.0.0
+    serialization_profile: {id: agtxiv.canonical-yaml/1.0.0, content_hash: 'sha256:...'}
+    artifact_hash: sha256:...
+  target_schema_uri: https://agtxiv.org/schema/math-claimir/1.1.0
+  migration_implementation:
+    id: migration:math-claimir-1.0-to-1.1
+    version: 1.0.0
+    implementation_hash: sha256:...
+```
+
+```yaml
+schema_migration_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.schema-migration-result/1.0.0
+  applies_to: <same exact ClaimIR TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  source_artifact_hash: sha256:...
+  target_artifact: null
+  semantic_equivalence_evidence: null
+```
+
+`SUCCEEDED` requires unchanged ClaimIR ID, semantic revision, and `semantic_content_hash`, plus target schema URI and new `artifact_hash`. A required meaning change is `REJECTED` and must use semantic revision. Missing migration fixtures or undecidable equivalence is `BLOCKED`. `FAILED_TO_RUN` produces no target artifact. Older artifacts remain resolvable by exact schema URI and artifact hash.
+
+#### 5.1.9 Formalization and independent backtranslation
+
+```yaml
+formal_environment:
+  schema: agtxiv.formal-environment/1.0.0
+  id: formal-env:project
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  prover: lean4
+  toolchain_artifact_hash: sha256:...
+  package_lock_artifact_hash: sha256:...
+  project_manifest_artifact_hash: sha256:...
+  imported_modules: []
+  environment_artifact_hash: sha256:...
+  content_hash: sha256:...
+```
+
+Module arrays are canonical sorted sets. `environment_artifact_hash` hashes the complete build environment archive; `content_hash` hashes the metadata record.
+
+```yaml
+formalization_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.formalization-request/1.0.0
+  applies_to: <exact artifact-bearing ClaimIR or MathematicalPropositionIR TargetRef>
+  target_system:
+    prover: lean4
+    adapter: agtxiv.autoformalizer.lean4
+    adapter_version: 1.0.0
+  environment:
+    id: formal-env:...
+    record_revision: 1
+    content_hash: sha256:...
+    artifact_hash: sha256:...
+  allowed_imports: []
+  formalization_boundary:
+    included_claim_components: [structured_statement]
+    excluded_claim_components: []
+    excluded_semantics: [physical_interpretation]
+    required_preservations: [quantifiers, object_types, assumptions, exactness, conclusion_strength]
+```
+
+```yaml
+formalization_record:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.formalization.lean4/1.0.0
+  applies_to: <same exact ClaimIR or MathematicalPropositionIR TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  formalization_boundary: <exact frozen boundary from request>
+  generation_state: GENERATED | PARTIAL | null
+  declaration_candidates:
+    - candidate_id: declaration-candidate:Namespace.mainBound
+      declaration_name: Namespace.mainBound
+      declaration_kind: theorem
+      source_artifact:
+        id: formal-source:Namespace.MainBound.lean
+        artifact_hash: sha256:...
+        byte_start: 0
+        byte_end: 0
+      canonical_statement_artifact_hash: sha256:...
+      statement_hash: sha256:...
+      proof_term_hash: sha256:... | null
+      imported_declarations: []
+      environment: {id: formal-env:..., record_revision: 1, content_hash: 'sha256:...', artifact_hash: 'sha256:...'}
+  diagnostic_artifacts: []
+```
+
+`candidate_id` is unique within one `FormalizationRecord`; reusing it for any second element makes the record invalid. `declaration_candidates` is sorted by `(declaration_name, declaration_kind, statement_hash, source_artifact.artifact_hash, candidate_id)` and rejects duplicate tuples. The exact formalization-record reference plus `candidate_id` therefore resolves one element, while the remaining `FormalizationCandidateRef` fields provide integrity checks. `imported_declarations` is a canonical sorted set of exact declaration references. Byte ranges are half-open UTF-8 byte offsets and must hash to the declared source slice. `statement_hash` hashes the elaborated canonical type; `canonical_statement_artifact_hash` hashes its serialized syntax; `proof_term_hash` is null only when no proof term was generated.
+
+An operation selects exactly one declaration candidate with the following immutable reference. All fields are mandatory and must resolve to one element of the pinned formalization record:
+
+```yaml
+formalization_candidate_ref:
+  candidate_id: declaration-candidate:Namespace.mainBound
+  declaration_name: Namespace.mainBound
+  statement_hash: sha256:...
+  source_artifact_hash: sha256:...
+  formalization_record:
+    id: formalization:paper-id:main-bound:lean4
+    record_revision: 1
+    content_hash: sha256:...
+```
+
+The candidate resolves only when `candidate_id`, `declaration_name`, `statement_hash`, and `source_artifact_hash` exactly equal one candidate under the specified formalization record. Resolution by declaration name alone, list position, or latest record is forbidden.
+
+On `SUCCEEDED`, `generation_state: GENERATED`, a nonempty candidate list, and every element field above are mandatory; reason codes are empty. On `BLOCKED`, `generation_state: PARTIAL`, diagnostics are mandatory, and candidates may be empty or partial. `REJECTED` means the boundary or requested imports violate policy and requires no candidates. `FAILED_TO_RUN` requires `generation_state: null`, no candidate assertions, and execution diagnostics. No outcome contains a backtranslation or verification status.
+
+```yaml
+backtranslation_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.backtranslation-request/1.0.0
+  applies_to: <exact FormalizationRecord TargetRef including governing ClaimIR>
+  formalization_candidate: <exact FormalizationCandidateRef>
+  source_blind_context:
+    artifact_ref: backtranslation-context:...@1
+    artifact_hash: sha256:...
+    allowed_inputs: [lean_declaration, required_definitions, actual_imports, namespace_notation]
+    forbidden_inputs: [source_text, claim_ir_statement, alignment_record, prior_backtranslation]
+```
+
+```yaml
+backtranslation_record:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.backtranslation/1.0.0
+  applies_to: <same exact FormalizationRecord TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  formalization_candidate: <same exact FormalizationCandidateRef>
+  independence_attestation: null
+  reconstructed_statement_artifact: null
+  human_readable_expanded_latex: null
+  detected_assumptions: []
+  detected_object_types: []
+  diagnostic_artifacts: []
+```
+
+When present, `independence_attestation` has this exact shape:
+
+```yaml
+independence_attestation:
+  schema: agtxiv.backtranslation-independence-attestation/1.0.0
+  source_blind_context_hash: sha256:...
+  allowed_input_manifest_hash: sha256:...
+  observed_input_manifest_hash: sha256:...
+  execution_sandbox_hash: sha256:...
+  model_and_adapter_hash: sha256:...
+  forbidden_input_detected: false
+  forbidden_input_kinds: []
+  attestor:
+    implementation: isolated-backtranslator-runner
+    version: 1.0.0
+    implementation_hash: sha256:...
+  attestation_hash: sha256:...
+```
+
+Input-kind arrays are canonical sorted sets. `attestation_hash` uses record canonicalization over this object with that field omitted. The observed manifest must be a byte-identical subset of the allowed manifest; otherwise `forbidden_input_detected` is true.
+
+Every outcome echoes the request's `formalization_candidate` byte-for-byte. `SUCCEEDED` requires this independence attestation with `forbidden_input_detected: false`, plus a reconstructed structured artifact and hash, expanded LaTeX, and detected assumption/type lists. `BLOCKED` requires the same valid attestation but incomplete interpretation and diagnostics. Detection of a forbidden input is `REJECTED`, requires an attestation with `forbidden_input_detected: true`, and emits no backtranslation assertion. `FAILED_TO_RUN` requires `independence_attestation: null` and no reconstructed statement. A candidate that does not resolve exactly is `REJECTED`. Backtranslation points inward; immutable targets never point outward to it.
+
+#### 5.1.10 Verification and alignment
+
+```yaml
+verification_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.verification-request/1.0.0
+  applies_to: <exact artifact TargetRef, including governing ClaimIR when present>
+  method:
+    id: lean-kernel-build
+    version: 1.0.0
+    implementation_hash: sha256:...
+  environment:
+    id: formal-env:...
+    record_revision: 1
+    content_hash: sha256:...
+    artifact_hash: sha256:...
+  requested_scope:
+    id: verification-scope:kernel-and-axioms
+    revision: 1
+    content_hash: sha256:...
+```
+
+```yaml
+verification_evidence_record:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.verification-evidence/1.0.0
+  applies_to: <same exact artifact TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  observed_result: PASSED | FAILED | BLOCKED | null
+  checked_scope: []
+  unchecked_scope: []
+  evidence_artifacts: []
+```
+
+`SUCCEEDED` requires `observed_result: PASSED | FAILED` and complete evidence hashes. `BLOCKED` requires `observed_result: BLOCKED` and unresolved prerequisites. `REJECTED` means method, target, scope, or environment is inadmissible and has no observed result. `FAILED_TO_RUN` also has no observed result and records execution diagnostics.
+
+```yaml
+alignment_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.alignment-request/1.0.0
+  applies_to: <exact FormalizationRecord TargetRef including governing ClaimIR>
+  exact_inputs:
+    source_artifact:
+      id: source:expanded:...
+      artifact_hash: sha256:...
+    claim_ir:
+      id: math-claim-ir:paper-id:main-bound
+      revision: 1
+      semantic_content_hash: sha256:...
+      artifact:
+        schema_uri: https://agtxiv.org/schema/math-claimir/1.0.0
+        schema_version: 1.0.0
+        serialization_profile: {id: agtxiv.canonical-yaml/1.0.0, content_hash: 'sha256:...'}
+        artifact_hash: sha256:...
+    formalization_record:
+      id: formalization:paper-id:main-bound:lean4
+      record_revision: 1
+      content_hash: sha256:...
+    formalization_candidate: <exact FormalizationCandidateRef>
+    backtranslation_record:
+      id: backtranslation:paper-id:main-bound:lean4
+      record_revision: 1
+      content_hash: sha256:...
+  comparison_policy:
+    id: alignment-policy:default
+    record_revision: 1
+    content_hash: sha256:...
+  criticality_policy:
+    id: alignment-criticality:default
+    record_revision: 1
+    content_hash: sha256:...
+```
+
+```yaml
+alignment_record:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.alignment/1.0.0
+  applies_to: <same exact FormalizationRecord TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  formalization_candidate: <same exact FormalizationCandidateRef>
+  exact_input_hashes: null
+  field_deltas: []
+  observed_result: AUTO_ALIGNMENT_PASSED | AUTO_ALIGNMENT_PARTIAL | MISALIGNED | BLOCKED | null
+```
+
+When present, `exact_input_hashes` is:
+
+```yaml
+exact_input_hashes:
+  source_artifact_hash: sha256:...
+  claim_ir_semantic_content_hash: sha256:...
+  claim_ir_artifact_hash: sha256:...
+  formalization_record_hash: sha256:...
+  formalization_candidate_ref_hash: sha256:...
+  declaration_statement_hash: sha256:...
+  backtranslation_record_hash: sha256:...
+  source_blind_context_hash: sha256:...
+  comparison_policy_hash: sha256:...
+  criticality_policy_hash: sha256:...
+  combined_input_hash: sha256:...
+```
+
+`formalization_candidate_ref_hash` hashes the complete canonical `FormalizationCandidateRef`. `combined_input_hash` hashes the preceding map canonically with itself omitted. The alignment request's candidate must equal the candidate echoed by the pinned backtranslation record and resolve under the pinned formalization record. Each field delta has this exact shape:
+
+```yaml
+field_delta:
+  field_path: /structured_statement/quantifiers/0
+  field_class: QUANTIFIER
+  delta_kind: MISSING
+  source_value: {state: PRESENT, canonical_value_hash: 'sha256:...', reason_code: null}
+  formal_value: {state: MISSING, canonical_value_hash: 'sha256:<missing-sentinel-hash>', reason_code: ABSENT_BINDER}
+  backtranslation_value: {state: NOT_COMPARABLE, canonical_value_hash: 'sha256:...', reason_code: UPSTREAM_MISSING_BINDER}
+  severity: CRITICAL
+  explanation: ...
+```
+
+`field_class` is exactly one of `QUANTIFIER`, `BINDER_SCOPE`, `OBJECT_TYPE`, `ASSUMPTION`, `DOMAIN`, `CODOMAIN`, `EXACTNESS`, `FINITE_ASYMPTOTIC_MODE`, `NORMALIZATION`, `CONVENTION`, `CONCLUSION_STRENGTH`, or `EDGE_CASE`. `delta_kind` is `MISSING`, `ADDED`, `CHANGED`, `WEAKENED`, `STRENGTHENED`, `TYPE_CHANGED`, `SCOPE_CHANGED`, `EXACTNESS_CHANGED`, or `ORDER_CHANGED`. Value state is `PRESENT`, `MISSING`, or `NOT_COMPARABLE`. Present values hash canonical field-value JSON. Missing values use the fixed SHA-256 hash of UTF-8 `agtxiv:missing-value/1.0.0`. Noncomparable values hash canonical `(reason_code, available_value_hashes)`; reason code is mandatory and no invented value is permitted.
+
+The exhaustive criticality rule starts from `MISSING:ERROR`, `ADDED:ERROR`, `CHANGED:WARNING`, `WEAKENED:ERROR`, `STRENGTHENED:ERROR`, `TYPE_CHANGED:CRITICAL`, `SCOPE_CHANGED:CRITICAL`, `EXACTNESS_CHANGED:CRITICAL`, and `ORDER_CHANGED:WARNING`, then raises severity one level, capped at `CRITICAL`, for field classes `QUANTIFIER`, `BINDER_SCOPE`, `OBJECT_TYPE`, `ASSUMPTION`, `DOMAIN`, `CODOMAIN`, and `CONCLUSION_STRENGTH`. A noncomparable required field blocks alignment instead of producing a delta. Deltas are sorted by `(field_path, field_class, delta_kind, source_value.canonical_value_hash, formal_value.canonical_value_hash, backtranslation_value.canonical_value_hash)` and duplicates are rejected. Any `CRITICAL` delta yields `MISALIGNED`; otherwise any `ERROR` yields `AUTO_ALIGNMENT_PARTIAL`; only `INFO` or `WARNING` deltas permit `AUTO_ALIGNMENT_PASSED`.
+
+Every outcome echoes the request's `formalization_candidate` byte-for-byte. `SUCCEEDED` requires `exact_input_hashes`, complete ordered deltas, and one of `AUTO_ALIGNMENT_PASSED`, `AUTO_ALIGNMENT_PARTIAL`, or `MISALIGNED`; any unresolved `CRITICAL` delta forces `MISALIGNED`. `BLOCKED` requires the hashes available before the block, `observed_result: BLOCKED`, and an unavailable or uninterpretable input reason. `REJECTED` means input TargetRefs do not share the same ClaimIR, candidate resolution fails, the backtranslation selects another candidate, or independence policy is violated, and it pins the inspected input hashes. `FAILED_TO_RUN` requires `exact_input_hashes: null`, `observed_result: null`, and no alignment conclusion. `PASSED` alone is never an alignment aggregate.
+
+#### 5.1.11 Blocker event interface
+
+Blockers are immutable optimistic-concurrency event streams.
+
+```yaml
+blocker_write_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.blocker-write-request/1.0.0
+  applies_to: <exact blocked TargetRef>
+  blocker_id: blocker:paper-id:main-bound:missing-foundation
+  write_kind: TRANSITION | CORRECTION
+  transition: OPENED | RESOLVED | REOPENED | null
+  expected_prior:
+    record_revision: 1
+    content_hash: sha256:...
+  blocker_scope:
+    stage: formalization
+    required_axis: mathematics
+    component_path: null
+  blocker_type: UNRESOLVED_EXTERNAL_FOUNDATION
+  statement: ...
+  evidence_refs: []
+  corrects: null
+```
+
+For initial `OPENED`, `expected_prior: null` is mandatory. Every later write pins the immediately preceding revision and hash. A correction sets `transition: null`, pins the exact event in `corrects`, and preserves its effective state; it corrects non-scope metadata without pretending that resolution occurred.
+
+```yaml
+blocker_write_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.blocker-write-result/1.0.0
+  applies_to: <same exact blocked TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  blocker_record: null
+  current_head: null
+```
+
+On `SUCCEEDED`, `blocker_record` is mandatory and is an immutable `BlockerRecord` containing the request target, scope, transition or correction, `effective_state_after: OPEN | RESOLVED`, exact prior link, and record hash. Legal transitions are initial `OPENED` to `OPEN`, `OPENED | REOPENED → RESOLVED`, and `RESOLVED → REOPENED`; all others are `REJECTED`. A stale `expected_prior` is `BLOCKED` and returns the exact current head for retry. `FAILED_TO_RUN` creates no event.
+
+Every transition and correction must have the same blocker ID, target, and scope as its prior event; changing target or scope requires a new blocker ID. Stream folding rejects duplicate revisions, hash mismatch, forks, missing ancestors, and cycles. Such a stream has no current state and status derivation fails rather than choosing a branch. Resolution evidence must target the same object or a component within the blocker scope.
+
+#### 5.1.12 Composite registry and external index snapshots
+
+A `CompositeRegistrySnapshot` atomically pins the read boundary of every registry participating in an operation:
+
+```yaml
+composite_registry_snapshot:
+  schema: agtxiv.composite-registry-snapshot/1.0.0
+  id: composite-snapshot:release-17
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  registries:
+    - registry_id: ExternalRecordRegistry
+      manifest_revision: 17
+      manifest_content_hash: sha256:...
+      append_log_segment: append-log:external:17
+      inclusive_offset: 4812
+      prefix_hash: sha256:...
+      supersession_state_hash: sha256:...
+  registry_order: lexicographic_registry_id
+  content_hash: sha256:...
+```
+
+`registries` contains every participating registry exactly once, is sorted by `registry_id`, and rejects duplicates. `supersession_state_hash` hashes the canonical map from every visible logical record ID to its unique eligible head or explicit fork marker at that boundary. The snapshot is created under a multi-registry read lock or from one transaction receipt, so mixed-time boundaries are invalid. Forks may be represented for audit but make dependent status, graph, query, or release operations `BLOCKED`.
+
+Every status derivation, graph build, query resolution, and release transaction pins one exact composite snapshot. Evidence and blocker indexes are deterministic derived views of that same snapshot and must echo its ID, revision, and content hash; an index derived from another boundary is incompatible.
+
+Index snapshots are deterministic views over a content-addressed registry boundary and are not evidence authorities.
+
+```yaml
+index_snapshot_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.index-snapshot-request/1.0.0
+  composite_registry_snapshot:
+    id: composite-snapshot:release-17
+    record_revision: 1
+    content_hash: sha256:...
+  source_registry_ids: [ExternalRecordRegistry]
+  index_kind: evidence | blocker | relation | import_receipt | graph | registry
+  record_type_schemas: []
+  index_profile:
+    id: agtxiv.external-index/1.0.0
+    content_hash: sha256:...
+```
+
+```yaml
+index_snapshot_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.index-snapshot-result/1.0.0
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  index_snapshot: null
+```
+
+`SUCCEEDED` requires the following immutable non-target snapshot:
+
+```yaml
+index_snapshot:
+  schema: agtxiv.index-snapshot/1.0.0
+  id: external-index:snapshot-7
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  composite_registry_snapshot:
+    id: composite-snapshot:release-17
+    record_revision: 1
+    content_hash: sha256:...
+  source_registry_ids: [ExternalRecordRegistry]
+  index_kind: evidence | blocker | relation | import_receipt | graph | registry
+  included_record_manifest_hash: sha256:...
+  eligible_heads_hash: sha256:...
+  index_implementation_hash: sha256:...
+  content_hash: sha256:...
+```
+
+Records are deduplicated by `(id, record_revision, content_hash)`, sorted by `(type_schema_uri, id, record_revision, content_hash)`, and retain explicit supersession visibility: all visible revisions are listed, while a separately marked `eligible_heads` set contains only unique non-superseded heads. A duplicate key with unequal content, fork, cycle, missing predecessor, invalid prefix hash, or manifest/log disagreement is `BLOCKED`, not silently repaired. Invalid profile or boundary syntax is `REJECTED`; I/O or implementation failure is `FAILED_TO_RUN`.
+
+```yaml
+index_lookup_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.index-lookup-request/1.0.0
+  applies_to: <TargetRef>
+  index_snapshot:
+    id: evidence-index:snapshot-7
+    record_revision: 1
+    content_hash: sha256:...
+  record_type_schemas: []
+```
+
+```yaml
+index_lookup_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.index-lookup-result/1.0.0
+  applies_to: <same TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  matched_records: []
+  result_hash: sha256:...
+```
+
+No match is `SUCCEEDED` with an empty list. Results use snapshot order. Invalid target/schema is `REJECTED`; unusable snapshot is `BLOCKED`; execution failure has no result hash.
+
+#### 5.1.13 VerificationScope, deterministic StatusPolicy, and StatusView
+
+A `VerificationScope` is immutable and makes the acceptance profile part of the requested computation:
+
+```yaml
+verification_scope:
+  schema: agtxiv.verification-scope/1.0.0
+  id: verification-scope:math-import
+  revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  target_selectors:
+    target_kinds: [org.agtxiv.claim_ir, org.agtxiv.math_contract, org.agtxiv.claim_contract]
+    component_path_patterns: ['']
+  required_axes: [source_fidelity, dependency_closure, mathematics, formal_alignment]
+  required_axis_thresholds:
+    source_fidelity: PASSED
+    dependency_closure: COMPLETE
+    mathematics: KERNEL_CHECKED
+    formal_alignment: AUTO_ALIGNMENT_PASSED
+  conditional_axes:
+    relation_validation: required_when_target_has_required_relations
+    semantic_alignment: omitted
+    approximation_regime: omitted
+    empirical_support: omitted
+    computation: omitted
+    human_review: omitted
+  content_hash: sha256:...
+```
+
+`acceptance_profile` is exactly one of `SOURCE_ONLY`, `DERIVATION_CHECKED`, `PARTIALLY_FORMALIZED`, or `KERNEL_CHECKED_ALIGNED`. For profile-controlled axes, `required_axis_thresholds` must equal the exhaustive profile table below; additional semantic, empirical, computational, or human-review axes state their exact thresholds here. A scope whose axes or thresholds contradict its profile is invalid. Scope arrays are canonical set-valued arrays sorted by canonical bytes with duplicates rejected.
+
+`StatusView` is generic; `ClaimStatusView` is the same schema restricted to a ClaimIR target. A policy is immutable and need not have `applies_to`.
+
+```yaml
+status_policy:
+  schema: agtxiv.status-policy/1.0.0
+  id: status-policy:default
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  producer:
+    implementation: status-policy-publisher
+    version: 1.0.0
+    implementation_hash: sha256:...
+  rule_tables:
+    evidence_to_axis:
+      id: status-rules:evidence-to-axis
+      revision: 1
+      content_hash: sha256:...
+    target_scope_applicability:
+      id: status-rules:target-scope-applicability
+      revision: 1
+      content_hash: sha256:...
+    axis_precedence:
+      id: status-rules:axis-precedence
+      revision: 1
+      content_hash: sha256:...
+    blocker_reduction:
+      id: status-rules:blocker-reduction
+      revision: 1
+      content_hash: sha256:...
+    acceptance_thresholds:
+      id: status-rules:acceptance-thresholds
+      revision: 1
+      content_hash: sha256:...
+    overall_predicates:
+      id: status-rules:overall-predicates
+      revision: 1
+      content_hash: sha256:...
+  content_hash: sha256:...
+```
+
+Each referenced table is an immutable canonical-JSON artifact whose content hash is verified before derivation. Its rows use these schemas:
+
+```yaml
+status_rule_row_schemas:
+  evidence_to_axis: [evidence_schema_uri, evidence_schema_hash, method, observed_result, checked_scope_predicate, axis, contribution]
+  target_scope_applicability: [target_kind, target_type_schema_hash, component_path_pattern, required_scope_id, required_axes, admissible_target_relations]
+  axis_precedence: [axis, complete_worst_to_best_values]
+  blocker_reduction: [blocker_type, stage, scope_intersection_predicate, effective_state, axis, contribution]
+  acceptance_thresholds: [profile_id, target_kind, required_scope_id, axis, minimum_value]
+  overall_predicates: [priority, overall_value, boolean_expression_ast]
+```
+
+Rows are sorted by their canonical encoded bytes. Pattern languages and Boolean AST operators are versioned in the table schema. Overlapping rows must have identical outputs or derivation fails; no first-match behavior is allowed. Every vocabulary value must occur exactly once in its axis precedence row, and every required `(target, scope, evidence)` combination must map uniquely.
+
+The hash-pinned tables are normative executable data:
+
+- `evidence_to_axis` maps every accepted evidence schema, method, observed result, and checked scope to exactly one axis contribution or `NOT_APPLICABLE`; an unmapped record fails derivation.
+- `target_scope_applicability` maps `(target_kind, component_path, required_scope)` to required axes and admissible evidence target relations; evidence for another target or scope is ignored with a derivation trace.
+- `axis_precedence` gives complete worst-to-best total orders:
+  - `source_fidelity`: `MISALIGNED < BLOCKED < UNCHECKED < PARTIAL < PASSED`;
+  - `relation_validation`: `DISPUTED < INVALID < BLOCKED < CANDIDATE < SOURCE_GROUNDED < VALIDATED`;
+  - `dependency_closure`: `DISPUTED < INCOMPLETE < BLOCKED < UNCHECKED < COMPLETE`;
+  - `mathematics`: `FAILED < BLOCKED < UNCHECKED < PARTIALLY_FORMALIZED < SOURCE_DERIVATION_CHECKED < KERNEL_CHECKED < NOT_APPLICABLE`;
+  - `formal_alignment`: `MISALIGNED < BLOCKED < UNCHECKED < BACKTRANSLATED < AUTO_ALIGNMENT_PARTIAL < AUTO_ALIGNMENT_PASSED < HUMAN_REVIEWED < NOT_APPLICABLE`;
+  - `semantic_alignment`: `CONTESTED < BLOCKED < UNCHECKED < AGENT_REVIEWED < HUMAN_REVIEWED < NOT_APPLICABLE`;
+  - `approximation_regime`: `FAILED < BLOCKED < DECLARED_ONLY < PARTIALLY_CHECKED < CHECKED_IN_STATED_REGIME < NOT_APPLICABLE`;
+  - `empirical_support`: `CONTESTED < BLOCKED < UNMODELED < SOURCE_GROUNDED < PARTIAL < SUPPORTED_IN_RECORDED_REGIME < NOT_APPLICABLE`;
+  - `computation`: `FAILED < BLOCKED < NOT_ATTEMPTED < QUALITATIVE_ONLY < REPRODUCED_WITH_TOLERANCE < REPRODUCED < NOT_APPLICABLE`;
+  - `human_review`: `REJECTED < CONTESTED < NOT_PERFORMED < PARTIAL < PERFORMED`.
+- `blocker_reduction` folds only valid blocker streams. An open blocker intersecting an axis scope contributes `BLOCKED`; `DISPUTED`, `MISALIGNED`, or `FAILED` remains worse where the axis order says so. Invalid streams fail derivation.
+- `acceptance_thresholds` maps each named acceptance profile and required scope to a minimum value for every required axis. `NOT_APPLICABLE` satisfies a threshold only when applicability explicitly returns it.
+- `overall_predicates` are evaluated in this order: `SUPERSEDED`, `DISPUTED`, `FAILED`, `BLOCKED`, `VERIFICATION_CLOSED`, `COMPUTATIONALLY_REPRODUCED`, `SEMANTICALLY_RECONSTRUCTED`, `MATH_CLOSED`, `PARTIALLY_VERIFIED`, `DEPENDENCY_MAPPED`, `RELATION_VALIDATED`, `SOURCE_VALIDATED`, `SOURCE_GROUNDED`, `PROPOSED`. `SUPERSEDED` requires a unique visible superseding target revision. `DISPUTED` requires any required axis at `DISPUTED` or `CONTESTED`. `FAILED` requires any required axis at `FAILED`, `MISALIGNED`, `INVALID`, or `REJECTED`. `BLOCKED` requires any required axis at `BLOCKED` after worse disputes or failures have been excluded. `VERIFICATION_CLOSED` requires every required-axis threshold. `COMPUTATIONALLY_REPRODUCED` requires the computation threshold for every load-bearing member. `SEMANTICALLY_RECONSTRUCTED` requires semantic-alignment and approximation thresholds. `MATH_CLOSED` requires `dependency_closure: COMPLETE`, mathematics and formal-alignment thresholds for the selected profile, and no intersecting open blocker. `PARTIALLY_VERIFIED` requires at least one above-untested required axis but failure of all stronger closure predicates. `DEPENDENCY_MAPPED` requires dependency closure `INCOMPLETE` or `COMPLETE`. `RELATION_VALIDATED` requires every required relation at `VALIDATED`. `SOURCE_VALIDATED` requires source fidelity `PASSED`; `SOURCE_GROUNDED` requires `PARTIAL` or `PASSED`; `PROPOSED` is the final fallback.
+
+The following compact rule tables are the exhaustive pilot contents of the pinned artifacts. A row written `A → B` maps exact input `A` to contribution `B`; any unlisted evidence schema, method, result, blocker stage, profile, or predicate input fails derivation.
+
+| Evidence schema and method | Exact result-to-axis mapping |
+|---|---|
+| `agtxiv.source-fidelity-evidence/1.0.0`, `source_audit` | `PASSED → source_fidelity:PASSED`; `PARTIAL → PARTIAL`; `MISALIGNED → MISALIGNED`; `BLOCKED → BLOCKED` |
+| `agtxiv.candidate-relation/1.0.0` | record presence `→ relation_validation:CANDIDATE` |
+| `agtxiv.relation-grounding-evidence/1.0.0` | `PASSED → relation_validation:SOURCE_GROUNDED`; `BLOCKED → BLOCKED` |
+| `agtxiv.relation-validation/1.0.0` | `VALID → relation_validation:VALIDATED`; `INVALID → INVALID`; `WRONG_DIRECTION` or `WRONG_RELATION_TYPE → INVALID` |
+| `agtxiv.relation-validation-result/1.0.0` | `BLOCKED` with `AMBIGUOUS` or `INSUFFICIENT_SOURCE_SUPPORT → relation_validation:BLOCKED`; `FAILED_TO_RUN` contributes no evidence |
+| `agtxiv.closure-artifact/1.0.0` | fixed point with empty blocked frontier `→ dependency_closure:COMPLETE`; fixed point with unresolved required nodes `→ INCOMPLETE`; invalid or unavailable fixed point `→ BLOCKED`; disputed required edge `→ DISPUTED` |
+| `agtxiv.verification-evidence/1.0.0`, `source_derivation_check` | `PASSED → mathematics:SOURCE_DERIVATION_CHECKED`; `FAILED → FAILED`; `BLOCKED → BLOCKED` |
+| `agtxiv.formalization.lean4/1.0.0` | `SUCCEEDED → mathematics:PARTIALLY_FORMALIZED`; `BLOCKED → BLOCKED`; rejected or failed-to-run contributes no axis evidence |
+| `agtxiv.verification-evidence/1.0.0`, `lean_kernel_build` | `PASSED → mathematics:KERNEL_CHECKED`; `FAILED → FAILED`; `BLOCKED → BLOCKED` |
+| `agtxiv.backtranslation/1.0.0` | `SUCCEEDED → formal_alignment:BACKTRANSLATED`; `BLOCKED → BLOCKED`; rejected independence `→ MISALIGNED`; failed-to-run contributes no axis evidence |
+| `agtxiv.alignment/1.0.0` | each observed result maps identically to `formal_alignment`; `FAILED_TO_RUN` contributes no evidence |
+| `agtxiv.semantic-alignment-evidence/1.0.0` | `AGENT_REVIEWED`, `HUMAN_REVIEWED`, `CONTESTED`, `BLOCKED` map identically to `semantic_alignment` |
+| `agtxiv.approximation-evidence/1.0.0` | `DECLARED_ONLY`, `PARTIALLY_CHECKED`, `CHECKED_IN_STATED_REGIME`, `FAILED`, `BLOCKED` map identically to `approximation_regime` |
+| `agtxiv.semantic-evidence/1.0.0`, `empirical_support` | `SOURCE_GROUNDED`, `PARTIAL`, `SUPPORTED_IN_RECORDED_REGIME`, `CONTESTED`, `BLOCKED` map identically to `empirical_support` |
+| `agtxiv.reproduction/1.0.0` | `REPRODUCED`, `REPRODUCED_WITH_TOLERANCE`, `QUALITATIVE_ONLY`, `FAILED` map identically to `computation`; `NOT_ATTEMPTED → NOT_ATTEMPTED`; blocked attempt `→ BLOCKED` |
+| `agtxiv.human-review-evidence/1.0.0` | `PERFORMED`, `PARTIAL`, `NOT_PERFORMED`, `CONTESTED`, `REJECTED` map identically to `human_review` |
+
+For multiple applicable contributions, the lowest value in the complete axis order is selected, except that a later evidence record supersedes an earlier record with the same logical ID only when the snapshot exposes a unique supersession head. Missing applicable evidence contributes the axis-specific untested value.
+
+| Open blocker `stage` | Axis contribution |
+|---|---|
+| `source_preprocessing`, `source_alignment` | `source_fidelity:BLOCKED` |
+| `relation_validation`, `relation_acceptance` | `relation_validation:BLOCKED` |
+| `dependency_mapping`, `graph_build`, `closure_build` | `dependency_closure:BLOCKED` |
+| `formalization`, `mathematical_verification` | `mathematics:BLOCKED` |
+| `formal_alignment` | `formal_alignment:BLOCKED` |
+| `semantic_alignment` | `semantic_alignment:BLOCKED` |
+| `approximation_regime` | `approximation_regime:BLOCKED` |
+| `empirical_support` | `empirical_support:BLOCKED` |
+| `reproduction` | `computation:BLOCKED` |
+| `human_review` | `human_review:CONTESTED` |
+
+A blocker of type `DISPUTE` contributes the axis's `DISPUTED` or `CONTESTED` value instead of `BLOCKED`. A `RESOLVED` stream contributes nothing. Component and scope intersection uses exact TargetRef ancestry and RFC 6901 prefix matching; no textual matching is allowed.
+
+| Acceptance profile | Required threshold rows | `MATH_CLOSED` predicate |
+|---|---|---|
+| `SOURCE_ONLY` | `source_fidelity ≥ PASSED`; `relation_validation ≥ VALIDATED` only when required by scope; `mathematics ≥ UNCHECKED`; `formal_alignment = NOT_APPLICABLE` | always `false`; strongest mathematical overall is `SOURCE_VALIDATED` |
+| `DERIVATION_CHECKED` | `source_fidelity ≥ PASSED`; `dependency_closure ≥ COMPLETE`; `mathematics ≥ SOURCE_DERIVATION_CHECKED`; `formal_alignment = NOT_APPLICABLE` | true exactly when all thresholds hold and no required blocker/dispute/failure exists |
+| `PARTIALLY_FORMALIZED` | `source_fidelity ≥ PASSED`; `mathematics ≥ PARTIALLY_FORMALIZED`; generated declarations require `formal_alignment ≥ BACKTRANSLATED`, otherwise `NOT_APPLICABLE` | always `false`; strongest mathematical overall is `PARTIALLY_VERIFIED` |
+| `KERNEL_CHECKED_ALIGNED` | `source_fidelity ≥ PASSED`; `dependency_closure ≥ COMPLETE`; `mathematics ≥ KERNEL_CHECKED`; `formal_alignment ≥ AUTO_ALIGNMENT_PASSED` | true exactly when all thresholds hold and no required blocker/dispute/failure exists |
+
+Semantic, empirical, computation, and human-review thresholds are added only when listed in `VerificationScope.required_axes`; their minimum is the profile-independent threshold stated by that scope. `VERIFICATION_CLOSED` is true exactly when every required axis meets its threshold. Overall predicates then use the fixed priority order above. Thus no profile can silently inherit a stronger `MATH_CLOSED` interpretation.
+
+`DAG_COMPLETE` is not an overall status. It is the query property `dependency_closure: COMPLETE` at fixed-point closure.
+
+Policy selection always pins ID, revision, and hash. A superseded policy may replay an old receipt but cannot produce a new view unless historical replay is explicit. Missing evidence contributes the axis's untested value (`UNCHECKED`, `UNMODELED`, `NOT_ATTEMPTED`, `DECLARED_ONLY`, or `NOT_PERFORMED` as specified by applicability). Forks, cycles, unknown vocabularies, unmapped evidence, invalid hashes, and non-total precedence fail derivation.
+
+```yaml
+status_derivation_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.status-derivation-request/1.0.0
+  applies_to: <TargetRef>
+  policy:
+    id: status-policy:default
+    record_revision: 1
+    content_hash: sha256:...
+  required_scope:
+    id: verification-scope:math-import
+    revision: 1
+    content_hash: sha256:...
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  composite_registry_snapshot:
+    id: composite-snapshot:release-17
+    record_revision: 1
+    content_hash: sha256:...
+  evidence_snapshot:
+    id: evidence-index:snapshot-7
+    record_revision: 1
+    content_hash: sha256:...
+  blocker_snapshot:
+    id: blocker-index:snapshot-4
+    record_revision: 1
+    content_hash: sha256:...
+```
+
+```yaml
+status_derivation_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.status-derivation-result/1.0.0
+  applies_to: <same TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  status_view: null
+```
+
+`SUCCEEDED` requires an immutable view with this full shape:
+
+```yaml
+status_view:
+  schema: agtxiv.status-view/1.0.0
+  id: status-view:...
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <exact request TargetRef>
+  policy: {id: status-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  required_scope: {id: verification-scope:math-import, revision: 1, content_hash: 'sha256:...'}
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  evidence_snapshot: {id: evidence-index:snapshot-7, record_revision: 1, content_hash: 'sha256:...'}
+  blocker_snapshot: {id: blocker-index:snapshot-4, record_revision: 1, content_hash: 'sha256:...'}
+  axes:
+    source_fidelity:
+      value: PASSED
+      evidence_derivation_refs: []
+      blocker_derivation_refs: []
+    dependency_closure:
+      value: COMPLETE
+      evidence_derivation_refs: []
+      blocker_derivation_refs: []
+    mathematics:
+      value: KERNEL_CHECKED
+      evidence_derivation_refs: []
+      blocker_derivation_refs: []
+    formal_alignment:
+      value: AUTO_ALIGNMENT_PASSED
+      evidence_derivation_refs: []
+      blocker_derivation_refs: []
+  overall: MATH_CLOSED
+  overall_derivation_ref: status-derivation:overall:...
+  producer:
+    implementation: status-deriver
+    version: 1.0.0
+    implementation_hash: sha256:...
+  content_hash: sha256:...
+```
+
+The request and view `acceptance_profile` must equal `VerificationScope.acceptance_profile`. Both index snapshots must declare the exact same `composite_registry_snapshot`; mismatch is `REJECTED`. Every applicable axis is mandatory; omitted axes are a schema error. `REJECTED` means invalid policy/scope/target combination. `BLOCKED` means snapshots are internally invalid or rule tables cannot resolve uniquely. `FAILED_TO_RUN` emits no view. Partial aggregate output is forbidden.
+
+#### 5.1.14 Import acceptance
+
+```yaml
+import_acceptance_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.import-acceptance-request/1.0.0
+  applies_to: <exact ClaimContract TargetRef including governing ClaimIR>
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  consumer:
+    id: agent:intermediate-paper
+    manifest_revision: 1
+    manifest_content_hash: sha256:...
+  proposed_status_view:
+    id: status-view:root-paper:theorem-T:...
+    record_revision: 1
+    content_hash: sha256:...
+  required_scope:
+    id: verification-scope:math-import
+    revision: 1
+    content_hash: sha256:...
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  policy:
+    id: status-policy:default
+    record_revision: 1
+    content_hash: sha256:...
+  evidence_snapshot: {id: evidence-index:snapshot-7, record_revision: 1, content_hash: 'sha256:...'}
+  blocker_snapshot: {id: blocker-index:snapshot-4, record_revision: 1, content_hash: 'sha256:...'}
+  assumption_matches: []
+  object_mappings: []
+  convention_mappings: []
+```
+
+```yaml
+import_acceptance_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.import-acceptance-result/1.0.0
+  applies_to: <same exact ClaimContract TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  decision: ACCEPTED | CONDITIONAL | REJECTED | null
+  claim_import_receipt: null
+  unmet_requirements: []
+```
+
+`SUCCEEDED` requires `decision: ACCEPTED | CONDITIONAL` and an immutable `ClaimImportReceipt`. `CONDITIONAL` requires explicit conditions; `ACCEPTED` requires none. `REJECTED` uses `decision: REJECTED`, lists incompatible scope, assumptions, objects, or policy, and emits no receipt. `BLOCKED` means evidence, blocker state, or mappings are unresolved and also emits no receipt. `FAILED_TO_RUN` has `decision: null` and no receipt.
+
+```yaml
+claim_import_receipt:
+  schema: agtxiv.claim-import-receipt/1.0.0
+  id: import-receipt:intermediate-paper:theorem-T
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <same exact ClaimContract TargetRef>
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  consumer: agent:intermediate-paper
+  decision: ACCEPTED | CONDITIONAL
+  accepted_status_view: {id: status-view:..., record_revision: 1, content_hash: 'sha256:...'}
+  required_scope: {id: verification-scope:math-import, revision: 1, content_hash: 'sha256:...'}
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  policy: {id: status-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  evidence_snapshot: {id: evidence-index:snapshot-7, record_revision: 1, content_hash: 'sha256:...'}
+  blocker_snapshot: {id: blocker-index:snapshot-4, record_revision: 1, content_hash: 'sha256:...'}
+  assumption_matches: []
+  object_mappings: []
+  convention_mappings: []
+  conditions: []
+  producer:
+    implementation: import-acceptance-service
+    version: 1.0.0
+    implementation_hash: sha256:...
+  content_hash: sha256:...
+```
+
+The receipt scope must be a policy-proved superset of both `MathContract.required_verification_scope` and `ClaimContract.required_verification.scope`. The status view must have exactly the receipt target, scope, acceptance profile, policy, composite snapshot, and derived evidence/blocker snapshots. Receipts are consumer-side external records discovered through indexes; providers and immutable contracts never point outward to later receipts.
+
+#### 5.1.15 Normative invariants
+
+1. `MathClaimIR` records only what an immutable source mathematically asserts.
+2. Source occurrence remains stable; intellectual attribution is an external `AttributionRecord`.
+3. Every core and external record revision is immutable and content-addressed.
+4. Every target-bearing request and record uses the canonical `TargetRef`; exact ClaimIR ID, revision, and `semantic_content_hash` are mandatory whenever a ClaimIR exists.
+5. Preprocessing and pre-ClaimIR failures use `claim_ir: null`; no ClaimIR is fabricated.
+6. Formalizations, backtranslations, evidence, alignments, blockers, index snapshots, status views, and receipts are independently versioned external records.
+7. Backtranslation points inward and is never embedded in a formalization.
+8. Generated code is not checked evidence; checked proof is not source alignment.
+9. Status is deterministic policy output over exact evidence and blocker snapshots.
+10. Blocker resolution, correction, and supersession create new revisions or events, never in-place updates.
+11. Meaning-preserving migration preserves canonical semantic hash and semantic revision while assigning a new serialization artifact hash.
+12. No migration, verifier, attribution process, or status policy may silently modify source meaning.
 
 ### 5.2 MathContract
 
-A `MathContract` is the smallest reusable mathematical package:
+A `MathContract` is the smallest reusable mathematical interface. It is immutable and packages dependency and compatibility requirements around one exact ClaimIR or MathematicalPropositionIR revision; it contains no formalization, evidence, blocker, or aggregate status field.
 
 ```yaml
+schema: agtxiv.math-contract/1.0.0
 id: math-contract:domain:result
-claim_ir: math-claim-ir:domain:result
-statement: >
-  For every X satisfying assumptions A, conclusion C holds.
-kind: theorem
-assumptions:
-  - math-contract:domain:A
-imports:
-  definitions: []
-  theorems: []
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
+applies_to: <exact ClaimIR or MathematicalPropositionIR TargetRef>
+statement_interface:
+  kind: theorem
+  assumptions:
+    - math-contract:domain:A@1
+  imports:
+    definitions: []
+    theorems: []
 source_manifestations:
   - paper_id: arxiv:...
     anchor: anchor:paper:theorem
-formalization:
-  status: EXISTING_PROJECT_DECLARATION
-  declarations:
-    - Namespace.theoremName
-  modules:
-    - Package.Module
-  environment: formal/project
-alignment:
-  backtranslation: backtranslation:...
-  audit: alignment-audit:...
-verification_references:
-  - verification:...
-version: 1.0.0
-compatibility: semver
-blockers: []
+compatibility:
+  policy: math-contract-compatibility/1.0.0
+  breaking_fields: [conclusion, quantifiers, assumptions, conventions]
+required_verification_scope:
+  id: verification-scope:math-contract
+  revision: 1
+  content_hash: sha256:...
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+content_hash: sha256:...
 ```
 
-Different papers may point to the same normalized contract. Similarity search may propose `candidate_same_as`, `specializes`, or `equivalent_under_assumptions`; it must not assert identity automatically.
-
-The minimum required fields are:
-
-1. a normalized `MathClaimIR`;
-2. explicit assumptions;
-3. definition and theorem imports;
-4. source manifestations;
-5. fully qualified Lean declarations when present;
-6. a source-blind backtranslation and alignment audit when autoformalized;
-7. verification references and blockers;
-8. a version and compatibility policy.
+External records are discovered through registries. A contract revision changes only when its interface, dependency requirements, compatibility policy, or required scope changes. Different papers may point to the same contract, but similarity search may only propose identity or specialization relations.
 
 ### 5.3 SourceAnchor
 
 A stable location in an immutable source artifact.
 
 ```yaml
+schema: agtxiv.source-anchor/1.0.0
 id: anchor:paper-id:theorem-2
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
 paper_id: arxiv:xxxx.xxxxxv2
 artifact: main.tex
 artifact_hash: sha256:...
@@ -1065,7 +2261,11 @@ content_hash: sha256:...
 When only a PDF is available:
 
 ```yaml
+schema: agtxiv.source-anchor/1.0.0
 id: anchor:paper-id:pdf-p7-eq12
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
 paper_id: doi:...
 artifact: paper.pdf
 artifact_hash: sha256:...
@@ -1073,176 +2273,195 @@ location:
   page: 7
   equation: "12"
   bounding_box: [72, 214, 518, 296]
+content_hash: sha256:...
 ```
 
-### 5.4 CandidateRelation
+### 5.4 Candidate and accepted relations
 
-A candidate relation is never accepted solely because an extractor emitted it.
+A candidate relation is an immutable proposal. It contains source anchors and extractor provenance, but no reverse link to later validation evidence.
 
 ```yaml
-id: relation-candidate:paper-A:C3--paper-B:T2
-source_claim: claim:paper-A:C3
-target_claim: claim:paper-B:T2
-relation_type: imports_theorem
-direction:
-  from: claim:paper-A:C3
-  to: claim:paper-B:T2
-source_anchors:
-  - anchor:paper-A:citation-context
-  - anchor:paper-A:local-derivation
-extractor:
-  model: ...
-  version: ...
-  confidence: 0.82
-validator:
-  verdict: AMBIGUOUS
-  reason: >
-    The citation supplies both a definition and a theorem; the exact imported
-    object is not yet isolated.
-status: CANDIDATE
+candidate_relation:
+  schema: agtxiv.candidate-relation/1.0.0
+  id: relation-candidate:paper-A:C3--paper-B:T2
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  source_target: <TargetRef for dependent claim C3>
+  target_target: <TargetRef for imported claim T2>
+  relation_type: imports_theorem
+  source_anchors: [anchor:paper-A:citation-context, anchor:paper-A:local-derivation]
+  extractor:
+    implementation: ...
+    version: ...
+    implementation_hash: sha256:...
+  extractor_confidence: 0.82
+  content_hash: sha256:...
 ```
 
-For dependency edges, direction means "the source claim depends on or imports the target claim." Epistemic relations retain their ordinary direction, such as `new_claim --refutes--> old_claim`.
+```yaml
+relation_validation_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.relation-validation-request/1.0.0
+  applies_to: <exact CandidateRelation TargetRef with governing ClaimIR members>
+  validation_policy: {id: relation-validation-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  source_context_artifacts: []
+```
+
+```yaml
+relation_validation_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.relation-validation-result/1.0.0
+  applies_to: <same CandidateRelation TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  verdict: VALID | INVALID | AMBIGUOUS | WRONG_DIRECTION | WRONG_RELATION_TYPE | INSUFFICIENT_SOURCE_SUPPORT | null
+  validation_record: null
+```
+
+`SUCCEEDED` requires a validation record and `VALID`, `INVALID`, `WRONG_DIRECTION`, or `WRONG_RELATION_TYPE`. `BLOCKED` uses `AMBIGUOUS` or `INSUFFICIENT_SOURCE_SUPPORT`. Invalid request structure is `REJECTED` with no scientific verdict; execution failure has `verdict: null`.
+
+```yaml
+relation_acceptance_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.relation-acceptance-request/1.0.0
+  applies_to: <exact CandidateRelation TargetRef>
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  validation_record: {id: relation-validation:..., record_revision: 1, content_hash: 'sha256:...'}
+  acceptance_policy: {id: relation-acceptance-policy:dependency/1.0.0, record_revision: 1, content_hash: 'sha256:...'}
+  required_scope: {id: relation-scope:query-build, revision: 1, content_hash: 'sha256:...'}
+```
+
+```yaml
+relation_acceptance_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.relation-acceptance-result/1.0.0
+  applies_to: <same CandidateRelation TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  accepted_relation: null
+```
+
+On successful validation, `validation_record` has the following immutable shape:
+
+```yaml
+relation_validation_record:
+  schema: agtxiv.relation-validation/1.0.0
+  id: relation-validation:...
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <exact CandidateRelation TargetRef>
+  validation_policy: {id: relation-validation-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  verdict: VALID | INVALID | WRONG_DIRECTION | WRONG_RELATION_TYPE
+  findings: []
+  content_hash: sha256:...
+```
+
+On successful acceptance, `accepted_relation` has this authoritative shape:
+
+```yaml
+accepted_relation:
+  schema: agtxiv.accepted-relation/1.0.0
+  id: relation:paper-A:C3--paper-B:T2
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  candidate_ref: {id: relation-candidate:paper-A:C3--paper-B:T2, record_revision: 1, content_hash: 'sha256:...'}
+  source_target: <exact dependent TargetRef>
+  target_target: <exact dependency TargetRef>
+  relation_type: imports_theorem
+  direction: SOURCE_DEPENDS_ON_TARGET
+  accepted_scope: {id: relation-scope:query-build, revision: 1, content_hash: 'sha256:...'}
+  acceptance_policy: {id: relation-acceptance-policy:dependency/1.0.0, record_revision: 1, content_hash: 'sha256:...'}
+  content_hash: sha256:...
+```
+
+`SUCCEEDED` requires this accepted relation. `REJECTED` records an invalid or policy-ineligible candidate and emits no accepted relation. `BLOCKED` records ambiguous or insufficient validation and emits none. `FAILED_TO_RUN` has no promotion decision. The provisional candidate graph contains candidate relations only; accepted dependency DAGs contain accepted relations only. No model confidence or validation record alone promotes an edge.
 
 ### 5.5 InferenceStep
 
-An `InferenceStep` is a first-class graph node representing one inspectable transformation from joint inputs to outputs.
+An `InferenceStep` is an immutable first-class graph node for one inspectable transformation from joint inputs to outputs.
 
 ```yaml
+schema: agtxiv.inference-step/1.0.0
 id: inference:paper-id:017
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
 inputs:
-  - equation:eq-7
-  - assumption:weak-coupling
+  - <TargetRef for equation eq-7>
+  - <TargetRef for assumption weak-coupling>
 outputs:
-  - equation:eq-8
+  - <TargetRef for equation eq-8>
 operation: approximation
 justification:
-  description: >
-    Expand to second order in lambda and discard terms of order lambda^3.
+  description: Expand to second order in lambda and discard order lambda cubed.
   retained_order: 2
-  discarded_order: "O(lambda^3)"
-active_assumptions:
-  - assumption:small-lambda
-validity_regime:
-  - "|lambda| << 1"
-source_anchors:
-  - anchor:paper-id:eq7-to-eq8
-formal_links:
-  - Namespace.intermediateIdentity
-verification_records:
-  - verification:step-017-symbolic
-status: PARTIALLY_VERIFIED
+  discarded_order_latex: O(\lambda^3)
+active_assumptions: [assumption:small-lambda]
+validity_regime_latex: ['$|\lambda|\ll 1$']
+source_anchors: [anchor:paper-id:eq7-to-eq8]
+content_hash: sha256:...
 ```
 
-Initial operation vocabulary:
+Formal links, checks, blockers, and status views target the exact inference-step revision through `TargetRef` and do not mutate it. Initial operations are `definition_expansion`, `algebra`, `substitution`, `logical_inference`, `theorem_application`, `citation_import`, `approximation`, `limit`, `symmetry_or_conservation`, `dimensional_argument`, `numerical_evaluation`, `physical_interpretation`, and `unresolved`.
 
-```text
-definition_expansion
-algebra
-substitution
-logical_inference
-theorem_application
-citation_import
-approximation
-limit
-symmetry_or_conservation
-dimensional_argument
-numerical_evaluation
-physical_interpretation
-unresolved
-```
+### 5.6 VerificationEvidenceRecord
 
-### 5.6 VerificationRecord
-
-A scoped record of one check.
-
-```yaml
-id: verification:step-017-symbolic
-target: inference:paper-id:017
-method: symbolic_algebra
-checker: independent-script
-checker_version: git:abc123
-result: PASSED
-scope:
-  checked:
-    - series expansion through second order
-    - coefficient equality
-  not_checked:
-    - rigorous remainder bound
-assumptions:
-  - lambda is real
-  - denominator is nonzero
-environment:
-  python: "3.13"
-  sympy: "1.x"
-evidence:
-  - verification/logs/step-017.txt
-notes: >
-  The algebraic truncation was reproduced. The physical regime in which the
-  neglected remainder is small remains only partially reviewed.
-```
+The sole normative schema and operation are `agtxiv.verification-request/1.0.0` and the result-envelope-derived `agtxiv.verification-evidence/1.0.0` in Section 5.1.10. No alternate `COMPLETED` outcome or legacy record shape is valid.
 
 ### 5.7 SemanticContract
 
-A `SemanticContract` combines physical-semantic reconstruction and evidence linkage while preserving separate internal status axes.
+A `SemanticContract` is immutable source-grounded semantic content. It contains no observations, evidence links, blockers, or statuses.
 
 ```yaml
-id: semantic-contract:paper-id:claim-C
-claim: claim:paper-id:claim-C
-source_anchors:
-  - anchor:paper-id:claim-C
-
-physical_system:
-  degrees_of_freedom: []
-  preparation: ...
-  observable: ...
-  parameter_regime: ...
-
-object_alignment:
-  paper_object: ...
-  mathematical_object: ...
-  operational_definition: ...
-
-assumptions:
-  - id: semantic-assumption:weak-coupling
+semantic_contract:
+  schema: agtxiv.semantic-contract/1.0.0
+  id: semantic-contract:paper-id:claim-C
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <exact ScientificClaim TargetRef with governing ClaimIR when present>
+  source_anchors: [anchor:paper-id:claim-C]
+  physical_system:
+    degrees_of_freedom: []
+    preparation: ...
+    observable: ...
+    parameter_regime: ...
+  object_alignment:
+    paper_object: ...
+    mathematical_object: ...
+    operational_definition: ...
+  assumptions:
+    - component_id: semantic-assumption:weak-coupling
+      statement: ...
+      regime: ...
+  approximations:
+    - component_id: semantic-regime:perturbative
+      method: perturbation
+      control_parameter: lambda
+      retained_order: 2
+      discarded_order_latex: O(\lambda^3)
+  conclusion:
+    component_id: semantic-conclusion:claim-C
     statement: ...
-    regime: ...
-
-approximations:
-  - method: perturbation
-    control_parameter: lambda
-    retained_order: 2
-    discarded_order: "O(lambda^3)"
-
-conventions:
-  - ...
-
-checks:
-  dimensional_consistency: PASSED
-  symmetry_compatibility: PARTIAL
-  limiting_cases: PARTIAL
-
-evidence:
-  - evidence:experiment-1
-
-status:
-  semantic_alignment: AGENT_REVIEWED
-  approximation_regime: PARTIALLY_CHECKED
-  empirical_support: PARTIAL
-  human_review: NOT_PERFORMED
+  conventions: []
+  content_hash: sha256:...
 ```
+
+Evidence targets the exact contract revision and component JSON Pointer through `org.agtxiv.semantic_contract.component`. Assumptions, regimes, and conclusions therefore receive evidence independently without a reverse link from the contract.
 
 ### 5.8 EvidenceRecord
 
-An `EvidenceRecord` is a lightweight record attached to a semantic assumption, regime, or conclusion.
+An `EvidenceRecord` is an immutable scoped observation attached through `TargetRef` to a semantic assumption, regime, or conclusion.
 
 ```yaml
+schema: agtxiv.semantic-evidence/1.0.0
 id: evidence:experiment-1
-target:
-  semantic_contract: semantic-contract:paper-id:claim-C
-  component: semantic-assumption:weak-coupling
-source_anchors:
-  - anchor:experiment-paper:figure-3
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
+applies_to: <exact org.agtxiv.semantic_contract.component TargetRef for /assumptions/0>
+source_anchors: [anchor:experiment-paper:figure-3]
 evidence_type: experiment
 system_or_sample: ...
 protocol: ...
@@ -1251,20 +2470,23 @@ parameter_regime: ...
 uncertainty_model: ...
 reported_result: ...
 relation: supports_under_conditions
-support_scope: >
-  Supports the approximation only for the measured parameter window.
-status: SOURCE_GROUNDED
+support_scope: Supports the approximation only for the measured parameter window.
+content_hash: sha256:...
 ```
 
-Evidence does not automatically prove a mathematical theorem or validate an approximation outside the recorded regime.
+Evidence does not automatically prove a theorem or validate an approximation outside its recorded regime.
 
 ### 5.9 ReproductionRecord
 
-A numerical or computational record attached to one claim.
+A `ReproductionRecord` is an immutable computational evidence record.
 
 ```yaml
+schema: agtxiv.reproduction/1.0.0
 id: reproduction:paper-id:result-R
-claim: claim:paper-id:result-R
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
+applies_to: <exact ScientificClaim TargetRef, with claim_ir when one exists>
 role: LOAD_BEARING
 source_code:
   repository: ...
@@ -1280,184 +2502,399 @@ command: ...
 reported_output: ...
 reproduced_output: ...
 tolerance: ...
-verdict: NOT_ATTEMPTED
+attempt_state: COMPLETED | FAILED_TO_RUN | NOT_ATTEMPTED
+observed_result: REPRODUCED | REPRODUCED_WITH_TOLERANCE | QUALITATIVE_ONLY | FAILED | null
 artifacts: []
+content_hash: sha256:...
 ```
 
-The record has no mandatory internal DAG and no Lean requirement.
+The observed result is evidence input, not aggregate claim status. The record has no mandatory internal DAG and no Lean requirement.
 
 ### 5.10 LeanPackageCapabilityRecord
 
-A `LeanPackageCapabilityRecord` supports domain routing and exact object matching.
+A capability record is immutable package metadata used for routing; it contains no mutable trust or build observation.
 
 ```yaml
-id: lean-capability:quantum-information-finite
-package:
-  repository: ...
-  commit: ...
-  lean_toolchain: ...
-  build_targets:
-    - QuantumInfo
-
-field_tags:
-  - quantum_information
-  - finite_dimensional_quantum_mechanics
-
-object_coverage:
-  - density_operator
-  - quantum_channel
-  - measurement
-  - entropy
-  - resource_theory
-
-declaration_index: registry/declarations.jsonl
-
-trust:
-  tier: COMMUNITY_CURATED
-  build_status: PASSED
-  sorry_audit: REVIEWED
-  axiom_policy: REVIEWED
-  maintenance: ACTIVE
-
-compatibility:
-  mathlib_commit: ...
-  tested_imports: []
-
-paper_to_lean_mappings: []
-known_gaps: []
+lean_package_capability_record:
+  schema: agtxiv.lean-package-capability/1.0.0
+  id: lean-capability:quantum-information-finite
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  package:
+    repository: ...
+    commit: ...
+    lean_toolchain: ...
+    build_targets: [QuantumInfo]
+  field_tags: [quantum_information, finite_dimensional_quantum_mechanics]
+  object_coverage: [density_operator, quantum_channel, measurement, entropy, resource_theory]
+  declaration_index:
+    artifact_ref: registry/declarations.jsonl
+    artifact_hash: sha256:...
+  compatibility:
+    mathlib_commit: ...
+    tested_imports: []
+  known_gaps: []
+  content_hash: sha256:...
 ```
 
-Suggested trust tiers:
+Build, placeholder, axiom, maintenance, and review observations are immutable `VerificationEvidenceRecord` objects targeting the exact package-capability revision. Trust tiers are policy-derived status-view values, never fields updated inside the capability record. Field classification remains a routing prior; exact declaration matching is required.
 
-```text
-MATHLIB_OR_CORE_CURATED
-COMMUNITY_CURATED
-COMMUNITY_STABLE
-ALPHA_OR_EXPERIMENTAL
-STANDALONE_AUDITED
-PROTOTYPE
-```
-
-Field classification is a routing prior. Exact claim-object and declaration matching is the final selection criterion.
-
-### 5.11 GraphRepairRecord
-
-A local graph-repair transaction.
+### 5.11 Graph artifacts, closures, CompanionBundles, and repairs
 
 ```yaml
-id: graph-repair:resolution-id:round-03
-query_resolution: resolution:...
-iteration: 3
-target_node: math-contract:...
-failure_class: ALIGNMENT_FAILURE
-diagnostic_tags:
-  - lost_normalization_assumption
-  - conclusion_too_strong
-operation: REWIRE_OR_RESCOPE
-before:
-  graph_hash: sha256:...
-actions:
-  - restore_assumption: assumption:normalized-observable
-  - replace_edge: relation-candidate:...
-  - rescope_claim: math-claim-ir:...
-after:
-  graph_hash: sha256:...
-new_frontier: []
-verdict: APPLIED
+dependency_node_manifest:
+  schema: agtxiv.dependency-node-manifest/1.0.0
+  id: dependency-node-manifest:resolution-id
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  nodes:
+    - target: <TargetRef>
+      node_role: ROOT | INTERNAL | EXTERNAL_FOUNDATION
+  ordering_rule: canonical_target_ref_bytes
+  content_hash: sha256:...
 ```
+
+Nodes are sorted by canonical TargetRef bytes and duplicate target identities are rejected.
+
+```yaml
+graph_build_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.graph-build-request/1.0.0
+  applies_to: <exact query-resolution or target TargetRef>
+  graph_kind: org.agtxiv.math_claim_dependency_dag
+  root_set: [<canonically ordered TargetRef values>]
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  accepted_relation_snapshot: {id: relation-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+  node_manifest: {id: dependency-node-manifest:..., record_revision: 1, content_hash: 'sha256:...'}
+  import_receipt_snapshot: {id: import-receipt-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+  blocker_snapshot: {id: blocker-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+  build_policy: {id: graph-build-policy:math-dag/1.0.0, record_revision: 1, content_hash: 'sha256:...'}
+  algorithm:
+    id: agtxiv.reverse-dependency-fixed-point/1.0.0
+    content_hash: sha256:...
+    traversal_order: canonical_breadth_first
+    relation_admission: accepted_relation_only
+    revisit_rule: never_after_canonical_identity_seen
+    termination: no_new_nodes_or_relations
+```
+
+```yaml
+graph_build_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.graph-build-result/1.0.0
+  applies_to: <same TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  graph_artifact: null
+  closure_artifact: null
+```
+
+`SUCCEEDED` publishes immutable `GraphArtifact` and `ClosureArtifact`. `REJECTED` identifies invalid edge types, direction, or target. `BLOCKED` identifies a cycle in the mathematical dependency view, unresolved endpoint, or invalid relation snapshot. `FAILED_TO_RUN` publishes no graph. Companion bundles and the paper projection are produced only by the `PaperBuildDAG` interface below.
+
+```yaml
+graph_artifact:
+  schema: agtxiv.graph-artifact/1.0.0
+  id: graph:resolution-id:math-dag
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <same TargetRef>
+  graph_kind: org.agtxiv.math_claim_dependency_dag
+  build_request_hash: sha256:...
+  build_input_manifest_hash: sha256:...
+  algorithm: {id: agtxiv.reverse-dependency-fixed-point/1.0.0, content_hash: 'sha256:...'}
+  nodes: [<canonically ordered TargetRef values>]
+  edges: [<canonically ordered accepted-relation TargetRef values>]
+  ordering_rule: canonical_encoded_bytes/1.0.0
+  graph_hash: sha256:...
+  content_hash: sha256:...
+```
+
+```yaml
+closure_artifact:
+  schema: agtxiv.closure-artifact/1.0.0
+  id: closure:resolution-id:required-math
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <same TargetRef>
+  graph_ref: {id: graph:resolution-id:math-dag, record_revision: 1, content_hash: 'sha256:...'}
+  inputs:
+    root_set: [<same ordered TargetRef values>]
+    composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+    accepted_relation_snapshot: {id: relation-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+    node_manifest: {id: dependency-node-manifest:..., record_revision: 1, content_hash: 'sha256:...'}
+    import_receipt_snapshot: {id: import-receipt-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+    blocker_snapshot: {id: blocker-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+    build_policy: {id: graph-build-policy:math-dag/1.0.0, record_revision: 1, content_hash: 'sha256:...'}
+    algorithm: {id: agtxiv.reverse-dependency-fixed-point/1.0.0, content_hash: 'sha256:...'}
+  nodes:
+    - target: <TargetRef>
+      classification: ACCEPTED | CONDITIONAL | BLOCKED
+      basis_refs: []
+  relations:
+    - relation: <AcceptedRelation TargetRef>
+      classification: ACCEPTED | CONDITIONAL | BLOCKED
+      basis_refs: []
+  blocked_frontier: [<canonically ordered TargetRef values>]
+  fixed_point:
+    reached: true
+    iterations: 0
+    invariant_hash: sha256:...
+  content_hash: sha256:...
+```
+
+`root_set`, nodes, relations, basis references, and blocked frontier are set-valued arrays sorted by canonical encoded TargetRef or record-reference bytes with duplicates rejected. Starting from the ordered roots, each iteration admits only accepted relations visible in the pinned relation snapshot, resolves imports only through receipts visible in the pinned receipt snapshot, applies blockers from the pinned blocker snapshot, and adds newly reached dependency endpoints in canonical order. `ACCEPTED` means every required import has an accepted receipt and no intersecting open blocker; `CONDITIONAL` means every unresolved requirement is covered by a conditional receipt; otherwise the element is `BLOCKED`. The fixed-point invariant is that another complete traversal over all admitted outgoing dependency relations adds no node, relation, receipt condition, or blocker classification. `invariant_hash` hashes the canonical final frontier and classification map. Any input snapshot not derived from the exact composite snapshot is rejected.
+
+The paper-level projection uses a separate normative operation. Its mapping snapshot fixes the PaperAgent owner of every claim-DAG node:
+
+```yaml
+claim_to_paper_agent_mapping_snapshot:
+  schema: agtxiv.claim-to-paper-agent-mapping-snapshot/1.0.0
+  id: claim-paper-mapping:release-17
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  mappings:
+    - claim_target: <exact claim-DAG node TargetRef>
+      paper_agent_target: <exact PaperAgentManifest TargetRef>
+      mapping_basis_ref: <exact source-occurrence, proposition-owner, or policy record ref>
+  ordering_rule: canonical_claim_then_paper_target_ref_bytes
+  content_hash: sha256:...
+```
+
+Mappings are sorted by `(canonical(claim_target), canonical(paper_agent_target))`. Every claim-DAG node has exactly one visible mapping; duplicates, omissions, forks, floating PaperAgent heads, and mappings to a different composite snapshot are invalid.
+
+```yaml
+paper_build_dag_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.paper-build-dag-request/1.0.0
+  applies_to: <exact query-resolution TargetRef>
+  math_claim_dependency_dag:
+    id: graph:resolution-id:math-dag
+    record_revision: 1
+    content_hash: sha256:...
+    graph_hash: sha256:...
+  claim_to_paper_agent_mapping_snapshot: {id: claim-paper-mapping:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  projection_policy: {id: paper-projection-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+  scc_algorithm:
+    id: agtxiv.deterministic-paper-scc-condensation/1.0.0
+    content_hash: sha256:...
+    projected_node_order: canonical_paper_agent_target_ref_bytes
+    adjacency_order: canonical_projected_edge_bytes
+    scc_method: tarjan_depth_first
+    component_member_order: canonical_paper_agent_target_ref_bytes
+    component_order: canonical_component_member_sequence_bytes
+    condensation_edge_order: canonical_component_pair_bytes
+    topological_order: kahn_lexicographically_minimal
+```
+
+```yaml
+paper_build_dag_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.paper-build-dag-result/1.0.0
+  applies_to: <same query-resolution TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  paper_build_dag_artifact: null
+  companion_bundles: []
+```
+
+```yaml
+paper_build_dag_artifact:
+  schema: agtxiv.paper-build-dag-artifact/1.0.0
+  id: graph:resolution-id:paper-build-dag
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <same query-resolution TargetRef>
+  inputs:
+    math_claim_dependency_dag:
+      id: graph:resolution-id:math-dag
+      record_revision: 1
+      content_hash: sha256:...
+      graph_hash: sha256:...
+    claim_to_paper_agent_mapping_snapshot: {id: claim-paper-mapping:release-17, record_revision: 1, content_hash: 'sha256:...'}
+    composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+    projection_policy: {id: paper-projection-policy:default, record_revision: 1, content_hash: 'sha256:...'}
+    scc_algorithm: {id: agtxiv.deterministic-paper-scc-condensation/1.0.0, content_hash: 'sha256:...'}
+  projected_paper_nodes: [<canonically ordered exact PaperAgentManifest TargetRefs>]
+  projected_edges:
+    - from_paper_agent: <exact PaperAgentManifest TargetRef>
+      to_paper_agent: <exact PaperAgentManifest TargetRef>
+      witness_claim_edges: [<canonically ordered exact claim-edge TargetRefs>]
+  companion_bundle_refs: []
+  condensation_nodes: [<canonically ordered exact singleton PaperAgent or CompanionBundle TargetRefs>]
+  condensation_edges:
+    - from_component: <exact singleton PaperAgent or CompanionBundle TargetRef>
+      to_component: <exact singleton PaperAgent or CompanionBundle TargetRef>
+      witness_projected_edge_hashes: [<canonically ordered hashes>]
+  canonical_topological_order: [<exact singleton PaperAgent or CompanionBundle TargetRefs>]
+  projection_graph_hash: sha256:...
+  condensation_graph_hash: sha256:...
+  build_input_hash: sha256:...
+  content_hash: sha256:...
+```
+
+The projection visits claim-DAG nodes and edges in their canonical artifact order, replaces every claim endpoint with its mapped `PaperAgentManifest` target, drops no witness, and coalesces equal ordered manifest-target pairs while retaining the sorted exact claim-edge witnesses. The pinned projection policy determines whether claim edges within one PaperAgent manifest are retained only as internal witnesses; they never become condensation self-edges.
+
+The SCC algorithm starts Tarjan depth-first searches in `projected_node_order` and visits adjacency lists in `adjacency_order`. Members of each SCC are sorted canonically; SCCs are ordered by their complete canonical member sequences. A multi-agent SCC produces one immutable `CompanionBundle`; a singleton remains its exact `PaperAgentManifest` target. Component identity is the SHA-256 hash of the ordered member-target sequence and pinned inputs. For every projected edge whose endpoints belong to different components, the condensation contains exactly one directed component pair with all witness projected-edge hashes sorted and deduplicated. Internal edges occur only in the corresponding bundle. Condensation edges are sorted by their endpoint component sequences. Kahn's algorithm selects the canonically smallest zero-indegree component at each step, yielding `canonical_topological_order`. A remaining cycle is an invariant failure.
+
+`build_input_hash` hashes the complete canonical `inputs` map, and the two graph hashes cover their respective canonically ordered nodes, edges, and witnesses. `content_hash` covers the complete immutable artifact with itself omitted. The result must echo request inputs exactly through the artifact. `SUCCEEDED` requires a complete mapping, all required bundles, an acyclic condensation, and matching hashes. Invalid graph kind, projection policy, duplicate mapping, or cross-snapshot input is `REJECTED`; a missing mapping, unresolved exact ref, fork, or unavailable input is `BLOCKED`; `FAILED_TO_RUN` emits no artifact or bundle. Publication is atomic, so no bundle or paper DAG is visible alone.
+
+```yaml
+companion_bundle:
+  schema: agtxiv.companion-bundle/1.0.0
+  id: bundle:resolution-id:1
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  applies_to: <multi-ClaimIR query-resolution TargetRef>
+  paper_build_request_hash: sha256:...
+  paper_agent_targets: [<canonically ordered exact PaperAgentManifest TargetRefs>]
+  internal_claim_relations: [<canonically ordered exact claim-edge TargetRefs>]
+  external_imports: [<canonically ordered exact incoming projected-edge refs>]
+  external_exports: [<canonically ordered exact outgoing projected-edge refs>]
+  component_identity_hash: sha256:...
+  component_graph_hash: sha256:...
+  content_hash: sha256:...
+```
+
+```yaml
+graph_repair_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.graph-repair-request/1.0.0
+  applies_to: <exact GraphArtifact TargetRef>
+  expected_graph_revision: 1
+  expected_graph_content_hash: sha256:...
+  operation: EXPAND_LOCAL | REWIRE_OR_RESCOPE | ESCALATE_OR_BLOCK
+  actions: []
+```
+
+```yaml
+graph_repair_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.graph-repair-result/1.0.0
+  applies_to: <same GraphArtifact TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  repaired_graph: null
+  graph_repair_record: null
+```
+
+Success atomically publishes a superseding graph and immutable repair transaction with before/after hashes. Stale expected revision is `BLOCKED`; invalid action or DAG invariant violation is `REJECTED`; execution failure publishes neither.
 
 ### 5.12 ClaimContract
 
-A claim exported by one Agent and imported by another.
+A `ClaimContract` is an immutable export interface. It pins ClaimIR and `MathContract` revisions and declares import requirements; it contains no aggregate status.
 
 ```yaml
+schema: agtxiv.claim-contract/1.0.0
 id: export:root-agent:theorem-T
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
 provider_agent: agent:root-paper
-claim: claim:root-paper:theorem-T
-math_contract: math-contract:root-paper:theorem-T
-assumptions:
-  - assumption:finite-dimensional-space
-  - assumption:positivity
+claim: claim:root-paper:theorem-T@1
+math_contract: math-contract:root-paper:theorem-T@1
+applies_to: <exact ClaimIR or MathematicalPropositionIR TargetRef>
+assumptions: [assumption:finite-dimensional-space, assumption:positivity]
 validity_regime: []
-formalization:
-  system: Lean4
-  declaration: RootPaper.TheoremT
-  status: KERNEL_CHECKED
-alignment:
-  status: AUTO_ALIGNMENT_PASSED
-verification:
-  source_fidelity: PASSED
-  mathematics: KERNEL_CHECKED
-  semantic_alignment: NOT_APPLICABLE
+required_verification:
+  scope:
+    id: verification-scope:math-import
+    revision: 1
+    content_hash: sha256:...
+    acceptance_profile: KERNEL_CHECKED_ALIGNED
+  policy:
+    id: status-policy:math-claim
+    record_revision: 1
+    content_hash: sha256:...
 provenance:
-  source_anchors:
-    - anchor:root-paper:theorem-T
-version: 1.0.0
+  source_anchors: [anchor:root-paper:theorem-T]
+content_hash: sha256:...
 ```
 
-An importer must not use the conclusion without importing the contract's assumptions, object mappings, and scope.
+Import acceptance is performed by the external interface in Section 5.1.14. The immutable provider contract never points to consumer receipts, later evidence, blockers, or status views.
 
 ### 5.13 PaperAgentManifest
 
+A published Agent manifest is immutable and holds exact registry references plus local staging or audit artifact hashes.
+
 ```yaml
+schema: agtxiv.paper-agent-manifest/1.0.0
+id: agent-manifest:paper-id
+record_revision: 1
+supersedes: null
+produced_at: 2026-08-18T00:00:00Z
 agent:
   id: agent:paper-id
   paper_id: arxiv:xxxx.xxxxxv2
-  roles:
-    - root
-    - intermediate
-    - target
-
+  roles: [root, intermediate, target]
 source:
   canonical_artifact: source/main.tex
-  source_hashes: source/source-hashes.json
-
-paper_graph:
-  interactions: graph/paper-interactions.jsonl
-
-imports:
-  - contract: export:ancestor-agent:claim-A
-    assumption_match: reviews/import-A.yaml
-
+  artifact_hash: sha256:...
+paper_graph_refs: []
 local_delta:
-  claims: knowledge/claims.jsonl
-  math_claim_ir: knowledge/math-claim-ir/
-  inference_steps: reasoning/inference-steps.jsonl
-
-verification:
-  records: verification/records.jsonl
-  lean_project: formal/lean/
-  semantic_contracts: semantic/
-  reproductions: computational/reproductions/
-  reviews: reviews/
-
-exports:
-  - exports/claim-C.yaml
-
-unresolved:
-  - blockers/blocker-001.yaml
+  scientific_claim_refs: []
+  claim_ir_refs:
+    - id: math-claim-ir:paper-id:claim-C
+      revision: 1
+      semantic_content_hash: sha256:...
+  inference_step_refs: []
+staging_and_audit_artifacts:
+  normalization_attempts: agents/paper-id/knowledge/staging/
+  formalization_payloads: agents/paper-id/formal/lean/
+  backtranslation_payloads: agents/paper-id/alignment/backtranslations/
+  evidence_payloads: agents/paper-id/verification/evidence-artifacts/
+content_hash: sha256:...
 ```
 
 ---
 
 ## 6. Verification Semantics
 
-### 6.1 Source origin
+### 6.1 Claim origin
 
-Every claim must declare its origin:
+Every `ScientificClaim` has exactly one origin class:
 
 ```text
-SOURCE_EXPLICIT
-SOURCE_IMPLICIT
-CITATION_REPORTED
-AGENT_NORMALIZED
-AGENT_INFERRED
-MATHEMATICALLY_DERIVED
-COMPUTATIONALLY_REPRODUCED
-HUMAN_INTERPRETED
+SOURCE_OCCURRENCE
+DERIVED_CLAIM
+SOURCE_INDEPENDENT_PROPOSITION
 ```
 
-A derived statement must not inherit `SOURCE_EXPLICIT` merely because its premises are source-explicit.
+`SOURCE_OCCURRENCE` requires a frozen source and anchors, with `assertion_mode: SOURCE_EXPLICIT | SOURCE_IMPLICIT | CITATION_REPORTED`. `DERIVED_CLAIM` requires exact premise and inference-step TargetRefs and must not inherit source-explicit status. `SOURCE_INDEPENDENT_PROPOSITION` identifies mathematics introduced independently of a frozen paper occurrence, for example a new helper lemma or package theorem. Computational reproduction, autoformalization, and human interpretation are evidence or production methods, never origin classes.
+
+A paper-derived mathematical statement uses `MathClaimIR`, whose `source` field is mandatory. A source-independent proposition must not fabricate that field. It uses the structurally parallel `MathematicalPropositionIR`:
+
+```yaml
+mathematical_proposition_ir:
+  schema: agtxiv.mathematical-proposition-ir/1.0.0
+  id: mathematical-proposition-ir:domain:helper-lemma
+  revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  scientific_claim:
+    id: claim:domain:helper-lemma
+    record_revision: 1
+    content_hash: sha256:...
+  origin: SOURCE_INDEPENDENT_PROPOSITION
+  statement_kind: lemma
+  normalized_statement_expanded_latex: ...
+  structured_statement: {}
+  semantic_content_hash: sha256:...
+  artifact:
+    schema_uri: https://agtxiv.org/schema/mathematical-proposition-ir/1.0.0
+    schema_version: 1.0.0
+    serialization_profile:
+      id: agtxiv.canonical-yaml/1.0.0
+      content_hash: sha256:...
+    artifact_hash: sha256:...
+```
+
+It uses `agtxiv.proposition-semantic-canonical/1.0.0`, which reuses the ClaimIR encoding and mathematical field rules but omits source-occurrence and anchor fields from both input and hash. It is a distinct namespaced target kind and never populates `claim_ir`. Formalization, evidence, contracts, and status views may target it directly. If a later frozen source occurrence is discovered, the system creates a separate ClaimIR and an external relation; it does not relabel the proposition in place.
 
 ### 6.2 Candidate and accepted relations
 
@@ -1605,7 +3042,7 @@ Possible actions:
 - create a new Root Agent candidate;
 - search for an alternative theorem or proof;
 - construct or record a counterexample;
-- mark the branch `BLOCKED`, `DISPUTED`, or `SOURCE_GAP`.
+- derive `BLOCKED` or `DISPUTED` and open a blocker of type `UNRESOLVED_EXTERNAL_FOUNDATION` when the source foundation is missing.
 
 A claim is not labeled false merely because Lean proof search failed. A public falsity claim requires an explicit source audit and a checkable counterexample or contradiction argument.
 
@@ -1627,100 +3064,43 @@ A field label is only a routing prior. Exact object and declaration compatibilit
 
 ### 6.7 Verification axes
 
-#### Source fidelity
+The only axis vocabularies are those defined by the complete precedence tables in Section 5.1.13:
 
 ```text
-UNCHECKED
-PASSED
-PARTIAL
-MISALIGNED
-BLOCKED
+source_fidelity:
+  MISALIGNED, BLOCKED, UNCHECKED, PARTIAL, PASSED
+relation_validation:
+  DISPUTED, INVALID, BLOCKED, CANDIDATE, SOURCE_GROUNDED, VALIDATED
+dependency_closure:
+  DISPUTED, INCOMPLETE, BLOCKED, UNCHECKED, COMPLETE
+mathematics:
+  FAILED, BLOCKED, UNCHECKED, PARTIALLY_FORMALIZED,
+  SOURCE_DERIVATION_CHECKED, KERNEL_CHECKED, NOT_APPLICABLE
+formal_alignment:
+  MISALIGNED, BLOCKED, UNCHECKED, BACKTRANSLATED,
+  AUTO_ALIGNMENT_PARTIAL, AUTO_ALIGNMENT_PASSED, HUMAN_REVIEWED,
+  NOT_APPLICABLE
+semantic_alignment:
+  CONTESTED, BLOCKED, UNCHECKED, AGENT_REVIEWED, HUMAN_REVIEWED,
+  NOT_APPLICABLE
+approximation_regime:
+  FAILED, BLOCKED, DECLARED_ONLY, PARTIALLY_CHECKED,
+  CHECKED_IN_STATED_REGIME, NOT_APPLICABLE
+empirical_support:
+  CONTESTED, BLOCKED, UNMODELED, SOURCE_GROUNDED, PARTIAL,
+  SUPPORTED_IN_RECORDED_REGIME, NOT_APPLICABLE
+computation:
+  FAILED, BLOCKED, NOT_ATTEMPTED, QUALITATIVE_ONLY,
+  REPRODUCED_WITH_TOLERANCE, REPRODUCED, NOT_APPLICABLE
+human_review:
+  REJECTED, CONTESTED, NOT_PERFORMED, PARTIAL, PERFORMED
 ```
 
-#### Relation validation and dependency closure
-
-```text
-CANDIDATE
-SOURCE_GROUNDED
-VALIDATED
-COMPLETE
-INCOMPLETE
-BLOCKED
-DISPUTED
-```
-
-#### Mathematics
-
-```text
-NOT_APPLICABLE
-UNCHECKED
-SOURCE_DERIVATION_CHECKED
-PARTIALLY_FORMALIZED
-KERNEL_CHECKED
-FAILED
-BLOCKED
-```
-
-#### Formal alignment
-
-```text
-UNCHECKED
-BACKTRANSLATED
-AUTO_ALIGNMENT_PASSED
-AUTO_ALIGNMENT_PARTIAL
-MISALIGNED
-HUMAN_REVIEWED
-BLOCKED
-```
-
-#### Semantic alignment
-
-```text
-UNCHECKED
-AGENT_REVIEWED
-HUMAN_REVIEWED
-CONTESTED
-BLOCKED
-```
-
-#### Approximation regime
-
-```text
-NOT_APPLICABLE
-DECLARED_ONLY
-PARTIALLY_CHECKED
-CHECKED_IN_STATED_REGIME
-FAILED
-BLOCKED
-```
-
-#### Empirical support
-
-```text
-NOT_APPLICABLE
-UNMODELED
-SOURCE_GROUNDED
-PARTIAL
-SUPPORTED_IN_RECORDED_REGIME
-CONTESTED
-BLOCKED
-```
-
-#### Computation
-
-```text
-NOT_APPLICABLE
-NOT_ATTEMPTED
-REPRODUCED
-REPRODUCED_WITH_TOLERANCE
-QUALITATIVE_ONLY
-FAILED
-BLOCKED
-```
+`relation_validation` describes individual relation acceptance evidence. `dependency_closure` describes fixed-point completeness of the query-required dependency closure. They are never merged. `KERNEL_CHECKED` is the sole kernel-success value. Cross-model agreement, when measured, is an evidence method mapped by policy to `formal_alignment`; it is not a separate axis value.
 
 ### 6.8 Overall lifecycle status
 
-A node, chain, relation, or export may have one of:
+A policy-versioned generic `StatusView` for any canonical `TargetRef`, including a ClaimIR, inference step, contract, relation, export, chain, or query resolution, may report one of:
 
 ```text
 PROPOSED
@@ -1734,15 +3114,16 @@ SEMANTICALLY_RECONSTRUCTED
 COMPUTATIONALLY_REPRODUCED
 VERIFICATION_CLOSED
 BLOCKED
+FAILED
 DISPUTED
 SUPERSEDED
 ```
 
-`MATH_CLOSED` means that the declared mathematical dependency closure and local formal delta satisfy the mathematical gates. `VERIFICATION_CLOSED` means only that every verification coordinate required by the declared scope has an acceptable status. Neither label means universal scientific certainty.
+For a non-ClaimIR target, the same derivation rules apply to that target's required scope and pinned member ClaimIR values; no proxy ClaimIR status is substituted. `MATH_CLOSED` is profile-sensitive: it is unavailable for `SOURCE_ONLY` and `PARTIALLY_FORMALIZED`, requires source-derivation closure for `DERIVATION_CHECKED`, and requires kernel checking plus automatic alignment for `KERNEL_CHECKED_ALIGNED`, exactly as specified in Section 5.1.13. Every derivation pins the scope/profile, composite snapshot, and evidence/blocker indexes derived from it. `VERIFICATION_CLOSED` means only that every verification coordinate required by that declared scope has an acceptable derived status. Neither label means universal scientific certainty. A new evidence record or policy version produces a new status view; it does not mutate the ClaimIR or overwrite the old view.
 
 ### 6.9 Public justification rule
 
-A verification record exposes only concise, independently inspectable reasoning:
+A verification evidence record exposes only concise, independently inspectable reasoning:
 
 ```text
 source premise
@@ -1849,26 +3230,30 @@ No downstream claim may be described as source-checked without an anchor to the 
 #### Actions
 
 1. Extract the exact source span.
-2. Preserve quantifiers, negations, modality, and exact-versus-approximate status.
-3. Resolve all nontrivial symbols.
-4. Separate a compound claim into atomic `ScientificClaim` objects.
-5. Construct `MathClaimIR` for formalizable components.
-6. Record explicit and inherited assumptions.
-7. Record object types, carriers, domains, and conventions.
-8. Separate the paper's mathematical result from interpretation, evidence, and novelty claims.
+2. Preserve raw LaTeX and recursively expand author-defined commands into standard LaTeX.
+3. Preserve quantifiers, negations, modality, and exact-versus-approximate status.
+4. Resolve all nontrivial symbols.
+5. Separate a compound claim into atomic `ScientificClaim` objects and record reconstruction provenance.
+6. Submit a `claim_ir_build_request` for each formalizable component.
+7. Record explicit and inherited assumptions, object types, carriers, domains, local binders, and conventions.
+8. Separate the paper's mathematical result from interpretation, evidence, novelty claims, and verification status.
+9. Emit either an immutable complete ClaimIR revision or an explicit review-required or failed build result.
 
 #### Output
 
 ```text
-knowledge/target-claim.yaml
-knowledge/target-math-claim-ir.yaml
-knowledge/target-symbols.yaml
-knowledge/target-assumptions.yaml
+MathClaimIRRegistry/claims/<claim-id>/revisions/<revision>/claim-ir.yaml
+MathClaimIRRegistry/normalization-records/<record-id>/<record-revision>.yaml
+MathClaimIRRegistry/decomposition-records/<record-id>/<record-revision>.yaml
+agents/<agent-id>/knowledge/staging/<request-id>/
+agents/<agent-id>/knowledge/registry-refs.yaml
 ```
+
+`MathClaimIRRegistry` is authoritative for ClaimIR, normalization, and decomposition records. Agent directories contain only staging attempts, audit payloads, and exact registry references. These outputs contain no mathematical verification status; later records are published to the single authoritative home assigned in Section 10.1.
 
 #### Gate
 
-The normalized claim must be understandable without an undefined symbol, hidden section-wide assumption, or ambiguous object type.
+A successful ClaimIR must be understandable without an undefined symbol, hidden section-wide assumption, ambiguous object type, or author-defined LaTeX command. If that gate fails, the phase emits no complete ClaimIR and preserves the failed attempt and blocker as external audit records.
 
 ---
 
@@ -1879,13 +3264,14 @@ The normalized claim must be understandable without an undefined symbol, hidden 
 1. Run the constrained claim and relation extractor.
 2. Require source anchors for every candidate.
 3. Classify the relation as dependency, epistemic, semantic, computational, or background.
-4. Validate direction and relation type independently.
-5. Keep ambiguous edges as candidates.
-6. Add only validated load-bearing mathematical edges to the provisional query DAG.
+4. Submit every candidate to `relation_validation_request` and preserve its immutable validation result.
+5. Keep ambiguous, insufficiently supported, rejected, and failed validations only in the provisional candidate graph.
+6. Submit each `VALID` candidate to `relation_acceptance_request` with the exact validation record, acceptance policy, scope, and composite snapshot.
+7. Publish an `AcceptedRelation` only on successful acceptance; only those records may enter an accepted dependency DAG.
 
 #### Gate
 
-No relation enters the accepted build graph solely from model confidence or citation presence.
+The candidate/provisional graph and accepted dependency DAG are distinct artifacts. Validation alone never promotes an edge; no relation enters the accepted build graph without an exact `AcceptedRelation` record.
 
 ---
 
@@ -1938,7 +3324,7 @@ A bibliographic citation alone is not a dependency edge.
 #### Valid stop reasons
 
 ```text
-ACCEPTED_CONTRACT_REUSED
+MATH_CONTRACT_REUSED_WITH_IMPORT_RECEIPT
 EXACT_PACKAGE_DECLARATION_FOUND
 SHORT_LOCAL_BRIDGE_SUFFICES
 PRIMARY_SOURCE_REACHED
@@ -1970,7 +3356,7 @@ For each root source or root contract:
 7. Apply one local graph-repair operation.
 8. Recompute the unresolved frontier.
 9. Repeat until the expected export is accepted, conditional, disputed, or blocked.
-10. Export only claims whose assumptions, scope, provenance, and statuses are explicit.
+10. Export only claims whose assumptions, scope, and provenance are explicit; publish later status-view and import-receipt associations only in release manifests, indexes, or query results.
 
 #### Gate
 
@@ -1993,25 +3379,41 @@ Process accepted mathematical dependencies in topological order.
 7. Formalize and refine only blocked local frontier nodes.
 8. Export new contracts.
 
-#### Assumption-matching record
+#### Import acceptance
+
+The importer submits the Section 5.1.14 import-acceptance interface with the exact `ClaimContract` `TargetRef`, consumer, candidate status view, composite/evidence/blocker snapshots, scope, acceptance profile, policy, assumption matches, object mappings, and convention mappings. A satisfied import emits a `ClaimImportReceipt`; a conditional import lists unresolved assumptions in `conditions`; rejection or execution failure emits no accepted receipt.
 
 ```yaml
-import_match:
-  contract: export:root-agent:theorem-T
-  importer: agent:intermediate-paper
-  object_mapping:
-    root_symbol_X: local_symbol_M
-    root_parameter_n: local_parameter_L
-  assumptions:
-    finite_dimensional:
-      status: SATISFIED
-      evidence: claim:local:finite-dim
-    positivity:
-      status: UNRESOLVED
-  convention_changes:
-    - description: Fourier normalization differs
-      reconciliation: inference:normalization-map
-  verdict: BLOCKED
+claim_import_receipt_excerpt:
+  id: import-receipt:intermediate-paper:theorem-T
+  record_revision: 1
+  applies_to: <exact ClaimContract TargetRef>
+  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  consumer: agent:intermediate-paper
+  decision: CONDITIONAL
+  accepted_status_view:
+    id: status-view:root-paper:theorem-T:...
+    record_revision: 1
+    content_hash: sha256:...
+  required_scope:
+    id: verification-scope:math-import
+    revision: 1
+    content_hash: sha256:...
+  acceptance_profile: KERNEL_CHECKED_ALIGNED
+  assumption_matches:
+    - assumption: finite_dimensional
+      observation: SATISFIED
+      evidence_ref: claim:local:finite-dim@1
+    - assumption: positivity
+      observation: UNRESOLVED
+  object_mappings:
+    - provider_object: root_symbol_X
+      consumer_object: local_symbol_M
+  convention_mappings:
+    - provider_convention: root_fourier_normalization
+      consumer_convention: local_fourier_normalization
+      reconciliation_ref: inference:normalization-map@1
+  conditions: [positivity]
 ```
 
 #### Gate
@@ -2029,8 +3431,8 @@ A kernel-checked theorem may not be imported if the importer has not established
 3. Reconstruct the target paper's local mathematical delta.
 4. Formalize and align the selected target claims.
 5. Preserve blocked and disputed branches.
-6. Generate the target exports, verification vector, and limitations.
-7. Derive `PaperBuildDAG(q)` from the accepted claim DAG.
+6. Generate target exports and limitations, then request exact external status views without copying their values into the Agent or export.
+7. Derive `PaperBuildDAG(q)` from the accepted claim DAG through the Section 5.11 construction interface.
 
 The target agent should answer:
 
@@ -2056,7 +3458,7 @@ Which semantic or numerical coordinates remain open?
 1. Create a `SemanticContract` when physical interpretation is material.
 2. Link assumptions and approximations to source spans.
 3. Add evidence records only for explicitly relevant support.
-4. Preserve separate semantic, approximation, and empirical statuses.
+4. Emit separate semantic, approximation, and empirical evidence inputs and derive their statuses only in external `StatusView` records.
 5. Create a `ReproductionRecord` only when numerical checking is useful or load-bearing.
 6. Classify the numerical role as illustrative, supporting, or load-bearing.
 
@@ -2113,7 +3515,7 @@ SemanticContracts and EvidenceRecords when present
 ReproductionRecords when present
 LeanPackageCapabilityRecords used by the build
 GraphRepairRecords
-blockers and disputes
+immutable blocker events, status views, and ClaimImportReceipts
 coverage and reuse telemetry
 release manifest
 ```
@@ -2162,33 +3564,9 @@ NO_MATCH
 
 A theorem-search result is candidate retrieval, not verification. It becomes a dependency only after the declaration compiles in the pinned environment and matches the contract assumptions.
 
-### 8.3 Create the MathClaimIR and alignment contract
+### 8.3 Submit the formalization request
 
-Before writing Lean code, create:
-
-```yaml
-formalization_contract:
-  source_claim: claim:root-paper:T
-  source_anchors:
-    - anchor:root-paper:T
-  math_claim_ir: math-claim-ir:root-paper:T
-  normalized_statement: >
-    For every X satisfying A and B, conclusion C holds.
-  physical_context_removed:
-    - interpretation of X as an observable
-  assumptions_made_explicit:
-    - finite dimensionality
-    - nonzero denominator
-  intended_lean_declaration: RootPaper.T
-  alignment_requirements:
-    preserve_quantifiers: true
-    preserve_object_types: true
-    preserve_exactness: true
-    preserve_conclusion_strength: true
-  status: READY_FOR_BLUEPRINT
-```
-
-This contract is the bridge between frozen source, mathematical normalization, and Lean.
+Before writing Lean code, submit the exact `agtxiv.formalization-request/1.0.0` interface in Section 5.1.9. The wire request expands `RequestEnvelope`, uses a namespaced artifact-bearing ClaimIR `TargetRef` with `type_schema`, `semantic_content_hash`, exact `target_artifact`, `claim_ir`, and empty `claim_ir_members`, and freezes the complete `formalization_boundary`. Its output is the outcome-dependent `FormalizationRecord` in that section. Section 8 defines no alternate field names or outcomes.
 
 ### 8.4 Pin the environment
 
@@ -2222,22 +3600,45 @@ The formalizer works against an evolving blueprint that serves as:
 - a list of unresolved leaves;
 - the shared state for formalizer, auditor, and refiner agents.
 
-A blueprint node contains:
+Each published blueprint node is immutable semantic planning content. It never points to later attempts, evidence, blockers, or status views.
 
 ```yaml
 blueprint_node:
+  schema: agtxiv.blueprint-node/1.0.0
   id: blueprint:claim-T:lemma-03
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  target: <exact ClaimIR TargetRef>
   source_claims: []
-  target_math_claim_ir: ...
   natural_language_role: ...
-  lean_declaration: ...
-  imports: []
-  children: []
-  status: UNPROVED
-  failure_class: null
+  proposed_declaration_signature: ...
+  planned_imports: []
+  child_node_refs: []
+  content_hash: sha256:...
 ```
 
-The blueprint is initially shallow. It is expanded only when a local node fails.
+Proof attempts are external:
+
+```yaml
+blueprint_attempt_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.blueprint-attempt-request/1.0.0
+  applies_to: <exact BlueprintNode TargetRef>
+  formalization_request_ref: {id: request:formalization:..., record_revision: 1, content_hash: 'sha256:...'}
+```
+
+```yaml
+blueprint_attempt_record:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.blueprint-attempt/1.0.0
+  applies_to: <same BlueprintNode TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  attempt_artifacts: []
+  diagnostic_artifacts: []
+```
+
+Success, rejection, unresolved proof obligations, and execution failure follow the envelope meanings. New planning content creates a superseding blueprint revision; an attempt never mutates the node.
 
 ### 8.6 Formalizer or Blueprinter Agent
 
@@ -2276,78 +3677,11 @@ Lean establishes formal correctness under encoded assumptions. It does not estab
 
 ### 8.8 Source-blind Backtranslator Agent
 
-Model B receives only:
-
-- the Lean declaration;
-- definitions needed to interpret its types;
-- actual imported declarations;
-- relevant namespace and notation information.
-
-It does not receive the original source claim during backtranslation.
-
-It outputs:
-
-```yaml
-backtranslation:
-  id: backtranslation:RootPaper.T
-  lean_declaration: RootPaper.T
-  reconstructed_math_claim_ir: ...
-  human_readable_statement: >
-    ...
-  assumptions_detected: []
-  object_types_detected: []
-  confidence: ...
-```
-
-Source blindness forces the backtranslation to expose what the Lean declaration actually encodes rather than merely repeating the paper.
+Model B receives only the source-blind context allowed by the exact `agtxiv.backtranslation-request/1.0.0` interface in Section 5.1.9. The isolated runner hashes the delivered context and emits the `BacktranslationRecord` with its independence attestation. Source text, ClaimIR statement content, prior backtranslations, and alignment records are forbidden inputs. `SUCCEEDED`, `REJECTED`, `BLOCKED`, and `FAILED_TO_RUN` have exactly the field-presence rules stated there; Section 8 defines no alternate `PRODUCED` or `PARTIAL` outcome vocabulary.
 
 ### 8.9 Alignment Auditor
 
-The auditor compares:
-
-```text
-frozen source
-MathClaimIR
-Lean declaration
-source-blind reconstructed MathClaimIR
-human-readable backtranslation
-```
-
-Required checks:
-
-```text
-quantifier_delta
-object_type_delta
-assumption_delta
-domain_and_codomain_delta
-exactness_delta
-finite_asymptotic_delta
-normalization_delta
-conclusion_strength_delta
-edge_case_delta
-```
-
-Example record:
-
-```yaml
-alignment_audit:
-  id: alignment-audit:RootPaper.T
-  source_claim: claim:root-paper:T
-  lean_declaration: RootPaper.T
-  verdict: MISALIGNED
-  differences:
-    - field: object_type
-      source: quantum_state_vector
-      lean: complex_scalar
-      severity: CRITICAL
-    - field: conclusion
-      source: Hilbert-space normalization identity
-      lean: scalar conjugation identity
-      severity: CRITICAL
-  repair_recommendation: REWIRE_OR_RESCOPE
-```
-
-A round-trip theorem equivalence check may be added, but it is one signal among several.
+The auditor consumes the exact source artifact, ClaimIR semantic hash, formalization record, independent backtranslation record, comparison policy, and criticality policy through `agtxiv.alignment-request/1.0.0` in Section 5.1.10. It emits only the full `AlignmentRecord` schema defined there. Field deltas use the normative delta-kind and severity vocabularies; `PASSED` alone is not an alignment result.
 
 ### 8.10 Source-aware Refiner
 
@@ -2377,7 +3711,7 @@ REWIRE_OR_RESCOPE
 ESCALATE_OR_BLOCK
 ```
 
-The Refiner must not invent new source claims without marking them `AGENT_INFERRED`. It must not silently weaken a theorem merely to obtain a proof.
+The Refiner must not invent new source claims without assigning `origin.class: DERIVED_CLAIM` and exact premise/inference provenance. It must not silently weaken a theorem merely to obtain a proof.
 
 ### 8.11 Automation and human interface
 
@@ -2395,16 +3729,7 @@ automatic alignment verdict
 remaining blocker
 ```
 
-Status levels remain explicit:
-
-```text
-LEAN_KERNEL_CHECKED
-AUTO_ALIGNMENT_PASSED
-CROSS_MODEL_ALIGNMENT_PASSED
-HUMAN_SEMANTIC_REVIEWED
-```
-
-`AUTO_ALIGNMENT_PASSED` does not imply `HUMAN_SEMANTIC_REVIEWED`.
+External status views use only the normative axis values `mathematics: KERNEL_CHECKED`, `formal_alignment: AUTO_ALIGNMENT_PASSED`, `semantic_alignment: HUMAN_REVIEWED`, and `human_review: PERFORMED`. Cross-model agreement is an evidence method, not an axis value. `AUTO_ALIGNMENT_PASSED` does not imply human review.
 
 ### 8.12 Kernel, placeholder, and axiom checks
 
@@ -2428,16 +3753,7 @@ lake env lean AgtXIv/RootPaper.lean
 
 ### 8.13 Formal export
 
-A mathematical claim may be exported as `KERNEL_CHECKED` only when its Lean declaration builds without placeholders and its axioms are documented.
-
-It may be exported as `AUTO_ALIGNMENT_PASSED` only when:
-
-- the source claim and `MathClaimIR` are anchored;
-- the source-blind backtranslation has been generated;
-- no critical quantifier, object-type, assumption, exactness, or conclusion-strength mismatch remains;
-- any accepted rescoping is explicit and versioned.
-
-A human review status is added only when a qualified reviewer has actually reviewed the alignment.
+An export contains no aggregate status fields. A generic `StatusView` targeting the exact immutable export may derive a mathematics axis value of `KERNEL_CHECKED` only when its pinned evidence snapshot contains a clean placeholder-free build and documented axiom audit. It may derive `formal_alignment: AUTO_ALIGNMENT_PASSED` only when the source and ClaimIR are anchored, an independent source-blind backtranslation exists, no critical mismatch remains, and every accepted rescoping is explicit and versioned. Human-review evidence contributes only when a qualified reviewer actually produced it. The immutable export must not reference that later status view or any `ClaimImportReceipt`. Exact associations appear only in external indexes, release manifests, or query results.
 
 ---
 
@@ -2458,9 +3774,9 @@ For every physically meaningful conclusion selected for semantic reconstruction:
 9. test dimensions, symmetries, and meaningful limits;
 10. separate mathematical conclusion from physical interpretation;
 11. attach evidence records to the exact assumption or regime they support;
-12. record automatic and human review statuses separately.
+12. record automatic and human review evidence separately and derive statuses only through external status views.
 
-The unified contract avoids maintaining separate full schemas for physical semantics and evidence. It does not merge their epistemic statuses.
+The unified contract avoids separate full schemas for physical semantics and evidence. It does not own status; external views preserve the distinct epistemic axes.
 
 ### 9.2 Assumption and evidence separation inside one contract
 
@@ -2484,15 +3800,7 @@ or
 all mathematical consequences of A describe nature exactly
 ```
 
-A `SemanticContract` therefore keeps:
-
-```text
-semantic_alignment
-approximation_regime
-empirical_support
-```
-
-as separate coordinates.
+A `SemanticContract` therefore supplies separately scoped evidence for `semantic_alignment`, `approximation_regime`, and `empirical_support`; a generic external `StatusView` derives those coordinates without writing them back into the contract.
 
 ### 9.3 Approximation propagation
 
@@ -2600,190 +3908,230 @@ or a scientific closure that explicitly requires numerical reproduction.
 
 ## 10. Repository Layout and Agent Interface
 
-### 10.1 Minimal repository layout
+### 10.1 Authoritative registry ownership and publication
 
-The following is the normative target interface, not a claim that every current pilot path already has this shape. The [repository README](README.md#repository-map) maps the present implementation; migrations must preserve stable identifiers and update consumers atomically.
+Every normative object has exactly one authoritative home. Each registry's own manifest and append-log segments are authoritative in that registry and nowhere else:
 
-```text
-.
-├── AgtXIv.md
-├── agtxiv.yaml
-├── pilot-scope.yaml
-├── README.md
-│
-├── ScientificClaimRegistry/
-│   ├── manifest.json
-│   ├── schema/
-│   ├── claims/
-│   ├── source-anchors/
-│   ├── candidate-relations/
-│   └── accepted-relations/
-│
-├── MathContractRegistry/
-│   ├── manifest.json
-│   ├── contracts/
-│   ├── math-claim-ir/
-│   ├── mappings/
-│   ├── reuse/
-│   ├── query-resolutions/
-│   └── demo/
-│
-├── LeanPackageCapabilityRegistry/
-│   ├── packages/
-│   ├── declaration-index/
-│   ├── compatibility/
-│   └── audits/
-│
-├── agents/
-│   ├── root-paper-1/
-│   │   ├── agent.yaml
-│   │   ├── source/
-│   │   │   ├── artifacts.json
-│   │   │   ├── source-hashes.json
-│   │   │   └── anchors.jsonl
-│   │   ├── knowledge/
-│   │   │   ├── claims.jsonl
-│   │   │   └── math-claim-ir/
-│   │   ├── reasoning/
-│   │   │   ├── blueprint.yaml
-│   │   │   └── inference-steps.jsonl
-│   │   ├── formal/
-│   │   │   └── lean/
-│   │   ├── alignment/
-│   │   │   ├── backtranslations/
-│   │   │   └── audits/
-│   │   ├── semantic/
-│   │   │   ├── contracts/
-│   │   │   └── evidence/
-│   │   ├── computational/
-│   │   │   └── reproductions/
-│   │   ├── verification/
-│   │   │   ├── records.jsonl
-│   │   │   └── logs/
-│   │   ├── reviews/
-│   │   ├── exports/
-│   │   └── blockers/
-│   │
-│   ├── intermediate-paper-1/
-│   └── target-paper/
-│
-├── graph/
-│   ├── paper-interactions.jsonl
-│   ├── candidate-claim-relations.jsonl
-│   ├── accepted-claim-relations.jsonl
-│   ├── query-math-dags/
-│   ├── query-paper-build-dags/
-│   └── companion-bundles/
-│
-├── repairs/
-│   └── graph-repair-records.jsonl
-│
-├── telemetry/
-│   ├── build-metrics.jsonl
-│   └── reuse-metrics.jsonl
-│
-├── reviews/
-├── coverage.yaml
-└── release-manifest.json
-```
+| Objects | Authoritative home |
+|---|---|
+| `ScientificClaim`, `ProfileAssociationRecord` | `ScientificClaimRegistry` |
+| frozen raw/expanded source artifacts, source manifests, and `SourceAnchor` | `SourceRegistry` |
+| `CandidateRelation`, validation records, `AcceptedRelation` | `RelationRegistry` |
+| `MathClaimIR`, `MathematicalPropositionIR`, normalization, decomposition, semantic revision, migration | `MathClaimIRRegistry` |
+| `MathContract`, `ClaimContract`, immutable export interfaces | `ContractRegistry` |
+| `InferenceStep`, `BlueprintNode` | `ReasoningRegistry` |
+| `SemanticContract`, semantic component evidence | `SemanticRegistry` |
+| `ReproductionRecord` | `ReproductionRegistry` |
+| `LeanPackageCapabilityRecord` | `LeanPackageCapabilityRegistry` |
+| graph artifacts, closures, `DependencyNodeManifest`, `ClaimToPaperAgentMappingSnapshot`, `PaperBuildDAGArtifact`, `CompanionBundle`, graph-repair records | `GraphRegistry` |
+| `PaperAgentManifest` | `PaperAgentRegistry` |
+| schema artifacts and serialization profiles | `SchemaRegistry` |
+| `VerificationScope`, `FormalEnvironment`, every policy, status rule table, graph/query algorithm descriptor, and criticality table | `ConfigurationRegistry` |
+| `CompositeRegistrySnapshot` and every evidence, blocker, relation, receipt, graph, or registry index snapshot | `SnapshotRegistry` |
+| attribution, formalization, backtranslation, verification, alignment, blocker events, status views, blueprint attempts, package trust evidence, and all request/result records not assigned by another row | `ExternalRecordRegistry` |
+| `QueryResolution`, `DependencyManifest`, `ClaimImportReceipt`, `ReleaseManifest`, `RegistryTransactionReceipt`, and `PaperAgentAnswer` | `ReceiptRegistry` |
+| build, coverage, and reuse telemetry records | `TelemetryRegistry` |
 
-Source artifacts are read-only after freezing.
-
-### 10.2 PaperAgent query contract
-
-A PaperAgent should expose operations logically equivalent to:
+The corresponding normative layout is:
 
 ```text
-claims()
-why(claim_id)
-source(object_id)
-assumptions(claim_id, transitive=true)
-dependencies(claim_id)
-imports(claim_id)
-local_delta()
-verification(claim_id)
-formalization(claim_id)
-backtranslation(claim_id)
-alignment(claim_id)
-semantics(claim_id)
-reproduction(claim_id)
-repairs(claim_id)
-blockers(claim_id)
-exports()
+SourceRegistry/
+ScientificClaimRegistry/
+RelationRegistry/
+MathClaimIRRegistry/
+ContractRegistry/
+ReasoningRegistry/
+SemanticRegistry/
+ReproductionRegistry/
+LeanPackageCapabilityRegistry/
+GraphRegistry/
+PaperAgentRegistry/
+SchemaRegistry/
+ConfigurationRegistry/
+SnapshotRegistry/
+ExternalRecordRegistry/
+ReceiptRegistry/
+TelemetryRegistry/
+agents/
+graph/
 ```
 
-### 10.3 Graph query contract
+Each registry owns an immutable content-addressed manifest and append log. `agents/` contains staging inputs, source code, logs, and payload artifacts only. `graph/` contains rebuildable indexes and visualizations only. Any duplicate under either path is marked `derived_from` with exact authoritative ID, revision, and hash and has no independent authority.
 
-The system should expose:
+A release manifest is authoritative only in `ReceiptRegistry`:
 
-```text
-paper_interactions(agent_id)
-math_dag(query_resolution_id)
-paper_build_dag(query_resolution_id)
-companion_bundles(query_resolution_id)
-accepted_closure(query_resolution_id)
-conditional_closure(query_resolution_id)
-blocked_frontier(query_resolution_id)
-local_delta(query_resolution_id)
+```yaml
+release_manifest:
+  schema: agtxiv.release-manifest/1.0.0
+  id: release:...
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  composite_registry_snapshot: {id: composite-snapshot:release-18, record_revision: 1, content_hash: 'sha256:...'}
+  dependency_manifests: []
+  published_objects: []
+  external_associations: []
+  payload_artifacts: []
+  content_hash: sha256:...
 ```
+
+All arrays are canonical sorted sets of exact references. `external_associations` is the permitted home for status-view, blocker, attribution, and receipt associations that immutable targets do not own.
+
+Cross-registry publication is atomic through this interface:
+
+```yaml
+registry_transaction_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.registry-transaction-request/1.0.0
+  base_composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  expected_registry_heads:
+    - registry_id: MathClaimIRRegistry
+      manifest_revision: 17
+      manifest_content_hash: sha256:...
+  writes:
+    - registry_id: MathClaimIRRegistry
+      object_id: math-claim-ir:...
+      object_revision: 1
+      semantic_content_hash: sha256:...
+      artifact_hash: sha256:...
+  release_manifest_artifact_hash: sha256:...
+```
+
+```yaml
+registry_transaction_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.registry-transaction-result/1.0.0
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  transaction_receipt: null
+  current_registry_heads: []
+```
+
+`SUCCEEDED` requires this receipt in `ReceiptRegistry`:
+
+```yaml
+registry_transaction_receipt:
+  schema: agtxiv.registry-transaction-receipt/1.0.0
+  id: registry-transaction:...
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-22T00:00:00Z
+  request_ref: {id: request:registry-transaction:..., record_revision: 1, content_hash: 'sha256:...'}
+  base_composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  resulting_composite_registry_snapshot: {id: composite-snapshot:release-18, record_revision: 1, content_hash: 'sha256:...'}
+  precondition_heads: []
+  committed_writes: []
+  resulting_registry_manifests: []
+  release_manifest_artifact_hash: sha256:...
+  committed_at: 2026-08-22T00:00:00Z
+  producer:
+    implementation: registry-transaction-service
+    version: 1.0.0
+    implementation_hash: sha256:...
+  content_hash: sha256:...
+```
+
+It pins the exact base and resulting composite snapshots, all precondition heads, writes, resulting registry manifests, release manifest hash, and commit time. `expected_registry_heads` must contain exactly the participating registries and equal their boundaries in the base composite snapshot; omission, addition, or mismatch is `REJECTED`. The service deterministically constructs the resulting composite snapshot from all resulting manifests and supersession states; the release manifest must pin that exact snapshot. All writes become visible together. Invalid ownership or object schema is `REJECTED`. A stale head or unresolved cross-reference is `BLOCKED` and publishes nothing. `FAILED_TO_RUN` publishes nothing. Crash recovery either exposes the complete receipt and all writes or none; partial visibility is forbidden.
+
+A release is accepted only through such a receipt. Release manifests may index exact status views, blockers, and receipts, but immutable claims, contracts, exports, blueprints, and relations do not acquire reverse links to them.
+
+### 10.2 Generic Agent query interface
+
+```yaml
+agent_query_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.agent-query-request/1.0.0
+  operation: claims | why | source | assumptions | dependencies | imports | local_delta | evidence | formalization | backtranslation | alignment | semantics | reproduction | repairs | blockers | exports | status
+  applies_to: <TargetRef; omitted only for collection operations>
+  index_snapshot: {id: external-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+```
+
+```yaml
+agent_query_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.agent-query-result/1.0.0
+  applies_to: <same TargetRef; omitted for collection operations>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  resolved_targets: []
+  record_refs: []
+  payload_artifacts: []
+  status_view_index_refs: []
+  candidate_targets: []
+```
+
+`SUCCEEDED` returns exact immutable references. Invalid operation or target is `REJECTED`; not-found, ambiguous resolution, or unusable snapshot is `BLOCKED` with candidates where available; execution failure returns no inferred answer. No result fabricates a ClaimIR or copies aggregate status.
+
+### 10.3 Graph query interface
+
+```yaml
+graph_query_request:
+  extends: agtxiv.request-envelope/1.0.0
+  schema: agtxiv.graph-query-request/1.0.0
+  applies_to: <exact query-resolution, graph, chain, or relation TargetRef>
+  operation: paper_interactions | math_dag | paper_build_dag | companion_bundles | accepted_closure | conditional_closure | blocked_frontier | local_delta
+  graph_snapshot: {id: graph-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
+```
+
+```yaml
+graph_query_result:
+  extends: agtxiv.result-envelope/1.0.0
+  schema: agtxiv.graph-query-result/1.0.0
+  applies_to: <same TargetRef>
+  outcome: SUCCEEDED | REJECTED | BLOCKED | FAILED_TO_RUN
+  graph_artifact_ref: null
+  closure_artifact_ref: null
+  node_targets: []
+  edge_targets: []
+  status_view_index_refs: []
+```
+
+Success returns exact hashes and canonically ordered TargetRefs. Invalid operation or target is `REJECTED`; missing or invalid snapshot and unresolved closure are `BLOCKED`; execution failure returns no graph. Partial output is allowed only as a separately hashed audit artifact and is never an accepted closure. Non-ClaimIR targets use generic `StatusView`; singular and multi-member governing ClaimIR fields follow Section 5.1.2.
 
 ### 10.4 Response discipline
 
-Every answer from a PaperAgent classifies its basis:
-
-```text
-DIRECT_SOURCE
-IMPORTED_CONTRACT
-DERIVED_FROM_ACCEPTED_CHAIN
-AUTOFORMALIZED_AND_ALIGNED
-UNVERIFIED_INFERENCE
-BLOCKED
-DISPUTED
-```
-
-Example:
+Every PaperAgent answer classifies its basis as `DIRECT_SOURCE`, `IMPORTED_CONTRACT`, `DERIVED_FROM_ACCEPTED_CHAIN`, `AUTOFORMALIZED_AND_ALIGNED`, `UNVERIFIED_INFERENCE`, `BLOCKED`, or `DISPUTED`.
 
 ```yaml
 answer:
-  question: "Why does claim C hold?"
+  schema: agtxiv.paper-agent-answer/1.0.0
+  id: answer:target:C:why
+  record_revision: 1
+  supersedes: null
+  produced_at: 2026-08-18T00:00:00Z
+  applies_to: <exact chain TargetRef>
+  question: Why does claim C hold?
   basis: DERIVED_FROM_ACCEPTED_CHAIN
-  chain: chain:target:C
-  math_status: MATH_CLOSED
-  formal_alignment: AUTO_ALIGNMENT_PASSED
-  unresolved:
-    - semantic-contract:target:C
+  status_view_refs:
+    - id: status-view:chain:target:C:...
+      record_revision: 1
+      content_hash: sha256:...
+  unresolved_target_refs:
+    - <exact semantic-contract TargetRef>
   conclusion: >
-    The accepted mathematical graph supports the derivation. The physical
-    interpretation remains agent-reviewed but has not received human review,
-    and the load-bearing numerical result has not been reproduced.
+    The referenced status view supports the mathematical derivation under its
+    pinned scope. The semantic and computational targets remain unresolved.
+  content_hash: sha256:...
 ```
 
-A PaperAgent must refuse to present an unsupported inference as a paper claim.
+The answer contains no `math_status`, `formal_alignment`, or other aggregate axis field. It must refuse to present unsupported inference as a paper claim, and a request failure returns an immutable failure result rather than a fluent substitute answer.
 
 ---
 
 ## 11. Acceptance Criteria and First Pilot
 
-### 11.1 Acceptance rule for an exported MathContract
+### 11.1 Acceptance profiles for an exported MathContract
 
-An exported mathematical contract is acceptable only if it has:
+A contract declares exactly one hash-pinned acceptance profile in its required verification scope. The status policy defines these profiles:
 
-1. a frozen source version or an explicit independent-proof origin;
-2. an exact source anchor or explicit derived provenance;
-3. an atomic `ScientificClaim`;
-4. a normalized `MathClaimIR` preserving logical form and object types;
-5. explicit assumptions and imports;
-6. a dependency path to accepted roots or declared external foundations;
-7. typed `InferenceStep` nodes;
-8. a clean Lean build when the contract is marked formalized;
-9. no unresolved placeholders in the accepted closure;
-10. documented axioms and declaration dependencies;
-11. a source-blind backtranslation;
-12. an alignment audit with no unresolved critical mismatch;
-13. visible blockers and limitations;
-14. a version and compatibility policy.
+| Profile | Required minimum axes | Formal artifacts |
+|---|---|---|
+| `SOURCE_ONLY` | `source_fidelity: PASSED`; applicable relation requirements satisfied | Formalization is out of scope; `mathematics: UNCHECKED` and `formal_alignment: NOT_APPLICABLE` are permitted. No backtranslation or alignment is required. |
+| `DERIVATION_CHECKED` | `source_fidelity: PASSED`, `dependency_closure: COMPLETE`, `mathematics: SOURCE_DERIVATION_CHECKED` | Formalization is out of scope unless separately requested; no backtranslation or formal alignment is required. |
+| `PARTIALLY_FORMALIZED` | `source_fidelity: PASSED`, `mathematics: PARTIALLY_FORMALIZED`; explicit unresolved formal boundary | Partial formalization evidence and blockers are required. Backtranslation or alignment is required only for generated declarations included by the scope. |
+| `KERNEL_CHECKED_ALIGNED` | `source_fidelity: PASSED`, `dependency_closure: COMPLETE`, `mathematics: KERNEL_CHECKED`, `formal_alignment: AUTO_ALIGNMENT_PASSED` | Clean kernel build, placeholder and axiom audit, independent source-blind backtranslation, and full alignment record are required. |
 
-Human semantic review strengthens the contract but is not silently assumed.
+Every accepted export also requires an exact ClaimIR semantic revision and hash, explicit assumptions and imports, source or independent-proposition provenance, typed inference steps where applicable, contract version and compatibility policy, visible limitations, and an external release-manifest association to an immutable `StatusView` whose target, profile scope, policy, composite snapshot, evidence snapshot, and blocker snapshot match. Human review is never inferred.
+
+A contract may be accepted under a weaker profile without being represented as kernel checked. Formalization explicitly marked out of scope maps formal alignment to `NOT_APPLICABLE`; the system must not manufacture a backtranslation or alignment requirement. Consumers may demand a stronger profile through import acceptance.
 
 ### 11.2 Acceptance rule for a SemanticContract
 
@@ -2793,7 +4141,7 @@ A semantic contract is acceptable at the declared automated level when:
 - object mappings are explicit;
 - assumptions and approximation regimes are recorded;
 - evidence is linked to exact assumptions or regimes;
-- semantic alignment and empirical support have separate statuses;
+- external status views derive separate semantic-alignment and empirical-support axes;
 - automated review is not labeled human review;
 - unresolved interpretive ambiguity is visible.
 
@@ -2814,15 +4162,15 @@ Root status does not make every claim in the paper acceptable.
 
 ### 11.4 Acceptance rule for the target query
 
-The query result should report separate closure levels.
+The query result should reference separate closure levels only through policy-versioned generic `StatusView` records targeting the query resolution, chain, export, or ClaimIR as appropriate. Every reported level cites its required scope, evidence snapshot, blocker snapshot, and policy; none is stored in a ClaimIR core record.
 
-#### `DAG_COMPLETE`
+#### `dependency_closure: COMPLETE`
 
-Every required external mathematical claim has an admissible source or independent proof path.
+This fixed-point query property may be displayed as `DAG_COMPLETE`, but it is not an overall status. Every required external mathematical claim has an admissible source or independent proof path.
 
 #### `MATH_CLOSED`
 
-The target mathematical delta and required imports are kernel-checked and formally aligned to the declared automated threshold.
+This label is profile-sensitive and is derived only under the selected `acceptance_profile`; it does not mean ``kernel checked'' by definition. Under `DERIVATION_CHECKED`, it requires `source_fidelity: PASSED`, `dependency_closure: COMPLETE`, `mathematics: SOURCE_DERIVATION_CHECKED`, `formal_alignment: NOT_APPLICABLE`, and no required blocker, dispute, or failure. Under `KERNEL_CHECKED_ALIGNED`, it requires `source_fidelity: PASSED`, `dependency_closure: COMPLETE`, `mathematics: KERNEL_CHECKED`, `formal_alignment: AUTO_ALIGNMENT_PASSED`, and no required blocker, dispute, or failure. It is unavailable under `SOURCE_ONLY` and `PARTIALLY_FORMALIZED`. The selected acceptance-profile thresholds and predicate in Section 5.1.13 are authoritative; target-query prose must not strengthen or weaken them.
 
 #### `SEMANTICALLY_RECONSTRUCTED`
 
@@ -2945,12 +4293,17 @@ coverage:
 
 ### Claim normalization
 
-- [ ] Compound claims are split atomically.
+- [ ] Raw LaTeX and expanded standard LaTeX are both preserved.
+- [ ] No complete ClaimIR depends on author-defined macros or `head.tex`.
+- [ ] Compound claims are split atomically and reconstruction provenance is recorded.
+- [ ] Top-level quantifiers and local binders are distinguished.
 - [ ] Quantifiers and negations are preserved.
 - [ ] Exact and approximate statements are distinguished.
 - [ ] Object types and carriers are explicit.
 - [ ] Assumptions and conventions are explicit.
 - [ ] Mathematical and interpretive claims are separated.
+- [ ] Every ClaimIR revision is immutable and contains no verification status.
+- [ ] Review-required or failed normalization emits no pretend-complete ClaimIR.
 
 ### Lean package routing
 
@@ -3014,6 +4367,9 @@ coverage:
 - [ ] Approximation regimes propagate.
 - [ ] Gauge- or convention-dependent statements are labeled.
 - [ ] Formal correctness is separated from source fidelity and physical applicability.
+- [ ] Every formalization, evidence, alignment, and blocker record points to an exact target revision.
+- [ ] Aggregate statuses are derived under a named policy and evidence/blocker snapshot.
+- [ ] No verification or autoformalization update has mutated a ClaimIR.
 - [ ] Candidate edges have not been promoted by confidence alone.
 - [ ] Blockers and disputes remain visible.
 - [ ] A clean rebuild procedure is documented.
@@ -3061,11 +4417,11 @@ and failures trigger local iteration:
 }
 \]
 
-Every mathematical package should import explicit versioned contracts, reuse existing declarations before writing local proofs, verify only its residual local delta, generate a source-blind backtranslation, and export only claims whose assumptions, provenance, scope, alignment status, and verification state are public.
+Every mathematical package should import explicit versioned contracts, reuse existing declarations before writing local proofs, verify only its residual local delta, generate a source-blind backtranslation, and export immutable claims whose assumptions, provenance, and scope are public, while release manifests or query results carry exact external status-view and import-receipt associations.
 
 PaperAgents organize frozen literature sources. They do not provide trust by authority. The strict mathematical DAG is query-relative. Paper-level directed cycles are allowed and are condensed only for build scheduling. Multi-premise deductions use explicit `InferenceStep` nodes rather than a specialized hypergraph implementation.
 
-`SemanticContract` unifies physical interpretation and evidence linkage as one natural-language-facing object, while preserving separate semantic, approximation, empirical, and human-review statuses. Numerical work remains an optional `ReproductionRecord`, not a required DAG or Lean target.
+`SemanticContract` unifies physical interpretation and evidence linkage as one natural-language-facing object, while external status views preserve separate semantic, approximation, empirical, and human-review axes. Numerical work remains an optional `ReproductionRecord`, not a required DAG or Lean target.
 
 AgtXIv should prefer an explicit incomplete registry with a visible missing frontier over a fluent but unverifiable account. Its minimum useful answer is a reusable path receipt:
 
