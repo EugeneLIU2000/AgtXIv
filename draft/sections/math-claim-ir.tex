@@ -1,0 +1,278 @@
+% !TeX root = ../main.tex
+\section{A Stable Intermediate Representation for Mathematical Claims}\label{sec:math-claim-ir}
+
+% This section defines the MATH ClaimIR and gives the closed-form robustness-of-magic example.
+
+AgtXIv uses the MATH ClaimIR as a stable intermediate representation for mathematical claims extracted from frozen sources. It is a lightweight engineering synthesis, not a direct implementation of a pre-existing standard or a proposed universal standard. Several earlier systems inform its design. OMDoc supplies statement-level categories for mathematical knowledge and separates formal content from informal presentation~\cite{kohlhase2006omdoc}. sTeX shows how semantic structure and symbol declarations can be embedded in \LaTeX{} sources~\cite{kohlhase2008stex}. OpenMath and Content MathML provide established models for content-level symbols, applications, binders, and expression structure~\cite{openmath2019standard,w3c2014mathml}. MMT motivates logic-independent, theory-qualified mathematical knowledge~\cite{rabe2013mmt}; ClaimIR turns that separation into explicit adapters between its stable core and tool-specific representations. These principles guide the ClaimIR, but none of these sources specifies the JSON or YAML schema described here.
+
+The representation separates a durable account of what a source claims from changing extraction methods, theorem-prover integrations, and verification results. This separation is necessary for a long-lived research system. A source claim should not acquire a new identity merely because an improved model extracts it, a Lean formalization is added, or an embedding service changes its vector dimension.
+
+\subsection{Stable core and versioned extensions}
+
+The stable ClaimIR core contains only information expected to remain useful across tools and verification environments:
+\begin{itemize}[leftmargin=*]
+    \item the ClaimIR schema version and a stable claim identifier;
+    \item the source statement, immutable source and proof anchors, and revisable attribution and provenance links;
+    \item the statement kind, normalized statement, and structured mathematical statement; and
+    \item links between immutable claim revisions, including revision and supersession relations.
+\end{itemize}
+The structured statement records typed objects, top-level quantifiers, assumptions, one atomic principal conclusion, the mathematical mode, and interpretation conventions. A field may state explicitly that information is unknown. Extraction systems must not invent a domain, quantifier, assumption, attribution, or symbol meaning merely to produce a complete-looking record.
+
+The core distinguishes top-level quantification from binders internal to an expression. For example, a theorem may quantify universally over an integer $n$, a measurement set $\mathcal{M}$, and a density operator $\rho$. A variable $Q$ bound only inside a maximum and a variable $P$ bound only inside a sum are local binders, not additional theorem-level quantifiers. Preserving this distinction supports faithful translation into content trees and theorem-prover declarations.
+
+Tool-specific information belongs in external extensions with namespaced identifiers and independent versions. Such extensions may contain Lean, Isabelle, or Coq formalizations; pinned theorem-prover environments; mathematical dependency directed acyclic graph edges; verification status; unresolved blockers; model and extraction metadata; embeddings; and audit logs. Each extension points inward to the stable claim identifier and exact claim revision to which it applies. An external registry indexes these reverse links for discovery; the core record does not maintain an authoritative list of its extensions. A new autoformalization method therefore adds an adapter and extension record without mutating or revising the stable source claim.
+
+Normalized mathematical content uses expanded, standard \LaTeX{}. Author-defined source macros are not permitted in downstream ClaimIR fields. For example, source commands such as \verb|\RoM|, \verb|\Mcal|, \verb|\clnum|, and a redefined \verb|\tr| become, respectively, $\operatorname{RoM}$, $\mathcal{M}$, $\operatorname{cl}$, and $\operatorname{tr}$. The provenance layer retains both the raw source and an expanded source rendering, but ClaimIR consumers must not require a source-specific \texttt{head.tex}, document preamble, or macro package. Expansion makes the normalized claim self-contained while preserving the frozen raw artifact for source audits.
+
+\subsection{Identity, migration, and attribution}
+
+The ClaimIR schema follows semantic versioning. A patch release repairs behavior without changing represented meaning, a minor release adds backward-compatible fields or values, and a major release permits incompatible structural or semantic changes. Normalization profiles are versioned separately because changes in macro expansion, whitespace handling, symbol qualification, or expression parsing can alter normalized output without requiring an immediate redesign of the core schema.
+
+Claim revisions are immutable. A correction creates a new record connected to its predecessor by relations such as \texttt{supersedes} and \texttt{wasRevisionOf}. Stable identifiers are not derived solely from content hashes: equivalent claims can occur in different sources, and a corrected record must retain continuity even when its text changes. Content hashes instead establish the integrity of frozen artifacts, source spans, normalized payloads, and extension files.
+
+Schema migrations proceed stepwise between adjacent supported versions. A migration never changes the frozen source or its anchor and never silently changes the attributed mathematical meaning. When meaning is unchanged, it preserves the stable claim identifier and claim revision while recording the source schema, target schema, normalization profiles, migration implementation, and pre-migration artifact hash. If migration or renormalization changes the interpreted mathematical meaning, it creates a new immutable claim revision instead of replacing the old record. A migration fails visibly rather than dropping a field it cannot represent, and it retains the pre-migration artifact. External adapters independently preserve extension records they do not understand; core-schema migration neither embeds nor rewrites those records. Releases are tested against golden fixtures drawn from real mathematical claims, including nested binders, implicit assumptions, overloaded notation, source macros, theorem environments with multiple conclusions, and incomplete attribution.
+
+Attribution remains dynamically revisable even though each claim revision is immutable. Explicit source attribution takes precedence. If a source does not state an attribution, the initial record attributes the claim to the current paper by default. Later evidence may identify an earlier owner or a more precise origin. That correction creates a new revision, preserves the current paper as an occurrence or manifestation of the claim, and retains the earlier attribution decision in the provenance history. Claim identity, occurrence, and intellectual attribution are therefore related but distinct.
+
+\subsection{Worked decomposition of a source theorem}
+
+The example is Theorem \texttt{thm:solvable} from Yingjian Liu et al., ``Graph Theoretic Approach to Quantum Nonstabilizerness,'' frozen as arXiv:2607.26154v1~\cite{liu2026graph}. Let $n$ be a positive integer. An $n$-qubit Pauli observable acts on the $2^n$-dimensional $n$-qubit Hilbert space. Let $\mathcal{M}=\{P_1,\ldots,P_m\}$ be a finite nonempty set of nonidentity Hermitian $n$-qubit Pauli observables, and define the accessible expectation vector by
+\begin{equation}
+\boldsymbol{b}_{\mathcal{M}}(\rho)
+=
+\bigl(\operatorname{tr}(P_1\rho),\ldots,\operatorname{tr}(P_m\rho)\bigr).
+\end{equation}
+Writing $\operatorname{STAB}_n$ for the set of $n$-qubit stabilizer states, the reduced stabilizer polytope and reduced robustness of magic are
+\begin{align}
+\operatorname{STAB}(\mathcal{M})
+&=
+\operatorname{conv}\!\left\{\boldsymbol{b}_{\mathcal{M}}(\sigma):
+\sigma\in\operatorname{STAB}_n\right\},\\
+\operatorname{RoM}_{\mathcal{M}}(\rho)
+&=
+\min_{\boldsymbol{x}}
+\left\{\lVert\boldsymbol{x}\rVert_1:
+\sum_{\boldsymbol{v}}x_{\boldsymbol{v}}\boldsymbol{v}
+=\boldsymbol{b}_{\mathcal{M}}(\rho),\quad
+\sum_{\boldsymbol{v}}x_{\boldsymbol{v}}=1\right\},
+\end{align}
+where $\boldsymbol{v}$ ranges over the vertices of $\operatorname{STAB}(\mathcal{M})$.
+
+The frustration graph $G_{\mathcal{M}}$ has the observables in $\mathcal{M}$ as vertices and joins two vertices when the corresponding observables anticommute. A graph is perfect when every induced subgraph has chromatic number equal to its clique number. Write $\operatorname{Clique}(G_{\mathcal{M}})$ for the set of nonempty cliques and $\operatorname{cl}(G_{\mathcal{M}})$ for the maximum clique size. An active dependency is a nonempty inclusion-minimal subset $T\subseteq\mathcal{M}$ such that $\prod_{P\in T}P$ is proportional to the identity and the operators in $T$ commute pairwise. Thus ``no active dependencies'' is a precise source-defined predicate, not a condition reconstructed from its name.
+
+The source theorem states that if $\mathcal{M}$ has no active dependencies and $G_{\mathcal{M}}$ is perfect, then every $n$-qubit density operator $\rho$ satisfies
+\begin{equation}
+\operatorname{RoM}_{\mathcal{M}}(\rho)
+=
+\max\left(1,
+\max_{Q\in\operatorname{Clique}(G_{\mathcal{M}})}
+\sum_{P\in Q}
+\left|\operatorname{tr}(P\rho)\right|\right)
+\leq
+\sqrt{\operatorname{cl}(G_{\mathcal{M}})}.
+\label{eq:rom-perfect-graph}
+\end{equation}
+The bound is attained by states supported on the $+1$ eigenspace of
+\begin{equation}
+A_Q
+=
+\lvert Q\rvert^{-1/2}\sum_{P\in Q}P,
+\label{eq:maximum-clique-operator}
+\end{equation}
+where $Q$ is a maximum clique.
+
+Although the source presents this result in one theorem environment, Eq.~\ref{eq:rom-perfect-graph} contains two mathematically distinct conclusions, and the attainment statement adds a third. The source theorem is therefore a parent occurrence for three atomic ClaimIR records: the closed-form equality, the clique-number upper bound, and attainment of that bound. The source-level parent records the decomposition without treating the conjunction as one reusable claim.
+
+\begin{verbatim}
+schema: agtxiv.math-claimir-parent/1.0.0
+id: claim-parent:arxiv-2607.26154v1:thm-solvable
+source:
+  work: arxiv:2607.26154v1
+  statement_anchor:
+    latex_label: thm:solvable
+    artifact: arxiv-source:2607.26154v1
+  artifact_integrity: frozen-release-manifest
+statement_kind: theorem_environment
+normalized_source: >
+  If the stated assumptions hold, then the closed-form equality and
+  clique-number upper bound hold, and the upper bound is attained by
+  states supported on the specified +1 eigenspace.
+decomposes_into:
+  - claim:arxiv-2607.26154v1:thm-solvable:equality
+  - claim:arxiv-2607.26154v1:thm-solvable:upper-bound
+  - claim:arxiv-2607.26154v1:thm-solvable:attainment
+\end{verbatim}
+
+The detailed equality record below uses expanded \LaTeX{} in every mathematical field. The theorem-level variables $n$, $\mathcal{M}$, and $\rho$ appear under \texttt{quantifiers}. By contrast, $Q$ and $P$ appear under \texttt{local\_binders}, with scopes limited to the maximum and sum in which they occur. The mode \texttt{exact\_finite} states that the claim concerns finite-dimensional objects and exact identities rather than asymptotic or approximate relations.
+
+\begin{verbatim}
+schema: agtxiv.math-claimir/1.0.0
+id: claim:arxiv-2607.26154v1:thm-solvable:equality
+revision: 1
+statement_kind: theorem
+source:
+  work: arxiv:2607.26154v1
+  statement_anchor:
+    latex_label: thm:solvable
+    artifact: arxiv-source:2607.26154v1
+  proof_anchor:
+    proof_of_label: thm:solvable
+    artifact: arxiv-source:2607.26154v1
+  raw_source: retained-by-frozen-source-artifact
+  expanded_source: retained-by-normalization-artifact
+attribution:
+  status: explicit
+  attributed_to: Yingjian Liu et al.
+  attributed_work: arxiv:2607.26154v1
+  history: attribution-log:thm-solvable
+normalization:
+  profile: agtxiv.expanded-standard-latex/1.0.0
+  unresolved_symbols: []
+normalized_statement: >
+  For every positive integer $n$, every finite nonempty set
+  $\mathcal{M}$ of nonidentity Hermitian $n$-qubit Pauli
+  observables with no active dependencies and perfect frustration
+  graph, and every $n$-qubit density operator $\rho$,
+  $\operatorname{RoM}_{\mathcal{M}}(\rho)$ equals
+  \(\max\left(1,
+  \max_{Q\in\operatorname{Clique}(G_{\mathcal{M}})}
+  \sum_{P\in Q}|\operatorname{tr}(P\rho)|\right)\).
+structured_statement:
+  mathematical_mode: exact_finite
+  quantifiers:
+    - variable: $n$
+      binder: forall
+      type: positive_integer
+    - variable: $\mathcal{M}$
+      binder: forall
+      type: finite_nonempty_measurement_set
+    - variable: $\rho$
+      binder: forall
+      type: n_qubit_density_operator
+  typed_objects:
+    - object: $\mathcal{M}$
+      type: >
+        finite nonempty set of nonidentity Hermitian
+        $n$-qubit Pauli observables
+    - object: $G_{\mathcal{M}}$
+      type: frustration_graph_on_measurement_set
+    - object: $\operatorname{Clique}(G_{\mathcal{M}})$
+      type: set_of_nonempty_cliques
+    - object: $\operatorname{RoM}_{\mathcal{M}}(\rho)$
+      type: nonnegative_real_number
+  assumptions:
+    explicit:
+      - $\mathcal{M}$ has no active dependencies.
+      - $G_{\mathcal{M}}$ is perfect.
+    source_implicit:
+      - All observables act on the same $n$-qubit Hilbert space.
+      - >
+        $\rho$ is positive semidefinite and
+        $\operatorname{tr}(\rho)=1$.
+      - >
+        The source definitions of the frustration graph and
+        measurement-restricted robustness of magic are in force.
+  local_binders:
+    - variable: $Q$
+      type: clique_of_$G_{\mathcal{M}}$
+      scope: inner_maximum
+    - variable: $P$
+      type: element_of_$Q$
+      scope: finite_sum
+  conclusion:
+    relation: equality
+    left: $\operatorname{RoM}_{\mathcal{M}}(\rho)$
+    right: >
+      \(\max\left(1,
+      \max_{Q\in\operatorname{Clique}(G_{\mathcal{M}})}
+      \sum_{P\in Q}|\operatorname{tr}(P\rho)|\right)\)
+  conventions:
+    - >
+      $\operatorname{Clique}(G)$ contains the nonempty cliques
+      of $G$.
+    - $\operatorname{tr}$ is the ordinary matrix trace.
+    - All maxima and sums are finite.
+revision_links:
+  supersedes: null
+  wasRevisionOf: null
+\end{verbatim}
+
+The upper-bound record reuses the same source context and assumptions but has one inequality as its principal conclusion. Its dependency extension may later state whether it imports the equality claim or admits an independent proof; that decision is not part of the core meaning. The following is a non-normative excerpt showing the fields that differ from the complete equality record. A serialized record must also contain the same typed source, attribution, normalization, object, convention, and revision fields required by \texttt{agtxiv.math-claimir/1.0.0}.
+
+\begin{verbatim}
+excerpt_of_schema: agtxiv.math-claimir/1.0.0
+id: claim:arxiv-2607.26154v1:thm-solvable:upper-bound
+source_parent: claim-parent:arxiv-2607.26154v1:thm-solvable
+structured_statement:
+  mathematical_mode: exact_finite
+  quantifiers:
+    - variable: $n$
+      binder: forall
+      type: positive_integer
+    - variable: $\mathcal{M}$
+      binder: forall
+      type: finite_nonempty_measurement_set
+    - variable: $\rho$
+      binder: forall
+      type: n_qubit_density_operator
+  assumptions:
+    explicit:
+      - $\mathcal{M}$ has no active dependencies.
+      - $G_{\mathcal{M}}$ is perfect.
+  conclusion:
+    relation: inequality
+    latex: >
+      \(\operatorname{RoM}_{\mathcal{M}}(\rho)
+      \leq\sqrt{\operatorname{cl}(G_{\mathcal{M}})}\)
+\end{verbatim}
+
+The attainment record treats Eq.~\ref{eq:maximum-clique-operator} as a referenced definition, not as another conclusion. A maximum clique $Q$ has cardinality $\lvert Q\rvert=\operatorname{cl}(G_{\mathcal{M}})$. The record quantifies over density operators supported on the $+1$ eigenspace of $A_Q$ and gives only the attained equality as its principal conclusion. This is again a non-normative excerpt; a complete record contains all fields required by the same schema.
+
+\begin{verbatim}
+excerpt_of_schema: agtxiv.math-claimir/1.0.0
+id: claim:arxiv-2607.26154v1:thm-solvable:attainment
+source_parent: claim-parent:arxiv-2607.26154v1:thm-solvable
+structured_statement:
+  mathematical_mode: exact_finite
+  quantifiers:
+    - variable: $n$
+      binder: forall
+      type: positive_integer
+    - variable: $\mathcal{M}$
+      binder: forall
+      type: finite_nonempty_measurement_set
+    - variable: $Q$
+      binder: forall
+      type: maximum_clique_of_$G_{\mathcal{M}}$
+    - variable: $\rho$
+      binder: forall
+      type: density_operator_supported_on_plus_one_eigenspace_of_$A_Q$
+  assumptions:
+    explicit:
+      - $\mathcal{M}$ has no active dependencies.
+      - $G_{\mathcal{M}}$ is perfect.
+  referenced_definitions:
+    - symbol: $A_Q$
+      latex: >
+        $A_Q=\lvert Q\rvert^{-1/2}\sum_{P\in Q}P$
+      local_binders:
+        - variable: $P$
+          type: element_of_$Q$
+          scope: finite_sum
+  conclusion:
+    relation: equality
+    latex: >
+      \(\operatorname{RoM}_{\mathcal{M}}(\rho)
+      =\sqrt{\operatorname{cl}(G_{\mathcal{M}})}\)
+\end{verbatim}
+
+These records describe the mathematical meaning attributed to the frozen source; they do not certify it. External verification records separately report whether macro expansion and source alignment passed, whether imported definitions and foundations were accepted, and whether a theorem-prover declaration was checked in a pinned environment. Every such record points back to the exact immutable claim revision, for example:
+\begin{verbatim}
+schema: agtxiv.formalization.lean4/1.0.0
+id: formalization:closed-form-rom:lean4:1
+applies_to:
+  claim: claim:arxiv-2607.26154v1:thm-solvable:equality
+  revision: 1
+status: unformalized
+\end{verbatim}
+The closed-form equality may remain unformalized, fail an alignment audit, or be blocked by a missing Lean definition without changing its ClaimIR content. A later correction to the source interpretation creates a new immutable ClaimIR revision, while progress or failure in verification updates only the corresponding external records.
