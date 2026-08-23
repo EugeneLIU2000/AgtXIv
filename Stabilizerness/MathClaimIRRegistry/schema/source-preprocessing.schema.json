@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/source-preprocessing/1.0.0",
+  "title": "AgtXIv source preprocessing receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "paper_id", "canonical_source", "source_artifact_hash", "expansion_profile", "macro_definitions", "included_sources", "outcome", "unresolved_macros", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.source-preprocessing/1.0.0"},
+    "id": {"type": "string", "pattern": "^source-preprocessing:"},
+    "record_revision": {"const": 1},
+    "paper_id": {"type": "string"},
+    "canonical_source": {"type": "string"},
+    "source_artifact_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "expansion_profile": {"const": "agtxiv.macro-expansion/1.0.0"},
+    "macro_definitions": {"type": "object", "additionalProperties": {"type": "string"}},
+    "included_sources": {"type": "array", "items": {"type": "string"}},
+    "outcome": {"enum": ["EXPANDED", "PARTIALLY_EXPANDED", "EXPANSION_FAILED"]},
+    "unresolved_macros": {"type": "array", "items": {"type": "string"}},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

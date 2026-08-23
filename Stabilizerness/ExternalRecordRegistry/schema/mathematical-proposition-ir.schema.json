@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/mathematical-proposition-ir/1.0.0",
+  "title": "AgtXIv MathematicalPropositionIR",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "revision", "supersedes", "produced_at", "origin", "derivation_provenance", "normalized_statement_expanded_latex", "structured_statement", "semantic_content_hash", "artifact"],
+  "properties": {
+    "schema": {"const": "agtxiv.mathematical-proposition-ir/1.0.0"},
+    "id": {"type": "string", "pattern": "^math-proposition-ir:"},
+    "revision": {"type": "integer", "minimum": 1},
+    "supersedes": {"type": ["object", "null"]},
+    "produced_at": {"type": "string"},
+    "origin": {"enum": ["DERIVED_CLAIM", "SOURCE_INDEPENDENT_PROPOSITION"]},
+    "derivation_provenance": {"type": "object"},
+    "normalized_statement_expanded_latex": {"type": "string", "minLength": 1},
+    "structured_statement": {"type": "object"},
+    "semantic_content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "artifact": {"type": "object", "required": ["schema_uri", "schema_version", "serialization_profile", "artifact_hash"]}
+  }
+}

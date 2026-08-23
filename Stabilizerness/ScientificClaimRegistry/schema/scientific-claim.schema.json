@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/scientific-claim/1.0.0",
+  "title": "AgtXIv ScientificClaim",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "supersedes", "produced_at", "paper_id", "kind", "text", "source_anchors", "origin", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.scientific-claim/1.0.0"},
+    "id": {"type": "string", "pattern": "^claim:"},
+    "record_revision": {"type": "integer", "minimum": 1},
+    "supersedes": {"type": ["object", "null"]},
+    "produced_at": {"type": "string"},
+    "paper_id": {"type": "string"},
+    "kind": {"enum": ["definition", "assumption", "convention", "equation", "claim", "lemma", "theorem", "proposition", "corollary", "counterexample"]},
+    "text": {"type": "string", "minLength": 1},
+    "source_anchors": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "origin": {"const": "SOURCE_OCCURRENCE"},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/math-claimir/1.0.0",
+  "title": "AgtXIv MathClaimIR",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "revision", "supersedes", "produced_at", "claim", "source", "statement_kind", "normalized_statement_expanded_latex", "structured_statement", "normalization", "semantic_content_hash", "artifact"],
+  "properties": {
+    "schema": {"const": "agtxiv.math-claimir/1.0.0"},
+    "id": {"type": "string", "pattern": "^math-claim-ir:"},
+    "revision": {"type": "integer", "minimum": 1},
+    "supersedes": {"type": ["object", "null"]},
+    "produced_at": {"type": "string"},
+    "claim": {"$ref": "#/$defs/exact_ref"},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["occurrence_work", "statement_anchors", "proof_anchors", "source_statement_expanded_latex"],
+      "properties": {
+        "occurrence_work": {"type": "string"},
+        "statement_anchors": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+        "proof_anchors": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "source_statement_expanded_latex": {"type": "string", "minLength": 1}
+      }
+    },
+    "statement_kind": {"enum": ["definition", "assumption", "convention", "equation", "lemma", "theorem", "proposition", "corollary", "counterexample", "claim"]},
+    "normalized_statement_expanded_latex": {"type": "string", "minLength": 1},
+    "structured_statement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["typed_objects", "quantifiers", "assumptions", "local_binders", "conclusion", "mathematical_mode", "conventions"],
+      "properties": {
+        "typed_objects": {"type": "array", "items": {"$ref": "#/$defs/typed_object"}},
+        "quantifiers": {"type": "array", "items": {"$ref": "#/$defs/quantifier"}},
+        "assumptions": {
+          "type": "object", "additionalProperties": false, "required": ["explicit", "source_implicit"],
+          "properties": {
+            "explicit": {"type": "array", "items": {"$ref": "#/$defs/assumption"}},
+            "source_implicit": {"type": "array", "items": {"$ref": "#/$defs/assumption"}}
+          }
+        },
+        "local_binders": {"type": "array", "items": {"type": "object"}},
+        "conclusion": {"type": "object", "required": ["relation", "expression_latex"], "properties": {"relation": {"type": "string"}, "expression_latex": {"type": "string", "minLength": 1}}, "additionalProperties": true},
+        "mathematical_mode": {"type": "object", "required": ["exactness", "finite_or_asymptotic"], "properties": {"exactness": {"enum": ["exact", "approximate", "asymptotic", "unknown"]}, "finite_or_asymptotic": {"enum": ["finite", "asymptotic", "mixed", "unknown"]}}, "additionalProperties": false},
+        "conventions": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "normalization": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile", "relation_to_source", "unresolved_symbols", "preprocessing_record_ref"],
+      "properties": {
+        "profile": {"const": "agtxiv.expanded-standard-latex/1.0.0"},
+        "relation_to_source": {"enum": ["VERBATIM", "NOTATION_NORMALIZED", "LOGICAL_FORM_EXPANDED", "SOURCE_IMPLICIT_CONTEXT_EXPLICIT"]},
+        "unresolved_symbols": {"type": "array", "items": {"type": "string"}},
+        "preprocessing_record_ref": {"type": "string"}
+      }
+    },
+    "semantic_content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_uri", "schema_version", "serialization_profile", "artifact_hash"],
+      "properties": {
+        "schema_uri": {"const": "https://agtxiv.org/schema/math-claimir/1.0.0"},
+        "schema_version": {"const": "1.0.0"},
+        "serialization_profile": {"type": "object", "required": ["id", "content_hash"], "properties": {"id": {"const": "agtxiv.canonical-json/1.0.0"}, "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}, "additionalProperties": false},
+        "artifact_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  },
+  "$defs": {
+    "exact_ref": {"type": "object", "additionalProperties": false, "required": ["id", "record_revision", "content_hash"], "properties": {"id": {"type": "string"}, "record_revision": {"type": "integer", "minimum": 1}, "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "typed_object": {"type": "object", "additionalProperties": false, "required": ["symbol_latex", "semantic_type", "scope"], "properties": {"symbol_latex": {"type": "string"}, "semantic_type": {"type": "string"}, "carrier_latex": {"type": ["string", "null"]}, "scope": {"enum": ["global", "claim", "local"]}}},
+    "quantifier": {"type": "object", "additionalProperties": false, "required": ["binder", "variable_latex", "domain_latex", "origin"], "properties": {"binder": {"enum": ["forall", "exists", "exists_unique"]}, "variable_latex": {"type": "string"}, "domain_latex": {"type": "string"}, "origin": {"enum": ["SOURCE_EXPLICIT", "SOURCE_IMPLICIT"]}}},
+    "assumption": {"type": "object", "additionalProperties": false, "required": ["id", "expression_latex", "origin"], "properties": {"id": {"type": "string"}, "expression_latex": {"type": "string"}, "origin": {"enum": ["SOURCE_EXPLICIT", "SOURCE_IMPLICIT", "IMPORTED"]}, "source_anchor": {"type": ["string", "null"]}}}
+  }
+}

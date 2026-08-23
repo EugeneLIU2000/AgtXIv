@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/claim-migration/1.0.0",
+  "title": "Legacy-to-ClaimIR migration disposition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "legacy_record", "disposition", "new_records", "differences", "source_audit", "review_priority"],
+  "properties": {
+    "schema": {"const": "agtxiv.claim-migration/1.0.0"},
+    "legacy_record": {"type": "object", "required": ["id", "path", "line", "content_hash"], "additionalProperties": false, "properties": {"id": {"type": "string"}, "path": {"type": "string"}, "line": {"type": "integer", "minimum": 1}, "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "disposition": {"enum": ["UNCHANGED", "NOTATION_ONLY", "SEMANTIC_CORRECTION", "SPLIT", "MERGED", "RECLASSIFIED_EXTERNAL", "SOURCE_UNSUPPORTED", "DUPLICATE", "BLOCKED"]},
+    "new_records": {"type": "array", "items": {"type": "object", "required": ["record_kind", "id"], "properties": {"record_kind": {"enum": ["ScientificClaim", "MathClaimIR", "MathematicalPropositionIR", "EvidenceRecord", "BlockerRecord", "none"]}, "id": {"type": ["string", "null"]}}, "additionalProperties": false}},
+    "differences": {"type": "array", "items": {"type": "object", "required": ["field", "change_type", "old", "new", "significance"], "additionalProperties": false, "properties": {"field": {"type": "string"}, "change_type": {"enum": ["ADDED", "REMOVED", "CHANGED", "SPLIT", "RECLASSIFIED"]}, "old": {}, "new": {}, "significance": {"enum": ["EDITORIAL", "STRUCTURAL", "SEMANTIC", "SAFETY"]}}}},
+    "source_audit": {"type": "object", "required": ["latex_checked", "anchors_checked", "support"], "additionalProperties": false, "properties": {"latex_checked": {"type": "boolean"}, "anchors_checked": {"type": "array", "items": {"type": "string"}}, "support": {"enum": ["EXPLICIT", "IMPLICIT_CONTEXT", "PARTIAL", "NONE", "NOT_SOURCE_CLAIM"]}, "notes": {"type": "string"}}},
+    "review_priority": {"enum": ["LOW", "MEDIUM", "HIGH", "BLOCKING"]}
+  }
+}
