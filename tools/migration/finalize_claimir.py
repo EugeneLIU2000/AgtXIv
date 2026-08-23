@@ -111,11 +111,17 @@ def main() -> int:
     claim_files = sorted((ROOT / "Stabilizerness/ScientificClaimRegistry/claims").glob("*.jsonl"))
     ir_files = sorted((ROOT / "Stabilizerness/MathClaimIRRegistry/claims").glob("*.jsonl"))
     proposition_files = sorted((ROOT / "Stabilizerness/ExternalRecordRegistry/propositions").glob("*.jsonl"))
+    evidence_files = sorted((ROOT / "Stabilizerness/ExternalRecordRegistry/evidence").glob("*.jsonl"))
+    preprocessing_files = sorted((ROOT / "Stabilizerness/MathClaimIRRegistry/preprocessing").glob("*.json"))
+    migration_files = sorted((ROOT / "Stabilizerness/MathClaimIRRegistry/migrations").glob("*.jsonl"))
     all_errors: list[str] = []
 
+    claim_hashes: dict[str, tuple[int, str]] = {}
     for path in claim_files:
         rows = read_jsonl(path)
         finalized = [finalize_scientific_claim(r) for r in rows]
+        for row in finalized:
+            claim_hashes[row["id"]] = (row["record_revision"], row["content_hash"])
         if args.check and finalized != rows:
             all_errors.append(f"{path}: hashes are not finalized")
         elif not args.check:
@@ -124,6 +130,11 @@ def main() -> int:
 
     for path in ir_files:
         rows = read_jsonl(path)
+        for row in rows:
+            claim_id = row.get("claim", {}).get("id")
+            if claim_id in claim_hashes:
+                revision, content_hash = claim_hashes[claim_id]
+                row["claim"] = {"id": claim_id, "record_revision": revision, "content_hash": content_hash}
         finalized = [finalize_ir(r) for r in rows]
         if args.check and finalized != rows:
             all_errors.append(f"{path}: hashes are not finalized")
@@ -140,9 +151,52 @@ def main() -> int:
             write_jsonl(path, finalized)
         all_errors.extend(validate(finalized if not args.check else rows, ROOT / "Stabilizerness/ExternalRecordRegistry/schema/mathematical-proposition-ir.schema.json", str(path)))
 
+    for path in evidence_files:
+        rows = read_jsonl(path)
+        finalized = []
+        for row in rows:
+            item = copy.deepcopy(row)
+            item["content_hash"] = digest({k: v for k, v in item.items() if k != "content_hash"})
+            finalized.append(item)
+        if args.check and finalized != rows:
+            all_errors.append(f"{path}: hashes are not finalized")
+        elif not args.check:
+            write_jsonl(path, finalized)
+        all_errors.extend(validate(finalized if not args.check else rows, ROOT / "Stabilizerness/ExternalRecordRegistry/schema/migration-evidence.schema.json", str(path)))
+
+    for path in preprocessing_files:
+        row = json.loads(path.read_text())
+        finalized = copy.deepcopy(row)
+        finalized["content_hash"] = digest({k: v for k, v in finalized.items() if k != "content_hash"})
+        if args.check and finalized != row:
+            all_errors.append(f"{path}: hash is not finalized")
+        elif not args.check:
+            path.write_text(json.dumps(finalized, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+        all_errors.extend(validate([finalized if not args.check else row], ROOT / "Stabilizerness/MathClaimIRRegistry/schema/source-preprocessing.schema.json", str(path)))
+
+    for path in migration_files:
+        rows = read_jsonl(path)
+        finalized = []
+        for row in rows:
+            item = copy.deepcopy(row)
+            legacy = item.get("legacy_record", {})
+            legacy_path = ROOT / legacy.get("path", "")
+            line_number = legacy.get("line", 0)
+            if legacy_path.exists() and isinstance(line_number, int) and line_number > 0:
+                source_lines = [line for line in legacy_path.read_text().splitlines() if line.strip()]
+                if line_number <= len(source_lines):
+                    legacy_obj = json.loads(source_lines[line_number - 1])
+                    legacy["content_hash"] = digest(legacy_obj)
+            finalized.append(item)
+        if args.check and finalized != rows:
+            all_errors.append(f"{path}: legacy hashes are not finalized")
+        elif not args.check:
+            write_jsonl(path, finalized)
+        all_errors.extend(validate(finalized if not args.check else rows, ROOT / "Stabilizerness/MathClaimIRRegistry/schema/claim-migration.schema.json", str(path)))
+
     for error in all_errors:
         print(error)
-    print(f"scientific_claim_files={len(claim_files)} claimir_files={len(ir_files)} proposition_files={len(proposition_files)} errors={len(all_errors)}")
+    print(f"scientific_claim_files={len(claim_files)} claimir_files={len(ir_files)} proposition_files={len(proposition_files)} evidence_files={len(evidence_files)} preprocessing_files={len(preprocessing_files)} migration_files={len(migration_files)} errors={len(all_errors)}")
     return 1 if all_errors else 0
 
 
