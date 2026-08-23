@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/paper-agent-manifest/1.0.0",
+  "title": "AgtXIv PaperAgentManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "supersedes", "produced_at", "paper_id", "legacy_agent", "source", "registries", "migration", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.paper-agent-manifest/1.0.0"},
+    "id": {"type": "string", "pattern": "^paper-agent-manifest:"},
+    "record_revision": {"const": 1},
+    "supersedes": {"type": ["object", "null"]},
+    "produced_at": {"type": "string"},
+    "paper_id": {"type": "string"},
+    "legacy_agent": {"type": "object", "required": ["path", "content_hash"]},
+    "source": {"type": "object", "required": ["canonical_artifact", "artifact_hash", "preprocessing_record"]},
+    "registries": {"type": "object", "required": ["scientific_claims", "math_claim_ir", "mathematical_propositions", "evidence"]},
+    "migration": {"type": "object", "required": ["dispositions", "summary", "legacy_record_count", "unresolved_legacy_ids"]},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "schema": "agtxiv.claim-migration-summary/1.0.0",
+  "paper_id": "arxiv:1609.07488v2",
+  "produced_at": "2026-08-22T00:00:00Z",
+  "legacy_source": {
+    "path": "agents/robustness-of-magic/knowledge/statements.jsonl",
+    "record_count": 5,
+    "line_range": [
+      1,
+      5
+    ]
+  },
+  "coverage": {
+    "expected_legacy_records": 5,
+    "migration_dispositions": 5,
+    "covered_lines": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "missing_lines": [],
+    "duplicate_lines": [],
+    "complete": true
+  },
+  "disposition_counts": {
+    "UNCHANGED": 0,
+    "NOTATION_ONLY": 2,
+    "SEMANTIC_CORRECTION": 1,
+    "SPLIT": 1,
+    "MERGED": 0,
+    "RECLASSIFIED_EXTERNAL": 1,
+    "SOURCE_UNSUPPORTED": 0,
+    "DUPLICATE": 0,
+    "BLOCKED": 0
+  },
+  "generated_record_counts": {
+    "ScientificClaim": 4,
+    "MathClaimIR": 4,
+    "MathematicalPropositionIR": 2,
+    "EvidenceRecord": 3,
+    "SourcePreprocessing": 1
+  },
+  "semantic_or_high_risk_differences": [
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-definition-normalized",
+      "change_type": "RECLASSIFIED",
+      "field": "origin",
+      "new": "derived MathematicalPropositionIR plus SourceAudit evidence; no ScientificClaim or source-occurrence ClaimIR",
+      "old": "AGENT_NORMALIZED definition attached to a source anchor",
+      "significance": "SAFETY"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-definition-normalized",
+      "change_type": "CHANGED",
+      "field": "affine_constraint",
+      "new": "sum_i x_i=1 is a trace-one consequence of the source decomposition, not an additional source optimization constraint",
+      "old": "affine normalization presented as part of the definition",
+      "significance": "SEMANTIC"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-definition-normalized",
+      "change_type": "RECLASSIFIED",
+      "field": "free_set_bridge",
+      "new": "STAB_n=conv(S_n) is an imported convention recorded only in MathematicalPropositionIR provenance and assumptions",
+      "old": "imports statement:1307.7171v1:n-qubit-stabilizer-polytope inside the normalized legacy definition",
+      "significance": "SAFETY"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-faithfulness",
+      "change_type": "REMOVED",
+      "field": "hypotheses",
+      "new": "the source theorem is represented directly under the source RoM definition and the source proof's meaning of mixed stabilizer state",
+      "old": "agent-normalized definition and imported stabilizer-polytope statement were listed as hypotheses",
+      "significance": "SEMANTIC"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-faithfulness",
+      "change_type": "ADDED",
+      "field": "strict_outside_clause",
+      "new": "both the equivalence and source-explicit strict inequality outside the convex hull are retained",
+      "old": "logical-form conclusion retained only R(rho)=1 iff rho in STAB_n although prose also said R(rho)>1 otherwise",
+      "significance": "SEMANTIC"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-monotonicity",
+      "change_type": "SPLIT",
+      "field": "claim_scope",
+      "new": "source ScientificClaim and ClaimIR; external atom-preserving-map MathematicalPropositionIR; FormalizationObservation and AlignmentObservation evidence",
+      "old": "one legacy theorem combined source monotonicity, an exact deterministic atom-preserving map normalization, kernel status, and a pending alignment obligation",
+      "significance": "SAFETY"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-monotonicity",
+      "change_type": "ADDED",
+      "field": "channel_premise",
+      "new": "ClaimIR explicitly requires p_ij>=0, sum_j p_ij=1, and E(sigma_i)=sum_j p_ij sigma_j for every pure stabilizer atom",
+      "old": "atom-image premise was referenced indirectly through a legacy statement hypothesis",
+      "significance": "SEMANTIC"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-monotonicity",
+      "change_type": "CHANGED",
+      "field": "quantified_interface",
+      "new": "ClaimIR quantifies over the source trace-preserving stabilizer channel; the stricter agent map interface is an external proposition",
+      "old": "logical form quantified over an exact deterministic atom-preserving density map while prose began with a trace-preserving stabilizer channel",
+      "significance": "SEMANTIC"
+    },
+    {
+      "legacy_record_id": "statement:1609.07488v2:rom-monotonicity",
+      "change_type": "REMOVED",
+      "field": "status_and_blocker",
+      "new": "kernel status and alignment observation are external evidence; no status or blocker appears in ClaimIR",
+      "old": "kernel-checked scope and pending source-channel alignment were embedded in theorem text and scope_relation",
+      "significance": "SAFETY"
+    }
+  ],
+  "canonical_object_hashes": {
+    "legacy_records": [
+      {
+        "line": 1,
+        "id": "statement:1609.07488v2:rom-definition-source",
+        "sha256": "sha256:9713e73c0256ffa543f110bc9268f89f2b9fa60187bc7535bcb236e1cc997169"
+      },
+      {
+        "line": 2,
+        "id": "statement:1609.07488v2:stabilizer-channel-action",
+        "sha256": "sha256:d9651f906ef614eb426c05caaf867cc5fa6b40782c12fec95704a8529b4e35d2"
+      },
+      {
+        "line": 3,
+        "id": "statement:1609.07488v2:rom-definition-normalized",
+        "sha256": "sha256:b85520666ec30623833b4dc2b7c837893b336b15addcb4f7ba4d683c252969a5"
+      },
+      {
+        "line": 4,
+        "id": "statement:1609.07488v2:rom-faithfulness",
+        "sha256": "sha256:a4d1f9497324d6f4ff4fb0504604fa38749a51031ea5fd00abf2ab5117864f86"
+      },
+      {
+        "line": 5,
+        "id": "statement:1609.07488v2:rom-monotonicity",
+        "sha256": "sha256:1df19c04dcb9c586763be1f7f17c9144333caf63c8c3fd66068eab2a5d07c320"
+      }
+    ],
+    "new_records": [
+      {
+        "record_kind": "ScientificClaim",
+        "id": "claim:1609.07488v2:rom-definition-source",
+        "sha256": "sha256:de2aa2e6bf28b0d09b736f47863b349304386bc285dd5c4eaf9b92fa2511b811"
+      },
+      {
+        "record_kind": "ScientificClaim",
+        "id": "claim:1609.07488v2:stabilizer-channel-action",
+        "sha256": "sha256:bf6b44ec071d5a7918e9b982b5d2a76176f74322513cac694760c07b9d0333c5"
+      },
+      {
+        "record_kind": "ScientificClaim",
+        "id": "claim:1609.07488v2:rom-faithfulness",
+        "sha256": "sha256:16514c27556c9319a1111658de8cbff424645f41b9017877238b67cc76a86389"
+      },
+      {
+        "record_kind": "ScientificClaim",
+        "id": "claim:1609.07488v2:rom-monotonicity",
+        "sha256": "sha256:9b01865c713378ba0bb6581804b15e9f50e6d073c930dea1f15766f9fde345d9"
+      },
+      {
+        "record_kind": "MathClaimIR",
+        "id": "math-claim-ir:1609.07488v2:rom-definition-source",
+        "sha256": "sha256:47529146134533a14d2d9337fd0a19ce7a5a8fe7a8b4cb388a6d665bf257f871"
+      },
+      {
+        "record_kind": "MathClaimIR",
+        "id": "math-claim-ir:1609.07488v2:stabilizer-channel-action",
+        "sha256": "sha256:9c5e060557566c333d49d128c1fabc307b6f7c28263a962b4a6836132073d833"
+      },
+      {
+        "record_kind": "MathClaimIR",
+        "id": "math-claim-ir:1609.07488v2:rom-faithfulness",
+        "sha256": "sha256:e47ecfb1b2fa02eacce5417e804227ac83221dd06d688580b519080116e4206d"
+      },
+      {
+        "record_kind": "MathClaimIR",
+        "id": "math-claim-ir:1609.07488v2:rom-monotonicity",
+        "sha256": "sha256:35887a51d23fc520a13cb02abf841f66675341a28079578f53a69e563c0fe570"
+      },
+      {
+        "record_kind": "MathematicalPropositionIR",
+        "id": "math-proposition-ir:1609.07488v2:rom-normalized-affine-bridge",
+        "sha256": "sha256:47a813e2d58aea938e7baa9501f077d337908fc16bc14ecd5069da261b661ae9"
+      },
+      {
+        "record_kind": "MathematicalPropositionIR",
+        "id": "math-proposition-ir:1609.07488v2:atom-preserving-map-monotonicity-bridge",
+        "sha256": "sha256:ff925768bf57ebc9214f73162709b3a2e72b6f44fc2b76749c9fe57ea1341493"
+      },
+      {
+        "record_kind": "EvidenceRecord",
+        "id": "evidence:1609.07488v2:normalized-free-set-source-audit",
+        "sha256": "sha256:d247f906f5a5ba2ffda3168f06fab65f1464b2306369bd72bb9445193deb806a"
+      },
+      {
+        "record_kind": "EvidenceRecord",
+        "id": "evidence:1609.07488v2:monotonicity-kernel-interface-observation",
+        "sha256": "sha256:ae3c708c81b2786d23e32bc49e9c060b1a2fbaa721ca1b063108a96cfee64d95"
+      },
+      {
+        "record_kind": "EvidenceRecord",
+        "id": "evidence:1609.07488v2:monotonicity-channel-interface-alignment",
+        "sha256": "sha256:1e51d418eeed9b5f82c607c1a0b34d34396df52dc65060b6fdf86209187105c3"
+      },
+      {
+        "record_kind": "SourcePreprocessing",
+        "id": "source-preprocessing:1609.07488v2:robustness-of-magic",
+        "sha256": "sha256:c8a0246d3f6a57c96d756df9ff5480ea103be2e9ee1c6106af643eb585a9c65c"
+      }
+    ]
+  },
+  "validation_expectations": {
+    "json_parse": true,
+    "schema_validation": true,
+    "exact_legacy_coverage": true,
+    "zero_hash_placeholders_used_for_artifact_and_serialization_profile_hashes": false
+  }
+}

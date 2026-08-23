@@ -1,0 +1,737 @@
+{
+  "disposition_totals": {
+    "NOTATION_ONLY": 20,
+    "RECLASSIFIED_EXTERNAL": 15,
+    "SEMANTIC_CORRECTION": 3,
+    "SOURCE_UNSUPPORTED": 1,
+    "SPLIT": 11
+  },
+  "high_risk_differences": [
+    {
+      "differences": [],
+      "disposition": "SPLIT",
+      "legacy_id": "assumption:2607.26154v1:measurement-set-normalized",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "IMPLICIT_CONTEXT"
+    },
+    {
+      "differences": [],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:2607.26154v1:relaxation-exactness",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "REMOVED",
+          "field": "proof_detail",
+          "new": "The source states affine spanning only parenthetically and does not give this construction.",
+          "old": "For each coordinate, extend P_i and flip only its sign to obtain 2e_i.",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "REMOVED",
+          "field": "conclusion",
+          "new": "No source ClaimIR emitted because support is partial.",
+          "old": "Standalone affine-span/feasibility/boundedness lemma",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SOURCE_UNSUPPORTED",
+      "legacy_id": "statement:2607.26154v1:relaxed-affine-span",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "BLOCKING",
+      "source_support": "PARTIAL"
+    },
+    {
+      "differences": [],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:2607.26154v1:dual-mwis",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "ADDED",
+          "field": "hypothesis",
+          "new": "Explicit no-active-dependency assumption",
+          "old": "Implicit no-active context",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "NOTATION_ONLY",
+      "legacy_id": "statement:2607.26154v1:exact-graph-dual",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "MEDIUM",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:2607.26154v1:clifford-covariance",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "record_kind",
+          "new": "external numerical evidence, not MathClaimIR",
+          "old": "numerical_result legacy statement",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:2607.26154v1:figure2-detection",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "record_kind",
+          "new": "external numerical evidence, not MathClaimIR",
+          "old": "prototype numerical_result",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:prototype:k3-finite-check",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "record_kind",
+          "new": "external numerical evidence, not MathClaimIR",
+          "old": "prototype numerical_result",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:prototype:ising-path-finite-check",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "record_kind",
+          "new": "external numerical evidence, not MathClaimIR",
+          "old": "prototype numerical_result",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:prototype:active-dependency-negative-control",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "record_kind",
+          "new": "external counterexample evidence, not MathClaimIR",
+          "old": "prototype numerical_result",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:prototype:active-dependency-physical-counterexample",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "truth_status",
+          "new": "Omitted from ClaimIR and stored as external counterexample evidence.",
+          "old": "CLAIM_FALSE",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "ADDED",
+          "field": "fixed_window",
+          "new": "\\mathcal M\\text{ is identical before and after }\\mathcal E",
+          "old": "while M is held fixed",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:2602.18939v1:fixed-window-monotonicity-claimed",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "BLOCKING",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "SOURCE_INDEPENDENT_PROPOSITION plus external COUNTEREXAMPLE evidence",
+          "old": "AGENT_RECONSTRUCTED",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:2602.18939v1:fixed-window-counterexample",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "ADDED",
+          "field": "normalization_assumptions",
+          "new": "Explicit guards that no nonidentity or phase-class normalization is imported and that the source coordinate clause f(P)P in S is not silently repaired to P in S.",
+          "old": null,
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "proof_status",
+          "new": "Published proof-gap audit stored as external evidence.",
+          "old": null,
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "NOTATION_ONLY",
+      "legacy_id": "statement:2602.18939v1:reduced-polytope-vrep",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "SOURCE_INDEPENDENT_PROPOSITION",
+          "old": "AGENT_NORMALIZED",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "source_support",
+          "new": "Recorded as an additional Agent assumption not stated at that anchor.",
+          "old": "Anchored to the projected-polytope definition",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "assumption:2602.18939v1:normalized-pauli-window",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "DERIVED_CLAIM",
+          "old": "AGENT_RECONSTRUCTED",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:2602.18939v1:admissible-sign-bijection",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "MEDIUM",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "DERIVED_CLAIM with unresolved signed-frame-extension foundation",
+          "old": "AGENT_RECONSTRUCTED",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:2602.18939v1:maximal-context-physical",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "DERIVED_CLAIM with unresolved maximal-context refinement",
+          "old": "AGENT_RECONSTRUCTED",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:2602.18939v1:projection-maximal-mixture",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "Two DERIVED_CLAIM MathematicalPropositionIR records, distinct from the source ClaimIR.",
+          "old": "AGENT_NORMALIZED",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "ADDED",
+          "field": "assumptions",
+          "new": "Finite nonempty window; fixed nonidentity Hermitian involutions; phase-class uniqueness; inclusion-maximal contexts; phase-aware signs.",
+          "old": "under normalized signed-Pauli assumptions",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:2602.18939v1:reduced-polytope-vrep-normalized",
+      "paper_id": "arxiv:2602.18939v1",
+      "review_priority": "BLOCKING",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "DERIVED_CLAIM external proposition",
+          "old": "AGENT_INFERRED",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:1307.7171v1:fixed-space-clifford-orbit-equivalence",
+      "paper_id": "arxiv:1307.7171v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "ADDED",
+          "field": "state_representation",
+          "new": "rank-one density-operator representative made explicit",
+          "old": "S_i not type-resolved",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "NOTATION_ONLY",
+      "legacy_id": "statement:1307.7171v1:stabilizer-convex-hull",
+      "paper_id": "arxiv:1307.7171v1",
+      "review_priority": "LOW",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "CHANGED",
+          "field": "definition_basis",
+          "new": "magic iff not a stabilizer state",
+          "old": "preparability/free-resource paraphrase",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "ADDED",
+          "field": "source_anchor",
+          "new": "anchor:1307.7171v1:stabilizer-protocol-and-monotone",
+          "old": "anchor:1307.7171v1:resource-split",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "SEMANTIC_CORRECTION",
+      "legacy_id": "statement:1307.7171v1:magic-membership",
+      "paper_id": "arxiv:1307.7171v1",
+      "review_priority": "MEDIUM",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "DERIVED_CLAIM external propositions",
+          "old": "AGENT_NORMALIZED",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "scope",
+          "new": "qubit specialization depends explicitly on the external fixed-space/Clifford-orbit bridge",
+          "old": "finite n-qubit systems presented as normalized source claim",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:1307.7171v1:n-qubit-stabilizer-polytope",
+      "paper_id": "arxiv:1307.7171v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "derived MathematicalPropositionIR plus SourceAudit evidence; no ScientificClaim or source-occurrence ClaimIR",
+          "old": "AGENT_NORMALIZED definition attached to a source anchor",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "affine_constraint",
+          "new": "sum_i x_i=1 is a trace-one consequence of the source decomposition, not an additional source optimization constraint",
+          "old": "affine normalization presented as part of the definition",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "free_set_bridge",
+          "new": "STAB_n=conv(S_n) is an imported convention recorded only in MathematicalPropositionIR provenance and assumptions",
+          "old": "imports statement:1307.7171v1:n-qubit-stabilizer-polytope inside the normalized legacy definition",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "statement:1609.07488v2:rom-definition-normalized",
+      "paper_id": "arxiv:1609.07488v2",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "REMOVED",
+          "field": "hypotheses",
+          "new": "the source theorem is represented directly under the source RoM definition and the source proof's meaning of mixed stabilizer state",
+          "old": "agent-normalized definition and imported stabilizer-polytope statement were listed as hypotheses",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "ADDED",
+          "field": "strict_outside_clause",
+          "new": "both the equivalence and source-explicit strict inequality outside the convex hull are retained",
+          "old": "logical-form conclusion retained only R(rho)=1 iff rho in STAB_n although prose also said R(rho)>1 otherwise",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SEMANTIC_CORRECTION",
+      "legacy_id": "statement:1609.07488v2:rom-faithfulness",
+      "paper_id": "arxiv:1609.07488v2",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "SPLIT",
+          "field": "claim_scope",
+          "new": "source ScientificClaim and ClaimIR; external atom-preserving-map MathematicalPropositionIR; FormalizationObservation and AlignmentObservation evidence",
+          "old": "one legacy theorem combined source monotonicity, an exact deterministic atom-preserving map normalization, kernel status, and a pending alignment obligation",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "ADDED",
+          "field": "channel_premise",
+          "new": "ClaimIR explicitly requires p_ij>=0, sum_j p_ij=1, and E(sigma_i)=sum_j p_ij sigma_j for every pure stabilizer atom",
+          "old": "atom-image premise was referenced indirectly through a legacy statement hypothesis",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "quantified_interface",
+          "new": "ClaimIR quantifies over the source trace-preserving stabilizer channel; the stricter agent map interface is an external proposition",
+          "old": "logical form quantified over an exact deterministic atom-preserving density map while prose began with a trace-preserving stabilizer channel",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "REMOVED",
+          "field": "status_and_blocker",
+          "new": "kernel status and alignment observation are external evidence; no status or blocker appears in ClaimIR",
+          "old": "kernel-checked scope and pending source-channel alignment were embedded in theorem text and scope_relation",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:1609.07488v2:rom-monotonicity",
+      "paper_id": "arxiv:1609.07488v2",
+      "review_priority": "BLOCKING",
+      "source_support": "PARTIAL"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "SOURCE_INDEPENDENT_PROPOSITION plus SOURCE_AUDIT evidence",
+          "old": "AGENT_NORMALIZED",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "assumptions",
+          "new": "Subset-product injectivity, Pauli carrier, commutation, Hermiticity, involution, and phase exclusion are explicit and not attributed verbatim to the thesis",
+          "old": "n independent commuting Hermitian involutive generators; no minus identity",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "assumption:9705052v1:rank-n-phase-normalized-stabilizer",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "review_priority": "HIGH",
+      "source_support": "PARTIAL"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "record_layer",
+          "new": "Assumptions scoped inside source-independent MathematicalPropositionIR records",
+          "old": "formalization_assumption in legacy claim inventory",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "REMOVED",
+          "field": "physical_scope",
+          "new": "No source attribution; the anchor remains only in derivation provenance",
+          "old": "General-stabilizer anchor attached as if it stated arbitrary finite-group representation hypotheses",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "legacy_id": "assumption:9705052v1:finite-group-representation-core",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "CHANGED",
+          "field": "phase_notation",
+          "new": "iI and -I are explicitly typed as Pauli-group scalar operators",
+          "old": "forbidden scalar phases absent",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "ADDED",
+          "field": "dimension_assumptions",
+          "new": "Abelianness, |S|=2^(n-k), iI notin S, and -I notin S are individually scoped",
+          "old": "Conditional clause compressed",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:9705052v1:stabilizer-code-fixed-space",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "CHANGED",
+          "field": "scope",
+          "new": "The specific stabilizer generated by the original-code generators and encoded Z operators in the source construction",
+          "old": "An arbitrary n-generator stabilizer",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "conclusion",
+          "new": "the joint +1 eigenspace has complex dimension one",
+          "old": "only one joint +1 eigenvector",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SEMANTIC_CORRECTION",
+      "legacy_id": "statement:9705052v1:n-generator-unique-eigenvector",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "review_priority": "HIGH",
+      "source_support": "EXPLICIT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "origin",
+          "new": "SOURCE_INDEPENDENT_PROPOSITION with derivation provenance",
+          "old": "MATHEMATICALLY_DERIVED legacy statement attached to source anchor",
+          "significance": "SAFETY"
+        },
+        {
+          "change_type": "CHANGED",
+          "field": "source_support",
+          "new": "Only unnormalized fixedness is source explicit; normalization, idempotence, reverse range inclusion, and arbitrary representation generality are reconstructed",
+          "old": "Formal reconstruction generalizes source step",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:9705052v1:group-average-projector",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "review_priority": "HIGH",
+      "source_support": "NOT_SOURCE_CLAIM"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "CHANGED",
+          "field": "source_scope",
+          "new": "Only the contextual encoded-zero one-dimensionality is a source occurrence",
+          "old": "Modern phase-normalized rank-n specialization presented with source anchors",
+          "significance": "SEMANTIC"
+        },
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "terminology",
+          "new": "Modern density-operator interpretation is external reconstructed mathematics",
+          "old": "pure stabilizer state and rank-one projector",
+          "significance": "SAFETY"
+        }
+      ],
+      "disposition": "SPLIT",
+      "legacy_id": "statement:9705052v1:pure-stabilizer-state",
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "review_priority": "HIGH",
+      "source_support": "PARTIAL"
+    }
+  ],
+  "legacy_record_count": 50,
+  "migration_disposition_count": 50,
+  "new_record_totals": {
+    "EvidenceRecord": 14,
+    "MathClaimIR": 39,
+    "MathematicalPropositionIR": 18,
+    "ScientificClaim": 39
+  },
+  "papers": [
+    {
+      "dispositions": {
+        "NOTATION_ONLY": 10,
+        "RECLASSIFIED_EXTERNAL": 5,
+        "SOURCE_UNSUPPORTED": 1,
+        "SPLIT": 5
+      },
+      "legacy_records": 21,
+      "new_records": {
+        "EvidenceRecord": 5,
+        "MathClaimIR": 21,
+        "MathematicalPropositionIR": 0,
+        "ScientificClaim": 21
+      },
+      "paper_id": "arxiv:2607.26154v1",
+      "semantic_or_safety_changes": 7,
+      "slug": "graph-theoretic-nonstabilizerness",
+      "unresolved_legacy_ids": [
+        "statement:2607.26154v1:relaxed-affine-span"
+      ]
+    },
+    {
+      "dispositions": {
+        "NOTATION_ONLY": 3,
+        "RECLASSIFIED_EXTERNAL": 6,
+        "SPLIT": 1
+      },
+      "legacy_records": 10,
+      "new_records": {
+        "EvidenceRecord": 2,
+        "MathClaimIR": 4,
+        "MathematicalPropositionIR": 7,
+        "ScientificClaim": 4
+      },
+      "paper_id": "arxiv:2602.18939v1",
+      "semantic_or_safety_changes": 8,
+      "slug": "predicting-magic-from-very-few-measurements",
+      "unresolved_legacy_ids": []
+    },
+    {
+      "dispositions": {
+        "NOTATION_ONLY": 4,
+        "RECLASSIFIED_EXTERNAL": 1,
+        "SEMANTIC_CORRECTION": 1,
+        "SPLIT": 1
+      },
+      "legacy_records": 7,
+      "new_records": {
+        "EvidenceRecord": 2,
+        "MathClaimIR": 5,
+        "MathematicalPropositionIR": 3,
+        "ScientificClaim": 5
+      },
+      "paper_id": "arxiv:1307.7171v1",
+      "semantic_or_safety_changes": 4,
+      "slug": "resource-theory-of-stabilizer-computation",
+      "unresolved_legacy_ids": []
+    },
+    {
+      "dispositions": {
+        "NOTATION_ONLY": 2,
+        "RECLASSIFIED_EXTERNAL": 1,
+        "SEMANTIC_CORRECTION": 1,
+        "SPLIT": 1
+      },
+      "legacy_records": 5,
+      "new_records": {
+        "EvidenceRecord": 3,
+        "MathClaimIR": 4,
+        "MathematicalPropositionIR": 2,
+        "ScientificClaim": 4
+      },
+      "paper_id": "arxiv:1609.07488v2",
+      "semantic_or_safety_changes": 3,
+      "slug": "robustness-of-magic",
+      "unresolved_legacy_ids": []
+    },
+    {
+      "dispositions": {
+        "NOTATION_ONLY": 1,
+        "RECLASSIFIED_EXTERNAL": 2,
+        "SEMANTIC_CORRECTION": 1,
+        "SPLIT": 3
+      },
+      "legacy_records": 7,
+      "new_records": {
+        "EvidenceRecord": 2,
+        "MathClaimIR": 5,
+        "MathematicalPropositionIR": 6,
+        "ScientificClaim": 5
+      },
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "semantic_or_safety_changes": 6,
+      "slug": "stabilizer-codes-and-quantum-error-correction",
+      "unresolved_legacy_ids": []
+    }
+  ],
+  "produced_at": "2026-08-22T00:00:00Z",
+  "schema": "agtxiv.demo-claim-migration-summary/1.0.0",
+  "validation": {
+    "all_legacy_records_disposed": true,
+    "claimir_contains_verification_status": false,
+    "expected_legacy_records": 50
+  }
+}

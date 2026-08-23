@@ -1,0 +1,64 @@
+{
+  "schema": "agtxiv.claim-migration-summary/1.0.0",
+  "paper_id": "arxiv:quant-ph/9705052v1",
+  "basename": "stabilizer-codes-and-quantum-error-correction",
+  "produced_at": "2026-08-22T00:00:00Z",
+  "legacy_source": "agents/stabilizer-codes-and-quantum-error-correction/knowledge/statements.jsonl",
+  "legacy_record_count": 7,
+  "migration_record_count": 7,
+  "coverage": {
+    "legacy_lines": [1, 2, 3, 4, 5, 6, 7],
+    "legacy_ids": [
+      "assumption:9705052v1:rank-n-phase-normalized-stabilizer",
+      "assumption:9705052v1:finite-group-representation-core",
+      "statement:9705052v1:stabilizer-code-fixed-space",
+      "statement:9705052v1:n-generator-unique-eigenvector",
+      "statement:9705052v1:group-sum-fixedness",
+      "statement:9705052v1:group-average-projector",
+      "statement:9705052v1:pure-stabilizer-state"
+    ],
+    "all_legacy_records_have_exactly_one_disposition": true
+  },
+  "disposition_counts": {
+    "NOTATION_ONLY": 1,
+    "RECLASSIFIED_EXTERNAL": 2,
+    "SEMANTIC_CORRECTION": 1,
+    "SPLIT": 3
+  },
+  "output_record_counts": {
+    "ScientificClaim": 5,
+    "MathClaimIR": 5,
+    "MathematicalPropositionIR": 6,
+    "EvidenceRecord": 2
+  },
+  "structural_differences": [
+    "The compound stabilizer-code record is split into a fixed-space definition, a stabilizer-cardinality equation, and a fixed-space dimension theorem.",
+    "The reconstructed group-average theorem is split into idempotence and exact-range propositions.",
+    "The legacy pure-state record is split into a contextual source claim and external propositions for the modern specialization, global-phase uniqueness, and density-operator interpretation."
+  ],
+  "semantic_differences": [
+    "The n-generator unique-eigenvector wording is restricted to the source decoding construction and normalized to one-dimensionality of a vector space.",
+    "The arbitrary finite-group representation core is not attributed to the thesis.",
+    "The phase-normalized rank-n generator package is reconstructed mathematics, not source wording.",
+    "Forbidden scalar phases are typed as iI and -I, and the dimension theorem carries the subgroup-cardinality premise from the surrounding source sentence."
+  ],
+  "high_risk_differences": [
+    {
+      "legacy_id": "assumption:9705052v1:rank-n-phase-normalized-stabilizer",
+      "risk": "The legacy record could falsely suggest that the thesis explicitly states modern independence, Hermiticity, involution, and phase-normalization assumptions."
+    },
+    {
+      "legacy_id": "statement:9705052v1:n-generator-unique-eigenvector",
+      "risk": "Without construction context or independence semantics, generator count alone does not imply a one-dimensional fixed space."
+    },
+    {
+      "legacy_id": "statement:9705052v1:group-average-projector",
+      "risk": "The source proves only forward fixedness of an unnormalized sum, not normalized idempotence and exact range for arbitrary finite-group representations."
+    },
+    {
+      "legacy_id": "statement:9705052v1:pure-stabilizer-state",
+      "risk": "Global-phase uniqueness and rank-one pure-density terminology are mathematical reconstructions absent from the cited source occurrence."
+    }
+  ],
+  "hash_policy": "Each legacy_record.content_hash is SHA-256 of the parsed legacy JSON object serialized as UTF-8 canonical JSON with lexicographically sorted keys and no insignificant whitespace."
+}

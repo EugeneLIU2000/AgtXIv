@@ -1,0 +1,208 @@
+{
+  "schema": "agtxiv.claim-migration-summary/1.0.0",
+  "paper_id": "arxiv:2607.26154v1",
+  "agent_id": "graph-theoretic-nonstabilizerness",
+  "produced_at": "2026-08-22T00:00:00Z",
+  "legacy_registry": "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+  "legacy_record_count": 21,
+  "disposition_counts": {
+    "NOTATION_ONLY": 10,
+    "RECLASSIFIED_EXTERNAL": 5,
+    "SOURCE_UNSUPPORTED": 1,
+    "SPLIT": 5
+  },
+  "new_record_counts": {
+    "ScientificClaim": 21,
+    "MathClaimIR": 21,
+    "MathematicalPropositionIR": 0,
+    "EvidenceRecord": 5
+  },
+  "coverage": {
+    "first_legacy_line": 1,
+    "last_legacy_line": 21,
+    "missing_lines": [],
+    "duplicate_lines": []
+  },
+  "semantic_and_high_risk_differences": [
+    {
+      "legacy_id": "assumption:2607.26154v1:measurement-set-normalized",
+      "line": 1,
+      "disposition": "SPLIT",
+      "differences": [
+        {
+          "field": "text",
+          "change_type": "SPLIT",
+          "old": "M is a finite, nonempty, ordered set of nonidentity Hermitian n-qubit Pauli observables; signed representatives are retained for expectation values and separate phase-free symplectic vectors are retained for graph calculations.",
+          "new": [
+            "measurement-set-domain",
+            "signed-observable-convention"
+          ],
+          "significance": "STRUCTURAL"
+        }
+      ],
+      "audit_note": "The source distributes the measurement-domain assumptions and signed-representative convention across the background and Clifford-covariance discussion."
+    },
+    {
+      "legacy_id": "statement:2607.26154v1:relaxation-exactness",
+      "line": 7,
+      "disposition": "SPLIT",
+      "differences": [
+        {
+          "field": "conclusion",
+          "change_type": "SPLIT",
+          "old": "polytope equality iff condition plus robustness equality",
+          "new": "two atomic theorem conclusions",
+          "significance": "STRUCTURAL"
+        }
+      ],
+      "audit_note": "Theorem at lines 234--244 contains two conclusions with different logical forms."
+    },
+    {
+      "legacy_id": "statement:2607.26154v1:relaxed-affine-span",
+      "line": 8,
+      "disposition": "SOURCE_UNSUPPORTED",
+      "differences": [
+        {
+          "field": "proof_detail",
+          "change_type": "REMOVED",
+          "old": "For each coordinate, extend P_i and flip only its sign to obtain 2e_i.",
+          "new": "The source states affine spanning only parenthetically and does not give this construction.",
+          "significance": "SAFETY"
+        },
+        {
+          "field": "conclusion",
+          "change_type": "REMOVED",
+          "old": "Standalone affine-span/feasibility/boundedness lemma",
+          "new": "No source ClaimIR emitted because support is partial.",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "audit_note": "Lines 607--609 state affine spanning, feasibility, and boundedness, but the legacy coordinate-flip construction is absent from the frozen source."
+    },
+    {
+      "legacy_id": "statement:2607.26154v1:dual-mwis",
+      "line": 10,
+      "disposition": "SPLIT",
+      "differences": [
+        {
+          "field": "conclusion",
+          "change_type": "SPLIT",
+          "old": "feasible-region characterization plus separator",
+          "new": "dual optimum equality and atomic separation claim",
+          "significance": "STRUCTURAL"
+        }
+      ],
+      "audit_note": "Proposition at lines 253--264 and appendix lines 596--625 support both assertions."
+    },
+    {
+      "legacy_id": "statement:2607.26154v1:exact-graph-dual",
+      "line": 11,
+      "disposition": "NOTATION_ONLY",
+      "differences": [
+        {
+          "field": "hypothesis",
+          "change_type": "ADDED",
+          "old": "Implicit no-active context",
+          "new": "Explicit no-active-dependency assumption",
+          "significance": "SAFETY"
+        }
+      ],
+      "audit_note": "Appendix lines 628--632 state the exact graph dual in the no-active regime."
+    },
+    {
+      "legacy_id": "statement:2607.26154v1:clifford-covariance",
+      "line": 16,
+      "disposition": "SPLIT",
+      "differences": [
+        {
+          "field": "conclusion",
+          "change_type": "SPLIT",
+          "old": "one compound preservation summary",
+          "new": "covariance equality, solvability preservation, and capacity preservation",
+          "significance": "STRUCTURAL"
+        }
+      ],
+      "audit_note": "Proposition and proof at lines 302--326 state these distinct consequences."
+    },
+    {
+      "legacy_id": "statement:2607.26154v1:figure2-detection",
+      "line": 17,
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "differences": [
+        {
+          "field": "record_kind",
+          "change_type": "RECLASSIFIED",
+          "old": "numerical_result legacy statement",
+          "new": "external numerical evidence, not MathClaimIR",
+          "significance": "SAFETY"
+        }
+      ],
+      "audit_note": "Lines 455--459 report the empirical result; the figure is numerical evidence rather than a source mathematical assertion."
+    },
+    {
+      "legacy_id": "statement:prototype:k3-finite-check",
+      "line": 18,
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "differences": [
+        {
+          "field": "record_kind",
+          "change_type": "RECLASSIFIED",
+          "old": "prototype numerical_result",
+          "new": "external numerical evidence, not MathClaimIR",
+          "significance": "SAFETY"
+        }
+      ],
+      "audit_note": "No source anchor; this is an independent prototype finite check."
+    },
+    {
+      "legacy_id": "statement:prototype:ising-path-finite-check",
+      "line": 19,
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "differences": [
+        {
+          "field": "record_kind",
+          "change_type": "RECLASSIFIED",
+          "old": "prototype numerical_result",
+          "new": "external numerical evidence, not MathClaimIR",
+          "significance": "SAFETY"
+        }
+      ],
+      "audit_note": "No source anchor; this is an independent prototype finite check."
+    },
+    {
+      "legacy_id": "statement:prototype:active-dependency-negative-control",
+      "line": 20,
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "differences": [
+        {
+          "field": "record_kind",
+          "change_type": "RECLASSIFIED",
+          "old": "prototype numerical_result",
+          "new": "external numerical evidence, not MathClaimIR",
+          "significance": "SAFETY"
+        }
+      ],
+      "audit_note": "The source supplies the commuting-triple example but not the prototype l1 computations."
+    },
+    {
+      "legacy_id": "statement:prototype:active-dependency-physical-counterexample",
+      "line": 21,
+      "disposition": "RECLASSIFIED_EXTERNAL",
+      "differences": [
+        {
+          "field": "record_kind",
+          "change_type": "RECLASSIFIED",
+          "old": "prototype numerical_result",
+          "new": "external counterexample evidence, not MathClaimIR",
+          "significance": "SAFETY"
+        }
+      ],
+      "audit_note": "The five-observable instance, state, and value 5/4 do not occur in the frozen source."
+    }
+  ],
+  "notes": [
+    "The compound source theorem thm:solvable is represented by three atomic claims: closed-form equality, clique-number upper bound, and attainment.",
+    "No MathematicalPropositionIR is emitted: the only unsupported agent-expanded mathematical lemma remains SOURCE_UNSUPPORTED, and all prototype finite checks are external evidence.",
+    "Placeholder SHA-256 values consisting of 64 zero digits are used only in newly constructed records; every legacy migration hash is computed from canonical JSON."
+  ]
+}
