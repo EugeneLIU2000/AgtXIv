@@ -413,6 +413,22 @@ LLM extraction
 
 The extractor proposes atomic claims, source anchors, symbols, assumptions, and typed relations. It is not allowed to emit an accepted edge.
 
+Extraction begins with a deliberately coarse discourse pass. This pass identifies the small number of claims that the paper presents as central contributions, groups repeated textual realizations in the abstract, introduction, theorem statements, body, appendices, and conclusion, and proposes paper-level epistemic relations such as `supports`, `extends`, `qualifies`, `refutes`, and `background_to`. Discourse claims and realization clusters are extractor-internal staging annotations, not new Registry object types. A realization cluster is only a `candidate_same_as` proposal: lexical or embedding similarity never merges claim identities.
+
+A second, query-relative decomposition pass expands only a selected central claim into the source-grounded objects needed for verification:
+
+```text
+central discourse claim
+→ definitions and typed objects
+→ explicit and source-supported implicit assumptions
+→ scope, regime, and conventions
+→ atomic mathematical or semantic conclusions
+→ candidate intermediate claims and external foundations
+→ explicit multi-premise InferenceSteps
+```
+
+The two granularities remain distinct. A discourse annotation records what the paper emphasizes; an atomic claim records one load-bearing proposition or semantic component. A provisional discourse cluster may point to several candidate atomic `ScientificClaim` occurrences. The existing profile interfaces then associate those claims with `MathClaimIR` or `SemanticContract` records where applicable. Broad paper-wide discovery may remain provisional, while atomic decomposition is required only on the current query frontier.
+
 #### Constrained schema
 
 Every candidate claim and relation must satisfy a machine-checkable schema. Free-form prose may be stored as notes, but not used as the only representation of quantifiers, assumptions, or relation direction.
@@ -450,6 +466,10 @@ relation_correction:
 ```
 
 Fine-tuning is deferred until the claim granularity, relation ontology, and grounding policy are stable.
+
+Discourse-level epistemic relations and verification dependencies use separate namespaces and evidence. A citation context may propose that one paper supports, extends, qualifies, or refutes another claim, but that relation does not establish theorem import, logical implication, or contradiction. Conversely, an accepted mathematical dependency need not be presented rhetorically as support. `background_to` is retained as a literature observation and never enters `MathClaimDependencyDAG(q)`.
+
+Candidate relation discovery should inspect the cited claim, citing claim, and local citation context together. When available, it should also inspect the cited theorem or definition context. The extractor may propose several independent facets—evidential stance, scope change, method reuse, and logical relation—rather than forcing one mutually exclusive label. Each proposed facet becomes a separate `CandidateRelation` record with one `relation_type`, or remains extractor audit metadata; every candidate follows the existing validation and acceptance path independently.
 
 ### 2.5 Search, registry, and incremental build
 
@@ -3229,15 +3249,18 @@ No downstream claim may be described as source-checked without an anchor to the 
 
 #### Actions
 
-1. Extract the exact source span.
-2. Preserve raw LaTeX and recursively expand author-defined commands into standard LaTeX.
-3. Preserve quantifiers, negations, modality, and exact-versus-approximate status.
-4. Resolve all nontrivial symbols.
-5. Separate a compound claim into atomic `ScientificClaim` objects and record reconstruction provenance.
-6. Submit a `claim_ir_build_request` for each formalizable component.
-7. Record explicit and inherited assumptions, object types, carriers, domains, local binders, and conventions.
-8. Separate the paper's mathematical result from interpretation, evidence, novelty claims, and verification status.
-9. Emit either an immutable complete ClaimIR revision or an explicit review-required or failed build result.
+1. Run a coarse discourse pass over the full source to propose central claims and their textual realizations. Treat every cluster and paper-level relation as provisional.
+2. Select the discourse claim that contains or supports the current query target; leave unrelated central claims at candidate granularity.
+3. Extract the exact source span, together with theorem-wide, section-wide, appendix, and notation context needed to interpret it.
+4. Preserve raw LaTeX and recursively expand author-defined commands into standard LaTeX.
+5. Preserve quantifiers, negations, modality, scope, and exact-versus-approximate status.
+6. Resolve all nontrivial symbols.
+7. Separate a compound claim into atomic `ScientificClaim` objects and record how the atomic claims reconstruct the source occurrence.
+8. Separate definitions, assumptions, semantic regimes, mathematical conclusions, empirical conclusions, and source-independent helper propositions. Do not promote a helper required by formalization to a source claim unless the frozen source supports it.
+9. Submit a `claim_ir_build_request` for each formalizable component.
+10. Record explicit and inherited assumptions, object types, carriers, domains, local binders, and conventions.
+11. Separate the paper's mathematical result from interpretation, evidence, novelty claims, and verification status.
+12. Emit either an immutable complete ClaimIR revision or an explicit review-required or failed build result.
 
 #### Output
 
@@ -3754,6 +3777,128 @@ lake env lean AgtXIv/RootPaper.lean
 ### 8.13 Formal export
 
 An export contains no aggregate status fields. A generic `StatusView` targeting the exact immutable export may derive a mathematics axis value of `KERNEL_CHECKED` only when its pinned evidence snapshot contains a clean placeholder-free build and documented axiom audit. It may derive `formal_alignment: AUTO_ALIGNMENT_PASSED` only when the source and ClaimIR are anchored, an independent source-blind backtranslation exists, no critical mismatch remains, and every accepted rescoping is explicit and versioned. Human-review evidence contributes only when a qualified reviewer actually produced it. The immutable export must not reference that later status view or any `ClaimImportReceipt`. Exact associations appear only in external indexes, release manifests, or query results.
+
+### 8.14 Lean-guided semantic claim repair
+
+Lean acts as an executable pressure test for the candidate decomposition. It may expose a missing definition, hidden premise, object-type mismatch, invalid dependency, omitted intermediate result, unexpected axiom, counterexample, or source-to-formal mismatch. These findings drive local repair proposals; they do not give Lean or the Refiner authority to rewrite the frozen source or mutate an accepted ClaimIR.
+
+The repair loop preserves four distinct layers:
+
+```text
+frozen source occurrences
+→ provisional discourse and atomic claim graph
+→ immutable ScientificClaim, MathClaimIR, and SemanticContract revisions
+→ formalizations, verification evidence, diagnostics, and repair history
+```
+
+The provisional graph may be iterated freely by publishing new or superseding candidate records, but no immutable candidate record is overwritten and no candidate is promoted without the existing validation and acceptance path. A change to accepted source meaning creates a new immutable revision through the existing construction or revision interface. A correction to Lean code creates a new formalization attempt or record. A helper inferred from exact recorded premises is a `DERIVED_CLAIM`; an independently introduced helper is a `SOURCE_INDEPENDENT_PROPOSITION` represented by `MathematicalPropositionIR`. Neither is attributed to the frozen paper unless a separate source occurrence supports it. A confirmed false source claim remains addressable as the original source occurrence and receives refutation evidence; it is never overwritten by a weaker true statement.
+
+#### Diagnostic classification
+
+The Refiner first assigns one of the existing top-level failure classes and then records a more specific non-normative diagnostic tag. Typical tags include:
+
+```text
+LOCAL_BUILD_FAILURE
+  missing_definition
+  lean_typecheck_or_coercion_failure
+  missing_premise_candidate
+  missing_helper
+  invalid_or_incomplete_inference_step
+  unexpected_dependency
+  placeholder_or_axiom_violation
+
+ALIGNMENT_FAILURE
+  quantifier_mismatch
+  assumption_added_or_lost
+  wrong_object_type
+  object_mapping_mismatch
+  scope_mismatch
+  exact_approximate_mismatch
+  conclusion_strengthened_or_weakened
+
+SOURCE_OR_FOUNDATION_GAP
+  source_ambiguous
+  required_premise_not_in_source
+  external_foundation_missing
+  counterexample_confirmed
+```
+
+A local Lean typechecking or coercion error remains `LOCAL_BUILD_FAILURE`; disagreement among the source, ClaimIR, Lean declaration, or backtranslation about the represented object or carrier is `ALIGNMENT_FAILURE`. These tags elaborate the existing failure classes and do not create a new wire-level outcome vocabulary. A timeout, failed theorem search, or unsolved goal is not by itself evidence that a claim is false or that an assumption is missing. A counterexample affects the source claim only after its objects satisfy the exact encoded assumptions and the object mapping has passed audit.
+
+#### Allowed repair actions
+
+Each diagnostic may propose one or more internal actions. These actions are not new values of `graph_repair_request.operation`; graph publication continues to use only `EXPAND_LOCAL`, `REWIRE_OR_RESCOPE`, or `ESCALATE_OR_BLOCK`.
+
+- split a compound occurrence into separately anchored atomic conclusions while preserving reconstruction provenance and shared scope;
+- merge only provisional realizations after types, quantifiers, assumptions, scope, exactness, and conclusions are shown equivalent; embedding similarity alone is insufficient;
+- add a source-grounded definition, assumption, intermediate claim, external foundation, or explicit `InferenceStep`;
+- add a helper proposition, choosing `DERIVED_CLAIM` only when exact recorded premises and an inference step derive it, and otherwise choosing `SOURCE_INDEPENDENT_PROPOSITION`;
+- reverse or retype a candidate relation, replace a false single-premise edge with a multi-premise `InferenceStep`, or propose an explicit scope correction;
+- repair imports, namespaces, coercions, package mappings, statements, or proof code without changing source meaning;
+- preserve a source claim and attach a reproducible counterexample record, then propose a candidate `refutes` relation through the existing validation and acceptance interfaces;
+- expose an unresolved source ambiguity or external foundation instead of inventing a bridge.
+
+Source-grounded split, expansion, and added prerequisites are classified under `EXPAND_LOCAL`. Candidate merging, edge reversal, relation retyping, and rescoping are classified under `REWIRE_OR_RESCOPE`. Refutation evidence and unresolved ambiguity are handled under `ESCALATE_OR_BLOCK`. A formalization-only correction creates a new formalization attempt or record and does not invoke graph repair unless accepted dependencies also change. Dependent query outputs are invalidated only after the required evidence, accepted relations, repairs, and superseding snapshots become visible through the existing interfaces.
+
+A rescoping from a claim over a domain \(X\) to a claim over a strict subdomain \(X_0\) is a source correction only when the frozen source supports \(X_0\) and the previous extraction omitted it. Otherwise the restricted result is a new derived claim. The same rule applies to added regularity, finiteness, nonemptiness, perfectness, exactness, or physical-regime assumptions.
+
+#### Source-meaning gate
+
+Every repair proposal that could affect semantic content returns to the frozen source. The gate compares the proposed change field by field against exact anchors. Implementations may use internal decision labels such as:
+
+```text
+SOURCE_EXPLICIT
+SOURCE_IMPLICIT_SUPPORTED
+SOURCE_AMBIGUOUS
+NOT_IN_SOURCE
+CONTRADICTED_BY_SOURCE
+```
+
+and internal action labels such as:
+
+```text
+ALLOW_NEW_IR_REVISION
+ALLOW_SOURCE_GROUNDED_EXPANSION
+REQUIRE_DERIVED_OR_INDEPENDENT_PROPOSITION
+FORMALIZATION_ONLY
+ATTACH_REFUTATION_EVIDENCE
+REJECT_REPAIR
+BLOCK
+```
+
+These labels are audit vocabulary, not new request, result, status, or graph-operation enums. Publication uses the existing ClaimIR revision, generic object-construction, formalization, evidence, relation-validation and acceptance, graph-repair, blocker, snapshot, and invalidation interfaces.
+
+A new ClaimIR revision is reserved for a demonstrated extraction or normalization error and publishes a semantic diff; this repair workflow defines no alternate query or ClaimIR interface. A source-grounded expansion adds separately anchored nodes without changing the target statement. A required extra proposition keeps the source claim unchanged and receives the origin class determined by its actual provenance. A formalization-only action changes no semantic record. Refutation handling preserves the original source claim, publishes counterexample or contradiction evidence, and routes the proposed `refutes` relation through normal validation and acceptance. Unsupported proposals are rejected or blocked.
+
+A source-supported change to physical interpretation, operational definition, or approximation regime creates a new immutable `SemanticContract` revision through the existing generic object-construction interface; it creates a ClaimIR revision only when represented mathematical meaning changes. An unsupported physical regime must not be inserted into a source-grounded `SemanticContract`; when mathematically useful, it may instead scope a distinct derived claim with explicit provenance.
+
+#### Operational loop
+
+```text
+source-grounded claim or semantic component
+→ package search and formalization attempt
+→ Lean build, dependency, placeholder, and axiom checks
+→ source-blind backtranslation
+→ field-level alignment comparison
+→ localized diagnostic
+→ one or more local repair proposals
+→ source-meaning gate
+→ new formalization, graph expansion, immutable semantic revision,
+  derived claim, refutation evidence, or blocker
+→ rebuild only invalidated query closures
+```
+
+The loop terminates in existing artifacts and derived views: a `StatusView` such as `MATH_CLOSED`, `FAILED`, `BLOCKED`, or `DISPUTED`; a conditional `ClosureArtifact`; an `AlignmentRecord`; an open `BlockerRecord`; or accepted refutation evidence and relations. This section defines no additional lifecycle outcome vocabulary. Proof success never hides an alignment mismatch, and proof failure never silently weakens the target.
+
+#### Required pilot repair cases
+
+The first vertical slice should preserve three distinct repair traces:
+
+1. **Extraction correction:** Lean or backtranslation exposes an assumption that is explicitly present in the source but absent from the extracted claim. The source-meaning gate permits a new ClaimIR revision with an exact semantic diff.
+2. **Helper proposition:** Lean requires an intermediate proposition that the source does not state as a separate claim. If exact recorded premises and an `InferenceStep` derive it, the graph gains a `DERIVED_CLAIM`; otherwise it gains a `SOURCE_INDEPENDENT_PROPOSITION` represented by `MathematicalPropositionIR`. The source ClaimIR remains unchanged.
+3. **Refuted source claim:** a reproducible counterexample satisfies the source assumptions and violates the conclusion. The original claim remains in the Registry with refutation evidence, while any valid restricted replacement is published as a distinct derived claim.
+
+These cases demonstrate that verification feedback can improve claim decomposition and graph structure while preserving the authority of the frozen source.
 
 ---
 
@@ -4293,6 +4438,9 @@ coverage:
 
 ### Claim normalization
 
+- [ ] Central discourse claims and their textual realizations are proposed before query-relative atomic decomposition.
+- [ ] Realization clustering remains provisional until source and semantic equivalence are checked.
+- [ ] Only claims on the selected query frontier are required to receive full atomic decomposition.
 - [ ] Raw LaTeX and expanded standard LaTeX are both preserved.
 - [ ] No complete ClaimIR depends on author-defined macros or `head.tex`.
 - [ ] Compound claims are split atomically and reconstruction provenance is recorded.
@@ -4326,12 +4474,17 @@ coverage:
 
 ### Graph refinement
 
-- [ ] Failed nodes are classified into one of three top-level failures.
+- [ ] Failed nodes are classified into one of three top-level failures and receive a localized diagnostic tag.
 - [ ] Only the affected local graph region is repaired.
 - [ ] Repair operations are recorded.
+- [ ] Every semantic repair passes the source-meaning gate before publication.
+- [ ] Formalization-only fixes do not revise ClaimIR.
+- [ ] Helpers inferred from exact recorded premises are `DERIVED_CLAIM`; independently introduced helpers are `SOURCE_INDEPENDENT_PROPOSITION`; neither is attributed to the paper without a source occurrence.
+- [ ] Rescoping without source support creates a distinct derived claim.
 - [ ] Newly exposed prerequisites update the frontier.
 - [ ] Claims are not labeled false from proof-search failure alone.
-- [ ] Explicit counterexamples are preserved when found.
+- [ ] Explicit counterexamples preserve the original source claim and invalidate only dependent outputs.
+- [ ] The pilot includes extraction-correction, helper-proposition, and refuted-claim repair traces.
 
 ### Forward construction
 
