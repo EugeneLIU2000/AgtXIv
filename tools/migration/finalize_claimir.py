@@ -113,6 +113,8 @@ def main() -> int:
     proposition_files = sorted((ROOT / "Stabilizerness/ExternalRecordRegistry/propositions").glob("*.jsonl"))
     evidence_files = sorted((ROOT / "Stabilizerness/ExternalRecordRegistry/evidence").glob("*.jsonl"))
     preprocessing_files = sorted((ROOT / "Stabilizerness/MathClaimIRRegistry/preprocessing").glob("*.json"))
+    source_anchor_files = sorted((ROOT / "Stabilizerness/MathClaimIRRegistry/source-anchors").glob("*.jsonl"))
+    classification_files = sorted((ROOT / "Stabilizerness/ExternalRecordRegistry/claim-classifications").glob("*.jsonl"))
     migration_files = sorted((ROOT / "Stabilizerness/MathClaimIRRegistry/migrations").glob("*.jsonl"))
     all_errors: list[str] = []
 
@@ -174,6 +176,14 @@ def main() -> int:
             path.write_text(json.dumps(finalized, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
         all_errors.extend(validate([finalized if not args.check else row], ROOT / "Stabilizerness/MathClaimIRRegistry/schema/source-preprocessing.schema.json", str(path)))
 
+    for path in source_anchor_files:
+        rows = read_jsonl(path)
+        all_errors.extend(validate(rows, ROOT / "Stabilizerness/MathClaimIRRegistry/schema/source-anchor.schema.json", str(path)))
+
+    for path in classification_files:
+        rows = read_jsonl(path)
+        all_errors.extend(validate(rows, ROOT / "Stabilizerness/ExternalRecordRegistry/schema/source-claim-classification.schema.json", str(path)))
+
     for path in migration_files:
         rows = read_jsonl(path)
         finalized = []
@@ -196,7 +206,7 @@ def main() -> int:
 
     for error in all_errors:
         print(error)
-    print(f"scientific_claim_files={len(claim_files)} claimir_files={len(ir_files)} proposition_files={len(proposition_files)} evidence_files={len(evidence_files)} preprocessing_files={len(preprocessing_files)} migration_files={len(migration_files)} errors={len(all_errors)}")
+    print(f"scientific_claim_files={len(claim_files)} claimir_files={len(ir_files)} proposition_files={len(proposition_files)} evidence_files={len(evidence_files)} preprocessing_files={len(preprocessing_files)} source_anchor_files={len(source_anchor_files)} classification_files={len(classification_files)} migration_files={len(migration_files)} errors={len(all_errors)}")
     return 1 if all_errors else 0
 
 

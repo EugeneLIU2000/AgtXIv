@@ -6,16 +6,17 @@ This report compares the 50 legacy `knowledge/statements.jsonl` records with rec
 
 - Legacy records: **50**
 - Migration dispositions: **50**
-- Source-grounded MathClaimIR records: **39**
-- External mathematical propositions: **18**
-- External evidence records: **14**
+- Source-grounded MathClaimIR records: **43**
+- External mathematical propositions: **19**
+- External evidence records: **15**
+- External source-claim classifications: **2**
 
 ## Per-paper result
 
 | PaperAgent | Legacy | ClaimIR | Proposition | Evidence | Main dispositions |
 |---|---:|---:|---:|---:|---|
-| `graph-theoretic-nonstabilizerness` | 21 | 21 | 0 | 5 | NOTATION_ONLY=10, RECLASSIFIED_EXTERNAL=5, SOURCE_UNSUPPORTED=1, SPLIT=5 |
-| `predicting-magic-from-very-few-measurements` | 10 | 4 | 7 | 2 | NOTATION_ONLY=3, RECLASSIFIED_EXTERNAL=6, SPLIT=1 |
+| `graph-theoretic-nonstabilizerness` | 21 | 25 | 1 | 5 | NOTATION_ONLY=8, RECLASSIFIED_EXTERNAL=5, SEMANTIC_CORRECTION=1, SPLIT=7 |
+| `predicting-magic-from-very-few-measurements` | 10 | 4 | 7 | 3 | NOTATION_ONLY=2, RECLASSIFIED_EXTERNAL=5, SPLIT=3 |
 | `resource-theory-of-stabilizer-computation` | 7 | 5 | 3 | 2 | NOTATION_ONLY=4, RECLASSIFIED_EXTERNAL=1, SEMANTIC_CORRECTION=1, SPLIT=1 |
 | `robustness-of-magic` | 5 | 4 | 2 | 3 | NOTATION_ONLY=2, RECLASSIFIED_EXTERNAL=1, SEMANTIC_CORRECTION=1, SPLIT=1 |
 | `stabilizer-codes-and-quantum-error-correction` | 7 | 5 | 6 | 2 | NOTATION_ONLY=1, RECLASSIFIED_EXTERNAL=2, SEMANTIC_CORRECTION=1, SPLIT=3 |
@@ -31,8 +32,9 @@ This report compares the 50 legacy `knowledge/statements.jsonl` records with rec
 ## High-priority differences
 
 - `assumption:2607.26154v1:measurement-set-normalized` (SPLIT, source=IMPLICIT_CONTEXT): high-priority source boundary.
+- `assumption:2607.26154v1:perfect-frustration-graph` (SEMANTIC_CORRECTION, source=EXPLICIT): notation: RECLASSIFIED.
 - `statement:2607.26154v1:relaxation-exactness` (SPLIT, source=EXPLICIT): high-priority source boundary.
-- `statement:2607.26154v1:relaxed-affine-span` (SOURCE_UNSUPPORTED, source=PARTIAL): proof_detail: REMOVED; conclusion: REMOVED.
+- `statement:2607.26154v1:relaxed-affine-span` (SPLIT, source=PARTIAL): compound_record: SPLIT.
 - `statement:2607.26154v1:dual-mwis` (SPLIT, source=EXPLICIT): high-priority source boundary.
 - `statement:2607.26154v1:exact-graph-dual` (NOTATION_ONLY, source=EXPLICIT): hypothesis: ADDED.
 - `statement:2607.26154v1:clifford-covariance` (SPLIT, source=EXPLICIT): high-priority source boundary.
@@ -41,9 +43,9 @@ This report compares the 50 legacy `knowledge/statements.jsonl` records with rec
 - `statement:prototype:ising-path-finite-check` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): record_kind: RECLASSIFIED.
 - `statement:prototype:active-dependency-negative-control` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): record_kind: RECLASSIFIED.
 - `statement:prototype:active-dependency-physical-counterexample` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): record_kind: RECLASSIFIED.
-- `statement:2602.18939v1:fixed-window-monotonicity-claimed` (RECLASSIFIED_EXTERNAL, source=EXPLICIT): truth_status: RECLASSIFIED; fixed_window: ADDED.
+- `statement:2602.18939v1:fixed-window-monotonicity-claimed` (SPLIT, source=EXPLICIT): truth_status: SPLIT; fixed_window: ADDED.
 - `statement:2602.18939v1:fixed-window-counterexample` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): origin: RECLASSIFIED.
-- `statement:2602.18939v1:reduced-polytope-vrep` (NOTATION_ONLY, source=EXPLICIT): normalization_assumptions: ADDED; proof_status: RECLASSIFIED.
+- `statement:2602.18939v1:reduced-polytope-vrep` (SPLIT, source=EXPLICIT): normalization_assumptions: ADDED; source_truth_boundary: SPLIT.
 - `assumption:2602.18939v1:normalized-pauli-window` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): origin: RECLASSIFIED; source_support: CHANGED.
 - `statement:2602.18939v1:admissible-sign-bijection` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): origin: RECLASSIFIED.
 - `statement:2602.18939v1:maximal-context-physical` (RECLASSIFIED_EXTERNAL, source=NOT_SOURCE_CLAIM): origin: RECLASSIFIED.

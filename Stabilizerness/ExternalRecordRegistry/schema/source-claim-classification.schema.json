@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/source-claim-classification/1.0.0",
+  "title": "External source-claim classification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "paper_id", "scientific_claim_id", "math_claim_ir_id", "classification", "evidence_ids", "downstream_policy", "produced_at"],
+  "properties": {
+    "schema": {"const": "agtxiv.source-claim-classification/1.0.0"},
+    "id": {"type": "string", "pattern": "^source-claim-classification:"},
+    "paper_id": {"type": "string"},
+    "scientific_claim_id": {"type": "string", "pattern": "^claim:"},
+    "math_claim_ir_id": {"type": "string", "pattern": "^math-claim-ir:"},
+    "classification": {"enum": ["REFUTED"]},
+    "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^evidence:"}},
+    "downstream_policy": {"const": "EXCLUDE_AS_THEOREM_DEPENDENCY"},
+    "produced_at": {"type": "string"}
+  }
+}

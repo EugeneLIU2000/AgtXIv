@@ -54,6 +54,8 @@ def main() -> int:
         migration_path = ROOT / f"Stabilizerness/MathClaimIRRegistry/migrations/{slug}.jsonl"
         summary_path = ROOT / f"Stabilizerness/MathClaimIRRegistry/migrations/{slug}-summary.json"
         preprocessing_path = ROOT / f"Stabilizerness/MathClaimIRRegistry/preprocessing/{slug}.json"
+        source_anchor_path = ROOT / f"Stabilizerness/MathClaimIRRegistry/source-anchors/{slug}.jsonl"
+        classification_path = ROOT / f"Stabilizerness/ExternalRecordRegistry/claim-classifications/{slug}.jsonl"
 
         migrations = load_jsonl(migration_path)
         dispositions = collections.Counter(row["disposition"] for row in migrations)
@@ -63,6 +65,7 @@ def main() -> int:
             "MathClaimIR": len(load_jsonl(ir_path)),
             "MathematicalPropositionIR": len(load_jsonl(prop_path)),
             "EvidenceRecord": len(load_jsonl(evidence_path)),
+            "SourceClaimClassification": len(load_jsonl(classification_path)) if classification_path.exists() else 0,
         }
         new_totals.update(counts)
         unresolved = sorted(row["legacy_record"]["id"] for row in migrations if row["disposition"] in {"SOURCE_UNSUPPORTED", "BLOCKED"})
@@ -100,12 +103,14 @@ def main() -> int:
                 "canonical_artifact": str(source_path.relative_to(ROOT)),
                 "artifact_hash": digest_file(source_path),
                 "preprocessing_record": file_ref(preprocessing_path),
+                **({"source_anchor_records": file_ref(source_anchor_path)} if source_anchor_path.exists() else {}),
             },
             "registries": {
                 "scientific_claims": file_ref(claim_path),
                 "math_claim_ir": file_ref(ir_path),
                 "mathematical_propositions": file_ref(prop_path),
                 "evidence": file_ref(evidence_path),
+                **({"source_claim_classifications": file_ref(classification_path)} if classification_path.exists() else {}),
             },
             "migration": {
                 "dispositions": file_ref(migration_path),
@@ -144,7 +149,8 @@ def main() -> int:
         f"- Migration dispositions: **{aggregate['migration_disposition_count']}**",
         f"- Source-grounded MathClaimIR records: **{new_totals['MathClaimIR']}**",
         f"- External mathematical propositions: **{new_totals['MathematicalPropositionIR']}**",
-        f"- External evidence records: **{new_totals['EvidenceRecord']}**", "",
+        f"- External evidence records: **{new_totals['EvidenceRecord']}**",
+        f"- External source-claim classifications: **{new_totals['SourceClaimClassification']}**", "",
         "## Per-paper result", "",
         "| PaperAgent | Legacy | ClaimIR | Proposition | Evidence | Main dispositions |", "|---|---:|---:|---:|---:|---|",
     ]
@@ -174,9 +180,11 @@ def main() -> int:
         manifest[key] = sorted(str(p.relative_to(ROOT)) for p in ROOT.glob(pattern))
         if manifest_path.name == "manifest.json" and "MathClaimIRRegistry" in str(manifest_path):
             manifest["preprocessing_files"] = sorted(str(p.relative_to(ROOT)) for p in ROOT.glob("Stabilizerness/MathClaimIRRegistry/preprocessing/*.json"))
+            manifest["source_anchor_files"] = sorted(str(p.relative_to(ROOT)) for p in ROOT.glob("Stabilizerness/MathClaimIRRegistry/source-anchors/*.jsonl"))
             manifest["migration_files"] = sorted(str(p.relative_to(ROOT)) for p in ROOT.glob("Stabilizerness/MathClaimIRRegistry/migrations/*.jsonl"))
         if "ExternalRecordRegistry" in str(manifest_path):
             manifest["evidence_files"] = sorted(str(p.relative_to(ROOT)) for p in ROOT.glob("Stabilizerness/ExternalRecordRegistry/evidence/*.jsonl"))
+            manifest["source_claim_classification_files"] = sorted(str(p.relative_to(ROOT)) for p in ROOT.glob("Stabilizerness/ExternalRecordRegistry/claim-classifications/*.jsonl"))
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
 
     paper_manifest = {

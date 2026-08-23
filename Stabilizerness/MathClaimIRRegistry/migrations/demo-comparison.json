@@ -1,10 +1,9 @@
 {
   "disposition_totals": {
-    "NOTATION_ONLY": 20,
-    "RECLASSIFIED_EXTERNAL": 15,
-    "SEMANTIC_CORRECTION": 3,
-    "SOURCE_UNSUPPORTED": 1,
-    "SPLIT": 11
+    "NOTATION_ONLY": 17,
+    "RECLASSIFIED_EXTERNAL": 14,
+    "SEMANTIC_CORRECTION": 4,
+    "SPLIT": 15
   },
   "high_risk_differences": [
     {
@@ -14,6 +13,22 @@
       "paper_id": "arxiv:2607.26154v1",
       "review_priority": "HIGH",
       "source_support": "IMPLICIT_CONTEXT"
+    },
+    {
+      "differences": [
+        {
+          "change_type": "RECLASSIFIED",
+          "field": "notation",
+          "new": "universal perfect-graph definition separated from the paper-specific solvability assumption",
+          "old": "chi(H)=omega(H) with G_M fixed",
+          "significance": "SEMANTIC"
+        }
+      ],
+      "disposition": "SEMANTIC_CORRECTION",
+      "legacy_id": "assumption:2607.26154v1:perfect-frustration-graph",
+      "paper_id": "arxiv:2607.26154v1",
+      "review_priority": "LOW",
+      "source_support": "EXPLICIT"
     },
     {
       "differences": [],
@@ -26,21 +41,14 @@
     {
       "differences": [
         {
-          "change_type": "REMOVED",
-          "field": "proof_detail",
-          "new": "The source states affine spanning only parenthetically and does not give this construction.",
-          "old": "For each coordinate, extend P_i and flip only its sign to obtain 2e_i.",
+          "change_type": "SPLIT",
+          "field": "compound_record",
+          "new": "three source-occurrence claims plus one external derived proposition",
+          "old": "source assertions plus Agent-supplied coordinate-flip proof",
           "significance": "SAFETY"
-        },
-        {
-          "change_type": "REMOVED",
-          "field": "conclusion",
-          "new": "No source ClaimIR emitted because support is partial.",
-          "old": "Standalone affine-span/feasibility/boundedness lemma",
-          "significance": "SEMANTIC"
         }
       ],
-      "disposition": "SOURCE_UNSUPPORTED",
+      "disposition": "SPLIT",
       "legacy_id": "statement:2607.26154v1:relaxed-affine-span",
       "paper_id": "arxiv:2607.26154v1",
       "review_priority": "BLOCKING",
@@ -161,10 +169,10 @@
     {
       "differences": [
         {
-          "change_type": "RECLASSIFIED",
+          "change_type": "SPLIT",
           "field": "truth_status",
-          "new": "Omitted from ClaimIR and stored as external counterexample evidence.",
-          "old": "CLAIM_FALSE",
+          "new": "source assertion retained unchanged; exact refutation and downstream exclusion classified externally",
+          "old": "CLAIM_FALSE embedded in legacy source record",
           "significance": "SAFETY"
         },
         {
@@ -175,7 +183,7 @@
           "significance": "SEMANTIC"
         }
       ],
-      "disposition": "RECLASSIFIED_EXTERNAL",
+      "disposition": "SPLIT",
       "legacy_id": "statement:2602.18939v1:fixed-window-monotonicity-claimed",
       "paper_id": "arxiv:2602.18939v1",
       "review_priority": "BLOCKING",
@@ -207,14 +215,14 @@
           "significance": "SAFETY"
         },
         {
-          "change_type": "RECLASSIFIED",
-          "field": "proof_status",
-          "new": "Published proof-gap audit stored as external evidence.",
-          "old": null,
+          "change_type": "SPLIT",
+          "field": "source_truth_boundary",
+          "new": "literal source assertion retained; proof gap and exact literal counterexample externalized",
+          "old": "source theorem and published proof presented together",
           "significance": "SAFETY"
         }
       ],
-      "disposition": "NOTATION_ONLY",
+      "disposition": "SPLIT",
       "legacy_id": "statement:2602.18939v1:reduced-polytope-vrep",
       "paper_id": "arxiv:2602.18939v1",
       "review_priority": "HIGH",
@@ -624,45 +632,46 @@
   "legacy_record_count": 50,
   "migration_disposition_count": 50,
   "new_record_totals": {
-    "EvidenceRecord": 14,
-    "MathClaimIR": 39,
-    "MathematicalPropositionIR": 18,
-    "ScientificClaim": 39
+    "EvidenceRecord": 15,
+    "MathClaimIR": 43,
+    "MathematicalPropositionIR": 19,
+    "ScientificClaim": 43,
+    "SourceClaimClassification": 2
   },
   "papers": [
     {
       "dispositions": {
-        "NOTATION_ONLY": 10,
+        "NOTATION_ONLY": 8,
         "RECLASSIFIED_EXTERNAL": 5,
-        "SOURCE_UNSUPPORTED": 1,
-        "SPLIT": 5
+        "SEMANTIC_CORRECTION": 1,
+        "SPLIT": 7
       },
       "legacy_records": 21,
       "new_records": {
         "EvidenceRecord": 5,
-        "MathClaimIR": 21,
-        "MathematicalPropositionIR": 0,
-        "ScientificClaim": 21
+        "MathClaimIR": 25,
+        "MathematicalPropositionIR": 1,
+        "ScientificClaim": 25,
+        "SourceClaimClassification": 0
       },
       "paper_id": "arxiv:2607.26154v1",
-      "semantic_or_safety_changes": 7,
+      "semantic_or_safety_changes": 8,
       "slug": "graph-theoretic-nonstabilizerness",
-      "unresolved_legacy_ids": [
-        "statement:2607.26154v1:relaxed-affine-span"
-      ]
+      "unresolved_legacy_ids": []
     },
     {
       "dispositions": {
-        "NOTATION_ONLY": 3,
-        "RECLASSIFIED_EXTERNAL": 6,
-        "SPLIT": 1
+        "NOTATION_ONLY": 2,
+        "RECLASSIFIED_EXTERNAL": 5,
+        "SPLIT": 3
       },
       "legacy_records": 10,
       "new_records": {
-        "EvidenceRecord": 2,
+        "EvidenceRecord": 3,
         "MathClaimIR": 4,
         "MathematicalPropositionIR": 7,
-        "ScientificClaim": 4
+        "ScientificClaim": 4,
+        "SourceClaimClassification": 2
       },
       "paper_id": "arxiv:2602.18939v1",
       "semantic_or_safety_changes": 8,
@@ -681,7 +690,8 @@
         "EvidenceRecord": 2,
         "MathClaimIR": 5,
         "MathematicalPropositionIR": 3,
-        "ScientificClaim": 5
+        "ScientificClaim": 5,
+        "SourceClaimClassification": 0
       },
       "paper_id": "arxiv:1307.7171v1",
       "semantic_or_safety_changes": 4,
@@ -700,7 +710,8 @@
         "EvidenceRecord": 3,
         "MathClaimIR": 4,
         "MathematicalPropositionIR": 2,
-        "ScientificClaim": 4
+        "ScientificClaim": 4,
+        "SourceClaimClassification": 0
       },
       "paper_id": "arxiv:1609.07488v2",
       "semantic_or_safety_changes": 3,
@@ -719,7 +730,8 @@
         "EvidenceRecord": 2,
         "MathClaimIR": 5,
         "MathematicalPropositionIR": 6,
-        "ScientificClaim": 5
+        "ScientificClaim": 5,
+        "SourceClaimClassification": 0
       },
       "paper_id": "arxiv:quant-ph/9705052v1",
       "semantic_or_safety_changes": 6,

@@ -18,18 +18,18 @@
     "unique_legacy_ids": 10
   },
   "disposition_counts": {
-    "NOTATION_ONLY": 3,
-    "RECLASSIFIED_EXTERNAL": 6,
-    "SPLIT": 1
+    "NOTATION_ONLY": 2,
+    "RECLASSIFIED_EXTERNAL": 5,
+    "SPLIT": 3
   },
   "high_risk_differences": [
     {
       "legacy_line": 3,
-      "risk": "A false source assertion could be silently corrected or dropped; it is retained as ClaimIR and refuted only by external evidence."
+      "risk": "The false source assertion is retained for source fidelity, but an external REFUTED classification now excludes it from theorem dependencies."
     },
     {
       "legacy_line": 5,
-      "risk": "A source-fidelity record could be mistaken for proof validation; the published proof gap remains external evidence."
+      "risk": "The literal source theorem is false; exact one-qubit refutation, proof-gap evidence, and downstream exclusion remain external to MathClaimIR."
     },
     {
       "legacy_line": 6,
@@ -47,22 +47,22 @@
   },
   "migration_file": "Stabilizerness/MathClaimIRRegistry/migrations/predicting-magic-from-very-few-measurements.jsonl",
   "new_record_counts": {
-    "EvidenceRecord": 2,
+    "EvidenceRecord": 3,
     "MathClaimIR": 4,
     "MathematicalPropositionIR": 7,
     "ScientificClaim": 4
   },
   "paper_id": "arxiv:2602.18939v1",
-  "produced_at": "2026-08-22T00:00:00Z",
+  "produced_at": "2026-08-23T00:00:00Z",
   "schema": "agtxiv.claim-migration-summary/1.0.0",
   "semantic_differences": [
-    "The fixed-window monotonicity ClaimIR preserves the source assertion without truth status; its exact one-qubit refutation and falsity judgment are external.",
-    "The source V-representation ClaimIR preserves the source's stated domain and admissibility condition without importing the Agent's nonidentity and phase-class normalization assumptions.",
+    "The fixed-window monotonicity ClaimIR preserves the source assertion; exact refutation and downstream exclusion are external.",
+    "The literal source V-representation is retained exactly and externally classified REFUTED; the normalized repair remains external and conditional.",
     "The Agent-normalized V-representation is external and split into convex-hull equality and extremality, rather than being presented as a repaired source ClaimIR.",
     "Agent-reconstructed admissible-sign, physical-realization, and maximal-mixture lemmas are external propositions with their normalized domains and unresolved foundations explicit."
   ],
   "validation": {
-    "details": "Seven files parse as JSON/JSONL; six record types validate against their registry schemas; canonical hashes recompute; legacy IDs, paths, lines 1-10, and canonical-object SHA-256 values match exactly.",
+    "details": "Claims, propositions, evidence, preprocessing, classifications, and migrations validate against their schemas; hashes recompute; preprocessing foreign keys resolve; legacy IDs, paths, lines 1-10, and canonical-object SHA-256 values match exactly.",
     "hashes_finalized": true,
     "json_parsed": true,
     "legacy_coverage_checked": true,

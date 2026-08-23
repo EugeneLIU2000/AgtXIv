@@ -54,14 +54,20 @@ def main() -> int:
     errors: list[str] = []
     legacy_total = migration_total = 0
     all_new_ids: set[str] = set()
+    ids_by_kind: dict[str, set[str]] = {
+        "ScientificClaim": set(),
+        "MathClaimIR": set(),
+        "MathematicalPropositionIR": set(),
+        "EvidenceRecord": set(),
+    }
 
     registry_patterns = [
-        "Stabilizerness/ScientificClaimRegistry/claims/*.jsonl",
-        "Stabilizerness/MathClaimIRRegistry/claims/*.jsonl",
-        "Stabilizerness/ExternalRecordRegistry/propositions/*.jsonl",
-        "Stabilizerness/ExternalRecordRegistry/evidence/*.jsonl",
+        ("ScientificClaim", "Stabilizerness/ScientificClaimRegistry/claims/*.jsonl"),
+        ("MathClaimIR", "Stabilizerness/MathClaimIRRegistry/claims/*.jsonl"),
+        ("MathematicalPropositionIR", "Stabilizerness/ExternalRecordRegistry/propositions/*.jsonl"),
+        ("EvidenceRecord", "Stabilizerness/ExternalRecordRegistry/evidence/*.jsonl"),
     ]
-    for pattern in registry_patterns:
+    for kind, pattern in registry_patterns:
         for path in ROOT.glob(pattern):
             for row in load_jsonl(path):
                 identifier = row.get("id")
@@ -71,6 +77,7 @@ def main() -> int:
                     errors.append(f"duplicate new record id: {identifier}")
                 else:
                     all_new_ids.add(identifier)
+                    ids_by_kind[kind].add(identifier)
                 if row.get("schema") == "agtxiv.math-claimir/1.0.0":
                     forbidden = recurse_forbidden(without_meta(row))
                     if forbidden:
@@ -119,10 +126,26 @@ def main() -> int:
         if not preprocessing_path.exists():
             errors.append(f"missing preprocessing receipt for {slug}")
 
+    preprocessing_ids: set[str] = set()
+    for path in ROOT.glob("Stabilizerness/MathClaimIRRegistry/preprocessing/*.json"):
+        record = json.loads(path.read_text())
+        identifier = record.get("id")
+        if not identifier:
+            errors.append(f"{path}: missing preprocessing id")
+        elif identifier in preprocessing_ids:
+            errors.append(f"duplicate preprocessing id: {identifier}")
+        else:
+            preprocessing_ids.add(identifier)
+
     anchors: set[str] = set()
-    for path in ROOT.glob("agents/*/source/anchors.jsonl"):
+    anchor_paths = list(ROOT.glob("agents/*/source/anchors.jsonl"))
+    anchor_paths += list(ROOT.glob("Stabilizerness/MathClaimIRRegistry/source-anchors/*.jsonl"))
+    for path in anchor_paths:
         for anchor in load_jsonl(path):
-            anchors.add(anchor.get("id"))
+            identifier = anchor.get("id")
+            if identifier in anchors:
+                errors.append(f"{path}:{anchor['__line__']}: duplicate source anchor {identifier}")
+            anchors.add(identifier)
             artifact = ROOT / anchor.get("artifact", "")
             if not artifact.exists():
                 errors.append(f"{path}:{anchor['__line__']}: missing source artifact {artifact}")
@@ -132,8 +155,40 @@ def main() -> int:
             for anchor in row.get("source", {}).get("statement_anchors", []) + row.get("source", {}).get("proof_anchors", []):
                 if anchor not in anchors:
                     errors.append(f"{path}:{row['__line__']}: unknown source anchor {anchor}")
+            preprocessing_ref = row.get("normalization", {}).get("preprocessing_record_ref")
+            if preprocessing_ref not in preprocessing_ids:
+                errors.append(f"{path}:{row['__line__']}: unknown preprocessing record {preprocessing_ref}")
             if ZERO_HASH in json.dumps(row):
                 errors.append(f"{path}:{row['__line__']}: unfinalized zero hash")
+
+    classification_count = 0
+    for path in ROOT.glob("Stabilizerness/ExternalRecordRegistry/claim-classifications/*.jsonl"):
+        for row in load_jsonl(path):
+            classification_count += 1
+            if row.get("classification") != "REFUTED":
+                errors.append(f"{path}:{row['__line__']}: unsupported source-claim classification")
+            if row.get("downstream_policy") != "EXCLUDE_AS_THEOREM_DEPENDENCY":
+                errors.append(f"{path}:{row['__line__']}: unsafe downstream policy")
+            if row.get("scientific_claim_id") not in ids_by_kind["ScientificClaim"]:
+                errors.append(f"{path}:{row['__line__']}: unknown ScientificClaim target")
+            if row.get("math_claim_ir_id") not in ids_by_kind["MathClaimIR"]:
+                errors.append(f"{path}:{row['__line__']}: unknown MathClaimIR target")
+            for evidence_id in row.get("evidence_ids", []):
+                if evidence_id not in ids_by_kind["EvidenceRecord"]:
+                    errors.append(f"{path}:{row['__line__']}: unknown evidence {evidence_id}")
+
+    required_refuted_claims = {
+        "math-claim-ir:2602.18939v1:fixed-window-monotonicity-claimed",
+        "math-claim-ir:2602.18939v1:reduced-polytope-vrep",
+    }
+    classified_claims = {
+        row.get("math_claim_ir_id")
+        for path in ROOT.glob("Stabilizerness/ExternalRecordRegistry/claim-classifications/*.jsonl")
+        for row in load_jsonl(path)
+    }
+    missing_classifications = required_refuted_claims - classified_claims
+    if missing_classifications:
+        errors.append(f"missing downstream exclusion classifications: {sorted(missing_classifications)}")
 
     if legacy_total != 50:
         errors.append(f"expected 50 legacy statements, found {legacy_total}")
@@ -142,7 +197,7 @@ def main() -> int:
 
     for error in errors:
         print(error)
-    print(f"legacy={legacy_total} migrations={migration_total} new_records={len(all_new_ids)} errors={len(errors)}")
+    print(f"legacy={legacy_total} migrations={migration_total} new_records={len(all_new_ids)} classifications={classification_count} preprocessing_ids={len(preprocessing_ids)} errors={len(errors)}")
     return 1 if errors else 0
 
 

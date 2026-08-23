@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/source-anchor/1.0.0",
+  "title": "Frozen-source anchor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "paper_id", "artifact", "artifact_hash", "location", "content_hash"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^anchor:"},
+    "paper_id": {"type": "string"},
+    "artifact": {"type": "string"},
+    "artifact_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "location": {"type": "object"},
+    "content_hash": {"type": ["string", "null"]}
+  }
+}
