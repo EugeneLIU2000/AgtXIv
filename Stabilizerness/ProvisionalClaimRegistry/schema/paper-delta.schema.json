@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/provisional-paper-delta/0.1.0",
+  "title": "Paper delta draft against a fixed accepted-registry snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "paper_slug",
+    "baseline",
+    "dispositions",
+    "originality_notice",
+    "review_notice"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.provisional-paper-delta/0.1.0"
+    },
+    "paper_slug": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry",
+        "git_commit",
+        "claim_file_blob",
+        "source_anchor_blobs",
+        "preprocessing_blob"
+      ],
+      "properties": {
+        "registry": {
+          "const": "MathClaimIRRegistry"
+        },
+        "git_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "claim_file_blob": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "source_anchor_blobs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          }
+        },
+        "preprocessing_blob": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "dispositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_ref",
+          "disposition",
+          "baseline_record_refs",
+          "possible_baseline_region_refs",
+          "comparison_evidence",
+          "reason_codes",
+          "status"
+        ],
+        "properties": {
+          "candidate_ref": {
+            "type": "string",
+            "pattern": "^provisional-claim:"
+          },
+          "disposition": {
+            "enum": [
+              "reused",
+              "equivalent",
+              "specialization",
+              "generalization",
+              "new-to-registry",
+              "new-proof",
+              "new-relation",
+              "unresolved"
+            ]
+          },
+          "baseline_record_refs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^math-claim-ir:"
+            }
+          },
+          "possible_baseline_region_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "method",
+                "possible_baseline_ref",
+                "anchor_refs",
+                "occurrence_refs"
+              ],
+              "properties": {
+                "method": {
+                  "const": "LOCATION_ONLY_SOURCE_ANCHOR_OVERLAP"
+                },
+                "possible_baseline_ref": {
+                  "type": "string",
+                  "pattern": "^math-claim-ir:"
+                },
+                "anchor_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^anchor:"
+                  }
+                },
+                "occurrence_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^source-claim-occurrence:"
+                  }
+                }
+              }
+            }
+          },
+          "comparison_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "method": {
+                  "enum": [
+                    "EXACT_NORMALIZED_REPRESENTATION",
+                    "CONSERVATIVE_STATEMENT_MATCH",
+                    "NO_CONSERVATIVE_MATCH",
+                    "EXPLICIT_SEMANTIC_REVIEW",
+                    "REGISTRY_ABSENCE_AUDIT"
+                  ]
+                },
+                "baseline_ref": {
+                  "type": "string",
+                  "pattern": "^math-claim-ir:"
+                },
+                "representation": {
+                  "enum": [
+                    "source_statement_expanded_latex",
+                    "normalized_statement_expanded_latex",
+                    "structured_conclusion"
+                  ]
+                },
+                "occurrence_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^source-claim-occurrence:"
+                  }
+                },
+                "shared_terms": {
+                  "type": "array",
+                  "minItems": 3,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 4
+                  }
+                },
+                "score": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "detail": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "oneOf": [
+                {
+                  "properties": {
+                    "method": {
+                      "const": "EXACT_NORMALIZED_REPRESENTATION"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "baseline_ref",
+                    "representation",
+                    "occurrence_refs"
+                  ]
+                },
+                {
+                  "properties": {
+                    "method": {
+                      "const": "CONSERVATIVE_STATEMENT_MATCH"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "baseline_ref",
+                    "representation",
+                    "occurrence_refs",
+                    "shared_terms",
+                    "score"
+                  ]
+                },
+                {
+                  "properties": {
+                    "method": {
+                      "const": "NO_CONSERVATIVE_MATCH"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "detail"
+                  ]
+                },
+                {
+                  "properties": {
+                    "method": {
+                      "const": "EXPLICIT_SEMANTIC_REVIEW"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "baseline_ref",
+                    "detail"
+                  ]
+                },
+                {
+                  "properties": {
+                    "method": {
+                      "const": "REGISTRY_ABSENCE_AUDIT"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "detail"
+                  ]
+                }
+              ]
+            }
+          },
+          "reason_codes": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "contains": {
+              "const": "REVIEW_REQUIRED"
+            },
+            "items": {
+              "enum": [
+                "EXACT_BASELINE_REPRESENTATION_MATCH",
+                "PARTIAL_STATEMENT_MATCH_RELATION_UNRESOLVED",
+                "BASELINE_ABSENCE_NOT_ESTABLISHED",
+                "REGISTRY_ABSENCE_CONFIRMED",
+                "HUMAN_SEMANTIC_RELATION_REQUIRED",
+                "REVIEW_REQUIRED"
+              ]
+            }
+          },
+          "status": {
+            "const": "REVIEW_REQUIRED"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "const": "reused"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "baseline_record_refs": {
+                  "minItems": 1
+                },
+                "comparison_evidence": {
+                  "contains": {
+                    "properties": {
+                      "method": {
+                        "const": "EXACT_NORMALIZED_REPRESENTATION"
+                      }
+                    },
+                    "required": [
+                      "method"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "enum": [
+                    "equivalent",
+                    "specialization",
+                    "generalization",
+                    "new-proof",
+                    "new-relation"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "baseline_record_refs": {
+                  "minItems": 1
+                },
+                "comparison_evidence": {
+                  "contains": {
+                    "properties": {
+                      "method": {
+                        "const": "EXPLICIT_SEMANTIC_REVIEW"
+                      }
+                    },
+                    "required": [
+                      "method"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "const": "new-to-registry"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason_codes": {
+                  "contains": {
+                    "const": "REGISTRY_ABSENCE_CONFIRMED"
+                  }
+                },
+                "comparison_evidence": {
+                  "contains": {
+                    "properties": {
+                      "method": {
+                        "const": "REGISTRY_ABSENCE_AUDIT"
+                      }
+                    },
+                    "required": [
+                      "method"
+                    ]
+                  }
+                },
+                "baseline_record_refs": {
+                  "maxItems": 0
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "originality_notice": {
+      "type": "string",
+      "pattern": "(?i)new.to.registry.*not.*academic originality"
+    },
+    "review_notice": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

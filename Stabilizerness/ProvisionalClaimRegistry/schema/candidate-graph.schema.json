@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/provisional-candidate-graph/0.1.0",
+  "title": "Candidate-only semantic graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "paper_slug", "nodes", "edges", "graph_status", "cycle_policy"],
+  "properties": {
+    "schema": {"const": "agtxiv.provisional-candidate-graph/0.1.0"},
+    "paper_slug": {"type": "string"},
+    "nodes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^provisional-claim:"}},
+    "edges": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "source", "target", "edge_type", "evidence_occurrence_refs", "shared_terms", "reason_codes", "candidate_only", "status"], "properties": {
+      "id": {"type": "string", "pattern": "^provisional-edge:"},
+      "source": {"type": "string", "pattern": "^provisional-claim:"},
+      "target": {"type": "string", "pattern": "^provisional-claim:"},
+      "edge_type": {"enum": ["DEFINITION_PREREQUISITE", "SCOPE_ASSUMPTION", "CLAIM_PREMISE", "DERIVATION", "EQUIVALENCE_CANDIDATE", "SPECIALIZATION_CANDIDATE", "GENERALIZATION_CANDIDATE"]},
+      "evidence_occurrence_refs": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "pattern": "^source-claim-occurrence:"}},
+      "shared_terms": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+      "reason_codes": {"type": "array", "minItems": 2, "uniqueItems": true, "contains": {"const": "REVIEW_REQUIRED"}, "items": {"enum": ["DEFINITION_TERM_OVERLAP", "ASSUMPTION_SCOPE_OVERLAP", "EXPLICIT_DERIVATION_CUE", "EXPLICIT_PREMISE_CUE", "EXPLICIT_ANAPHORIC_RELATION_CUE", "REVIEW_REQUIRED"]}},
+      "candidate_only": {"const": true},
+      "status": {"const": "REVIEW_REQUIRED"}
+    }}},
+    "graph_status": {"const": "PROVISIONAL_NOT_VERIFIED_DAG"},
+    "cycle_policy": {"type": "string", "minLength": 1}
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/provisional-canonical-semantic-candidate/0.1.0",
+  "title": "Provisional canonical semantic candidate (never accepted MathClaimIR)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "candidate_status",
+    "reason_codes",
+    "speech_act",
+    "source_relation",
+    "occurrence_refs",
+    "statement",
+    "canonical_content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.provisional-canonical-semantic-candidate/0.1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^provisional-claim:"
+    },
+    "candidate_status": {
+      "const": "PROVISIONAL"
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "contains": {
+        "const": "REVIEW_REQUIRED"
+      },
+      "items": {
+        "enum": [
+          "AUTOMATIC_EXTRACTION",
+          "REVIEW_REQUIRED",
+          "LOW_CONFIDENCE_SEMANTIC_LABEL",
+          "EXPLICIT_DERIVATION_CUE"
+        ]
+      }
+    },
+    "speech_act": {
+      "enum": [
+        "MATHEMATICAL_ASSERTION",
+        "DEFINITION",
+        "ASSUMPTION",
+        "DERIVATION_CONCLUSION",
+        "CONJECTURE",
+        "ATTRIBUTED_ASSERTION",
+        "EXAMPLE_INSTANCE",
+        "NOTATION",
+        "UNRESOLVED"
+      ]
+    },
+    "source_relation": {
+      "enum": [
+        "EXACT",
+        "LOGICAL_FORM_EXPANDED",
+        "INTERPRETIVE",
+        "SPECIALIZATION",
+        "MULTI_SPAN_DERIVED",
+        "UNRESOLVED"
+      ]
+    },
+    "occurrence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^source-claim-occurrence:"
+      }
+    },
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "typed_objects",
+        "assumptions",
+        "conclusion",
+        "unresolved"
+      ],
+      "properties": {
+        "typed_objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "symbol_latex",
+              "semantic_type",
+              "scope"
+            ],
+            "properties": {
+              "symbol_latex": {
+                "type": "string"
+              },
+              "semantic_type": {
+                "type": "string"
+              },
+              "scope": {
+                "enum": [
+                  "global",
+                  "claim",
+                  "local"
+                ]
+              }
+            }
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "source_text",
+              "type"
+            ],
+            "properties": {
+              "source_text": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "conclusion": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "source_text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "predicate_latex": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "parse_status": {
+              "enum": [
+                "PARTIAL",
+                "RESOLVED"
+              ]
+            }
+          },
+          "required": [
+            "source_text",
+            "predicate_latex",
+            "parse_status"
+          ],
+          "additionalProperties": false
+        },
+        "unresolved": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "source_text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "issues": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "source_text",
+            "issues"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "conclusion": {
+              "type": "object"
+            },
+            "unresolved": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "conclusion": {
+              "type": "null"
+            },
+            "unresolved": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "canonical_content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "speech_act": {
+            "const": "UNRESOLVED"
+          }
+        },
+        "required": [
+          "speech_act"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_relation": {
+            "const": "UNRESOLVED"
+          },
+          "statement": {
+            "properties": {
+              "conclusion": {
+                "type": "null"
+              },
+              "unresolved": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "speech_act": {
+            "not": {
+              "const": "UNRESOLVED"
+            }
+          }
+        },
+        "required": [
+          "speech_act"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_relation": {
+            "not": {
+              "const": "UNRESOLVED"
+            }
+          },
+          "statement": {
+            "properties": {
+              "conclusion": {
+                "type": "object"
+              },
+              "unresolved": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_relation": {
+            "const": "MULTI_SPAN_DERIVED"
+          }
+        },
+        "required": [
+          "source_relation"
+        ]
+      },
+      "then": {
+        "properties": {
+          "speech_act": {
+            "const": "DERIVATION_CONCLUSION"
+          },
+          "reason_codes": {
+            "contains": {
+              "const": "EXPLICIT_DERIVATION_CUE"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "speech_act": {
+            "const": "DERIVATION_CONCLUSION"
+          }
+        },
+        "required": [
+          "speech_act"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_relation": {
+            "enum": [
+              "INTERPRETIVE",
+              "MULTI_SPAN_DERIVED"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

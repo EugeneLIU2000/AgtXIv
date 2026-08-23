@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/provisional-canonical-claim-module/0.1.0",
+  "title": "Provisional canonical claim module draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "candidate_status",
+    "section_scope",
+    "imports",
+    "assumption_contracts",
+    "definitions",
+    "core_claims",
+    "derived_exports",
+    "unresolved_review_queue",
+    "limitations",
+    "future_oracle_markers"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.provisional-canonical-claim-module/0.1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^provisional-claim-module:"
+    },
+    "candidate_status": {
+      "const": "PROVISIONAL"
+    },
+    "section_scope": {
+      "type": "string"
+    },
+    "imports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumption_contracts": {
+      "$ref": "#/$defs/refs"
+    },
+    "definitions": {
+      "$ref": "#/$defs/refs"
+    },
+    "core_claims": {
+      "$ref": "#/$defs/refs"
+    },
+    "derived_exports": {
+      "$ref": "#/$defs/refs"
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "future_oracle_markers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "oracle",
+          "status"
+        ],
+        "properties": {
+          "oracle": {
+            "enum": [
+              "Physlib",
+              "PhyslibAlpha"
+            ]
+          },
+          "status": {
+            "const": "FUTURE_SEARCH_ONLY"
+          }
+        }
+      }
+    },
+    "unresolved_review_queue": {
+      "$ref": "#/$defs/refs"
+    }
+  },
+  "$defs": {
+    "refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^provisional-claim:"
+      }
+    }
+  }
+}

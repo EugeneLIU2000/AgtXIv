@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/source-claim-occurrence/0.1.0",
+  "title": "Provisional source claim occurrence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "paper_id",
+    "source_artifact",
+    "source_artifact_hash",
+    "line_start",
+    "line_end",
+    "verbatim_source_text",
+    "section_path",
+    "span_kind",
+    "speech_act",
+    "candidate_status",
+    "reason_codes",
+    "content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.source-claim-occurrence/0.1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^source-claim-occurrence:"
+    },
+    "paper_id": {
+      "type": "string"
+    },
+    "source_artifact": {
+      "type": "string"
+    },
+    "source_artifact_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "line_start": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "line_end": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "verbatim_source_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "section_path": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "span_kind": {
+      "enum": [
+        "PROSE_PARAGRAPH",
+        "THEOREM_LIKE_ENVIRONMENT",
+        "DEFINITION_ENVIRONMENT",
+        "DISPLAY_EQUATION",
+        "EQUATION_DISCOURSE_BUNDLE",
+        "EQUATION_CONTEXT_BUNDLE"
+      ]
+    },
+    "speech_act": {
+      "enum": [
+        "MATHEMATICAL_ASSERTION",
+        "DEFINITION",
+        "ASSUMPTION",
+        "DERIVATION_CONCLUSION",
+        "CONJECTURE",
+        "ATTRIBUTED_ASSERTION",
+        "EXAMPLE_INSTANCE",
+        "NOTATION",
+        "UNRESOLVED"
+      ]
+    },
+    "candidate_status": {
+      "const": "PROVISIONAL"
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "contains": {
+        "const": "REVIEW_REQUIRED"
+      },
+      "items": {
+        "enum": [
+          "AUTOMATIC_HEURISTIC",
+          "AUTOMATIC_EXTRACTION",
+          "EXPLICIT_LATEX_STRUCTURE",
+          "ATTRIBUTION_DETECTED",
+          "EQUATION_WITHOUT_SEMANTIC_PARSE",
+          "MULTI_SPAN_SYNTHESIS",
+          "REVIEW_REQUIRED",
+          "LOW_CONFIDENCE_SEMANTIC_LABEL",
+          "EXPLICIT_DERIVATION_CUE"
+        ]
+      }
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}
