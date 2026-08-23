@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AgtXIv resolves scientific claims into source-grounded contracts and query-relative dependency graphs.">
+  <title>AgtXIv — Navigable scientific ground truth</title>
+  <link rel="icon" href="assets/agentxiv-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav-wrap" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="AgtXIv home">
+        <img src="assets/agentxiv-logo.svg" alt="AgtXIv">
+      </a>
+      <div class="nav-links">
+        <a href="#value">Why AgtXIv</a>
+        <a href="#path">Research path</a>
+        <a href="#registry">Registry</a>
+      </div>
+      <a class="button button-small button-dark nav-cta" href="#registry">Explore the graph <span aria-hidden="true">↗</span></a>
+      <details class="mobile-menu">
+        <summary aria-label="Open navigation"><span></span><span></span><span></span></summary>
+        <div>
+          <a href="#value">Why AgtXIv</a>
+          <a href="#path">Research path</a>
+          <a href="#registry">Registry</a>
+        </div>
+      </details>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="terrain" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-content shell">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span></span> Verification-aware scientific infrastructure</p>
+          <h1 id="hero-title">Turn scientific claims into <em>navigable ground truth.</em></h1>
+          <p class="hero-lede">Trace a result to its source, resolve its mathematical dependencies, and reuse verified contracts—without flattening uncertainty into a single status.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#registry">Open registry preview <span aria-hidden="true">→</span></a>
+            <a class="button button-ghost" href="https://github.com/EugeneLIU2000/AgtXIv" rel="noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-facts" aria-label="AgtXIv characteristics">
+            <span><i></i> Source-grounded</span>
+            <span><i></i> Query-relative</span>
+            <span><i></i> Lean-aware</span>
+          </div>
+        </div>
+
+        <div class="map-console reveal reveal-late" aria-label="Interactive illuminated research path">
+          <div class="console-topline">
+            <span>QUERY MAP / STABILIZERNESS</span>
+            <span class="live-label"><i></i> ACTIVE VIEW</span>
+          </div>
+          <div class="road-map">
+            <svg viewBox="0 0 760 450" role="group" aria-label="Select a map in the research path">
+              <defs>
+                <filter id="routeGlow" x="-30%" y="-50%" width="160%" height="200%">
+                  <feGaussianBlur stdDeviation="9" result="blur"></feGaussianBlur>
+                  <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+                </filter>
+                <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#1f5cff" stop-opacity=".45"></stop>
+                  <stop offset=".5" stop-color="#3d89ff"></stop>
+                  <stop offset="1" stop-color="#52e1dd"></stop>
+                </linearGradient>
+                <pattern id="mapGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                  <path d="M32 0H0V32" fill="none" stroke="#a9bcdd" stroke-opacity=".075" stroke-width="1"></path>
+                </pattern>
+              </defs>
+              <rect width="760" height="450" fill="url(#mapGrid)"></rect>
+              <g class="contours" fill="none" stroke="#a9bcdd" stroke-opacity=".10">
+                <path d="M-70 340C50 260 130 370 238 308s126-183 252-126 159 13 272-55"></path>
+                <path d="M-77 371C58 290 138 400 250 337s126-186 245-132 172 22 280-53"></path>
+                <path d="M-60 402C71 323 152 424 268 363s126-178 241-129 163 33 270-33"></path>
+                <path d="M355-34c-4 83 57 99 38 163s-76 77-64 146 89 90 73 185"></path>
+                <path d="M393-36c-2 74 53 94 37 154s-72 82-57 145 82 89 72 191"></path>
+              </g>
+              <g class="branches" fill="none" stroke-linecap="round">
+                <path d="M194 285C147 233 122 191 62 174"></path>
+                <path d="M367 235C332 174 327 127 287 88"></path>
+                <path d="M519 185C558 139 595 115 640 96"></path>
+                <path d="M519 185C580 203 626 246 692 242"></path>
+                <circle cx="62" cy="174" r="3"></circle><circle cx="287" cy="88" r="3"></circle>
+                <circle cx="640" cy="96" r="3"></circle><circle cx="692" cy="242" r="3"></circle>
+              </g>
+              <path class="road-shadow" d="M16 370C118 362 124 308 194 285S292 277 367 235 447 215 519 185 613 140 742 142"></path>
+              <path class="road-core" d="M16 370C118 362 124 308 194 285S292 277 367 235 447 215 519 185 613 140 742 142"></path>
+              <path class="road-progress" pathLength="100" d="M16 370C118 362 124 308 194 285S292 277 367 235 447 215 519 185 613 140 742 142"></path>
+
+              <g class="map-node is-active" data-map="literature" data-step="0" role="button" tabindex="0" aria-pressed="true" aria-label="Select Literature map">
+                <circle class="node-halo" cx="194" cy="285" r="26"></circle><circle class="node-ring" cx="194" cy="285" r="10"></circle><circle class="node-core" cx="194" cy="285" r="4"></circle>
+                <text x="194" y="327" text-anchor="middle">LITERATURE MAP</text><text class="node-count" x="194" y="344" text-anchor="middle">SOURCE PATHS</text>
+              </g>
+              <g class="map-node" data-map="claim" data-step="1" role="button" tabindex="0" aria-pressed="false" aria-label="Select Claim map">
+                <circle class="node-halo" cx="367" cy="235" r="26"></circle><circle class="node-ring" cx="367" cy="235" r="10"></circle><circle class="node-core" cx="367" cy="235" r="4"></circle>
+                <text x="367" y="277" text-anchor="middle">CLAIM MAP</text><text class="node-count" x="367" y="294" text-anchor="middle">TYPED RELATIONS</text>
+              </g>
+              <g class="map-node" data-map="contract" data-step="2" role="button" tabindex="0" aria-pressed="false" aria-label="Select Contract map">
+                <circle class="node-halo" cx="519" cy="185" r="26"></circle><circle class="node-ring" cx="519" cy="185" r="10"></circle><circle class="node-core" cx="519" cy="185" r="4"></circle>
+                <text x="519" y="227" text-anchor="middle">CONTRACT MAP</text><text class="node-count" x="519" y="244" text-anchor="middle">MATHCLAIMIR</text>
+              </g>
+              <g class="map-node" data-map="proof" data-step="3" role="button" tabindex="0" aria-pressed="false" aria-label="Select Proof map">
+                <circle class="node-halo" cx="655" cy="143" r="26"></circle><circle class="node-ring" cx="655" cy="143" r="10"></circle><circle class="node-core" cx="655" cy="143" r="4"></circle>
+                <text x="655" y="185" text-anchor="middle">PROOF MAP</text><text class="node-count" x="655" y="202" text-anchor="middle">LEAN 4</text>
+              </g>
+            </svg>
+          </div>
+          <div class="map-detail" aria-live="polite">
+            <div class="map-index" id="mapIndex">01</div>
+            <div>
+              <p id="mapKicker">Trace the source</p>
+              <h2 id="mapTitle">Literature map</h2>
+              <p id="mapDescription">Follow a scientific claim back to frozen source occurrences and explicit provenance—not a citation-shaped shortcut.</p>
+            </div>
+            <div class="map-status"><span id="mapStatus">PREVIEW · SOURCE PATHS</span><i></i></div>
+          </div>
+          <p class="map-help">Select a node to inspect the route <span>01 / 04</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="value-section shell section" id="value" aria-labelledby="value-title">
+      <div class="section-heading reveal">
+        <p class="eyebrow dark"><span></span> One claim, a visible chain of trust</p>
+        <h2 id="value-title">Make every result inspectable.</h2>
+        <p>AgtXIv organizes the work between a paper and a proof into artifacts that can be queried, audited, and reused.</p>
+      </div>
+      <div class="value-grid">
+        <article class="value-card reveal">
+          <div class="card-number">01</div>
+          <div class="card-icon source-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8 5.5h12l4 4V26.5H8z"></path><path d="M20 5.5v5h4M12 16h8M12 20h6"></path></svg></div>
+          <h3>Trace the source</h3>
+          <p>Bind each claim to a frozen source occurrence with explicit anchors, scope, and provenance.</p>
+          <span class="card-link">SourceAnchor <b>→</b></span>
+        </article>
+        <article class="value-card reveal reveal-late">
+          <div class="card-number">02</div>
+          <div class="card-icon claim-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="8" cy="16" r="3"></circle><circle cx="24" cy="9" r="3"></circle><circle cx="24" cy="23" r="3"></circle><path d="M11 15l10-5M11 17l10 5"></path></svg></div>
+          <h3>Resolve the claim</h3>
+          <p>Derive the strict dependency DAG required by the selected query, with typed and reviewable edges.</p>
+          <span class="card-link">QueryResolution <b>→</b></span>
+        </article>
+        <article class="value-card reveal reveal-later">
+          <div class="card-number">03</div>
+          <div class="card-icon proof-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L26 9"></path><path d="M16 4a12 12 0 1 1-10.4 6"></path></svg></div>
+          <h3>Reuse the proof</h3>
+          <p>Package accepted mathematical interfaces as versioned contracts that reduce repeated formalization work.</p>
+          <span class="card-link">MathContract <b>→</b></span>
+        </article>
+      </div>
+    </section>
+
+    <section class="path-section section" id="path" aria-labelledby="path-title">
+      <div class="shell">
+        <div class="section-heading path-heading reveal">
+          <p class="eyebrow dark"><span></span> Research path</p>
+          <h2 id="path-title">From frozen source to reusable proof.</h2>
+          <p>Verification runs backward to roots, then forward through the residual local deltas.</p>
+        </div>
+        <ol class="process-list">
+          <li class="reveal"><span>01</span><div><p>FREEZE</p><h3>Anchor the occurrence</h3><p>Preserve the source statement and its exact location.</p></div><i aria-hidden="true">→</i></li>
+          <li class="reveal"><span>02</span><div><p>NORMALIZE</p><h3>Structure the meaning</h3><p>Record typed objects, quantifiers, assumptions, and one atomic conclusion in MathClaimIR.</p></div><i aria-hidden="true">→</i></li>
+          <li class="reveal"><span>03</span><div><p>RESOLVE</p><h3>Find query roots</h3><p>Build the load-bearing dependency closure and keep unresolved sources explicit.</p></div><i aria-hidden="true">→</i></li>
+          <li class="reveal"><span>04</span><div><p>VERIFY</p><h3>Check the local delta</h3><p>Route packages, construct in Lean 4, and audit alignment with the source claim.</p></div><i aria-hidden="true">✓</i></li>
+        </ol>
+        <p class="boundary-note reveal"><strong>Verification is multi-axis.</strong> Lean kernel acceptance does not by itself establish physical applicability, approximation validity, or source fidelity.</p>
+      </div>
+    </section>
+
+    <section class="registry-section section" id="registry" aria-labelledby="registry-title">
+      <div class="shell">
+        <div class="section-heading registry-heading reveal">
+          <p class="eyebrow dark"><span></span> Registry preview</p>
+          <h2 id="registry-title">See what the target depends on—and why.</h2>
+          <p>A high-fidelity concept view of a query-relative claim graph. Statuses shown here are scoped, not a global verification score.</p>
+        </div>
+
+        <div class="workbench reveal">
+          <header class="workbench-bar">
+            <div class="workbench-brand"><span class="mini-mark">A</span><strong>MathContract Registry</strong><small>STABILIZERNESS / PILOT</small></div>
+            <div class="workbench-actions"><span aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5"></circle><path d="m12.5 12.5 4 4"></path></svg></span><span>READ-ONLY PREVIEW</span></div>
+          </header>
+          <div class="workbench-body">
+            <aside class="registry-sidebar" aria-label="Registry query controls">
+              <label for="querySearch">TARGET QUERY</label>
+              <div class="search-field"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5"></circle><path d="m12.5 12.5 4 4"></path></svg><input id="querySearch" type="search" value="Perfect graph / Pauli" aria-label="Target query preview, read only" readonly></div>
+              <p class="side-label">GRAPH VIEW</p>
+              <div class="side-item active" aria-current="true"><i></i> Claim dependencies <span>8</span></div>
+              <div class="side-item"><i></i> Root contracts <span>3</span></div>
+              <div class="side-item"><i></i> Source records <span>6</span></div>
+              <div class="side-divider"></div>
+              <p class="side-label">EDGE TYPES</p>
+              <p class="legend-item"><i class="edge solid"></i> Scientific claim</p>
+              <p class="legend-item"><i class="edge dashed"></i> Definition</p>
+              <p class="legend-item"><i class="edge dotted"></i> Scope</p>
+              <div class="query-card"><p>CANDIDATE VIEW</p><strong>8 visible claims</strong><span>3 roots · 7 proposed relations</span><div><i></i> DAGComplete: FALSE</div></div>
+            </aside>
+
+            <div class="graph-panel">
+              <div class="graph-panel-head">
+                <div><p>ORACLE CANDIDATE GRAPH</p><h3>Perfect graph bound for Pauli profiles</h3></div>
+                <div class="view-pills"><span>−</span><span>100%</span><span>+</span></div>
+              </div>
+              <div class="dag-canvas" aria-label="Illustrative claim dependency graph">
+                <svg viewBox="0 0 720 430" role="img" aria-labelledby="dagTitle dagDesc">
+                  <title id="dagTitle">Perfect graph and Pauli Oracle-candidate dependency view</title>
+                  <desc id="dagDesc">A concept preview of three candidate roots and proposed relations leading to a selected target theorem; completion and acceptance are not established.</desc>
+                  <g class="dag-lines" fill="none">
+                    <path class="solid" d="M120 88C120 137 222 119 222 171"></path><path class="dashed" d="M360 88C360 132 222 129 222 171"></path>
+                    <path class="dotted" d="M600 88C600 138 496 130 496 177"></path><path class="solid" d="M222 219C222 270 357 250 357 296"></path>
+                    <path class="solid" d="M496 225C496 271 357 252 357 296"></path><path class="solid active-line" d="M357 344V375"></path>
+                  </g>
+                  <g class="dag-node root" transform="translate(36 42)"><rect width="168" height="47" rx="8"></rect><circle cx="14" cy="15" r="4"></circle><text x="25" y="18">ROOT CONTRACT</text><text class="node-title" x="14" y="36">Finite LP duality</text></g>
+                  <g class="dag-node root pending" transform="translate(276 42)"><rect width="168" height="47" rx="8"></rect><circle cx="14" cy="15" r="4"></circle><text x="25" y="18">ROOT CONTRACT</text><text class="node-title" x="14" y="36">Perfect graph duality</text></g>
+                  <g class="dag-node root" transform="translate(516 42)"><rect width="168" height="47" rx="8"></rect><circle cx="14" cy="15" r="4"></circle><text x="25" y="18">SOURCE CLAIM</text><text class="node-title" x="14" y="36">Pauli frustration graph</text></g>
+                  <g class="dag-node" transform="translate(136 172)"><rect width="172" height="48" rx="8"></rect><text x="14" y="17">DEFINITION</text><text class="node-title" x="14" y="37">Weighted stable set</text></g>
+                  <g class="dag-node" transform="translate(410 178)"><rect width="172" height="48" rx="8"></rect><text x="14" y="17">LEMMA</text><text class="node-title" x="14" y="37">Pauli support bound</text></g>
+                  <g class="dag-node pending" transform="translate(264 296)"><rect width="186" height="49" rx="8"></rect><circle cx="170" cy="14" r="4"></circle><text x="14" y="18">CANDIDATE CONTRACT</text><text class="node-title" x="14" y="38">Graph-duality interface</text></g>
+                  <g class="dag-node selected" transform="translate(250 375)"><rect width="214" height="52" rx="9"></rect><text x="14" y="19">TARGET QUERY</text><text class="node-title" x="14" y="40">Perfect graph Pauli bound</text></g>
+                </svg>
+                <div class="canvas-chip"><i></i> SELECTED QUERY PATH</div>
+              </div>
+            </div>
+
+            <aside class="inspector" aria-label="Selected contract inspector">
+              <div class="inspector-head"><div><p>SELECTED CANDIDATE</p><h3>Graph-duality interface</h3></div><span class="inspector-close" aria-hidden="true">×</span></div>
+              <div class="status-row"><span class="status blocked"><i></i> RELEASE GATE BLOCKED</span><span>preview</span></div>
+              <dl>
+                <div><dt>CONTRACT ID</dt><dd>mc:perfect-graph-weighted-duality</dd></div>
+                <div><dt>KIND</dt><dd>candidate mathematical_interface</dd></div>
+                <div><dt>PROVER</dt><dd>Lean 4 · unmapped</dd></div>
+              </dl>
+              <div class="contract-claim"><p>CONCLUSION</p><code>α(G,w) = κ*(G,w)</code><span>for finite perfect G and nonnegative w</span></div>
+              <div class="verification-list">
+                <p>CURRENT STATUS</p>
+                <div><span><i class="wait"></i> Edge disposition</span><b class="pending-text">ORACLE CANDIDATE</b></div>
+                <div><span><i class="wait"></i> Source alignment</span><b class="pending-text">PENDING</b></div>
+                <div><span><i class="wait"></i> Lean mapping</span><b class="pending-text">UNMAPPED</b></div>
+                <div><span><i class="wait"></i> DAGComplete</span><b class="blocked-text">FALSE</b></div>
+              </div>
+              <p class="inspector-note">This preview exposes unresolved gates; it does not establish formal support or source alignment.</p>
+            </aside>
+          </div>
+          <footer class="workbench-footer"><span><i></i> Registry snapshot · concept preview</span><span>ORACLE_CANDIDATE · NOT EVALUABLE</span></footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta section">
+      <div class="cta-grid" aria-hidden="true"></div>
+      <div class="shell reveal">
+        <p class="eyebrow light"><span></span> Build on verified ground</p>
+        <h2>Every resolved claim makes the next one easier to reach.</h2>
+        <p>Explore the open pilot for source-grounded claims, MathClaimIR records, query-relative dependency graphs, and Lean 4 artifacts.</p>
+        <a class="button button-light" href="https://github.com/EugeneLIU2000/AgtXIv" rel="noreferrer">Explore AgtXIv on GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-main">
+      <a class="brand footer-brand" href="#top"><img src="assets/agentxiv-logo.svg" alt="AgtXIv"></a>
+      <p>Verification-aware infrastructure for scientific claims.</p>
+      <nav aria-label="Footer navigation"><a href="#value">Why AgtXIv</a><a href="#path">Research path</a><a href="#registry">Registry</a><a href="https://github.com/EugeneLIU2000/AgtXIv" rel="noreferrer">GitHub ↗</a></nav>
+    </div>
+    <div class="shell footer-bottom"><span>Open research prototype</span><span>Designed for inspectability, not authority.</span></div>
+  </footer>
+
+  <noscript><p class="noscript">The complete static prototype is visible. Enable JavaScript only for map selection and scroll transitions.</p></noscript>
+  <script src="app.js"></script>
+</body>
+</html>
