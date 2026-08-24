@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -8,10 +9,10 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-import tools.validate_contribution_claims as validator
+import tools.validate_scientific_claims as validator
 
 
-class ContributionClaimValidationTests(unittest.TestCase):
+class ScientificClaimValidationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.claims = validator.load_jsonl(validator.CLAIMS)
@@ -37,6 +38,34 @@ class ContributionClaimValidationTests(unittest.TestCase):
 
     def test_all_fixtures_sources_hashes_references_manifests_and_dag_inputs_validate(self) -> None:
         self.assertEqual(self.validate(), [])
+
+    def test_unified_schema_validates_formal_v1_and_contribution_role_records(self) -> None:
+        manifest = json.loads((validator.ROOT / "Stabilizerness/ScientificClaimRegistry/manifest.json").read_text())
+        records = [
+            row
+            for relative in manifest["claim_files"]
+            for row in validator.load_jsonl(validator.ROOT / relative)
+        ]
+        formal = [row for row in records if row["schema"] == "agtxiv.scientific-claim/1.0.0"]
+        narrative = [row for row in records if row["schema"] == "agtxiv.scientific-claim/1.1.0"]
+        self.assertEqual(len(formal), 43)
+        self.assertEqual(len(narrative), 7)
+        self.assertTrue(all(row.get("claim_role") == "CONTRIBUTION" for row in narrative))
+        self.assertEqual(validator.validate_all_scientific_claims(validator.ROOT), [])
+
+    def test_generic_manifest_discovers_role_records_without_parallel_claim_type(self) -> None:
+        registry = validator.ROOT / "Stabilizerness/ScientificClaimRegistry"
+        manifest = json.loads((registry / "manifest.json").read_text())
+        relative = str(validator.CLAIMS.relative_to(validator.ROOT))
+        self.assertIn(relative, manifest["claim_files"])
+        self.assertIn(relative, manifest["object_files"])
+        self.assertNotIn("contribution_claim_files", manifest)
+        self.assertEqual(manifest["schema_files"], ["Stabilizerness/ScientificClaimRegistry/schema/scientific-claim.schema.json"])
+        obsolete_schema = registry / "schema" / ("contribution" + "-claim.schema.json")
+        self.assertFalse(obsolete_schema.exists())
+        self.assertFalse((registry / "contributions").exists())
+        self.assertTrue(all(row["id"].startswith("claim:") and not row["id"].startswith("claim:" + "contribution:") for row in self.claims))
+        self.assertTrue(all(row["scientific_claim_ref"]["target_kind"] == "org.agtxiv.scientific_claim" for row in self.calibrations + self.support))
 
     def test_unicode_equivalent_strings_have_identical_hashes(self) -> None:
         self.assertEqual(validator.hash_value({"text": "é"}), validator.hash_value({"text": "e\u0301"}))
@@ -75,18 +104,18 @@ class ContributionClaimValidationTests(unittest.TestCase):
         first = copy.deepcopy(self.claims[0])
         second = copy.deepcopy(first)
         second["record_revision"] = 2
-        second["supersedes"] = validator.immutable_record_ref(first, "org.agtxiv.scientific_claim.contribution")
+        second["supersedes"] = validator.immutable_record_ref(first, "org.agtxiv.scientific_claim")
         self.rehash_claim(second)
-        self.assertEqual(validator.validate_supersedes([first, second], "org.agtxiv.scientific_claim.contribution"), [])
+        self.assertEqual(validator.validate_supersedes([first, second], "org.agtxiv.scientific_claim"), [])
         second["supersedes"]["target_artifact"]["artifact_hash"] = "sha256:" + "0" * 64
-        self.assertTrue(any("exact previous immutable TargetRef" in error for error in validator.validate_supersedes([first, second], "org.agtxiv.scientific_claim.contribution")))
+        self.assertTrue(any("exact previous immutable TargetRef" in error for error in validator.validate_supersedes([first, second], "org.agtxiv.scientific_claim")))
 
     def test_full_validator_accepts_two_append_only_generations(self) -> None:
         claims = copy.deepcopy(self.claims)
         first_claim = claims[0]
         second_claim = copy.deepcopy(first_claim)
         second_claim["record_revision"] = 2
-        second_claim["supersedes"] = validator.immutable_record_ref(first_claim, "org.agtxiv.scientific_claim.contribution")
+        second_claim["supersedes"] = validator.immutable_record_ref(first_claim, "org.agtxiv.scientific_claim")
         second_claim["scope_hints"].append("append-only revision test scope")
         second_claim["scope_hints"] = validator.canonicalize(second_claim["scope_hints"], "scope_hints")
         for occurrence in second_claim["occurrences"]:
@@ -98,8 +127,8 @@ class ContributionClaimValidationTests(unittest.TestCase):
         first_calibration = calibrations[0]
         second_calibration = copy.deepcopy(first_calibration)
         second_calibration["record_revision"] = 2
-        second_calibration["supersedes"] = validator.immutable_record_ref(first_calibration, "org.agtxiv.contribution_calibration")
-        second_calibration["contribution_ref"] = validator.contribution_target_ref(second_claim)
+        second_calibration["supersedes"] = validator.immutable_record_ref(first_calibration, "org.agtxiv.scientific_claim_calibration")
+        second_calibration["scientific_claim_ref"] = validator.scientific_claim_target_ref(second_claim)
         self.rehash_external(second_calibration)
         calibrations.append(second_calibration)
 
@@ -108,8 +137,8 @@ class ContributionClaimValidationTests(unittest.TestCase):
         second_support = copy.deepcopy(first_support)
         second_support["record_revision"] = 2
         second_support["supersedes"] = validator.immutable_record_ref(first_support, "org.agtxiv.claim_support_association")
-        second_support["contribution_ref"] = validator.contribution_target_ref(second_claim)
-        second_support["navigation_basis_ref"] = validator.contribution_target_ref(second_claim, "/facets", artifact=False)
+        second_support["scientific_claim_ref"] = validator.scientific_claim_target_ref(second_claim)
+        second_support["navigation_basis_ref"] = validator.scientific_claim_target_ref(second_claim, "/facets", artifact=False)
         self.rehash_external(second_support)
         support.append(second_support)
 
@@ -130,11 +159,11 @@ class ContributionClaimValidationTests(unittest.TestCase):
         calibrations[0]["record_revision"] = 2
         self.rehash_external(calibrations[0])
         errors = validator.validate_registry_records(self.claims, calibrations, self.support)
-        self.assertTrue(any("record revision must equal its ContributionClaim target revision" in error for error in errors))
+        self.assertTrue(any("record revision must equal its contribution-role ScientificClaim target revision" in error for error in errors))
 
     def test_association_revision_cannot_switch_claim_identity(self) -> None:
         cases = (
-            (self.calibrations, "org.agtxiv.contribution_calibration", "calibration"),
+            (self.calibrations, "org.agtxiv.scientific_claim_calibration", "calibration"),
             (self.support, "org.agtxiv.claim_support_association", "support"),
         )
         for fixtures, target_kind, label in cases:
@@ -143,12 +172,12 @@ class ContributionClaimValidationTests(unittest.TestCase):
                 switched = copy.deepcopy(first)
                 switched["record_revision"] = 2
                 switched["supersedes"] = validator.immutable_record_ref(first, target_kind)
-                switched["contribution_ref"] = copy.deepcopy(fixtures[1]["contribution_ref"])
-                switched["contribution_ref"]["target_revision"] = 2
+                switched["scientific_claim_ref"] = copy.deepcopy(fixtures[1]["scientific_claim_ref"])
+                switched["scientific_claim_ref"]["target_revision"] = 2
                 self.rehash_external(switched)
                 self.assertEqual(validator.validate_supersedes([first, switched], target_kind), [])
                 errors = validator.validate_association_identity([first, switched], label)
-                self.assertTrue(any("cannot switch ContributionClaim identity" in error for error in errors))
+                self.assertTrue(any("cannot switch contribution-role ScientificClaim identity" in error for error in errors))
 
     def test_embedded_verification_or_support_is_rejected(self) -> None:
         claims = copy.deepcopy(self.claims)
@@ -157,14 +186,14 @@ class ContributionClaimValidationTests(unittest.TestCase):
 
     def test_missing_perfect_graph_hypothesis_is_rejected(self) -> None:
         claims = copy.deepcopy(self.claims)
-        claim = next(row for row in claims if row["id"].endswith("2607-perfect-graph-closed-form"))
+        claim = next(row for row in claims if row["id"].endswith(":perfect-graph-closed-form"))
         claim["scope_hints"] = [hint for hint in claim["scope_hints"] if "perfect frustration graph" not in hint]
         self.rehash_claim(claim)
         self.assertTrue(any("both no-active-dependency and perfect-graph hypotheses" in error for error in self.validate(claims=claims)))
 
     def test_np_complete_overstatement_is_rejected(self) -> None:
         claims = copy.deepcopy(self.claims)
-        claim = next(row for row in claims if row["id"].endswith("2602-rsmp-np-hardness"))
+        claim = next(row for row in claims if row["id"].endswith(":reduced-stabilizer-membership-np-hardness"))
         claim["normalized_statement"] = claim["normalized_statement"].replace("NP-hard", "NP-complete")
         self.rehash_claim(claim)
         self.assertTrue(any("must state NP-hard, not NP-complete" in error for error in self.validate(claims=claims)))
@@ -177,12 +206,12 @@ class ContributionClaimValidationTests(unittest.TestCase):
         self.assertTrue(any("does not aggregate from all facets" in error or "does not permit COMPLETE" in error for error in self.validate(support=support)))
 
     def test_combined_rom_claim_maps_definition_monotonicity_estimator_and_bound_facets(self) -> None:
-        claim = next(row for row in self.claims if row["id"].endswith("1609-rom-monotone-estimator"))
+        claim = next(row for row in self.claims if row["id"].endswith(":rom-monotone-estimator"))
         self.assertEqual(
             {facet["facet_id"] for facet in claim["facets"]},
             {"facet:rom-definition", "facet:rom-monotonicity", "facet:gk-estimator", "facet:quadratic-sample-bound"},
         )
-        support = next(row for row in self.support if row["id"].endswith("1609-rom-monotone-estimator"))
+        support = next(row for row in self.support if row["scientific_claim_ref"]["target_id"].endswith(":rom-monotone-estimator"))
         outcomes = {item["facet_id"]: item["coverage"] for item in support["facet_outcomes"]}
         self.assertEqual(outcomes["facet:rom-definition"], "COMPLETE")
         self.assertEqual(outcomes["facet:rom-monotonicity"], "COMPLETE")
@@ -191,10 +220,10 @@ class ContributionClaimValidationTests(unittest.TestCase):
 
     def test_body_enriched_primary_calibrations_use_partial_overlap(self) -> None:
         expected = {
-            "contribution-calibration:2602-vrep-algorithm-runtime",
-            "contribution-calibration:2602-rsmp-np-hardness",
-            "contribution-calibration:1307-wigner-sum-negativity",
-            "contribution-calibration:1609-rom-monotone-estimator",
+            "scientific-claim-calibration:2602-vrep-algorithm-runtime",
+            "scientific-claim-calibration:2602-rsmp-np-hardness",
+            "scientific-claim-calibration:1307-wigner-sum-negativity",
+            "scientific-claim-calibration:1609-rom-monotone-estimator",
         }
         actual = {
             record["id"]
@@ -204,37 +233,37 @@ class ContributionClaimValidationTests(unittest.TestCase):
         self.assertTrue(expected <= actual)
         self.assertTrue(all(record["relation_direction"] == "SOURCE_RELATIVE_TO_NORMALIZED_CLAIM" for record in self.calibrations))
         by_id = {record["id"]: record for record in self.calibrations}
-        self.assertEqual(by_id["contribution-calibration:2607-sign-relaxation-exactness"]["primary_to_normalized_relation"], "BROADER_THAN")
+        self.assertEqual(by_id["scientific-claim-calibration:2607-sign-relaxation-exactness"]["primary_to_normalized_relation"], "BROADER_THAN")
         for calibration_id in (
-            "contribution-calibration:1307-wigner-sum-negativity",
-            "contribution-calibration:1609-rom-monotone-estimator",
+            "scientific-claim-calibration:1307-wigner-sum-negativity",
+            "scientific-claim-calibration:1609-rom-monotone-estimator",
         ):
             self.assertEqual(by_id[calibration_id]["body_to_normalized_relation"], "PARTIAL_OVERLAP")
 
     def test_thesis_mathclaimir_links_are_topical_and_coverage_none(self) -> None:
-        record = next(row for row in self.support if row["id"].endswith("9705052-thesis-overview"))
+        record = next(row for row in self.support if row["scientific_claim_ref"]["target_id"].endswith(":thesis-overview"))
         self.assertEqual(record["provisional_facet_coverage"], "NONE")
         self.assertTrue(all(link["relationship"] == "TOPICAL_NAVIGATION_ONLY" and link["facet_coverage"] == "NONE" for link in record["links"]))
 
     def test_mathclaimir_coexistence_does_not_create_or_promote_contribution(self) -> None:
         math_claim = validator.load_jsonl(validator.ROOT / "Stabilizerness/MathClaimIRRegistry/claims/stabilizer-codes-and-quantum-error-correction.jsonl")[0]
-        self.assertFalse(validator.is_contribution_record(math_claim))
-        self.assertNotEqual(math_claim["id"], "claim:contribution:9705052-thesis-overview")
+        self.assertFalse(validator.is_contribution_role_record(math_claim))
+        self.assertNotEqual(math_claim["id"], "claim:stabilizer-codes-and-quantum-error-correction:thesis-overview")
 
-    def test_contribution_claim_is_recursively_rejected_from_math_dependency_dag(self) -> None:
+    def test_scientific_claim_is_recursively_rejected_from_math_dependency_dag(self) -> None:
         target_ref = {
-            "target_kind": "org.agtxiv.scientific_claim.contribution",
-            "target_id": "claim:contribution:test",
+            "target_kind": "org.agtxiv.scientific_claim",
+            "target_id": "claim:test-paper:narrative-claim",
         }
         payloads = (
-            {"nodes": ["math-claim-ir:test:ok", "claim:contribution:test"]},
-            {"nodes": [{"id": "claim:contribution:test"}]},
-            {"nodes": {"contribution": {"claim": {"id": "claim:contribution:test"}}}},
+            {"nodes": ["math-claim-ir:test:ok", "claim:test-paper:narrative-claim"]},
+            {"nodes": [{"id": "claim:test-paper:narrative-claim"}]},
+            {"nodes": {"contribution": {"claim": {"id": "claim:test-paper:narrative-claim"}}}},
             {"nodes": [target_ref]},
             {"nodes": [{"id": "statement:test:valid", "target_ref": target_ref}]},
             {"nodes": [{"target_kind": "org.agtxiv.claim_ir", "target_id": "math-claim-ir:test:valid", "claim": target_ref}]},
             {"edges": [{"source": {"claim": target_ref}, "target": {"id": "math-claim-ir:test:ok"}}]},
-            {"edges": [{"from": {"claim": {"id": "claim:contribution:test"}}, "to": "math-claim-ir:test:ok"}]},
+            {"edges": [{"from": {"claim": {"id": "claim:test-paper:narrative-claim"}}, "to": "math-claim-ir:test:ok"}]},
         )
         for payload in payloads:
             with self.subTest(payload=payload):
@@ -267,7 +296,7 @@ class ContributionClaimValidationTests(unittest.TestCase):
 
     def test_thesis_cannot_be_promoted_to_result_or_proof_speech_act(self) -> None:
         claims = copy.deepcopy(self.claims)
-        claim = next(row for row in claims if row["id"].endswith("9705052-thesis-overview"))
+        claim = next(row for row in claims if row["id"].endswith(":thesis-overview"))
         claim["contribution_kind"] = "org.agtxiv.contribution.result"
         claim["source_characterization"]["speech_act"] = "org.agtxiv.speech_act.proves"
         self.rehash_claim(claim)

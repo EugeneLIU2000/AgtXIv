@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/scientific-claim-calibration-record/1.1.0",
+  "title": "AgtXIv ScientificClaimCalibrationRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "record_revision",
+    "supersedes",
+    "produced_at",
+    "scientific_claim_ref",
+    "relation_direction",
+    "primary_to_normalized_relation",
+    "body_to_normalized_relation",
+    "calibration_stage",
+    "reason_codes",
+    "content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.scientific-claim-calibration-record/1.1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^scientific-claim-calibration:"
+    },
+    "record_revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Append-only revision of this calibration identity; it must equal scientific_claim_ref.target_revision, and target_id cannot change across revisions."
+    },
+    "supersedes": {
+      "oneOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/target-ref/1.0.0"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "produced_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scientific_claim_ref": {
+      "$ref": "https://agtxiv.org/schema/target-ref/1.0.0"
+    },
+    "relation_direction": {
+      "const": "SOURCE_RELATIVE_TO_NORMALIZED_CLAIM",
+      "description": "The source occurrence or grouped source spans are classified relative to the normalized contribution-role ScientificClaim."
+    },
+    "primary_to_normalized_relation": {
+      "$ref": "#/$defs/relation"
+    },
+    "body_to_normalized_relation": {
+      "$ref": "#/$defs/relation"
+    },
+    "calibration_stage": {
+      "enum": [
+        "NARRATIVE_CALIBRATED",
+        "BODY_LOCATED",
+        "SUPPORT_CLASSIFIED",
+        "ATOMIC_AUDIT_COMPLETED"
+      ]
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9_]+$"
+      }
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "relation": {
+      "description": "Let S be the cited source proposition (or conjunction of grouped spans) and N the normalized claim. EQUIVALENT means S entails N and N entails S with the same facets. CONSERVATIVE_PARAPHRASE preserves the source assertion without adding a facet and permits terminology normalization or explicit conservative weakening (S entails N). BROADER_THAN means S entails N but N does not entail S because S asserts additional cases or scope. NARROWER_THAN means N entails S but S does not entail N because S has fewer cases or stronger conditions. PARTIAL_OVERLAP means neither straightforwardly entails the other, including different asserted facets. UNRESOLVED means no justified ordering is available.",
+      "oneOf": [
+        {
+          "const": "EQUIVALENT"
+        },
+        {
+          "const": "CONSERVATIVE_PARAPHRASE"
+        },
+        {
+          "const": "BROADER_THAN"
+        },
+        {
+          "const": "NARROWER_THAN"
+        },
+        {
+          "const": "PARTIAL_OVERLAP"
+        },
+        {
+          "const": "UNRESOLVED"
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate ContributionClaim registries and the seven source-audit fixtures."""
+"""Validate ScientificClaim registries and the seven source-audit fixtures."""
 from __future__ import annotations
 
 import argparse
@@ -15,14 +15,14 @@ import jsonschema
 from referencing import Registry, Resource
 
 ROOT = Path(__file__).resolve().parents[1]
-CLAIMS = ROOT / "Stabilizerness/ScientificClaimRegistry/contributions/contribution-claims.jsonl"
-CALIBRATIONS = ROOT / "Stabilizerness/ExternalRecordRegistry/contribution-calibrations/contribution-calibrations.jsonl"
-SUPPORT = ROOT / "Stabilizerness/ExternalRecordRegistry/claim-support-associations/contribution-support.jsonl"
+CLAIMS = ROOT / "Stabilizerness/ScientificClaimRegistry/claims/contribution-role-scientific-claims.jsonl"
+CALIBRATIONS = ROOT / "Stabilizerness/ExternalRecordRegistry/scientific-claim-calibrations/scientific-claim-calibrations.jsonl"
+SUPPORT = ROOT / "Stabilizerness/ExternalRecordRegistry/claim-support-associations/scientific-claim-support.jsonl"
 TARGET_REF_SCHEMA = ROOT / "schemas/target-ref.schema.json"
 PROFILE = ROOT / "schemas/record-canonical-json-v1.profile.json"
 SCHEMAS = {
-    "agtxiv.contribution-claim/1.1.0": ROOT / "Stabilizerness/ScientificClaimRegistry/schema/contribution-claim.schema.json",
-    "agtxiv.contribution-calibration-record/1.1.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/contribution-calibration-record.schema.json",
+    "agtxiv.scientific-claim/1.1.0": ROOT / "Stabilizerness/ScientificClaimRegistry/schema/scientific-claim.schema.json",
+    "agtxiv.scientific-claim-calibration-record/1.1.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/scientific-claim-calibration-record.schema.json",
     "agtxiv.claim-support-association/1.1.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/claim-support-association.schema.json",
 }
 SET_VALUED_KEYS = {"claim_ir_members", "contribution_tags", "links", "reason_codes", "scope_hints"}
@@ -100,7 +100,7 @@ def profile_ref() -> dict[str, str]:
 
 def semantic_payload(claim: dict[str, Any]) -> dict[str, Any]:
     keys = (
-        "paper_id", "role", "granularity", "contribution_kind", "contribution_tags",
+        "paper_id", "claim_role", "granularity", "contribution_kind", "contribution_tags",
         "source_characterization", "normalized_statement", "scope_hints", "facets",
     )
     return {key: claim[key] for key in keys}
@@ -139,14 +139,14 @@ def nested_forbidden(value: Any, path: str = "") -> list[str]:
     return errors
 
 
-def is_contribution_record(record: dict[str, Any]) -> bool:
-    return record.get("schema") == "agtxiv.contribution-claim/1.1.0" and record.get("role") == "CONTRIBUTION" and record.get("granularity") == "NARRATIVE_ATOMIC"
+def is_contribution_role_record(record: dict[str, Any]) -> bool:
+    return record.get("schema") == "agtxiv.scientific-claim/1.1.0" and record.get("claim_role") == "CONTRIBUTION" and record.get("granularity") == "NARRATIVE_ATOMIC"
 
 
-def contribution_target_ref(claim: dict[str, Any], component_path: str | None = None, artifact: bool = True) -> dict[str, Any]:
+def scientific_claim_target_ref(claim: dict[str, Any], component_path: str | None = None, artifact: bool = True) -> dict[str, Any]:
     return {
-        "target_kind": "org.agtxiv.scientific_claim.contribution",
-        "type_schema": {"uri": "https://agtxiv.org/schema/contribution-claim/1.1.0", "content_hash": file_hash(SCHEMAS["agtxiv.contribution-claim/1.1.0"])},
+        "target_kind": "org.agtxiv.scientific_claim",
+        "type_schema": {"uri": "https://agtxiv.org/schema/scientific-claim/1.1.0", "content_hash": file_hash(SCHEMAS["agtxiv.scientific-claim/1.1.0"])},
         "target_id": claim["id"], "target_revision": claim["record_revision"], "target_content_hash": claim["content_hash"],
         "target_artifact": copy.deepcopy(claim["artifact"]) if artifact else None,
         "component_path": component_path, "claim_ir": None, "claim_ir_members": [],
@@ -197,8 +197,8 @@ def validate_dependency_payload(payload: Any, label: str = "dependency payload")
         if not isinstance(identifier, str):
             errors.append(f"{label}: mathematical DAG node reference has no string ID")
             return
-        if identifier.startswith("claim:contribution:") or target_kind == "org.agtxiv.scientific_claim.contribution":
-            errors.append(f"{label}: ContributionClaim cannot be a MathClaimDependencyDAG node: {identifier}")
+        if identifier.startswith("claim:") or target_kind == "org.agtxiv.scientific_claim":
+            errors.append(f"{label}: ScientificClaim cannot be a MathClaimDependencyDAG node: {identifier}")
             return
         if target_kind is not None:
             prefix = SUPPORTED_TARGET_KINDS.get(target_kind)
@@ -259,18 +259,35 @@ def validate_dependency_payload(payload: Any, label: str = "dependency payload")
     return errors
 
 
+def validate_all_scientific_claims(root: Path) -> list[str]:
+    """Validate every generic-manifest claim file against the unified schema."""
+    errors: list[str] = []
+    manifest = json.loads((root / "Stabilizerness/ScientificClaimRegistry/manifest.json").read_text())
+    schema = json.loads(SCHEMAS["agtxiv.scientific-claim/1.1.0"].read_text())
+    target_schema = json.loads(TARGET_REF_SCHEMA.read_text())
+    registry = Registry().with_resource(target_schema["$id"], Resource.from_contents(target_schema))
+    validator = jsonschema.Draft202012Validator(schema, registry=registry, format_checker=jsonschema.FormatChecker())
+    for relative in manifest.get("claim_files", []):
+        for index, row in enumerate(load_jsonl(root / relative), 1):
+            try:
+                validator.validate(row)
+            except jsonschema.ValidationError as exc:
+                errors.append(f"{relative} record {index}: unified ScientificClaim schema validation failed: {exc.message}")
+    return errors
+
+
 def validate_manifest_discovery(root: Path) -> list[str]:
     errors: list[str] = []
     scientific = json.loads((root / "Stabilizerness/ScientificClaimRegistry/manifest.json").read_text())
     external = json.loads((root / "Stabilizerness/ExternalRecordRegistry/manifest.json").read_text())
     expected = (
         (scientific, "object_files", str(CLAIMS.relative_to(ROOT))),
-        (scientific, "schema_files", str(SCHEMAS["agtxiv.contribution-claim/1.1.0"].relative_to(ROOT))),
+        (scientific, "schema_files", str(SCHEMAS["agtxiv.scientific-claim/1.1.0"].relative_to(ROOT))),
         (scientific, "shared_schema_files", str(TARGET_REF_SCHEMA.relative_to(ROOT))),
         (scientific, "serialization_profile_files", str(PROFILE.relative_to(ROOT))),
-        (external, "contribution_calibration_files", str(CALIBRATIONS.relative_to(ROOT))),
+        (external, "scientific_claim_calibration_files", str(CALIBRATIONS.relative_to(ROOT))),
         (external, "claim_support_association_files", str(SUPPORT.relative_to(ROOT))),
-        (external, "schema_files", str(SCHEMAS["agtxiv.contribution-calibration-record/1.1.0"].relative_to(ROOT))),
+        (external, "schema_files", str(SCHEMAS["agtxiv.scientific-claim-calibration-record/1.1.0"].relative_to(ROOT))),
         (external, "schema_files", str(SCHEMAS["agtxiv.claim-support-association/1.1.0"].relative_to(ROOT))),
         (external, "shared_schema_files", str(TARGET_REF_SCHEMA.relative_to(ROOT))),
     )
@@ -287,8 +304,8 @@ def validate_manifest_discovery(root: Path) -> list[str]:
 
 
 def immutable_record_ref(record: dict[str, Any], target_kind: str) -> dict[str, Any]:
-    if target_kind == "org.agtxiv.scientific_claim.contribution":
-        return contribution_target_ref(record)
+    if target_kind == "org.agtxiv.scientific_claim":
+        return scientific_claim_target_ref(record)
     schema_name = record["schema"]
     schema_path = SCHEMAS[schema_name]
     schema = json.loads(schema_path.read_text())
@@ -328,10 +345,10 @@ def validate_association_identity(records: list[dict[str, Any]], label: str) -> 
         previous = by_key.get((row.get("id"), revision - 1))
         if previous is None:
             continue
-        current_target = row.get("contribution_ref", {}).get("target_id")
-        previous_target = previous.get("contribution_ref", {}).get("target_id")
+        current_target = row.get("scientific_claim_ref", {}).get("target_id")
+        previous_target = previous.get("scientific_claim_ref", {}).get("target_id")
         if current_target != previous_target:
-            errors.append(f"{row.get('id')} revision {revision}: {label} association cannot switch ContributionClaim identity from {previous_target} to {current_target}")
+            errors.append(f"{row.get('id')} revision {revision}: {label} association cannot switch contribution-role ScientificClaim identity from {previous_target} to {current_target}")
     return errors
 
 
@@ -352,10 +369,11 @@ def validate_registry_records(claims: list[dict[str, Any]], calibrations: list[d
             except jsonschema.ValidationError as exc:
                 errors.append(f"{label} {index}: schema validation failed: {exc.message}")
     errors.extend(validate_manifest_discovery(root))
+    errors.extend(validate_all_scientific_claims(root))
     all_records = claims + calibrations + support_records
     keys = [(row.get("id"), row.get("record_revision")) for row in all_records]
     if len(set(keys)) != len(keys):
-        errors.append("duplicate record ID/revision in ContributionClaim vertical slice")
+        errors.append("duplicate record ID/revision in contribution-role ScientificClaim vertical slice")
     global_ids: dict[tuple[str, Any], str] = {}
     for path in root.glob("Stabilizerness/**/*.jsonl"):
         for row in load_jsonl(path):
@@ -369,8 +387,8 @@ def validate_registry_records(claims: list[dict[str, Any]], calibrations: list[d
                 errors.append(f"duplicate global record ID/revision {key}: {global_ids[key]} and {relative}")
             else:
                 global_ids[key] = relative
-    errors.extend(validate_supersedes(claims, "org.agtxiv.scientific_claim.contribution"))
-    errors.extend(validate_supersedes(calibrations, "org.agtxiv.contribution_calibration"))
+    errors.extend(validate_supersedes(claims, "org.agtxiv.scientific_claim"))
+    errors.extend(validate_supersedes(calibrations, "org.agtxiv.scientific_claim_calibration"))
     errors.extend(validate_supersedes(support_records, "org.agtxiv.claim_support_association"))
     errors.extend(validate_association_identity(calibrations, "calibration"))
     errors.extend(validate_association_identity(support_records, "support"))
@@ -380,8 +398,8 @@ def validate_registry_records(claims: list[dict[str, Any]], calibrations: list[d
     source_paper: dict[str, str] = {}
     for claim in claims:
         identifier = claim.get("id", "<missing-id>")
-        if not is_contribution_record(claim):
-            errors.append(f"{identifier}: only explicit ContributionClaim profile records enter this registry collection")
+        if not is_contribution_role_record(claim):
+            errors.append(f"{identifier}: only explicit contribution-role ScientificClaim profile records enter this registry collection")
         forbidden = nested_forbidden(claim)
         if forbidden:
             errors.append(f"{identifier}: embedded lifecycle/evidence/support fields: {forbidden}")
@@ -426,24 +444,24 @@ def validate_registry_records(claims: list[dict[str, Any]], calibrations: list[d
                 for key in SET_VALUED_KEYS & record.keys():
                     if record[key] != canonicalize(record[key], key): errors.append(f"{identifier}: set-valued {key} is not in canonical order")
             except ValueError as exc: errors.append(f"{identifier}: canonicalization failed: {exc}")
-            ref = record.get("contribution_ref", {}); key = (ref.get("target_id"), ref.get("target_revision"))
+            ref = record.get("scientific_claim_ref", {}); key = (ref.get("target_id"), ref.get("target_revision"))
             if record.get("record_revision") != ref.get("target_revision"):
-                errors.append(f"{identifier}: {label} record revision must equal its ContributionClaim target revision")
-            if key in refs: errors.append(f"duplicate {label} for ContributionClaim revision {key}")
+                errors.append(f"{identifier}: {label} record revision must equal its contribution-role ScientificClaim target revision")
+            if key in refs: errors.append(f"duplicate {label} for contribution-role ScientificClaim revision {key}")
             refs.add(key); claim = claim_by_key.get(key)
-            if claim is None: errors.append(f"{identifier}: unresolved ContributionClaim TargetRef {key}")
-            elif ref != contribution_target_ref(claim): errors.append(f"{identifier}: ContributionClaim TargetRef is not exact and canonical")
+            if claim is None: errors.append(f"{identifier}: unresolved contribution-role ScientificClaim TargetRef {key}")
+            elif ref != scientific_claim_target_ref(claim): errors.append(f"{identifier}: contribution-role ScientificClaim TargetRef is not exact and canonical")
     claim_keys = set(claim_by_key)
-    if calibration_refs != claim_keys: errors.append("every ContributionClaim revision must have exactly one calibration record")
-    if support_refs != claim_keys: errors.append("every ContributionClaim revision must have exactly one support association")
+    if calibration_refs != claim_keys: errors.append("every contribution-role ScientificClaim revision must have exactly one calibration record")
+    if support_refs != claim_keys: errors.append("every contribution-role ScientificClaim revision must have exactly one support association")
 
     targets, target_errors = existing_support_targets(root); errors.extend(target_errors)
-    calibration_by_ref = {(row["contribution_ref"]["target_id"], row["contribution_ref"]["target_revision"]): row for row in calibrations}
+    calibration_by_ref = {(row["scientific_claim_ref"]["target_id"], row["scientific_claim_ref"]["target_revision"]): row for row in calibrations}
     for record in support_records:
-        identifier = record.get("id", "<missing-id>"); cref = record.get("contribution_ref", {})
+        identifier = record.get("id", "<missing-id>"); cref = record.get("scientific_claim_ref", {})
         claim = claim_by_key.get((cref.get("target_id"), cref.get("target_revision")))
         if claim is None: continue
-        if record.get("navigation_basis_ref") != contribution_target_ref(claim, "/facets", artifact=False): errors.append(f"{identifier}: navigation basis must pin the immutable /facets decomposition")
+        if record.get("navigation_basis_ref") != scientific_claim_target_ref(claim, "/facets", artifact=False): errors.append(f"{identifier}: navigation basis must pin the immutable /facets decomposition")
         facets = [facet["facet_id"] for facet in claim.get("facets", [])]; outcomes = record.get("facet_outcomes", [])
         if [item.get("facet_id") for item in outcomes] != facets: errors.append(f"{identifier}: facet outcomes must cover every facet once in declared order")
         positive = {facet: 0 for facet in facets}
@@ -475,8 +493,8 @@ def validate_registry_records(claims: list[dict[str, Any]], calibrations: list[d
 def validate_fixture_audit(claims: list[dict[str, Any]], calibrations: list[dict[str, Any]], support_records: list[dict[str, Any]]) -> list[str]:
     """Seven-fixture source-strength guardrails, separate from registry validation."""
     errors: list[str] = []
-    if len(claims) != 7 or len(calibrations) != 7 or len(support_records) != 7: errors.append("source audit requires exactly seven ContributionClaim fixtures and paired records")
-    claim_by_id = {row.get("id"): row for row in claims}; support_by_id = {row.get("contribution_ref", {}).get("target_id"): row for row in support_records}; calibration_by_id = {row.get("contribution_ref", {}).get("target_id"): row for row in calibrations}
+    if len(claims) != 7 or len(calibrations) != 7 or len(support_records) != 7: errors.append("source audit requires exactly seven contribution-role ScientificClaim fixtures and paired records")
+    claim_by_id = {row.get("id"): row for row in claims}; support_by_id = {row.get("scientific_claim_ref", {}).get("target_id"): row for row in support_records}; calibration_by_id = {row.get("scientific_claim_ref", {}).get("target_id"): row for row in calibrations}
     expected_sources = {
         "arxiv:2607.26154v1": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
         "arxiv:2602.18939v1": "Reference/Predicting magic from very few measurements/pra_version.tex",
@@ -490,30 +508,30 @@ def validate_fixture_audit(claims: list[dict[str, Any]], calibrations: list[dict
             errors.append(f"{claim.get('id')}: fixture paper/source artifact mapping is inconsistent")
     def require(claim_id: str, condition: bool, message: str) -> None:
         if claim_id in claim_by_id and not condition: errors.append(f"{claim_id}: {message}")
-    perfect_id = "claim:contribution:2607-perfect-graph-closed-form"; perfect = claim_by_id.get(perfect_id, {}); perfect_scope = " ".join(perfect.get("scope_hints", [])).lower()
+    perfect_id = "claim:graph-theoretic-nonstabilizerness:perfect-graph-closed-form"; perfect = claim_by_id.get(perfect_id, {}); perfect_scope = " ".join(perfect.get("scope_hints", [])).lower()
     require(perfect_id, "no active dependencies" in perfect_scope and "perfect frustration graph" in perfect_scope, "both no-active-dependency and perfect-graph hypotheses are mandatory")
-    hard_id = "claim:contribution:2602-rsmp-np-hardness"; hard = claim_by_id.get(hard_id, {}); hard_text = (hard.get("normalized_statement", "") + " " + " ".join(hard.get("scope_hints", []))).lower()
+    hard_id = "claim:predicting-magic-from-very-few-measurements:reduced-stabilizer-membership-np-hardness"; hard = claim_by_id.get(hard_id, {}); hard_text = (hard.get("normalized_statement", "") + " " + " ".join(hard.get("scope_hints", []))).lower()
     require(hard_id, "np-hard" in hard_text and "np-complete" not in hard.get("normalized_statement", "").lower(), "must state NP-hard, not NP-complete"); require(hard_id, "p != np" in hard_text, "the no-polynomial-time consequence must retain P != NP")
-    wigner_id = "claim:contribution:1307-wigner-sum-negativity"; wigner = claim_by_id.get(wigner_id, {}); require(wigner_id, "odd prime" in " ".join(wigner.get("scope_hints", [])).lower(), "odd-prime-dimensional scope is mandatory")
-    rom_id = "claim:contribution:1609-rom-monotone-estimator"; rom = claim_by_id.get(rom_id, {}); rom_text = (rom.get("normalized_statement", "") + " " + " ".join(rom.get("scope_hints", []))).lower()
+    wigner_id = "claim:resource-theory-of-stabilizer-computation:wigner-sum-negativity"; wigner = claim_by_id.get(wigner_id, {}); require(wigner_id, "odd prime" in " ".join(wigner.get("scope_hints", [])).lower(), "odd-prime-dimensional scope is mandatory")
+    rom_id = "claim:robustness-of-magic:rom-monotone-estimator"; rom = claim_by_id.get(rom_id, {}); rom_text = (rom.get("normalized_statement", "") + " " + " ".join(rom.get("scope_hints", []))).lower()
     require(rom_id, "estimator" in rom_text and "quadratic" in rom_text, "must identify the specified estimator and quadratic sample bound"); require(rom_id, "equals classical simulation runtime" not in rom_text, "must not assert generic runtime equality")
     body_enriched_ids = (
-        "claim:contribution:2602-vrep-algorithm-runtime",
+        "claim:predicting-magic-from-very-few-measurements:v-representation-algorithm-runtime",
         hard_id,
         wigner_id,
         rom_id,
     )
     for claim_id in body_enriched_ids:
         require(claim_id, calibration_by_id.get(claim_id, {}).get("primary_to_normalized_relation") == "PARTIAL_OVERLAP", "body-enriched facets require conservative PARTIAL_OVERLAP calibration")
-    sign_id = "claim:contribution:2607-sign-relaxation-exactness"
+    sign_id = "claim:graph-theoretic-nonstabilizerness:sign-relaxation-exactness"
     require(sign_id, calibration_by_id.get(sign_id, {}).get("primary_to_normalized_relation") == "BROADER_THAN", "the full primary source is BROADER_THAN the selected sign-relaxation claim facets")
     for claim_id in (wigner_id, rom_id):
         require(claim_id, calibration_by_id.get(claim_id, {}).get("body_to_normalized_relation") == "PARTIAL_OVERLAP", "grouped body spans omit normalized facets and require PARTIAL_OVERLAP calibration")
-    thesis_id = "claim:contribution:9705052-thesis-overview"; thesis = claim_by_id.get(thesis_id, {}); thesis_support = support_by_id.get(thesis_id, {}); thesis_calibration = calibration_by_id.get(thesis_id, {})
+    thesis_id = "claim:stabilizer-codes-and-quantum-error-correction:thesis-overview"; thesis = claim_by_id.get(thesis_id, {}); thesis_support = support_by_id.get(thesis_id, {}); thesis_calibration = calibration_by_id.get(thesis_id, {})
     require(thesis_id, thesis.get("contribution_kind") == "org.agtxiv.contribution.synthesis" and thesis.get("source_characterization", {}).get("speech_act") == "org.agtxiv.speech_act.reviews", "thesis negative control cannot be promoted to a theorem contribution")
     require(thesis_id, thesis_support.get("provisional_facet_coverage") == "NONE" and all(link.get("relationship") == "TOPICAL_NAVIGATION_ONLY" and link.get("facet_coverage") == "NONE" for link in thesis_support.get("links", [])), "thesis MathClaimIR coexistence must remain non-dispositive topical navigation")
     require(thesis_id, thesis_calibration.get("body_to_normalized_relation") == "PARTIAL_OVERLAP", "thesis body span only partially overlaps the overview narrative")
-    for claim_id in ("claim:contribution:2602-vrep-algorithm-runtime", wigner_id, rom_id, thesis_id): require(claim_id, support_by_id.get(claim_id, {}).get("provisional_facet_coverage") != "COMPLETE", "audit does not permit COMPLETE existing atomic support")
+    for claim_id in ("claim:predicting-magic-from-very-few-measurements:v-representation-algorithm-runtime", wigner_id, rom_id, thesis_id): require(claim_id, support_by_id.get(claim_id, {}).get("provisional_facet_coverage") != "COMPLETE", "audit does not permit COMPLETE existing atomic support")
     return errors
 
 
@@ -525,7 +543,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument("--check", action="store_true", help="validate without modifying files (the default behavior)"); parser.parse_args()
     claims = load_jsonl(CLAIMS); calibrations = load_jsonl(CALIBRATIONS); support_records = load_jsonl(SUPPORT); errors = validate_records(claims, calibrations, support_records)
     for error in errors: print(error)
-    print(f"contribution_claims={len(claims)} calibrations={len(calibrations)} support_associations={len(support_records)} errors={len(errors)}")
+    print(f"scientific_claims={len(claims)} calibrations={len(calibrations)} support_associations={len(support_records)} errors={len(errors)}")
     return 1 if errors else 0
 
 

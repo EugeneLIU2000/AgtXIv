@@ -270,13 +270,15 @@ LLM extraction
 
 Do not fine-tune a model in v1.
 
-## 4.0 ContributionClaim vertical slice
+## 4.0 Contribution-role ScientificClaim vertical slice
 
-`ContributionClaim` is the source-grounded narrative entry point for selecting
-which paper-packaged result to decompose. It is a constrained `CONTRIBUTION`,
-`NARRATIVE_ATOMIC` role/profile of `ScientificClaim`, stored in
-`ScientificClaimRegistry` with a `claim:` ID. It is not a proof object and must
-never enter `MathClaimDependencyDAG(q)` in place of `MathClaimIR`.
+`ScientificClaim` with `claim_role: CONTRIBUTION` is the source-grounded narrative
+entry point for selecting which paper-packaged result to decompose. It uses the
+`NARRATIVE_ATOMIC` profile and a neutral `claim:<paper-slug>:<descriptive-slug>`
+identity in `ScientificClaimRegistry`; the role does not create a separate entity or
+target kind. It is not a proof object and must never enter
+`MathClaimDependencyDAG(q)` in place of `MathClaimIR` or
+`MathematicalPropositionIR`.
 
 Required pipeline:
 
@@ -300,12 +302,12 @@ Milestone checklist:
 - [x] validate source hashes/ranges/text, manifests, canonical TargetRefs, globally unique occurrence IDs, exact target artifacts, and append-only `(id, record_revision)` continuity;
 - [x] retain one calibration and support generation per claim revision, with matching revisions and exact supersession references;
 - [x] enforce source-strength guardrails plus generic MathClaimIR/non-promotion and mathematical-target-kind/ID-family DAG invariants;
-- [ ] connect selected ContributionClaims to query-specific `PaperTheoryDelta` generation;
+- [ ] connect selected contribution-role ScientificClaims to query-specific `PaperTheoryDelta` generation;
 - [ ] persist the first query-relative decomposition and resulting `QueryResolution`;
 - [ ] expose contribution-to-atomic support coverage in the verification viewer without presenting it as proof status.
 
 The 1,645 provisional extractor candidates remain candidate inventory. They are
-not accepted ContributionClaims and must pass calibration before promotion.
+not accepted contribution-role ScientificClaims and must pass calibration before promotion.
 
 ## 4.1 Claim extraction schema
 

@@ -420,12 +420,12 @@ Extraction begins with a deliberately coarse discourse pass. This pass identifie
 - `FORMAL_ATOMIC`: one load-bearing mathematical proposition, definition, assumption, convention, equation, or semantic component suitable for query-relative decomposition;
 - `NARRATIVE_ATOMIC`: one source-grounded unit of what a paper presents as a principal result, method, construction, model, finding, synthesis, qualification, or limitation, possibly realized in several source locations.
 
-A `ContributionClaim` is the constrained `role: CONTRIBUTION`, `granularity: NARRATIVE_ATOMIC` profile of `ScientificClaim`. It remains in `ScientificClaimRegistry` and uses the same `claim:` identity family. Multiple source realizations may belong to one ContributionClaim, but exactly one occurrence is `PRIMARY`; explicit body occurrences preserve the connection to technical support. A ContributionClaim reports the paper's presentation. It does not encode correctness, novelty, priority, verification status, blockers, evidence, or mutable support links, and it never substitutes for `MathClaimIR` in `MathClaimDependencyDAG(q)`.
+A ScientificClaim with `claim_role: CONTRIBUTION` and `granularity: NARRATIVE_ATOMIC` is the contribution-role narrative profile. `ScientificClaim` is the only paper-level scientific claim identity and type in `ScientificClaimRegistry`; the role is mutable narrative metadata and is deliberately absent from stable `claim:<paper-slug>:<descriptive-slug>` identity. Multiple source realizations may belong to one such ScientificClaim, but exactly one occurrence is `PRIMARY`; explicit body occurrences preserve the connection to technical support. The profile reports the paper's presentation. It does not encode correctness, novelty, priority, verification status, blockers, evidence, or mutable support links, and it never substitutes for `MathClaimIR` in `MathClaimDependencyDAG(q)`.
 
-A second, query-relative decomposition pass expands only a selected ContributionClaim into the source-grounded objects needed for verification:
+A second, query-relative decomposition pass expands only a selected contribution-role ScientificClaim into the source-grounded objects needed for verification:
 
 ```text
-ContributionClaim
+ScientificClaim with claim_role: CONTRIBUTION
 → definitions and typed objects
 → explicit and source-supported implicit assumptions
 → scope, regime, and conventions
@@ -434,7 +434,7 @@ ContributionClaim
 → explicit multi-premise InferenceSteps
 ```
 
-The two granularities remain distinct. A narrative claim records what the paper emphasizes; a formal-atomic claim records one load-bearing proposition or semantic component. Each combined narrative exposes stable named facets. In this vertical slice, `ClaimSupportAssociation` is an immutable navigation mapping from those facets to exact `MathClaimIR` or `MathematicalPropositionIR` TargetRefs; it does not advertise unresolved target kinds. Its provisional facet outcome is pinned to the ContributionClaim's immutable `/facets` basis and is neither eternal global coverage nor mathematical verification. `QueryResolution` later computes final query-relative coverage from the selected decomposition and composite registry snapshot. A ContributionClaim ID is invalid in every `MathClaimDependencyDAG(q)` node slot. Broad paper-wide discovery may remain provisional, while formal-atomic decomposition is required only on the current query frontier. Existing `agtxiv.scientific-claim/1.0.0` formal-atomic records remain valid and require no bulk migration.
+The two granularities remain distinct. A narrative claim records what the paper emphasizes; a formal-atomic claim records one load-bearing proposition or semantic component. Each combined narrative exposes stable named facets. In this vertical slice, `ClaimSupportAssociation` is an immutable navigation mapping from those facets to exact `MathClaimIR` or `MathematicalPropositionIR` TargetRefs; it does not advertise unresolved target kinds. Its provisional facet outcome is pinned to the contribution-role ScientificClaim's immutable `/facets` basis and is neither eternal global coverage nor mathematical verification. `QueryResolution` later computes final query-relative coverage from the selected decomposition and composite registry snapshot. A generic ScientificClaim TargetRef or any `claim:` ID is invalid in every `MathClaimDependencyDAG(q)` node slot; only resolved `MathClaimIR` and `MathematicalPropositionIR` target kinds may enter the mathematical DAG. Broad paper-wide discovery may remain provisional, while formal-atomic decomposition is required only on the current query frontier. Existing `agtxiv.scientific-claim/1.0.0` formal-atomic records remain valid and require no bulk migration.
 
 #### Constrained schema
 
@@ -486,7 +486,7 @@ The expensive offline path is:
 
 ```text
 freeze sources
-→ discover ContributionClaim candidates in Abstract / Introduction / Conclusion / Discussion
+→ discover contribution-role ScientificClaim candidates in Abstract / Introduction / Conclusion / Discussion
 → calibrate repeated narrative realizations to exact source spans
 → locate explicit body support
 → classify support kinds and coverage without implying verification
@@ -1022,7 +1022,7 @@ origin:
 content_hash: sha256:...
 ```
 
-The specialized `ContributionClaim` representation is a constrained ScientificClaim role/profile, not a parallel identity ontology or permanent registry. It uses broad namespaced contribution kinds (`result`, `method`, `construction`, `model`, `empirical_finding`, `computational_finding`, `synthesis`, `qualification`, or `limitation`) and orthogonal namespaced source speech-act, formality, and conditionality fields. Fixture-specific cautions remain record data and validation policy rather than general ontology values.
+The contribution profile is a constrained ScientificClaim role/profile selected by `claim_role: CONTRIBUTION`, not a parallel entity, target kind, identity ontology, or registry. It uses broad namespaced contribution kinds (`result`, `method`, `construction`, `model`, `empirical_finding`, `computational_finding`, `synthesis`, `qualification`, or `limitation`) and orthogonal namespaced source speech-act, formality, and conditionality fields. Fixture-specific cautions remain record data and validation policy rather than general ontology values.
 
 Its semantic hash covers normalized contribution meaning: paper, role and granularity, broad contribution kind and tags, source characterization, normalized statement, canonical set-valued scope hints, and ordered narrative facets. Serialization uses the schema-pinned `agtxiv.record-canonical-json/1.0.0` profile: UTF-8; Unicode NFC and LF normalization; normalized map keys in Unicode code-point order; RFC-8785-compatible literals for the implemented `null`/Boolean/integer/string subset; schema-declared ordered arrays; and canonical-byte sorting with duplicate rejection for declared set arrays. Non-integral numbers are outside this slice, so this implementation does not claim full RFC 8785 number support. Occurrences and provenance, revisions and timestamps, and serialization metadata are excluded from semantic identity. `artifact_hash` detects those fields and omits its own slot plus the subsequently derived record `content_hash`; record `content_hash` then covers the complete record with only its own slot omitted.
 
@@ -1040,11 +1040,11 @@ profile_target: <exact ClaimIR TargetRef with semantic_content_hash>
 content_hash: sha256:...
 ```
 
-Contribution calibration and support are immutable external records rather than fields of the ContributionClaim. Every inward and supersession reference uses the canonical TargetRef of Section 5.1.2, including namespaced `target_kind`, pinned `type_schema`, exact content and artifact addresses, `component_path`, and governing-ClaimIR fields.
+Calibration and support for a contribution-role ScientificClaim are immutable external records rather than fields of the ScientificClaim. Every inward and supersession reference uses the canonical TargetRef of Section 5.1.2, including namespaced `target_kind`, pinned `type_schema`, exact content and artifact addresses, `component_path`, and governing-ClaimIR fields.
 
 ```yaml
-contribution_calibration_record:
-  contribution_ref: <canonical artifact-bearing ContributionClaim TargetRef>
+scientific_claim_calibration_record:
+  scientific_claim_ref: <canonical artifact-bearing contribution-role ScientificClaim TargetRef>
   relation_direction: SOURCE_RELATIVE_TO_NORMALIZED_CLAIM
   primary_to_normalized_relation: EQUIVALENT | CONSERVATIVE_PARAPHRASE | BROADER_THAN | NARROWER_THAN | PARTIAL_OVERLAP | UNRESOLVED
   body_to_normalized_relation: EQUIVALENT | CONSERVATIVE_PARAPHRASE | BROADER_THAN | NARROWER_THAN | PARTIAL_OVERLAP | UNRESOLVED
@@ -1052,7 +1052,7 @@ contribution_calibration_record:
 
 claim_support_association:
   association_scope: IMMUTABLE_FACET_NAVIGATION_NOT_QUERY_COVERAGE
-  contribution_ref: <canonical artifact-bearing ContributionClaim TargetRef>
+  scientific_claim_ref: <canonical artifact-bearing contribution-role ScientificClaim TargetRef>
   navigation_basis_ref: <semantic-only TargetRef to /facets of the same immutable revision>
   facet_outcomes:
     - {facet_id: facet:..., coverage: COMPLETE | PARTIAL | NONE}
@@ -1064,9 +1064,9 @@ claim_support_association:
       relationship: DIRECT_ATOMIC_SUPPORT | SUPPORTING_ASSUMPTION | FRAMEWORK_SUPPORT | TOPICAL_NAVIGATION_ONLY
 ```
 
-The relation direction is normative. Let $S$ be the proposition expressed by the cited source occurrence (or the conjunction of the grouped source spans) and $N$ the normalized ContributionClaim. `SOURCE_RELATIVE_TO_NORMALIZED_CLAIM` always classifies $S$ relative to $N$: `EQUIVALENT` requires $S \models N$ and $N \models S$ with the same asserted facets; `CONSERVATIVE_PARAPHRASE` requires that $N$ preserve the source assertion without adding an independently asserted facet, allowing only terminology normalization or an explicit conservative weakening ($S \models N$); `BROADER_THAN` means $S \models N$ but $N \not\models S$ because the source asserts additional cases or scope; `NARROWER_THAN` means $N \models S$ but $S \not\models N$ because the source is restricted to fewer cases or stronger conditions; and `PARTIAL_OVERLAP` means neither straightforwardly entails the other, including when $S$ and $N$ assert different facets. `UNRESOLVED` records that no such judgment is yet justified. Thus an abstract occurrence and a body-enriched normalized narrative use `PARTIAL_OVERLAP` whenever each contains a facet absent from the other; surface phrasing or relative text length does not determine the ordering. Calibration stage records process maturation independently of coverage outcome: a completed atomic audit may conclude `NONE`, `PARTIAL`, or `COMPLETE`. `TOPICAL_NAVIGATION_ONLY` links have facet coverage `NONE`; in particular, technical MathClaimIR coexistence cannot promote a synthesis ContributionClaim. Final coverage is query-relative and belongs to a future decomposition/snapshot-scoped `QueryResolution`, not this navigation association. None of these fields is truth or verification status, and there is no `contribution_verified` Boolean.
+The relation direction is normative. Let $S$ be the proposition expressed by the cited source occurrence (or the conjunction of the grouped source spans) and $N$ the normalized contribution-role ScientificClaim. `SOURCE_RELATIVE_TO_NORMALIZED_CLAIM` always classifies $S$ relative to $N$: `EQUIVALENT` requires $S \models N$ and $N \models S$ with the same asserted facets; `CONSERVATIVE_PARAPHRASE` requires that $N$ preserve the source assertion without adding an independently asserted facet, allowing only terminology normalization or an explicit conservative weakening ($S \models N$); `BROADER_THAN` means $S \models N$ but $N \not\models S$ because the source asserts additional cases or scope; `NARROWER_THAN` means $N \models S$ but $S \not\models N$ because the source is restricted to fewer cases or stronger conditions; and `PARTIAL_OVERLAP` means neither straightforwardly entails the other, including when $S$ and $N$ assert different facets. `UNRESOLVED` records that no such judgment is yet justified. Thus an abstract occurrence and a body-enriched normalized narrative use `PARTIAL_OVERLAP` whenever each contains a facet absent from the other; surface phrasing or relative text length does not determine the ordering. Calibration stage records process maturation independently of coverage outcome: a completed atomic audit may conclude `NONE`, `PARTIAL`, or `COMPLETE`. `TOPICAL_NAVIGATION_ONLY` links have facet coverage `NONE`; in particular, technical MathClaimIR coexistence cannot promote a synthesis contribution-role ScientificClaim. Final coverage is query-relative and belongs to a future decomposition/snapshot-scoped `QueryResolution`, not this navigation association. None of these fields is truth or verification status, and there is no `contribution_verified` Boolean.
 
-All three vertical-slice record types are append-only. Their global record key is `(id, record_revision)`, so successive revisions retain one stable identity and coexist in registry history; revision $r>1$ must supersede the exact immutable TargetRef for revision $r-1$. Occurrence IDs, by contrast, are globally unique event IDs and cannot be reused by another record revision. For each ContributionClaim `(id, record_revision)` there is exactly one calibration record and one support association whose own `record_revision` equals the pinned claim revision. A calibration or support association identity remains attached to the same ContributionClaim identity across all of its revisions and cannot switch `contribution_ref.target_id`. Historical association generations remain present and continue to reference their historical claim revisions rather than being rewritten to the latest revision.
+All three vertical-slice record types are append-only. Their global record key is `(id, record_revision)`, so successive revisions retain one stable identity and coexist in registry history; revision $r>1$ must supersede the exact immutable TargetRef for revision $r-1$. Occurrence IDs, by contrast, are globally unique event IDs and cannot be reused by another record revision. For each contribution-role ScientificClaim `(id, record_revision)` there is exactly one calibration record and one support association whose own `record_revision` equals the pinned claim revision. A calibration or support association identity remains attached to the same ScientificClaim identity across all of its revisions and cannot switch `scientific_claim_ref.target_id`. Historical association generations remain present and continue to reference their historical claim revisions rather than being rewritten to the latest revision.
 
 Verification and lifecycle labels are not stored in either identity record. They are derived in external status views.
 
@@ -4099,7 +4099,7 @@ Every normative object has exactly one authoritative home. Each registry's own m
 
 | Objects | Authoritative home |
 |---|---|
-| `ScientificClaim` (including the `ContributionClaim` role/profile), `ProfileAssociationRecord` | `ScientificClaimRegistry` |
+| `ScientificClaim` (including records with `claim_role: CONTRIBUTION`), `ProfileAssociationRecord` | `ScientificClaimRegistry` |
 | frozen raw/expanded source artifacts, source manifests, and `SourceAnchor` | `SourceRegistry` |
 | `CandidateRelation`, validation records, `AcceptedRelation` | `RelationRegistry` |
 | `MathClaimIR`, `MathematicalPropositionIR`, normalization, decomposition, semantic revision, migration | `MathClaimIRRegistry` |
