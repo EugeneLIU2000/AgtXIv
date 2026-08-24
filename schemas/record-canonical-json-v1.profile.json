@@ -1,0 +1,23 @@
+{
+  "schema": "agtxiv.serialization-profile/1.0.0",
+  "id": "agtxiv.record-canonical-json/1.0.0",
+  "scope": "ContributionClaim vertical-slice records containing JSON null, booleans, integers, strings, arrays, and objects; non-integral numbers are outside this implemented subset",
+  "encoding": "UTF-8",
+  "string_normalization": "Unicode NFC after CRLF and CR are normalized to LF",
+  "object_order": "normalized keys in Unicode code-point order; normalized duplicate keys are rejected",
+  "primitive_serialization": "RFC-8785-compatible JSON literals for the supported null/boolean/integer/string subset",
+  "set_valued_array_keys": [
+    "claim_ir_members",
+    "contribution_tags",
+    "links",
+    "reason_codes",
+    "scope_hints"
+  ],
+  "ordered_array_keys": [
+    "facets",
+    "facet_outcomes",
+    "occurrences"
+  ],
+  "set_rule": "normalize each member, sort by canonical encoded bytes, and reject canonical duplicates",
+  "hash_algorithm": "SHA-256"
+}

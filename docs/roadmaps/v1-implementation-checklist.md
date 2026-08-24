@@ -270,6 +270,43 @@ LLM extraction
 
 Do not fine-tune a model in v1.
 
+## 4.0 ContributionClaim vertical slice
+
+`ContributionClaim` is the source-grounded narrative entry point for selecting
+which paper-packaged result to decompose. It is a constrained `CONTRIBUTION`,
+`NARRATIVE_ATOMIC` role/profile of `ScientificClaim`, stored in
+`ScientificClaimRegistry` with a `claim:` ID. It is not a proof object and must
+never enter `MathClaimDependencyDAG(q)` in place of `MathClaimIR`.
+
+Required pipeline:
+
+```text
+Abstract / Introduction / Conclusion / Discussion candidate discovery
+→ source calibration across repeated realizations
+→ explicit body support locating
+→ query-relative FORMAL_ATOMIC decomposition
+→ canonical reusable theory alignment
+→ load-bearing verification
+→ PaperTheoryDelta / QueryResolution persistence
+```
+
+Milestone checklist:
+
+- [x] preserve existing `agtxiv.scientific-claim/1.0.0` records without bulk migration;
+- [x] implement the schema-pinned NFC/LF canonical profile for the supported JSON subset, including declared set/ordered arrays and duplicate rejection;
+- [x] add seven exact-source fixtures with one primary and explicit body occurrences;
+- [x] keep calibration and facet-aware navigation mappings in immutable external records pinned to each claim's `/facets` basis;
+- [x] separate completed calibration stage from `NONE`/`PARTIAL`/`COMPLETE` facet outcomes;
+- [x] validate source hashes/ranges/text, manifests, canonical TargetRefs, globally unique occurrence IDs, exact target artifacts, and append-only `(id, record_revision)` continuity;
+- [x] retain one calibration and support generation per claim revision, with matching revisions and exact supersession references;
+- [x] enforce source-strength guardrails plus generic MathClaimIR/non-promotion and mathematical-target-kind/ID-family DAG invariants;
+- [ ] connect selected ContributionClaims to query-specific `PaperTheoryDelta` generation;
+- [ ] persist the first query-relative decomposition and resulting `QueryResolution`;
+- [ ] expose contribution-to-atomic support coverage in the verification viewer without presenting it as proof status.
+
+The 1,645 provisional extractor candidates remain candidate inventory. They are
+not accepted ContributionClaims and must pass calibration before promotion.
+
 ## 4.1 Claim extraction schema
 
 Every extracted claim must record at minimum:

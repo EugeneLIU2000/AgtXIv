@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/claim-support-association/1.1.0",
+  "title": "AgtXIv facet-aware ClaimSupportAssociation",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "supersedes", "produced_at", "association_scope", "contribution_ref", "navigation_basis_ref", "facet_outcomes", "provisional_facet_coverage", "links", "reason_codes", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.claim-support-association/1.1.0"},
+    "id": {"type": "string", "pattern": "^claim-support-association:"},
+    "record_revision": {"type": "integer", "minimum": 1, "description": "Append-only revision of this association identity; it must equal contribution_ref.target_revision, and target_id cannot change across revisions."},
+    "supersedes": {"oneOf": [{"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"}, {"type": "null"}]},
+    "produced_at": {"type": "string", "format": "date-time"},
+    "association_scope": {"const": "IMMUTABLE_FACET_NAVIGATION_NOT_QUERY_COVERAGE"},
+    "contribution_ref": {"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"},
+    "navigation_basis_ref": {"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"},
+    "facet_outcomes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/facetOutcome"}},
+    "provisional_facet_coverage": {"enum": ["COMPLETE", "PARTIAL", "NONE"]},
+    "links": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/link"}},
+    "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z0-9_]+$"}},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "coverage": {"enum": ["COMPLETE", "PARTIAL", "NONE"]},
+    "facetOutcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["facet_id", "coverage"],
+      "properties": {
+        "facet_id": {"type": "string", "pattern": "^facet:[a-z0-9][a-z0-9-]*$"},
+        "coverage": {"$ref": "#/$defs/coverage"}
+      }
+    },
+    "link": {
+      "type": "object", "additionalProperties": false,
+      "required": ["facet_id", "target_ref", "facet_coverage", "relationship"],
+      "properties": {
+        "facet_id": {"type": "string", "pattern": "^facet:[a-z0-9][a-z0-9-]*$"},
+        "target_ref": {"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"},
+        "facet_coverage": {"$ref": "#/$defs/coverage"},
+        "relationship": {"enum": ["DIRECT_ATOMIC_SUPPORT", "SUPPORTING_ASSUMPTION", "FRAMEWORK_SUPPORT", "TOPICAL_NAVIGATION_ONLY"]}
+      }
+    }
+  }
+}

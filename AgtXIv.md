@@ -413,21 +413,28 @@ LLM extraction
 
 The extractor proposes atomic claims, source anchors, symbols, assumptions, and typed relations. It is not allowed to emit an accepted edge.
 
-Extraction begins with a deliberately coarse discourse pass. This pass identifies the small number of claims that the paper presents as central contributions, groups repeated textual realizations in the abstract, introduction, theorem statements, body, appendices, and conclusion, and proposes paper-level epistemic relations such as `supports`, `extends`, `qualifies`, `refutes`, and `background_to`. Discourse claims and realization clusters are extractor-internal staging annotations, not new Registry object types. A realization cluster is only a `candidate_same_as` proposal: lexical or embedding similarity never merges claim identities.
+Extraction begins with a deliberately coarse discourse pass. This pass identifies the small number of claims that the paper presents as central contributions, groups repeated textual realizations in the abstract, introduction, theorem statements, body, appendices, discussion, and conclusion, and proposes paper-level epistemic relations such as `supports`, `extends`, `qualifies`, `refutes`, and `background_to`. Abstract, Introduction, Conclusion, and Discussion are discovery zones, not mandatory locations. A realization cluster is only a `candidate_same_as` proposal until source calibration establishes one narrative identity; lexical or embedding similarity never merges claim identities.
 
-A second, query-relative decomposition pass expands only a selected central claim into the source-grounded objects needed for verification:
+`ScientificClaim` supports two explicit granularities:
+
+- `FORMAL_ATOMIC`: one load-bearing mathematical proposition, definition, assumption, convention, equation, or semantic component suitable for query-relative decomposition;
+- `NARRATIVE_ATOMIC`: one source-grounded unit of what a paper presents as a principal result, method, construction, model, finding, synthesis, qualification, or limitation, possibly realized in several source locations.
+
+A `ContributionClaim` is the constrained `role: CONTRIBUTION`, `granularity: NARRATIVE_ATOMIC` profile of `ScientificClaim`. It remains in `ScientificClaimRegistry` and uses the same `claim:` identity family. Multiple source realizations may belong to one ContributionClaim, but exactly one occurrence is `PRIMARY`; explicit body occurrences preserve the connection to technical support. A ContributionClaim reports the paper's presentation. It does not encode correctness, novelty, priority, verification status, blockers, evidence, or mutable support links, and it never substitutes for `MathClaimIR` in `MathClaimDependencyDAG(q)`.
+
+A second, query-relative decomposition pass expands only a selected ContributionClaim into the source-grounded objects needed for verification:
 
 ```text
-central discourse claim
+ContributionClaim
 → definitions and typed objects
 → explicit and source-supported implicit assumptions
 → scope, regime, and conventions
-→ atomic mathematical or semantic conclusions
+→ FORMAL_ATOMIC mathematical or semantic conclusions
 → candidate intermediate claims and external foundations
 → explicit multi-premise InferenceSteps
 ```
 
-The two granularities remain distinct. A discourse annotation records what the paper emphasizes; an atomic claim records one load-bearing proposition or semantic component. A provisional discourse cluster may point to several candidate atomic `ScientificClaim` occurrences. The existing profile interfaces then associate those claims with `MathClaimIR` or `SemanticContract` records where applicable. Broad paper-wide discovery may remain provisional, while atomic decomposition is required only on the current query frontier.
+The two granularities remain distinct. A narrative claim records what the paper emphasizes; a formal-atomic claim records one load-bearing proposition or semantic component. Each combined narrative exposes stable named facets. In this vertical slice, `ClaimSupportAssociation` is an immutable navigation mapping from those facets to exact `MathClaimIR` or `MathematicalPropositionIR` TargetRefs; it does not advertise unresolved target kinds. Its provisional facet outcome is pinned to the ContributionClaim's immutable `/facets` basis and is neither eternal global coverage nor mathematical verification. `QueryResolution` later computes final query-relative coverage from the selected decomposition and composite registry snapshot. A ContributionClaim ID is invalid in every `MathClaimDependencyDAG(q)` node slot. Broad paper-wide discovery may remain provisional, while formal-atomic decomposition is required only on the current query frontier. Existing `agtxiv.scientific-claim/1.0.0` formal-atomic records remain valid and require no bulk migration.
 
 #### Constrained schema
 
@@ -479,14 +486,15 @@ The expensive offline path is:
 
 ```text
 freeze sources
-→ extract candidate claims
-→ ground candidates to source spans
-→ validate high-value relations
-→ normalize MathClaimIR objects
-→ search formal packages and declarations
-→ build or repair local formal deltas
-→ publish accepted contracts
-→ cache verified query closures
+→ discover ContributionClaim candidates in Abstract / Introduction / Conclusion / Discussion
+→ calibrate repeated narrative realizations to exact source spans
+→ locate explicit body support
+→ classify support kinds and coverage without implying verification
+→ query-relative FORMAL_ATOMIC decomposition
+→ align with canonical reusable theory objects
+→ verify only load-bearing mathematics and semantics
+→ persist PaperTheoryDelta and QueryResolution records
+→ publish accepted contracts and cache verified query closures
 ```
 
 The online query path is:
@@ -990,7 +998,7 @@ The math-first pilot treats `ScientificClaim`, `MathClaimIR`, `MathContract`, `C
 
 ### 5.0 ScientificClaim
 
-A `ScientificClaim` is the stable cross-profile identity of one atomic source occurrence, derived claim, or source-independent proposition. Source anchors are mandatory only for `origin.class: SOURCE_OCCURRENCE`; the record never owns aggregate status or a mutable profile map.
+A `ScientificClaim` is the stable cross-profile identity of a `FORMAL_ATOMIC` or `NARRATIVE_ATOMIC` source-grounded claim, derived claim, or source-independent proposition. `FORMAL_ATOMIC` remains the default interpretation of existing `agtxiv.scientific-claim/1.0.0` records. Source anchors are mandatory only for `origin.class: SOURCE_OCCURRENCE`; the record never owns aggregate status or a mutable profile map.
 
 ```yaml
 schema: agtxiv.scientific-claim/1.0.0
@@ -1014,6 +1022,10 @@ origin:
 content_hash: sha256:...
 ```
 
+The specialized `ContributionClaim` representation is a constrained ScientificClaim role/profile, not a parallel identity ontology or permanent registry. It uses broad namespaced contribution kinds (`result`, `method`, `construction`, `model`, `empirical_finding`, `computational_finding`, `synthesis`, `qualification`, or `limitation`) and orthogonal namespaced source speech-act, formality, and conditionality fields. Fixture-specific cautions remain record data and validation policy rather than general ontology values.
+
+Its semantic hash covers normalized contribution meaning: paper, role and granularity, broad contribution kind and tags, source characterization, normalized statement, canonical set-valued scope hints, and ordered narrative facets. Serialization uses the schema-pinned `agtxiv.record-canonical-json/1.0.0` profile: UTF-8; Unicode NFC and LF normalization; normalized map keys in Unicode code-point order; RFC-8785-compatible literals for the implemented `null`/Boolean/integer/string subset; schema-declared ordered arrays; and canonical-byte sorting with duplicate rejection for declared set arrays. Non-integral numbers are outside this slice, so this implementation does not claim full RFC 8785 number support. Occurrences and provenance, revisions and timestamps, and serialization metadata are excluded from semantic identity. `artifact_hash` detects those fields and omits its own slot plus the subsequently derived record `content_hash`; record `content_hash` then covers the complete record with only its own slot omitted.
+
 Profile association is an immutable external record. A new semantic or computational profile creates another association revision and does not mutate the `ScientificClaim`.
 
 ```yaml
@@ -1027,6 +1039,34 @@ profile_kind: mathematics
 profile_target: <exact ClaimIR TargetRef with semantic_content_hash>
 content_hash: sha256:...
 ```
+
+Contribution calibration and support are immutable external records rather than fields of the ContributionClaim. Every inward and supersession reference uses the canonical TargetRef of Section 5.1.2, including namespaced `target_kind`, pinned `type_schema`, exact content and artifact addresses, `component_path`, and governing-ClaimIR fields.
+
+```yaml
+contribution_calibration_record:
+  contribution_ref: <canonical artifact-bearing ContributionClaim TargetRef>
+  relation_direction: SOURCE_RELATIVE_TO_NORMALIZED_CLAIM
+  primary_to_normalized_relation: EQUIVALENT | CONSERVATIVE_PARAPHRASE | BROADER_THAN | NARROWER_THAN | PARTIAL_OVERLAP | UNRESOLVED
+  body_to_normalized_relation: EQUIVALENT | CONSERVATIVE_PARAPHRASE | BROADER_THAN | NARROWER_THAN | PARTIAL_OVERLAP | UNRESOLVED
+  calibration_stage: NARRATIVE_CALIBRATED | BODY_LOCATED | SUPPORT_CLASSIFIED | ATOMIC_AUDIT_COMPLETED
+
+claim_support_association:
+  association_scope: IMMUTABLE_FACET_NAVIGATION_NOT_QUERY_COVERAGE
+  contribution_ref: <canonical artifact-bearing ContributionClaim TargetRef>
+  navigation_basis_ref: <semantic-only TargetRef to /facets of the same immutable revision>
+  facet_outcomes:
+    - {facet_id: facet:..., coverage: COMPLETE | PARTIAL | NONE}
+  provisional_facet_coverage: COMPLETE | PARTIAL | NONE
+  links:
+    - facet_id: facet:...
+      target_ref: <canonical artifact-bearing MathClaimIR or MathematicalPropositionIR TargetRef>
+      facet_coverage: COMPLETE | PARTIAL | NONE
+      relationship: DIRECT_ATOMIC_SUPPORT | SUPPORTING_ASSUMPTION | FRAMEWORK_SUPPORT | TOPICAL_NAVIGATION_ONLY
+```
+
+The relation direction is normative. Let $S$ be the proposition expressed by the cited source occurrence (or the conjunction of the grouped source spans) and $N$ the normalized ContributionClaim. `SOURCE_RELATIVE_TO_NORMALIZED_CLAIM` always classifies $S$ relative to $N$: `EQUIVALENT` requires $S \models N$ and $N \models S$ with the same asserted facets; `CONSERVATIVE_PARAPHRASE` requires that $N$ preserve the source assertion without adding an independently asserted facet, allowing only terminology normalization or an explicit conservative weakening ($S \models N$); `BROADER_THAN` means $S \models N$ but $N \not\models S$ because the source asserts additional cases or scope; `NARROWER_THAN` means $N \models S$ but $S \not\models N$ because the source is restricted to fewer cases or stronger conditions; and `PARTIAL_OVERLAP` means neither straightforwardly entails the other, including when $S$ and $N$ assert different facets. `UNRESOLVED` records that no such judgment is yet justified. Thus an abstract occurrence and a body-enriched normalized narrative use `PARTIAL_OVERLAP` whenever each contains a facet absent from the other; surface phrasing or relative text length does not determine the ordering. Calibration stage records process maturation independently of coverage outcome: a completed atomic audit may conclude `NONE`, `PARTIAL`, or `COMPLETE`. `TOPICAL_NAVIGATION_ONLY` links have facet coverage `NONE`; in particular, technical MathClaimIR coexistence cannot promote a synthesis ContributionClaim. Final coverage is query-relative and belongs to a future decomposition/snapshot-scoped `QueryResolution`, not this navigation association. None of these fields is truth or verification status, and there is no `contribution_verified` Boolean.
+
+All three vertical-slice record types are append-only. Their global record key is `(id, record_revision)`, so successive revisions retain one stable identity and coexist in registry history; revision $r>1$ must supersede the exact immutable TargetRef for revision $r-1$. Occurrence IDs, by contrast, are globally unique event IDs and cannot be reused by another record revision. For each ContributionClaim `(id, record_revision)` there is exactly one calibration record and one support association whose own `record_revision` equals the pinned claim revision. A calibration or support association identity remains attached to the same ContributionClaim identity across all of its revisions and cannot switch `contribution_ref.target_id`. Historical association generations remain present and continue to reference their historical claim revisions rather than being rewritten to the latest revision.
 
 Verification and lifecycle labels are not stored in either identity record. They are derived in external status views.
 
@@ -4059,7 +4099,7 @@ Every normative object has exactly one authoritative home. Each registry's own m
 
 | Objects | Authoritative home |
 |---|---|
-| `ScientificClaim`, `ProfileAssociationRecord` | `ScientificClaimRegistry` |
+| `ScientificClaim` (including the `ContributionClaim` role/profile), `ProfileAssociationRecord` | `ScientificClaimRegistry` |
 | frozen raw/expanded source artifacts, source manifests, and `SourceAnchor` | `SourceRegistry` |
 | `CandidateRelation`, validation records, `AcceptedRelation` | `RelationRegistry` |
 | `MathClaimIR`, `MathematicalPropositionIR`, normalization, decomposition, semantic revision, migration | `MathClaimIRRegistry` |
@@ -4073,7 +4113,7 @@ Every normative object has exactly one authoritative home. Each registry's own m
 | schema artifacts and serialization profiles | `SchemaRegistry` |
 | `VerificationScope`, `FormalEnvironment`, every policy, status rule table, graph/query algorithm descriptor, and criticality table | `ConfigurationRegistry` |
 | `CompositeRegistrySnapshot` and every evidence, blocker, relation, receipt, graph, or registry index snapshot | `SnapshotRegistry` |
-| attribution, formalization, backtranslation, verification, alignment, blocker events, status views, blueprint attempts, package trust evidence, and all request/result records not assigned by another row | `ExternalRecordRegistry` |
+| `ContributionCalibrationRecord`, `ClaimSupportAssociation`, attribution, formalization, backtranslation, verification, alignment, blocker events, status views, blueprint attempts, package trust evidence, and all request/result records not assigned by another row | `ExternalRecordRegistry` |
 | `QueryResolution`, `DependencyManifest`, `ClaimImportReceipt`, `ReleaseManifest`, `RegistryTransactionReceipt`, and `PaperAgentAnswer` | `ReceiptRegistry` |
 | build, coverage, and reuse telemetry records | `TelemetryRegistry` |
 

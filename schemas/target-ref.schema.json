@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/target-ref/1.0.0",
+  "title": "AgtXIv canonical TargetRef",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["target_kind", "type_schema", "target_id", "target_revision", "target_content_hash", "target_artifact", "component_path", "claim_ir", "claim_ir_members"],
+  "properties": {
+    "target_kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"},
+    "type_schema": {"$ref": "#/$defs/typeSchema"},
+    "target_id": {"type": "string", "minLength": 1},
+    "target_revision": {"type": "integer", "minimum": 1},
+    "target_content_hash": {"$ref": "#/$defs/hash"},
+    "target_artifact": {"oneOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]},
+    "component_path": {"type": ["string", "null"], "pattern": "^(|/([^~/]|~[01])*)*$"},
+    "claim_ir": {"oneOf": [{"$ref": "#/$defs/claimIRIdentity"}, {"type": "null"}]},
+    "claim_ir_members": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/claimIRMember"}}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "typeSchema": {
+      "type": "object", "additionalProperties": false,
+      "required": ["uri", "content_hash"],
+      "properties": {
+        "uri": {"type": "string", "format": "uri"},
+        "content_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "serializationProfile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "content_hash"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "content_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_uri", "schema_version", "serialization_profile", "artifact_hash"],
+      "properties": {
+        "schema_uri": {"type": "string", "format": "uri"},
+        "schema_version": {"type": "string", "minLength": 1},
+        "serialization_profile": {"$ref": "#/$defs/serializationProfile"},
+        "artifact_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "claimIRIdentity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "semantic_content_hash"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^math-claim-ir:"},
+        "revision": {"type": "integer", "minimum": 1},
+        "semantic_content_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "claimIRMember": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "semantic_content_hash", "artifact"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^math-claim-ir:"},
+        "revision": {"type": "integer", "minimum": 1},
+        "semantic_content_hash": {"$ref": "#/$defs/hash"},
+        "artifact": {"$ref": "#/$defs/artifact"}
+      }
+    }
+  }
+}
