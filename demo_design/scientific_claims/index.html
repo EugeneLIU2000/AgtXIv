@@ -3,21 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Expandable typed claim graph for Graph Theoretic Approach to Quantum Nonstabilizerness.">
+  <meta name="description" content="Source-faithful and normalized mathematical claims for Graph Theoretic Approach to Quantum Nonstabilizerness.">
   <title>ScientificClaim Graph · AgtXIv</title>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]],
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+        processEscapes: true,
+        macros: {
+          Mcal: "\\mathcal M",
+          STAB: "\\mathrm{STAB}",
+          RoM: "\\mathrm{RoM}",
+          tr: "\\operatorname{tr}",
+          clnum: "\\operatorname{cl}"
+        }
+      },
+      svg: { fontCache: "local" },
+      options: { enableMenu: false }
+    };
+  </script>
+  <script src="vendor/mathjax/tex-svg.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#graphStage">Skip to claim graph</a>
-
   <header class="site-header">
     <div class="shell header-inner">
       <img src="../assets/agentxiv-logo.svg" alt="AgtXIv" width="126" height="28">
-      <div class="header-context">
-        <strong>ScientificClaim Graph</strong>
-        <span>Frozen architecture · 2d9b1b7</span>
-      </div>
+      <div class="header-context"><strong>ScientificClaim Graph</strong><span>Source-faithful → normalized</span></div>
       <span class="snapshot"><i aria-hidden="true"></i> arxiv:2607.26154v1</span>
     </div>
   </header>
@@ -25,106 +40,73 @@
   <main>
     <section class="graph-intro shell" aria-labelledby="paperTitle">
       <div>
-        <p class="eyebrow">TYPED · EXPANDABLE · FACET-AWARE</p>
+        <p class="eyebrow">CLAIMS · PROVENANCE · MATHEMATICAL TYPE</p>
         <h1 id="paperTitle">Graph Theoretic Approach to Quantum Nonstabilizerness</h1>
         <p id="paperAuthors" class="authors"></p>
       </div>
       <div class="boundary-copy">
-        <strong>Architecture boundary</strong>
-        <p>Three distinct layers are shown: claim-level source provenance, normalized mathematical objects, and an optional unverified Oracle candidate skeleton. Contribution ScientificClaims never enter the proof DAG.</p>
+        <strong>Reading the graph</strong>
+        <p>Circles stay faithful to the source; squares are reorganized MathClaimIR objects. Gray branches are unaccepted candidates. Facets, occurrences, support, and verification status appear in details—not as extra nodes.</p>
       </div>
     </section>
 
     <section class="graph-section shell" id="claimGraph" aria-labelledby="graphTitle" aria-busy="true">
       <header class="graph-heading">
-        <div>
-          <p class="eyebrow">PRIMARY VIEW</p>
-          <h2 id="graphTitle">Contribution claim graph</h2>
-        </div>
-        <p>Activate a node to pin its Markdown detail and progressively reveal its typed children.</p>
+        <div><p class="eyebrow">PRIMARY VIEW</p><h2 id="graphTitle">Necessary claim graph</h2></div>
+        <p>Select a claim to pin its source, support, identity, and rendered mathematics. Expand only the branch you need.</p>
       </header>
-
-      <div class="loading-status" id="loadStatus" role="status">
-        <span aria-hidden="true"></span> Loading deterministic graph payload…
-      </div>
-      <div class="load-error" id="loadError" role="alert" hidden>
-        <p id="loadErrorMessage"></p>
-        <button type="button" id="retryButton">Retry local graph load</button>
-      </div>
+      <div class="loading-status" id="loadStatus" role="status"><span aria-hidden="true"></span> Loading generated claim graph…</div>
+      <div class="load-error" id="loadError" role="alert" hidden><p id="loadErrorMessage"></p><button type="button" id="retryButton">Retry local graph load</button></div>
 
       <div class="graph-app" id="graphApp" hidden>
         <section class="legend" aria-labelledby="legendTitle">
-          <div class="legend-title">
-            <span class="eyebrow">PERSISTENT LEGEND</span>
-            <h3 id="legendTitle">Node and edge types</h3>
+          <div class="legend-title"><span class="eyebrow">LEGEND</span><h3 id="legendTitle">Shape, provenance, type</h3></div>
+          <div class="shape-legend" aria-label="Shape and provenance encoding">
+            <span><i class="shape-swatch circle" aria-hidden="true"></i>Source-faithful</span>
+            <span><i class="shape-swatch square" aria-hidden="true"></i>Reorganized</span>
+            <span><i class="shape-swatch gray" aria-hidden="true"></i>Temporary / referenced</span>
           </div>
-          <div class="node-legend" aria-label="Node ring and dot colors; larger glyphs indicate higher graph hierarchy">
-            <span><i class="glyph-swatch paper" aria-hidden="true"></i>Paper</span>
-            <span><i class="glyph-swatch contribution" aria-hidden="true"></i>Contribution ScientificClaim</span>
-            <span><i class="glyph-swatch facet" aria-hidden="true"></i>Facet</span>
-            <span><i class="glyph-swatch formal" aria-hidden="true"></i>FORMAL_ATOMIC claim</span>
-            <span><i class="glyph-swatch occurrence" aria-hidden="true"></i>Source occurrence</span>
-            <span><i class="glyph-swatch math" aria-hidden="true"></i>MathClaimIR</span>
-            <span><i class="glyph-swatch proposition" aria-hidden="true"></i>MathematicalPropositionIR</span>
-            <span><i class="glyph-swatch oracle" aria-hidden="true"></i>Oracle candidate (unverified)</span>
+          <div class="type-legend" aria-label="Mathematical claim type colors">
+            <span><i class="type-swatch contribution" aria-hidden="true"></i>Contribution</span>
+            <span><i class="type-swatch definition" aria-hidden="true"></i>Definition</span>
+            <span><i class="type-swatch lemma" aria-hidden="true"></i>Lemma</span>
+            <span><i class="type-swatch proposition" aria-hidden="true"></i>Proposition</span>
+            <span><i class="type-swatch theorem" aria-hidden="true"></i>Theorem / result</span>
           </div>
-          <div class="edge-legend" aria-label="Edge styles">
-            <span><i class="edge-swatch hierarchy"></i>Structure</span>
-            <span><i class="edge-swatch source"></i>Source / calibration</span>
-            <span><i class="edge-swatch support"></i>PROVISIONAL NAVIGATION</span>
-            <span><i class="edge-swatch oracle"></i>ORACLE CANDIDATE</span>
+          <div class="edge-legend" aria-label="Edge confidence encoding">
+            <span><i class="edge-swatch solid" aria-hidden="true"></i>Canonical</span>
+            <span><i class="edge-swatch candidate" aria-hidden="true"></i>Unverified</span>
           </div>
-          <p class="legend-boundary">Ring/dot color encodes type; glyph size encodes hierarchy. Navigation coverage is not proof completeness. Oracle candidates remain unreviewed and scientifically UNKNOWN.</p>
         </section>
 
         <div class="graph-layout">
           <div class="graph-main">
             <div class="graph-toolbar" aria-label="Graph controls">
-              <button type="button" id="fitButton">Fit graph</button>
+              <button type="button" id="fitButton">Fit</button>
               <button type="button" id="zoomOutButton" aria-label="Zoom out">−</button>
               <button type="button" id="zoomInButton" aria-label="Zoom in">+</button>
               <button type="button" id="expandButton">Expand all</button>
               <button type="button" id="collapseButton">Collapse</button>
-              <button type="button" id="resetButton">Reset view</button>
-              <span class="pan-hint">Drag canvas to pan · wheel or controls to zoom</span>
+              <button type="button" id="resetButton">Reset</button>
+              <span class="pan-hint">Drag to pan · wheel to zoom</span>
             </div>
-
             <div class="graph-stage" id="graphStage">
               <svg id="claimGraphSvg" role="group" aria-label="Expandable ScientificClaim graph" tabindex="0">
                 <defs>
-                  <marker id="arrowStructure" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
-                  <marker id="arrowSource" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
-                  <marker id="arrowSupport" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
-                  <marker id="arrowOracle" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
-                  <filter id="nodeShadow" x="-80%" y="-80%" width="260%" height="280%">
-                    <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#17211c" flood-opacity="0.18"></feDropShadow>
-                  </filter>
+                  <marker id="arrowCanonical" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
+                  <marker id="arrowCandidate" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
+                  <filter id="nodeShadow" x="-80%" y="-80%" width="260%" height="280%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#17211c" flood-opacity="0.16"></feDropShadow></filter>
                 </defs>
-                <g id="viewportGroup">
-                  <g id="edgeLayer"></g>
-                  <g id="nodeLayer"></g>
-                </g>
+                <g id="viewportGroup"><g id="edgeLayer"></g><g id="nodeLayer"></g></g>
               </svg>
-              <div class="graph-empty" id="graphEmpty" hidden>No visible graph nodes.</div>
+              <div class="graph-empty" id="graphEmpty" hidden>No visible claims.</div>
             </div>
-
-            <div class="graph-status">
-              <p id="breadcrumb">Paper</p>
-              <p id="graphLiveStatus" role="status" aria-live="polite">Paper root and two contribution-role claims are visible.</p>
-            </div>
+            <div class="graph-status"><p id="breadcrumb">Paper</p><p id="graphLiveStatus" role="status" aria-live="polite">Paper and contribution claims are visible.</p></div>
           </div>
 
           <aside class="detail-panel" id="pinnedPanel" aria-labelledby="detailTitle">
-            <header>
-              <div>
-                <span class="eyebrow">PINNED MARKDOWN DETAIL</span>
-                <h3 id="detailTitle">Select a graph node</h3>
-              </div>
-              <button type="button" id="unpinButton" aria-label="Unpin node detail" hidden>×</button>
-            </header>
-            <div class="detail-body markdown-body" id="pinnedDetail">
-              <p>Click or press Enter/Space on a node to pin its rendered detail here. Hovering or keyboard focus opens the same detail in a floating card.</p>
-            </div>
+            <header><div><span class="eyebrow">SELECTED CLAIM</span><h3 id="detailTitle">Select a claim</h3></div><button type="button" id="unpinButton" aria-label="Unpin claim detail" hidden>×</button></header>
+            <div class="detail-body markdown-body" id="pinnedDetail"><p>Activate a node to pin its source-faithful metadata or normalized mathematics. Hover and keyboard focus show the same safe detail in a floating card.</p></div>
           </aside>
         </div>
       </div>
@@ -132,14 +114,7 @@
   </main>
 
   <div class="node-tooltip markdown-body" id="nodeTooltip" role="tooltip" hidden></div>
-
-  <footer class="site-footer">
-    <div class="shell">
-      <span>AgtXIv · typed ScientificClaim graph</span>
-      <span>No network or third-party dependencies</span>
-    </div>
-  </footer>
-
+  <footer class="site-footer"><div class="shell"><span>AgtXIv · ScientificClaim graph</span><span>MathJax 3.2.2 SVG · local bundle</span></div></footer>
   <noscript><p class="noscript">This graph requires JavaScript to load its local generated payload.</p></noscript>
 </body>
 </html>
