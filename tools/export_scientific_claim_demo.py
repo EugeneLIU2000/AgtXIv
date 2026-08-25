@@ -15,7 +15,13 @@ CALIBRATIONS = ROOT / "Stabilizerness/ExternalRecordRegistry/scientific-claim-ca
 SUPPORT = ROOT / "Stabilizerness/ExternalRecordRegistry/claim-support-associations/scientific-claim-support.jsonl"
 MATH_MANIFEST = ROOT / "Stabilizerness/MathClaimIRRegistry/manifest.json"
 EXTERNAL_MANIFEST = ROOT / "Stabilizerness/ExternalRecordRegistry/manifest.json"
+FORMAL_CLAIMS = ROOT / "Stabilizerness/ScientificClaimRegistry/claims/graph-theoretic-nonstabilizerness.jsonl"
 OUTPUT = ROOT / "demo_design/scientific_claims/data/graph-theoretic-scientific-claims.json"
+GRAPH_NODE_TYPES = {
+    "paper", "scientific_claim_contribution", "facet", "scientific_claim_formal",
+    "source_occurrence", "math_claim_ir", "mathematical_proposition_ir",
+}
+GRAPH_EDGE_TYPES = {"contains", "has_facet", "source_calibration", "formal_source", "provisional_navigation"}
 SUPPORTED_TARGETS = {
     "org.agtxiv.claim_ir": "math-claim-ir:",
     "org.agtxiv.mathematical_proposition_ir": "math-proposition-ir:",
@@ -196,6 +202,326 @@ def assert_support_ref(reference: Any, targets: dict[tuple[str, int], dict[str, 
         raise ExportError(f"{label} MathematicalPropositionIR must not contain claim_ir")
 
 
+def compact_label(identifier: str) -> str:
+    return identifier.rsplit(":", 1)[-1].replace("-", " ").title()
+
+
+def fenced(text: str, language: str = "") -> str:
+    if "```" in text:
+        raise ExportError("graph Markdown code content contains an unsupported fence")
+    return f"```{language}\n{text}\n```"
+
+
+def validate_markdown_detail(detail: Any, node_id: str) -> None:
+    if not isinstance(detail, str) or not detail.strip().startswith("## "):
+        raise ExportError(f"graph node {node_id} has missing or malformed Markdown detail")
+    lowered = detail.lower()
+    unsafe = ("<script", "javascript:", "data:text/html", "onerror=", "onload=", "\x00")
+    if any(token in lowered for token in unsafe):
+        raise ExportError(f"graph node {node_id} has unsafe Markdown detail")
+    if detail.count("```") % 2:
+        raise ExportError(f"graph node {node_id} has an unclosed Markdown fence")
+
+
+def validate_graph(graph: dict[str, Any]) -> None:
+    nodes = graph.get("nodes")
+    edges = graph.get("edges")
+    if not isinstance(nodes, list) or not isinstance(edges, list):
+        raise ExportError("graph payload must contain node and edge arrays")
+    node_by_id = unique_by(nodes, "id", "graph node")
+    unique_by(edges, "id", "graph edge")
+    prefixes = {
+        "paper": "paper:",
+        "scientific_claim_contribution": "claim:",
+        "facet": "graph-facet:",
+        "scientific_claim_formal": "claim:",
+        "source_occurrence": "occurrence:",
+        "math_claim_ir": "math-claim-ir:",
+        "mathematical_proposition_ir": "math-proposition-ir:",
+    }
+    for node in nodes:
+        node_type = node.get("type")
+        if node_type not in GRAPH_NODE_TYPES:
+            raise ExportError(f"graph node {node.get('id')} has unsupported type {node_type!r}")
+        if not str(node["id"]).startswith(prefixes[node_type]):
+            raise ExportError(f"graph node type {node_type} does not match ID {node['id']}")
+        if not isinstance(node.get("label"), str) or not node["label"].strip():
+            raise ExportError(f"graph node {node['id']} has no label")
+        validate_markdown_detail(node.get("detail_markdown"), node["id"])
+    endpoint_types = {
+        "contains": ({"paper"}, {"scientific_claim_contribution"}),
+        "has_facet": ({"scientific_claim_contribution"}, {"facet"}),
+        "source_calibration": ({"scientific_claim_contribution"}, {"source_occurrence"}),
+        "formal_source": ({"scientific_claim_contribution"}, {"scientific_claim_formal"}),
+        "provisional_navigation": ({"facet"}, {"math_claim_ir", "mathematical_proposition_ir"}),
+    }
+    for edge in edges:
+        edge_type = edge.get("type")
+        if edge_type not in GRAPH_EDGE_TYPES:
+            raise ExportError(f"graph edge {edge.get('id')} has unsupported type")
+        if edge.get("source") not in node_by_id or edge.get("target") not in node_by_id:
+            raise ExportError(f"graph edge {edge.get('id')} has a dangling endpoint")
+        if edge.get("expand_from") != edge.get("source"):
+            raise ExportError(f"graph edge {edge.get('id')} must expand from its source")
+        source_types, target_types = endpoint_types[edge_type]
+        if node_by_id[edge["source"]]["type"] not in source_types or node_by_id[edge["target"]]["type"] not in target_types:
+            raise ExportError(f"graph edge {edge['id']} has endpoint types invalid for {edge_type}")
+        if edge_type == "provisional_navigation":
+            if not str(edge.get("label", "")).startswith("PROVISIONAL NAVIGATION · "):
+                raise ExportError(f"mathematical navigation edge {edge['id']} has misleading status text")
+    initial = graph.get("initial_node_ids")
+    expanded = graph.get("initial_expanded_node_ids")
+    expected_initial = [node["id"] for node in nodes if node["type"] in {"paper", "scientific_claim_contribution"}]
+    if initial != expected_initial:
+        raise ExportError("graph initial state must contain only the paper and contribution-role ScientificClaims")
+    paper_ids = [node["id"] for node in nodes if node["type"] == "paper"]
+    if expanded != paper_ids:
+        raise ExportError("graph initial expanded state must contain only the paper root")
+
+
+def build_graph(exported_claims: list[dict[str, Any]], targets: dict[tuple[str, int], dict[str, Any]], paper: dict[str, Any]) -> dict[str, Any]:
+    formal_by_id = unique_by(load_jsonl(FORMAL_CLAIMS), "id", "FORMAL_ATOMIC ScientificClaim")
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    paper_node_id = f"paper:{paper['id']}"
+    paper_detail = "\n\n".join([
+        "## Paper",
+        f"**{paper['title']}**",
+        f"`{paper['id']}`",
+        "### Authors\n" + "\n".join(f"- {author}" for author in paper["authors"]),
+        f"### Frozen source\n`{paper['source_path']}`",
+    ])
+    nodes.append({
+        "id": paper_node_id,
+        "type": "paper",
+        "label": paper["title"],
+        "detail_markdown": paper_detail,
+        "expandable": True,
+    })
+
+    support_contexts: dict[tuple[str, int], list[dict[str, str]]] = {}
+    support_refs: dict[tuple[str, int], dict[str, Any]] = {}
+    formal_sources: dict[str, dict[str, dict[str, Any]]] = {}
+    facet_node_ids: dict[tuple[str, str], str] = {}
+
+    for bundle in exported_claims:
+        claim = bundle["claim"]
+        calibration = bundle["calibration"]
+        association = bundle["support_association"]
+        claim_id = claim["id"]
+        claim_detail = "\n\n".join([
+            "## Contribution-role ScientificClaim",
+            f"**{compact_label(claim_id)}**",
+            claim["normalized_statement"],
+            f"`{claim_id}` · revision `{claim['record_revision']}`",
+            "### Scope\n" + "\n".join(f"- {hint}" for hint in claim["scope_hints"]),
+            "### Immutable identity\n" + "\n".join([
+                f"- Semantic: `{claim['semantic_content_hash']}`",
+                f"- Artifact: `{claim['artifact']['artifact_hash']}`",
+                f"- Content: `{claim['content_hash']}`",
+            ]),
+            "*Narrative/source navigation only; this ScientificClaim is not a mathematical proof-DAG node.*",
+        ])
+        nodes.append({
+            "id": claim_id,
+            "type": "scientific_claim_contribution",
+            "label": compact_label(claim_id),
+            "detail_markdown": claim_detail,
+            "expandable": True,
+        })
+        edges.append({
+            "id": f"edge:paper:{claim_id}",
+            "source": paper_node_id,
+            "target": claim_id,
+            "expand_from": paper_node_id,
+            "type": "contains",
+            "label": "CONTRIBUTION-ROLE SCIENTIFICCLAIM",
+        })
+
+        outcomes = {outcome["facet_id"]: outcome["coverage"] for outcome in association["facet_outcomes"]}
+        for facet in claim["facets"]:
+            facet_id = facet["facet_id"]
+            node_id = f"graph-facet:{claim_id.rsplit(':', 1)[-1]}:{facet_id.rsplit(':', 1)[-1]}"
+            facet_node_ids[(claim_id, facet_id)] = node_id
+            outcome = outcomes[facet_id]
+            detail = "\n\n".join([
+                "## Facet",
+                f"**{facet['statement']}**",
+                f"- Facet ID: `{facet_id}`",
+                f"- Kind: `{facet['facet_kind']}`",
+                f"- Provisional facet navigation: **{outcome.lower()}**",
+                "*This outcome routes inspection; it is not final query coverage or verification.*",
+            ])
+            nodes.append({
+                "id": node_id,
+                "type": "facet",
+                "label": compact_label(facet_id),
+                "detail_markdown": detail,
+                "expandable": True,
+                "claim_id": claim_id,
+                "facet_id": facet_id,
+            })
+            edges.append({
+                "id": f"edge:facet:{claim_id}:{facet_id}",
+                "source": claim_id,
+                "target": node_id,
+                "expand_from": claim_id,
+                "type": "has_facet",
+                "label": "HAS FACET",
+            })
+
+        for occurrence in claim["occurrences"]:
+            role = occurrence["occurrence_role"]
+            if role == "PRIMARY":
+                relation = calibration["primary_to_normalized_relation"]
+            elif role == "BODY_SUPPORT":
+                relation = calibration["body_to_normalized_relation"]
+            else:
+                relation = None
+            relation_line = f"- Calibration: `{relation}`" if relation else "- Calibration: occurrence role only; no finer relation is asserted"
+            detail = "\n\n".join([
+                "## Source occurrence",
+                f"**{role}** · `{occurrence['source_zone']}`",
+                "\n".join([
+                    f"- Occurrence: `{occurrence['id']}`",
+                    f"- Source: `{occurrence['source_artifact']['path']}`",
+                    f"- Lines: `{occurrence['line_start']}–{occurrence['line_end']}`",
+                    f"- Speech act: `{occurrence['source_characterization']['speech_act']}`",
+                    f"- Formality: `{occurrence['source_characterization']['formality']}`",
+                    f"- Conditionality: `{occurrence['source_characterization']['conditionality']}`",
+                    relation_line,
+                ]),
+                "### Verbatim excerpt\n" + fenced(occurrence["source_text"], "latex"),
+            ])
+            nodes.append({
+                "id": occurrence["id"],
+                "type": "source_occurrence",
+                "label": f"{role.title().replace('_', ' ')} · lines {occurrence['line_start']}–{occurrence['line_end']}",
+                "detail_markdown": detail,
+                "expandable": False,
+                "claim_id": claim_id,
+            })
+            edges.append({
+                "id": f"edge:occurrence:{claim_id}:{occurrence['id']}",
+                "source": claim_id,
+                "target": occurrence["id"],
+                "expand_from": claim_id,
+                "type": "source_calibration",
+                "label": f"{role} · {relation or 'SOURCE OCCURRENCE'}",
+                "calibration_id": calibration["id"],
+                "relation_direction": calibration["relation_direction"],
+            })
+
+        for link in association["links"]:
+            reference = link["target_ref"]
+            key = (reference["target_id"], reference["target_revision"])
+            support_refs[key] = reference
+            support_contexts.setdefault(key, []).append({
+                "claim_id": claim_id,
+                "facet_id": link["facet_id"],
+                "relationship": link["relationship"],
+                "facet_coverage": link["facet_coverage"],
+            })
+            target = targets[key]
+            formal_ref = target.get("claim") if reference["target_kind"] == "org.agtxiv.claim_ir" else None
+            if isinstance(formal_ref, dict):
+                formal = formal_by_id.get(formal_ref.get("id"))
+                if formal is None:
+                    raise ExportError(f"MathClaimIR {target['id']} has dangling FORMAL_ATOMIC ScientificClaim {formal_ref.get('id')}")
+                expected = (formal["record_revision"], formal["content_hash"])
+                actual = (formal_ref.get("record_revision"), formal_ref.get("content_hash"))
+                if actual != expected:
+                    raise ExportError(f"MathClaimIR {target['id']} has mismatched FORMAL_ATOMIC ScientificClaim identity")
+                formal_sources.setdefault(claim_id, {})[formal["id"]] = formal
+
+    for claim_id, formal_records in formal_sources.items():
+        for formal in sorted(formal_records.values(), key=lambda record: record["id"]):
+            detail = "\n\n".join([
+                "## FORMAL_ATOMIC ScientificClaim",
+                f"**{formal['text']}**",
+                "\n".join([
+                    f"- ID: `{formal['id']}`",
+                    f"- Kind: `{formal['kind']}`",
+                    f"- Origin: `{formal['origin']}`",
+                    f"- Revision: `{formal['record_revision']}`",
+                    f"- Content hash: `{formal['content_hash']}`",
+                ]),
+                "### Source anchors\n" + "\n".join(f"- `{anchor}`" for anchor in formal["source_anchors"]),
+                "*Included because a displayed MathClaimIR carries this exact immutable ScientificClaim identity; no occurrence-level edge is guessed.*",
+            ])
+            nodes.append({
+                "id": formal["id"],
+                "type": "scientific_claim_formal",
+                "label": compact_label(formal["id"]),
+                "detail_markdown": detail,
+                "expandable": False,
+                "claim_id": claim_id,
+            })
+            edges.append({
+                "id": f"edge:formal:{claim_id}:{formal['id']}",
+                "source": claim_id,
+                "target": formal["id"],
+                "expand_from": claim_id,
+                "type": "formal_source",
+                "label": "FORMAL_ATOMIC SOURCE IDENTITY",
+                "basis": "Exact MathClaimIR.claim immutable reference",
+            })
+
+    for key in sorted(support_contexts):
+        target = targets[key]
+        reference = support_refs[key]
+        contexts = support_contexts[key]
+        node_type = "math_claim_ir" if reference["target_kind"] == "org.agtxiv.claim_ir" else "mathematical_proposition_ir"
+        statement = target.get("normalized_statement_expanded_latex") or target.get("text") or target.get("statement") or "No display statement recorded."
+        detail = "\n\n".join([
+            f"## {'MathClaimIR' if node_type == 'math_claim_ir' else 'MathematicalPropositionIR'}",
+            f"**{compact_label(target['id'])}**",
+            "\n".join([
+                f"- Target ID: `{target['id']}`",
+                f"- Revision: `{target['revision']}`",
+                f"- Semantic hash: `{target['semantic_content_hash']}`",
+                f"- Artifact hash: `{target['artifact']['artifact_hash']}`",
+            ]),
+            "### Mathematical statement\n" + fenced(str(statement), "latex"),
+            "### Provisional navigation associations\n" + "\n".join(
+                f"- `{context['facet_id']}` · `{context['relationship']}` · **{context['facet_coverage'].lower()}**"
+                for context in contexts
+            ),
+            "### Exact artifact\n" + fenced(json.dumps(reference["target_artifact"], ensure_ascii=False, sort_keys=True, indent=2), "json"),
+            "*Eligible for the mathematical proof-DAG layer; these links still do not assert final query coverage or verification.*",
+        ])
+        nodes.append({
+            "id": target["id"],
+            "type": node_type,
+            "label": compact_label(target["id"]),
+            "detail_markdown": detail,
+            "expandable": False,
+            "revision": target["revision"],
+        })
+        for context in contexts:
+            facet_node_id = facet_node_ids[(context["claim_id"], context["facet_id"])]
+            edges.append({
+                "id": f"edge:support:{facet_node_id}:{target['id']}",
+                "source": facet_node_id,
+                "target": target["id"],
+                "expand_from": facet_node_id,
+                "type": "provisional_navigation",
+                "label": f"PROVISIONAL NAVIGATION · {context['facet_coverage']}",
+                "relationship": context["relationship"],
+                "facet_id": context["facet_id"],
+                "target_ref": reference,
+            })
+
+    graph = {
+        "nodes": nodes,
+        "edges": edges,
+        "initial_node_ids": [node["id"] for node in nodes if node["type"] in {"paper", "scientific_claim_contribution"}],
+        "initial_expanded_node_ids": [paper_node_id],
+    }
+    validate_graph(graph)
+    return graph
+
+
 def build_demo_data() -> dict[str, Any]:
     all_claims = load_jsonl(CLAIMS)
     unique_by(all_claims, "id", "ScientificClaim")
@@ -277,6 +603,13 @@ def build_demo_data() -> dict[str, Any]:
             "support_association": association,
         })
 
+    paper = {
+        "authors": ["Yingjian Liu", "Albert Gasull", "Mengyao Hu", "Ruiyun Zhang", "Flavio Baccari", "Jordi Tura"],
+        "id": PAPER_ID,
+        "source_path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+        "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
+    }
+    graph = build_graph(exported_claims, targets, paper)
     return {
         "architecture": {
             "calibration_direction": {
@@ -310,14 +643,10 @@ def build_demo_data() -> dict[str, Any]:
             },
         },
         "claims": exported_claims,
-        "paper": {
-            "authors": ["Yingjian Liu", "Albert Gasull", "Mengyao Hu", "Ruiyun Zhang", "Flavio Baccari", "Jordi Tura"],
-            "id": PAPER_ID,
-            "source_path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
-            "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
-        },
-        "schema": "agtxiv.scientific-claim-demo/1.0.0",
-        "source_revision": "97445bc",
+        "graph": graph,
+        "paper": paper,
+        "schema": "agtxiv.scientific-claim-demo/2.0.0",
+        "source_revision": "2d9b1b7",
     }
 
 

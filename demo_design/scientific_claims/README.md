@@ -1,6 +1,6 @@
 # ScientificClaim visualization demo
 
-A dependency-free, facet-first view of the two current contribution-role `ScientificClaim` records for **Graph Theoretic Approach to Quantum Nonstabilizerness** (`arxiv:2607.26154v1`) at repository revision `97445bc`.
+A dependency-free, expandable SVG graph of the two current contribution-role `ScientificClaim` records for **Graph Theoretic Approach to Quantum Nonstabilizerness** (`arxiv:2607.26154v1`) at repository revision `2d9b1b7`. The graph progressively reveals claim facets, source/calibration records, justified `FORMAL_ATOMIC` claims, and provisional navigation to deduplicated MathClaimIR or MathematicalPropositionIR targets.
 
 ## Preview
 
@@ -20,4 +20,4 @@ python3 tools/export_scientific_claim_demo.py --check
 python3 -m unittest tests.test_scientific_claim_demo
 ```
 
-The generated JSON is derived from the ScientificClaim, calibration, support-association, MathClaimIR, and MathematicalPropositionIR registries. The exporter fails on ambiguous or dangling claim, facet, and mathematical-target references.
+The generated JSON is derived from the ScientificClaim, calibration, support-association, MathClaimIR, and MathematicalPropositionIR registries. The exporter fails on ambiguous or dangling claim, facet, occurrence, formal-claim, and mathematical-target references, and validates every typed graph endpoint. Mathematical edges are explicitly labeled `PROVISIONAL NAVIGATION`; contribution-role ScientificClaims remain outside the mathematical proof DAG.
