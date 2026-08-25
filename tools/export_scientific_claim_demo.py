@@ -10,18 +10,41 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER_ID = "arxiv:2607.26154v1"
+POLYTOPE_CLAIM_ID = "claim:graph-theoretic-nonstabilizerness:sign-relaxation-exactness"
+POLYTOPE_FACET_ID = "facet:polytope-exactness"
+EXACT_POLYTOPE_MATH_ID = "math-claim-ir:graph-theoretic-nonstabilizerness:relaxation-polytope-exactness"
+ORACLE_SKELETON_ID = "oracle-skeleton:polytope-exactness"
 CLAIMS = ROOT / "Stabilizerness/ScientificClaimRegistry/claims/contribution-role-scientific-claims.jsonl"
 CALIBRATIONS = ROOT / "Stabilizerness/ExternalRecordRegistry/scientific-claim-calibrations/scientific-claim-calibrations.jsonl"
 SUPPORT = ROOT / "Stabilizerness/ExternalRecordRegistry/claim-support-associations/scientific-claim-support.jsonl"
 MATH_MANIFEST = ROOT / "Stabilizerness/MathClaimIRRegistry/manifest.json"
 EXTERNAL_MANIFEST = ROOT / "Stabilizerness/ExternalRecordRegistry/manifest.json"
 FORMAL_CLAIMS = ROOT / "Stabilizerness/ScientificClaimRegistry/claims/graph-theoretic-nonstabilizerness.jsonl"
+SOURCE_ANCHORS = ROOT / "Stabilizerness/MathClaimIRRegistry/source-anchors/graph-theoretic-nonstabilizerness.jsonl"
+CANDIDATE_DAG = ROOT / "Stabilizerness/dag/claim-dag.json"
 OUTPUT = ROOT / "demo_design/scientific_claims/data/graph-theoretic-scientific-claims.json"
 GRAPH_NODE_TYPES = {
     "paper", "scientific_claim_contribution", "facet", "scientific_claim_formal",
     "source_occurrence", "math_claim_ir", "mathematical_proposition_ir",
+    "oracle_skeleton", "oracle_candidate",
 }
-GRAPH_EDGE_TYPES = {"contains", "has_facet", "source_calibration", "formal_source", "provisional_navigation"}
+GRAPH_EDGE_TYPES = {
+    "contains", "has_facet", "source_calibration", "normalizes_identity",
+    "provisional_navigation", "oracle_overlay", "oracle_contains", "oracle_candidate_dependency",
+}
+ORACLE_NODE_IDS = {
+    "root:gottesman-stabilizer-formalism", "root:varela-reduced-polytope",
+    "claim:reduced-stabilizer-polytope", "claim:frustration-graph",
+    "claim:exact-reduced-vrep", "claim:sign-syndrome-linear-consistent",
+    "claim:dependency-affine-code", "claim:pauli-active-dependency",
+    "claim:no-active-free-signs", "claim:relaxation-exactness",
+}
+ORACLE_EVIDENCE = {
+    "oracle_status": "ORACLE_PROPOSED",
+    "source_alignment": "UNREVIEWED_AT_EDGE_LEVEL",
+    "lean_support": "NOT_EXTRACTED",
+    "disposition": "CANDIDATE",
+}
 SUPPORTED_TARGETS = {
     "org.agtxiv.claim_ir": "math-claim-ir:",
     "org.agtxiv.mathematical_proposition_ir": "math-proposition-ir:",
@@ -223,6 +246,85 @@ def validate_markdown_detail(detail: Any, node_id: str) -> None:
         raise ExportError(f"graph node {node_id} has an unclosed Markdown fence")
 
 
+def load_oracle_subgraph() -> tuple[dict[str, Any], dict[str, dict[str, Any]], list[dict[str, Any]]]:
+    dag = load_json(CANDIDATE_DAG)
+    if dag.get("graph_view") != "ORACLE_CANDIDATE":
+        raise ExportError("candidate DAG is not an ORACLE_CANDIDATE graph view")
+    dag_nodes = unique_by(dag.get("nodes", []), "id", "candidate DAG node")
+    missing = ORACLE_NODE_IDS - dag_nodes.keys()
+    if missing:
+        raise ExportError(f"candidate DAG is missing required nodes: {sorted(missing)}")
+    selected_nodes = {candidate_id: dag_nodes[candidate_id] for candidate_id in ORACLE_NODE_IDS}
+    for candidate_id, record in selected_nodes.items():
+        issues = record.get("issue_badges", [])
+        if not isinstance(issues, list):
+            raise ExportError(f"candidate DAG node {candidate_id} has malformed issue badges")
+        for issue in issues:
+            if not isinstance(issue, dict) or set(issue) != {"object", "status", "badges", "interpretation"}:
+                raise ExportError(f"candidate DAG node {candidate_id} has malformed structured issue metadata")
+            if not isinstance(issue["badges"], list) or not issue["badges"]:
+                raise ExportError(f"candidate DAG node {candidate_id} has an issue without badges")
+    selected_edges = [
+        edge for edge in dag.get("edges", [])
+        if edge.get("from") in selected_nodes and edge.get("to") in selected_nodes
+    ]
+    if not selected_edges:
+        raise ExportError("candidate DAG contains no selected dependency edges")
+    for edge in selected_edges:
+        if edge.get("evidence") != ORACLE_EVIDENCE:
+            raise ExportError(f"candidate DAG edge {edge.get('from')} -> {edge.get('to')} has unexpected evidence")
+        if edge.get("type") not in dag.get("edge_types", {}):
+            raise ExportError(f"candidate DAG edge has undeclared type {edge.get('type')}")
+        if not isinstance(edge.get("reason"), str) or not edge["reason"].strip():
+            raise ExportError(f"candidate DAG edge {edge.get('from')} -> {edge.get('to')} has no reason")
+    return dag, selected_nodes, selected_edges
+
+
+def oracle_layout_levels(selected_nodes: dict[str, dict[str, Any]], selected_edges: list[dict[str, Any]]) -> dict[str, int]:
+    predecessors = {candidate_id: set() for candidate_id in selected_nodes}
+    successors = {candidate_id: set() for candidate_id in selected_nodes}
+    for edge in selected_edges:
+        predecessors[edge["to"]].add(edge["from"])
+        successors[edge["from"]].add(edge["to"])
+    ready = sorted(candidate_id for candidate_id, incoming in predecessors.items() if not incoming)
+    levels = {candidate_id: 5 for candidate_id in ready}
+    remaining = {candidate_id: set(incoming) for candidate_id, incoming in predecessors.items()}
+    visited = 0
+    while ready:
+        candidate_id = ready.pop(0)
+        visited += 1
+        for target in sorted(successors[candidate_id]):
+            levels[target] = max(levels.get(target, 5), levels[candidate_id] + 1)
+            remaining[target].discard(candidate_id)
+            if not remaining[target]:
+                ready.append(target)
+                ready.sort()
+    if visited != len(selected_nodes):
+        raise ExportError("selected Oracle candidate subgraph contains a cycle")
+    return levels
+
+
+def expected_polytope_navigation() -> list[dict[str, Any]]:
+    associations = [
+        record for record in load_jsonl(SUPPORT)
+        if record.get("scientific_claim_ref", {}).get("target_id") == POLYTOPE_CLAIM_ID
+    ]
+    if len(associations) != 1:
+        raise ExportError("expected exactly one support association for the polytope contribution claim")
+    links = [link for link in associations[0].get("links", []) if link.get("facet_id") == POLYTOPE_FACET_ID]
+    required = {
+        (EXACT_POLYTOPE_MATH_ID, "DIRECT_ATOMIC_SUPPORT", "COMPLETE"),
+        ("math-claim-ir:graph-theoretic-nonstabilizerness:sign-set-collapse", "FRAMEWORK_SUPPORT", "PARTIAL"),
+    }
+    actual = {
+        (link.get("target_ref", {}).get("target_id"), link.get("relationship"), link.get("facet_coverage"))
+        for link in links
+    }
+    if actual != required:
+        raise ExportError("polytope facet Registry association does not contain the required exact navigation pair")
+    return links
+
+
 def validate_graph(graph: dict[str, Any]) -> None:
     nodes = graph.get("nodes")
     edges = graph.get("edges")
@@ -231,13 +333,15 @@ def validate_graph(graph: dict[str, Any]) -> None:
     node_by_id = unique_by(nodes, "id", "graph node")
     unique_by(edges, "id", "graph edge")
     prefixes = {
-        "paper": "paper:",
-        "scientific_claim_contribution": "claim:",
-        "facet": "graph-facet:",
-        "scientific_claim_formal": "claim:",
-        "source_occurrence": "occurrence:",
-        "math_claim_ir": "math-claim-ir:",
-        "mathematical_proposition_ir": "math-proposition-ir:",
+        "paper": ("paper:",),
+        "scientific_claim_contribution": ("claim:",),
+        "facet": ("graph-facet:",),
+        "scientific_claim_formal": ("claim:",),
+        "source_occurrence": ("occurrence:",),
+        "math_claim_ir": ("math-claim-ir:",),
+        "mathematical_proposition_ir": ("math-proposition-ir:",),
+        "oracle_skeleton": ("oracle-skeleton:",),
+        "oracle_candidate": ("oracle-candidate:",),
     }
     for node in nodes:
         node_type = node.get("type")
@@ -247,13 +351,18 @@ def validate_graph(graph: dict[str, Any]) -> None:
             raise ExportError(f"graph node type {node_type} does not match ID {node['id']}")
         if not isinstance(node.get("label"), str) or not node["label"].strip():
             raise ExportError(f"graph node {node['id']} has no label")
+        if node_type == "oracle_candidate" and not isinstance(node.get("layout_level"), int):
+            raise ExportError(f"Oracle candidate {node['id']} has no DAG-derived layout level")
         validate_markdown_detail(node.get("detail_markdown"), node["id"])
     endpoint_types = {
         "contains": ({"paper"}, {"scientific_claim_contribution"}),
         "has_facet": ({"scientific_claim_contribution"}, {"facet"}),
         "source_calibration": ({"scientific_claim_contribution"}, {"source_occurrence"}),
-        "formal_source": ({"scientific_claim_contribution"}, {"scientific_claim_formal"}),
+        "normalizes_identity": ({"math_claim_ir"}, {"scientific_claim_formal"}),
         "provisional_navigation": ({"facet"}, {"math_claim_ir", "mathematical_proposition_ir"}),
+        "oracle_overlay": ({"math_claim_ir"}, {"oracle_skeleton"}),
+        "oracle_contains": ({"oracle_skeleton"}, {"oracle_candidate"}),
+        "oracle_candidate_dependency": ({"oracle_candidate"}, {"oracle_candidate"}),
     }
     for edge in edges:
         edge_type = edge.get("type")
@@ -261,14 +370,102 @@ def validate_graph(graph: dict[str, Any]) -> None:
             raise ExportError(f"graph edge {edge.get('id')} has unsupported type")
         if edge.get("source") not in node_by_id or edge.get("target") not in node_by_id:
             raise ExportError(f"graph edge {edge.get('id')} has a dangling endpoint")
-        if edge.get("expand_from") != edge.get("source"):
-            raise ExportError(f"graph edge {edge.get('id')} must expand from its source")
         source_types, target_types = endpoint_types[edge_type]
         if node_by_id[edge["source"]]["type"] not in source_types or node_by_id[edge["target"]]["type"] not in target_types:
             raise ExportError(f"graph edge {edge['id']} has endpoint types invalid for {edge_type}")
+        expand_from = edge.get("expand_from")
+        if expand_from not in node_by_id:
+            raise ExportError(f"graph edge {edge['id']} has an invalid expansion owner")
+        if edge_type != "oracle_candidate_dependency" and expand_from != edge["source"]:
+            raise ExportError(f"graph edge {edge['id']} must expand from its source")
+        if edge_type == "oracle_candidate_dependency" and node_by_id[expand_from]["type"] != "oracle_skeleton":
+            raise ExportError(f"Oracle edge {edge['id']} must be owned by its skeleton")
         if edge_type == "provisional_navigation":
             if not str(edge.get("label", "")).startswith("PROVISIONAL NAVIGATION · "):
                 raise ExportError(f"mathematical navigation edge {edge['id']} has misleading status text")
+        if edge_type == "normalizes_identity" and edge.get("basis") != "Exact MathClaimIR.claim immutable reference":
+            raise ExportError(f"identity edge {edge['id']} has no exact normalization basis")
+        if edge_type == "oracle_candidate_dependency" and edge.get("evidence") != ORACLE_EVIDENCE:
+            raise ExportError(f"Oracle edge {edge['id']} does not preserve exact candidate evidence")
+
+    facet_nodes = [
+        node for node in nodes
+        if node.get("type") == "facet"
+        and node.get("claim_id") == POLYTOPE_CLAIM_ID
+        and node.get("facet_id") == POLYTOPE_FACET_ID
+    ]
+    if len(facet_nodes) != 1:
+        raise ExportError("graph must contain exactly one selected polytope facet")
+    expected_navigation = expected_polytope_navigation()
+    expected_navigation_records = sorted(
+        (
+            link["target_ref"]["target_id"], link["relationship"], link["facet_coverage"],
+            link["facet_id"], json.dumps(link["target_ref"], sort_keys=True),
+        )
+        for link in expected_navigation
+    )
+    actual_navigation_records = sorted(
+        (
+            edge["target"], edge.get("relationship"), edge.get("facet_coverage"),
+            edge.get("facet_id"), json.dumps(edge.get("target_ref"), sort_keys=True),
+        )
+        for edge in edges
+        if edge.get("type") == "provisional_navigation" and edge.get("source") == facet_nodes[0]["id"]
+    )
+    if actual_navigation_records != expected_navigation_records:
+        raise ExportError("selected polytope facet navigation does not exactly match its Registry association")
+
+    _, source_candidates, source_oracle_edges = load_oracle_subgraph()
+    graph_candidates = {
+        node.get("candidate_id"): node for node in nodes if node.get("type") == "oracle_candidate"
+    }
+    if set(graph_candidates) != set(source_candidates):
+        raise ExportError("graph Oracle candidate node set does not match the selected source-DAG subgraph")
+    expected_levels = oracle_layout_levels(source_candidates, source_oracle_edges)
+    for candidate_id, source_record in source_candidates.items():
+        graph_node = graph_candidates[candidate_id]
+        if graph_node.get("candidate_record") != source_record:
+            raise ExportError(f"Oracle candidate {candidate_id} does not preserve its source DAG record")
+        if graph_node.get("source_status") != source_record.get("status"):
+            raise ExportError(f"Oracle candidate {candidate_id} does not preserve source status")
+        if graph_node.get("issue_badges") != source_record.get("issue_badges", []):
+            raise ExportError(f"Oracle candidate {candidate_id} does not preserve structured issue badges")
+        detail = graph_node["detail_markdown"]
+        for issue in source_record.get("issue_badges", []):
+            required_detail = [
+                f"Object: **{issue['object']}**", f"Status: `{issue['status']}`",
+                issue["interpretation"], *(f"`{badge}`" for badge in issue["badges"]),
+            ]
+            if any(value not in detail for value in required_detail):
+                raise ExportError(f"Oracle candidate {candidate_id} does not render its structured issue metadata")
+        if graph_node.get("layout_level") != expected_levels[candidate_id]:
+            raise ExportError(f"Oracle candidate {candidate_id} does not preserve the source-derived topological layout")
+    expected_oracle_edges = sorted(
+        (
+            edge["from"], edge["to"], edge["type"], edge["reason"], json.dumps(edge["evidence"], sort_keys=True),
+        )
+        for edge in source_oracle_edges
+    )
+    actual_oracle_edges = sorted(
+        (
+            edge["source"].removeprefix("oracle-candidate:"),
+            edge["target"].removeprefix("oracle-candidate:"),
+            edge.get("candidate_edge_type"), edge.get("reason"), json.dumps(edge.get("evidence"), sort_keys=True),
+        )
+        for edge in edges if edge.get("type") == "oracle_candidate_dependency"
+    )
+    if actual_oracle_edges != expected_oracle_edges:
+        raise ExportError("Oracle candidate dependency edges do not exactly match the induced source-DAG subgraph")
+    contained_candidates = {
+        edge["target"].removeprefix("oracle-candidate:")
+        for edge in edges if edge.get("type") == "oracle_contains" and edge.get("source") == ORACLE_SKELETON_ID
+    }
+    if contained_candidates != set(source_candidates):
+        raise ExportError("Oracle skeleton containment does not exactly cover the selected candidate nodes")
+    overlay_edges = [edge for edge in edges if edge.get("type") == "oracle_overlay"]
+    if len(overlay_edges) != 1 or (overlay_edges[0]["source"], overlay_edges[0]["target"]) != (EXACT_POLYTOPE_MATH_ID, ORACLE_SKELETON_ID):
+        raise ExportError("Oracle overlay is not attached exactly beneath the polytope-exactness MathClaimIR")
+
     initial = graph.get("initial_node_ids")
     expanded = graph.get("initial_expanded_node_ids")
     expected_initial = [node["id"] for node in nodes if node["type"] in {"paper", "scientific_claim_contribution"}]
@@ -279,248 +476,222 @@ def validate_graph(graph: dict[str, Any]) -> None:
         raise ExportError("graph initial expanded state must contain only the paper root")
 
 
+def anchor_lines(formal: dict[str, Any], anchors: dict[str, dict[str, Any]]) -> list[str]:
+    lines = []
+    for anchor_id in formal["source_anchors"]:
+        anchor = anchors.get(anchor_id)
+        if anchor is None:
+            lines.append(f"- `{anchor_id}` — **referenced anchor / Registry record missing**")
+        else:
+            location = anchor["location"]
+            lines.append(f"- `{anchor_id}` — resolved SourceAnchor, lines `{location['line_start']}–{location['line_end']}`")
+    return lines
+
+
+def build_oracle_overlay(nodes: list[dict[str, Any]], edges: list[dict[str, Any]], exact_math_id: str) -> None:
+    _, dag_nodes, selected_edges = load_oracle_subgraph()
+    skeleton_id = ORACLE_SKELETON_ID
+    nodes.append({
+        "id": skeleton_id,
+        "type": "oracle_skeleton",
+        "label": "ORACLE CANDIDATE PROOF SKELETON",
+        "detail_markdown": "\n\n".join([
+            "## ORACLE CANDIDATE PROOF SKELETON",
+            "**UNVERIFIED overlay from the prototype claim DAG**",
+            "- Source status: `ORACLE_PROPOSED`",
+            "- Edge review: `UNREVIEWED_AT_EDGE_LEVEL`",
+            "- Lean support: `NOT_EXTRACTED`",
+            "- Disposition: `CANDIDATE`",
+            "- SCIENTIFIC ACCEPTANCE: **UNKNOWN**",
+            "- PROOF-DAG EDGE: **NOT ASSERTED AS ACCEPTED**",
+            f"- Frozen DAG: `{CANDIDATE_DAG.relative_to(ROOT)}`",
+            f"- File hash: `{file_hash(CANDIDATE_DAG)}`",
+            "*Expanding this overlay shows an Oracle-proposed candidate chain, not accepted MathClaimIR dependencies.*",
+        ]),
+        "expandable": True,
+        "unverified": True,
+    })
+    edges.append({
+        "id": f"edge:oracle-overlay:{exact_math_id}",
+        "source": exact_math_id,
+        "target": skeleton_id,
+        "expand_from": exact_math_id,
+        "type": "oracle_overlay",
+        "label": "OPTIONAL · UNVERIFIED ORACLE OVERLAY",
+    })
+    candidate_levels = oracle_layout_levels(dag_nodes, selected_edges)
+    for candidate_id in sorted(ORACLE_NODE_IDS):
+        record = dag_nodes[candidate_id]
+        display_id = f"oracle-candidate:{candidate_id}"
+        source = record.get("source") or {"anchor": record.get("anchor")}
+        blockers = [record["status"]] if record.get("status") in {
+            "BLOCKED_BY_ROOT_CONTRACT", "BLOCKED_BY_VREP_PROOF_GAP", "AGENT_EXPLICITATION_REQUIRES_PROOF_AUDIT",
+            "LOCAL_DERIVATION_BLOCKED_BY_VREP_IMPORT",
+        } else []
+        issues = record.get("issue_badges", [])
+        detail_parts = [
+            "## Oracle candidate node",
+            f"**{record['contract']}**",
+            f"- Candidate ID: `{candidate_id}`",
+            f"- Kind: `{record['kind']}`",
+            f"- Source status: `{record['status']}`",
+            "- Oracle status: `ORACLE_PROPOSED`",
+            "- SCIENTIFIC ACCEPTANCE: **UNKNOWN**",
+            "- PROOF-DAG EDGE: **NOT ASSERTED AS ACCEPTED**",
+            "### Preserved source\n" + fenced(json.dumps(source, ensure_ascii=False, sort_keys=True, indent=2), "json"),
+        ]
+        if blockers:
+            detail_parts.append("### Node blockers / audit status\n" + "\n".join(f"- `{blocker}`" for blocker in blockers))
+        for issue in issues:
+            detail_parts.append("\n".join([
+                f"### Structured issue: {issue['object']}",
+                f"- Object: **{issue['object']}**",
+                f"- Status: `{issue['status']}`",
+                "- Badges: " + ", ".join(f"`{badge}`" for badge in issue["badges"]),
+                f"- Interpretation: {issue['interpretation']}",
+            ]))
+        nodes.append({
+            "id": display_id,
+            "candidate_id": candidate_id,
+            "type": "oracle_candidate",
+            "label": compact_label(candidate_id),
+            "detail_markdown": "\n\n".join(detail_parts),
+            "expandable": False,
+            "source_status": record["status"],
+            "issue_badges": issues,
+            "candidate_record": record,
+            "layout_level": candidate_levels[candidate_id],
+            "unverified": True,
+        })
+        edges.append({
+            "id": f"edge:oracle-contains:{candidate_id}",
+            "source": skeleton_id,
+            "target": display_id,
+            "expand_from": skeleton_id,
+            "type": "oracle_contains",
+            "label": "UNVERIFIED CANDIDATE NODE",
+        })
+    for index, record in enumerate(selected_edges):
+        edges.append({
+            "id": f"edge:oracle-dependency:{index:02d}:{record['from']}:{record['to']}",
+            "source": f"oracle-candidate:{record['from']}",
+            "target": f"oracle-candidate:{record['to']}",
+            "expand_from": skeleton_id,
+            "type": "oracle_candidate_dependency",
+            "label": f"CANDIDATE · {record['type']}",
+            "candidate_edge_type": record["type"],
+            "reason": record["reason"],
+            "evidence": record["evidence"],
+        })
+
+
 def build_graph(exported_claims: list[dict[str, Any]], targets: dict[tuple[str, int], dict[str, Any]], paper: dict[str, Any]) -> dict[str, Any]:
     formal_by_id = unique_by(load_jsonl(FORMAL_CLAIMS), "id", "FORMAL_ATOMIC ScientificClaim")
+    anchor_records = load_jsonl(SOURCE_ANCHORS)
+    anchors = unique_by(anchor_records, "id", "SourceAnchor")
+    for anchor in anchor_records:
+        artifact = ROOT / anchor["artifact"]
+        if anchor.get("artifact_hash") != file_hash(artifact):
+            raise ExportError(f"SourceAnchor {anchor['id']} artifact hash mismatch")
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     paper_node_id = f"paper:{paper['id']}"
-    paper_detail = "\n\n".join([
-        "## Paper",
-        f"**{paper['title']}**",
-        f"`{paper['id']}`",
-        "### Authors\n" + "\n".join(f"- {author}" for author in paper["authors"]),
-        f"### Frozen source\n`{paper['source_path']}`",
-    ])
     nodes.append({
-        "id": paper_node_id,
-        "type": "paper",
-        "label": paper["title"],
-        "detail_markdown": paper_detail,
-        "expandable": True,
+        "id": paper_node_id, "type": "paper", "label": paper["title"], "expandable": True,
+        "detail_markdown": "\n\n".join(["## Paper", f"**{paper['title']}**", f"`{paper['id']}`", "### Authors\n" + "\n".join(f"- {a}" for a in paper["authors"]), f"### Frozen source\n`{paper['source_path']}`"]),
     })
 
     support_contexts: dict[tuple[str, int], list[dict[str, str]]] = {}
     support_refs: dict[tuple[str, int], dict[str, Any]] = {}
-    formal_sources: dict[str, dict[str, dict[str, Any]]] = {}
     facet_node_ids: dict[tuple[str, str], str] = {}
-
     for bundle in exported_claims:
-        claim = bundle["claim"]
-        calibration = bundle["calibration"]
-        association = bundle["support_association"]
+        claim, calibration, association = bundle["claim"], bundle["calibration"], bundle["support_association"]
         claim_id = claim["id"]
-        claim_detail = "\n\n".join([
-            "## Contribution-role ScientificClaim",
-            f"**{compact_label(claim_id)}**",
-            claim["normalized_statement"],
-            f"`{claim_id}` · revision `{claim['record_revision']}`",
-            "### Scope\n" + "\n".join(f"- {hint}" for hint in claim["scope_hints"]),
-            "### Immutable identity\n" + "\n".join([
-                f"- Semantic: `{claim['semantic_content_hash']}`",
-                f"- Artifact: `{claim['artifact']['artifact_hash']}`",
-                f"- Content: `{claim['content_hash']}`",
-            ]),
-            "*Narrative/source navigation only; this ScientificClaim is not a mathematical proof-DAG node.*",
-        ])
         nodes.append({
-            "id": claim_id,
-            "type": "scientific_claim_contribution",
-            "label": compact_label(claim_id),
-            "detail_markdown": claim_detail,
-            "expandable": True,
+            "id": claim_id, "type": "scientific_claim_contribution", "label": compact_label(claim_id), "expandable": True,
+            "detail_markdown": "\n\n".join([
+                "## Contribution-role ScientificClaim", f"**{compact_label(claim_id)}**", claim["normalized_statement"],
+                f"`{claim_id}` · revision `{claim['record_revision']}`", "### Scope\n" + "\n".join(f"- {hint}" for hint in claim["scope_hints"]),
+                "*Narrative root and claim-level source provenance only; this ScientificClaim is not a proof-DAG node.*",
+            ]),
         })
-        edges.append({
-            "id": f"edge:paper:{claim_id}",
-            "source": paper_node_id,
-            "target": claim_id,
-            "expand_from": paper_node_id,
-            "type": "contains",
-            "label": "CONTRIBUTION-ROLE SCIENTIFICCLAIM",
-        })
-
-        outcomes = {outcome["facet_id"]: outcome["coverage"] for outcome in association["facet_outcomes"]}
+        edges.append({"id": f"edge:paper:{claim_id}", "source": paper_node_id, "target": claim_id, "expand_from": paper_node_id, "type": "contains", "label": "CONTRIBUTION-ROLE SCIENTIFICCLAIM"})
+        outcomes = {item["facet_id"]: item["coverage"] for item in association["facet_outcomes"]}
         for facet in claim["facets"]:
             facet_id = facet["facet_id"]
             node_id = f"graph-facet:{claim_id.rsplit(':', 1)[-1]}:{facet_id.rsplit(':', 1)[-1]}"
             facet_node_ids[(claim_id, facet_id)] = node_id
-            outcome = outcomes[facet_id]
-            detail = "\n\n".join([
-                "## Facet",
-                f"**{facet['statement']}**",
-                f"- Facet ID: `{facet_id}`",
-                f"- Kind: `{facet['facet_kind']}`",
-                f"- Provisional facet navigation: **{outcome.lower()}**",
-                "*This outcome routes inspection; it is not final query coverage or verification.*",
-            ])
+            coverage = outcomes[facet_id]
             nodes.append({
-                "id": node_id,
-                "type": "facet",
-                "label": compact_label(facet_id),
-                "detail_markdown": detail,
-                "expandable": True,
-                "claim_id": claim_id,
-                "facet_id": facet_id,
+                "id": node_id, "type": "facet", "label": compact_label(facet_id), "expandable": True,
+                "claim_id": claim_id, "facet_id": facet_id,
+                "detail_markdown": "\n\n".join([
+                    "## Facet", f"**{facet['statement']}**", f"- Facet ID: `{facet_id}`", f"- Kind: `{facet['facet_kind']}`",
+                    f"- NAVIGATION COVERAGE: **{coverage}**", "- SCIENTIFIC ACCEPTANCE: **UNKNOWN**", "- PROOF-DAG EDGE: **NOT ASSERTED**",
+                    "*Navigation coverage routes Registry inspection. It is not proof completeness or scientific verification.*",
+                ]),
             })
-            edges.append({
-                "id": f"edge:facet:{claim_id}:{facet_id}",
-                "source": claim_id,
-                "target": node_id,
-                "expand_from": claim_id,
-                "type": "has_facet",
-                "label": "HAS FACET",
-            })
-
+            edges.append({"id": f"edge:facet:{claim_id}:{facet_id}", "source": claim_id, "target": node_id, "expand_from": claim_id, "type": "has_facet", "label": "HAS FACET"})
         for occurrence in claim["occurrences"]:
             role = occurrence["occurrence_role"]
-            if role == "PRIMARY":
-                relation = calibration["primary_to_normalized_relation"]
-            elif role == "BODY_SUPPORT":
-                relation = calibration["body_to_normalized_relation"]
-            else:
-                relation = None
-            relation_line = f"- Calibration: `{relation}`" if relation else "- Calibration: occurrence role only; no finer relation is asserted"
-            detail = "\n\n".join([
-                "## Source occurrence",
-                f"**{role}** · `{occurrence['source_zone']}`",
-                "\n".join([
-                    f"- Occurrence: `{occurrence['id']}`",
-                    f"- Source: `{occurrence['source_artifact']['path']}`",
-                    f"- Lines: `{occurrence['line_start']}–{occurrence['line_end']}`",
-                    f"- Speech act: `{occurrence['source_characterization']['speech_act']}`",
-                    f"- Formality: `{occurrence['source_characterization']['formality']}`",
-                    f"- Conditionality: `{occurrence['source_characterization']['conditionality']}`",
-                    relation_line,
-                ]),
-                "### Verbatim excerpt\n" + fenced(occurrence["source_text"], "latex"),
-            ])
+            relation = calibration.get("primary_to_normalized_relation") if role == "PRIMARY" else calibration.get("body_to_normalized_relation") if role == "BODY_SUPPORT" else None
             nodes.append({
-                "id": occurrence["id"],
-                "type": "source_occurrence",
-                "label": f"{role.title().replace('_', ' ')} · lines {occurrence['line_start']}–{occurrence['line_end']}",
-                "detail_markdown": detail,
-                "expandable": False,
-                "claim_id": claim_id,
+                "id": occurrence["id"], "type": "source_occurrence", "label": f"{role.title().replace('_', ' ')} · lines {occurrence['line_start']}–{occurrence['line_end']}", "expandable": False, "claim_id": claim_id,
+                "detail_markdown": "\n\n".join([
+                    "## Claim-level source occurrence", f"**{role}** · `{occurrence['source_zone']}`",
+                    "\n".join([f"- Occurrence: `{occurrence['id']}`", f"- Source: `{occurrence['source_artifact']['path']}`", f"- Lines: `{occurrence['line_start']}–{occurrence['line_end']}`", f"- Calibration: `{relation or 'SOURCE OCCURRENCE'}`"]),
+                    "- PROOF-DAG EDGE: **NOT ASSERTED**", "### Verbatim excerpt\n" + fenced(occurrence["source_text"], "latex"),
+                ]),
             })
-            edges.append({
-                "id": f"edge:occurrence:{claim_id}:{occurrence['id']}",
-                "source": claim_id,
-                "target": occurrence["id"],
-                "expand_from": claim_id,
-                "type": "source_calibration",
-                "label": f"{role} · {relation or 'SOURCE OCCURRENCE'}",
-                "calibration_id": calibration["id"],
-                "relation_direction": calibration["relation_direction"],
-            })
-
+            edges.append({"id": f"edge:occurrence:{claim_id}:{occurrence['id']}", "source": claim_id, "target": occurrence["id"], "expand_from": claim_id, "type": "source_calibration", "label": f"{role} · {relation or 'SOURCE OCCURRENCE'}", "calibration_id": calibration["id"], "relation_direction": calibration["relation_direction"]})
         for link in association["links"]:
             reference = link["target_ref"]
             key = (reference["target_id"], reference["target_revision"])
             support_refs[key] = reference
-            support_contexts.setdefault(key, []).append({
-                "claim_id": claim_id,
-                "facet_id": link["facet_id"],
-                "relationship": link["relationship"],
-                "facet_coverage": link["facet_coverage"],
-            })
-            target = targets[key]
-            formal_ref = target.get("claim") if reference["target_kind"] == "org.agtxiv.claim_ir" else None
-            if isinstance(formal_ref, dict):
-                formal = formal_by_id.get(formal_ref.get("id"))
-                if formal is None:
-                    raise ExportError(f"MathClaimIR {target['id']} has dangling FORMAL_ATOMIC ScientificClaim {formal_ref.get('id')}")
-                expected = (formal["record_revision"], formal["content_hash"])
-                actual = (formal_ref.get("record_revision"), formal_ref.get("content_hash"))
-                if actual != expected:
-                    raise ExportError(f"MathClaimIR {target['id']} has mismatched FORMAL_ATOMIC ScientificClaim identity")
-                formal_sources.setdefault(claim_id, {})[formal["id"]] = formal
+            support_contexts.setdefault(key, []).append({"claim_id": claim_id, "facet_id": link["facet_id"], "relationship": link["relationship"], "facet_coverage": link["facet_coverage"]})
 
-    for claim_id, formal_records in formal_sources.items():
-        for formal in sorted(formal_records.values(), key=lambda record: record["id"]):
-            detail = "\n\n".join([
-                "## FORMAL_ATOMIC ScientificClaim",
-                f"**{formal['text']}**",
-                "\n".join([
-                    f"- ID: `{formal['id']}`",
-                    f"- Kind: `{formal['kind']}`",
-                    f"- Origin: `{formal['origin']}`",
-                    f"- Revision: `{formal['record_revision']}`",
-                    f"- Content hash: `{formal['content_hash']}`",
-                ]),
-                "### Source anchors\n" + "\n".join(f"- `{anchor}`" for anchor in formal["source_anchors"]),
-                "*Included because a displayed MathClaimIR carries this exact immutable ScientificClaim identity; no occurrence-level edge is guessed.*",
-            ])
-            nodes.append({
-                "id": formal["id"],
-                "type": "scientific_claim_formal",
-                "label": compact_label(formal["id"]),
-                "detail_markdown": detail,
-                "expandable": False,
-                "claim_id": claim_id,
-            })
-            edges.append({
-                "id": f"edge:formal:{claim_id}:{formal['id']}",
-                "source": claim_id,
-                "target": formal["id"],
-                "expand_from": claim_id,
-                "type": "formal_source",
-                "label": "FORMAL_ATOMIC SOURCE IDENTITY",
-                "basis": "Exact MathClaimIR.claim immutable reference",
-            })
-
+    formal_added: set[str] = set()
+    exact_math_id = EXACT_POLYTOPE_MATH_ID
     for key in sorted(support_contexts):
-        target = targets[key]
-        reference = support_refs[key]
-        contexts = support_contexts[key]
+        target, reference, contexts = targets[key], support_refs[key], support_contexts[key]
         node_type = "math_claim_ir" if reference["target_kind"] == "org.agtxiv.claim_ir" else "mathematical_proposition_ir"
         statement = target.get("normalized_statement_expanded_latex") or target.get("text") or target.get("statement") or "No display statement recorded."
-        detail = "\n\n".join([
-            f"## {'MathClaimIR' if node_type == 'math_claim_ir' else 'MathematicalPropositionIR'}",
-            f"**{compact_label(target['id'])}**",
-            "\n".join([
-                f"- Target ID: `{target['id']}`",
-                f"- Revision: `{target['revision']}`",
-                f"- Semantic hash: `{target['semantic_content_hash']}`",
-                f"- Artifact hash: `{target['artifact']['artifact_hash']}`",
-            ]),
+        node_detail = [
+            f"## {'MathClaimIR' if node_type == 'math_claim_ir' else 'MathematicalPropositionIR'}", f"**{compact_label(target['id'])}**",
+            f"- Target ID: `{target['id']}`", f"- Revision: `{target['revision']}`", "- SCIENTIFIC ACCEPTANCE: **UNKNOWN**", "- PROOF-DAG EDGE: **NOT ASSERTED**",
             "### Mathematical statement\n" + fenced(str(statement), "latex"),
-            "### Provisional navigation associations\n" + "\n".join(
-                f"- `{context['facet_id']}` · `{context['relationship']}` · **{context['facet_coverage'].lower()}**"
-                for context in contexts
-            ),
+            "### Registry navigation\n" + "\n".join(f"- `{c['facet_id']}` · `{c['relationship']}` · NAVIGATION COVERAGE: **{c['facet_coverage']}**" for c in contexts),
             "### Exact artifact\n" + fenced(json.dumps(reference["target_artifact"], ensure_ascii=False, sort_keys=True, indent=2), "json"),
-            "*Eligible for the mathematical proof-DAG layer; these links still do not assert final query coverage or verification.*",
-        ])
-        nodes.append({
-            "id": target["id"],
-            "type": node_type,
-            "label": compact_label(target["id"]),
-            "detail_markdown": detail,
-            "expandable": False,
-            "revision": target["revision"],
-        })
+            "*This normalized object is proof-DAG eligible, but these Registry links assert navigation only.*",
+        ]
+        nodes.append({"id": target["id"], "type": node_type, "label": compact_label(target["id"]), "detail_markdown": "\n\n".join(node_detail), "expandable": node_type == "math_claim_ir", "revision": target["revision"]})
         for context in contexts:
             facet_node_id = facet_node_ids[(context["claim_id"], context["facet_id"])]
-            edges.append({
-                "id": f"edge:support:{facet_node_id}:{target['id']}",
-                "source": facet_node_id,
-                "target": target["id"],
-                "expand_from": facet_node_id,
-                "type": "provisional_navigation",
-                "label": f"PROVISIONAL NAVIGATION · {context['facet_coverage']}",
-                "relationship": context["relationship"],
-                "facet_id": context["facet_id"],
-                "target_ref": reference,
-            })
+            edges.append({"id": f"edge:support:{facet_node_id}:{target['id']}", "source": facet_node_id, "target": target["id"], "expand_from": facet_node_id, "type": "provisional_navigation", "label": f"PROVISIONAL NAVIGATION · {context['facet_coverage']}", "relationship": context["relationship"], "facet_coverage": context["facet_coverage"], "facet_id": context["facet_id"], "target_ref": reference})
+        if node_type == "math_claim_ir":
+            formal_ref = target.get("claim")
+            formal = formal_by_id.get(formal_ref.get("id") if isinstance(formal_ref, dict) else None)
+            if formal is None or (formal_ref.get("record_revision"), formal_ref.get("content_hash")) != (formal["record_revision"], formal["content_hash"]):
+                raise ExportError(f"MathClaimIR {target['id']} has invalid FORMAL_ATOMIC ScientificClaim identity")
+            if formal["id"] not in formal_added:
+                formal_added.add(formal["id"])
+                nodes.append({
+                    "id": formal["id"], "type": "scientific_claim_formal", "label": compact_label(formal["id"]), "expandable": False,
+                    "detail_markdown": "\n\n".join([
+                        "## Immutable FORMAL_ATOMIC ScientificClaim identity", f"**{formal['text']}**", f"- ID: `{formal['id']}`", f"- Revision: `{formal['record_revision']}`", f"- Content hash: `{formal['content_hash']}`",
+                        "### Source-anchor resolution\n" + "\n".join(anchor_lines(formal, anchors)),
+                        "- SCIENTIFIC ACCEPTANCE: **UNKNOWN**", "- PROOF-DAG EDGE: **NOT ASSERTED**",
+                        "*This is the exact identity normalized by its MathClaimIR, not a proof dependency or contribution-source edge.*",
+                    ]),
+                })
+            edges.append({"id": f"edge:identity:{target['id']}:{formal['id']}", "source": target["id"], "target": formal["id"], "expand_from": target["id"], "type": "normalizes_identity", "label": "NORMALIZES IMMUTABLE IDENTITY", "basis": "Exact MathClaimIR.claim immutable reference"})
 
-    graph = {
-        "nodes": nodes,
-        "edges": edges,
-        "initial_node_ids": [node["id"] for node in nodes if node["type"] in {"paper", "scientific_claim_contribution"}],
-        "initial_expanded_node_ids": [paper_node_id],
-    }
+    if exact_math_id not in {node["id"] for node in nodes}:
+        raise ExportError("polytope exactness MathClaimIR is missing from Registry navigation")
+    build_oracle_overlay(nodes, edges, exact_math_id)
+    graph = {"nodes": nodes, "edges": edges, "initial_node_ids": [n["id"] for n in nodes if n["type"] in {"paper", "scientific_claim_contribution"}], "initial_expanded_node_ids": [paper_node_id]}
     validate_graph(graph)
     return graph
-
 
 def build_demo_data() -> dict[str, Any]:
     all_claims = load_jsonl(CLAIMS)
@@ -624,13 +795,13 @@ def build_demo_data() -> dict[str, Any]:
                 },
                 {
                     "id": "facet-evidence",
-                    "label": "Facets + source audit",
+                    "label": "Claim-level source provenance",
                     "description": "Facets route navigation to immutable occurrences, source characterization, and calibration records.",
                 },
                 {
                     "id": "mathematical-dag",
                     "label": "Mathematical support targets",
-                    "description": "MathClaimIR and MathematicalPropositionIR records may enter the mathematical dependency DAG.",
+                    "description": "Normalized MathClaimIR and MathematicalPropositionIR objects are proof-DAG eligible; Registry links do not assert dependencies.",
                 },
             ],
             "verification_boundary": {
@@ -645,7 +816,7 @@ def build_demo_data() -> dict[str, Any]:
         "claims": exported_claims,
         "graph": graph,
         "paper": paper,
-        "schema": "agtxiv.scientific-claim-demo/2.0.0",
+        "schema": "agtxiv.scientific-claim-demo/3.0.0",
         "source_revision": "2d9b1b7",
     }
 

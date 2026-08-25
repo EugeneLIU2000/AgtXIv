@@ -31,7 +31,7 @@
       </div>
       <div class="boundary-copy">
         <strong>Architecture boundary</strong>
-        <p>ScientificClaim nodes navigate narrative and source records; they never enter the mathematical proof DAG. Purple and orange mathematical targets alone are proof-DAG eligible.</p>
+        <p>Three distinct layers are shown: claim-level source provenance, normalized mathematical objects, and an optional unverified Oracle candidate skeleton. Contribution ScientificClaims never enter the proof DAG.</p>
       </div>
     </section>
 
@@ -66,13 +66,15 @@
             <span><i class="glyph-swatch occurrence" aria-hidden="true"></i>Source occurrence</span>
             <span><i class="glyph-swatch math" aria-hidden="true"></i>MathClaimIR</span>
             <span><i class="glyph-swatch proposition" aria-hidden="true"></i>MathematicalPropositionIR</span>
+            <span><i class="glyph-swatch oracle" aria-hidden="true"></i>Oracle candidate (unverified)</span>
           </div>
           <div class="edge-legend" aria-label="Edge styles">
             <span><i class="edge-swatch hierarchy"></i>Structure</span>
             <span><i class="edge-swatch source"></i>Source / calibration</span>
             <span><i class="edge-swatch support"></i>PROVISIONAL NAVIGATION</span>
+            <span><i class="edge-swatch oracle"></i>ORACLE CANDIDATE</span>
           </div>
-          <p class="legend-boundary">Ring/dot color encodes type; glyph size encodes hierarchy. Support edges are navigation—not final query coverage or verification.</p>
+          <p class="legend-boundary">Ring/dot color encodes type; glyph size encodes hierarchy. Navigation coverage is not proof completeness. Oracle candidates remain unreviewed and scientifically UNKNOWN.</p>
         </section>
 
         <div class="graph-layout">
@@ -93,6 +95,7 @@
                   <marker id="arrowStructure" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
                   <marker id="arrowSource" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
                   <marker id="arrowSupport" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
+                  <marker id="arrowOracle" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 z"></path></marker>
                   <filter id="nodeShadow" x="-80%" y="-80%" width="260%" height="280%">
                     <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#17211c" flood-opacity="0.18"></feDropShadow>
                   </filter>

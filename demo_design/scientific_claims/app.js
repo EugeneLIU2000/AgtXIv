@@ -6,8 +6,12 @@
   const NODE_TYPES = new Set([
     "paper", "scientific_claim_contribution", "facet", "scientific_claim_formal",
     "source_occurrence", "math_claim_ir", "mathematical_proposition_ir",
+    "oracle_skeleton", "oracle_candidate",
   ]);
-  const EDGE_TYPES = new Set(["contains", "has_facet", "source_calibration", "formal_source", "provisional_navigation"]);
+  const EDGE_TYPES = new Set([
+    "contains", "has_facet", "source_calibration", "normalizes_identity", "provisional_navigation",
+    "oracle_overlay", "oracle_contains", "oracle_candidate_dependency",
+  ]);
   const TYPE_LABELS = {
     paper: "Paper",
     scientific_claim_contribution: "Contribution ScientificClaim",
@@ -16,15 +20,19 @@
     source_occurrence: "Source occurrence",
     math_claim_ir: "MathClaimIR",
     mathematical_proposition_ir: "MathematicalPropositionIR",
+    oracle_skeleton: "Unverified Oracle candidate proof skeleton",
+    oracle_candidate: "Unverified Oracle candidate",
   };
   const LEVELS = {
     paper: 0,
     scientific_claim_contribution: 1,
-    scientific_claim_formal: 2,
     source_occurrence: 2,
-    facet: 3,
-    math_claim_ir: 4,
-    mathematical_proposition_ir: 4,
+    facet: 2,
+    math_claim_ir: 3,
+    mathematical_proposition_ir: 3,
+    scientific_claim_formal: 4,
+    oracle_skeleton: 4,
+    oracle_candidate: 5,
   };
   const READABLE_SCALE_FLOORS = { desktop: .46, tablet: .38, mobile: .32, narrow: .28 };
   const NODE_METRICS = {
@@ -35,6 +43,8 @@
     source_occurrence: { radius: 15, hitRadius: 25, footprint: 68, labelWidth: 150 },
     math_claim_ir: { radius: 17, hitRadius: 27, footprint: 72, labelWidth: 160 },
     mathematical_proposition_ir: { radius: 17, hitRadius: 27, footprint: 72, labelWidth: 170 },
+    oracle_skeleton: { radius: 18, hitRadius: 28, footprint: 78, labelWidth: 190 },
+    oracle_candidate: { radius: 14, hitRadius: 24, footprint: 68, labelWidth: 160 },
   };
   const TYPE_CODES = {
     paper: "PAPER",
@@ -44,6 +54,8 @@
     source_occurrence: "SOURCE",
     math_claim_ir: "MATHCLAIMIR",
     mathematical_proposition_ir: "PROPOSITIONIR",
+    oracle_skeleton: "ORACLE · UNVERIFIED",
+    oracle_candidate: "ORACLE CANDIDATE",
   };
   const state = {
     data: null,
@@ -169,14 +181,34 @@
     return fragment;
   }
 
-  window.ScientificClaimDemo = Object.freeze({ isSafeUrl, renderMarkdown });
+  function parseDeepLink(hash) {
+    if (typeof hash !== "string" || !hash.startsWith("#")) return null;
+    const params = new URLSearchParams(hash.slice(1));
+    const claimId = params.get("claim");
+    const facetId = params.get("facet");
+    if (!claimId || !claimId.startsWith("claim:")) return null;
+    if (facetId !== null && !facetId.startsWith("facet:")) return null;
+    return { claimId, facetId };
+  }
+
+  function resolveDeepLink(hash, graph) {
+    const parsed = parseDeepLink(hash);
+    if (!parsed || !graph || !Array.isArray(graph.nodes)) return null;
+    const claim = graph.nodes.find((node) => node.id === parsed.claimId && node.type === "scientific_claim_contribution");
+    if (!claim) return null;
+    if (parsed.facetId === null) return { claim, facet: null };
+    const facet = graph.nodes.find((node) => node.type === "facet" && node.claim_id === claim.id && node.facet_id === parsed.facetId);
+    return facet ? { claim, facet } : null;
+  }
+
+  window.ScientificClaimDemo = Object.freeze({ isSafeUrl, renderMarkdown, parseDeepLink, resolveDeepLink });
 
   function requireData(condition, message) {
     if (!condition) throw new Error(message);
   }
 
   function validateGraphData(data) {
-    requireData(data?.schema === "agtxiv.scientific-claim-demo/2.0.0", "The frozen graph payload has the wrong schema.");
+    requireData(data?.schema === "agtxiv.scientific-claim-demo/3.0.0", "The frozen graph payload has the wrong schema.");
     const graph = data.graph;
     requireData(graph && Array.isArray(graph.nodes) && Array.isArray(graph.edges), "The frozen graph payload is missing nodes or edges.");
     const ids = new Set();
@@ -191,8 +223,11 @@
       contains: [["paper"], ["scientific_claim_contribution"]],
       has_facet: [["scientific_claim_contribution"], ["facet"]],
       source_calibration: [["scientific_claim_contribution"], ["source_occurrence"]],
-      formal_source: [["scientific_claim_contribution"], ["scientific_claim_formal"]],
+      normalizes_identity: [["math_claim_ir"], ["scientific_claim_formal"]],
       provisional_navigation: [["facet"], ["math_claim_ir", "mathematical_proposition_ir"]],
+      oracle_overlay: [["math_claim_ir"], ["oracle_skeleton"]],
+      oracle_contains: [["oracle_skeleton"], ["oracle_candidate"]],
+      oracle_candidate_dependency: [["oracle_candidate"], ["oracle_candidate"]],
     };
     const edgeIds = new Set();
     graph.edges.forEach((edge) => {
@@ -204,8 +239,12 @@
       const target = graph.nodes.find((node) => node.id === edge.target);
       const [sourceTypes, targetTypes] = endpointTypes[edge.type];
       requireData(sourceTypes.includes(source.type) && targetTypes.includes(target.type), `Graph edge ${edge.id} has invalid typed endpoints.`);
+      requireData(ids.has(edge.expand_from), `Graph edge ${edge.id} has an invalid expansion owner.`);
       if (edge.type === "provisional_navigation") {
         requireData(edge.label.startsWith("PROVISIONAL NAVIGATION · "), `Graph edge ${edge.id} has misleading support wording.`);
+      }
+      if (edge.type === "oracle_candidate_dependency") {
+        requireData(edge.evidence?.oracle_status === "ORACLE_PROPOSED" && edge.evidence?.source_alignment === "UNREVIEWED_AT_EDGE_LEVEL" && edge.evidence?.lean_support === "NOT_EXTRACTED" && edge.evidence?.disposition === "CANDIDATE", `Graph edge ${edge.id} loses Oracle evidence status.`);
       }
     });
     const initialTypes = graph.initial_node_ids.map((id) => graph.nodes.find((node) => node.id === id)?.type);
@@ -232,21 +271,22 @@
   function layoutGraph(nodes) {
     const layers = new Map();
     nodes.forEach((node) => {
-      const level = LEVELS[node.type];
+      const level = Number.isInteger(node.layout_level) ? node.layout_level : LEVELS[node.type];
       if (!layers.has(level)) layers.set(level, []);
       layers.get(level).push(node);
     });
-    const xPositions = [90, 330, 555, 755, 1010];
+    const maxLevel = Math.max(...layers.keys());
+    const xPositions = Array.from({ length: maxLevel + 1 }, (_, level) => 90 + level * 225);
     const gap = 12;
     const layerHeights = [];
-    for (let level = 0; level <= 4; level += 1) {
+    for (let level = 0; level <= maxLevel; level += 1) {
       const layer = layers.get(level) || [];
       const height = layer.reduce((total, node) => total + NODE_METRICS[node.type].footprint, 0) + Math.max(0, layer.length - 1) * gap;
       layerHeights.push(height);
     }
     const totalHeight = Math.max(240, ...layerHeights) + 64;
     const positions = new Map();
-    for (let level = 0; level <= 4; level += 1) {
+    for (let level = 0; level <= maxLevel; level += 1) {
       const layer = layers.get(level) || [];
       let y = (totalHeight - layerHeights[level]) / 2;
       layer.forEach((node) => {
@@ -284,6 +324,12 @@
   }
 
   function edgePath(source, target) {
+    if (source.level === target.level) {
+      const x1 = source.x + source.radius;
+      const x2 = target.x + target.radius;
+      const loopX = source.x + Math.max(source.radius, target.radius) + 54;
+      return `M ${x1} ${source.y} C ${loopX} ${source.y}, ${loopX} ${target.y}, ${x2} ${target.y}`;
+    }
     const x1 = source.x + source.radius;
     const y1 = source.y;
     const x2 = target.x - target.radius;
@@ -295,7 +341,9 @@
   function edgeLabel(edge) {
     if (edge.type === "provisional_navigation") return edge.label.replace("PROVISIONAL NAVIGATION · ", "NAV · ");
     if (edge.type === "source_calibration") return edge.label.split(" · ")[0];
-    if (edge.type === "formal_source") return "FORMAL_ATOMIC";
+    if (edge.type === "normalizes_identity") return "IDENTITY";
+    if (edge.type === "oracle_overlay") return "UNVERIFIED OVERLAY";
+    if (edge.type === "oracle_candidate_dependency") return "CANDIDATE";
     return "";
   }
 
@@ -309,7 +357,7 @@
       "data-source-id": edge.source,
       "data-target-id": edge.target,
     });
-    const marker = edge.type === "provisional_navigation" ? "url(#arrowSupport)" : ["source_calibration", "formal_source"].includes(edge.type) ? "url(#arrowSource)" : "url(#arrowStructure)";
+    const marker = edge.type === "provisional_navigation" ? "url(#arrowSupport)" : edge.type.startsWith("oracle_") ? "url(#arrowOracle)" : ["source_calibration", "normalizes_identity"].includes(edge.type) ? "url(#arrowSource)" : "url(#arrowStructure)";
     group.append(svgElement("path", { class: "graph-edge-underlay", d: pathData }));
     group.append(svgElement("path", { class: `graph-edge ${edge.type}`, d: pathData, "marker-end": marker }));
     const label = edgeLabel(edge);
@@ -461,6 +509,39 @@
     return descendants;
   }
 
+  function hashForNode(node) {
+    if (node.type === "scientific_claim_contribution") return `#${new URLSearchParams({ claim: node.id })}`;
+    if (node.type === "facet") return `#${new URLSearchParams({ claim: node.claim_id, facet: node.facet_id })}`;
+    const support = state.edges.find((edge) => edge.type === "provisional_navigation" && edge.target === node.id);
+    const facet = support && state.nodes.get(support.source);
+    return facet ? `#${new URLSearchParams({ claim: facet.claim_id, facet: facet.facet_id })}` : null;
+  }
+
+  function updateHashForNode(node) {
+    const hash = hashForNode(node);
+    if (hash && window.location.hash !== hash) history.replaceState(null, "", hash);
+  }
+
+  function applyDeepLink(hash) {
+    const selection = resolveDeepLink(hash, state.data?.graph);
+    if (!selection) return false;
+    state.expanded = new Set(state.data.graph.initial_expanded_node_ids);
+    state.expanded.add(selection.claim.id);
+    const selected = selection.facet || selection.claim;
+    if (selection.facet) {
+      state.expanded.add(selection.facet.id);
+      const exactness = state.edges.find((edge) => edge.type === "provisional_navigation" && edge.source === selection.facet.id && edge.relationship === "DIRECT_ATOMIC_SUPPORT");
+      if (exactness && state.nodes.get(exactness.target)?.expandable) state.expanded.add(exactness.target);
+    }
+    state.pinnedId = selected.id;
+    state.suppressTooltipFocusId = selected.id;
+    pinDetail(selected);
+    renderGraph({ fit: true, focusId: selected.id });
+    updateSelectionStatus(selected);
+    byId("graphLiveStatus").textContent = `${selected.label} opened from a validated deep link; sibling facets remain collapsed.`;
+    return true;
+  }
+
   function activateNode(nodeId, options = {}) {
     const node = state.nodes.get(nodeId);
     if (!node) return;
@@ -468,6 +549,7 @@
     state.suppressTooltipFocusId = options.focusAfter ? nodeId : null;
     state.pinnedId = nodeId;
     pinDetail(node);
+    updateHashForNode(node);
     if (node.expandable) {
       if (state.expanded.has(nodeId)) {
         state.expanded.delete(nodeId);
@@ -665,6 +747,7 @@
     byId("resetButton").addEventListener("click", () => {
       state.expanded = new Set(state.data.graph.initial_expanded_node_ids);
       clearSelection();
+      history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
       renderGraph({ fit: true });
       byId("graphLiveStatus").textContent = "Graph expansion, selection, pan, and zoom reset.";
     });
@@ -742,7 +825,7 @@
       byId("paperAuthors").textContent = data.paper.authors.join(" · ");
       byId("graphApp").hidden = false;
       finishLoading();
-      renderGraph({ fit: true });
+      if (!applyDeepLink(window.location.hash)) renderGraph({ fit: true });
     } catch (error) {
       showLoadError(error instanceof Error ? error : new Error("The frozen graph could not be loaded."));
     }

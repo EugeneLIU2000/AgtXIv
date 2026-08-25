@@ -13,6 +13,7 @@
   --purple: #7653c6;
   --orange: #dc7629;
   --amber: #9a5a0b;
+  --oracle: #b45309;
   --radius: 14px;
   --shadow: 0 18px 54px rgba(19, 31, 52, .12);
 }
@@ -72,9 +73,12 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 .glyph-swatch.occurrence { --glyph-color: var(--occurrence); width: 15px; height: 15px; }
 .glyph-swatch.math { --glyph-color: var(--purple); }
 .glyph-swatch.proposition { --glyph-color: var(--orange); }
+.glyph-swatch.oracle { --glyph-color: var(--oracle); }
+.glyph-swatch.oracle::after { border-style: dotted; }
 .edge-swatch { width: 23px; height: 0; display: inline-block; border-top: 2px solid #7b8798; }
 .edge-swatch.source { border-top-style: dashed; border-top-color: var(--formal); }
 .edge-swatch.support { border-top-style: dotted; border-top-width: 3px; border-top-color: var(--purple); }
+.edge-swatch.oracle { border-top: 3px double var(--oracle); }
 .legend-boundary { max-width: 250px; margin: 0; color: #765114; font-size: 10px; line-height: 1.4; }
 
 .graph-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; min-height: 690px; }
@@ -94,16 +98,20 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 .graph-edge-underlay, .graph-edge { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .graph-edge-underlay { stroke: rgba(255,255,255,.96); stroke-width: 5.2; }
 .graph-edge { stroke: #8190a5; stroke-width: 1.55; opacity: .78; transition: opacity 150ms ease, stroke-width 150ms ease; }
-.graph-edge.source_calibration, .graph-edge.formal_source { stroke: var(--formal); stroke-dasharray: 6 5; }
+.graph-edge.source_calibration, .graph-edge.normalizes_identity { stroke: var(--formal); stroke-dasharray: 6 5; }
 .graph-edge.provisional_navigation { stroke: var(--purple); stroke-width: 2.1; stroke-dasharray: 2 6; }
+.graph-edge.oracle_overlay, .graph-edge.oracle_contains { stroke: var(--oracle); stroke-width: 2.2; stroke-dasharray: 9 4 2 4; }
+.graph-edge.oracle_candidate_dependency { stroke: var(--oracle); stroke-width: 1.8; stroke-dasharray: 3 4; opacity: .62; }
 .edge-group.hover-active .graph-edge { stroke-width: 3.6; opacity: 1; }
 .edge-group.hover-active .graph-edge-underlay { stroke-width: 7; }
 .edge-group.hover-muted { opacity: .06; }
 #arrowStructure path { fill: #8190a5; }
 #arrowSource path { fill: var(--formal); }
 #arrowSupport path { fill: var(--purple); }
+#arrowOracle path { fill: var(--oracle); }
 .edge-label { fill: #68758a; font-size: 8px; font-weight: 750; letter-spacing: .04em; paint-order: stroke; stroke: #f8fafc; stroke-width: 4px; stroke-linejoin: round; }
 .edge-label.provisional_navigation { fill: var(--purple); }
+.edge-label.oracle_overlay, .edge-label.oracle_candidate_dependency { fill: var(--oracle); }
 
 .graph-node { --node-color: var(--occurrence); cursor: pointer; outline: none; transition: opacity 150ms ease; }
 .graph-node.paper { --node-color: var(--navy); }
@@ -113,9 +121,11 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 .graph-node.source_occurrence { --node-color: var(--occurrence); }
 .graph-node.math_claim_ir { --node-color: var(--purple); }
 .graph-node.mathematical_proposition_ir { --node-color: var(--orange); }
+.graph-node.oracle_skeleton, .graph-node.oracle_candidate { --node-color: var(--oracle); }
 .node-hit-area { fill: transparent; }
 .membership-ring { fill: none; stroke: var(--node-color); stroke-width: 1.7; transition: stroke-width 120ms ease; }
 .scientific_claim_formal .membership-ring { stroke-width: 2; stroke-dasharray: 3 2; }
+.oracle_skeleton .membership-ring, .oracle_candidate .membership-ring { stroke-width: 2; stroke-dasharray: 7 3 2 3; }
 .interface-shell, .node-shell { fill: #ffffff; stroke: rgba(255,255,255,.98); stroke-width: 2; }
 .interface-dot, .node-dot { fill: var(--node-color); stroke: rgba(255,255,255,.94); stroke-width: 1.2; }
 .node-focus, .interface-focus { fill: none; stroke: var(--node-color); stroke-width: 2; opacity: 0; transition: opacity 120ms ease, stroke-width 120ms ease; }
