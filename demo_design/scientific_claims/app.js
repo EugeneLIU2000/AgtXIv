@@ -20,21 +20,30 @@
   const LEVELS = {
     paper: 0,
     scientific_claim_contribution: 1,
-    facet: 2,
     scientific_claim_formal: 2,
     source_occurrence: 2,
-    math_claim_ir: 3,
-    mathematical_proposition_ir: 3,
+    facet: 3,
+    math_claim_ir: 4,
+    mathematical_proposition_ir: 4,
   };
   const READABLE_SCALE_FLOORS = { desktop: .46, tablet: .38, mobile: .32, narrow: .28 };
-  const DIMENSIONS = {
-    paper: [220, 82],
-    scientific_claim_contribution: [270, 88],
-    facet: [225, 76],
-    scientific_claim_formal: [230, 70],
-    source_occurrence: [230, 66],
-    math_claim_ir: [240, 74],
-    mathematical_proposition_ir: [250, 74],
+  const NODE_METRICS = {
+    paper: { radius: 42, hitRadius: 52, footprint: 122, labelWidth: 210 },
+    scientific_claim_contribution: { radius: 28, hitRadius: 38, footprint: 96, labelWidth: 190 },
+    facet: { radius: 17, hitRadius: 27, footprint: 72, labelWidth: 150 },
+    scientific_claim_formal: { radius: 17, hitRadius: 27, footprint: 72, labelWidth: 150 },
+    source_occurrence: { radius: 15, hitRadius: 25, footprint: 68, labelWidth: 150 },
+    math_claim_ir: { radius: 17, hitRadius: 27, footprint: 72, labelWidth: 160 },
+    mathematical_proposition_ir: { radius: 17, hitRadius: 27, footprint: 72, labelWidth: 170 },
+  };
+  const TYPE_CODES = {
+    paper: "PAPER",
+    scientific_claim_contribution: "SCI CLAIM",
+    facet: "FACET",
+    scientific_claim_formal: "FORMAL_ATOMIC",
+    source_occurrence: "SOURCE",
+    math_claim_ir: "MATHCLAIMIR",
+    mathematical_proposition_ir: "PROPOSITIONIR",
   };
   const state = {
     data: null,
@@ -49,6 +58,7 @@
     preferReadableFit: false,
     dragging: null,
     tooltipId: null,
+    highlightId: null,
     suppressTooltipFocusId: null,
   };
   const byId = (id) => document.getElementById(id);
@@ -226,30 +236,39 @@
       if (!layers.has(level)) layers.set(level, []);
       layers.get(level).push(node);
     });
-    const xPositions = [40, 350, 690, 1030];
-    const gap = 28;
+    const xPositions = [90, 330, 555, 755, 1010];
+    const gap = 12;
     const layerHeights = [];
-    for (let level = 0; level <= 3; level += 1) {
+    for (let level = 0; level <= 4; level += 1) {
       const layer = layers.get(level) || [];
-      const height = layer.reduce((total, node) => total + DIMENSIONS[node.type][1], 0) + Math.max(0, layer.length - 1) * gap;
+      const height = layer.reduce((total, node) => total + NODE_METRICS[node.type].footprint, 0) + Math.max(0, layer.length - 1) * gap;
       layerHeights.push(height);
     }
-    const totalHeight = Math.max(220, ...layerHeights) + 80;
+    const totalHeight = Math.max(240, ...layerHeights) + 64;
     const positions = new Map();
-    for (let level = 0; level <= 3; level += 1) {
+    for (let level = 0; level <= 4; level += 1) {
       const layer = layers.get(level) || [];
       let y = (totalHeight - layerHeights[level]) / 2;
       layer.forEach((node) => {
-        const [width, height] = DIMENSIONS[node.type];
-        positions.set(node.id, { x: xPositions[level], y, width, height, level });
-        y += height + gap;
+        const metrics = NODE_METRICS[node.type];
+        positions.set(node.id, {
+          x: xPositions[level],
+          y: y + metrics.hitRadius,
+          radius: metrics.radius,
+          hitRadius: metrics.hitRadius,
+          labelWidth: metrics.labelWidth,
+          footprint: metrics.footprint,
+          level,
+        });
+        y += metrics.footprint + gap;
       });
     }
     const populated = [...positions.values()];
-    const right = Math.max(...populated.map((position) => position.x + position.width));
-    const bottom = Math.max(...populated.map((position) => position.y + position.height));
+    const left = Math.min(...populated.map((position) => position.x - Math.max(position.hitRadius, position.labelWidth / 2)));
+    const right = Math.max(...populated.map((position) => position.x + Math.max(position.hitRadius, position.labelWidth / 2)));
+    const bottom = Math.max(...populated.map((position) => position.y + position.footprint - position.hitRadius));
     state.positions = positions;
-    state.bounds = { x: 10, y: 10, width: right, height: bottom + 30 };
+    state.bounds = { x: left - 24, y: 10, width: right - left + 48, height: bottom + 30 };
   }
 
   function shortId(identifier, limit = 31) {
@@ -258,23 +277,17 @@
     return value.length > limit ? `${value.slice(0, limit - 1)}…` : value;
   }
 
-  function wrapLabel(label, maxLength = 28) {
-    const words = label.split(/\s+/);
-    const lines = [""];
-    words.forEach((word) => {
-      const current = lines[lines.length - 1];
-      if (current && `${current} ${word}`.length > maxLength && lines.length < 2) lines.push(word);
-      else lines[lines.length - 1] = current ? `${current} ${word}` : word;
-    });
-    if (lines[lines.length - 1].length > maxLength + 8) lines[lines.length - 1] = `${lines[lines.length - 1].slice(0, maxLength + 7)}…`;
-    return lines;
+  function conciseNodeLabel(node) {
+    if (node.type === "paper") return "Graph-theoretic nonstabilizerness";
+    const limit = node.type === "scientific_claim_contribution" ? 32 : 25;
+    return node.label.length > limit ? `${node.label.slice(0, limit - 1)}…` : node.label;
   }
 
   function edgePath(source, target) {
-    const x1 = source.x + source.width;
-    const y1 = source.y + source.height / 2;
-    const x2 = target.x;
-    const y2 = target.y + target.height / 2;
+    const x1 = source.x + source.radius;
+    const y1 = source.y;
+    const x2 = target.x - target.radius;
+    const y2 = target.y;
     const curve = Math.max(48, (x2 - x1) * .48);
     return `M ${x1} ${y1} C ${x1 + curve} ${y1}, ${x2 - curve} ${y2}, ${x2} ${y2}`;
   }
@@ -289,13 +302,20 @@
   function renderEdge(edge) {
     const source = state.positions.get(edge.source);
     const target = state.positions.get(edge.target);
-    const group = svgElement("g", { class: `edge-group ${edge.type}` });
-    const path = svgElement("path", { class: `graph-edge ${edge.type}`, d: edgePath(source, target), "data-edge-id": edge.id });
-    group.append(path);
+    const pathData = edgePath(source, target);
+    const group = svgElement("g", {
+      class: `edge-group ${edge.type}`,
+      "data-edge-id": edge.id,
+      "data-source-id": edge.source,
+      "data-target-id": edge.target,
+    });
+    const marker = edge.type === "provisional_navigation" ? "url(#arrowSupport)" : ["source_calibration", "formal_source"].includes(edge.type) ? "url(#arrowSource)" : "url(#arrowStructure)";
+    group.append(svgElement("path", { class: "graph-edge-underlay", d: pathData }));
+    group.append(svgElement("path", { class: `graph-edge ${edge.type}`, d: pathData, "marker-end": marker }));
     const label = edgeLabel(edge);
     if (label) {
-      const x = (source.x + source.width + target.x) / 2;
-      const y = (source.y + source.height / 2 + target.y + target.height / 2) / 2 - 5;
+      const x = (source.x + source.radius + target.x - target.radius) / 2;
+      const y = (source.y + target.y) / 2 - 7;
       const text = svgElement("text", { class: `edge-label ${edge.type}`, x, y, "text-anchor": "middle" });
       text.textContent = label;
       group.append(text);
@@ -310,8 +330,9 @@
 
   function renderNode(node) {
     const position = state.positions.get(node.id);
+    const roleClass = node.type === "paper" ? "agent-node agent-root" : "interface-node";
     const group = svgElement("g", {
-      class: `graph-node ${node.type}${state.pinnedId === node.id ? " is-pinned" : ""}`,
+      class: `graph-node claim-glyph ${roleClass} ${node.type}${state.pinnedId === node.id ? " is-pinned" : ""}`,
       transform: `translate(${position.x} ${position.y})`,
       tabindex: "0",
       role: "button",
@@ -320,40 +341,91 @@
       "data-node-id": node.id,
       "data-node-type": node.type,
     });
-    const radius = node.type === "source_occurrence" ? position.height / 2 : node.type === "scientific_claim_formal" ? 4 : 11;
-    group.append(svgElement("rect", { class: "node-shape", width: position.width, height: position.height, rx: radius, ry: radius }));
-    const typeText = svgElement("text", { class: "node-type", x: 14, y: 18 });
-    typeText.textContent = TYPE_LABELS[node.type];
-    group.append(typeText);
-    wrapLabel(node.label, node.type === "scientific_claim_contribution" ? 34 : 28).forEach((line, index) => {
-      const text = svgElement("text", { class: "node-label", x: 14, y: 39 + index * 14 });
-      text.textContent = line;
-      group.append(text);
-    });
-    const idText = svgElement("text", { class: "node-id", x: 14, y: position.height - 9 });
-    idText.textContent = shortId(node.id);
-    group.append(idText);
-    if (node.expandable) {
-      const indicator = svgElement("text", { class: "expand-indicator", x: position.width - 16, y: 20, "text-anchor": "middle" });
-      indicator.textContent = state.expanded.has(node.id) ? "−" : "+";
-      group.append(indicator);
+    group.append(svgElement("circle", { r: position.hitRadius, class: "node-hit-area" }));
+    if (node.type === "paper") {
+      group.append(svgElement("circle", { r: 42, class: "agent-progress-track" }));
+      group.append(svgElement("circle", { r: 42, class: "agent-progress-ring" }));
+      group.append(svgElement("circle", { r: 37, class: "agent-outline" }));
+      group.append(svgElement("circle", { r: 32, class: "agent-disc", filter: "url(#nodeShadow)" }));
+      group.append(svgElement("circle", { r: 14, class: "agent-core-dot" }));
+      group.append(svgElement("circle", { r: 46, class: "node-focus" }));
+    } else {
+      group.append(svgElement("circle", { r: position.radius, class: "membership-ring" }));
+      group.append(svgElement("circle", { r: Math.max(10, position.radius - 3), class: "interface-shell node-shell", filter: "url(#nodeShadow)" }));
+      group.append(svgElement("circle", { r: Math.max(6, position.radius - 8), class: "interface-dot node-dot" }));
+      group.append(svgElement("circle", { r: position.radius + 4, class: "interface-focus node-focus" }));
     }
-    group.addEventListener("mouseenter", () => showTooltip(node, group));
+    const typeLine = svgElement("text", { class: "external-node-type", x: 0, y: position.radius + 18, "text-anchor": "middle" });
+    typeLine.textContent = node.type === "paper" ? `${TYPE_CODES[node.type]} · ${node.id.replace(/^paper:/, "")}` : TYPE_CODES[node.type];
+    const labelLine = svgElement("text", { class: "external-node-label", x: 0, y: position.radius + 36, "text-anchor": "middle" });
+    labelLine.textContent = conciseNodeLabel(node);
+    group.append(typeLine, labelLine);
+    if (node.expandable) {
+      const badge = svgElement("g", { class: "expand-badge", transform: `translate(${position.radius + 8} ${-position.radius + 4})`, "aria-hidden": "true" });
+      badge.append(svgElement("circle", { r: 8, class: "expand-badge-shell" }));
+      const indicator = svgElement("text", { class: "expand-badge-label", x: 0, y: 3, "text-anchor": "middle" });
+      indicator.textContent = state.expanded.has(node.id) ? "−" : "+";
+      badge.append(indicator);
+      group.append(badge);
+    }
+    group.addEventListener("mouseenter", () => {
+      applyConnectedHighlight(node.id);
+      showTooltip(node, group);
+    });
     group.addEventListener("mouseleave", () => {
-      if (document.activeElement !== group) hideTooltip();
+      if (document.activeElement !== group) {
+        hideTooltip();
+        restorePinnedHighlight();
+      }
     });
     group.addEventListener("focus", () => {
+      applyConnectedHighlight(node.id);
       if (state.suppressTooltipFocusId === node.id) state.suppressTooltipFocusId = null;
       else showTooltip(node, group);
       updateSelectionStatus(node);
     });
-    group.addEventListener("blur", hideTooltip);
+    group.addEventListener("blur", () => {
+      hideTooltip();
+      restorePinnedHighlight();
+    });
     group.addEventListener("click", (event) => {
       event.stopPropagation();
       activateNode(node.id, { focusAfter: true });
     });
     group.addEventListener("keydown", (event) => handleNodeKeydown(event, node));
     return group;
+  }
+
+  function clearConnectedHighlight() {
+    state.highlightId = null;
+    document.querySelectorAll(".graph-node").forEach((node) => node.classList.remove("hover-active", "hover-muted", "is-highlight-target"));
+    document.querySelectorAll(".edge-group").forEach((edge) => edge.classList.remove("hover-active", "hover-muted"));
+  }
+
+  function applyConnectedHighlight(nodeId) {
+    if (!state.visibleIds.includes(nodeId)) return;
+    state.highlightId = nodeId;
+    const connected = new Set([nodeId]);
+    document.querySelectorAll(".edge-group").forEach((edge) => {
+      const active = edge.dataset.sourceId === nodeId || edge.dataset.targetId === nodeId;
+      edge.classList.toggle("hover-active", active);
+      edge.classList.toggle("hover-muted", !active);
+      if (active) {
+        connected.add(edge.dataset.sourceId);
+        connected.add(edge.dataset.targetId);
+      }
+    });
+    document.querySelectorAll(".graph-node").forEach((node) => {
+      const active = connected.has(node.dataset.nodeId);
+      node.classList.toggle("hover-active", active);
+      node.classList.toggle("hover-muted", !active);
+      node.classList.toggle("is-highlight-target", node.dataset.nodeId === nodeId);
+    });
+  }
+
+  function restorePinnedHighlight() {
+    if (state.pinnedId && state.visibleIds.includes(state.pinnedId)) applyConnectedHighlight(state.pinnedId);
+    else clearConnectedHighlight();
   }
 
   function renderGraph(options = {}) {
@@ -370,6 +442,7 @@
     if (focusId && state.visibleIds.includes(focusId)) {
       requestAnimationFrame(() => document.querySelector(`[data-node-id="${CSS.escape(focusId)}"]`)?.focus());
     }
+    restorePinnedHighlight();
     updateExpandedSummary();
   }
 
@@ -483,6 +556,7 @@
     byId("unpinButton").hidden = true;
     byId("breadcrumb").textContent = "Paper › contribution-role ScientificClaims";
     document.querySelectorAll(".graph-node").forEach((element) => element.classList.remove("is-pinned"));
+    clearConnectedHighlight();
     byId("graphLiveStatus").textContent = "Floating and pinned details closed.";
   }
 

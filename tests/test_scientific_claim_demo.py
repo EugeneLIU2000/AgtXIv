@@ -76,10 +76,33 @@ class ScientificClaimDemoTests(unittest.TestCase):
         actual_types = {node["type"] for node in self.graph["nodes"]}
         self.assertEqual(actual_types, exporter.GRAPH_NODE_TYPES - {"mathematical_proposition_ir"})
         for class_name in ("paper", "contribution", "facet", "formal", "occurrence", "math", "proposition"):
-            self.assertIn(f'class="swatch {class_name}"', self.html)
+            self.assertIn(f'class="glyph-swatch {class_name}"', self.html)
         for variable in ("--navy", "--blue", "--cyan", "--formal", "--occurrence", "--purple", "--orange"):
             self.assertIn(variable, self.css)
         self.assertIn("MathematicalPropositionIR", self.html)
+
+    def test_every_graph_node_uses_reference_style_circle_glyphs_and_external_labels(self) -> None:
+        renderer = self.javascript.split("function renderNode", 1)[1].split("function clearConnectedHighlight", 1)[0]
+        self.assertNotIn('svgElement("rect"', renderer)
+        for class_name in (
+            "node-hit-area", "agent-progress-track", "agent-outline", "agent-disc",
+            "membership-ring", "interface-shell node-shell", "interface-dot node-dot",
+            "interface-focus node-focus", "external-node-type", "external-node-label",
+            "expand-badge", "expand-badge-shell", "expand-badge-label",
+        ):
+            self.assertIn(class_name, renderer)
+        self.assertIn('role: "button"', renderer)
+        self.assertIn('"aria-label": nodeAriaLabel(node)', renderer)
+        self.assertIn('"aria-expanded": state.expanded.has(node.id)', renderer)
+        self.assertIn("glyph size encodes hierarchy", self.html)
+
+    def test_active_node_neighbors_and_typed_edges_use_reference_highlighting(self) -> None:
+        for hook in ("function applyConnectedHighlight", "function restorePinnedHighlight", 'classList.toggle("hover-active"', 'classList.toggle("hover-muted"'):
+            self.assertIn(hook, self.javascript)
+        for class_name in ("graph-edge-underlay", "edge-group.hover-active", "edge-group.hover-muted", "graph-node.hover-muted", "is-highlight-target"):
+            self.assertIn(class_name, self.css + self.javascript)
+        self.assertIn("provisional_navigation", self.css)
+        self.assertIn("stroke-dasharray: 2 6", self.css)
 
     def test_initial_graph_is_paper_plus_two_contribution_claims_only(self) -> None:
         initial = self.graph["initial_node_ids"]
