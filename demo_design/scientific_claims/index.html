@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A facet-first view of contribution-role ScientificClaims for Graph Theoretic Approach to Quantum Nonstabilizerness.">
+  <title>ScientificClaim Atlas · AgtXIv</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#claimWorkspace">Skip to claim workspace</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <img src="../assets/agentxiv-logo.svg" alt="AgtXIv" width="126" height="28">
+      <div class="header-context">
+        <span>ScientificClaim Atlas</span>
+        <small>Unified architecture · 97445bc</small>
+      </div>
+      <span class="header-status"><i aria-hidden="true"></i> Registry snapshot</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="paper-hero" aria-labelledby="paperTitle">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">ONE PAPER · TWO CONTRIBUTION-ROLE CLAIMS</p>
+          <h1 id="paperTitle">Loading paper…</h1>
+          <p class="authors" id="paperAuthors"></p>
+        </div>
+        <dl class="paper-coordinates">
+          <div><dt>Paper</dt><dd id="paperId">arxiv:2607.26154v1</dd></div>
+          <div><dt>Source</dt><dd id="paperSource">—</dd></div>
+          <div><dt>Snapshot</dt><dd id="sourceRevision">—</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="architecture shell" aria-labelledby="architectureTitle">
+      <div class="section-heading">
+        <p class="eyebrow">ARCHITECTURE LEGEND</p>
+        <h2 id="architectureTitle">Narrative identity above, mathematical DAG below.</h2>
+      </div>
+      <ol class="layer-list" id="layerList"></ol>
+    </section>
+
+    <section class="workspace shell" id="claimWorkspace" aria-labelledby="workspaceTitle" aria-busy="true">
+      <div class="workspace-heading">
+        <div>
+          <p class="eyebrow">CURRENT RECORDS</p>
+          <h2 id="workspaceTitle">Inspect a ScientificClaim</h2>
+        </div>
+        <p>Select a claim, then a facet. Follow the architecture in order: source occurrences, calibration, then provisional navigation to mathematical records.</p>
+      </div>
+
+      <div class="loading-status" id="loadStatus" role="status">
+        <span class="loading-dot" aria-hidden="true"></span>
+        Loading the frozen two-claim registry view…
+      </div>
+      <div class="load-error" id="loadError" role="alert" hidden>
+        <p id="loadErrorMessage"></p>
+        <button type="button" id="retryButton">Retry local data load</button>
+      </div>
+
+      <div class="claim-tabs" role="tablist" aria-label="Contribution-role ScientificClaims" id="claimTabs"></div>
+
+      <article class="claim-record" id="claimRecord" role="tabpanel" tabindex="0" hidden>
+        <header class="claim-header">
+          <div class="claim-index" aria-hidden="true" id="claimIndex">01</div>
+          <div class="claim-statement">
+            <div class="badge-row">
+              <span class="badge badge-blue" id="claimRole"></span>
+              <span class="badge" id="claimGranularity"></span>
+              <span class="badge" id="claimRevision"></span>
+            </div>
+            <p class="field-label">Exact normalized statement</p>
+            <h3 id="claimStatement"></h3>
+            <p class="stable-id" id="claimId"></p>
+          </div>
+        </header>
+
+        <section class="identity-panel" aria-labelledby="identityTitle">
+          <div class="panel-heading">
+            <span class="panel-number">00</span>
+            <div><p class="field-label">SCIENTIFICCLAIM</p><h4 id="identityTitle">Stable narrative identity</h4></div>
+          </div>
+          <div class="identity-grid">
+            <dl class="metadata-list" id="claimMetadata"></dl>
+            <div>
+              <p class="field-label">Scope hints</p>
+              <ul class="token-list" id="scopeHints"></ul>
+              <p class="field-label spaced">Immutable hashes</p>
+              <div class="hash-grid" id="claimHashes"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="facet-panel" aria-labelledby="facetTitle">
+          <div class="panel-heading">
+            <span class="panel-number">01</span>
+            <div><p class="field-label">CENTRAL UNIT</p><h4 id="facetTitle">Select a facet</h4></div>
+          </div>
+          <p class="rail-help" id="facetHelp">One facet is selected at a time. Arrow keys, Home, and End move and select within this group.</p>
+          <div id="facetList" class="facet-list" role="radiogroup" aria-labelledby="facetTitle" aria-describedby="facetHelp"></div>
+        </section>
+
+        <section class="evidence-panel" aria-labelledby="evidenceTitle">
+          <div class="panel-heading">
+            <span class="panel-number">02</span>
+            <div><p class="field-label">SOURCE AUDIT</p><h4 id="evidenceTitle">Source occurrences</h4></div>
+            <span class="shared-label">Shared across this claim’s facets</span>
+          </div>
+          <p class="shared-note">Occurrences belong to the ScientificClaim as a whole. Selecting a facet does not assert a finer occurrence-to-facet mapping.</p>
+          <div class="occurrence-list" id="occurrenceList"></div>
+        </section>
+
+        <section class="calibration-panel" aria-labelledby="calibrationTitle">
+          <div class="panel-heading">
+            <span class="panel-number">03</span>
+            <div><p class="field-label">SOURCE ↔ NORMALIZED</p><h4 id="calibrationTitle">Calibration record</h4></div>
+          </div>
+          <div class="direction-note">
+            <strong id="calibrationDirection"></strong>
+            <p id="calibrationExplanation"></p>
+          </div>
+          <div class="calibration-grid" id="calibrationGrid"></div>
+        </section>
+
+        <section class="support-panel" aria-labelledby="supportTitle">
+          <div class="panel-heading">
+            <span class="panel-number">04</span>
+            <div><p class="field-label">MATHEMATICAL RECORD NAVIGATION</p><h4 id="supportTitle">Facet-aware support associations</h4></div>
+            <span class="coverage-pill" id="facetOutcome"></span>
+          </div>
+          <div class="support-warning" role="note">
+            <strong>Verification boundary</strong>
+            <span>Provisional facet navigation is not query-specific coverage or mathematical verification. ScientificClaim is not a proof-DAG node.</span>
+          </div>
+          <p class="selected-facet" id="selectedFacetStatement"></p>
+          <dl class="association-summary" id="supportSummary"></dl>
+          <div class="support-links" id="supportLinks"></div>
+          <div class="dag-boundary">
+            <strong>Target boundary</strong>
+            <span>Only the linked MathClaimIR or MathematicalPropositionIR records may enter the mathematical DAG.</span>
+          </div>
+        </section>
+
+        <section class="verification-boundary" aria-labelledby="boundaryTitle">
+          <div>
+            <p class="eyebrow">VERIFICATION BOUNDARY · RECAP</p>
+            <h4 id="boundaryTitle">Navigation support is not final query coverage.</h4>
+            <p id="boundaryAvailable"></p>
+          </div>
+          <div class="pending-box">
+            <span>STILL PENDING</span>
+            <ul id="boundaryPending"></ul>
+          </div>
+        </section>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <span>AgtXIv · ScientificClaim visualization</span>
+      <span>Dependency-free registry view</span>
+    </div>
+  </footer>
+
+  <noscript><p class="noscript">This interactive registry view requires JavaScript to load its local generated JSON file.</p></noscript>
+</body>
+</html>

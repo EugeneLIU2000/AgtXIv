@@ -1,0 +1,644 @@
+{
+  "architecture": {
+    "calibration_direction": {
+      "code": "SOURCE_RELATIVE_TO_NORMALIZED_CLAIM",
+      "explanation": "Each relation describes the source occurrence relative to the normalized ScientificClaim: BROADER_THAN means the source says more; CONSERVATIVE_PARAPHRASE means the normalized claim stays within the source; PARTIAL_OVERLAP means only part aligns."
+    },
+    "layers": [
+      {
+        "description": "CONTRIBUTION-role narrative and navigation identity; it is not a node in the mathematical proof DAG.",
+        "id": "scientific-claim",
+        "label": "ScientificClaim"
+      },
+      {
+        "description": "Facets route navigation to immutable occurrences, source characterization, and calibration records.",
+        "id": "facet-evidence",
+        "label": "Facets + source audit"
+      },
+      {
+        "description": "MathClaimIR and MathematicalPropositionIR records may enter the mathematical dependency DAG.",
+        "id": "mathematical-dag",
+        "label": "Mathematical support targets"
+      }
+    ],
+    "verification_boundary": {
+      "available": "Provisional facet coverage is immutable navigation support from the current source audit.",
+      "pending": [
+        "Query-specific PaperTheoryDelta construction",
+        "Final QueryResolution coverage",
+        "Viewer integration"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "calibration": {
+        "body_to_normalized_relation": "CONSERVATIVE_PARAPHRASE",
+        "calibration_stage": "ATOMIC_AUDIT_COMPLETED",
+        "content_hash": "sha256:976a3fe1c904dfa61359a85a08c5244d717e48c8fb87e6d028f73c7b4725e43f",
+        "id": "scientific-claim-calibration:2607-perfect-graph-closed-form",
+        "primary_to_normalized_relation": "CONSERVATIVE_PARAPHRASE",
+        "produced_at": "2026-08-24T00:00:00Z",
+        "reason_codes": [
+          "BOTH_SOLVABLE_REGIME_HYPOTHESES_RETAINED",
+          "TRACTABILITY_CLAUSE_SEPARATELY_CALIBRATED"
+        ],
+        "record_revision": 1,
+        "relation_direction": "SOURCE_RELATIVE_TO_NORMALIZED_CLAIM",
+        "schema": "agtxiv.scientific-claim-calibration-record/1.1.0",
+        "scientific_claim_ref": {
+          "claim_ir": null,
+          "claim_ir_members": [],
+          "component_path": null,
+          "target_artifact": {
+            "artifact_hash": "sha256:0c7afe09eeaf18392e3380bdc2ff2d3baf48c86a645845a10615f894be080f7c",
+            "schema_uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+            "schema_version": "1.1.0",
+            "serialization_profile": {
+              "content_hash": "sha256:6f23c17e65a89eb3ab762a849a2666ab80bedacc908842cb7cae563ce5083efb",
+              "id": "agtxiv.record-canonical-json/1.0.0"
+            }
+          },
+          "target_content_hash": "sha256:9e5ed8ca712e1b178b99c70045148c7cf04c43af391835df7af9e801439e8b8f",
+          "target_id": "claim:graph-theoretic-nonstabilizerness:perfect-graph-closed-form",
+          "target_kind": "org.agtxiv.scientific_claim",
+          "target_revision": 1,
+          "type_schema": {
+            "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405",
+            "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0"
+          }
+        },
+        "supersedes": null
+      },
+      "claim": {
+        "artifact": {
+          "artifact_hash": "sha256:0c7afe09eeaf18392e3380bdc2ff2d3baf48c86a645845a10615f894be080f7c",
+          "schema_uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+          "schema_version": "1.1.0",
+          "serialization_profile": {
+            "content_hash": "sha256:6f23c17e65a89eb3ab762a849a2666ab80bedacc908842cb7cae563ce5083efb",
+            "id": "agtxiv.record-canonical-json/1.0.0"
+          }
+        },
+        "claim_role": "CONTRIBUTION",
+        "content_hash": "sha256:9e5ed8ca712e1b178b99c70045148c7cf04c43af391835df7af9e801439e8b8f",
+        "contribution_kind": "org.agtxiv.contribution.result",
+        "contribution_tags": [
+          "org.agtxiv.contribution_tag.closed_form",
+          "org.agtxiv.contribution_tag.tractability"
+        ],
+        "facets": [
+          {
+            "facet_id": "facet:closed-form",
+            "facet_kind": "org.agtxiv.facet.closed_form",
+            "statement": "Under no active dependencies and a perfect frustration graph, reduced RoM has the stated clique closed form."
+          },
+          {
+            "facet_id": "facet:finite-precision-tractability",
+            "facet_kind": "org.agtxiv.facet.tractability",
+            "statement": "Finite-precision evaluation is presented as polynomial-time weighted clique or MWIS optimization on a perfect graph."
+          }
+        ],
+        "granularity": "NARRATIVE_ATOMIC",
+        "id": "claim:graph-theoretic-nonstabilizerness:perfect-graph-closed-form",
+        "normalized_statement": "The paper proves that, when the measurement set has no active dependencies and its frustration graph is perfect, reduced RoM has the clique closed form max(1, max over cliques Q of the sum over P in Q of |tr(P rho)|); the paper further presents finite-precision evaluation as polynomial-time maximum-weight clique optimization on a perfect graph.",
+        "occurrences": [
+          {
+            "id": "occurrence:2607-perfect-graph-closed-form:1",
+            "line_end": 100,
+            "line_start": 95,
+            "occurrence_role": "PRIMARY",
+            "source_artifact": {
+              "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+              "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+            },
+            "source_characterization": {
+              "conditionality": "org.agtxiv.conditionality.conditional",
+              "formality": "org.agtxiv.formality.narrative",
+              "speech_act": "org.agtxiv.speech_act.derives"
+            },
+            "source_text": "\tWe prove that this relaxation is exact if and only if $\\Mcal$ has no active dependencies, where an active dependency is a minimal Pauli product relation contained entirely in an independent set, as depicted schematically in Fig.~\\ref{fig:graph-polytope-rom}.\n\tUnder this relaxation, the separation oracle for the dual constraints reduces to a standard maximum-weight independent set (MWIS) problem on $G_\\Mcal$.\n\tExploiting the polynomial-time solvability of MWIS on perfect graphs, the evaluation of $\\RoM_\\Mcal(\\rho)$ is further reduced to an efficiently computable closed form in the absence of active dependencies.\n\t\n\tBeyond evaluating $\\RoM_\\Mcal(\\rho)$, the closed form determines the witness capacity of a measurement set $\\Mcal$, defined as $\\sup_\\rho\\RoM_\\Mcal(\\rho)$.\n\tIn the solvable regime, the witness capacity equals $\\sqrt{\\clnum(G_\\Mcal)}$, where the clique number $\\clnum(G_\\Mcal)$ is the size of the largest pairwise anticommuting subset of $\\Mcal$.",
+            "source_zone": "org.agtxiv.source_zone.introduction"
+          },
+          {
+            "id": "occurrence:2607-perfect-graph-closed-form:2",
+            "line_end": 283,
+            "line_start": 270,
+            "occurrence_role": "BODY_SUPPORT",
+            "source_artifact": {
+              "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+              "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+            },
+            "source_characterization": {
+              "conditionality": "org.agtxiv.conditionality.conditional",
+              "formality": "org.agtxiv.formality.formal_statement",
+              "speech_act": "org.agtxiv.speech_act.proves"
+            },
+            "source_text": "\t\\begin{theorem}\n\t\t\\label{thm:solvable}\n\t\tIf $\\Mcal$ has no active dependencies and $G_\\Mcal$ is perfect, then for any $n$-qubit quantum state $\\rho$,\n\t\t{\\small\n\t\t\t\\begin{equation}\\label{eq:closed-form}\n\t\t\t\t\\RoM_\\Mcal\\big(\\rho\\big)\n\t\t\t\t=\n\t\t\t\t\\max\\!\\Big(1,\\ \\max_{Q} \\sum_{P\\in Q}\\big|\\tr(P\\rho)\\big| \\Big)\n\t\t\t\t\\le\\sqrt{\\clnum(G_\\Mcal)},\n\t\t\t\\end{equation}\n\t\t}\n\t\twhere $Q$ ranges over cliques of $G_\\Mcal$, equivalently over pairwise anticommuting subsets of $\\Mcal$.\n\t\tThe bound is attained by any state supported on the $+1$ eigenspace of $|Q|^{-1/2}\\sum_{P\\in Q}P$ for the maximum clique $Q$.\n\t\\end{theorem}",
+            "source_zone": "org.agtxiv.source_zone.theorem"
+          },
+          {
+            "id": "occurrence:2607-perfect-graph-closed-form:3",
+            "line_end": 284,
+            "line_start": 284,
+            "occurrence_role": "BODY_SUPPORT",
+            "source_artifact": {
+              "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+              "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+            },
+            "source_characterization": {
+              "conditionality": "org.agtxiv.conditionality.conditional",
+              "formality": "org.agtxiv.formality.narrative",
+              "speech_act": "org.agtxiv.speech_act.explains"
+            },
+            "source_text": "\tFor finite precision expectation values, evaluating Eq.~\\eqref{eq:closed-form} is a maximum-weight clique problem with weights $|\\tr(P\\rho)|$, equivalently MWIS on complement graph $\\overline{G_\\Mcal}$. The complement of a perfect graph is perfect, so Lemma~\\ref{lem:perfect-collapse} in Appendix~\\ref{app:proof-mwis} gives a polynomial-time evaluation.",
+            "source_zone": "org.agtxiv.source_zone.body"
+          }
+        ],
+        "paper_id": "arxiv:2607.26154v1",
+        "produced_at": "2026-08-24T00:00:00Z",
+        "record_revision": 1,
+        "schema": "agtxiv.scientific-claim/1.1.0",
+        "scope_hints": [
+          "closed form concerns reduced RoM",
+          "no active dependencies is a mandatory hypothesis",
+          "perfect frustration graph is a mandatory hypothesis",
+          "polynomial-time statement concerns finite-precision weighted clique or MWIS evaluation"
+        ],
+        "semantic_content_hash": "sha256:1d8b0c0626fbe59a4a90523af23ab5a08b2390ebdfd20512aaac66333bd6adfe",
+        "source_characterization": {
+          "conditionality": "org.agtxiv.conditionality.conditional",
+          "formality": "org.agtxiv.formality.narrative",
+          "speech_act": "org.agtxiv.speech_act.derives"
+        },
+        "supersedes": null
+      },
+      "support_association": {
+        "association_scope": "IMMUTABLE_FACET_NAVIGATION_NOT_QUERY_COVERAGE",
+        "content_hash": "sha256:b7b0315101c88312cc1704dec656949453ccff97a77e0a2d6cd6aa342714876a",
+        "facet_outcomes": [
+          {
+            "coverage": "COMPLETE",
+            "facet_id": "facet:closed-form"
+          },
+          {
+            "coverage": "PARTIAL",
+            "facet_id": "facet:finite-precision-tractability"
+          }
+        ],
+        "id": "claim-support-association:2607-perfect-graph-closed-form",
+        "links": [
+          {
+            "facet_coverage": "COMPLETE",
+            "facet_id": "facet:closed-form",
+            "relationship": "DIRECT_ATOMIC_SUPPORT",
+            "target_ref": {
+              "claim_ir": {
+                "id": "math-claim-ir:graph-theoretic-nonstabilizerness:closed-form-equality",
+                "revision": 1,
+                "semantic_content_hash": "sha256:bfd91f0b1a13fec71d05f5e4e5f0e890c64a6ebf7b62c8c2d09b4ff8cc24fd46"
+              },
+              "claim_ir_members": [],
+              "component_path": null,
+              "target_artifact": {
+                "artifact_hash": "sha256:46b60671563656ba0e1e919f833599a84795fcd2ff1cd37b215f914f1ea9a588",
+                "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+                "schema_version": "1.0.0",
+                "serialization_profile": {
+                  "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c",
+                  "id": "agtxiv.canonical-json/1.0.0"
+                }
+              },
+              "target_content_hash": "sha256:bfd91f0b1a13fec71d05f5e4e5f0e890c64a6ebf7b62c8c2d09b4ff8cc24fd46",
+              "target_id": "math-claim-ir:graph-theoretic-nonstabilizerness:closed-form-equality",
+              "target_kind": "org.agtxiv.claim_ir",
+              "target_revision": 1,
+              "type_schema": {
+                "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5",
+                "uri": "https://agtxiv.org/schema/math-claimir/1.0.0"
+              }
+            }
+          },
+          {
+            "facet_coverage": "PARTIAL",
+            "facet_id": "facet:finite-precision-tractability",
+            "relationship": "FRAMEWORK_SUPPORT",
+            "target_ref": {
+              "claim_ir": {
+                "id": "math-claim-ir:graph-theoretic-nonstabilizerness:exact-graph-dual",
+                "revision": 1,
+                "semantic_content_hash": "sha256:ab6977e128f27678ea9b423b81efebf8081e009101c40eb7a84d5ac75836f7e7"
+              },
+              "claim_ir_members": [],
+              "component_path": null,
+              "target_artifact": {
+                "artifact_hash": "sha256:09d403ffc420c7478e443611e8b8d8321a6a0a4efc1ed4e04455ebe234ae4e73",
+                "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+                "schema_version": "1.0.0",
+                "serialization_profile": {
+                  "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c",
+                  "id": "agtxiv.canonical-json/1.0.0"
+                }
+              },
+              "target_content_hash": "sha256:ab6977e128f27678ea9b423b81efebf8081e009101c40eb7a84d5ac75836f7e7",
+              "target_id": "math-claim-ir:graph-theoretic-nonstabilizerness:exact-graph-dual",
+              "target_kind": "org.agtxiv.claim_ir",
+              "target_revision": 1,
+              "type_schema": {
+                "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5",
+                "uri": "https://agtxiv.org/schema/math-claimir/1.0.0"
+              }
+            }
+          },
+          {
+            "facet_coverage": "PARTIAL",
+            "facet_id": "facet:finite-precision-tractability",
+            "relationship": "FRAMEWORK_SUPPORT",
+            "target_ref": {
+              "claim_ir": {
+                "id": "math-claim-ir:graph-theoretic-nonstabilizerness:relaxed-dual-mwis",
+                "revision": 1,
+                "semantic_content_hash": "sha256:92a26f200fef91a9f474ebc57efd399916265c391b1632bd5b50f70bd50348a2"
+              },
+              "claim_ir_members": [],
+              "component_path": null,
+              "target_artifact": {
+                "artifact_hash": "sha256:77fcda258df0df7899d7b881d3e9f4e57ac6e56ee6a0461e6425bc1ca0369167",
+                "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+                "schema_version": "1.0.0",
+                "serialization_profile": {
+                  "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c",
+                  "id": "agtxiv.canonical-json/1.0.0"
+                }
+              },
+              "target_content_hash": "sha256:92a26f200fef91a9f474ebc57efd399916265c391b1632bd5b50f70bd50348a2",
+              "target_id": "math-claim-ir:graph-theoretic-nonstabilizerness:relaxed-dual-mwis",
+              "target_kind": "org.agtxiv.claim_ir",
+              "target_revision": 1,
+              "type_schema": {
+                "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5",
+                "uri": "https://agtxiv.org/schema/math-claimir/1.0.0"
+              }
+            }
+          }
+        ],
+        "navigation_basis_ref": {
+          "claim_ir": null,
+          "claim_ir_members": [],
+          "component_path": "/facets",
+          "target_artifact": null,
+          "target_content_hash": "sha256:9e5ed8ca712e1b178b99c70045148c7cf04c43af391835df7af9e801439e8b8f",
+          "target_id": "claim:graph-theoretic-nonstabilizerness:perfect-graph-closed-form",
+          "target_kind": "org.agtxiv.scientific_claim",
+          "target_revision": 1,
+          "type_schema": {
+            "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405",
+            "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0"
+          }
+        },
+        "produced_at": "2026-08-24T00:00:00Z",
+        "provisional_facet_coverage": "PARTIAL",
+        "reason_codes": [
+          "FACET_BASIS_SOURCE_AUDIT",
+          "TRACTABILITY_CONCLUSION_NOT_ATOMICALLY_RECORDED"
+        ],
+        "record_revision": 1,
+        "schema": "agtxiv.claim-support-association/1.1.0",
+        "scientific_claim_ref": {
+          "claim_ir": null,
+          "claim_ir_members": [],
+          "component_path": null,
+          "target_artifact": {
+            "artifact_hash": "sha256:0c7afe09eeaf18392e3380bdc2ff2d3baf48c86a645845a10615f894be080f7c",
+            "schema_uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+            "schema_version": "1.1.0",
+            "serialization_profile": {
+              "content_hash": "sha256:6f23c17e65a89eb3ab762a849a2666ab80bedacc908842cb7cae563ce5083efb",
+              "id": "agtxiv.record-canonical-json/1.0.0"
+            }
+          },
+          "target_content_hash": "sha256:9e5ed8ca712e1b178b99c70045148c7cf04c43af391835df7af9e801439e8b8f",
+          "target_id": "claim:graph-theoretic-nonstabilizerness:perfect-graph-closed-form",
+          "target_kind": "org.agtxiv.scientific_claim",
+          "target_revision": 1,
+          "type_schema": {
+            "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405",
+            "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0"
+          }
+        },
+        "supersedes": null
+      }
+    },
+    {
+      "calibration": {
+        "body_to_normalized_relation": "CONSERVATIVE_PARAPHRASE",
+        "calibration_stage": "ATOMIC_AUDIT_COMPLETED",
+        "content_hash": "sha256:ec4f4cd55e1465d3bd5fc9d42694bb6f6c66f45cb635ce70c12e88ff82a9b0bc",
+        "id": "scientific-claim-calibration:2607-sign-relaxation-exactness",
+        "primary_to_normalized_relation": "BROADER_THAN",
+        "produced_at": "2026-08-24T00:00:00Z",
+        "reason_codes": [
+          "NO_ACTIVE_DEPENDENCY_SCOPE_RETAINED"
+        ],
+        "record_revision": 1,
+        "relation_direction": "SOURCE_RELATIVE_TO_NORMALIZED_CLAIM",
+        "schema": "agtxiv.scientific-claim-calibration-record/1.1.0",
+        "scientific_claim_ref": {
+          "claim_ir": null,
+          "claim_ir_members": [],
+          "component_path": null,
+          "target_artifact": {
+            "artifact_hash": "sha256:28d27fee3483f6eb2e04fe2d47c4c11f5db26b52bf102bee8ea9afa84fdd17aa",
+            "schema_uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+            "schema_version": "1.1.0",
+            "serialization_profile": {
+              "content_hash": "sha256:6f23c17e65a89eb3ab762a849a2666ab80bedacc908842cb7cae563ce5083efb",
+              "id": "agtxiv.record-canonical-json/1.0.0"
+            }
+          },
+          "target_content_hash": "sha256:eb92df15102e31281a31922f5c5b2073143e5361346dd7e76101098eb447377a",
+          "target_id": "claim:graph-theoretic-nonstabilizerness:sign-relaxation-exactness",
+          "target_kind": "org.agtxiv.scientific_claim",
+          "target_revision": 1,
+          "type_schema": {
+            "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405",
+            "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0"
+          }
+        },
+        "supersedes": null
+      },
+      "claim": {
+        "artifact": {
+          "artifact_hash": "sha256:28d27fee3483f6eb2e04fe2d47c4c11f5db26b52bf102bee8ea9afa84fdd17aa",
+          "schema_uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+          "schema_version": "1.1.0",
+          "serialization_profile": {
+            "content_hash": "sha256:6f23c17e65a89eb3ab762a849a2666ab80bedacc908842cb7cae563ce5083efb",
+            "id": "agtxiv.record-canonical-json/1.0.0"
+          }
+        },
+        "claim_role": "CONTRIBUTION",
+        "content_hash": "sha256:eb92df15102e31281a31922f5c5b2073143e5361346dd7e76101098eb447377a",
+        "contribution_kind": "org.agtxiv.contribution.result",
+        "contribution_tags": [
+          "org.agtxiv.contribution_tag.theoretical_characterization"
+        ],
+        "facets": [
+          {
+            "facet_id": "facet:polytope-exactness",
+            "facet_kind": "org.agtxiv.facet.theoretical_result",
+            "statement": "The sign-relaxed and exact reduced stabilizer polytopes coincide exactly when active dependencies are absent."
+          },
+          {
+            "facet_id": "facet:robustness-exactness",
+            "facet_kind": "org.agtxiv.facet.theoretical_result",
+            "statement": "Under the same condition, relaxed and exact reduced robustness agree for every state."
+          }
+        ],
+        "granularity": "NARRATIVE_ATOMIC",
+        "id": "claim:graph-theoretic-nonstabilizerness:sign-relaxation-exactness",
+        "normalized_statement": "The paper introduces a sign-relaxed reduced stabilizer polytope and proves that it equals the exact reduced stabilizer polytope if and only if the Pauli measurement set has no active dependencies; under the same condition, the relaxed and exact reduced robustness agree for every state.",
+        "occurrences": [
+          {
+            "id": "occurrence:2607-sign-relaxation-exactness:1",
+            "line_end": 97,
+            "line_start": 94,
+            "occurrence_role": "PRIMARY",
+            "source_artifact": {
+              "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+              "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+            },
+            "source_characterization": {
+              "conditionality": "org.agtxiv.conditionality.conditional",
+              "formality": "org.agtxiv.formality.narrative",
+              "speech_act": "org.agtxiv.speech_act.proves"
+            },
+            "source_text": "\tTo address this issue, we relax $\\STAB(\\Mcal)$ by allowing all sign assignments on each maximal independent set, thereby discarding only the restrictions imposed by Pauli product relations.\n\tWe prove that this relaxation is exact if and only if $\\Mcal$ has no active dependencies, where an active dependency is a minimal Pauli product relation contained entirely in an independent set, as depicted schematically in Fig.~\\ref{fig:graph-polytope-rom}.\n\tUnder this relaxation, the separation oracle for the dual constraints reduces to a standard maximum-weight independent set (MWIS) problem on $G_\\Mcal$.\n\tExploiting the polynomial-time solvability of MWIS on perfect graphs, the evaluation of $\\RoM_\\Mcal(\\rho)$ is further reduced to an efficiently computable closed form in the absence of active dependencies.",
+            "source_zone": "org.agtxiv.source_zone.introduction"
+          },
+          {
+            "id": "occurrence:2607-sign-relaxation-exactness:2",
+            "line_end": 72,
+            "line_start": 70,
+            "occurrence_role": "REALIZATION",
+            "source_artifact": {
+              "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+              "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+            },
+            "source_characterization": {
+              "conditionality": "org.agtxiv.conditionality.conditional",
+              "formality": "org.agtxiv.formality.narrative",
+              "speech_act": "org.agtxiv.speech_act.proves"
+            },
+            "source_text": "\t\tWe trace this difficulty into two coupled obstructions: the  simultaneous measurability of measurements captured by their frustration graph structure, and the consistency  of  sign dependencies from stabilizer formalism.\n\t\tWe show that the sign dependencies can be discarded exactly whenever active dependencies are absent,  and that perfect frustration graphs then make this reduced polytope efficiently solvable.\n\t\tThis solvable regime derives a closed form bounded by the clique number of the frustration graph, revealing a tradeoff between witness capacity and simultaneous measurability.",
+            "source_zone": "org.agtxiv.source_zone.abstract"
+          },
+          {
+            "id": "occurrence:2607-sign-relaxation-exactness:3",
+            "line_end": 244,
+            "line_start": 234,
+            "occurrence_role": "BODY_SUPPORT",
+            "source_artifact": {
+              "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+              "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+            },
+            "source_characterization": {
+              "conditionality": "org.agtxiv.conditionality.conditional",
+              "formality": "org.agtxiv.formality.formal_statement",
+              "speech_act": "org.agtxiv.speech_act.proves"
+            },
+            "source_text": "\t\\begin{theorem}\n\t\t\n\t\t\\label{thm:mwis}\n\t\t$\\STAB(\\Mcal)=\\widetilde{\\STAB}(\\Mcal)$ holds if and only if $\\Mcal$ has no active dependencies.\n\t\tWhen these equivalent conditions hold, for every quantum state $\\rho$,\n\t\t\\begin{equation}\n\t\t\t\\RoM_\\Mcal(\\rho)=\\widetilde{\\RoM}_\\Mcal(\\rho).\n\t\t\t\\label{eq:no-active-tight}\n\t\t\\end{equation}\n\t\tConsequently, the polytope relaxation computes the exact reduced robustness without a correction from sign dependencies.\n\t\\end{theorem}",
+            "source_zone": "org.agtxiv.source_zone.theorem"
+          }
+        ],
+        "paper_id": "arxiv:2607.26154v1",
+        "produced_at": "2026-08-24T00:00:00Z",
+        "record_revision": 1,
+        "schema": "agtxiv.scientific-claim/1.1.0",
+        "scope_hints": [
+          "exactness holds if and only if no active dependencies are present",
+          "finite Pauli measurement set",
+          "sign information is not asserted to be universally irrelevant",
+          "sign relaxation allows all deterministic signs on explicitly defined commuting contexts"
+        ],
+        "semantic_content_hash": "sha256:8a5aee8083234a9fa29d9c1764504bf39022f391cb5d99bed30481b60db9e700",
+        "source_characterization": {
+          "conditionality": "org.agtxiv.conditionality.conditional",
+          "formality": "org.agtxiv.formality.narrative",
+          "speech_act": "org.agtxiv.speech_act.proves"
+        },
+        "supersedes": null
+      },
+      "support_association": {
+        "association_scope": "IMMUTABLE_FACET_NAVIGATION_NOT_QUERY_COVERAGE",
+        "content_hash": "sha256:eaca5d46d228f8e8cb92b98f5f38f1a499c94f3537f78ff8d8696633a31e7f51",
+        "facet_outcomes": [
+          {
+            "coverage": "COMPLETE",
+            "facet_id": "facet:polytope-exactness"
+          },
+          {
+            "coverage": "COMPLETE",
+            "facet_id": "facet:robustness-exactness"
+          }
+        ],
+        "id": "claim-support-association:2607-sign-relaxation-exactness",
+        "links": [
+          {
+            "facet_coverage": "COMPLETE",
+            "facet_id": "facet:polytope-exactness",
+            "relationship": "DIRECT_ATOMIC_SUPPORT",
+            "target_ref": {
+              "claim_ir": {
+                "id": "math-claim-ir:graph-theoretic-nonstabilizerness:relaxation-polytope-exactness",
+                "revision": 1,
+                "semantic_content_hash": "sha256:865d9a31f7802cd91aa6d2b348ae058aa4fb39886bc6759b40c394e75601a0f3"
+              },
+              "claim_ir_members": [],
+              "component_path": null,
+              "target_artifact": {
+                "artifact_hash": "sha256:61d6c0fdb6a4a76b18ec522984e5d23e0bd3107fb7dd301cc7ed93872c6eb894",
+                "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+                "schema_version": "1.0.0",
+                "serialization_profile": {
+                  "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c",
+                  "id": "agtxiv.canonical-json/1.0.0"
+                }
+              },
+              "target_content_hash": "sha256:865d9a31f7802cd91aa6d2b348ae058aa4fb39886bc6759b40c394e75601a0f3",
+              "target_id": "math-claim-ir:graph-theoretic-nonstabilizerness:relaxation-polytope-exactness",
+              "target_kind": "org.agtxiv.claim_ir",
+              "target_revision": 1,
+              "type_schema": {
+                "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5",
+                "uri": "https://agtxiv.org/schema/math-claimir/1.0.0"
+              }
+            }
+          },
+          {
+            "facet_coverage": "COMPLETE",
+            "facet_id": "facet:robustness-exactness",
+            "relationship": "DIRECT_ATOMIC_SUPPORT",
+            "target_ref": {
+              "claim_ir": {
+                "id": "math-claim-ir:graph-theoretic-nonstabilizerness:relaxation-robustness-exactness",
+                "revision": 1,
+                "semantic_content_hash": "sha256:0e238663db4aee894027e05747ae18b0d3f994971e0e9faf983d24bb14aa2270"
+              },
+              "claim_ir_members": [],
+              "component_path": null,
+              "target_artifact": {
+                "artifact_hash": "sha256:46fa7e0d206f6fd8de46a7a02b009852f6997003dc918247221d9644f5e0f5cd",
+                "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+                "schema_version": "1.0.0",
+                "serialization_profile": {
+                  "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c",
+                  "id": "agtxiv.canonical-json/1.0.0"
+                }
+              },
+              "target_content_hash": "sha256:0e238663db4aee894027e05747ae18b0d3f994971e0e9faf983d24bb14aa2270",
+              "target_id": "math-claim-ir:graph-theoretic-nonstabilizerness:relaxation-robustness-exactness",
+              "target_kind": "org.agtxiv.claim_ir",
+              "target_revision": 1,
+              "type_schema": {
+                "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5",
+                "uri": "https://agtxiv.org/schema/math-claimir/1.0.0"
+              }
+            }
+          },
+          {
+            "facet_coverage": "PARTIAL",
+            "facet_id": "facet:polytope-exactness",
+            "relationship": "FRAMEWORK_SUPPORT",
+            "target_ref": {
+              "claim_ir": {
+                "id": "math-claim-ir:graph-theoretic-nonstabilizerness:sign-set-collapse",
+                "revision": 1,
+                "semantic_content_hash": "sha256:6e99b3bc1e9abc178a5e44300949baa4d11bc802bebf84d7c2f7641bae597a34"
+              },
+              "claim_ir_members": [],
+              "component_path": null,
+              "target_artifact": {
+                "artifact_hash": "sha256:be699c899746cb124f9c7455346fb81dc990b358a4a4188a205e00cc0c1ada50",
+                "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+                "schema_version": "1.0.0",
+                "serialization_profile": {
+                  "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c",
+                  "id": "agtxiv.canonical-json/1.0.0"
+                }
+              },
+              "target_content_hash": "sha256:6e99b3bc1e9abc178a5e44300949baa4d11bc802bebf84d7c2f7641bae597a34",
+              "target_id": "math-claim-ir:graph-theoretic-nonstabilizerness:sign-set-collapse",
+              "target_kind": "org.agtxiv.claim_ir",
+              "target_revision": 1,
+              "type_schema": {
+                "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5",
+                "uri": "https://agtxiv.org/schema/math-claimir/1.0.0"
+              }
+            }
+          }
+        ],
+        "navigation_basis_ref": {
+          "claim_ir": null,
+          "claim_ir_members": [],
+          "component_path": "/facets",
+          "target_artifact": null,
+          "target_content_hash": "sha256:eb92df15102e31281a31922f5c5b2073143e5361346dd7e76101098eb447377a",
+          "target_id": "claim:graph-theoretic-nonstabilizerness:sign-relaxation-exactness",
+          "target_kind": "org.agtxiv.scientific_claim",
+          "target_revision": 1,
+          "type_schema": {
+            "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405",
+            "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0"
+          }
+        },
+        "produced_at": "2026-08-24T00:00:00Z",
+        "provisional_facet_coverage": "COMPLETE",
+        "reason_codes": [
+          "DIRECT_ATOMIC_COVERAGE",
+          "FACET_BASIS_SOURCE_AUDIT"
+        ],
+        "record_revision": 1,
+        "schema": "agtxiv.claim-support-association/1.1.0",
+        "scientific_claim_ref": {
+          "claim_ir": null,
+          "claim_ir_members": [],
+          "component_path": null,
+          "target_artifact": {
+            "artifact_hash": "sha256:28d27fee3483f6eb2e04fe2d47c4c11f5db26b52bf102bee8ea9afa84fdd17aa",
+            "schema_uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+            "schema_version": "1.1.0",
+            "serialization_profile": {
+              "content_hash": "sha256:6f23c17e65a89eb3ab762a849a2666ab80bedacc908842cb7cae563ce5083efb",
+              "id": "agtxiv.record-canonical-json/1.0.0"
+            }
+          },
+          "target_content_hash": "sha256:eb92df15102e31281a31922f5c5b2073143e5361346dd7e76101098eb447377a",
+          "target_id": "claim:graph-theoretic-nonstabilizerness:sign-relaxation-exactness",
+          "target_kind": "org.agtxiv.scientific_claim",
+          "target_revision": 1,
+          "type_schema": {
+            "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405",
+            "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0"
+          }
+        },
+        "supersedes": null
+      }
+    }
+  ],
+  "paper": {
+    "authors": [
+      "Yingjian Liu",
+      "Albert Gasull",
+      "Mengyao Hu",
+      "Ruiyun Zhang",
+      "Flavio Baccari",
+      "Jordi Tura"
+    ],
+    "id": "arxiv:2607.26154v1",
+    "source_path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+    "title": "Graph Theoretic Approach to Quantum Nonstabilizerness"
+  },
+  "schema": "agtxiv.scientific-claim-demo/1.0.0",
+  "source_revision": "97445bc"
+}
