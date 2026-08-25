@@ -1,0 +1,50 @@
+\subsection{Case study: numerical selection for compressible Euler solutions}
+\label{case:2608-02862}
+
+\paragraph{Paper and theme.}
+Anandan et al., ``Selection criteria for the compressible Euler equations: numerical study'' (arXiv:2608.02862v1), tests whether entropy-, energy-, defect-, and norm-based functionals distinguish dissipative weak solutions produced by four numerical families on a Kelvin--Helmholtz benchmark. The source archive and hash are frozen in \texttt{sample\_manifest.json}. The checked source is \texttt{tmp/claim-interface-study/extracted/2608.02862/main.tex}.
+
+\paragraph{Census method and counts.}
+The audit read the abstract, every prose and formal block in the introduction, every numerical-study paragraph, all table captions and values used by the discussion, every conclusion paragraph, and every method description in the appendix. A claim-bearing unit was a paragraph, list item, displayed definition, or evidentiary table block that asserted, defined, proposed, imported, observed, limited, or interpreted something. Mere organization, raw figure captions that only identify plotted variables, bibliographic matter, and declarations of no conflict were excluded. Repeated abstract, discussion, and conclusion formulations were merged only when they had the same predicate and scope; each retained occurrence remains a separate source span. The result contains 30 atomic candidates backed by 38 checked contiguous source occurrences. All records are \texttt{SOURCE\_CHECKED}.
+
+\begin{center}
+\begin{tabular}{p{0.30\linewidth}p{0.12\linewidth}p{0.45\linewidth}}
+\hline
+Source family & Candidates & Content retained \\
+\hline
+Introduction and imported theory & 13 & Ill-posedness, DW definition, convergence results, entropy-maximal and variational selections \\
+Benchmark and convergence & 4 & Algorithm-dependent DW limits, local maximality mismatch, Ces\`aro convergence \\
+Operational criteria & 3 & Entropy/energy/defect definitions, functional family, quadrature and resolution regime \\
+Discussion and conclusions & 6 & Entropy and energy rankings, norm and combined criteria, synthesis and diffusion sensitivity \\
+Numerical-method appendix & 4 & VFV consistency condition, DVBFV positivity, DGSEM stabilization, data-access limitation \\
+\hline
+Total & 30 & 38 source occurrences after repeated-claim consolidation \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Source statements.}
+The source defines a DW solution by a conjunction of regularity, energy monotonicity, weak continuity and momentum equations, a Young-measure entropy inequality, and compatible Reynolds-stress and energy defects. It imports the convergence dichotomy for consistent stable approximations and the equivalence between strong convergence and vanishing Reynolds defect. It then operationalizes selection through the observables
+\begin{align}
+\mathcal I_{\widetilde S}(t) &= \int_\Omega \widetilde S(t,\mathbf x) \mathrm d\mathbf x, &
+D_S(t) &= \mathcal I_{\widetilde S}(t)-\mathcal I_{\widetilde S}(0),\\
+\mathcal I_{\widehat E}(t) &= \int_\Omega E(\widetilde\varrho,\widetilde{\mathbf m},\widetilde S)(t,\mathbf x) \mathrm d\mathbf x, &
+\mathcal D_E(t) &= \mathcal I_{\widetilde E}(t)-\mathcal I_{\widehat E}(t).
+\end{align}
+The finite study reports convergence of the Ces\`aro-averaged density, but not raw density, for every tested method with $N\geq 1$. Its entropy criteria repeatedly favor DVBFV~0 and RKDG~0, with DVBFV~1 also favored; energy criteria do not yield one winner. At $t=10$, the combined functional $\mathcal A$ places DVBFV~0, RKDG~0, DGSEM~1, DVBFV~1, and DGSEM~2 in its top five. The authors interpret DVBFV~0, RKDG~0, and DVBFV~1 as the most consistent candidates and state that selection is sensitive to scheme-dependent numerical diffusion.
+
+\paragraph{Difficult atomicity and source cases.}
+The DW definition is one named source object but contains several independently testable clauses. Splitting it would improve logical atomicity while losing the fact that no clause alone defines a DW solution. The record therefore retains one composite formal-definition candidate and marks \texttt{single\_primary\_predication=false}. Conversely, the four entropy rankings are consolidated because the paper's synthesis quantifies over that functional family; their individual table evidence and discussion remain anchored.
+
+The strongest convergence statement is approximation-dependent rather than a claim about a continuum solution in isolation. Its scope includes the successive-grid $L^1$ error, $t=10$, interpolation to the finest grid, a finite mesh sequence, the tested methods, and $N\geq1$. The interface must not normalize this to unrestricted convergence as $h\to0$. Likewise, ``dominates globally'' means at all reported sample times, not all real times.
+
+The paper juxtaposes theorem-backed and empirical content in one paragraph: selection for every $\lambda>0$ implies a locally entropy-maximal weak solution, while the observed Kelvin--Helmholtz limits are oscillatory. The retained candidate records both support and the theorem--observation boundary rather than silently upgrading the mismatch to a proof.
+
+\paragraph{MathClaimIR boundaries.}
+Explicit definitions, inequalities, discounted functionals, and biconditionals are suitable or partly suitable for MathClaimIR. Numerical rankings require typed method, polynomial degree, mesh, time, quadrature, and optimization-direction entities; a bare inequality loses their evidentiary regime. ``Physically reasonable'', ``maximally turbulent'', ``dominates'', and ``most consistent'' are author interpretations, not mathematical predicates without a source-defined operationalization. Imported convergence statements also need provenance and assumptions that are only summarized in this paper.
+
+\paragraph{Interface pressures.}
+This case requires: multi-span support for abstract--discussion--conclusion repetition; explicit knowledge attribution; theorem versus observation status; finite-resolution and quadrature scope; algorithm and hyperparameter identity; optimization direction; convergence-mode typing; composite named definitions; negative results; and access limitations. Numerical evidence must remain distinct from scientific acceptance: a method winning a sampled functional is not thereby the unique physical Euler solution.
+
+\paragraph{Provisional verdict.}
+The v1 record shape can represent the principal claims without a paper-specific ontology, provided that conditions, attribution, modality, and interface-pressure fields remain first-class. It is weakest for structured empirical evidence: tables, finite mesh sequences, algorithm variants, and repeated rankings are compressed into prose scopes. A future evidence layer should type experimental regimes and table cells, while the core claim object should remain small and should not encode a preferred selection criterion as accepted truth.

@@ -1,0 +1,95 @@
+\subsection{Case study: arXiv:2608.04867v1}
+\label{case:2608-04867}
+
+\paragraph{Paper and theme.}
+B. N. Jayawiguna and A. Sulaksono, ``Ambiguity in matter sector for modified gravity involving $\delta^2\mathcal L_m/\delta g\delta g$ and its implications to astrophysics and cosmology,'' argues that a normalization-aware metric variation removes the difference between the perfect-fluid choices $\mathcal L_m=p$ and $\mathcal L_m=-\rho$ in several curvature--matter models. It then compares old and revised prescriptions in stellar and FLRW applications. The machine-readable census contains 38 consolidated candidates. The claims below remain claims of the paper, including its reported numerical interpretations; the interface judgments are the case-study analysis.
+
+\paragraph{Census method and counts.}
+The census read \texttt{tmp/claim-interface-study/extracted/2608.04867/Lagrangian\_Formulationver5.tex} in full, including preamble macros, appendices, and the embedded bibliography, and inspected the local \texttt{orcidlink.sty} macro package. Bibliographic entries and package implementation lines were not treated as scientific claims. A claim-bearing unit was a paragraph or equation block that imported a fact, defined a model, stated a variational assumption, derived an identity or field equation, selected an analytic branch, reported a numerical profile, interpreted a result, or stated a limitation. Repeated conclusion statements and appendix derivations were consolidated with their main-text candidates.
+
+\begin{center}
+\begin{tabular}{p{0.48\linewidth}rr}
+\hline
+Source division & Claim-bearing units & Consolidated candidates \\
+\hline
+Introduction & 6 & 3 \\
+Modified-gravity models and old prescription & 13 & 6 \\
+Revisited model & 6 & 3 \\
+Compact-star application & 12 & 7 \\
+Cosmological application & 31 & 18 \\
+Conclusion & 3 & 1 \\
+Appendices & 6 & 0 new; 2 supporting occurrences \\
+\hline
+Total & 77 & 38 \\
+\hline
+\end{tabular}
+\end{center}
+
+The count is not a sentence count. For example, the four equalities for $\Theta_{\mu\nu}$, $\theta_{\mu\nu}$, $\Gamma_{\mu\nu}$, and $\Xi_{\mu\nu}$ form one universality candidate because they share one variational assumption and one primary conclusion. Conversely, one results paragraph supports separate numerical, interpretive, stability, bounded-density, and GR-comparison candidates.
+
+\paragraph{Claim families.}
+\begin{center}
+\begin{tabular}{p{0.25\linewidth}p{0.49\linewidth}r}
+\hline
+Family & Representative content & Count \\
+\hline
+Background and problem & motivation, $f(R)$ equivalence, matter-Lagrangian ambiguity & 3 \\
+Model definitions & $f(R,T)$, EMSG, $f(R,T,P)$, Einstein-tensor couplings & 4 \\
+Variational comparison & old variations and inequivalence; velocity identity; revised variations and equivalence & 5 \\
+Stellar systems & revised and old ODE systems, GR limit, profiles, EoS interpretation, stability & 7 \\
+Cosmological systems & assumptions, GR baselines, old and revised equations and branches & 15 \\
+Phenomenological conclusions & density bound, finite early maximum, qualitative closeness to GR, universality conclusion & 4 \\
+\hline
+Total & & 38 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Representative hard splits and formulas.}
+The central split is not between the two strings ``$p$'' and ``$-\rho$'' alone. It is between two variational prescriptions. Under the old treatment, the source writes
+\begin{align}
+\frac{\delta^2p}{\delta g^{\mu\nu}\delta g^{\alpha\beta}}&=0,\\
+\frac{\delta^2\rho}{\delta g^{\mu\nu}\delta g^{\alpha\beta}}
+&=-\frac{\rho+p}{2}g_{\mu\alpha}g_{\nu\beta},
+\end{align}
+and reports inequivalent tensors for the two Lagrangian representatives. Under normalization-aware variation it first uses
+\[
+\frac{\delta(u_\alpha u_\beta)}{\delta g^{\mu\nu}}
+=u_\alpha u_\beta u_\mu u_\nu,
+\]
+then derives nonzero second variations for both representatives. The resulting relation
+\begin{align}
+\frac{\delta^2\rho}{\delta g^{\mu\nu}\delta g^{\alpha\beta}}
+&=-\frac{\delta^2p}{\delta g^{\mu\nu}\delta g^{\alpha\beta}}
+ +\frac{\rho+p}{4}g_{\alpha\beta}g_{\mu\nu}
+ -\frac{\rho+p}{2}g_{\mu\alpha}g_{\nu\beta}
+\end{align}
+is then used to establish four parallel equalities. A faithful candidate must identify the prescription and perfect-fluid setting; recording only ``$p$ and $-\rho$ are equivalent'' would incorrectly assert unconditional Lagrangian equality.
+
+The four tensor equalities are consolidated as one cross-model equivalence claim, but their appendix calculations remain supporting spans. This is a hard atomicity boundary: splitting them gives cleaner predicates but duplicates the same assumption and proof pattern four times; merging them without naming each tensor hides which reviewed theories were checked. The audit record therefore marks the bundle as a deliberate consolidation rather than pretending it is syntactically atomic.
+
+The applications require model-specific separation. For revised $f(R,T)=R+2\chi T$, the source claims
+\[
+G_{\mu\nu}=8\pi T_{\mu\nu}+\chi g_{\mu\nu}T,
+\]
+then supplies a coupled stellar ODE system. The old $p$ and old $-\rho$ systems are separate comparison candidates because their mass and pressure equations differ. The statement that all three reduce or remain close to GR is not merged with those equations: the exact $\chi\to0$ limit is a formal claim, while ``close to GR'' at $\chi=1$ is a qualitative reading of plotted profiles.
+
+The cosmology has three independent axes that must not be flattened: prescription, equation-of-state value, and solution branch. The revised general system is
+\begin{align}
+3H^2&=8\pi[\rho-\alpha(1+3w^2)\rho^2],\\
+-2\dot H-3H^2&=8\pi[w\rho+\alpha(1+3w^2)\rho^2],\\
+3(1+w)H\rho+[1-2\alpha\rho(1+3w^2)]\dot\rho&=0.
+\end{align}
+Dust and radiation use selected square-root branches that recover GR as $\alpha\to0$. The $w=-1$ case is disjunctive: the source allows a constant-density branch or $\rho=1/(8\alpha)$. Branch choice is therefore a truth-relevant field, not presentation detail.
+
+\paragraph{Source-fidelity decisions.}
+All JSONL source paths are workspace relative, all ranges are 1-indexed and inclusive, and every \texttt{exact\_text} value is reconstructed byte-for-byte from the source. Records receive \texttt{SOURCE\_CHECKED} only after this equality check. The velocity identity and revised tensor equivalence use non-contiguous main-text and appendix spans because the appendix supplies the displayed derivation. Figure captions alone were not promoted to claims; the surrounding results prose supplies the numerical statements. Citations determine attribution but do not turn imported equations into current-work derivations. The paper repeatedly labels $w=-1$ as ``stiff'', while its equations and prose also call it vacuum energy. The records preserve $w=-1$ and flag the terminology pressure rather than silently correcting the source to the usual stiff-fluid value $w=1$.
+
+\paragraph{MathClaimIR boundaries.}
+The model actions, field equations, variational identities, tensor equalities, stellar ODEs, FLRW systems, limits, root choices, and explicit solution branches are suitable for \texttt{MathClaimIR}. Their scientific-claim envelopes must still carry the prescription, fluid assumptions, attribution, parameter units, and branch conditions. Partial suitability applies to framework-wide equivalence because the formal calculations cover an enumerated family rather than every possible curvature--matter theory. Numerical statements such as ``profiles are close,'' EoS-based causal explanations, and stability readings are not suitable without machine-readable data, an explicit distance or stability criterion, and a reproducible computation link.
+
+\paragraph{Interface pressures.}
+This paper exposes seven pressures. First, the same symbols denote inequivalent variational procedures. Second, ``independent of the matter Lagrangian'' is shorthand for invariance under two on-shell perfect-fluid representatives, not unrestricted independence from all matter actions. Third, attribution alternates between imported equations, adopted variation identities, and current substitutions. Fourth, analytic solutions depend on root and integration-constant choices. Fifth, several results are implicit relations $t(H)$ rather than explicit functions $H(t)$. Sixth, phenomenological claims depend on figures and parameter units absent from a pure formula graph. Seventh, inconsistent source terminology must be preserved as provenance while the normalized semantics use the explicit value $w=-1$.
+
+\paragraph{Provisional verdict.}
+The case supports an interface that makes assumptions and representation choices first-class. A compact record can contain one scientific statement, exact source spans, modality and attribution, structured scope, and an optional \texttt{MathClaimIR} kernel. It should not encode ``$\mathcal L_m$ choice'' as an untyped string: the old or revised variational prescription and the perfect-fluid equivalence relation are indispensable. Figure-grounded and interpretive candidates should remain valid scientific claims even when they have no mathematical payload. This separation preserves rigor without forcing all astrophysical and cosmological conclusions into a theorem-shaped representation.

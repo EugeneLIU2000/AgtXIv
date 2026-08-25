@@ -1,0 +1,114 @@
+\subsection{Case study: detailed-balance copying dynamics and the H-theorem}\label{case:2608-22867}
+
+\paragraph{Source and review state.}
+This case analyzes Prabodh Shukla, ``Note on Boltzmann's H-Theorem and Detailed Balance Dynamics,'' arXiv:2608.22867v1. The frozen source is \path{tmp/claim-interface-study/extracted/2608.22867/note2.tex}. The census includes the abstract, all sections, all displayed equations, all figure captions, the bibliography used for attribution, and the source macros \texttt{\textbackslash be}, \texttt{\textbackslash ee}, \texttt{\textbackslash bea}, \texttt{\textbackslash eea}, \texttt{\textbackslash bdm}, and \texttt{\textbackslash edm}. The machine-readable inventory contains 39 consolidated candidates and 52 exact source-span anchors. All 39 records are \status{source\_checked}.
+
+\paragraph{Source census.}
+The count uses claim-bearing prose paragraphs as the primary unit. A displayed equation remains attached to its introducing paragraph. The four figure captions are counted separately because each repeats numerical conditions or findings that must be checked during consolidation.
+
+\begin{center}
+\small
+\begin{tabular}{lrrl}
+\toprule
+Source region & Units & Candidates & Principal content \\
+\midrule
+Abstract & 1 & 3 & theorem, copying process, numerical objective \\
+Introduction & 5 & 11 & canonical ensemble, entropy, H-theorem, assumptions \\
+Numerical Simulations & 6 & 15 & update rules, observations, distributions, times \\
+Discussion & 3 & 10 & imported facts, limits, asymptotic interpretation \\
+Figure captions & 4 & 0 & repeated occurrences consolidated above \\
+\midrule
+Total & 19 & 39 & 52 retained source-span anchors \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The captions create no new candidate identities. They provide repeated source anchors and, in several cases, supply ensemble size, run count, or update-rule details omitted from the surrounding interpretive sentence.
+
+\paragraph{Claim families.}
+\begin{center}
+\begin{tabular}{lrl}
+\toprule
+Family & Count & Boundary decision \\
+\midrule
+Abstract theorem and objective & 3 & source claims \\
+Canonical and thermodynamic background & 5 & imported or system-derived claims \\
+H-theorem derivation and assumptions & 6 & assumptions split from conclusions \\
+Simulation setup and findings & 15 & finite observations and algorithms \\
+Discussion background and limitations & 7 & attributed source claims \\
+Asymptotic and ergodic interpretation & 3 & assertion, observation, and hypothesis split \\
+\midrule
+Total & 39 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The inventory has 18 \status{reported}, 16 \status{asserted}, two \status{conditional}, two \status{approximate}, and one \status{hypothesized} candidate. Attribution is 22 current-work, 12 community-background, three system-derived, and two other-work records. Math normalization is suitable for 15 records, partial for eight, and unsuitable for 16.
+
+\paragraph{Representative theorem split.}
+Let $p_i>0$ be the value assigned to state $i$, let
+\begin{equation}
+H=\sum_i p_i\ln p_i,
+\label{eq:case-22867-h}
+\end{equation}
+and let $W_{i\leftarrow j}$ and $W_{i\to j}$ denote transition rates. The source first writes a master-equation expression and then imposes the strong symmetric-rate condition
+\begin{equation}
+W_{i\leftarrow j}=W_{i\to j}=W.
+\label{eq:case-22867-rate-assumption}
+\end{equation}
+Only under equation~\ref{eq:case-22867-rate-assumption} does it state
+\begin{align}
+\frac{\mathrm dH}{\mathrm dt}
+  &=-\frac{W}{2}\sum_i\sum_j
+  (p_i-p_j)(\ln p_i-\ln p_j),\\
+  &\leq 0,\\
+\frac{\mathrm dS}{\mathrm dt}
+  &\geq 0.
+\label{eq:case-22867-monotonicity}
+\end{align}
+The inventory therefore separates the definition in equation~\ref{eq:case-22867-h}, the rate assumption in equation~\ref{eq:case-22867-rate-assumption}, the inequality in equation~\ref{eq:case-22867-monotonicity}, the equal-value stationarity condition, and the limitation that this argument does not determine the common value $p^*$. Calling all five simply ``the H-theorem'' would erase identity-bearing conditions.
+
+\paragraph{Discrete dynamics versus the differential theorem.}
+The numerical section sets $k_B=W=1$ and studies parallel, finite-step copying. The source explicitly reports that the discrete entropy increment approaches zero but is not monotone, whereas the number of equal state values behaves monotonically. These are retained as separate observations. Neither is represented as a disproof of equation~\ref{eq:case-22867-monotonicity}, because the source itself distinguishes the finite-difference update from the differential equation.
+
+The main update initializes values uniformly on $[0,1]$ and randomly pairs states so that each copies another state's current value. A second update places states on a circle and copies a random nearest neighbor. The inventory records the following separately: random pairing reaches a common value within about 150 steps for the stated $10^3$-state, $10^3$-run experiment; the 101-state circle case takes nearly $10^4$ steps; the circle rule is described as an order of magnitude slower; and even-sized circle ensembles are reported not to reach a fixed state. The last statement retains empirical modality because no proof or tested range is supplied.
+
+\paragraph{Distributional and asymptotic splits.}
+The terminal common value is reported to equal one randomly selected initial value. Across repeated runs, the terminal-value distribution is called ``numerically indistinguishable'' from the input distribution. This phrase is retained without inventing a distance, test, tolerance, or confidence level. The finite finding is distinct from the discussion's stronger statement that the transition time is sharply peaked in the thermodynamic limit. The latter remains an asserted asymptotic claim with an evidence-scope pressure: the source reports one principal system size and no finite-size scaling sequence.
+
+The final interpretation is weaker still: a sharp relaxation-time peak ``may indicate'' why configuration averages reproduce time averages. It is recorded as \status{hypothesized}, not as a consequence of the simulation and not as the ergodic hypothesis itself.
+
+\paragraph{Source-fidelity decisions.}
+The records preserve the source's terminology ``probabilities'' for initial values drawn independently from $[0,1]$. They do not silently impose $\sum_i p_i=1$ on the simulation protocol, because the text does not state a renormalization step. This creates interface pressure between a symbol's declared scientific role and the operational data actually supplied.
+
+The source states that entropy fluctuates about $1/4$ and associates this value with $\int_0^1p\ln p\,\mathrm dp$. Direct evaluation gives
+\begin{align}
+\int_0^1p\ln p\,\mathrm dp
+  &=\left[\frac{p^2}{2}\ln p-\frac{p^2}{4}\right]_0^1\\
+  &=-\frac14.
+\label{eq:case-22867-sign-check}
+\end{align}
+The source-grounded candidate preserves the reported $1/4$ rather than replacing it with equation~\ref{eq:case-22867-sign-check}; the sign check appears only in this case-study analysis and in the record's review note. This is the required separation between extraction fidelity and scientific assessment.
+
+The entropy derivation also alternates $k_B$ and $k_b$ and contains an intermediate expression whose factors are not typographically stable. The normalized candidate retains the final stated Gibbs entropy formula while its review note records the notation pressure. No source text is repaired inside \field{exact\_text}.
+
+\paragraph{Attribution decisions.}
+Canonical probabilities, the partition function, the H-theorem background, and the ergodic hypothesis are community-background claims. The displayed monotonicity and entropy-identification manipulations are system-derived from premises stated in the note. Numerical equalization, distributional comparisons, relaxation times, and the discussion's thermodynamic-limit assertion are current-work claims even when they are not adequately supported by the finite experiment. Scientific acceptance is not inferred from attribution or from \status{source\_checked}.
+
+\paragraph{MathClaimIR boundary.}
+The canonical distribution, entropy functional, rate symmetry, H-theorem inequality, expectation $1/2$ for a uniform input, and exact simulation parameters fit \MathClaimIR{}. The saddle-region statement is only partially suitable because no limiting parameter or error term is supplied. The stochastic copying algorithm is partially suitable because pairing semantics and probability normalization are underspecified. ``Numerically indistinguishable,'' ``relatively sharp'', ``order of magnitude slower,'' foundational interpretations, and relevance to ergodicity remain outside mathematical normalization unless a later assessment adds operational definitions.
+
+\paragraph{Interface pressures from this source.}
+\begin{itemize}
+\item Assumptions must remain independently addressable from theorem conclusions; ``detailed balance'' cannot stand in for the exact rate equation used.
+\item A continuous-time theorem and a discrete-time implementation may have different monotones and must be related rather than merged.
+\item Symbol-role conflicts matter: values called probabilities need not satisfy a stated normalization in the implemented simulation.
+\item Repeated figure captions often carry conditions required to interpret a prose claim.
+\item Distributional equality needs an optional metric, tolerance, test, and sample count; absent values must remain unknown.
+\item Thermodynamic-limit claims need quantifier and evidence-scope annotations distinct from finite-size numerical findings.
+\item Source-internal mathematical tension must be represented by an assessment or review note, never by editing the source claim.
+\item ``Proven'', ``observed',' ``expected',' ``approximate',' and ``hypothesized'' statements need distinct modalities or relations.
+\end{itemize}
+
+\paragraph{Provisional verdict (case-study analysis).}
+This paper again supports a compact \ScientificClaim{} core: statement, source spans, scope, modality, and attribution. It strongly argues against putting ``proof status'' into a single Boolean. The useful structure is relational: an assumption supports a derivation; a finite algorithm implements or approximates a dynamics; an observation agrees or conflicts with an expectation; and an assessment flags normalization, sign, or evidence-scope problems. \MathClaimIR{} should normalize the exact equations without certifying either their applicability to the simulation or their scientific correctness.

@@ -1,0 +1,109 @@
+\subsection{Case study: arXiv:2608.20180v1}
+\label{case:2608-20180}
+
+\paragraph{Paper and theme.}
+David S. Pereira, Francisco S. N. Lobo, and Jos\'e Pedro Mimoso, ``A Buchdahl solution generator for Einstein--sigma gravity and multiscalar--tensor gravity,'' studies a target-covariant transformation from Ricci-flat cyclic seeds to exact Einstein--sigma solutions and their Jordan-frame descendants. The paper is unusually useful for interface testing because one theorem is repeated as an abstract claim, a density derivation, a Ricci-level statement, an explicit theorem, many examples, and an appendix check. The machine-readable census contains 48 consolidated candidates. These are claims made or imported by the paper; the interface assessment below is the present case-study analysis.
+
+\paragraph{Census method and counts.}
+The census read the complete source file \texttt{tmp/claim-interface-study/extracted/2608.20180/apssamp2.tex}, including the preamble macros, all displayed equations, the conclusion, and both appendices. A claim-bearing unit was a prose paragraph or equation block that defined an object, imposed a truth-relevant hypothesis, asserted or imported a result, supplied a construction, interpreted a formula, stated a limitation, or proposed an extension. Repeated abstract, conclusion, and appendix occurrences were consolidated when they had the same primary predication; the JSONL record retains multiple source spans when the later occurrence contributes proof or scope. Tables of target profiles were treated as repeated formula presentations rather than new claims.
+
+\begin{center}
+\begin{tabular}{p{0.45\linewidth}rr}
+\hline
+Source division & Claim-bearing units & Consolidated candidates \\
+\hline
+Introduction & 7 & 5 \\
+Multi-field Buchdahl construction & 20 & 12 \\
+Jordan-frame extension & 10 & 5 \\
+Target-space geodesics & 11 & 5 \\
+Tangherlini family & 13 & 5 \\
+Black branes & 5 & 2 \\
+Weyl seeds & 6 & 2 \\
+Kasner cosmologies & 5 & 2 \\
+Kaluza--Klein bubbles & 5 & 2 \\
+Rosen waves & 5 & 2 \\
+Gowdy cosmologies & 5 & 2 \\
+C-metric family & 6 & 2 \\
+Jordan descendants & 2 & 1 \\
+Conclusion and outlook & 5 & 1 \\
+Appendices & 8 & 0 new; 4 supporting occurrences \\
+\hline
+Total & 113 & 48 \\
+\hline
+\end{tabular}
+\end{center}
+
+Here ``claim-bearing unit'' is deliberately not a sentence count. A long displayed construction and its immediately governing prose form one unit, while one paragraph can support several atomic candidates. Appendix occurrences do not increase the candidate total when they repeat the density identity, Ricci system, theorem proof, or field-equation check.
+
+\paragraph{Claim families.}
+\begin{center}
+\begin{tabular}{p{0.25\linewidth}p{0.48\linewidth}r}
+\hline
+Family & Representative content & Count \\
+\hline
+Imported background and definitions & scalar hair, target manifolds, prior Buchdahl scope, geodesic lifting, Einstein--sigma equations & 5 \\
+Core hypotheses and identities & cyclic domains, density identity, coefficient, rank and pullback statements & 7 \\
+Theorem and boundary cases & harmonic/geodesic sufficiency, Ricci system, null-gradient split, theorem, endpoints & 5 \\
+Jordan-frame claims & conformal dictionary, observables, two-scalar construction, frame inequivalence & 5 \\
+Target realizations & flat, spherical, hyperbolic, axion--dilaton, equal-speed degeneracy & 5 \\
+Explicit spacetime families & Tangherlini, branes, Weyl, Kasner, bubbles, Rosen, Gowdy, C-metric, Jordan descendants & 20 \\
+Outlook & proposed higher-rank extension & 1 \\
+\hline
+Total & & 48 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Representative hard splits and formulas.}
+The central source-level theorem cannot be represented faithfully as the short conclusion ``the generated fields solve the equations.'' Its conditions and construction are part of its truth value. With
+\[
+C_D(\beta)=\frac{D-2}{D-3}(1-\beta^2),
+\qquad
+\Sigma=\frac12\ln\lvert g^{(0)}_{yy}\rvert,
+\]
+the source asserts, on a connected fixed-sign nonzero-norm domain and for $D>3$,
+\begin{align}
+\mathrm d s_\beta^2
+&=\varepsilon e^{2\beta\Sigma}\mathrm d y^2
+ +e^{2(1-\beta)\Sigma/(D-3)}h_{ij}\mathrm d x^i\mathrm d x^j,\\
+R_{AB}[g_\beta]
+&=C_D(\beta) \partial_A\Sigma\,\partial_B\Sigma,\\
+\Box_{g_\beta}\Sigma&=0,\\
+\varphi^I(x)&=\Phi^I(\Sigma(x)),\\
+\mathcal G_{IJ}(\Phi)\Phi^{I\prime}\Phi^{J\prime}
+&=C_D(\beta).
+\end{align}
+The theorem candidate also retains Ricci flatness of the seed, hypersurface orthogonality of the cyclic direction, nondegeneracy of the target metric, and affine geodesicity of $\Phi$. Omitting any one of these would turn the candidate into a materially stronger assertion.
+
+The geodesic statement requires a causal split. The scalar equation decomposes into a harmonic term and a target-acceleration term multiplied by $(\nabla\Sigma)^2$. Thus a non-null gradient requires the geodesic equation within the composition ansatz, while a nonzero null gradient does not. The Rosen-wave example supplies an explicit witness:
+\begin{align}
+(\nabla\Sigma)^2&=0,\\
+R[g_\beta]&=0,\\
+R_{uu}[g_\beta]
+&=2(1-\beta^2)\left(\frac{\mathrm d}{\mathrm d u}\ln a(u)\right)^2.
+\end{align}
+This must be split from the uniform geodesic construction: the latter remains sufficient in the null sector, but the source explicitly denies that it is necessary there.
+
+The rank claim also requires a signature split. Positive definiteness converts a rank-one pullback into a local rank bound on the scalar map. For an indefinite target, null cancellation blocks the converse. A record that stores only ``rank-one source'' loses whether rank refers to an ambient target tensor, a pullback tensor, or the differential of the scalar map.
+
+The Jordan-frame statement requires two linked but distinct relations:
+\begin{align}
+\mathcal G^{(E)}_{IJ}
+&=\frac{\mathcal H_{IJ}}{\mathcal A}
+ +\frac{D-1}{D-2} \partial_I\ln\mathcal A\,\partial_J\ln\mathcal A,\\
+\widetilde g_{AB}
+&=\mathcal A(\Phi(\Sigma))^{-2/(D-2)}g_{\beta AB}.
+\end{align}
+Equal target speed determines the same Einstein-frame source, but target position enters the second relation. Consequently ``same speed'' supports Einstein-frame metric equality without supporting Jordan-frame equivalence.
+
+\paragraph{Source-fidelity decisions.}
+Every JSONL span uses the workspace-relative source path, 1-indexed inclusive lines, and exact source bytes, including TeX commands and trailing newlines. The records mark \texttt{SOURCE\_CHECKED} only after reconstructing each span from the cited lines. Abstract and conclusion summaries were not substituted for derivation spans when they omitted domain restrictions. The theorem, density identity, Ricci system, and velocity-independent field-equation check therefore use non-contiguous spans. Formula tables and repeated target profiles were consolidated into target-family candidates rather than counted row by row. Interpretation was not silently promoted to theorem: ``physical'', ``generically',' inherited-defect, and proposed-extension language remains represented by suitability limits or non-assertive modality.
+
+\paragraph{MathClaimIR boundaries.}
+The best \texttt{MathClaimIR} inputs are the density identity, rank calculation, Ricci system, theorem, target geodesic equations, charge relations, Kasner sum rules, and explicit limiting scalings. Partial cases need an outer scientific-claim envelope: attribution to prior work, local-versus-global scope, patch selection, positive-versus-indefinite signature, sufficiency versus exhaustiveness, and physical interpretation of singularities or observables. Qualitative scope summaries and the higher-rank outlook are not suitable for mathematical normalization. In particular, \texttt{MathClaimIR} should encode the formal kernel, not erase the source's epistemic status or convert an example into a universal theorem.
+
+\paragraph{Interface pressures.}
+This paper pressures the interface in six ways. First, theorem conditions are distributed over the cyclic ansatz, fixed-sign-domain paragraph, speed equation, and theorem statement. Second, repeated occurrences differ in evidential role: abstract summary, main derivation, named theorem, examples, and appendix verification. Third, tensor type and rank must remain explicit. Fourth, causal and signature case splits change necessity claims without changing the displayed source tensor. Fifth, one Einstein-frame metric admits multiple target realizations and multiple Jordan descendants, so equivalence needs a frame and comparison criterion. Sixth, example families combine construction, local domain, asymptotic approximation, and physical interpretation in one paragraph.
+
+\paragraph{Provisional verdict.}
+The paper supports a small interface with a source-grounded scientific-claim envelope and an optional \texttt{MathClaimIR} payload. The envelope must retain exact spans, conditions, modality, attribution, and a typed relation such as ``sufficient construction,'' ``local equivalence,'' or ``limiting implication.'' A formula-only representation is too weak, but a sentence-level ontology is unnecessarily large. The 48 candidates show that repeated formulas can be consolidated aggressively if non-contiguous evidence and source-level qualifications remain first-class.

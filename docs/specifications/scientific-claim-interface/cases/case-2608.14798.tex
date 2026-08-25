@@ -1,0 +1,77 @@
+\subsection{Case study: stabilizer statistical mechanics}\label{case:2608-14798}
+
+\paragraph{Source and census.}
+This case analyzes arXiv:2608.14798v1, ``Stabilizer Statistical Mechanics: A Framework for Efficient Quantification and Classification of Magic States''. The frozen archive has SHA-256 \texttt{3e3c04d827872466db57b58fe70ad9d5d61c8d141056ca25f82581ac14aa0d52}. The census read all 2,723 lines of \texttt{Pauli\_Spectrum.tex}, including preamble macros, the complete main text, and supplemental material. It yielded 76 consolidated candidates.
+
+\begin{center}
+\begin{tabular}{p{0.29\linewidth}p{0.50\linewidth}r}
+\toprule
+Source unit & Claim-bearing material & Candidates\\
+\midrule
+Introduction & imported computational facts, measure limitations, pseudomagic boundary & 3\\
+Preliminaries & Pauli spectrum, examples, support/kernel, nullity, SRE & 9\\
+SPF construction & Pauli gas, SPF/cSPF definitions, invariance, representations, continuity, estimability, bounds & 13\\
+Hilbert-space zoo & product, separable, Haar, compressible, doped, and pseudomagic classes & 23\\
+Stabilizer work & resource theory, definition, properties, limits, concentration & 9\\
+Applications & fidelity, conversion, cost, distillation, chemistry, Ising & 10\\
+Discussion and extensions & mixed states, channels, PTM characterization, open problems & 4\\
+Supplement & proof refinements (consolidated), SPS density and validation, additional numerical comparisons & 5\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Claim families.}
+\begin{center}
+\begin{tabular}{p{0.24\linewidth}p{0.48\linewidth}p{0.20\linewidth}}
+\toprule
+Family & Representative content & Interface pressure\\
+\midrule
+Definitions & signed Pauli spectrum, Pauli gas, SPF, cSPF, work, mixed/channel extensions & definitions carry domains, conventions, and extension status\\
+Exact results & invariance, closed forms, bounds, tensor-product identities & theorem environment and all parameter ranges must survive\\
+Asymptotics & Haar and $\nu$-compressible limits and concentration & $o(1)$ regimes and normalization inside probability events are identity-bearing\\
+Algorithms and complexity & Bell estimator, oracle classifiers, truncation control & fixed-parameter assumptions and two error sources must not collapse into ``efficient''\\
+Resource theory & monotonicity profile, fidelity and conversion bounds & free-operation class and pure-state restriction determine truth\\
+Cryptographic boundary & pseudomagic indistinguishability and SPS analysis & computational observer, copy budget, and pseudorandom assumptions matter\\
+Numerical science & hydrogen bases, Ising finite sizes, SPS validation & method, basis, encoding, finite-size range, and interpretation must be separated\\
+Limitations & basis dependence, necessary-not-sufficient witnesses, open channel monotonicity & explicit nonclaims are candidate scientific content\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Difficult split and scope examples.}
+The SPF is an analytic generating object,
+\[
+\mathcal Z_\beta(\psi)=e^{-\beta}\sum_{P\in\mathcal P_n}
+\cosh\!\left(\beta\operatorname{tr}(\psi P)\right),
+\]
+but it does not retain the labelled signed spectrum. A normalization must distinguish ``encodes every even moment'' from ``reconstructs every labelled Pauli expectation''. The Clifford-orbit and SRE expansions are equivalent representations, not new physical effects.
+
+The sampling claim combines statistical and truncation errors. For fixed $k$ and $\beta$, the supplement gives
+\[
+\mathcal N=O\!\left(
+\frac{\cosh^2\beta}{e^{2\beta}{\bigl(\epsilon-\Delta(\beta,k)\bigr)}^2}
+\log\frac1\delta\right),\qquad \epsilon>\Delta(\beta,k).
+\]
+Consequently, ``efficiently estimable'' cannot be stored without $k$, $\beta$, normalization, additive error, failure probability, and the truncation remainder.
+
+The resource claims are scoped to deterministic pure-state stabilizer protocols. The interconversion theorem is
+\[
+\psi^{\otimes n}\xrightarrow{\mathfrak F}\phi^{\otimes m}
+\Longrightarrow
+\mathcal W_\beta(\phi^{\otimes m})
+\leq\mathcal W_\beta(\psi^{\otimes n})
+\leq n\mathcal W_\beta(\psi),
+\quad \beta\neq0.
+\]
+The source separately shows that curve dominance is not sufficient for conversion. The implication direction and free-operation class are therefore part of the claim identity.
+
+The hydrogen claims require model-indexed scope. STO-3G and 6-31G reverse the ordering between $R=0.5$ and $R=6$ bohr. The records preserve exact diagonalization, basis, Jordan--Wigner encoding, and the authors' refusal to infer basis-independent molecular magic.
+
+\paragraph{Source-fidelity decisions.}
+The machine records quote exact TeX lines rather than rendered prose. Main-text theorem statements are consolidated with supplemental proofs only when the conclusion is the same. Supplemental-only results, including the discrete SPS density and finite-sample validation, remain separate candidates. Imported results are attributed to other work even when used centrally. Claims about pseudorandom SPS are not silently strengthened to uniformly random Boolean functions; this mismatch remains visible as interface pressure. Property bundles are retained only where the paper itself presents them as one resource-theoretic profile, and their non-atomicity is marked.
+
+\paragraph{Normalization boundaries and interface pressure.}
+MathClaimIR is well suited to closed forms, inequalities, limits, and probability bounds. It is partial for ensemble sampling prescriptions, algorithms, cryptographic indistinguishability, free-operation classes, and computational experiments. The stress test requires a minimal interface to separate mathematical normalization from: (i) source modality and attribution; (ii) parameter and asymptotic scope; (iii) object kind, including definition, theorem, algorithm, observation, and limitation; (iv) model and representation choices; and (v) relations among a main theorem, proof, example, and application. A single ``claim type'' enum would be too rigid because one candidate may be both a definition and an extension boundary, or both an empirical observation and a model-sensitive interpretation.
+
+\paragraph{Provisional verdict.}
+A concise ScientificClaim core remains viable, but only as a source-grounded assertion with structured scope and modality. MathClaimIR should be optional and subordinate: it captures the dense exact mathematics well, yet cannot by itself represent cryptographic observer models, estimator regimes, pure-state protocol restrictions, or numerical basis dependence. These belong in annotations, relations, or assessments rather than being discarded or forced into one formula.

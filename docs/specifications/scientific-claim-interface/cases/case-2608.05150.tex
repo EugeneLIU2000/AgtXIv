@@ -1,0 +1,159 @@
+\subsection{Case study: the QCD axion and neutrino masses}
+\label{case:2608-05150}
+
+\paragraph{Paper identity and theme.}
+The source is Hridoy Debnath, Pavel Fileviez P\'erez, and Grace Miller,
+``The QCD Axion and Neutrino Masses,'' arXiv:2608.05150v1. The paper links
+Peccei--Quinn (PQ) breaking to neutrino-mass generation in DFSZ and KSVZ
+models. It compares anomaly coefficients, derives axion couplings and decay
+rates, and studies neutrino signals from axion dark-matter decay. Statements
+in the next two paragraphs report what the paper says; paragraphs explicitly
+headed ``Interface analysis'' report the present stress-test analysis.
+
+\paragraph{Source census method.}
+The census used the official v1 archive identified by the frozen manifest and
+read \texttt{tmp/claim-interface-study/extracted/2608.05150/main.tex} from its
+macro definitions through both occurrences of \verb|\end{document}|. A
+claim-bearing source unit is a prose paragraph, list item, equation-plus-lead,
+table, or figure caption that asserts a definition, assumption, imported
+result, derivation step, result, limitation, or interpretation. Pure headings,
+layout code, acknowledgements, and bibliographic commands were excluded.
+Repeated abstract, introduction, body, and summary statements were counted as
+occurrences and then consolidated. Material after the first
+\verb|\end{document}| was retained as ``dormant source'' rather than silently
+presented as compiled appendix content.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Source division & Claim-bearing units & Consolidated candidates \\
+\hline
+Abstract & 3 & 3 \\
+Introduction & 8 & 7 \\
+The QCD axion & 6 & 3 \\
+DFSZ mechanisms & 17 & 9 \\
+KSVZ mechanisms and colored seesaw & 16 & 8 \\
+Neutrinos from the QCD axion & 18 & 11 \\
+Summary & 5 & 0 (repeated support) \\
+Dormant post-document derivations & 10 & 3 \\
+\hline
+Total occurrences & 83 & 35 unique candidates \\
+\hline
+\end{tabular}
+\end{center}
+
+The candidate count is not the sum of the right column because several
+candidates join non-contiguous support across divisions, while several source
+units split into more than one candidate. The JSONL inventory is the
+candidate-level source of truth.
+
+\paragraph{Compact claim-family census.}
+\begin{center}
+\begin{tabular}{p{0.24\linewidth}p{0.48\linewidth}r}
+\hline
+Family & Examples retained & Candidates \\
+\hline
+Background and imported results & Strong CP bound, neutrino-mass evidence,
+seesaw and radiative mechanisms & 3 \\
+Model definitions and assumptions & DFSZ and KSVZ field content, shared-scale
+hypothesis, model scope & 6 \\
+Analytical relations & $m_a(f_a)$, $g_{a\gamma\gamma}$, seesaw and loop masses,
+anomaly maps, decay widths, flux & 13 \\
+Numerical and phenomenological findings & Current exclusions, branching and
+lifetime patterns, spectra, flux comparisons & 8 \\
+Interpretation, testability, and scope & Dark-matter signal and PTOLEMY-type
+testability & 2 \\
+Dormant derivations & DFSZ color and electromagnetic anomaly calculations & 3 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Representative difficult splits.}
+The paper places a model-family assertion, a coefficient convention, and a
+mass scaling in nearby prose. The inventory separates the explicit relations
+from the family-level assertion:
+\[
+\begin{aligned}
+ m_a &\simeq 5.7\,\mu\mathrm{eV}
+ \left(\frac{10^{12} \mathrm{GeV}}{f_a}\right),\\
+ g_{a\gamma\gamma} &= \frac{\alpha_{\mathrm{em}}}{2\pi f_a}
+ \left(\frac{E}{N}-1.92\right).
+\end{aligned}
+\]
+The first two normalize directly. The separate claim that all linked models
+have axion--neutrino interactions is retained with its universal quantifier and
+model scope rather than being inferred from these equations.
+
+A second split concerns axion decay. The two channel formulas are one
+analytical candidate,
+\[
+\begin{aligned}
+ \Gamma(a\to\gamma\gamma)
+ &=\frac{\alpha_{\mathrm{em}}^2}{256\pi^3}
+ \left(\frac EN-1.92\right)^2\frac{m_a^3}{f_a^2},\\
+ \Gamma(a\to\nu_i\nu_i)
+ &=\frac{m_a}{16\pi}
+ \left|\frac{c_\nu m_{\nu_i}}{Nf_a}\right|^2
+ \sqrt{1-\frac{4m_{\nu_i}^2}{m_a^2}},
+\end{aligned}
+\]
+whereas channel dominance for normal or inverted ordering is a separate,
+figure-supported candidate with the massless-lightest-neutrino assumption.
+The statement that the axion remains a good dark-matter candidate is yet
+another interpretive conclusion; it is not folded into either width formula.
+
+The flux claim also needs an assumption-bearing split:
+\[
+\begin{aligned}
+ \frac{d\Phi_\nu}{dE}
+ &=\frac{1}{4\pi m_a\tau_a}\frac13\frac{dN}{dE}D(\Omega),\\
+ \frac{dN}{dE}&=2\delta(E-m_a/2).
+\end{aligned}
+\]
+This formula is normalized conditionally on axions constituting Galactic dark
+matter. The claims that the flux is ``large'', lies above backgrounds, or is
+testable are retained separately because they require numerical curves,
+background definitions, and detector assumptions.
+
+\paragraph{Source-fidelity decisions.}
+Every JSONL span uses one-indexed complete source lines and byte-for-byte text
+from those lines. Repeated conclusions were consolidated with multiple spans
+when the later occurrence supplied truth-relevant scope. Knowledge
+attribution distinguishes community background, cited imported formulas, and
+current-work model or scan results. Approximate signs, conditional phrases
+such as ``assuming'', and feasibility language such as ``could in principle''
+were preserved. No candidate infers experimental reach beyond the paper's
+wording. The post-document anomaly calculations are explicitly designated as
+inactive source content: their presence is evidence that source state cannot
+be represented by line location alone.
+
+\paragraph{Interface analysis: MathClaimIR boundaries.}
+The 35 candidates divide into 16 \textsc{yes}, 14 \textsc{partial}, and 5
+\textsc{no} decisions. Explicit equations, inequalities, decay widths, and
+finite model-to-anomaly tables are \textsc{yes}. Family-wide anomaly claims,
+shared-scale explanations, and hierarchy-dependent channel statements are
+\textsc{partial}: their mathematical core is useful, but model membership,
+assumptions, and causal explanation remain semantic. Figure-level exclusions,
+``clearly separated'' fluxes, dark-matter viability, and experimental
+feasibility are \textsc{no}; forcing these into a formula would erase the
+comparison metric or evidence provenance.
+
+\paragraph{Interface pressures.}
+This paper stresses the interface in six recurring ways. First, one atomic
+claim may need non-contiguous support. Second, a universal model-family claim
+must not inherit stronger scope from one worked example. Third, table cells
+are evidence, not merely presentation. Fourth, figure-dependent comparisons
+need links to external contours and numerical assumptions. Fifth, anomaly
+coefficients depend on charge and normalization conventions. Sixth, dormant
+TeX after \verb|\end{document}| requires source-activity status distinct from
+scientific acceptance. These are pressures on provenance, scope, and evidence
+completeness; they do not justify enlarging the proposed Registry schema in
+this case study.
+
+\paragraph{Provisional verdict.}
+The interface handles the paper's equation-level content cleanly when an
+atomic statement carries explicit scope and exact source spans. It is only
+partially adequate for model-family conclusions and numerical comparisons,
+and it must allow \textsc{no} normalization without treating the scientific
+claim as invalid. The decisive requirement is separation of source fidelity,
+mathematical normalization, and scientific or phenomenological acceptance.

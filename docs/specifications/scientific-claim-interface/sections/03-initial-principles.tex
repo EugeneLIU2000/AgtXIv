@@ -1,0 +1,138 @@
+\section{Iteration 0: pre-stress-test interface hypotheses}\label{sec:initial-principles}
+
+This section freezes Iteration~0 before any result from the ten sampled papers is inspected. Every statement below is a \emph{hypothesis to be stress-tested}, not a final standard. The purpose of the freeze is to make later changes attributable to observed cross-paper pressure rather than hindsight.
+
+\subsection{Working object and admission boundary}
+
+\paragraph{Hypothesis I0.1: source-faithful atomic claim.}
+A source-faithful atomic claim is a declarative proposition that satisfies all of the following provisional conditions:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item it states one primary predication whose truth can vary independently of neighboring predications;
+  \item it preserves the source's truth-relevant entities, relation, polarity, modality, quantifiers, comparison class, system or population, regime, and conditions;
+  \item it can be assessed in principle, even when the present study has not assessed it;
+  \item it is understandable without silently importing a new premise, while adding only the minimum wording needed to resolve local references; and
+  \item every substantive part is traceable to one or more exact source spans.
+\end{enumerate}
+``Atomic'' does not mean ``one sentence'' or ``one clause''. It means that the proposition has one independently revisable assertion. ``Source-faithful'' does not mean verbatim: a faithful statement may resolve pronouns, restore an omitted subject, or normalize notation, provided that the provenance retains exact text and the rewrite neither strengthens nor weakens the source.
+
+\paragraph{Hypothesis I0.2: candidate versus accepted claim.}
+A \emph{candidate} is an extracted proposition awaiting the admission tests in \cref{sec:i0-rejection}. An \emph{accepted claim} is a candidate that has passed atomicity, faithfulness, scope-completeness, declarativity, and provenance checks. Acceptance means only ``well-formed source representation''. It does not mean true, novel, important, supported, verified, or suitable for formalization. Rejected candidates remain in an audit trail but are not exposed as accepted \ScientificClaim{} objects.
+
+\paragraph{Hypothesis I0.3: scope completeness.}
+Scope is complete when changing any omitted qualifier could change the truth value of the extracted proposition relative to the source. Provisional truth-relevant scope includes:
+\begin{align*}
+S ={}& \{\text{system or population},\text{regime},\text{assumptions},\text{conditions},\\
+     &\text{quantifiers},\text{comparison baseline},\text{polarity},\text{modality},\text{approximation}\}.
+\end{align*}
+Iteration~0 stores these features in the claim statement rather than duplicating them as mandatory structured fields. Optional analyzers may expose them as annotations. The stress test must determine whether any member of $S$ is too important or too difficult to reconstruct to remain outside the core.
+
+\paragraph{Hypothesis I0.4: multi-span provenance.}
+A claim has an ordered, non-empty list of \SourceSpan{} records. Multiple spans are allowed when a proposition depends on a definition, antecedent, equation, caption, theorem condition, or continuation elsewhere in the source. Each span identifies a source artifact, a stable locator, and exact source text. Span order records reconstruction order, not evidentiary priority. Non-contiguous provenance is valid; unanchored paraphrase is not.
+
+\paragraph{Hypothesis I0.5: stable identity and revision.}
+A claim identifier denotes a proposition lineage, while a revision denotes one source-grounded representation in that lineage. Editorial changes that preserve truth conditions, such as punctuation or harmless decontextualization, increment the revision without creating a new claim identifier. A change to predicate, argument, polarity, modality, quantification, material condition, comparison baseline, or source attribution creates a new candidate identifier and records a derivation link. Source spans may be repaired within a revision only when the represented proposition is unchanged.
+
+This hypothesis intentionally separates identifier stability from text equality:
+\begin{align*}
+\text{same words} &\not\Rightarrow \text{same proposition},\\
+\text{different words} &\not\Rightarrow \text{different proposition},\\
+\text{changed truth conditions} &\implies \text{new candidate identity}.
+\end{align*}
+The ten-paper study must test whether human reviewers can apply this rule consistently.
+
+\subsection{Smallest plausible core}
+
+\paragraph{Hypothesis I0.6: five core fields suffice.}
+The smallest plausible accepted-claim record has exactly five conceptual fields:
+\begin{lstlisting}[style=interface]
+ScientificClaim {
+  claim_id
+  revision
+  statement
+  source_spans[]
+  lifecycle_state   // CANDIDATE | ACCEPTED | REJECTED
+}
+\end{lstlisting}
+Their provisional semantics are:
+\begin{description}[style=nextline]
+  \item[\field{claim\_id}] Stable opaque identifier for a proposition lineage. It does not encode paper, role, truth, or hierarchy.
+  \item[\field{revision}] Monotone version within the lineage, paired with change provenance in the surrounding revision service.
+  \item[\field{statement}] Source-faithful, scope-complete, atomic declarative wording used for comparison and display.
+  \item[\field{source\_spans}] One or more exact anchors sufficient to audit the statement against source artifacts.
+  \item[\field{lifecycle\_state}] Workflow boundary distinguishing unreviewed candidates, accepted representations, and audited rejections.
+\end{description}
+A document identifier is part of each \SourceSpan{} rather than duplicated at claim level, because one claim representation may need spans from distinct source artifacts such as a TeX file and its generated figure caption. Rejection reasons, extraction model, reviewer, timestamps, and parent derivation are audit metadata managed around the record; Iteration~0 does not make them identity-bearing fields.
+
+\paragraph{Hypothesis I0.7: core minimality test.}
+A field may enter the core only if all three conditions hold:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item changing it can change which proposition the record denotes or whether that proposition is auditable;
+  \item omitting it causes unrecoverable loss rather than inconvenience for one downstream task; and
+  \item the need recurs in at least two sampled papers from different strata.
+\end{enumerate}
+Fields that fail this test belong to annotations, relations, assessments, audit metadata, or query views.
+
+\subsection{Strict layer boundaries}
+
+\paragraph{Hypothesis I0.8: separation from \MathClaimIR{}.}
+\ScientificClaim{} preserves a proposition as communicated by its source. \MathClaimIR{} represents optional mathematical normalization for symbolic comparison, dependency analysis, or formalization. A claim may have zero, one, or several candidate normalizations. Failure to normalize does not reject the scientific claim, and changing a normalization does not revise claim identity unless the source-faithful statement itself was wrong. Definitions, equations, theorem hypotheses, and proof obligations may inform normalization without becoming mandatory fields in \ScientificClaim{}.
+
+\paragraph{Hypothesis I0.9: separation from discourse annotation.}
+AZ-II zones, CoreSC concepts, section labels, EDU boundaries, discourse heads, and rhetorical relations are optional annotations over source spans or claims. They may be multi-label and classifier-versioned. They do not determine identity or acceptance. In particular, \field{OUTCOME.RESULT} may annotate a factual investigation output, distinct from \field{OUTCOME.OBSERVATION} and \field{OUTCOME.CONCLUSION}; none is a core field.
+
+\paragraph{Hypothesis I0.10: separation from evidence.}
+Evidence is represented by a typed edge from a claim to one or more source spans, claims, datasets, computations, or artifacts. A rationale may be a set of spans. Adding, removing, or replacing evidence changes the edge or rationale, not the claim, unless review discovers that the claim statement itself misrepresented the source. Provenance records where the representation came from; evidence records what bears on its assessment. They are not interchangeable.
+
+\paragraph{Hypothesis I0.11: separation from dependencies.}
+Logical, mathematical, causal, procedural, citation, and discourse dependencies are \ClaimRelation{} objects with typed endpoints and relation provenance. They are not embedded parent lists in the core claim. This permits several competing dependency analyses and avoids mistaking a SciDTB discourse head, an AZ-II \textsc{use} relation, or a theorem premise for the same relation type.
+
+\paragraph{Hypothesis I0.12: separation from verification.}
+Truth, support, refutation, uncertainty, reviewer confidence, and verification status belong to \ClaimAssessment{} records scoped to an assessor, method, evidence set, and time. Candidate acceptance is not verification. A source can faithfully assert a false or later-refuted proposition, and that proposition remains a valid source-faithful \ScientificClaim{}.
+
+\paragraph{Hypothesis I0.13: separation from query views.}
+Search score, user relevance, ranking, cluster membership, coverage summary, display snippet, and details-on-demand state are query or presentation objects. They may select or aggregate claims but must not mutate them. Offline corpus extraction should be reusable across queries; query-time matching should return references to claim revisions.
+
+\subsection{Explicit rejection tests}\label{sec:i0-rejection}
+
+\paragraph{Hypothesis I0.14: deterministic rejection gate.}
+A candidate is rejected from the accepted-claim layer if any test below fails. Rejection preserves the candidate and reason in the audit store.
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}}
+\caption{Iteration~0 rejection tests. Every row is provisional and must be stress-tested.}\label{tab:i0-rejection-tests}\\
+\toprule
+Test & Reject when & Required action \\
+\midrule
+\endfirsthead
+\toprule
+Test & Reject when & Required action \\
+\midrule
+\endhead
+Declarativity & The candidate is only a question, command, navigation sentence, topic phrase, or bibliographic metadata & Exclude it or extract the proposition actually asserted nearby \\
+Assessability & No interpretation makes the statement truth-evaluable relative to a system, model, dataset, or literature state & Store as discourse text, not a claim \\
+Atomicity & Two primary predications could independently be true or false & Split into candidates and preserve any explicit relation \\
+No false splitting & Splitting removes a shared condition, comparison, quantifier, or exception needed by each fragment & Merge or repeat the necessary scope faithfully \\
+Faithfulness & The statement adds, removes, strengthens, weakens, reverses, or generalizes source content & Rewrite from the source; synthetic variants receive distinct generated-candidate provenance \\
+Scope completeness & A material condition, regime, assumption, quantifier, baseline, polarity, modality, or approximation is omitted & Restore it in the statement or reject pending clarification \\
+Decontextualization & A pronoun, symbol, ellipsis, or local label has no resolvable referent in the statement and spans & Resolve minimally from anchored context \\
+Provenance sufficiency & Any substantive phrase lacks an exact source anchor, or an anchor cannot be stably located & Add or repair spans; otherwise reject \\
+Source identity & A benchmark reformulation, generated negation, or external summary is presented as if it were the source's own proposition & Assign transformation provenance and a distinct candidate identity \\
+Duplication & The candidate has the same truth conditions and source proposition lineage as an existing accepted claim & Link as a duplicate mention or revise provenance; do not mint another accepted identity \\
+Layer leakage & Acceptance depends on having a role, evidence verdict, dependency edge, \MathClaimIR{} form, or query score & Remove the downstream requirement and rerun admission \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Pre-registered failure signals}
+
+\paragraph{Hypothesis I0.15: conditions for revising Iteration 0.}
+The initial interface must be changed if the stress test demonstrates any of the following in at least two papers from different strata:
+\begin{enumerate}
+  \item reviewers cannot preserve truth-relevant scope in \field{statement} without a mandatory structured field;
+  \item ordered \field{source\_spans} cannot represent essential equation, figure, table, theorem, or non-contiguous provenance;
+  \item the identity-versus-revision rule yields systematic disagreement;
+  \item an excluded layer is necessary to tell two propositions apart rather than merely to analyze them;
+  \item the five-field core duplicates information or permits unauditable accepted claims; or
+  \item an explicit rejection test excludes a recurring, scientifically important claim form.
+\end{enumerate}
+Conversely, a downstream feature request alone is not evidence for core expansion. The post-test specification must record which hypothesis survived, failed, or was narrowed, together with cross-case evidence.

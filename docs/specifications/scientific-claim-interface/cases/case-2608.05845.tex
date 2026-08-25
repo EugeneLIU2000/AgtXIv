@@ -1,0 +1,128 @@
+\subsection{Case study: molecular-dynamics shear-viscosity estimators}\label{case:2608-05845}
+
+\paragraph{Source and review state.}
+This case analyzes Brandt, Ludwig, and Paschek, ``Computing Shear Viscosities from Molecular Dynamics Simulation: Comparing the OrthoBoXY Approach with the Green--Kubo Method,'' arXiv:2608.05845v1. The frozen source is \path{tmp/claim-interface-study/extracted/2608.05845/main.tex}. The census includes the abstract, all numbered sections, tables, figure captions, supplementary-material statement, data-availability statement, and source macros. Bibliographic entries were read for attribution but were not promoted into claims merely because they occur in the bibliography. The machine-readable inventory contains 99 consolidated candidates and 143 exact source-span anchors. All 99 records are \status{source\_checked}.
+
+\paragraph{Source census.}
+The unit count below is a manual census of claim-bearing prose paragraphs or structured table units. Displayed equations remain attached to their introducing paragraphs; captions that only repeat a nearby result are counted with that result. ``Candidates'' counts consolidated atomic records, not sentences.
+
+\begin{center}
+\small
+\begin{tabular}{lrrl}
+\toprule
+Source region & Units & Candidates & Principal content \\
+\midrule
+Abstract & 1 & 8 & comparison, size effects, recommendations, cost \\
+Introduction & 4 & 4 & definition, estimators, sample, study purpose \\
+Theoretical Background & 1 & 7 & Yeh--Hummer and OrthoBoXY relations \\
+Methods & 3 & 6 & campaign matrix, protocol, trajectory estimators \\
+Method comparison & 2 & 46 & 44 table-cell results and two interpretations \\
+Statistical treatment & 7 & 11 & variants, artifacts, propagated errors \\
+System size & 5 & 8 & imported scaling, observations, cancellation \\
+Simulation length & 3 & 6 & recipe, tests, bias, interpretation \\
+Conclusions & 3 & 1 & one recommendation; other occurrences consolidated above \\
+Supplement and availability & 2 & 2 & evidence and reproducibility artifacts \\
+\midrule
+Total & 31 & 99 & 143 retained source-span anchors \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The conclusion contributes one separately phrased estimator recommendation. Its remaining claims are retained as additional spans on corresponding abstract or results records. This prevents repetition from masquerading as independent evidence.
+
+\paragraph{Claim families.}
+\begin{center}
+\begin{tabular}{lrl}
+\toprule
+Family & Count & Boundary decision \\
+\midrule
+Framing results and recommendations & 8 & source claims \\
+Definitions and imported theory & 11 & source claims with attribution \\
+Simulation and estimator protocol & 6 & source claims; protocol bundles preserved \\
+Per-liquid numerical values & 44 & atomic table-cell claims \\
+Benchmark interpretation & 2 & source claims, not evaluator conclusions \\
+Statistical variants and uncertainty & 12 & formulas, assumptions, and recommendations split \\
+System-size behavior & 8 & observed, imported, and derived statuses retained \\
+Simulation-length behavior & 6 & observations separated from a hypothesis \\
+Evidence and artifact availability & 2 & source claims outside mathematical IR \\
+\midrule
+Total & 99 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Of the 99 candidates, 63 are \status{reported}, 30 are \status{asserted}, five are \status{conditional}, and one is \status{hypothesized}. Attribution is 48 current-work, 39 other-work, six system-derived, four community-background, and two previous-own-work records. Math normalization is suitable for 66 records, partial for four, and unsuitable for 29. The high ``yes'' count is driven by 44 scalar table cells with units and uncertainties, not only by symbolic derivations.
+
+\paragraph{Representative source claims.}
+The paper combines an imported hydrodynamic relation with a geometry-specific cancellation. With $D_0$ denoting the infinite-system self-diffusion coefficient, $D_{\mathrm{PBC},ii}$ a directional periodic-box estimate, $L_i$ a box length, $\zeta_{ii}$ a geometry constant, $T$ temperature, and $\eta$ shear viscosity, the source states
+\begin{align}
+D_0
+  &= D_{\mathrm{PBC},ii}
+   + \frac{k_{\mathrm B}T\zeta_{ii}}{6\pi\eta L_i},
+   \label{eq:case-05845-directional}\\
+\zeta_{xx}=\zeta_{yy}
+  &=0
+  \quad\Longrightarrow\quad
+D_0
+  =\frac{D_{\mathrm{PBC},xx}+D_{\mathrm{PBC},yy}}{2},
+   \label{eq:case-05845-cancellation}\\
+\eta
+  &=\frac{k_{\mathrm B}T\zeta_{zz}}
+  {6\pi L_z\left(D_0-D_{\mathrm{PBC},zz}\right)}.
+   \label{eq:case-05845-viscosity}
+\end{align}
+Equation~\ref{eq:case-05845-directional} is attributed to other work, equation~\ref{eq:case-05845-cancellation} depends on the stated OrthoBoXY aspect ratio, and equation~\ref{eq:case-05845-viscosity} is recorded as a system-derived rearrangement. They are not collapsed into one claim because their provenance and conditions differ.
+
+The statistical variants require a second split. Variant C first averages the two diffusion estimates and then applies the nonlinear map in equation~\ref{eq:case-05845-viscosity}. Under first-order propagation without a covariance term, the source gives
+\begin{align}
+\widehat{\sigma}_{\eta}
+  &=\frac{k_{\mathrm B}T\zeta_{zz}}
+  {6\pi L_z\left(D_0-D_{\mathrm{PBC},zz}\right)^2}
+  \sqrt{\widehat{\sigma}_{D_0}^2+
+  \widehat{\sigma}_{D_{\mathrm{PBC},zz}}^2},
+  \label{eq:case-05845-absolute-error}\\
+\frac{\widehat{\sigma}_{\eta}}{\eta}
+  &=\frac{\sqrt{\widehat{\sigma}_{D_0}^2+
+  \widehat{\sigma}_{D_{\mathrm{PBC},zz}}^2}}
+  {\left|D_0-D_{\mathrm{PBC},zz}\right|}.
+  \label{eq:case-05845-relative-error}
+\end{align}
+The inventory separates the estimator, the no-covariance uncertainty assumption, the two formulas, and the recommendation to use variant C. A production interface should not encode ``recommended'' as a mathematical consequence of equations~\ref{eq:case-05845-absolute-error}--\ref{eq:case-05845-relative-error}.
+
+\paragraph{Difficult atomic splits.}
+Each row of the viscosity table contains three independently attributable quantities: a current-work OrthoBoXY estimate, an imported Green--Kubo estimate, and an imported experimental value. These become separate candidates. The table caption supplies the common fact that reported OrthoBoXY and Green--Kubo uncertainties are standard errors corresponding to $1\sigma$; each scalar record therefore uses both the caption and its row as source spans. Formamide has no Green--Kubo value, so no synthetic missing-value claim is created. Experimental values have no tabled uncertainty, which is flagged rather than imputed.
+
+The campaign protocol is intentionally not exploded into one identity per thermostat constant, cut-off, package version, and equilibration duration. Those settings jointly define a reproducible run and are retained as a non-single-predication protocol bundle. Query views may project individual settings. Conversely, observations about formaldehyde are split into (i) the reported rise in estimated viscosity as blocks shorten and (ii) the authors' hypothesis that short trajectories may not be fully diffusive.
+
+\paragraph{Source-fidelity and uncertainty decisions.}
+The records preserve ``agree very well'', ``roughly',' ``seem',' ``likely',' and ``might safely'' rather than replacing them with thresholds absent from the source. The absence of a finite-size effect is scoped to the three liquids and four tested sizes, despite broader wording in the abstract and conclusion. The $N$-independent viscosity-error statement remains approximate because the paper reports large scatter. The block-length recommendations retain their $1\,\mathrm{ns}$ and $100\,\mathrm{ns}$ thresholds and remain empirical recommendations, not universal guarantees.
+
+Repeated abstract, results, and conclusion formulations are represented by multiple source spans on one candidate. Imported Green--Kubo and experimental values remain \status{other\_work}; the OrthoBoXY values remain \status{current\_work}. The statement that prior studies found weak size dependence is \status{previous\_own\_work}. Algebraic consequences of sourced equations are \status{system\_derived}. These distinctions prevent textual proximity from erasing epistemic provenance.
+
+\paragraph{MathClaimIR boundary.}
+Equations, scalar estimates with units, aspect-ratio conditions, fitted time windows, uncertainty formulas, and power-law scalings fit \MathClaimIR{}. Empirical agreement, absence of detected effects, robustness judgments, causal interpretations, protocol bundles, software availability, and recommendations do not. The finite-size cancellation is only conditionally mathematical:
+\begin{align}
+\left|D_0-D_{\mathrm{PBC},zz}\right|
+  &\propto N^{-1/3},\\
+\widehat{\sigma}_{D}
+  &\propto N^{-1/3},\\
+\frac{\widehat{\sigma}_{\eta}}{\eta}
+  &\propto \frac{N^{-1/3}}{N^{-1/3}}
+   \propto N^0.
+\end{align}
+The final line is a prediction under the two scaling premises; the reported data only roughly support it. The claim graph should therefore relate premises, derivation, and observation without merging their modalities.
+
+\paragraph{Interface pressures from this source.}
+\begin{itemize}
+\item A claim may need several non-contiguous spans because abstract, table, discussion, and conclusion jointly carry identity and conditions.
+\item Table cells require atomic attribution while inheriting caption-level uncertainty semantics and paragraph-level simulation conditions.
+\item Protocol settings are condition bundles, not necessarily independent claim identities.
+\item Nonlinear estimators require an explicit order of averaging; algebraically similar formulas can have different finite-sample behavior.
+\item Uncertainty claims need the statistic type, confidence convention, independence or covariance assumptions, and sample unit.
+\item Negative empirical claims need a tested range and system population; ``not observed'' must not become ``impossible''.
+\item Recommendations and cost claims belong in the scientific-claim layer but outside \MathClaimIR{}.
+\item Generation provenance, source attribution, and scientific acceptance are separate: \status{source\_checked} certifies transcription only.
+\end{itemize}
+
+\paragraph{Provisional verdict (case-study analysis).}
+This paper supports a small core consisting of statement, source spans, scope, modality, and knowledge attribution. Mathematical normalization should remain optional. Uncertainty details, table inheritance, protocol membership, and recommendation type are useful annotations or relations rather than mandatory core fields. The decisive stress is not formula complexity; it is preserving provenance and conditions while moving between table cells, repeated prose, empirical observations, and derived scalings.

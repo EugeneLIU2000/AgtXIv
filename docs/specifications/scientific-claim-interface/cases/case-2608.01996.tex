@@ -1,0 +1,69 @@
+\subsection{Case study: moving frames and gauge invariance for generalised continua}
+\label{case:2608-01996}
+
+\paragraph{Paper and theme.}
+Ecker and Kolev, ``Geometric theory of generalised continua using moving frames'' (arXiv:2608.01996v1), builds a gauge-theoretic kinematics for generalised continua, derives a reference-frame invariance criterion, classifies first-order media by structural-group reduction, and proposes projections from first-order to constrained second-grade models. The checked archive consists of \texttt{main.tex}, \texttt{metadata.tex}, \texttt{notations.tex}, and \texttt{diag.tex} under \texttt{tmp/claim-interface-study/extracted/2608.01996/}; its hash is frozen in \texttt{sample\_manifest.json}.
+
+\paragraph{Census method and counts.}
+The audit read every included TeX file, including the abstract macro, notation definitions, all examples and remarks, all diagrams as mathematical constructions, the conclusion, and the minimisation appendix. Claim-bearing units include definitions, equivalences, derived constructions, imported geometric facts, modelling postulates, counterexamples, classification rows, limitations, and interpretive consequences. Pure typographic macros and diagram drawing instructions were not separate claims when the same construction was stated in the main text. Repeated abstract, outline, body, and conclusion formulations were consolidated only after checking their scopes. The result contains 44 atomic candidates supported by 56 checked contiguous source occurrences. Every record is \texttt{SOURCE\_CHECKED}.
+
+\begin{center}
+\begin{tabular}{p{0.31\linewidth}p{0.12\linewidth}p{0.44\linewidth}}
+\hline
+Source family & Candidates & Content retained \\
+\hline
+Motivation and classical background & 4 & Cauchy limitations, model-selection ambiguity, reduction taxonomy, classical objectivity \\
+Frames, configurations, and maps & 14 & Frame definitions, group action, placements, bundle isomorphisms, local forms, micro-deformation, free energy \\
+Gauge principle and consequence & 12 & Gauge/material examples, postulate, transformations, local principle, necessary-and-sufficient energy form \\
+Classification and lifted kinematics & 8 & Structural-group taxonomy, exclusions, convected frames, unique twist decomposition, objectivity \\
+Constrained media and scope & 6 & Projection proposal, two solved groups, open questions, limitations \\
+\hline
+Total & 44 & 56 source occurrences after repeated-claim consolidation \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Source statements.}
+A generalised placement is a smooth map from the body into the Euclidean frame bundle whose projection is a classical placement. A generalised deformation extends to a frame-bundle isomorphism and induces a tangent-space isomorphism $\boldsymbol\chi$, the micro-deformation. The bundle isomorphism, $\boldsymbol\chi$, and local observed forms with their gauge-change law carry equivalent data, although a matrix representation of $\boldsymbol\chi$ alone does not recover the classical deformation.
+
+The paper postulates invariance under simultaneous local changes of the reference moving frame and observed generalised deformation. In a trivialisation, the central derived result is
+\begin{align}
+\mathcal E^{\mathrm C}_{p_0,A G_0}[\varphi,\boldsymbol\chi]
+    &= \mathcal E^{\mathrm C}_{p_0,G_0}[\varphi,\boldsymbol\chi]
+    &&\text{for every smooth }A:\Omega_0\to\mathrm{GL}_3(\mathbb R),\\
+\Longleftrightarrow\quad
+\mathcal E^{\mathrm C}_{p_0}[\varphi,\boldsymbol\chi]
+    &= \int_{\Omega_0} W^{\mathrm C}
+       (X,\varphi(X),[\boldsymbol\chi_X],F_X,T_X[\boldsymbol\chi])
+       \rho_0\,\mathrm{vol}_{g_0},
+\end{align}
+so the density is independent of the reference-frame coordinates $G_0$ and $TG_0$. The authors identify this as exactly the standard micromorphic energy dependence and interpret it as making the directors arbitrary gauges rather than material descriptors.
+
+For first-order kinematic reductions, the configuration space is reduced through a closed matrix subgroup $G\subset\mathrm{GL}_3(\mathbb R)$. The source maps common media to $\mathrm{GL}_3$, $\mathrm{SL}_3$, $\mathrm{CO}(3)$, $\mathrm{SO}(3)$, $\mathbb R_+^*I$, and $\{I\}$. It excludes the finite-strain micro-strain model from this group classification because symmetric positive-definite matrices are not closed under multiplication. In three dimensions, the generalised deformation factors uniquely into a convective lift and a Lagrangian twist, giving
+\begin{equation}
+\boldsymbol\chi_X=F_X\boldsymbol\kappa_X.
+\end{equation}
+
+For constrained media, the proposed rule is
+\begin{equation}
+[\boldsymbol\chi_X]_{\mathrm{constr}}
+\in \underset{A\in G}{\operatorname{argmin}}
+\lVert A-[F_X]\rVert_F^2.
+\end{equation}
+The appendix derives the polar rotation for $G=\mathrm{SO}(3)$ and $\tfrac13\operatorname{Tr}([F_X])I$ for $G=\mathbb R_+^*I$ under the source's positivity assumptions.
+
+\paragraph{Difficult atomicity and source cases.}
+Several formal objects are definition bundles rather than single sentences. A generalised placement simultaneously determines a classical placement, a generalised configuration, and an associated moving frame. The corresponding record keeps this named construction intact and marks it composite. By contrast, the claim that the matrix of the micro-deformation is insufficient without the classical deformation is split from the preceding equivalence because it is an information-loss boundary with a distinct predicate.
+
+The gauge result mixes modelling and deduction. Treating the reference moving frame as arbitrary is a postulate motivated by the cube and beam-lattice examples; independence of the energy from $G_0$ and $TG_0$ is then derived. The record set marks the invariance principle \texttt{HYPOTHESIZED} and the elimination result \texttt{SYSTEM\_DERIVED}. It does not present the physical gauge interpretation as an unconditional theorem about every microstructured material: the primitive-vector lattice is an explicit counterexample when the frame is constitutive data.
+
+The classification table is one mapping claim with six values, not six unrelated discoveries. The micro-strain exclusion is separate because it is supported by a concrete closure counterexample. The constrained-media construction is a proposal; the two solved projection problems are derived results. Existence or uniqueness for a general subgroup is not asserted, and well-posedness of the resulting mechanics is explicitly not guaranteed.
+
+\paragraph{MathClaimIR boundaries.}
+Transformation laws, commuting constructions, group actions, biconditionals, factorisations, and argmin statements are partly suitable, but they require typed manifolds, bundles, fibers, sections, and source/target spaces. Flattening $\Phi$, $\Psi$, $\varphi$, and $\boldsymbol\chi$ into untyped functions would make several claims false. The phrases ``general-purpose'', ``blind to the micro-structure'', ``same experiment'', and ``directors of matter'' are modelling interpretations. They should remain prose with attribution rather than be forced into formula IR.
+
+\paragraph{Interface pressures.}
+This paper stresses typed geometric entities; definitional equivalence; choice-dependent representations versus intrinsic objects; necessary-and-sufficient invariance; modelling postulates versus consequences; examples and counterexamples; table-valued classifications; dimension restrictions; proposal status; optimization existence and uniqueness; and explicit scope limitations. Multi-span support is essential because central claims recur in the abstract, outline, derivation, appendix, and conclusion with different evidentiary roles.
+
+\paragraph{Provisional verdict.}
+The v1 interface captures the epistemic and source structure if the statement remains human-readable and MathClaimIR is optional. A minimal implementation should not attempt to encode the full bundle theory in the core record. It should preserve typed notation and source spans externally, distinguish postulates from derived equivalences, and allow one named formal construction to remain composite when splitting would destroy its identity. The strongest missing feature is a typed relation layer for equivalence, induced maps, restrictions, and group actions; adding such a layer later is preferable to enlarging the first-version claim record now.

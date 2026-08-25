@@ -1,0 +1,111 @@
+\section{Literature-grounded design space}\label{sec:literature}
+
+This section separates observations reported by prior work from design choices inferred for AgtXIv. The distinction matters because sentence zoning, discourse dependency, fact verification, and knowledge-graph extraction solve different problems. None of them, by itself, defines the identity of a scientific claim.
+
+\subsection{Comparison by annotation contract}
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.11\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}}
+\caption{The required sources compared by annotation contract. ``AgtXIv inference'' denotes a design conclusion not asserted as a result of the cited work.}\label{tab:literature-contracts}\\
+\toprule
+Source & Unit & Label dimensions & Relation or evidence model & Exclusivity & AgtXIv inference \\
+\midrule
+\endfirsthead
+\toprule
+Source & Unit & Label dimensions & Relation or evidence model & Exclusivity & AgtXIv inference \\
+\midrule
+\endhead
+AZ and AZ-II~\cite{teufel1999az,teufel2009azii} & Sentence & Rhetorical zone combining ownership, relation to prior work, and stage of the investigation & Citations are cues, not required edges; \textsc{support}, \textsc{use}, and contrast-like zones characterize rhetorical relation & One mutually exclusive zone per sentence & Store such zones as discourse annotations, never as claim identity \\
+CoreSC~\cite{liakata2010coresc,liakata2012coresc} & Sentence & Investigation component; concept properties; cross-sentence concept identifier & Concept identifiers link mentions of the same investigation component, not evidentiary entailment & The scheme permits more than one first-layer concept for a sentence & Keep investigation component multi-label and optional \\
+SciDTB~\cite{yang2018scidtb} & Clause-like elementary discourse unit (EDU) & Directed discourse relation, at coarse and fine granularity & A triple $(h,d,r)$ links head EDU $h$ to dependent EDU $d$ by relation $r$ & One head and one relation per non-root EDU in the dependency tree & Keep textual discourse dependencies outside claim identity \\
+Dr.~Inventor~\cite{ronzano2015drinventor} & Scientific-publication text processed at several linguistic and semantic layers & Layered information-extraction outputs & Framework-level links among extracted structures & Not established from the accessible primary metadata & Use a layered architecture; do not copy an unverified schema \\
+SciFact and SciFact-Open~\cite{wadden2020scifact,wadden2022scifactopen} & Atomic reformulated claim paired with a research abstract & Pair label \textsc{supports}, \textsc{refutes}, or \textsc{no\_info}/NEI & Minimal rationale sentence sets in SciFact; abstract-level pooled evidence in SciFact-Open & One label per claim--abstract pair; a claim may have several evidence abstracts and rationales & Model assessment on claim--evidence edges, not in the claim record \\
+PaperTrail\newline\cite{martinboyle2026papertrail} & Decontextualized atomic claim extracted from a paper or answer & Claim quality plus claim--evidence matching & Offline paper extraction, answer-time extraction, then query-time matching and evidence display & Claim decomposition is many-to-many; no single discourse-role enum & Separate the stable corpus layer from query-time views \\
+SciClaim\allowbreak Hunt\newline\cite{kumar2025sciclaimhunt} & Generated claim paired with a source paper & Fluency, atomicity, decontextualization, faithfulness; positive or negative pair & Retrieved paper passages act as evidence & Quality dimensions are jointly assessed; pair polarity is a task label & Treat quality checks as admission tests, not identity fields \\
+SciGraph-LLM~\cite{malashin2026scigraphllm} & According to the accessible abstract, atomic claims and source-linked extracted objects & Claims, evidence spans, methods, datasets, metrics, numerical results, and graph relations & Provenance-aware graph with direct textual grounding & Full schema behavior could not be inspected & Adopt only the evidenced separation of claims, provenance, and graph relations \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Argumentative Zoning and AZ-II}
+
+The original Argumentative Zoning (AZ) task assigns mutually exclusive categories sentence by sentence~\cite{teufel1999az}. Its categories model stages in the paper's argument about a knowledge claim, including who owns the knowledge and how the current work is positioned. AZ-II expands the original seven categories to fifteen~\cite{teufel2009azii}. The distinctions most relevant here are:
+\begin{itemize}
+  \item \textsc{own\_mthd}, \textsc{own\_res}, and \textsc{own\_conc} separate the current work's methods, measurable or objective outcomes, and conclusions requiring inference;
+  \item \textsc{othr}, \textsc{prev\_own}, and common ground distinguish other authors' claims, the present authors' earlier claims, and background that raises no significant knowledge claim;
+  \item \textsc{support}, \textsc{use}, neutral comparison, contradiction, and \textsc{gap\_weak} distinguish support, operational use, comparison, conflict, and a criticized research gap; and
+  \item \textsc{fut} marks limitations or future-work suggestions.
+\end{itemize}
+The source explicitly says that citations are important but not decisive cues. A citation can occur in several zones. It also defines \textsc{own\_res} by direct measurable or objective outcome and \textsc{own\_conc} by the reasoning needed to reach a finding. Thus AZ-II itself establishes that ownership, citation relation, gap, support, use, method, result, conclusion, and future work are analytically distinguishable, even though its annotation contract collapses them into one exclusive sentence label.
+
+AgtXIv infers a different storage boundary. A sentence zone describes the rhetorical work performed by a sentence; it does not identify the proposition expressed by a claim. One sentence may express several independently revisable propositions, while one proposition may require several spans. Consequently, sentence zoning must not serve as claim identity. AZ-II labels remain useful as optional annotations over source spans or claims.
+
+\subsection{CoreSC and components of an investigation}
+
+CoreSC treats a paper as a human-readable representation of a scientific investigation~\cite{liakata2010coresc,liakata2012coresc}. Its first layer contains eleven sentence-level concepts:
+\begin{center}
+\textsc{hypothesis}, \textsc{motivation}, \textsc{goal}, \textsc{object}, \textsc{background},
+\textsc{method}, \textsc{experiment}, \textsc{model}, \textsc{observation}, \textsc{result}, and \textsc{conclusion}.
+\end{center}
+The second layer records properties of a concept, such as novelty or advantage; the third supplies identifiers linking textual instances of the same concept. The journal account explicitly gives a sentence whose aim is to evaluate a hypothesis and annotates it with both \textsc{goal} and \textsc{hypothesis}~\cite{liakata2012coresc}. It also groups the concepts into a higher-level hierarchy:
+\begin{align*}
+\textsc{objective} &= \{\textsc{hypothesis},\textsc{goal},\textsc{motivation},\textsc{object}\},\\
+\textsc{approach} &= \{\textsc{method},\textsc{model},\textsc{experiment}\},\\
+\textsc{outcome} &= \{\textsc{observation},\textsc{result},\textsc{conclusion}\}.
+\end{align*}
+These results establish both the usefulness of investigation-component labels and the possibility of multi-label sentences. They do not establish that a CoreSC label determines proposition identity.
+
+AgtXIv therefore treats this hierarchy as an optional, multi-label annotation family. In particular, \textsc{result} can remain narrowly available as \field{OUTCOME.RESULT}: a factual output derived from an investigation. It stays distinct from \field{OUTCOME.OBSERVATION}, which records data or phenomena, and \field{OUTCOME.CONCLUSION}, which is inferred from observations or results. None of the three enters the core identity of a claim; a wording-preserving correction from observation to conclusion changes an annotation, not the proposition's identifier.
+
+\subsection{Discourse dependencies are not claim dependencies}
+
+SciDTB segments scientific abstracts into non-overlapping, clause-like EDUs, with documented exceptions where syntactic clauses do not form suitable semantic units~\cite{yang2018scidtb}. It represents each discourse relation as
+\begin{align*}
+(h,d,r),
+\end{align*}
+where $h$ is the head EDU carrying essential information, $d$ is the dependent EDU carrying supportive content, and $r$ is the relation. The inventory has 17 coarse and 26 fine relations. Each non-root EDU receives one head and one relation so that the abstract forms a directed dependency tree.
+
+The source establishes a representation of textual coherence, not logical or evidentiary dependence among normalized scientific propositions. AgtXIv therefore infers that EDU boundaries are useful claim-candidate cues and that SciDTB-style arcs may be retained in a discourse layer, but neither an EDU nor a discourse head is automatically a \ScientificClaim{} or a \ClaimRelation{}.
+
+\subsection{Layered information extraction}
+
+Ronzano and Saggion present the Dr.~Inventor framework as a system for extracting structured information from scientific publications through a layered information-extraction architecture~\cite{ronzano2015drinventor}. This establishes architectural precedent for keeping document structure, linguistic analysis, discourse or rhetorical analysis, and extracted knowledge in coordinated layers rather than forcing all information into one record type.
+
+\paragraph{Source-access limitation.}
+The publisher landing page and DOI metadata were accessible, but the full primary chapter and its complete schema were not available in the present source check. No Dr.~Inventor class inventory, cardinality, exclusivity rule, or relation semantics beyond the verifiable framework-level description is imported here. The only AgtXIv inference is architectural: maintain typed layers with explicit interfaces.
+
+\subsection{Scientific fact verification}
+
+SciFact defines a scientific claim as an atomic, verifiable statement about one aspect of an entity or process, verifiable from a single source~\cite{wadden2020scifact}. Its claims are not source sentences. Annotators reformulate naturally occurring citation sentences into atomic claims, and an expert creates some refuting claims by negating existing claims. For each claim $c$ and abstract $a$, the benchmark assigns
+\begin{align*}
+y(c,a) \in \{\textsc{supports},\textsc{refutes},\textsc{no\_info}\}.
+\end{align*}
+A supporting or refuting edge must have at least one rationale, where each rationale is a minimal set of abstract sentences that jointly implies the claim in context. Rationales may be non-contiguous, and a claim--abstract pair may have multiple rationales. SciFact deliberately labels individual claim--abstract relations rather than assigning a corpus-wide truth value.
+
+SciFact-Open reuses SciFact test claims and extends verification to 500,000 abstracts using pooled system predictions for expert annotation~\cite{wadden2022scifactopen}. It retains abstract-level \textsc{supports}/\textsc{refutes} evidence and treats other pairs as NEI for evaluation, but does not collect rationale annotations because of their cost. Therefore the two benchmarks establish a typed evidence-edge model and the practical difference between closed and open evidence collection. They do not establish source-faithful identity: benchmark claims are reformulations and some are purposefully negated, so their identifiers cannot stand for the source proposition from which they were generated.
+
+AgtXIv infers that verification belongs in \ClaimAssessment{} objects attached to claim--evidence edges. Evidence collection may evolve without revising claim identity, and a synthetic negation must receive a new candidate identity with generation provenance rather than inherit the source claim's identity.
+
+\subsection{Claim quality, corpus extraction, and query-time interfaces}
+
+PaperTrail requires extracted claims to be atomic, verifiable, faithful, decontextualized, and declarative~\cite{martinboyle2026papertrail}. Its first stage extracts all potentially relevant paper claims and evidence offline rather than filtering by a current query. A second real-time stage decomposes an answer, and a third retrieves candidates and performs claim--claim and claim--evidence matching at query time. Its interface follows ``overview first, zoom and filter, then details-on-demand'': users move from coverage summaries to claim annotations and finally to source text. The source establishes that complete offline extraction and query-time relevance are separate operations. AgtXIv infers that filters, rankings, coverage summaries, and displayed detail are views over claims, not fields that define them.
+
+SciClaimHunt calls a claim valid when it is fluent, atomic, decontextualized, and faithful to its source, and evaluates these dimensions separately~\cite{kumar2025sciclaimhunt}. It generates positive claims from result, discussion, and conclusion passages. Its synthetic negatives include prompted negation, mismatching a claim with another paper, changing numerical or cardinal values, and named-entity replacement. The source establishes useful quality axes and scalable adversarial data construction. AgtXIv infers that these axes should be explicit admission checks and that synthetic negatives require provenance flags; being a fluent atomic sentence does not make a generated claim source-faithful.
+
+SciGraph-LLM's accessible primary abstract describes a constrained pipeline that extracts atomic claims, evidence spans, methods, datasets, metrics, and numerical results, links them to verbatim source text, and builds a provenance-aware graph~\cite{malashin2026scigraphllm}. This supports separating claim nodes, evidence spans, and graph relations. The full ACM primary text and schema were unavailable during this check. The abstract does not justify importing exact node types, edge types, cardinalities, or exclusivity rules, and no such details are assumed here.
+
+\subsection{Why a flat role enum fails}
+
+A single field such as
+\begin{lstlisting}[style=interface]
+role: BACKGROUND | METHOD | RESULT | CONCLUSION | SUPPORT | ...
+\end{lstlisting}
+conflates at least five independent questions:
+\begin{enumerate}
+  \item \emph{Investigation component}: Is the content a goal, model, method, observation, result, or conclusion?
+  \item \emph{Knowledge attribution}: Is it current work, the authors' previous work, other work, or community background?
+  \item \emph{Epistemic status}: Is it asserted, hypothesized, conjectured, conditional, approximate, or questioned?
+  \item \emph{Source designation}: Which cited or uncited source is presented as holding the proposition?
+  \item \emph{Inter-claim relation}: Does one claim support, refute, use, qualify, compare with, or depend on another?
+\end{enumerate}
+The literature demonstrates that these dimensions cross-cut one another. A current-work result can be approximate; an other-work conclusion can support a current hypothesis; one sentence can state both a goal and a hypothesis. Encoding the combinations in one enum causes a Cartesian-product explosion and prevents a local correction to one dimension. AgtXIv therefore infers a layered interface: identity-bearing statement and provenance in the core, optional annotations for investigation component and epistemic status, explicit source designations, and typed edges for evidence and inter-claim relations.

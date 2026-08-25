@@ -1,0 +1,175 @@
+\subsection{Case study: a one-loop Majorana-neutrino and dark-matter model}
+\label{case:2608-12646}
+
+\paragraph{Paper identity and theme.}
+The source is Mohamed Belfkir, Mohamed Amin Loualidi, and Salah Nasri,
+``A Novel One-loop Model for Majorana Neutrino Mass and Dark Matter,''
+arXiv:2608.12646v1. The paper constructs a $T4$-$3$-$i$ realization in
+which a Dirac mediator removes a lower-order seesaw contribution, a separate
+Majorana fermion supplies lepton-number violation, and an exact $Z_2$ symmetry
+stabilizes dark matter. It derives scalar, neutrino, charged-lepton-flavor,
+and dark-matter observables and fits four combinations of mass ordering and
+dark-matter identity. Claims attributed below to ``the paper'' are source
+statements; comments headed ``Interface analysis'' are the present stress-test
+assessment.
+
+\paragraph{Source census method.}
+The census read all of
+\texttt{tmp/claim-interface-study/extracted/2608.12646/main.tex}, including
+macros, tables, figure captions, and the complete unitarity appendix. A
+claim-bearing unit is a prose paragraph, list item, equation-plus-lead, table,
+or caption that contributes a definition, assumption, imported result,
+derivation, analytical result, numerical finding, limitation, or
+interpretation. Headings, layout, acknowledgements, and bibliography commands
+were excluded. Abstract, introduction, body, and conclusion repetitions were
+counted as occurrences and consolidated only after their scopes were compared.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Source division & Claim-bearing units & Consolidated candidates \\
+\hline
+Abstract and introduction & 10 & 6 \\
+Topology and charge classification & 19 & 10 \\
+Scalar potential and spectrum & 18 & 6 \\
+Neutrino mass and cLFV & 24 & 7 \\
+Theoretical and experimental constraints & 13 & 5 \\
+Dark-matter constraints & 17 & 8 \\
+Statistical framework & 9 & 2 \\
+Fit results and benchmarks & 29 & 13 \\
+Summary, limitations, and outlook & 5 & 3 \\
+Unitarity appendix & 7 & 1 \\
+\hline
+Total occurrences & 151 & 53 unique candidates \\
+\hline
+\end{tabular}
+\end{center}
+
+Some candidates use support from more than one division, and some dense source
+paragraphs split into several independent predications; consequently the
+candidate total is not an additive partition of the right column.
+
+\paragraph{Compact claim-family census.}
+\begin{center}
+\begin{tabular}{p{0.23\linewidth}p{0.50\linewidth}r}
+\hline
+Family & Examples retained & Candidates \\
+\hline
+Background, novelty, and model scope & Genuineness criterion, priority claim,
+minimal field content & 5 \\
+Classification and setup & Four charge families, allowed $\alpha$ variants,
+$Z_2$ and lepton-number design & 8 \\
+Analytical field-theory results & Scalar matrices, one-loop neutrino mass,
+cLFV, unitarity, Higgs and oblique observables & 18 \\
+Dark-matter assumptions and mechanisms & Freeze-out, coannihilation, tree- and
+loop-level direct detection & 8 \\
+Statistical and numerical findings & Likelihood, acceptance counts, fitted
+ranges, benchmark observables, viability & 11 \\
+Limitations and interpretation & Collider omission, future work, region labels
+& 3 \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Representative difficult splits.}
+The model-building argument is not one indivisible claim. The inventory
+separates the conditional obstruction---a Majorana singlet or triplet mediator
+permits a lower-order seesaw---from the authors' construction using Dirac $N$,
+Majorana $\psi$, and exact $Z_2$. It then separates the resulting field
+inventory from the later numerical viability claim. This prevents the
+existence of a neutral odd state from being conflated with successful relic
+abundance and direct detection.
+
+The most compact analytical result is
+\[
+\begin{aligned}
+ M_\nu &= \Lambda\left(Yy^T+yY^T\right),\\
+ \Lambda &=-\mu_\phi\langle H^0\rangle^2
+ \frac{M_\psi}{M_N}y'_{11}
+ I_3(m_\phi^2,m_{\phi'}^2,M_\psi^2).
+\end{aligned}
+\]
+For one $N$ and one $\psi$,
+\[
+\begin{aligned}
+ \operatorname{rank}(M_\nu)&\leq 2,\\
+ \det M_\nu&=0
+ \quad\text{for generic rank two},
+\end{aligned}
+\]
+so one neutrino is massless at this order. The record keeps ``generic flavor
+vectors'' and ``at this order'' as scope. The normal- and inverted-ordering
+mass intervals from the scan are distinct numerical claims rather than part of
+the rank theorem.
+
+A similar split is needed for direct detection. For fermionic dark matter the
+paper derives, in the heavy-charged-scalar limit,
+\[
+ g_{h\psi\psi}^{\mathrm{eff}}
+ \simeq-\frac{\kappa_1v}{32\pi^2}
+ \left(\sum_\alpha|y_\alpha|^2\right)
+ \frac{M_\psi}{m_{\phi^\pm}^2}.
+\]
+This decoupling formula is an analytical candidate. The statement that all
+accepted fermionic points lie below xenon limits is separate because it also
+depends on scan ranges, cuts, and external exclusion curves. For scalar dark
+matter, the tree-level $hH_1^0H_1^0$ coupling is likewise distinct from the
+reported accepted cross-section range.
+
+The relic-density discussion combines a standard equation with an
+interpretive region label:
+\[
+\begin{aligned}
+ \frac{dY}{dx}
+ &=-\frac{s}{Hx}\langle\sigma_{\mathrm{eff}}v\rangle
+ \left(Y^2-Y_{\mathrm{eq}}^2\right),\\
+ r_i(x)&=\frac{g_i(1+\Delta_i)^{3/2}e^{-x\Delta_i}}
+ {\sum_k g_k(1+\Delta_k)^{3/2}e^{-x\Delta_k}}.
+\end{aligned}
+\]
+The equations and radiation-dominated freeze-out assumption normalize. The
+claim that a viable sample is best called a ``Higgs-funnel/coannihilation
+region'' does not normalize without an explicit region-membership criterion.
+
+\paragraph{Source-fidelity decisions.}
+All JSONL spans are one-indexed complete-line ranges whose text is copied
+byte-for-byte. Tables were retained when they define finite mappings, scan
+ranges, acceptance counts, or benchmarks. Figure captions alone were not
+used to infer trends absent from the prose. The priority statement remains
+hedged as ``to the authors' knowledge'' and is attributed to the paper rather
+than accepted as a verified literature fact. Imported likelihood profiles,
+experimental contours, and projected sensitivities remain external evidence.
+Approximations such as $\Delta U=0$, the Standard-Model-like Higgs total width,
+leading-chiral conversion formulas, and a radiation-dominated thermal history
+are attached to the claims that depend on them.
+
+\paragraph{Interface analysis: MathClaimIR boundaries.}
+The 53 candidates contain explicit equations and finite mappings that normalize
+well; model-wide causal statements and scan-conditioned findings generally
+normalize only partially. Priority, minimality, qualitative region labels,
+and research-scope statements do not have faithful MathClaimIR forms. In
+particular, the existential claim that all four scenarios are viable is not an
+unqualified theorem: it means that each finite scan contains at least one point
+passing the stated implementation, priors, ranges, likelihoods, and cuts.
+
+\paragraph{Interface pressures.}
+The case exposes nine pressures: conditional ``genuine topology'' status;
+priority claims requiring external verification; physical exclusions versus
+authors' convenience restrictions in a classification; assumptions propagated
+across long derivations; removable singular domains in reconstructed
+parameters; mixed likelihood and hard-cut semantics; selection-induced
+conclusions; benchmark evidence versus population-level claims; and large,
+ordered matrix collections in the appendix. It also shows why an external
+experimental curve cannot be reduced to the prose phrase ``below the bound''.
+These pressures concern evidence, scope, and provenance and are recorded
+without changing the proposed interface schema.
+
+\paragraph{Provisional verdict.}
+The interface is strong for explicit Lagrangians, matrices, inequalities,
+finite classifications, and parameter-to-observable mappings. It remains
+usable for phenomenology only if assumptions and scan provenance stay attached
+to each candidate. A normalization refusal is essential for priority,
+minimality, qualitative region, and future-work claims. The case therefore
+supports a small core interface with exact source spans, atomic statements,
+scope, modality, attribution, optional mathematical normalization, and visible
+pressure flags rather than a physics-specific expansion of the Registry.
