@@ -1,7 +1,7 @@
 \subsection{Case study: Clifford obfuscation and classical verification}\label{case:2608-15963}
 
 \paragraph{Source and census.}
-This case analyzes arXiv:2608.15963v1, ``Classical Verification of Quantum Advantage via Clifford Obfuscation''. The frozen archive has SHA-256 \texttt{4805fdb1c4eed5382aea8ed0e8f28d8419235a918a2af52c3c69408d5ba45859}. The census read \texttt{main.tex} (293 lines) and \texttt{appendix.tex} (169 lines), including all local macros and the appendix included at line 292. It yielded 32 consolidated candidates. Repeated SSB definitions and nullity bounds in the main text and appendix are represented once with multiple source spans.
+This case analyzes arXiv:2608.15963v1, ``Classical Verification of Quantum Advantage via Clifford Obfuscation''. The frozen archive has SHA-256 \path{4805fdb1c4eed5382aea8ed0e8f28d8419235a918a2af52c3c69408d5ba45859}. The census read \texttt{main.tex} (293 lines) and \texttt{appendix.tex} (169 lines), including all local macros and the appendix included at line 292. It yielded 32 consolidated candidates, including three deliberate composites. Repeated SSB definitions and nullity bounds in the main text and appendix are represented once with multiple source spans. This is candidate-stage stress data: promotion to an accepted ScientificClaim still requires the later atomicity gate.
 
 \begin{center}
 \begin{tabular}{p{0.31\linewidth}p{0.50\linewidth}r}
@@ -38,10 +38,12 @@ Limitations & no formal proof, small-system simulation, trusted prover & negativ
 \paragraph{Difficult split and scope examples.}
 The exact-update passage must not normalize into an unconditional hardness theorem. Its structure is
 \[
+\begin{aligned}
 \text{exact local preservation}
-\Longrightarrow U_{\mathrm{obf}}=U_{\mathrm{Cliff}}
-\quad\text{but the authors conjecture hardness only if}\quad
-U_{\mathrm{obf}}\not\approx_{\mathrm{classical\ distinguishability}}U_{\mathrm{random}}.
+&\Longrightarrow U_{\mathrm{obf}}=U_{\mathrm{Cliff}},\\
+&\quad\text{but the authors conjecture hardness only if}\\
+&\qquad U_{\mathrm{obf}}\not\approx_{\substack{\text{classical}\\\text{distinguishability}}}U_{\mathrm{random}}.
+\end{aligned}
 \]
 The source explicitly says that the Clifford unitary itself is efficiently simulable when presented as Clifford gates. Presentation, adversary access, and conjectural modality therefore belong to the claim scope.
 
@@ -61,6 +63,7 @@ is stored as a reported model of the simulated data, not as a universal asymptot
 \[
 \nu(U)\leq T_{\mathrm{opt}}(U)\leq T_{\mathrm{circ}}(U).
 \]
+Three inventory records deliberately retain bundles. The unitary-nullity record joins definitions, Clifford/non-Clifford properties, and an imported $T$-count lower bound; the peaked-circuit record joins a definition, a polynomial-sample consequence, and an open construction-hardness limitation. The affine-support record joins imported stabilizer structure with the current SSB protocol use, so its bundle-level attribution is \texttt{AMBIGUOUS} while its review note assigns each clause. Each bundle has an explicit split note and must be separated or typed relationally at accepted-claim promotion.
 
 \paragraph{Source-fidelity decisions.}
 Every machine record uses workspace-relative paths, one-indexed inclusive line ranges, and byte-faithful TeX text. Repeated main-text and appendix occurrences are consolidated only when their predicates and scope agree. The phrase ``indistinguishable from uniform at the lowest order'' remains a diagnostic interpretation, with the source's warning about higher-order correlations. The tensor-network discussion remains a hypothesis and retains the explicit disclaimer that it is not a lower bound. The quantum-adversary caveat and trusted-experimenter restriction are independent candidates rather than editorial notes.
@@ -69,4 +72,4 @@ Every machine record uses workspace-relative paths, one-indexed inclusive line r
 MathClaimIR is suitable for the SSB formulas, affine-support constraints, and T-count inequalities. It is only partial for protocols, security arguments, empirical fits, and role-indexed knowledge. The case pressures a minimal interface to retain: (i) modality; (ii) conditions and quantifiers; (iii) actor and access model; (iv) multiple source anchors; and (v) provenance separating imported theorems, current numerical observations, and conjectures. Security labels such as ``soundness'' should be assessments or relations unless the source states a formal game and bound.
 
 \paragraph{Provisional verdict.}
-The paper fits a compact ScientificClaim core only if source spans, scope, modality, and attribution remain first-class. Math normalization alone would overstate the central result: the strongest formulas are statistical baselines and resource certificates, while the protocol's central security claim is explicitly heuristic.
+The paper fits the five-field accepted identity kernel only when scope, modality, attribution, actor, and access model remain first-class candidate/admission semantics and are explicit in the admitted statement. These semantics are not additional accepted-core columns. Mathematical normalization alone would overstate the central result: the strongest formulas are statistical baselines and resource certificates, while the protocol's central security claim is explicitly heuristic.

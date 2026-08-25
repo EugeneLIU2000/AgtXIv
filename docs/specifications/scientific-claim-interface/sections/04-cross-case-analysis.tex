@@ -1,0 +1,85 @@
+\section{Cross-case analysis}\label{sec:cross-case}
+
+\subsection{Corpus size and coverage}
+
+The stress-test corpus contains 494 consolidated candidates and 606 exact source-span anchors. All 494 records passed automated reconstruction of their complete source lines, including original line terminators. This result verifies byte-for-byte transcription of the recorded line spans against the frozen source artifacts; it does not verify atomicity, scientific correctness, or completeness of the census. Every candidate has at least one system or population in its recorded scope, 288 have one or more explicit conditions, and 60 have one or more separately recorded quantifiers.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Case & Candidates & Spans & Multi-span & Composite & Math yes/partial/no \\
+\midrule
+\ref{case:2608-01996} & 44 & 56 & 8 & 10 & 14/29/1 \\
+\ref{case:2608-02862} & 30 & 38 & 8 & 6 & 4/25/1 \\
+\ref{case:2608-04867} & 38 & 42 & 4 & 23 & 27/5/6 \\
+\ref{case:2608-05150} & 35 & 39 & 4 & 0 & 16/14/5 \\
+\ref{case:2608-05845} & 99 & 143 & 37 & 4 & 66/4/29 \\
+\ref{case:2608-12646} & 53 & 55 & 2 & 1 & 18/30/5 \\
+\ref{case:2608-14798} & 76 & 82 & 6 & 4 & 37/39/0 \\
+\ref{case:2608-15963} & 32 & 43 & 11 & 3 & 4/28/0 \\
+\ref{case:2608-20180} & 48 & 56 & 8 & 24 & 34/12/2 \\
+\ref{case:2608-22867} & 39 & 52 & 12 & 2 & 15/8/16 \\
+\midrule
+Total & 494 & 606 & 100 & 77 & 235/194/65 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 100 multi-span candidates are 20.2\% of the corpus. The 77 deliberately composite candidates are 15.6\%. Mathematical normalization is suitable for 235 candidates (47.6\%), partial for 194 (39.3\%), and unsuitable for 65 (13.2\%). Thus 52.4\% cannot be represented faithfully by a mathematical form alone. The high suitable count in case~\ref{case:2608-05845} is driven by 44 numerical table cells; it must not be read as evidence that symbolic theorems dominate the sample.
+
+All records are marked \status{source\_checked}. Their modalities are 302 asserted, 123 reported, 42 conditional, 15 approximate, eight hypothesized, two questioned, one conjectured, and one predicted. Attribution is 362 current-work, 77 other-work, 28 community-background, 21 system-derived, three previous-own-work, and three ambiguous. These distributions establish recurring heterogeneity; they do not validate the labels by independent adjudication.
+
+\subsection{Recurring failure modes}
+
+\paragraph{Sentence identity fails in both directions.}
+A single sentence or formal block may contain several independently revisable claims. Table rows in case~\ref{case:2608-05845} separate current estimates, imported estimates, and experimental values. The variational and cosmological passages in case~\ref{case:2608-04867} separate prescription, branch, limit, and interpretation. Conversely, one proposition may need several occurrences: 37 candidates in case~\ref{case:2608-05845} and 12 in case~\ref{case:2608-22867} use multiple spans. Sentence identifiers therefore cannot be claim identifiers.
+
+\paragraph{Blind splitting also fails.}
+Named definitions and protocol bundles can be scientifically atomic while logically conjunctive. The dissipative weak-solution definition in case~\ref{case:2608-02862} loses its identity if its clauses are promoted as independent definitions. Generalized placements in case~\ref{case:2608-01996} and run protocols in case~\ref{case:2608-05845} have the same property. The proper rule is one independently revisable scientific assertion, with a documented exception for a source-named construction whose membership conditions jointly define one object.
+
+\paragraph{Conditions are part of the proposition.}
+The theorem in case~\ref{case:2608-20180} depends on dimension, seed geometry, domain sign, target metric, and geodesic conditions. The security statements in case~\ref{case:2608-15963} depend on presentation and adversary access. The finite numerical rankings in case~\ref{case:2608-02862} depend on method, degree, mesh, time, and quadrature, while the resource bounds in case~\ref{case:2608-14798} depend on parameter ranges and free operations. Omitting such scope strengthens the claim. The corpus does not, however, show that a universal structured scope ontology is needed in the core: the conditions vary too widely and can be preserved in the statement.
+
+\paragraph{Exact source state is not just a line range.}
+Case~\ref{case:2608-05150} contains dormant TeX after \verb|\end{document}|. Case~\ref{case:2608-05845} requires a table cell together with caption-level uncertainty semantics. Case~\ref{case:2608-22867} requires figure captions that supply simulation conditions, and case~\ref{case:2608-20180} joins theorem, derivation, and appendix occurrences. A source anchor must therefore identify the source revision, retain exact bytes, support an ordered list of non-contiguous spans, and record whether the bytes participate in the rendered source. A path and line pair alone can silently change meaning after source revision or compilation.
+
+\paragraph{Source fidelity and correctness diverge.}
+Case~\ref{case:2608-22867} preserves a reported sign even though direct integration exposes a sign tension. Case~\ref{case:2608-04867} preserves the source's label for $w=-1$ while recording the terminology conflict separately. Priority and viability claims in case~\ref{case:2608-12646}, and hardness interpretations in case~\ref{case:2608-15963}, likewise require assessment beyond transcription. Correcting the claim text would destroy source fidelity; ignoring the issue would confuse extraction with acceptance. Assessments must therefore be separate, versioned objects.
+
+\paragraph{Attribution and modality are indispensable but not core identity columns.}
+Imported, current-work, and system-derived formulas coexist in case~\ref{case:2608-05845}; modelling postulates and derived consequences coexist in case~\ref{case:2608-01996}. Approximation, hypothesis, and report language recur in cases~\ref{case:2608-14798}, \ref{case:2608-15963}, and \ref{case:2608-22867}. Every truth-relevant attribution and modality commitment must be explicit in the source-faithful statement. Optional annotations may additionally normalize these dimensions for search or analysis, but they cannot substitute for statement content. Making a single fixed enum part of accepted identity would still lose mixed attribution, actor-specific access, and source-specific hedging.
+
+\paragraph{Equations and evidence are not interchangeable.}
+Figure-dependent exclusions in case~\ref{case:2608-05150}, finite scans in case~\ref{case:2608-12646}, algorithm rankings in case~\ref{case:2608-02862}, and numerical agreement in case~\ref{case:2608-05845} cannot be certified by a bare formula. Conversely, case~\ref{case:2608-20180} contains theorem kernels that normalize well but still need a source envelope. The observed 235/194/65 normalization split supports a one-to-many optional mapping from \ScientificClaim{} to \MathClaimIR{}, not inheritance between the two types.
+
+\paragraph{Negative, conflicting, and non-result content remain claims.}
+Limitations and counterexamples occur in cases~\ref{case:2608-01996} and \ref{case:2608-14798}; failure to identify a unique winner occurs in case~\ref{case:2608-02862}; a non-monotone discrete entropy observation occurs in case~\ref{case:2608-22867}. Definitions, assumptions, proposals, and informal derivations recur across all strata. Restricting admission to positive findings or formally proved theorems would exclude scientifically checkable content.
+
+\subsection{Candidate audit metadata versus the accepted core}
+
+\begin{sloppypar}
+The JSONL study schema is intentionally wider than the proposed interface. Its \field{candidate\_id}, \field{paper\_id}, \field{atomicity}, structured \field{scope}, \field{modality}, \field{knowledge\_attribution}, \field{source\_designation}, \field{phenomenon\_tags}, \field{math\_normalization}, \field{interface\_pressure}, \field{review\_status}, and \field{review\_note} fields support extraction and review. They record why a candidate was split, how it pressures the design, and whether it is ready for another review pass. They are not all properties of an accepted proposition.
+\end{sloppypar}
+
+The accepted core instead preserves only identity, revision, a source-faithful statement, exact source spans, and representation integrity. Candidate lifecycle, extraction model, prompts, reviewer, rejection reasons, confidence, discourse roles, evidence coverage, dependency hypotheses, and query scores remain in services around that core. This boundary allows an extractor to change without changing accepted claim identity, and it allows two reviewers to attach competing annotations or assessments to the same immutable claim revision.
+
+\subsection{Independent-audit counterexamples}
+
+An independent review of the completed inventory found concrete semantic failures despite exact source transcription. These findings are decisive because they test the admission contract rather than byte reconstruction.
+
+\begin{itemize}
+  \item In case~\ref{case:2608-01996}, candidate \field{dilatation-projection-hydrostatic} originally appended a reviewer-derived positive-trace correction to the paper's positive-determinant projection assertion. The source assertion now remains intact, while a separate assessment records that positive determinant alone does not ensure the stated open-domain minimizer.
+  \item In case~\ref{case:2608-14798}, candidates \field{sps-average-spf} and \field{sps-density-corollary} were originally rewritten as uniformly random-function claims. The source-faithful statements now retain the paper's pseudomagic SPS/PRF ensemble claim; separate assessments record that the supplied proof establishes the exact formulas only for uniformly random Boolean functions and that PRF transfer needs an additional argument.
+  \item In case~\ref{case:2608-02862}, candidate \field{local-maximality-mismatch} mixes an imported theorem with a current numerical observation under one current-work attribution. It requires splitting or typed clause-level attribution.
+  \item In case~\ref{case:2608-12646}, candidate \field{cp-inert-spectrum} attaches a real-potential condition to an inert-vacuum assertion. The independent assertions require splitting.
+  \item In case~\ref{case:2608-05845}, uncertainty-formula candidates omit the covariance-neglect assumption from their short statements even though that assumption controls the formulas.
+\end{itemize}
+
+These are not rare formatting defects. They instantiate omitted conditions, unjustified population transfer, mixed attribution, under-splitting, and assumption loss across mathematical physics, quantum information, particle theory, and molecular simulation. The structured audit fields sometimes retain information that the short \field{statement} omits. Therefore the five-field accepted kernel is viable only under a mandatory promotion check that moves every truth-relevant condition, quantifier, modality, and ownership commitment into the statement. A deployment that cannot enforce that rule must use a mandatory semantic envelope instead; it cannot treat the present 494 rows as accepted five-field records.
+
+\subsection{Limits of the evidence}
+
+The frozen pool and analyzed set are reproducible, and the purposive sample is stratified for adversarial cross-topic stress testing, but the ten papers are not a random or probability sample. The design supports discovery of interface counterexamples; it does not estimate their prevalence or represent the August pool, theoretical physics, or scientific literature. It also does not establish coverage for experimental laboratory notebooks, clinical records, proprietary datasets, multilingual sources, born-digital interactive articles, or source formats without stable bytes. The 494 rows instantiate a candidate extraction inventory, not an accepted-claim registry: the audit schema has no accepted \field{claim\_id}, claim revision, or completed lifecycle gate, and 77 records explicitly use the composite exception. A \status{source\_checked} state is not scientific acceptance. The independent audit found inconsistent atomicity decisions; the corrected case reports now identify every deliberate composite, but no candidate has yet passed the accepted-claim promotion gate.
+
+The candidate censuses were not independently replicated, and semantic atomicity, attribution, completeness, and ownership have not received blinded inter-annotator measurement. No observed pair of records tests the proposed identity-versus-revision rule. The automated source check establishes exact recorded spans only. Likewise, any readiness result for the study artifacts certifies declared artifact completeness, not random selection, semantic admission, population representativeness, or universality. The specification below is therefore a first-version contract revised in response to the stress test and independent audit, not a claim that the five-field core passed universality or that semantic admission is complete.

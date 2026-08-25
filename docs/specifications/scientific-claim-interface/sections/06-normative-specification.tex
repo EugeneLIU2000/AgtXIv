@@ -1,0 +1,240 @@
+\section{Normative first-version specification}\label{sec:normative}
+
+The key words \textsc{must}, \textsc{must not}, \textsc{should}, and \textsc{may} are normative. This section defines a conceptual interface; a JSON encoding may choose different field names only if it preserves the stated values, cardinalities, and invariants.
+
+\subsection{Terminology and boundary}
+
+A \emph{source artifact} is an immutable byte sequence together with a media type and a revision identity. A \emph{source occurrence} is an exact byte interval in one source artifact. A \emph{proposition lineage} is a sequence of source-faithful representations with unchanged truth conditions. A \emph{candidate} is an extracted or generated representation awaiting admission. An \emph{accepted claim} is a source-faithful proposition representation that passed the admission gate. ``Accepted'' means accepted into the registry, not true, supported, novel, important, or formally proved.
+
+A \ScientificClaim{} is the accepted core record. It identifies what a designated source communicates and how that representation can be audited. It is not a sentence, rhetorical zone, evidence bundle, truth verdict, dependency node type, mathematical formula, or query result. A definition, assumption, theorem, empirical result, limitation, or attributed background assertion can be a \ScientificClaim{} when it meets the common admission rule.
+
+Candidate-extraction metadata is outside this core. It includes the extractor, model and prompt, run identifier, generation provenance, confidence, split note, rejection reason, reviewer, timestamps, interface-pressure tags, and quality scores. Discourse roles, structured scope views, evidence, logical dependencies, verification, and ranking also remain outside the core.
+
+\subsection{Minimal accepted record}
+
+An accepted record has exactly five required conceptual fields:
+
+\begin{lstlisting}[style=interface]
+ScientificClaim {
+  claim_id              // opaque proposition-lineage identifier
+  revision              // positive, monotone integer
+  statement             // source-faithful atomic declarative wording
+  source_spans[]        // ordered, non-empty exact anchors
+  representation_hash   // digest of the canonical representation
+}
+\end{lstlisting}
+
+Implementations may add serialization and schema discriminators, but those are protocol framing rather than scientific semantics. No field above may be null.
+
+\paragraph{\field{claim\_id}.}
+The identifier \textsc{must} be globally unique and opaque. It \textsc{must not} encode paper, role, truth, hierarchy, or current workflow state. Repeated abstract, table, and conclusion occurrences in case~\ref{case:2608-05845}, and theorem, example, and appendix occurrences in case~\ref{case:2608-20180}, require one lineage independent of any one location. This value cannot be derived losslessly from the statement: equivalent wording can denote one proposition, and identical wording can denote different source propositions or scopes.
+
+\paragraph{\field{revision}.}
+The revision \textsc{must} be a positive integer, strictly increasing within one \field{claim\_id}. Dormant-source designation in case~\ref{case:2608-05150} and source-preserving terminology or sign tensions in cases~\ref{case:2608-04867} and \ref{case:2608-22867} show that representation repairs can occur without accepting a different proposition. Revision cannot be externalized losslessly because references must distinguish the exact statement--provenance pair used by a downstream assessment or normalization.
+
+\paragraph{\field{statement}.}
+The statement \textsc{must} be declarative, source-faithful, scope-complete, and atomic under the rule below. It \textsc{must} preserve truth-relevant entities, relations, polarity, modality, quantifiers, comparisons, systems, regimes, assumptions, conditions, approximations, actors, access models, and attribution expressed by the source. The distributed theorem conditions in case~\ref{case:2608-20180} and the adversary and presentation conditions in case~\ref{case:2608-15963} justify this field across topics. Exact spans cannot generate it losslessly: selecting, decontextualizing, and consolidating a proposition is an editorial act, and a source span can carry several claims.
+
+\paragraph{\field{source\_spans}.}
+The list \textsc{must} contain at least one \SourceSpan{} and \textsc{must} be ordered by reconstruction order. Non-contiguous spans are permitted. Dormant derivations in case~\ref{case:2608-05150}, caption and table inheritance in case~\ref{case:2608-05845}, and theorem/appendix joins in case~\ref{case:2608-20180} show why source anchoring is indispensable. The spans cannot be derived from the statement because a paraphrase does not determine which source bytes licensed it, and externalizing the list would permit an apparently valid claim record whose provenance was missing or revised independently.
+
+\paragraph{\field{representation\_hash}.}
+The digest \textsc{must} cover the canonical values of \field{claim\_id}, \field{revision}, \field{statement}, and the complete ordered \field{source\_spans} list, excluding the digest field itself. Multi-occurrence consolidation in case~\ref{case:2608-05845} and distributed theorem representation in case~\ref{case:2608-20180} require references to detect changes in either wording or provenance. The digest cannot be derived safely by every consumer after externalization because canonicalization and span availability may differ; carrying the agreed digest makes the referenced representation testable. It certifies integrity only, not truth or semantic equivalence.
+
+\subsection{Atomicity and admission invariants}
+
+A statement is atomic when it has one independently revisable primary assertion. A conjunction \textsc{must} be split if one conjunct could be corrected, rejected, or revised while the other remains. Shared conditions may be repeated in each resulting statement. A named definition, protocol, algorithm, or construction may remain composite only when its clauses jointly constitute one source-defined object and splitting them would falsely present a clause as the complete object. The candidate audit \textsc{must} record this exception; the accepted core need not.
+
+A candidate may be promoted only if all of the following invariants hold:
+\begin{enumerate}[label=\textup{A\arabic*.}]
+  \item \emph{Declarativity}: the statement asserts content rather than merely asking, commanding, navigating, or naming a topic.
+  \item \emph{Assessability}: the proposition can in principle be assessed relative to a system, model, dataset, computation, source, or literature state.
+  \item \emph{Atomicity}: it satisfies the independently revisable assertion rule or the reviewed named-object exception.
+  \item \emph{Faithfulness}: it neither adds, drops, reverses, strengthens, weakens, nor generalizes source content.
+  \item \emph{Scope completeness}: no omitted source qualifier can materially change truth conditions.
+  \item \emph{Decontextualization}: local references are resolved minimally, without inventing a premise.
+  \item \emph{Provenance sufficiency}: every substantive part is licensed by one or more exact spans.
+  \item \emph{Identity hygiene}: it is neither an unmarked generated transformation nor a duplicate accepted lineage.
+  \item \emph{Layer independence}: promotion does not depend on a role label, evidence verdict, dependency edge, normalization, or query score.
+  \item \emph{Integrity}: the representation digest recomputes under the declared canonical profile.
+\end{enumerate}
+
+Promotion \textsc{must} create a new accepted record and an audit mapping from the candidate identifier to \field{claim\_id}, \field{revision}, and \field{representation\_hash}. It \textsc{must not} overwrite candidate generation provenance. Rejection \textsc{must} preserve the candidate and reason in the candidate store. A generated negation, numerical mutation, or paraphrase remains a generated candidate until the source itself anchors the resulting proposition.
+
+Every promotion \textsc{must} also create an external semantic-admission decision:
+\begin{lstlisting}[style=interface]
+ClaimAdmissionDecision {
+  candidate_ref
+  proposed_claim_ref
+  atomicity_decision
+  scope_projection       // conditions, quantifiers, population/system
+  modality_projection
+  attribution_projection // typed by clause/span when mixed
+  provenance_decision
+  reviewer_or_method
+  decided_at
+}
+\end{lstlisting}
+Each projection \textsc{must} show that every truth-relevant candidate value is explicit in the final \field{statement}, or mark the candidate blocked. A structured candidate field is not permission to omit its meaning from the statement. Mixed ownership requires splitting unless clause-level attribution remains faithful and independently addressable. The admission decision is mandatory audit evidence but is not part of accepted claim identity. An implementation that cannot enforce or retain this decision \textsc{must} carry the semantic envelope as mandatory runtime data rather than expose the five fields alone.
+
+The 494 stress-test rows have not passed this promotion contract. In particular, exact source checking does not resolve under-splitting, omitted covariance or positivity conditions, random-versus-pseudorandom scope, or mixed attribution.
+
+\subsection{Exact \SourceSpan{} contract}
+
+Each span has the following required conceptual fields:
+
+\begin{lstlisting}[style=interface]
+SourceSpan {
+  span_id
+  artifact_id
+  artifact_revision
+  artifact_sha256
+  byte_start            // zero-based, inclusive
+  byte_end              // zero-based, exclusive
+  exact_bytes           // lossless byte transport, for example base64
+  bytes_sha256
+  source_activity       // ACTIVE | DORMANT | UNKNOWN
+}
+\end{lstlisting}
+
+The source registry \textsc{must} define the artifact's media type. For textual artifacts it \textsc{should} also define declared or detected encoding. Human-readable path, line, column, TeX label, page, figure, table, and DOM locators \textsc{may} be attached as convenience locators; they do not replace byte offsets. A decoded \field{exact\_text} \textsc{may} be cached, but it is derived from \field{exact\_bytes} and the artifact encoding.
+
+The following invariants apply:
+\begin{align*}
+0 &\leq \field{byte\_start} < \field{byte\_end}
+   \leq \lvert\text{artifact bytes}\rvert,\\
+\field{exact\_bytes}
+  &= \text{artifact bytes}[\field{byte\_start}:\field{byte\_end}],\\
+\field{bytes\_sha256}
+  &= \operatorname{SHA256}(\field{exact\_bytes}),\\
+\field{artifact\_sha256}
+  &= \operatorname{SHA256}(\text{complete artifact bytes}).
+\end{align*}
+Spans \textsc{must not} overlap accidentally; intentional overlap \textsc{must} be declared in candidate audit metadata. Their order records how a reviewer reconstructs the statement, not evidentiary strength or document order. Multiple source artifacts are permitted only when the statement explicitly attributes or combines them; otherwise cross-source support belongs to evidence relations.
+
+Within \SourceSpan{}, \field{source\_activity} is provenance metadata stating whether the bytes participate in the designated rendered source revision. The values have these meanings: \status{active} is included; \status{dormant} is present in the artifact but excluded from that rendering; \status{unknown} means that activity was not established. Activity does not imply scientific acceptance. A renderer or build profile \textsc{should} accompany the source-revision record when activity depends on compilation options. Span roles such as \status{primary\_statement}, \status{condition}, \status{proof}, \status{caption}, and \status{evidence} belong to typed occurrence annotations or evidence relations; they are not required fields of the identity-bearing span.
+
+\subsection{Identity, revision, and integrity semantics}
+
+Let $C=(i,r,s,P,h)$ denote a claim with identifier $i$, revision $r$, statement $s$, ordered spans $P$, and representation hash $h$. Two records belong to one lineage only when a competent review determines that they preserve the same source proposition and source attribution. String equality is neither necessary nor sufficient.
+
+A punctuation correction, harmless decontextualization, added equivalent occurrence, repaired locator, or source-activity correction \textsc{must} create revision $r+1$ under the same $i$ when truth conditions remain unchanged. A change to predicate, argument, polarity, modality, quantifier, material condition, comparison baseline, system, actor/access model, or source attribution \textsc{must} create a new candidate and, after admission, a new \field{claim\_id}. The new lineage \textsc{should} be connected to the old one by a derivation relation such as \status{corrects}, \status{negates}, \status{narrows}, or \status{broadens}.
+
+Every reference to a claim \textsc{must} include $(i,r,h)$. A reference without $r$ and $h$ is a convenience query for the latest revision, not a reproducible scientific reference. Revision order states chronology, not quality. No digest is a semantic identity oracle. The ten-paper inventory contains no adjudicated revision pairs, so these identity-versus-revision rules are normative design commitments that remain empirically untested.
+
+\subsection{Mapping to \MathClaimIR{}}
+
+A \ScientificClaim{} may map to zero, one, or several \MathClaimIR{} records. The mapping is a separate object:
+
+\begin{lstlisting}[style=interface]
+ClaimNormalization {
+  scientific_claim_ref  // claim_id, revision, representation_hash
+  math_claim_ir_ref
+  coverage               // COMPLETE | PARTIAL
+  component_path         // optional portion normalized
+  mapper_provenance
+  mapping_revision
+}
+\end{lstlisting}
+
+The value \status{complete} means that the mathematical object preserves the full proposition represented by the claim; it does not mean formally proved. A \status{partial} mapping \textsc{must} identify the normalized component and the unrepresented scientific envelope. A normalization \textsc{must not} erase attribution, modality, empirical regime, approximation, observer model, or source conditions. Failure to normalize does not reject a claim. Changing only a normalization does not revise the claim.
+
+Definitions and theorem kernels in cases~\ref{case:2608-01996} and \ref{case:2608-20180} show why formal structure is useful; empirical and security boundaries in cases~\ref{case:2608-05845} and \ref{case:2608-15963} show why it is subordinate. Mathematical dependency DAGs \textsc{should} use \MathClaimIR{} or proposition references as nodes and map back to \ScientificClaim{} through this interface.
+
+\subsection{Minimal extension, relation, and assessment interfaces}
+
+An optional annotation adds one versioned interpretation without changing the claim:
+\begin{lstlisting}[style=interface]
+ClaimAnnotation {
+  annotation_id
+  claim_ref
+  namespace
+  values[]
+  annotator_or_method
+  revision
+  provenance
+}
+\end{lstlisting}
+Values \textsc{must} be namespace-qualified and may be multi-label. The optional CoreSC-derived value \path{OUTCOME.RESULT} is permitted only for a factual output obtained by an investigation. A theorem-status annotation and an investigation-result annotation may coexist when both descriptions apply. \path{OUTCOME.RESULT} \textsc{must not} replace or absorb theorem, observation, conclusion, recommendation, or truth status.
+
+A relation connects immutable revisions:
+\begin{lstlisting}[style=interface]
+ClaimRelation {
+  relation_id
+  relation_type
+  source_refs[]
+  target_refs[]
+  relation_provenance
+  revision
+}
+\end{lstlisting}
+Relation types \textsc{must} distinguish logical implication, mathematical dependence, causal claim, procedural use, citation attribution, discourse relation, duplicate mention, correction, contradiction, and normalization. A hyperedge may have several sources or targets. An unverified oracle-generated dependency \textsc{must} remain visibly proposed or unverified rather than entering an accepted dependency graph as fact.
+
+An assessment records an evaluator-scoped judgment:
+\begin{lstlisting}[style=interface]
+ClaimAssessment {
+  assessment_id
+  claim_ref
+  assessor
+  method
+  evidence_refs[]
+  verdict
+  confidence_or_uncertainty
+  assessed_at
+  revision
+}
+\end{lstlisting}
+Verdicts may include \status{supports}, \status{refutes}, \status{no\_info}, \status{internally\_inconsistent}, or domain-specific values. Their semantics \textsc{must} be declared by the assessment profile. Evidence rationale may contain a set of non-contiguous spans. No assessment mutates source text or claim identity.
+
+\subsection{Required treatment of recurring claim forms}
+
+\begin{description}[style=nextline]
+  \item[Definitions and assumptions.] Admit them when they assert a checkable stipulation or premise. Preserve domain, convention, and scope in the statement. Use annotations for ``definition'' or ``assumption'' and relations to connect a premise to consequences. A named definition may use the reviewed composite exception.
+
+  \item[Theorems and informal derivations.] Admit the theorem with all material hypotheses. Admit an informal derivation as a source assertion about the stated consequence without upgrading it to proof. Proof steps and dependencies are relations or \MathClaimIR{} objects, not core fields.
+
+  \item[Numerical, table, and figure claims.] Admit scalar cells, trends, negative findings, and comparisons when scope-complete. Anchor cells together with inherited caption semantics through multiple spans. Preserve units, uncertainty convention, sample, algorithm, parameter range, and comparison baseline in the statement when truth-relevant. A figure or table is evidence or provenance, not an automatic verdict.
+
+  \item[Conditional claims.] Preserve antecedent, branch, and implication direction in the statement. Do not replace a source's exact condition with a broad tag such as ``under assumptions''. Conditions may also be projected into optional annotations for search.
+
+  \item[Cross-sentence and cross-section claims.] Use an ordered multi-span list and one decontextualized statement. Do not concatenate source fragments as if the source had stated the resulting sentence verbatim.
+
+  \item[Cited and background claims.] Admit them if the present source asserts them. Every truth-relevant attribution \textsc{must} be explicit in the statement. A source-designation annotation may additionally normalize that attribution, but it \textsc{must not} substitute for statement content. The present source span establishes that the paper made the attribution; it does not establish that the cited work supports it. Support from the cited work requires a separate claim--evidence assessment.
+
+  \item[Attribution and modality.] Preserve wording such as ``we observe'', ``previous work proves'', ``may'', ``approximately'', ``conjecture'', and ``to our knowledge'' whenever it changes commitment. Optional annotations may normalize these dimensions, but a classifier correction alone does not revise the claim if the statement already preserves the source commitment.
+
+  \item[Contradictions and corrections.] Keep each source-faithful proposition as its own claim. Add a typed contradiction, correction, or refutation relation and assessor-scoped evidence. Never repair exact bytes or silently replace a source statement with the evaluator's preferred result.
+
+  \item[System-derived claims.] A deterministic transformation of accepted premises may enter as a candidate with generation provenance and explicit premise relations. It may be accepted only if its statement is anchored to a designated derivation artifact; otherwise it remains a derived object, not a source claim. Algebraic rearrangements in case~\ref{case:2608-05845} and sign checking in case~\ref{case:2608-22867} illustrate the distinction.
+
+  \item[Limitations, questions, and recommendations.] Admit a declarative limitation or recommendation if assessable. A pure question remains discourse text unless it entails an explicit declarative uncertainty claim. Negative and inconclusive outcomes are not rejected merely because they are not positive results.
+\end{description}
+
+\subsection{Non-physics worked example}
+
+Consider a mathematics article whose introduction contains the sentence
+\begin{quote}
+``For a finite tree with at least two vertices, we shall show that two leaves always exist''.
+\end{quote}
+Its theorem later contains the sentence
+\begin{quote}
+``Every finite tree $T$ with $|V(T)|\geq2$ has at least two vertices of degree one''.
+\end{quote}
+Let the introduction and theorem be exact spans $p_1$ and $p_2$ in revision~1 of the source artifact.
+
+The accepted statement is:
+\begin{quote}
+Every finite tree $T$ with at least two vertices has at least two vertices of degree one.
+\end{quote}
+It receives one opaque \field{claim\_id}, revision~1, ordered spans $[p_1,p_2]$, and a representation digest. It does not receive mandatory fields saying ``theorem'', ``result'', ``proved'', or ``true''. An optional theorem-status annotation may record that the source presents it as a theorem. If the surrounding investigation framing also warrants \path{OUTCOME.RESULT}, that separate annotation may coexist; it does not replace theorem status. A proof assessment may later attach evidence. None of these additions changes the claim.
+
+One possible \MathClaimIR{} kernel is
+\begin{align*}
+&\forall T,\quad
+\operatorname{FiniteTree}(T)\land |V(T)|\geq2\\
+&\qquad\Longrightarrow
+\left|\{v\in V(T):\deg_T(v)=1\}\right|\geq2.
+\end{align*}
+The normalization mapping is \status{complete} only if \MathClaimIR{} defines finite tree, vertex set, and degree compatibly with the source. If the source uses ``leaf'' with a different convention, the mapping is partial or rejected while the \ScientificClaim{} remains valid.
+
+Suppose a later source revision changes ``at least two'' to ``at least three''. This changes truth conditions and therefore creates a new candidate lineage, not revision~2 of the original claim. If it merely replaces ``degree one'' by the source-defined synonym ``leaf'', the same lineage may receive revision~2 after review, with new spans and a new representation hash.

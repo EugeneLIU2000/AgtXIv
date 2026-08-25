@@ -12,33 +12,32 @@
     "hep-ph",
     "nucl-th"
   ],
-  "excluded_before_selection": [
+  "documented_eligibility_exclusions": [
     {
       "id": "2608.02735",
-      "queue_position": 1,
       "reason": "Primary contribution is a general equivariant-transformer architecture evaluation rather than a central claim about a physical or mathematical system.",
       "stratum": "qft-particle-nuclear"
     },
     {
       "id": "2608.14308",
-      "queue_position": 2,
       "reason": "Primary contribution concerns the effective-field-theory analysis of diffusion models; excluded by the predeclared requirement that the central claim concern a physical or mathematical system rather than a general ML model.",
       "stratum": "qft-particle-nuclear"
     }
   ],
   "pool_size": 2352,
-  "randomization": {
-    "digest": "sha256:ffddbbbfbc8cd7f0984077499f71301737c553248549cb9df374826107a92b4e",
-    "method": "independent deterministic shuffle within five predeclared strata",
-    "seed_text": "AgtXIv-ScientificClaim-interface-2026-08-25-v1",
-    "seed_uint64": 18437098881701173232
-  },
   "sampling_window": {
     "end": "2026-08-25T23:59:00Z",
     "note": "Partial calendar month fixed at sampling time.",
     "start": "2026-08-01T00:00:00Z"
   },
-  "schema": "agtxiv.claim-interface-sample/1.0.0",
+  "schema": "agtxiv.claim-interface-sample/1.1.0",
+  "selection_design": {
+    "type": "stratified_purposive_stress_test",
+    "probability_sample": false,
+    "candidate_pool_status": "The August 1-25 candidate pool was frozen before curation; its membership, stable ordering, size, and SHA-256 digest are reproducible.",
+    "selection_method": "After the candidate pool was frozen, two papers in each of five topic strata were curated for cross-topic ScientificClaim interface pressure.",
+    "lineage_scope": "The manifest asserts frozen-pool provenance and the identities of the curated papers. It does not assert a probability-based selected-set lineage or known inclusion probabilities."
+  },
   "selected": [
     {
       "abs_url": "https://arxiv.org/abs/2608.05150",

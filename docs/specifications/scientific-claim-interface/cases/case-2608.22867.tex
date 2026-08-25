@@ -1,7 +1,7 @@
 \subsection{Case study: detailed-balance copying dynamics and the H-theorem}\label{case:2608-22867}
 
 \paragraph{Source and review state.}
-This case analyzes Prabodh Shukla, ``Note on Boltzmann's H-Theorem and Detailed Balance Dynamics,'' arXiv:2608.22867v1. The frozen source is \path{tmp/claim-interface-study/extracted/2608.22867/note2.tex}. The census includes the abstract, all sections, all displayed equations, all figure captions, the bibliography used for attribution, and the source macros \texttt{\textbackslash be}, \texttt{\textbackslash ee}, \texttt{\textbackslash bea}, \texttt{\textbackslash eea}, \texttt{\textbackslash bdm}, and \texttt{\textbackslash edm}. The machine-readable inventory contains 39 consolidated candidates and 52 exact source-span anchors. All 39 records are \status{source\_checked}.
+This case analyzes Prabodh Shukla, ``Note on Boltzmann's H-Theorem and Detailed Balance Dynamics,'' arXiv:2608.22867v1. The frozen source is \path{tmp/claim-interface-study/extracted/2608.22867/note2.tex}. The census includes the abstract, all sections, all displayed equations, all figure captions, the bibliography used for attribution, and the source macros \texttt{\textbackslash be}, \texttt{\textbackslash ee}, \texttt{\textbackslash bea}, \texttt{\textbackslash eea}, \texttt{\textbackslash bdm}, and \texttt{\textbackslash edm}. The machine-readable inventory contains 39 consolidated candidates, including two deliberate composites, and 52 exact source-span anchors. All source spans are checked; 38 records retain \status{source\_checked} status and the corrected quantum-account bundle is \status{revised}. This is candidate-stage stress data: promotion to an accepted ScientificClaim still requires the later atomicity gate.
 
 \paragraph{Source census.}
 The count uses claim-bearing prose paragraphs as the primary unit. A displayed equation remains attached to its introducing paragraph. The four figure captions are counted separately because each repeats numerical conditions or findings that must be checked during consolidation.
@@ -81,6 +81,8 @@ The final interpretation is weaker still: a sharp relaxation-time peak ``may ind
 \paragraph{Source-fidelity decisions.}
 The records preserve the source's terminology ``probabilities'' for initial values drawn independently from $[0,1]$. They do not silently impose $\sum_i p_i=1$ on the simulation protocol, because the text does not state a renormalization step. This creates interface pressure between a symbol's declared scientific role and the operational data actually supplied.
 
+The discussion also bundles a proposed quantum account with a criticism: unitary evolution is said to conserve total outgoing transition probability, while omission of mixed states is separately suspected as the error. The inventory marks this as non-atomic. Promotion must split the reported account from the questioned omission rather than treating the criticism as part of the unitarity proposition.
+
 The source states that entropy fluctuates about $1/4$ and associates this value with $\int_0^1p\ln p\,\mathrm dp$. Direct evaluation gives
 \begin{align}
 \int_0^1p\ln p\,\mathrm dp
@@ -111,4 +113,4 @@ The canonical distribution, entropy functional, rate symmetry, H-theorem inequal
 \end{itemize}
 
 \paragraph{Provisional verdict (case-study analysis).}
-This paper again supports a compact \ScientificClaim{} core: statement, source spans, scope, modality, and attribution. It strongly argues against putting ``proof status'' into a single Boolean. The useful structure is relational: an assumption supports a derivation; a finite algorithm implements or approximates a dynamics; an observation agrees or conflicts with an expectation; and an assessment flags normalization, sign, or evidence-scope problems. \MathClaimIR{} should normalize the exact equations without certifying either their applicability to the simulation or their scientific correctness.
+This paper supports the five-field accepted identity kernel, not a core made of statement, spans, scope, modality, and attribution. Scope, modality, and attribution remain first-class candidate/admission semantics and must be explicit in the admitted statement. The case argues against one proof-status Boolean: an assumption supports a derivation; a finite algorithm implements or approximates a dynamics; an observation agrees or conflicts with an expectation; and an assessment flags normalization, sign, or evidence-scope problems. \MathClaimIR{} should normalize exact equations without certifying their applicability or scientific correctness.

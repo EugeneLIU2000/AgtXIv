@@ -1,0 +1,87 @@
+\section{Migration from current AgtXIv records}\label{sec:migration}
+
+\subsection{Scope and non-disruption rule}
+
+AgtXIv currently exposes two profiles through \texttt{agtxiv.scientific-claim/1.1.0}. The \texttt{FORMAL\_ATOMIC} profile uses \field{id}, \field{record\_revision}, \field{paper\_id}, \field{kind}, \field{text}, string-valued \field{source\_anchors}, \field{origin}, and \field{content\_hash}. The \texttt{NARRATIVE\_ATOMIC} contribution profile adds contribution roles and tags, source characterization, \field{normalized\_statement}, \field{scope\_hints}, facets, source occurrences, semantic and artifact hashes, and supersession references. Existing calibrations, support associations, target references, \MathClaimIR{} records, and candidate DAGs depend on those profiles.
+
+The first migration \textsc{must not} change those production schemas or rewrite existing JSONL. It introduces a sidecar adapter and index that projects existing records into the interface in Section~\ref{sec:normative}. The sidecar is independently versioned and may be deleted and rebuilt. Existing registries remain the authority until a separately reviewed schema migration is approved.
+
+\subsection{Projection rather than reinterpretation}
+
+For an existing record $x$, define an adapter projection $M(x)$ only when every required value can be obtained without invention:
+\begin{align*}
+M(x).\field{claim\_id}
+  &= x.\field{id},\\
+M(x).\field{revision}
+  &= x.\field{record\_revision},\\
+M(x).\field{statement}
+  &=
+  \begin{cases}
+  x.\field{text}, & \text{for \texttt{FORMAL\_ATOMIC}},\\
+  x.\field{normalized\_statement}, & \text{for \texttt{NARRATIVE\_ATOMIC}},
+  \end{cases}\\
+M(x).\field{source\_spans}
+  &= \operatorname{resolveOccurrences}(x),\\
+M(x).\field{representation\_hash}
+  &= \operatorname{hash}_{\mathrm{v1}}(M(x)).
+\end{align*}
+
+This mapping does not assert that an existing contribution bundle is atomic under the new rule. It preserves current identity while exposing review state in the sidecar. Existing \field{kind}, \field{claim\_role}, \field{contribution\_kind}, \field{contribution\_tags}, \field{source\_characterization}, \field{scope\_hints}, \field{facets}, and \field{source\_zone} values become annotations or candidate-review inputs. They do not enter the minimal core. Existing \field{content\_hash}, \field{semantic\_content\_hash}, and artifact hashes remain valid under their declared canonical profiles; the new \field{representation\_hash} is an additional adapter digest and \textsc{must not} be substituted for an old digest in an existing target reference.
+
+\subsection{Resolving current anchors}
+
+The narrative profile's occurrences already provide source artifact path and digest, line range, and source text. The adapter should resolve the artifact bytes, convert the inclusive line range to byte offsets without newline normalization, extract exact bytes, compute \field{bytes\_sha256}, and assign an artifact revision from the frozen paper or repository revision. The current occurrence role and source zone remain optional annotations. If build information proves that an occurrence is excluded from the designated rendering, assign \status{dormant}; otherwise assign \status{active} only when inclusion was actually checked, and \status{unknown} when it was not.
+
+The formal profile's string-valued \field{source\_anchors} may not contain enough information for byte resolution. The adapter \textsc{must not} guess. It should emit a blocked migration record with reason \status{anchor\_not\_byte\_resolvable}, preserve the old target reference, and wait for a source-audit sidecar. A human-readable label or line string may be retained as a locator, but it cannot satisfy the exact-span invariant by itself.
+
+The stress-test JSONL records can be migrated by the same route: resolve each \field{source\_file} and inclusive line range against the frozen source bytes, preserve order, and compute byte offsets and digests. The automated check has already reconstructed all 606 recorded spans for all 494 candidates exactly. This establishes that the mechanical conversion is feasible for this dataset. It does not authorize promotion of all 494 candidates or establish independent semantic review.
+
+\subsection{Candidate and provenance mapping}
+
+The audit records in \texttt{data/claims-*.jsonl} remain candidate records. Their fields map as follows:
+\begin{center}
+\small
+\begin{tabular}{p{0.27\textwidth}p{0.60\textwidth}}
+\toprule
+Current field & Migration destination \\
+\midrule
+\field{candidate\_id}, \field{review\_status}, \field{review\_note} & Candidate envelope and promotion audit \\
+\field{statement} & Proposed accepted \field{statement}, pending admission \\
+\field{source\_spans} & Exact-span conversion input \\
+\field{atomicity} & Admission review, including composite exception \\
+\field{scope}, \field{modality}, \field{knowledge\_attribution}, \field{source\_designation} & Statement-fidelity checks and optional annotations \\
+\field{math\_normalization} & Candidate \texttt{ClaimNormalization} task; suitability is not a completed mapping \\
+\field{phenomenon\_tags}, \field{interface\_pressure} & Extraction and study metadata \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No stress-test row may be bulk-promoted. The admission sidecar must initially block at least the independently identified records: \path{dilatation-projection-hydrostatic} pending adjudication of the positive-determinant assertion against the reviewer's open-domain positivity assessment; \path{sps-average-spf} and \path{sps-density-corollary} pending an argument that transfers the proved uniformly random-function formulas to the source's pseudomagic SPS/PRF ensemble or an explicit source-level correction; \path{local-maximality-mismatch} pending split or typed attribution; \path{cp-inert-spectrum} pending split; and the affected viscosity uncertainty formulas pending explicit covariance-neglect assumptions. Corrections to source propositions belong in new candidate revisions or derivations; reviewer conclusions belong in assessments and must not overwrite source identity.
+
+Generation provenance, evidence completeness, and scientific acceptance \textsc{must} remain separate. In particular, an expensive model's proposed DAG remains \status{oracle\_proposed}/\status{unverified} input until the Root Agent or another declared assessor verifies its edges. The migration may expose those nodes through a candidate graph view, but it must not convert oracle proposals into accepted \ClaimRelation{} objects merely because their identifiers resolve.
+
+\subsection{Relations, assessments, and normalization adapters}
+
+Existing support associations and calibration records should be projected to \ClaimAssessment{} or evidence-relation views only when their assessor, target revision and hash, method, evidence, and verdict semantics are explicit. Missing values remain \status{unknown}; they are not backfilled from a contribution role. Existing mathematical target references already bind identifiers, revisions, content hashes, artifacts, and schema identities. A \texttt{ClaimNormalization} sidecar may point from the new claim projection to those targets while retaining the old target reference unchanged.
+
+Existing claim DAGs require a boundary check. Mathematical derivation DAGs should continue to use mathematical proposition or \MathClaimIR{} nodes and connect to \ScientificClaim{} through normalization mappings. A narrative or citation graph may use \ScientificClaim{} revisions as endpoints, but each edge must declare whether it is discourse, citation, support, contradiction, use, or logical dependence. A legacy untyped edge is migrated as \status{unknown} or \status{oracle\_proposed}, not guessed from node order.
+
+\subsection{Phased procedure and decision conditions}
+
+\begin{enumerate}
+  \item \textbf{Inventory.} Enumerate every existing claim profile, source occurrence, target reference, calibration, support association, normalization, and DAG edge. Record schema and canonicalization profile digests.
+  \item \textbf{Sidecar construction.} Build immutable source-artifact records and adapter projections. Do not modify the source registry. Emit explicit \status{blocked} records for unresolved bytes, ambiguous identities, or missing source revisions.
+  \item \textbf{Mechanical validation.} Recompute old hashes under old profiles, new representation hashes under the new profile, byte slices, span digests, and target references. Require deterministic rebuilds.
+  \item \textbf{Semantic admission review.} Review atomicity, faithfulness, scope completeness, attribution, modality, and duplicate lineages. Promote candidates individually; do not bulk-promote because source checks passed.
+  \item \textbf{Layer projection.} Convert roles to optional annotations, evidence and calibrations to assessor-scoped objects, and mathematical links to normalization mappings. Preserve unknown and proposed states.
+  \item \textbf{Read-only comparison.} Run existing consumers against unchanged records and new consumers against the sidecar. Compare identifier resolution and displayed source text without replacing production manifests.
+  \item \textbf{Decision gate.} Consider a future production schema only after all in-scope anchors are byte-resolvable, every promoted record passes the admission gate, old references remain reproducible, and downstream consumers can distinguish claims, annotations, relations, assessments, and normalizations.
+\end{enumerate}
+
+The migration is complete for a record only when its projection is deterministic, all source bytes and digests verify, its semantic admission has a named reviewer or method, and every outgoing reference binds \field{claim\_id}, \field{revision}, and \field{representation\_hash}. A blocked record is a valid migration outcome. Automated readiness may verify only the declared completeness and consistency of migration artifacts; it does not establish random selection, semantic admission, or universality. This document does not claim that the current AgtXIv registries, the ten-paper candidates, or the oracle-proposed DAG satisfy these decision conditions.
+
+\subsection{Compatibility risks}
+
+The main compatibility risk is semantic overloading, not file conversion. Existing contribution facets can bundle definition, theorem, interpretation, and application; a new admission review may split them into several lineages. Existing profiles also require at least two occurrences for narrative contributions, whereas the normative interface requires one or more spans. The adapter must preserve the existing record and express any proposed split through candidate derivation relations. It must not recycle the old identifier for one arbitrarily selected fragment.
+
+A second risk is hash confusion. Old \field{content\_hash}, old \field{semantic\_content\_hash}, artifact hashes, span byte hashes, and the new \field{representation\_hash} protect different payloads. Every digest must carry its profile and purpose. A third risk is false completion: exact span verification proves source fidelity at the byte level but says nothing by itself about omitted claims, atomicity, truth, evidence coverage, or dependency correctness. Those limitations remain visible throughout migration.

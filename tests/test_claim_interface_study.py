@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import io
 import json
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -16,20 +19,29 @@ import tools.validate_claim_interface_study as validator
 
 
 class SamplingTests(unittest.TestCase):
-    def test_deterministic_per_stratum_shuffle_is_order_independent(self) -> None:
-        rows = [
-            {"id": "2608.00003", "primary_category": "hep-ph"},
-            {"id": "2608.00001", "primary_category": "hep-th"},
-            {"id": "2608.00002", "primary_category": "nucl-th"},
-            {"id": "2608.00004", "primary_category": "gr-qc"},
-        ]
-        first = [row["id"] for row in sampler.deterministic_shuffle(rows, "qft-particle-nuclear")]
-        second = [row["id"] for row in sampler.deterministic_shuffle(reversed(rows), "qft-particle-nuclear")]
-        self.assertEqual(first, second)
-        self.assertEqual(set(first), {"2608.00001", "2608.00002", "2608.00003"})
-
     def test_frozen_pool_and_manifest_pass_offline_check(self) -> None:
         self.assertEqual(sampler.validate_frozen(), [])
+
+    def test_manifest_and_cli_do_not_claim_random_or_queue_lineage(self) -> None:
+        manifest = json.loads(sampler.MANIFEST_PATH.read_text(encoding="utf-8"))
+        manifest_text = json.dumps(manifest, sort_keys=True).lower()
+        self.assertEqual(manifest["selection_design"]["type"], "stratified_purposive_stress_test")
+        self.assertIs(manifest["selection_design"]["probability_sample"], False)
+        self.assertNotIn('"randomization"', manifest_text)
+        self.assertNotIn("queue_position", manifest_text)
+        self.assertNotIn("excluded_before_selection", manifest_text)
+
+        output = io.StringIO()
+        with patch.object(sys, "argv", ["sample_claim_interface_arxiv.py", "--check"]):
+            with redirect_stdout(output):
+                self.assertEqual(sampler.main(), 0)
+        cli_text = output.getvalue().lower()
+        self.assertIn("candidate pool freezing: reproducible", cli_text)
+        self.assertIn("selected-set random lineage: not claimed", cli_text)
+        self.assertNotRegex(cli_text, r"random(?:ly)? select(?:ed|ion)")
+        self.assertNotRegex(cli_text, r"reproduc(?:e|ible|ing)[^\n]*queue")
+        self.assertFalse(hasattr(sampler, "deterministic_shuffle"))
+        self.assertFalse(hasattr(sampler, "queue_report"))
 
 
 class ClaimInterfaceStudyValidationTests(unittest.TestCase):

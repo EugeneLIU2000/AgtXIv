@@ -1,0 +1,74 @@
+\section{Iteration log and design decisions}\label{sec:iteration-log}
+
+\subsection{Iteration 0: frozen hypotheses}
+
+\begin{sloppypar}
+Iteration~0, recorded in Section~\ref{sec:initial-principles}, proposed a five-field record: \field{claim\_id}, \field{revision}, \field{statement}, \field{source\_spans}, and \field{lifecycle\_state}. It predicted that conditions could remain in the statement, source provenance could be an ordered span list, mathematical normalization could remain optional, and roles, evidence, dependencies, verification, and query state could remain outside the core. It also treated source artifact, locator, and exact source text as the minimum span content. These were hypotheses, not conclusions.
+\end{sloppypar}
+
+\subsection{First revision loop: stress-test findings and Iteration 1}
+
+The ten-paper extraction retained 494 candidates. Three conclusions changed the draft.
+
+First, the five-field object conflated two interfaces. Candidate review requires the field \field{lifecycle\_state}, but an accepted claim record does not need to say that it is accepted. Cases~\ref{case:2608-02862} and \ref{case:2608-01996} contain useful composite candidates that need explicit split notes during review; those notes should not become permanent fields of every accepted claim. Iteration~1 therefore moved lifecycle and rejection metadata into a candidate envelope.
+
+Second, line-based provenance was under-specified. Dormant post-document content in case~\ref{case:2608-05150}, caption inheritance in case~\ref{case:2608-05845}, and appendix/main-text joins in case~\ref{case:2608-20180} required source revision, source activity, and non-contiguous reconstruction. Iteration~1 expanded \SourceSpan{} rather than adding claim-level document fields.
+
+Third, stable references need an integrity value. The present AgtXIv registries already use revision and content hashes, while the stress test showed that a repaired span can otherwise be confused with the earlier representation. Iteration~1 added a representation hash over the statement and ordered source-span descriptors. The hash is an integrity check, not evidence of truth.
+
+The remaining Iteration~0 boundaries survived. In particular, the corpus did not force a mandatory role, scope object, modality enum, attribution enum, evidence list, dependency list, verification field, or \MathClaimIR{} payload into the core. Conditions remained mandatory in meaning but not in one domain-specific schema.
+
+\subsection{Second revision loop: independent counterexample review and Iteration 2}
+
+Iteration~1 was subjected to a counterexample-oriented independent audit. The audit first rechecked the source-internal sign tension in case~\ref{case:2608-22867}, inconsistent terminology and branch choices in case~\ref{case:2608-04867}, composite definitions in cases~\ref{case:2608-02862} and \ref{case:2608-01996}, source activity in case~\ref{case:2608-05150}, and heuristic security claims in case~\ref{case:2608-15963}. It then found five record-level counterexamples: source identity mixed with a reviewer-derived positivity correction in \field{dilatation-projection-hydrostatic} in case~\ref{case:2608-01996}; source pseudomagic SPS/PRF claims rewritten as uniformly random-function claims in \field{sps-average-spf} and \field{sps-density-corollary} in case~\ref{case:2608-14798}, although the proof supports exact formulas only for the latter ensemble; mixed imported/current attribution in \field{local-maximality-mismatch} in case~\ref{case:2608-02862}; an under-split potential/vacuum candidate \field{cp-inert-spectrum} in case~\ref{case:2608-12646}; and covariance-neglect assumptions absent from short uncertainty statements in case~\ref{case:2608-05845}.
+
+The audit also established that the current schema is a candidate inventory, not an accepted-claim instantiation. It has no accepted claim identifier, revision pair, or lifecycle gate; after audit correction, 77 records are explicitly composite; and \status{source\_checked} certifies transcription rather than acceptance. No record pair tests the identity-versus-revision rule. Iteration~2 therefore makes the following changes.
+
+\begin{enumerate}
+  \item Exact text is narrowed to exact bytes. A Unicode string plus line range does not distinguish LF from CRLF or preserve an undecodable source fragment. Iteration~2 requires byte offsets, exact bytes, and a byte digest, while allowing decoded text as a derived convenience.
+  \item Source activity is defined as provenance metadata inside the source-anchor contract, not a scientific lifecycle state. The value \status{dormant} marks anchored bytes that do not participate in the designated rendered artifact; it does not mean that the proposition is rejected or false. Span roles such as theorem statement, caption condition, proof, or evidence remain typed extensions rather than core identity fields.
+  \item A controlled exception to logical atomicity is made explicit for a named definition, protocol, or construction whose clauses jointly establish one source object. The exception requires a review reason and must not be used to merge independently revisable conclusions or clauses with different attribution.
+  \item The five fields are characterized as an accepted identity kernel, not a self-sufficient extraction record. Promotion now requires a separate admission decision that checks the candidate's structured scope, modality, quantifiers, and attribution against the final statement. Every truth-relevant value must be explicit in the statement. If an implementation cannot enforce this projection, the semantic envelope becomes mandatory at runtime.
+  \item Candidate promotion is monotone and auditable. Promotion creates a new accepted record and a mapping from the candidate; it does not mutate a generated candidate into source truth, erase rejected alternatives, or infer acceptance from \status{source\_checked}.
+\end{enumerate}
+
+The sign and positivity tensions, and the random-function proof gap beneath the source's PRF framing, belong to \ClaimAssessment{}. Branch dependence, covariance assumptions, and ownership still require admission review before promotion; an assessment must not be folded into the source-faithful statement. Iteration~2 stabilizes a defensible first-version contract; it does not establish universality, consistent application to all 494 candidates, or empirical validation of identity/revision semantics.
+
+\subsection{Change ledger}
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule
+Decision & Triggering cases & Rejected alternative & Complexity cost \\
+\midrule
+\endhead
+Move lifecycle out of accepted core & Composite review decisions in \ref{case:2608-02862} and \ref{case:2608-01996}; all 494 records are candidates during study review & Keep \path{CANDIDATE|ACCEPTED|REJECTED} on every accepted record. This makes workflow state appear proposition-bearing and permits in-place mutation & One candidate-envelope type and a promotion mapping; the accepted object loses one field \\
+Add source revision and artifact digest to every span & Source-file and compiled-state distinctions in \ref{case:2608-05150}; main/appendix recurrence in \ref{case:2608-15963} & Infer source version from paper ID or current path. A path can be overwritten and an arXiv work can have several revisions & Two scalar values per span and artifact-resolution logic \\
+Add ordered multi-span reconstruction & Distributed theorem scope in \ref{case:2608-20180}; table-caption inheritance in \ref{case:2608-05845} & Store one enclosing paragraph or concatenate paraphrases. The former over-anchors; the latter loses source boundaries & Ordered arrays and stable span identifiers; no graph machinery in core \\
+Add source activity & Dormant post-document derivations in \ref{case:2608-05150}; supplement-only results in \ref{case:2608-14798} & Reject dormant bytes or treat all archive bytes as rendered. Both conflate archive presence with document publication state & One small enum per span, plus optional renderer designation \\
+Require byte fidelity & Exact TeX and notation pressures in \ref{case:2608-22867} and \ref{case:2608-04867}; line-ending-sensitive reconstruction across the corpus & Keep decoded \field{exact\_text} only, or keep a hash only. Decoding can normalize bytes; a hash alone cannot reconstruct unavailable source & Byte offsets, base64 or equivalent byte transport, and one digest per span \\
+Add representation integrity hash & Repeated and repaired occurrences in \ref{case:2608-05845}; multi-location theorem representations in \ref{case:2608-20180} & Use revision alone or hash only the statement. Revision does not detect corruption; statement-only hashing ignores provenance changes & Canonical serialization and one digest per accepted revision \\
+Retain conditions in statement, with a mandatory admission decision rather than a universal core scope schema & Geometric domains in \ref{case:2608-20180}; adversary access in \ref{case:2608-15963}; omitted positivity, random-function scope, and covariance assumptions in \ref{case:2608-01996}, \ref{case:2608-14798}, and \ref{case:2608-05845} & Trust the short statement, or mandate physics-oriented fields for regime, model, actor, mesh, branch, and population. The first failed audit; the second is sparse and domain-specific & One external semantic-admission envelope and a field-by-field projection check; implementations unable to enforce projection must retain the envelope at runtime \\
+Keep span roles outside core & Mixed theorem/observation attribution in \ref{case:2608-02862}; caption conditions in \ref{case:2608-05845} & Put one untyped role on the claim or make every rhetorical role identity-bearing. Both fail for multi-span, mixed-role claims & Optional typed occurrence-role annotations and per-clause attribution during admission \\
+Allow reviewed composite named constructions & DW definition in \ref{case:2608-02862}; generalized placement in \ref{case:2608-01996}; protocol in \ref{case:2608-05845} & Split every conjunction, or allow arbitrary bundles. The first destroys named-object identity; the second defeats atomicity & One candidate review reason; no new accepted-core field \\
+Keep \MathClaimIR{} optional and one-to-many & Formula/prose boundaries in \ref{case:2608-14798} and \ref{case:2608-15963}; 259 partial or unsuitable candidates corpus-wide & Require one formula per claim or embed formulas in core. Both reject qualitative and empirical claims and hide alternative normalizations & A mapping record and separate normalization lifecycle \\
+Keep assessment external & Sign tension in \ref{case:2608-22867}; terminology tension in \ref{case:2608-04867} & Correct source text, or add a truth Boolean. Correction loses fidelity; a Boolean lacks assessor, evidence, and time & Separate assessment records and evidence references \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Adoption and rejection of literature ideas}
+
+\paragraph{AZ and AZ-II.}
+Adopt the separation of current results, conclusions, prior work, support, use, contradiction, gaps, and future work as useful annotation dimensions. Reject one mutually exclusive sentence zone as claim type or identity. Cases~\ref{case:2608-05845} and \ref{case:2608-22867} mix imported formulas, current observations, derivations, and interpretations too densely for a single sentence label.
+
+\paragraph{CoreSC.}
+Adopt optional, multi-label investigation components and its distinction among observation, result, and conclusion. Retain a narrow optional \field{OUTCOME.RESULT} annotation for a factual output of an investigation. Reject mandatory CoreSC labels and reject its concept identifiers as claim identifiers. Model definitions and theorem conditions in cases~\ref{case:2608-12646} and \ref{case:2608-20180} show that source proposition identity cuts across investigation components.
+
+\paragraph{SciDTB.}
+Adopt clause-like EDUs as extraction cues and retain discourse arcs in a discourse layer. Reject the one-head dependency tree as a logical, evidentiary, or mathematical claim DAG. Distributed proof support in case~\ref{case:2608-20180} and table/caption support in case~\ref{case:2608-05845} are non-tree and often non-discursive.
+
+\paragraph{SciFact and SciFact-Open.}
+Adopt assessor-scoped \status{supports}, \status{refutes}, and \status{no\_info} judgments on claim--evidence pairs, with rationale sets when collected. Reject benchmark reformulations and synthetic negations as source-faithful identities, and reject a corpus-wide truth label on the claim. Cases~\ref{case:2608-22867} and \ref{case:2608-15963} require the source assertion to survive even when assessment or adversarial generation disagrees with it.
+
+The broader literature comparison in Section~\ref{sec:literature} also supports layered extraction and admission-quality checks. Those ideas are adopted as architecture and workflow, not as additional mandatory fields.

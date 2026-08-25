@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce and check the frozen arXiv frame for the ScientificClaim study."""
+"""Check the frozen arXiv frame and purposive ScientificClaim stress-test sample."""
 
 from __future__ import annotations
 
@@ -10,8 +10,9 @@ import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from collections import Counter
 from collections.abc import Iterable
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -23,7 +24,6 @@ MANIFEST_PATH = DATA_ROOT / "sample_manifest.json"
 API_URL = "https://export.arxiv.org/api/query"
 WINDOW_START = "2026-08-01T00:00:00Z"
 WINDOW_END = "2026-08-25T23:59:00Z"
-SEED_TEXT = "AgtXIv-ScientificClaim-interface-2026-08-25-v1"
 CATEGORIES = (
     "hep-th",
     "gr-qc",
@@ -54,6 +54,19 @@ FROZEN_SELECTED_IDS = (
     "2608.05845",
     "2608.22867",
 )
+FROZEN_SOURCE_SHA256 = {
+    "2608.05150": "sha256:ec88c5d70f0dd218f0761cc470c98879c8fbff7a6b4ba0c604949ddb390c24d9",
+    "2608.12646": "sha256:ceda584f42416aa4d024913e307e91fc29ec2d17a0da9dbcafd4ad905483e605",
+    "2608.20180": "sha256:9fce9de2adb839829928d4cb4f82aca19b7710f21a5a0f23da10871f93e58611",
+    "2608.04867": "sha256:70e6bec186ce0d831f4bc8130e2efd0faabc8c173cbe5e4b2ea688c36abb5002",
+    "2608.02862": "sha256:93827c1d67bba685a09886853df47822e88e62c436f526bda64f61f3e10ff9df",
+    "2608.01996": "sha256:ecea1d235d049c949068700a282b6dc0e4d9bde7ea0fd8d7f1b142c8fc394086",
+    "2608.15963": "sha256:4805fdb1c4eed5382aea8ed0e8f28d8419235a918a2af52c3c69408d5ba45859",
+    "2608.14798": "sha256:3e3c04d827872466db57b58fe70ad9d5d61c8d141056ca25f82581ac14aa0d52",
+    "2608.05845": "sha256:c6e39b5ea5e7c83debc30ffc053dd96d04fce92c1b24eda4c5ee14d7a1a98063",
+    "2608.22867": "sha256:47337f57434318a90e0109edf2b9d25fd8597fcdeffeccf258235d566864de6c",
+}
+DOCUMENTED_EXCLUSION_IDS = frozenset(("2608.02735", "2608.14308"))
 ATOM = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
 USER_AGENT = "AgtXIv-ScientificClaim-study/1.0 (https://github.com/AgtXIv/AgtXIv; reproducibility query)"
 
@@ -87,33 +100,6 @@ def stratum_for(primary_category: str) -> str | None:
     return next((name for name, categories in STRATA.items() if primary_category in categories), None)
 
 
-def deterministic_shuffle(rows: Iterable[dict[str, Any]], stratum: str) -> list[dict[str, Any]]:
-    """Return a stable, implementation-independent permutation for one stratum."""
-    if stratum not in STRATA:
-        raise ValueError(f"unknown stratum: {stratum}")
-
-    def shuffle_key(row: dict[str, Any]) -> tuple[bytes, str]:
-        material = f"{SEED_TEXT}\0{stratum}\0{row['id']}".encode("utf-8")
-        return hashlib.sha256(material).digest(), row["id"]
-
-    members = (row for row in rows if row.get("primary_category") in STRATA[stratum])
-    return sorted(members, key=shuffle_key)
-
-
-def queue_report(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
-    selected = {item["arxiv_id"] for item in manifest.get("selected", [])}
-    excluded = {item["id"] for item in manifest.get("excluded_before_selection", [])}
-    report: dict[str, list[dict[str, Any]]] = {}
-    for stratum in STRATA:
-        queue = deterministic_shuffle(rows, stratum)
-        report[stratum] = [
-            {"queue_position": position, "id": row["id"], "recorded_decision": "selected" if row["id"] in selected else "excluded" if row["id"] in excluded else None}
-            for position, row in enumerate(queue, 1)
-            if row["id"] in selected or row["id"] in excluded
-        ]
-    return report
-
-
 def validate_frozen(pool_path: Path = POOL_PATH, manifest_path: Path = MANIFEST_PATH) -> list[str]:
     errors: list[str] = []
     try:
@@ -135,11 +121,19 @@ def validate_frozen(pool_path: Path = POOL_PATH, manifest_path: Path = MANIFEST_
         errors.append("manifest sampling window does not match the frozen frame")
     if tuple(manifest.get("eligible_primary_categories", ())) != CATEGORIES:
         errors.append("manifest primary categories do not match the frozen frame")
-    randomization = manifest.get("randomization", {})
-    if randomization.get("seed_text") != SEED_TEXT:
-        errors.append("manifest randomization seed text does not match")
-    if randomization.get("digest") != sha256_bytes(SEED_TEXT.encode("utf-8")):
-        errors.append("manifest randomization digest does not match the seed text")
+    if manifest.get("schema") != "agtxiv.claim-interface-sample/1.1.0":
+        errors.append("manifest does not use the purposive-sample contract version")
+    if "randomization" in manifest or "excluded_before_selection" in manifest:
+        errors.append("manifest contains a retired selection-lineage field")
+
+    selection_design = manifest.get("selection_design", {})
+    if selection_design.get("type") != "stratified_purposive_stress_test":
+        errors.append("manifest selection_design type is not stratified_purposive_stress_test")
+    if selection_design.get("probability_sample") is not False:
+        errors.append("manifest must state that this is not a probability sample")
+    for field in ("candidate_pool_status", "selection_method", "lineage_scope"):
+        if not selection_design.get(field):
+            errors.append(f"manifest selection_design has no {field}")
 
     ids = [row.get("id") for row in rows]
     if len(ids) != len(set(ids)):
@@ -163,8 +157,14 @@ def validate_frozen(pool_path: Path = POOL_PATH, manifest_path: Path = MANIFEST_
     selected = manifest.get("selected", [])
     selected_ids = tuple(item.get("arxiv_id") for item in selected)
     if selected_ids != FROZEN_SELECTED_IDS:
-        errors.append("manifest selected IDs/order differ from the frozen sample")
+        errors.append("manifest selected IDs/order differ from the frozen purposive sample")
+    if len(selected_ids) != len(set(selected_ids)):
+        errors.append("manifest selected papers contain duplicate IDs")
+    if [item.get("sample_index") for item in selected] != list(range(1, len(selected) + 1)):
+        errors.append("manifest selected sample_index values are not consecutive")
+
     by_id = {row.get("id"): row for row in rows}
+    selected_strata: Counter[str] = Counter()
     for item in selected:
         paper_id = item.get("arxiv_id")
         row = by_id.get(paper_id)
@@ -173,23 +173,34 @@ def validate_frozen(pool_path: Path = POOL_PATH, manifest_path: Path = MANIFEST_
             continue
         if item.get("versioned_id") != f"{paper_id}v1":
             errors.append(f"selected paper {paper_id} is not pinned to v1")
-        if item.get("stratum") != stratum_for(row.get("primary_category", "")):
+        expected_stratum = stratum_for(row.get("primary_category", ""))
+        if item.get("stratum") != expected_stratum:
             errors.append(f"selected paper {paper_id} has an incorrect stratum")
-    seen_exclusions: set[tuple[str, int]] = set()
-    for item in manifest.get("excluded_before_selection", []):
-        paper_id, stratum, position = item.get("id"), item.get("stratum"), item.get("queue_position")
-        if paper_id not in by_id:
-            errors.append(f"pre-selection exclusion {paper_id} is absent from candidate pool")
-        elif stratum_for(by_id[paper_id].get("primary_category", "")) != stratum:
-            errors.append(f"pre-selection exclusion {paper_id} has an incorrect stratum")
-        if not isinstance(position, int) or position < 1:
-            errors.append(f"pre-selection exclusion {paper_id} has an invalid queue position")
-        elif (stratum, position) in seen_exclusions:
-            errors.append(f"duplicate exclusion queue position {stratum}:{position}")
         else:
-            seen_exclusions.add((stratum, position))
+            selected_strata[item["stratum"]] += 1
+        if item.get("source_sha256") != FROZEN_SOURCE_SHA256.get(paper_id):
+            errors.append(f"selected paper {paper_id} has an incorrect frozen source hash")
+        if item.get("source_url") != f"https://arxiv.org/e-print/{paper_id}":
+            errors.append(f"selected paper {paper_id} does not use the official arXiv source URL")
+        if item.get("abs_url") != f"https://arxiv.org/abs/{paper_id}":
+            errors.append(f"selected paper {paper_id} does not use the official arXiv abstract URL")
+    if selected_strata != Counter({stratum: 2 for stratum in STRATA}):
+        errors.append("manifest does not select exactly two papers in each topic stratum")
+
+    exclusions = manifest.get("documented_eligibility_exclusions", [])
+    exclusion_ids = [item.get("id") for item in exclusions]
+    if frozenset(exclusion_ids) != DOCUMENTED_EXCLUSION_IDS or len(exclusion_ids) != len(DOCUMENTED_EXCLUSION_IDS):
+        errors.append("manifest documented eligibility exclusions differ from the two preserved decisions")
+    for item in exclusions:
+        paper_id, stratum = item.get("id"), item.get("stratum")
+        if "queue_position" in item:
+            errors.append(f"documented exclusion {paper_id} retains an unsupported queue position")
+        if paper_id not in by_id:
+            errors.append(f"documented exclusion {paper_id} is absent from candidate pool")
+        elif stratum_for(by_id[paper_id].get("primary_category", "")) != stratum:
+            errors.append(f"documented exclusion {paper_id} has an incorrect stratum")
         if not item.get("reason"):
-            errors.append(f"pre-selection exclusion {paper_id} has no reason")
+            errors.append(f"documented exclusion {paper_id} has no reason")
     return errors
 
 
@@ -274,21 +285,19 @@ def refresh(pool_path: Path = POOL_PATH, manifest_path: Path = MANIFEST_PATH, ra
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     action = parser.add_mutually_exclusive_group(required=True)
-    action.add_argument("--check", action="store_true", help="validate the frozen local pool and manifest without network access")
-    action.add_argument("--refresh", action="store_true", help="retrieve the official API frame and compare it with the frozen pool")
+    action.add_argument("--check", action="store_true", help="validate the frozen pool and purposive sample manifest offline")
+    action.add_argument("--refresh", action="store_true", help="politely retrieve the official API frame and compare it with the frozen pool")
     parser.add_argument("--pool", type=Path, default=POOL_PATH)
     parser.add_argument("--manifest", type=Path, default=MANIFEST_PATH)
-    parser.add_argument("--rate-limit-seconds", type=float, default=3.0)
-    parser.add_argument("--show-queue", action="store_true", help="print selected/excluded positions in the reproducible per-stratum queues")
+    parser.add_argument("--rate-limit-seconds", type=float, default=3.0, help="delay between official API requests (default: 3 seconds)")
     args = parser.parse_args()
     errors = refresh(args.pool, args.manifest, args.rate_limit_seconds) if args.refresh else validate_frozen(args.pool, args.manifest)
     for error in errors:
         print(f"ERROR: {error}")
-    if args.show_queue and not errors:
-        rows = load_jsonl(args.pool)
-        manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-        print(json.dumps(queue_report(rows, manifest), indent=2, sort_keys=True))
-    print(f"claim-interface sampling check: errors={len(errors)} network={'yes' if args.refresh else 'no'}")
+    if not errors:
+        print("candidate pool freezing: reproducible (count, digest, stable order, and frame verified)")
+        print("selected-set random lineage: not claimed; design=stratified purposive stress test")
+    print(f"claim-interface sample check: errors={len(errors)} network={'yes' if args.refresh else 'no'}")
     return 1 if errors else 0
 
 
