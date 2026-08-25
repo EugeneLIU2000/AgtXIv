@@ -1,18 +1,18 @@
 :root {
   color-scheme: light;
-  --ink: #17211c;
-  --muted: #68736d;
-  --line: #d8d5ca;
-  --paper: #f3f0e8;
-  --white: #fffdf8;
+  --ink: #111827;
+  --muted: #4b5b72;
+  --line: #d5dce7;
+  --paper: #f4f6f9;
+  --white: #ffffff;
   --navy: #0b1527;
-  --blue: #315f78;
-  --cyan: #287f91;
-  --formal: #1f6b4f;
-  --occurrence: #8f9e96;
-  --purple: #695283;
-  --orange: #b06b20;
-  --amber: #b06b20;
+  --blue: #2457f5;
+  --cyan: #0d9fc2;
+  --formal: #657286;
+  --occurrence: #9ba7b8;
+  --purple: #7653c6;
+  --orange: #dc7629;
+  --amber: #9a5a0b;
   --radius: 14px;
   --shadow: 0 18px 54px rgba(19, 31, 52, .12);
 }
@@ -64,7 +64,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 .glyph-swatch { --glyph-color: var(--occurrence); position: relative; width: 17px; height: 17px; display: inline-block; flex: 0 0 auto; background: var(--white); border: 2px solid var(--glyph-color); border-radius: 50%; box-shadow: 0 2px 4px rgba(23,33,28,.12); }
 .glyph-swatch::before { content: ""; position: absolute; inset: 3px; background: var(--glyph-color); border: 2px solid var(--white); border-radius: 50%; }
 .glyph-swatch::after { content: ""; position: absolute; inset: -4px; border: 1px solid color-mix(in srgb, var(--glyph-color) 72%, transparent); border-radius: 50%; }
-.glyph-swatch.paper { --glyph-color: var(--blue); width: 21px; height: 21px; }
+.glyph-swatch.paper { --glyph-color: var(--navy); width: 21px; height: 21px; }
 .glyph-swatch.contribution { --glyph-color: var(--blue); width: 19px; height: 19px; }
 .glyph-swatch.facet { --glyph-color: var(--cyan); }
 .glyph-swatch.formal { --glyph-color: var(--formal); }
@@ -84,7 +84,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 .graph-toolbar button:hover { color: var(--blue); border-color: #9bb0da; }
 .graph-toolbar button:active { transform: translateY(1px); }
 .pan-hint { margin-left: auto; color: #667389; font-size: 9px; }
-.graph-stage { position: relative; min-height: 590px; flex: 1; overflow: hidden; background-color: #f8f6f0; background-image: linear-gradient(rgba(216,213,202,.58) 1px, transparent 1px), linear-gradient(90deg, rgba(216,213,202,.58) 1px, transparent 1px); background-size: 28px 28px; cursor: grab; touch-action: none; }
+.graph-stage { position: relative; min-height: 590px; flex: 1; overflow: hidden; background-color: #f8fafc; background-image: linear-gradient(#e8edf4 1px, transparent 1px), linear-gradient(90deg, #e8edf4 1px, transparent 1px); background-size: 28px 28px; cursor: grab; touch-action: none; }
 .graph-stage.is-panning { cursor: grabbing; }
 #claimGraphSvg { width: 100%; height: 100%; min-height: 590px; display: block; user-select: none; }
 #viewportGroup { transform-origin: 0 0; }
@@ -92,21 +92,22 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 
 .edge-group { transition: opacity 150ms ease; }
 .graph-edge-underlay, .graph-edge { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.graph-edge-underlay { stroke: rgba(255,253,248,.96); stroke-width: 5.2; }
-.graph-edge { stroke: #8f9e96; stroke-width: 1.55; opacity: .72; transition: opacity 150ms ease, stroke-width 150ms ease; }
+.graph-edge-underlay { stroke: rgba(255,255,255,.96); stroke-width: 5.2; }
+.graph-edge { stroke: #8190a5; stroke-width: 1.55; opacity: .78; transition: opacity 150ms ease, stroke-width 150ms ease; }
 .graph-edge.source_calibration, .graph-edge.formal_source { stroke: var(--formal); stroke-dasharray: 6 5; }
 .graph-edge.provisional_navigation { stroke: var(--purple); stroke-width: 2.1; stroke-dasharray: 2 6; }
 .edge-group.hover-active .graph-edge { stroke-width: 3.6; opacity: 1; }
 .edge-group.hover-active .graph-edge-underlay { stroke-width: 7; }
 .edge-group.hover-muted { opacity: .06; }
-#arrowStructure path { fill: #8f9e96; }
+#arrowStructure path { fill: #8190a5; }
 #arrowSource path { fill: var(--formal); }
 #arrowSupport path { fill: var(--purple); }
-.edge-label { fill: #68736d; font-size: 8px; font-weight: 750; letter-spacing: .04em; paint-order: stroke; stroke: #fffdf8; stroke-width: 4px; stroke-linejoin: round; }
+.edge-label { fill: #68758a; font-size: 8px; font-weight: 750; letter-spacing: .04em; paint-order: stroke; stroke: #f8fafc; stroke-width: 4px; stroke-linejoin: round; }
 .edge-label.provisional_navigation { fill: var(--purple); }
 
 .graph-node { --node-color: var(--occurrence); cursor: pointer; outline: none; transition: opacity 150ms ease; }
-.graph-node.paper, .graph-node.scientific_claim_contribution { --node-color: var(--blue); }
+.graph-node.paper { --node-color: var(--navy); }
+.graph-node.scientific_claim_contribution { --node-color: var(--blue); }
 .graph-node.facet { --node-color: var(--cyan); }
 .graph-node.scientific_claim_formal { --node-color: var(--formal); }
 .graph-node.source_occurrence { --node-color: var(--occurrence); }
@@ -115,25 +116,25 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 .node-hit-area { fill: transparent; }
 .membership-ring { fill: none; stroke: var(--node-color); stroke-width: 1.7; transition: stroke-width 120ms ease; }
 .scientific_claim_formal .membership-ring { stroke-width: 2; stroke-dasharray: 3 2; }
-.interface-shell, .node-shell { fill: #fffdf8; stroke: rgba(255,255,255,.98); stroke-width: 2; }
+.interface-shell, .node-shell { fill: #ffffff; stroke: rgba(255,255,255,.98); stroke-width: 2; }
 .interface-dot, .node-dot { fill: var(--node-color); stroke: rgba(255,255,255,.94); stroke-width: 1.2; }
 .node-focus, .interface-focus { fill: none; stroke: var(--node-color); stroke-width: 2; opacity: 0; transition: opacity 120ms ease, stroke-width 120ms ease; }
 .agent-progress-track, .agent-progress-ring { fill: none; stroke-width: 3.5; }
-.agent-progress-track { stroke: rgba(86,102,94,.14); }
-.agent-progress-ring { stroke: var(--blue); stroke-linecap: round; stroke-dasharray: 14 5; }
-.agent-outline { fill: rgba(255,253,248,.94); stroke: rgba(23,33,28,.14); stroke-width: 1; transition: stroke 120ms ease, stroke-width 120ms ease; }
-.agent-disc { fill: #dbe8ef; stroke: var(--blue); stroke-width: 3; }
-.agent-core-dot { fill: var(--blue); stroke: #fffdf8; stroke-width: 2; }
-.external-node-type, .external-node-label { pointer-events: none; text-anchor: middle; paint-order: stroke; stroke: #fffdf8; stroke-linejoin: round; }
+.agent-progress-track { stroke: rgba(38,56,88,.14); }
+.agent-progress-ring { stroke: var(--navy); stroke-linecap: round; stroke-dasharray: 14 5; }
+.agent-outline { fill: rgba(255,255,255,.96); stroke: rgba(38,56,88,.18); stroke-width: 1; transition: stroke 120ms ease, stroke-width 120ms ease; }
+.agent-disc { fill: #e7edf7; stroke: var(--navy); stroke-width: 3; }
+.agent-core-dot { fill: var(--navy); stroke: #ffffff; stroke-width: 2; }
+.external-node-type, .external-node-label { pointer-events: none; text-anchor: middle; paint-order: stroke; stroke: #ffffff; stroke-linejoin: round; }
 .external-node-type { fill: var(--node-color); stroke-width: 3px; font: 800 8px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
-.external-node-label { fill: #334039; stroke-width: 4px; font: 700 10px Inter, ui-sans-serif, system-ui, sans-serif; }
+.external-node-label { fill: #253349; stroke-width: 4px; font: 700 10px Inter, ui-sans-serif, system-ui, sans-serif; }
 .graph-node:hover .node-focus, .graph-node:focus .node-focus, .graph-node.is-highlight-target .node-focus, .graph-node.is-pinned .node-focus { opacity: .95; stroke-width: 3; }
 .graph-node:hover .membership-ring, .graph-node:focus .membership-ring, .graph-node.is-highlight-target .membership-ring, .graph-node.is-pinned .membership-ring { stroke-width: 3; }
 .graph-node:hover .agent-outline, .graph-node:focus .agent-outline, .graph-node.is-highlight-target .agent-outline, .graph-node.is-pinned .agent-outline { stroke: var(--amber); stroke-width: 3; }
 .graph-node.hover-active, .graph-node.is-pinned { opacity: 1; }
 .graph-node.hover-muted { opacity: .09; }
 .expand-badge { pointer-events: none; }
-.expand-badge-shell { fill: #fffdf8; stroke: var(--node-color); stroke-width: 1.5; }
+.expand-badge-shell { fill: #ffffff; stroke: var(--node-color); stroke-width: 1.5; }
 .expand-badge-label { fill: var(--node-color); font: 800 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .graph-status { min-height: 52px; padding: 8px 13px; display: flex; justify-content: space-between; gap: 18px; color: #526075; background: #f7f9fc; border-top: 1px solid var(--line); font-size: 10px; }

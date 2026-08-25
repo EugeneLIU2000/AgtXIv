@@ -81,6 +81,22 @@ class ScientificClaimDemoTests(unittest.TestCase):
             self.assertIn(variable, self.css)
         self.assertIn("MathematicalPropositionIR", self.html)
 
+    def test_circle_glyphs_use_the_new_demo_palette(self) -> None:
+        expected_palette = {
+            "--navy": "#0b1527",
+            "--blue": "#2457f5",
+            "--cyan": "#0d9fc2",
+            "--formal": "#657286",
+            "--occurrence": "#9ba7b8",
+            "--purple": "#7653c6",
+            "--orange": "#dc7629",
+        }
+        for variable, value in expected_palette.items():
+            self.assertIn(f"{variable}: {value}", self.css)
+        self.assertIn(".graph-node.paper { --node-color: var(--navy); }", self.css)
+        self.assertIn(".graph-node.scientific_claim_contribution { --node-color: var(--blue); }", self.css)
+        self.assertIn("background-color: #f8fafc", self.css)
+
     def test_every_graph_node_uses_reference_style_circle_glyphs_and_external_labels(self) -> None:
         renderer = self.javascript.split("function renderNode", 1)[1].split("function clearConnectedHighlight", 1)[0]
         self.assertNotIn('svgElement("rect"', renderer)
