@@ -1,0 +1,226 @@
+\section{Normative first-version proposal}\label{sec:normative}
+
+The words \textsc{must}, \textsc{must not}, \textsc{should}, and \textsc{may} are normative. The proposal is a sidecar interface. It does not revise \ScientificClaim{}, \MathClaim{}, or the production registry.
+
+\subsection{Grounding contract}
+
+\begin{lstlisting}[style=interface]
+ClaimMathGrounding {
+  grounding_id
+  scientific_claim_ref       // id, revision, representation hash
+  math_claim_refs[]          // id, revision, contract hash
+  coverage                    // COMPLETE | PARTIAL
+  covered_components[]
+  semantic_envelope[]
+  assumption_alignment       // EQUIVALENT | MATH_STRONGER |
+                             // MATH_WEAKER | INCOMPARABLE
+  grounding_method
+  grounding_status           // PROPOSED | ACCEPTED | REJECTED |
+                             // BLOCKED | DISPUTED
+  reviewer_or_gate
+  revision
+  provenance
+}
+\end{lstlisting}
+
+A grounding \textsc{must} bind immutable revisions and hashes. Every covered component \textsc{must} identify a clause or independently reviewable component narrower than the undifferentiated \field{statement}. \status{complete} means that the referenced contracts cover all mathematical content of every identified candidate component, including its declared mathematical premises; it does not mean that attribution, evidence, interpretation, or the source claim as a whole is scientifically accepted. Such non-mathematical content remains in the residual semantic envelope. \status{partial} means that only named mathematical subcomponents are covered and requires at least one typed residual-envelope element that identifies what remains outside the contract.
+
+\field{assumption\_alignment} compares the mathematical contract with the source claim. \status{math\_stronger} means that the mathematical result requires stronger assumptions and therefore cannot verify the full source claim. \status{math\_weaker} means that it establishes a result under weaker assumptions, but the source claim's narrower scope remains part of its identity. \status{incomparable} blocks implication-based reduction.
+
+A grounding produced by similarity, NLI, retrieval, an LLM, or an unverified graph \textsc{must} remain \status{proposed}. Only the declared mathematical and source-alignment gates may assign \status{accepted}. The fixture state \status{assumed\_verified\_for\_study} is allowed only in research data and \textsc{must not} be mapped to a production verification state.
+
+\subsection{Semantic relation contract}
+
+\begin{lstlisting}[style=interface]
+SemanticClaimRelation {
+  relation_id
+  relation_type
+  source_claim_refs[]
+  target_claim_refs[]
+  orientation                  // source relation_type target
+  math_witness_refs[]
+  grounding_refs[]
+  envelope_comparison[]
+  assumption_context
+  status
+  assessor_or_method
+  revision
+  provenance
+}
+\end{lstlisting}
+
+The first-version relation types have the following semantics:
+\begin{description}[style=nextline]
+  \item[\status{same\_occurrence\_lineage}.] The occurrences have already been adjudicated as representations of one claim lineage. This relation consolidates display locations; it never removes source anchors.
+  \item[\status{semantic\_equivalent}.] Proposition, scope, modality, attribution, polarity, and all truth-relevant envelope values are equivalent in the declared context. Mathematical equivalence alone is insufficient.
+  \item[\status{math\_equivalent\_envelope\_distinct}.] The accepted mathematical components are equivalent, but at least one semantic envelope component differs. Registry identities and contribution units remain separate.
+  \item[\status{strictly\_entails}.] The complete source proposition of the source entails the target under the context, but the converse is not established. Direction and assumptions are mandatory.
+  \item[\status{specializes}/\status{generalizes}.] The propositions differ by domain, quantifier, assumption, or parameter range. Neither is a duplicate.
+  \item[\status{depends\_on}.] The source requires the target as a premise, definition, or construction input. This relation does not assert that the target entails the source and is never by itself eligible for hiding.
+  \item[\status{derivable\_exposition}.] The complete grounded component is derivable from displayed verified claims, and any residual envelope is explicitly accounted for. This type can justify hiding only for a policy that declares the exposition out of scope.
+  \item[\status{contradicts}/\status{corrects}.] The claims conflict or one source presents a correction. Both remain visible unless the query explicitly requests a single revision lineage and preserves the conflict receipt.
+  \item[\status{incomparable}.] No accepted order relation covers the complete propositions.
+  \item[\status{unknown}/\status{blocked}.] Required source, grounding, assumption, envelope, or assessor information is missing or inconsistent.
+\end{description}
+
+Every directed relation is read as ``source \field{relation\_type} target''; \status{depends\_on} therefore points from the dependent proposition to its prerequisite. Hyperedges are allowed only when every source and target MathClaim endpoint carries a candidate-component grounding; jointly required targets are interpreted conjunctively. A text model's score may accompany provenance but \textsc{must not} replace \field{status} or the accepted witnesses.
+
+\subsection{View construction}
+
+\begin{lstlisting}[style=interface]
+ClaimViewPolicy {
+  policy_id
+  revision
+  query_profile
+  eligible_relation_types[]
+  preserve_dimensions[]
+  always_visible_states[]
+  tie_break_rule
+  canonicalization_profile
+}
+
+ClaimView {
+  view_id
+  query
+  policy_ref
+  eligible_claim_refs[]
+  displayed_claim_refs[]
+  hidden_units[] {
+    hidden_ref
+    representative_refs[]
+    reason_relation_ref
+    grounding_refs[]
+    preserved_envelope
+  }
+  reconstruction_receipt
+  generated_at
+}
+\end{lstlisting}
+
+Every policy \textsc{must} preserve conditions, quantifiers, polarity, modality, attribution, approximation, empirical scope, uncertainty, comparison baseline, actor/access model, evidence status, contradiction, correction, and limitation unless the query explicitly excludes a dimension and the receipt still retains it. \status{blocked}, \status{disputed}, and unresolved \status{contradicts} units \textsc{must} remain visible in audit and contribution views.
+
+View construction proceeds in this order:
+\begin{enumerate}
+  \item resolve immutable claim and mathematical references;
+  \item consolidate occurrences already belonging to one lineage;
+  \item form equivalence classes only from accepted \status{semantic\_equivalent} relations;
+  \item select a representative deterministically under the policy;
+  \item consider accepted \status{derivable\_exposition} relations for the declared query;
+  \item run the envelope-preservation check for every proposed hidden unit;
+  \item emit displayed units and a complete reconstruction receipt; and
+  \item recompute the receipt hash and all coverage metrics.
+\end{enumerate}
+
+Strict entailment, specialization, dependency, mathematical equivalence with distinct envelope, similarity, shared citation, shared entity, and graph centrality \textsc{must not} by themselves form an equivalence class. A reconstruction receipt \textsc{must} bind the candidate hashes, source-span digests, exact residual envelope, and hashed policy fixture. A view \textsc{must} be reproducible from immutable inputs and a versioned policy. Changing only the view does not revise a claim.
+
+\subsection{Contribution unit contract}
+
+\begin{lstlisting}[style=interface]
+ContributionUnit {
+  unit_id
+  paper_revision
+  output_claim_refs[]
+  baseline_refs[]
+  baseline_declarations[]       // typed refs and immutable hashes
+  operation_types[]
+  dimension_witnesses           // output refs by aggregate dimension
+  math_delta {
+    relation                 // NEW | EQUIVALENT | STRONGER |
+                             // WEAKER_ASSUMPTIONS | SPECIALIZED |
+                             // INCOMPARABLE | NONE | UNKNOWN
+    new_equivalence_classes[]
+    witness_relations[]
+  }
+  assumption_delta[]
+  conclusion_delta[]
+  proof_or_method_delta[]
+  semantic_envelope_delta[]
+  verification_and_evidence[]
+  attribution
+  uncertainty
+  status
+  assessor_or_method
+  revision
+  provenance
+}
+\end{lstlisting}
+
+A contribution unit \textsc{must} identify at least one current-paper output claim and an explicit baseline, or state \status{no\_external\_baseline} with a reason. The latter permits documenting an author declaration but not asserting novelty. Baselines may be prior claims, prior methods, a null model, a benchmark, or a previous paper revision; their type and selection method must be declared.
+
+Operation types are multi-label. Their minimum meanings are:
+\begin{description}[style=nextline]
+  \item[\status{introduces}.] Defines a new object, resource, task, dataset, method, protocol, or representation relative to the baseline.
+  \item[\status{proves}.] Supplies accepted proof support for a proposition not proved by the declared baseline.
+  \item[\status{reproves}.] Supplies a materially different proof or derivation for an equivalent baseline proposition.
+  \item[\status{strengthens}.] Establishes a strictly stronger conclusion under aligned assumptions.
+  \item[\status{weakens\_assumptions}.] Establishes an aligned conclusion under strictly weaker assumptions.
+  \item[\status{generalizes}/\status{specializes}.] Changes the domain or parameter class without asserting a total quality order.
+  \item[\status{unifies}.] Provides one accepted representation or derivation covering several baseline cases.
+  \item[\status{refutes}.] Supplies an assessor-scoped contradiction or counterexample with evidence.
+  \item[\status{computes}.] Derives an exact, approximate, asymptotic, or numerical value with the method and regime preserved.
+  \item[\status{observes}.] Reports an empirical or numerical pattern under a specified setup.
+  \item[\status{implements}.] Realizes a defined procedure or estimator in an inspectable artifact or protocol.
+  \item[\status{benchmarks}.] Compares outputs under an explicit dataset, metric, baseline, and uncertainty convention.
+  \item[\status{interprets}.] Adds a scientific meaning not entailed by the mathematical object alone.
+\end{description}
+
+Author wording such as ``we introduce'' or ``for the first time'' creates a proposed contribution unit with source attribution. It does not establish accepted novelty or priority. A contribution assessment may confirm, dispute, or block the unit without modifying the underlying claims.
+
+\subsection{Contribution profile and quantification}
+
+\begin{lstlisting}[style=interface]
+ContributionProfile {
+  profile_id
+  paper_revision
+  baseline_set
+  granularity_profile
+  contribution_unit_refs[]
+  granularity_grouping_map      // groups partition unit refs
+  operation_histogram
+  mathematical_delta_counts
+  proof_and_method_delta_counts
+  empirical_and_semantic_delta_counts
+  dependency_reuse
+  verification_and_evidence_coverage
+  unknown_and_blocked_counts
+  sensitivity_results[]
+  comparison_domain
+  assessor_or_method
+  revision
+  provenance
+}
+\end{lstlisting}
+
+Counts \textsc{must} use accepted contribution units or declared mathematical equivalence classes, not sentences, source spans, citations, tokens, or raw graph nodes. Each counted profile dimension \textsc{must} be recomputed from explicit unit witnesses after applying the declared granularity grouping map; the map must partition the listed units. The profile baseline must satisfy every included unit's baseline declaration. Without an external baseline, mathematical novelty remains \field{null}, never zero or one. Quality, importance, and impact are not derived dimensions. The following quantities are permitted when their denominator is defined:
+\begin{align}
+N_{\mathrm{new}}(P\mid B,g)
+  &= \left|\mathcal E_P^{\mathrm{current}}(g)
+      \setminus \operatorname{Closure}(\mathcal E_B)\right|,\\
+R_{\mathrm{reuse}}(P\mid B,g)
+  &= \frac{|D_P^{\mathrm{accepted}}\cap
+      \operatorname{Closure}(D_B^{\mathrm{accepted}})|}
+      {|D_P^{\mathrm{accepted}}|},\\
+V_t(P)
+  &= \frac{\#\text{contribution units with completed check of type }t}
+      {\#\text{units eligible for check }t}.
+\end{align}
+Here $g$ is the declared granularity profile, $\mathcal E$ is a set of verified mathematical equivalence classes, and $D$ is a set of accepted dependencies. The closure operator and accepted relation types must be versioned. A zero denominator is not applicable.
+
+$N_{\mathrm{new}}$ measures graph novelty relative to one baseline and representation; it does not measure importance. $R_{\mathrm{reuse}}$ measures dependency reuse, not originality or lack of originality. $V_t$ measures completed coverage, not truth probability. Operation histograms measure the representation's typed units, not paper quality.
+
+Profiles are comparable component-wise only when paper scope, baseline construction, granularity, canonicalization, relation semantics, and eligible evidence checks agree. Otherwise the system \textsc{must} report incomparability or sensitivity, not fill missing dimensions with zero. Pareto views may be computed over a declared comparable set. A weighted sum is permitted only as an application-specific derived view with published weights, calibration target, validation data, and uncertainty. It \textsc{must not} be named ``quality'', ``truth'', ``importance'', ``novelty'', or ``impact'' without independent validation for that construct.
+
+\subsection{Forbidden operations}
+
+The first version forbids:
+\begin{itemize}
+  \item deleting source claims or source spans after view reduction;
+  \item merging claims solely from embedding similarity, NLI output, shared formulas, shared entities, shared citations, or graph proximity;
+  \item treating mathematical verification as verification of empirical applicability, interpretation, attribution, novelty, priority, or evidence sufficiency;
+  \item treating a stronger theorem as a duplicate of every specialization;
+  \item treating a new proof of an old theorem as a new theorem, or as no contribution;
+  \item using citation count, claim count, proof length, node count, compression ratio, or centrality as an intrinsic contribution score;
+  \item converting \status{unknown}, \status{blocked}, absent, or not applicable to numeric zero;
+  \item promoting an Oracle-generated edge because it yields a smaller graph; and
+  \item comparing profiles produced under undisclosed baselines or granularity settings.
+\end{itemize}

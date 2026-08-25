@@ -1,0 +1,51 @@
+\section{Method and evidence boundary}\label{sec:method}
+
+\subsection{Inherited contracts}
+
+This study treats the five-field accepted \ScientificClaim{} interface in the upstream specification as fixed input: \field{claim\_id}, \field{revision}, a source-faithful and scope-complete \field{statement}, ordered exact \field{source\_spans}, and \field{representation\_hash}. Candidate generation, discourse labels, evidence, assessment, graph relations, and mathematical normalization remain external. The existing 494-row stress-test corpus is a candidate inventory rather than an accepted registry.
+
+For this design experiment, a referenced \MathClaim{} may carry the study-only status \path{ASSUMED_VERIFIED_FOR_STUDY}. This means that the experiment is allowed to use its stated formal equivalence, implication, assumptions, and dependencies as if they had passed the mathematical gate. It does not assert that a corresponding Lean artifact exists in the repository. No result in this study upgrades such a synthetic fixture to \status{kernel\_checked}, \status{audited}, or \status{reusable\_contract}.
+
+\subsection{Terminology}
+
+A \emph{claim occurrence} is one source location at which a proposition is expressed. A \emph{claim lineage} is the versioned identity of one source proposition. A \emph{mathematical equivalence class} contains accepted \MathClaim{} revisions whose equivalence has been verified under an explicit assumption context. A \emph{semantic envelope} is the truth-relevant part of a \ScientificClaim{} not covered by its referenced \MathClaim{} records, including attribution, modality, empirical regime, approximation, comparison baseline, actor or access model, interpretation, and evidentiary status.
+
+A \emph{view reduction} hides redundant display units for a declared query while preserving all source records and a reconstruction receipt. It is not deletion, acceptance, or identity fusion. A \emph{paper contribution} is a source-grounded, assessor-scoped relation stating how current-work claims differ from an explicit baseline. An author contribution declaration is evidence for this relation, not its final adjudication.
+
+\subsection{Gold-slice selection}
+
+The empirical study reuses the stratified purposive ten-paper corpus documented by the upstream specification. Six papers were selected to expose different failure modes rather than to estimate prevalence:
+\begin{itemize}
+  \item case~\ref{case:contrib-20180}: theorem, proof recurrence, strict hypotheses, and mathematical consequences;
+  \item case~\ref{case:contrib-14798}: definitions, resource bounds, imported baselines, and a random-versus-pseudorandom scope gap;
+  \item case~\ref{case:contrib-05845}: formula derivation, repeated narrative conclusions, numerical table cells, uncertainty, and mixed attribution;
+  \item case~\ref{case:contrib-15963}: verified formulas inside security claims with an irreducible adversary and access-model envelope;
+  \item case~\ref{case:contrib-22867}: a standard theorem, system-derived formula, numerical interpretation, and a source-internal sign tension;
+  \item case~\ref{case:contrib-02862}: imported theorem versus current numerical observation and baseline-sensitive algorithm ranking.
+\end{itemize}
+The selected records and pair decisions are frozen in \path{data/gold-slices.jsonl}. They are deliberately small, reviewed slices; absence from a slice does not mean that a paper claim is unimportant or reducible.
+
+\subsection{Compared reduction strategies}
+
+Three strategies are evaluated conceptually and on the gold slices:
+\begin{description}[style=nextline]
+  \item[Text similarity clustering.] Candidate pairs are proposed from lexical or embedding similarity. It is inexpensive and high recall, but it receives no authority beyond \status{proposed}.
+  \item[Source-aware semantic subsumption.] A reviewer compares proposition, scope, modality, attribution, and envelope and records equivalence, strict implication, specialization, contradiction, or unknown. This can approve occurrence consolidation and some lineage-level view hiding.
+  \item[MathClaim-grounded quotient.] Accepted mathematical equivalence and implication are applied to the covered clause under one assumption context. Reduction is allowed only if an independent envelope check shows that hidden truth-relevant content remains represented by the displayed claim or by an attached envelope summary.
+\end{description}
+
+\subsection{Evaluation measures}
+
+Let $U_q$ be the eligible display units for query $q$, $V_q$ the displayed units, and $H_q=U_q\setminus V_q$ the hidden units. The view compression is
+\begin{equation}
+R_{\mathrm{claim}}(q)=1-\frac{|V_q|}{|U_q|}.
+\end{equation}
+Occurrence compression is computed analogously before and after consolidating repeated source occurrences. Compression is descriptive and never an objective by itself.
+
+For each truth-relevant dimension $d$ in conditions, quantifiers, modality, attribution, empirical scope, approximation, evidence status, and access model, envelope preservation is
+\begin{equation}
+P_d(q)=\frac{\#\text{hidden values of }d\text{ reconstructible from the receipt}}{\#\text{truth-relevant values of }d\text{ in }H_q}.
+\end{equation}
+The denominator-zero case is reported as not applicable, not as one. A false merge joins distinct lineages or envelopes as one identity. A false prune hides a unit whose query-relevant mathematical or semantic content is not reconstructible. High-severity false prune is any loss of polarity, material condition, quantifier, modality, attribution, empirical regime, uncertainty, actor/access model, contradiction, limitation, or independently assessable contribution operation.
+
+The study also reports decision coverage, the fraction of eligible candidate pairs assigned an accepted relation rather than \status{proposed}, \status{unknown}, or \status{blocked}. Reviewer agreement is computed only when two independent decisions exist; no proxy is reported as inter-annotator agreement. Contribution-profile stability is evaluated by recomputing the profile under each declared baseline and claim granularity. A dimension that changes is baseline- or granularity-sensitive and must remain visibly so.

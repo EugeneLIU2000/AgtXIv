@@ -1,0 +1,156 @@
+\section{Initial model and falsifiable hypotheses}\label{sec:initial-model}
+
+\subsection{Layered objects}
+
+The initial model adds no field to \ScientificClaim{} or \MathClaim{}. It proposes three sidecar objects and one contribution object.
+
+\begin{lstlisting}[style=interface]
+ClaimMathGrounding {
+  grounding_id
+  scientific_claim_ref       // claim_id, revision, hash
+  math_claim_refs[]          // immutable verified revisions
+  coverage                    // COMPLETE | PARTIAL
+  covered_components[]        // clause or component paths
+  semantic_envelope[]         // typed uncovered content
+  assumption_alignment
+  grounding_method
+  grounding_status            // PROPOSED | ACCEPTED | BLOCKED
+  revision
+  provenance
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=interface]
+SemanticClaimRelation {
+  relation_id
+  relation_type               // see Section 6
+  source_claim_refs[]
+  target_claim_refs[]
+  orientation                  // source relation_type target
+  math_witness_refs[]
+  envelope_comparison
+  assumption_context
+  status                      // PROPOSED | ACCEPTED | ...
+  assessor_or_method
+  revision
+  provenance
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=interface]
+ClaimView {
+  view_id
+  query
+  eligible_claim_refs[]
+  displayed_claim_refs[]
+  hidden_units[]              // each with reason and representative
+  relation_refs[]
+  grounding_refs[]
+  reconstruction_receipt
+  policy_id
+  policy_revision
+  generated_at
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=interface]
+ContributionProfile {
+  profile_id
+  paper_revision
+  baseline_refs[]
+  contribution_units[]
+  granularity_grouping_map
+  aggregate_vector             // derived from unit witnesses and groups
+  incomparability_notes[]
+  sensitivity_results[]
+  assessor_or_method
+  revision
+  provenance
+}
+\end{lstlisting}
+
+\subsection{Candidate relation lattice}
+
+The initial relation inventory separates operations that text models often collapse:
+\begin{enumerate}
+  \item \status{same\_occurrence\_lineage}: repeated source occurrences represent one already-adjudicated claim lineage;
+  \item \status{semantic\_equivalent}: complete proposition and envelope are equivalent under the stated context;
+  \item \status{math\_equivalent\_envelope\_distinct}: verified mathematical components are equivalent, but attribution, modality, interpretation, evidence, or another envelope component differs;
+  \item \status{strictly\_entails}: the source proposition entails the target but not conversely under the declared context;
+  \item \status{specializes} and \status{generalizes}: the mathematical relation changes domain or assumptions;
+  \item \status{depends\_on}: the source requires the target as a premise or construction input but is not logically entailed by the target alone;
+  \item \status{derivable\_exposition}: the claim's complete mathematical content follows from displayed verified nodes, while its envelope contributes no query-relevant independent assertion;
+  \item \status{contradicts}, \status{corrects}, and \status{incomparable}; and
+  \item \status{unknown} or \status{blocked} when the prerequisites for a stronger decision are absent.
+\end{enumerate}
+Mathematical equivalence is deliberately weaker than semantic equivalence. Every relation is read as ``source relation target''; in particular, \status{depends\_on} points from the dependent claim to its prerequisite. Strict implication is directional and is not interchangeable with duplicate status.
+
+\subsection{Initial safe-reduction rule}
+
+For query $q$, a claim $c$ may be hidden behind representative set $D$ only if all of the following hold:
+\begin{enumerate}[label=R\arabic*.]
+  \item $c$ and every member of $D$ are immutable revisions with resolvable source anchors.
+  \item An accepted grounding identifies the complete mathematical component of $c$, or the decision is limited to consolidation of occurrences already assigned to one lineage.
+  \item Accepted mathematical relations establish that $D$ covers the grounded component under the same or a stronger declared assumption context.
+  \item Every truth-relevant envelope element of $c$ is equivalent to content displayed in $D$, explicitly rendered in the view, or declared irrelevant by the query policy without being discarded from the receipt.
+  \item Hiding does not erase an independently assessable attribution, proof method, empirical result, numerical value, uncertainty, interpretation, limitation, contradiction, or contribution operation requested by $q$.
+  \item The receipt identifies $c$, $D$, the accepted relations and groundings, policy revision, and a deterministic reconstruction path.
+\end{enumerate}
+Failure of any rule yields \status{visible}, \status{unknown}, or \status{blocked}; it never causes deletion.
+
+\subsection{Contribution operations}
+
+A contribution unit relates current-work output claims to one or more explicit baseline claims:
+\begin{lstlisting}[style=interface]
+ContributionUnit {
+  unit_id
+  paper_revision
+  output_claim_refs[]
+  baseline_claim_refs[]
+  baseline_declarations[]
+  operation_types[]
+  dimension_witnesses
+  math_delta
+  assumption_delta
+  conclusion_delta
+  proof_or_method_delta
+  semantic_envelope_delta
+  verification_and_evidence
+  attribution
+  uncertainty
+  status
+  assessor_or_method
+  provenance
+}
+\end{lstlisting}
+
+The initial operation vocabulary is multi-label:
+\begin{center}
+\status{introduces}, \status{proves}, \status{reproves}, \status{strengthens}, \status{weakens\_assumptions},
+\status{generalizes}, \status{specializes}, \status{unifies}, \status{refutes}, \status{computes},
+\status{observes}, \status{implements}, \status{benchmarks}, and \status{interprets}.
+\end{center}
+A paper may introduce an object and prove a theorem about it; one enum would lose that structure.
+
+\subsection{No scalar contribution score}
+
+The initial aggregate is a vector with declared units:
+\begin{equation}
+\mathbf C(P\mid B,g)=
+(N_{\mathrm{new}},N_{\mathrm{strengthened}},N_{\mathrm{weakened}},N_{\mathrm{new\ proof}},
+N_{\mathrm{empirical}},N_{\mathrm{interpretive}},R_{\mathrm{dependency}},V_{\mathrm{coverage}}),
+\end{equation}
+where $P$ is the paper revision, $B$ the baseline set, and $g$ the granularity profile. Counts refer to accepted contribution units or verified mathematical equivalence classes, never raw sentences. $R_{\mathrm{dependency}}$ is a declared ratio of reused accepted mathematical dependencies to all accepted mathematical dependencies in the selected contribution subgraph. $V_{\mathrm{coverage}}$ reports verified and evidence-assessed coverage by type; it is not confidence in importance.
+
+The vector supports component-wise comparison only when baseline, granularity, domain profile, and assessed dimensions agree. Otherwise profiles are incomparable. A Pareto frontier may summarize a declared comparison set. A weighted scalar may be derived only when an external decision task supplies weights, calibration data, and error analysis. It must not be called scientific quality, truth, novelty, or impact.
+
+\subsection{Hypotheses to test}
+
+The gold slices test five hypotheses:
+\begin{enumerate}
+  \item repeated occurrences can be consolidated safely without hiding their locators;
+  \item verified mathematical equivalence alone is insufficient for semantic merging;
+  \item verified implication can reduce expository views only when scope and envelope checks pass;
+  \item contribution operations are more stable than raw claim counts but remain baseline-sensitive; and
+  \item numerical, security, attribution, and interpretive claims prevent a mathematics-only quotient from becoming the sole paper representation.
+\end{enumerate}

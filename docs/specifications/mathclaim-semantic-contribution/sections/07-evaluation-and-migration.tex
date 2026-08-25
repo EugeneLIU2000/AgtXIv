@@ -1,0 +1,69 @@
+\section{Evaluation, implementation, and migration}\label{sec:evaluation-migration}
+
+\subsection{What the fixture validates}
+
+The machine-readable fixture contains 26 decisions over six papers. It validates reference resolution against the upstream candidate corpus, directed candidate--MathClaim endpoint alignment, clause-specific grounding coverage, exact residual-envelope receipts, safe relation types for hiding, witness-derived profile aggregates, baseline compatibility, immutable iteration snapshots, resolvable triggers, representative membership, paper coverage, and the absence of rows knowingly marked as high-severity false prunes. It also regenerates the decision, relation, envelope, and contribution-operation summaries.
+
+The fixture reports three occurrence consolidations from eight locations to three lineage displays, zero hidden claim units, and three blocked reductions. It does not validate natural-language model accuracy, source completeness, actual formal proofs, inter-annotator reliability, or population-level compression. \field{ASSUMED\_VERIFIED\_FOR\_STUDY} references are synthetic experimental witnesses.
+
+\subsection{Required evaluation protocol}
+
+A production pilot should freeze a closed evaluation set and run the following stages:
+\begin{enumerate}
+  \item independently admit source-faithful \ScientificClaim{} revisions;
+  \item bind source-aligned, verified \MathClaim{} revisions and accepted mathematical relations;
+  \item generate candidate pairs separately with lexical, embedding, NLI, citation, and graph methods;
+  \item ask blinded reviewers to adjudicate grounding coverage, envelope components, semantic relation, and query-specific display decision;
+  \item compute pairwise precision and recall for candidate generation separately from accepted-relation precision;
+  \item report false merge and false prune by envelope dimension and severity;
+  \item report claim and occurrence compression with explicit denominators;
+  \item recompute each \ContributionProfile{} under at least two defensible baselines and two granularity profiles; and
+  \item publish disagreements, blockers, and reconstruction receipts with the aggregate results.
+\end{enumerate}
+
+An evaluation is unsafe if it reports only compression, cluster purity, textual similarity, NLI accuracy, or agreement on contribution categories. The primary safety endpoint is zero unresolved high-severity false prunes on the reviewed release set. This is a release gate, not a claim that the true error probability is zero.
+
+\subsection{Non-disruptive implementation path}
+
+The implementation should be a rebuildable sidecar next to existing claim and mathematics registries:
+\begin{enumerate}
+  \item \textbf{Reference adapter.} Resolve immutable \ScientificClaim{} and \MathClaim{} revisions and hashes. Existing candidate-only rows remain candidates.
+  \item \textbf{Grounding store.} Add proposed mappings, component coverage, residual envelopes, and assumption alignment. Imported production verification status must be preserved exactly.
+  \item \textbf{Relation store.} Keep text-model proposals separate from accepted semantic and mathematical witnesses.
+  \item \textbf{View engine.} Execute versioned policies without mutating source registries. Cache only receipts whose inputs and policy hashes still resolve.
+  \item \textbf{Contribution store.} Record author declarations, baseline selection, assessor decisions, typed deltas, and sensitivity runs.
+  \item \textbf{Read-only pilot.} Compare the existing display with occurrence, mathematics, contribution, and evidence views before any consumer treats the sidecar as authoritative.
+\end{enumerate}
+
+Legacy graph edges without type, evidence, and status migrate as \status{unknown} or \status{oracle\_proposed}. A verified \MathClaim{} edge may support the mathematical part of a grounding, but it does not become a semantic-equivalence or contribution relation automatically. Existing citation-context graphs remain useful for baseline discovery and attribution. They are not accepted novelty graphs.
+
+\subsection{Query profiles}
+
+The first pilot should expose four named policies:
+\begin{description}[style=nextline]
+  \item[\status{occurrence\_overview}.] Consolidate adjudicated repeated occurrences while displaying every lineage and all source locators on demand.
+  \item[\status{mathematical\_skeleton}.] Display a smallest currently justified verified mathematical dependency view, plus residual envelopes and visible blockers. It may hide accepted derivable exposition.
+  \item[\status{paper\_contribution}.] Display current-work contribution units, their baselines, proof or method deltas, empirical and interpretive envelopes, and uncertainty. New proofs and interpretations remain visible even when conclusions are mathematically equivalent to baselines.
+  \item[\status{evidence\_audit}.] Display all attribution, evidence, contradiction, uncertainty, approximation, and blocked units. It prioritizes completeness over compression.
+\end{description}
+A user interface may move between profiles, but it must not imply that one is the complete or objectively best paper representation.
+
+\subsection{Contribution sensitivity report}
+
+Every profile comparison should include a table with one row per baseline and granularity configuration. At minimum it reports the operation histogram, new mathematical equivalence classes, strengthened conclusions, weakened assumptions, new proof or method units, empirical units, interpretive units, dependency reuse, verification/evidence coverage, and unknown/blocked counts. The report must name which units entered or left each count.
+
+For example, treating the background H-theorem as the baseline makes case~\ref{case:contrib-22867} a reproof rather than a new theorem. Treating only the paper's immediately cited implementation as baseline may classify a new estimator in case~\ref{case:contrib-05845} as both implementation and benchmark; using the underlying hydrodynamic relation as baseline also exposes a mathematical derivation delta. Neither profile is intrinsically correct without a declared comparison question.
+
+\subsection{Release conditions and present limitations}
+
+A pilot release may claim safe view reduction only when:
+\begin{itemize}
+  \item all hidden units have accepted relation and grounding witnesses;
+  \item reconstruction from the receipt is deterministic;
+  \item every truth-relevant envelope dimension is preserved;
+  \item blinded review finds no unresolved high-severity false prune;
+  \item unknown, blocked, disputed, and contradictory units remain visible under the relevant policies; and
+  \item contribution metrics pass baseline and granularity sensitivity reporting.
+\end{itemize}
+
+The present document meets the structural and fixture-consistency portions of this contract. It does not yet meet the blinded independent-review condition, because the gold slices have one project adjudication rather than an independent replicated annotation. It also assumes mathematical verification rather than importing actual checked contracts. These are explicit blockers for claiming empirical safety or completing a production migration.

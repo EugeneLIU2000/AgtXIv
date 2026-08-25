@@ -1,0 +1,56 @@
+\section{Two revision loops and two audit corrections}\label{sec:iteration}
+
+\subsection{Iteration 0: literature-driven proposal}
+
+The initial literature synthesis proposed three progressively stronger reduction mechanisms: similarity clustering, source-aware semantic subsumption, and a quotient by verified \MathClaim{} equivalence. It also proposed counting novel mathematical equivalence classes and semantic contribution categories relative to cited prior work. At this stage, the design risked treating mathematical equivalence as sufficient for semantic equivalence and did not make the query policy part of every reduction receipt.
+
+\subsection{Loop 1: semantic-envelope stress test}
+
+The first gold-slice pass tested formula recurrence, theorem specialization, numerical alignment, security claims, and imported/current attribution. It produced four revisions.
+
+\begin{enumerate}
+  \item \textbf{Mathematical equivalence was split from semantic equivalence.} Cases~\ref{case:contrib-20180} and \ref{case:contrib-22867} showed that attribution and proof role can differ when normalized formulas agree.
+  \item \textbf{Coverage became clause-addressable.} Cases~\ref{case:contrib-14798} and \ref{case:contrib-15963} showed that \status{partial} without a covered-component path permits a narrow theorem to appear to verify a broader ensemble or threat-model claim.
+  \item \textbf{Reduction became a query-relative view.} The SSB interpretation was initially considered hideable in a formula-oriented view, but audit showed that its moment statement additionally requires an iid Bernoulli premise. It therefore remains visible in every generated view; a permanent redundancy flag is still ill-defined.
+  \item \textbf{Occurrence reduction was separated from claim reduction.} Repeated abstract, result, and conclusion locations can be consolidated safely while their locators remain. This does not reduce the number of proposition lineages.
+\end{enumerate}
+
+The resulting model introduced \ClaimMathGrounding{}, a typed \SemanticClaimRelation{}, and a deterministic \ClaimView{} receipt. It prohibited destructive deletion.
+
+\subsection{Loop 2: contribution and metric stress test}
+
+The second pass recomputed decisions under mathematical-skeleton, paper-contribution, occurrence-overview, and evidence-audit queries. It also tested contribution descriptions against alternative baselines and claim granularities. Five further revisions followed.
+
+\begin{enumerate}
+  \item \textbf{The baseline became mandatory and versioned.} Algorithm rankings in case~\ref{case:contrib-02862} change with the selected functional, while the novelty of the geodesic result in case~\ref{case:contrib-20180} changes with which prior theorem is used as baseline.
+  \item \textbf{Contribution type became multi-label.} Introducing a measure, proving its properties, implementing an estimator, and benchmarking it can coexist.
+  \item \textbf{New theorem and new proof were separated.} The H-theorem slice records \status{reproves}; an identical conclusion does not erase proof-method contribution, and a new proof is not a new proposition.
+  \item \textbf{Unknown and blocked values became first-class.} The pseudorandom transfer gap, mixed-attribution candidate, and source-internal entropy tension cannot be assigned zero contribution or safely hidden.
+  \item \textbf{The aggregate became a vector and partial order.} Counts changed under baseline and granularity choices. No task-independent scalar remained invariant or had an empirically justified interpretation.
+\end{enumerate}
+
+The audit-corrected gold data records 20 keep decisions, three occurrence consolidations, zero claim-level hides, and three blocks. No row is marked as a high-severity false prune. The fourth iteration record freezes the pre-correction SSB, depolarizing, observables, grounding, profile, and snapshot state as a canonical payload with a SHA-256 digest; every trigger resolves to a fixture identifier. This state means that no known high-severity loss is encoded in the reviewed fixture; it is not an empirical estimate of system error.
+
+\subsection{Change ledger}
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}}
+\toprule
+Decision & Trigger & Rejected alternative & Cost \\
+\midrule
+\endhead
+Separate mathematical and semantic equivalence & Imported/current pairs and theorem/reproof pairs & Merge equal normalized formulas & One relation type and envelope comparison \\
+Make grounding clause-addressable & PRF ensemble and security access-model gaps & One claim-level complete/partial flag & Component paths and residual envelopes \\
+Use reversible query views & SSB interpretation changes relevance by query & Permanent redundant Boolean & Policy and reconstruction receipt \\
+Consolidate occurrences before propositions & Eight repeated occurrences in three lineages & Treat every source location as a contribution & Occurrence registry retained \\
+Require explicit baseline & Numerical functional rankings and prior-theorem choice & Paper-intrinsic novelty field & Versioned baseline set and sensitivity run \\
+Separate proposition, proof, and implementation deltas & H-theorem reproof and viscosity estimator & One ``new result'' class & Multi-label contribution units \\
+Retain blocked contradictions & Ensemble proof gap and entropy tension & Prefer the smaller consistent graph & Visible blocker and assessment work \\
+Forbid uncalibrated scalar & Profile changes with baseline and granularity & Weighted sum chosen by the implementer & Vector, incomparability notes, and Pareto views \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Outstanding review boundary}
+
+The two passes above are part of the design process and use one project adjudication record. They do not constitute blinded independent annotation. A release claim about false-prune rate or reviewer agreement requires a separate assessor to reproduce the decisions from source, groundings, and query policies without seeing the adjudication. Until then, the study reports fixture consistency and explicit counterexamples rather than measured human reliability.

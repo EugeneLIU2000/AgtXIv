@@ -1,0 +1,82 @@
+\section{Gold-slice results and failure analysis}\label{sec:gold-analysis}
+
+\subsection{Decision distribution}
+
+The audit-corrected gold slices contain 26 reviewed decisions across six papers. Twenty decisions keep all candidate claims visible, three consolidate repeated occurrences, and three block reduction. No claim-level hiding survives independent review. The relation distribution is:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Relation & Decisions \\
+\midrule
+\status{depends\_on} & 7 \\
+\status{incomparable} & 7 \\
+\status{same\_occurrence\_lineage} & 3 \\
+\status{math\_equivalent\_envelope\_distinct} & 3 \\
+\status{specializes} & 2 \\
+\status{blocked} & 2 \\
+\status{strictly\_entails} & 1 \\
+\status{contradicts} & 1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is not an estimate of relation prevalence. The slices were selected to test difficult boundaries. All 26 decisions preserve every claim-level display unit; three consolidate only repeated occurrences, and three explicitly prohibit reduction.
+
+\subsection{Measured reduction}
+
+The three occurrence-consolidation decisions cover eight recorded source occurrences and display three lineage representatives, for an occurrence reduction of
+\begin{equation}
+1-\frac{3}{8}=0.625.
+\end{equation}
+Every hidden occurrence remains listed in the reconstruction receipt. This reduction is substantial and low risk because identity was already adjudicated at the lineage level.
+
+No claim unit is hidden in any generated view. In particular, the SSB support-mass statement remains visible because its moment theorem depends jointly on the statistic definition and an explicit iid Bernoulli premise; the definition alone does not entail the theorem. The study does not report a global claim-compression percentage because the gold slices are relation decisions rather than a closed census of all eligible view units. Reporting one would manufacture a denominator.
+
+\subsection{Envelope pressure}
+
+The 26 decisions require conditions in 14 cases, empirical scope in eight, evidence status in seven, interpretation in six, attribution and comparison baseline in four each, proof method in four, actor/access model, quantifiers, and uncertainty in two each, and approximation, modality, and limitation in one each. These dimensions recur across mathematical, numerical, and security papers. None can be inferred reliably from mathematical equivalence.
+
+The observed safe ordering is:
+\begin{equation}
+\begin{aligned}
+\text{occurrence consolidation}
+&\succ \text{accepted dependency-aware views}\\
+&\succ \text{semantic subsumption proposals}
+\succ \text{text-similarity clustering}.
+\end{aligned}
+\end{equation}
+where $\succ$ means ``provides a stronger reduction certificate than''. Similarity remains useful for proposing pairs, but accepted lineage identity and verified mathematical structure provide the actual witnesses.
+
+\subsection{Counterexamples to a mathematics-only quotient}
+
+\paragraph{Equal mathematics, different attribution.}
+The imported geodesic-lifting principle and a current-work sufficiency result in case~\ref{case:contrib-20180}, and the background H-theorem and current rederivation in case~\ref{case:contrib-22867}, cannot share one semantic identity. A mathematics quotient may align them but must keep separate source claims and contribution operations.
+
+\paragraph{Equal scalar, different evidence chain.}
+The three acetone viscosity values in case~\ref{case:contrib-05845} are comparable numerical objects. Their current-work, prior-work, and experimental provenance, and their uncertainty conventions, prevent merging.
+
+\paragraph{Verified narrower theorem, broader source claim.}
+The subset-phase-state example in case~\ref{case:contrib-14798} blocks reduction because the assumed verified fixture covers uniformly random functions while the source claim invokes a pseudorandom ensemble. A formal proof under a narrower population is not a certificate for the broader semantic claim.
+
+\paragraph{Formal statistic, unverified threat model.}
+Case~\ref{case:contrib-15963} retains key possession, efficient computation, and adversary access even when the probability formulas are verified. Formal correctness does not establish the operational security envelope.
+
+\paragraph{Smaller graph would hide a contradiction.}
+The entropy observation in case~\ref{case:contrib-22867} remains visible because it conflicts with a monotonicity argument. Contradictions and limitations receive higher preservation priority, not lower salience.
+
+\subsection{Contribution operations}
+
+The slices instantiate proofs, computations, observations, introductions, benchmarks, implementations, interpretations, specialization, generalization, reproof, and refutation. One claim may support several operations. The cases establish five distinctions required of a profile:
+\begin{enumerate}
+  \item a new mathematical proposition versus a new proof of an old proposition;
+  \item an exact result versus an asymptotic specialization;
+  \item mathematically aligned values with different evidence and attribution;
+  \item an introduced formula versus its implemented estimator; and
+  \item formal equivalence versus a new scientific interpretation.
+\end{enumerate}
+Raw sentence counts, accepted-claim counts, and verified-node counts collapse these distinctions. The profile therefore reports typed units and baseline-relative deltas before any aggregate.
+
+\subsection{Evidence limits}
+
+The fixtures marked \status{assumed\_verified\_for\_study} are not Lean proof artifacts. The slices were not independently replicated, and their two review passes are counterexample-oriented design checks rather than blinded annotation. No inter-annotator agreement is claimed. The study validates that the proposed data contract can represent safe, unsafe, and query-dependent decisions; it does not establish model accuracy or population-wide compression.

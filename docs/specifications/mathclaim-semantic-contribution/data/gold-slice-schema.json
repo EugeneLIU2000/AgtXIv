@@ -1,0 +1,367 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.example/schemas/mathclaim-semantic-gold-slice/2.0.0",
+  "title": "MathClaim-grounded semantic-reduction adjudication",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "paper_id",
+    "candidate_refs",
+    "candidate_snapshots",
+    "source_claim_refs",
+    "target_claim_refs",
+    "relation_orientation",
+    "query_profile",
+    "grounding_coverage",
+    "assumed_math_claim_refs",
+    "covered_components",
+    "residual_envelope",
+    "envelope_comparison",
+    "relation_type",
+    "decision",
+    "representative_refs",
+    "reconstruction_receipt",
+    "contribution_operations",
+    "contribution_unit_refs",
+    "iteration_evidence_refs",
+    "rationale",
+    "review"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_id": {
+      "type": "string",
+      "pattern": "^arxiv:[0-9]{4}\\.[0-9]{5}v[0-9]+$"
+    },
+    "candidate_refs": {
+      "$ref": "#/$defs/uniqueStrings"
+    },
+    "candidate_snapshots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_ref",
+          "record_sha256"
+        ],
+        "properties": {
+          "candidate_ref": {
+            "type": "string"
+          },
+          "record_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "source_claim_refs": {
+      "$ref": "#/$defs/uniqueStrings"
+    },
+    "target_claim_refs": {
+      "$ref": "#/$defs/uniqueStrings"
+    },
+    "query_profile": {
+      "enum": [
+        "OCCURRENCE_OVERVIEW",
+        "MATHEMATICAL_SKELETON",
+        "PAPER_CONTRIBUTION",
+        "EVIDENCE_AUDIT"
+      ]
+    },
+    "grounding_coverage": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "NONE"
+      ]
+    },
+    "assumed_math_claim_refs": {
+      "$ref": "#/$defs/strings"
+    },
+    "covered_components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_ref",
+          "component_path",
+          "coverage",
+          "math_claim_refs"
+        ],
+        "properties": {
+          "candidate_ref": {
+            "type": "string"
+          },
+          "component_path": {
+            "type": "string",
+            "pattern": "^(?!statement$).+"
+          },
+          "coverage": {
+            "enum": [
+              "COMPLETE",
+              "PARTIAL"
+            ]
+          },
+          "math_claim_refs": {
+            "$ref": "#/$defs/uniqueStrings"
+          }
+        }
+      }
+    },
+    "residual_envelope": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dimension",
+          "candidate_ref",
+          "value"
+        ],
+        "properties": {
+          "dimension": {
+            "$ref": "#/$defs/dimension"
+          },
+          "candidate_ref": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "envelope_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dimension",
+          "result",
+          "source_values",
+          "target_values"
+        ],
+        "properties": {
+          "dimension": {
+            "$ref": "#/$defs/dimension"
+          },
+          "result": {
+            "enum": [
+              "ALIGNED",
+              "DISTINCT",
+              "UNRESOLVED",
+              "NOT_APPLICABLE"
+            ]
+          },
+          "source_values": {
+            "$ref": "#/$defs/strings"
+          },
+          "target_values": {
+            "$ref": "#/$defs/strings"
+          }
+        }
+      }
+    },
+    "relation_type": {
+      "enum": [
+        "SAME_OCCURRENCE_LINEAGE",
+        "SEMANTIC_EQUIVALENT",
+        "MATH_EQUIVALENT_ENVELOPE_DISTINCT",
+        "STRICTLY_ENTAILS",
+        "SPECIALIZES",
+        "GENERALIZES",
+        "DERIVABLE_EXPOSITION",
+        "CONTRADICTS",
+        "INCOMPARABLE",
+        "UNKNOWN",
+        "BLOCKED",
+        "DEPENDS_ON"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "CONSOLIDATE_OCCURRENCES",
+        "HIDE_IN_VIEW",
+        "KEEP_VISIBLE",
+        "BLOCK_REDUCTION"
+      ]
+    },
+    "representative_refs": {
+      "$ref": "#/$defs/uniqueStrings"
+    },
+    "reconstruction_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hidden_claim_refs",
+        "hidden_occurrences",
+        "representative_refs",
+        "preserved_envelope",
+        "candidate_snapshot_hashes",
+        "source_span_digests",
+        "reconstructible",
+        "policy_revision",
+        "policy_fixture",
+        "receipt_hash"
+      ],
+      "properties": {
+        "hidden_claim_refs": {
+          "$ref": "#/$defs/strings"
+        },
+        "hidden_occurrences": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "representative_refs": {
+          "$ref": "#/$defs/strings"
+        },
+        "preserved_envelope": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "reconstructible": {
+          "type": "boolean"
+        },
+        "policy_revision": {
+          "type": "string"
+        },
+        "candidate_snapshot_hashes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "source_span_digests": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "policy_fixture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "payload",
+            "sha256"
+          ],
+          "properties": {
+            "payload": {
+              "type": "object"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "receipt_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "contribution_operations": {
+      "$ref": "#/$defs/strings"
+    },
+    "contribution_unit_refs": {
+      "$ref": "#/$defs/strings"
+    },
+    "iteration_evidence_refs": {
+      "$ref": "#/$defs/strings"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pass_one",
+        "pass_two",
+        "independent_audit",
+        "adjudicator_marked_high_severity_false_prune"
+      ],
+      "properties": {
+        "pass_one": {
+          "enum": [
+            "ACCEPTED",
+            "REVISED",
+            "BLOCKED"
+          ]
+        },
+        "pass_two": {
+          "enum": [
+            "ACCEPTED",
+            "REVISED",
+            "BLOCKED"
+          ]
+        },
+        "independent_audit": {
+          "enum": [
+            "ACCEPTED",
+            "REVISED",
+            "BLOCKED",
+            "NOT_REVIEWED"
+          ]
+        },
+        "adjudicator_marked_high_severity_false_prune": {
+          "type": "boolean"
+        }
+      }
+    },
+    "relation_orientation": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "strings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "uniqueStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "dimension": {
+      "enum": [
+        "ATTRIBUTION",
+        "MODALITY",
+        "CONDITIONS",
+        "QUANTIFIERS",
+        "APPROXIMATION",
+        "EMPIRICAL_SCOPE",
+        "UNCERTAINTY",
+        "COMPARISON_BASELINE",
+        "ACTOR_ACCESS_MODEL",
+        "INTERPRETATION",
+        "EVIDENCE_STATUS",
+        "LIMITATION",
+        "PROOF_METHOD"
+      ]
+    }
+  }
+}
