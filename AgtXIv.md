@@ -1,8 +1,8 @@
 # AgtXIv: Verification-Aware Incremental Search over Scientific Claims
 
 **Status:** Math-first pilot specification
-**Version:** 0.5
-**Date:** 2026-08-22
+**Version:** 0.6
+**Date:** 2026-08-26
 **Primary target:** Mathematical claims in theoretical physics and mathematically structured sciences
 **Normative paper-source acquisition:** [AgtXIv Paper Source Acquisition](docs/specifications/paper-source-acquisition.md)
 **Normative mathematics detail:** [AgtXIv Mathematics Pipeline](docs/specifications/mathematics-pipeline.md)
@@ -15,7 +15,7 @@
 
 AgtXIv is an experimental protocol for resolving a scientific query into a reusable, versioned, and partially verified dependency path. Instead of returning only a paper list or a fluent explanation, it returns the target claim's address in a contract registry, the source spans from which the claim was reconstructed, its accepted and conditional imports, the Lean declarations already connected to it, the unresolved frontier, and the local mathematical delta that remains to be built.
 
-The minimum viable system is **math-first**. A frozen paper is represented by a source-bounded `PaperAgent`, but the primary reusable unit is a claim-level `MathContract`. PaperAgents are connected by a typed directed `PaperInteractionGraph`, which may contain cycles because two frozen companion papers can depend on different claims from one another. For a selected query, AgtXIv derives a strict `MathClaimDependencyDAG(q)` containing only the load-bearing mathematical claims required by the target. The corresponding `PaperBuildDAG(q)` is a query-relative build view obtained by projecting the claim DAG to PaperAgents and condensing any paper-level strongly connected components.
+The minimum viable system is **math-first**. Each traced work is assigned one public Git repository, and each citable publication instance is that repository together with one exact release. A source-bounded `PaperAgent` represents one frozen source occurrence of the work at such a release, but the primary reusable unit is a claim-level `MathContract`. PaperAgents are connected by a typed directed `PaperInteractionGraph`, which may contain cycles because two frozen companion papers can depend on different claims from one another. For a selected query, AgtXIv derives a strict `MathClaimDependencyDAG(q)` containing only the load-bearing mathematical claims required by the target. The corresponding `PaperBuildDAG(q)` is a query-relative build view obtained by projecting the claim DAG to PaperAgents and condensing any paper-level strongly connected components.
 
 AgtXIv does not require a dedicated hypergraph data structure in the pilot. A multi-premise inference is represented by an explicit `InferenceStep` node: several claims point to the step, and the step points to its conclusion. This retains the joint-premise semantics while allowing the implementation to use an ordinary typed directed graph.
 
@@ -226,7 +226,9 @@ A paper may initially be represented by:
 
 ```yaml
 paper_package:
-  paper_id: arxiv:...
+  work_id: work:stable-id
+  source_version_id: arxiv:...vN
+  work_repository_binding_ref: <exact WorkRepositoryBinding TargetRef>
   source_bundle: source/...
   math_contracts:
     - math-contract:...
@@ -256,6 +258,49 @@ reproduces_with_tolerance
 ```
 
 AgtXIv standardizes identity, provenance, status propagation, and contract boundaries. It does not force mathematical proof, physical interpretation, experimental support, and numerical reproduction into one proof notion.
+
+### 1.6 Publication identity and version domains
+
+AgtXIv adopts the repository-centered publication principle of the [Agentic Publication Protocol](https://github.com/LionSR/AgenticPublicationProtocol/blob/712c11b5290de184256166fc63e81d7331c15800/PROTOCOL.md): the repository is part of the publication object, not merely a place to store a PDF. One traced intellectual work has one public publication repository. A **publication instance** is that repository together with one exact release. Internally, AgtXIv resolves the human-facing release tag to the full target commit and tree identifiers and records the release-asset hashes; neither a branch nor a tag name alone is an immutable address.
+
+The repository belongs to a stable `work_id`. An exact arXiv version, publisher edition, or other frozen source is a `source_version_id`. A newer source version normally produces a new commit and publication release in the same repository, not a new repository and not a rewrite of an earlier release.
+
+The following version domains are independent:
+
+| Version domain | Meaning | Normative owner |
+|---|---|---|
+| `work_id` | stable identity of the traced intellectual work | `WorkRegistry` and `WorkRepositoryBinding` |
+| `source_version_id` | exact upstream source occurrence, such as an arXiv version | source manifest |
+| Git commit and tree identifiers | exact repository bytes | Git object database |
+| publication release | public distribution coordinate: repository, tag, resolved commit and tree, and release assets | Git provider plus AgtXIv `ReleaseManifest` binding |
+| `record_revision` and `supersedes` | semantic or evidential lineage of one logical AgtXIv record | authoritative AgtXIv registry |
+| schema or serialization version | interpretation of record bytes | `SchemaRegistry` |
+| `CompositeRegistrySnapshot` | atomic multi-registry read boundary | `SnapshotRegistry` |
+
+No row substitutes for another. One commit may contain many record revisions; a byte-only edit may create a commit without a semantic revision; one record revision may be cited by several releases. `CompositeRegistrySnapshot` is not a Git snapshot, and the AgtXIv `ReleaseManifest` is not the Git release itself.
+
+Repository assignment is owned by one immutable `WorkRepositoryBinding` in `WorkRegistry`:
+
+```yaml
+work_repository_binding:
+  schema: agtxiv.work-repository-binding/1.0.0
+  id: work-repository-binding:stable-id
+  record_revision: 1
+  supersedes: null
+  work_id: work:stable-id
+  repository:
+    provider: github
+    repository_id: provider-stable-repository-id
+    canonical_url: https://github.com/owner/repository
+  assignment_basis: <exact work-resolution record ref>
+  content_hash: sha256:...
+```
+
+At one composite registry boundary, each `work_id` has exactly one eligible binding head and each provider-stable repository identity is bound to at most one `work_id`. A repository rename or transfer preserves `repository_id` and creates a new binding revision when its canonical URL changes. A genuine repository migration requires a superseding binding with an explicit migration record; concurrent bindings or forks block acquisition and publication.
+
+Git supplies byte-level history, diffs, blame, branching, merging, distributed storage, commit-addressed paths, and tags. A Git provider may add pull requests, issues, reviews, releases, immutable-release enforcement, signatures, attestations, and continuous integration. AgtXIv reuses these capabilities instead of duplicating them, but treats provider events only as provenance or candidate evidence. A merged pull request, closed issue, green continuous-integration check, fork, submodule, or repository link never creates an accepted scientific relation or verification status by itself.
+
+AgtXIv retains semantic identity, canonical `TargetRef`, source-span semantics, append-only record revisions, registry transactions, claim-level evidence and status, and cross-repository dependency graphs. Published tags are never retargeted, release assets are never overwritten, and corrections create a new release and a new AgtXIv `ReleaseManifest` whose `supersedes_publication_ref` points to the earlier publication instance. Immutable provider releases are preferred; durable scholarly releases should also use independent archival identifiers when available.
 
 ---
 
@@ -434,7 +479,7 @@ ScientificClaim with claim_role: CONTRIBUTION
 → explicit multi-premise InferenceSteps
 ```
 
-The two granularities remain distinct. A narrative claim records what the paper emphasizes; a formal-atomic claim records one load-bearing proposition or semantic component. Each combined narrative exposes stable named facets. In this vertical slice, `ClaimSupportAssociation` is an immutable navigation mapping from those facets to exact `MathClaimIR` or `MathematicalPropositionIR` TargetRefs; it does not advertise unresolved target kinds. Its provisional facet outcome is pinned to the contribution-role ScientificClaim's immutable `/facets` basis and is neither eternal global coverage nor mathematical verification. `QueryResolution` later computes final query-relative coverage from the selected decomposition and composite registry snapshot. A generic ScientificClaim TargetRef or any `claim:` ID is invalid in every `MathClaimDependencyDAG(q)` node slot; only resolved `MathClaimIR` and `MathematicalPropositionIR` target kinds may enter the mathematical DAG. Broad paper-wide discovery may remain provisional, while formal-atomic decomposition is required only on the current query frontier. Existing `agtxiv.scientific-claim/1.0.0` formal-atomic records remain valid and require no bulk migration.
+The two granularities remain distinct. A narrative claim records what the paper emphasizes; a formal-atomic claim records one load-bearing proposition or semantic component. Each combined narrative exposes stable named facets. In this vertical slice, `ClaimSupportAssociation` is an immutable navigation mapping from those facets to exact `MathClaimIR` or `MathematicalPropositionIR` TargetRefs; it does not advertise unresolved target kinds. Its provisional facet outcome is pinned to the contribution-role ScientificClaim's immutable `/facets` basis and is neither eternal global coverage nor mathematical verification. `QueryResolution` later computes final query-relative coverage from the selected decomposition and composite registry snapshot. A generic ScientificClaim TargetRef or any `claim:` ID is invalid in every `MathClaimDependencyDAG(q)` node slot; only resolved `MathClaimIR` and `MathematicalPropositionIR` target kinds may enter the mathematical DAG. Broad paper-wide discovery may remain provisional, while formal-atomic decomposition is required only on the current query frontier. Existing `agtxiv.scientific-claim/1.0.0` formal-atomic records remain valid and require no bulk migration; new publication-aware records use schema `1.1.0` with separate work and source-version identity.
 
 #### Constrained schema
 
@@ -530,7 +575,7 @@ query_resolution_request:
   schema: agtxiv.query-resolution-request/1.0.0
   normalized_query_artifact_hash: sha256:...
   requested_target: <TargetRef or null>
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   required_scope: {id: verification-scope:query, revision: 1, content_hash: 'sha256:...'}
   acceptance_profile: KERNEL_CHECKED_ALIGNED
 ```
@@ -553,7 +598,7 @@ dependency_manifest:
   record_revision: 1
   supersedes: null
   produced_at: 2026-08-22T00:00:00Z
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   policies:
     - {id: status-policy:default, record_revision: 1, content_hash: 'sha256:...'}
   verification_scope: {id: verification-scope:query, revision: 1, content_hash: 'sha256:...'}
@@ -617,7 +662,7 @@ query_invalidation_request:
   schema: agtxiv.query-invalidation-request/1.0.0
   applies_to: <exact QueryResolution TargetRef>
   old_dependency_manifest: {id: dependency-manifest:resolution-id, record_revision: 1, content_hash: 'sha256:...'}
-  new_composite_registry_snapshot: {id: composite-snapshot:release-18, record_revision: 1, content_hash: 'sha256:...'}
+  new_composite_registry_snapshot: {id: composite-snapshot:registry-boundary-18, record_revision: 1, content_hash: 'sha256:...'}
   proposed_changed_refs:
     - ref: <exact old or new record, snapshot, or TargetRef>
       change_kind: SUPERSEDED | REMOVED | ADDED | CONTENT_CHANGED
@@ -757,8 +802,9 @@ This layer establishes what the authors actually stated.
 
 It records:
 
-- paper identifier and frozen version;
-- repository release or source archive when available;
+- stable work identifier and exact frozen source version;
+- public publication repository and exact release binding;
+- full Git commit and tree identifiers, release-asset hashes, and signatures or attestations when available;
 - file and content hashes;
 - exact theorem, equation, figure, table, and paragraph anchors;
 - cited source versions;
@@ -860,7 +906,7 @@ Human review is represented explicitly when it occurs. Automated semantic alignm
 
 ### 3.5 Computational reproduction layer
 
-The pilot treats numerical work as an optional claim-attached record rather than a separate DAG. A `ReproductionRecord` may contain:
+The pilot treats numerical work as an optional claim-attached record rather than a separate DAG. A `ReproductionRecord` is organized around six repository-addressable layers: source, data, environment, execution, output, and evidence. It may contain:
 
 - authoritative code or an independent implementation;
 - code commit and data hashes;
@@ -894,9 +940,9 @@ No claim or contract stores a Boolean or aggregate verification vector. A consum
 
 ### 4.1 Paper Agent
 
-A **PaperAgent** is a source-bounded scientific software object representing one frozen paper and its reconstructed local contribution.
+A **PaperAgent** is a source-bounded scientific software object representing one exact source occurrence of a stable traced work and its reconstructed local contribution. The work has one public publication repository; each published PaperAgent revision is bound externally to one exact repository release by an AgtXIv `ReleaseManifest`.
 
-It is not merely a chatbot persona. Its answers and actions are constrained by its frozen source objects, accepted imports, candidate and accepted reasoning relations, verification records, and unresolved blockers.
+It is not merely a chatbot persona. Its answers and actions are constrained by its release-bound source objects, accepted imports, candidate and accepted reasoning relations, verification records, and unresolved blockers. Repository coordinates locate the package; they do not establish source fidelity, scientific truth, or relation acceptance.
 
 A PaperAgent is modeled as
 
@@ -998,15 +1044,16 @@ The math-first pilot treats `ScientificClaim`, `MathClaimIR`, `MathContract`, `C
 
 ### 5.0 ScientificClaim
 
-A `ScientificClaim` is the stable cross-profile identity of a `FORMAL_ATOMIC` or `NARRATIVE_ATOMIC` source-grounded claim, derived claim, or source-independent proposition. `FORMAL_ATOMIC` remains the default interpretation of existing `agtxiv.scientific-claim/1.0.0` records. Source anchors are mandatory only for `origin.class: SOURCE_OCCURRENCE`; the record never owns aggregate status or a mutable profile map.
+A `ScientificClaim` is the stable cross-profile identity of a `FORMAL_ATOMIC` or `NARRATIVE_ATOMIC` source-grounded claim, derived claim, or source-independent proposition. `FORMAL_ATOMIC` remains the default interpretation of legacy `agtxiv.scientific-claim/1.0.0` records; schema `1.1.0` separates stable `work_id` from exact `source_version_id`. Source anchors are mandatory only for `origin.class: SOURCE_OCCURRENCE`; the record never owns aggregate status or a mutable profile map.
 
 ```yaml
-schema: agtxiv.scientific-claim/1.0.0
+schema: agtxiv.scientific-claim/1.1.0
 id: claim:paper-id:main-bound
 record_revision: 1
 supersedes: null
-produced_at: 2026-08-18T00:00:00Z
-paper_id: arxiv:xxxx.xxxxxv2
+produced_at: 2026-08-26T00:00:00Z
+work_id: work:stable-id
+source_version_id: arxiv:xxxx.xxxxxv2
 kind: theorem
 text: >
   For every finite-dimensional complex Hilbert space H of dimension n and every
@@ -1024,7 +1071,7 @@ content_hash: sha256:...
 
 The contribution profile is a constrained ScientificClaim role/profile selected by `claim_role: CONTRIBUTION`, not a parallel entity, target kind, identity ontology, or registry. It uses broad namespaced contribution kinds (`result`, `method`, `construction`, `model`, `empirical_finding`, `computational_finding`, `synthesis`, `qualification`, or `limitation`) and orthogonal namespaced source speech-act, formality, and conditionality fields. Fixture-specific cautions remain record data and validation policy rather than general ontology values.
 
-Its semantic hash covers normalized contribution meaning: paper, role and granularity, broad contribution kind and tags, source characterization, normalized statement, canonical set-valued scope hints, and ordered narrative facets. Serialization uses the schema-pinned `agtxiv.record-canonical-json/1.0.0` profile: UTF-8; Unicode NFC and LF normalization; normalized map keys in Unicode code-point order; RFC-8785-compatible literals for the implemented `null`/Boolean/integer/string subset; schema-declared ordered arrays; and canonical-byte sorting with duplicate rejection for declared set arrays. Non-integral numbers are outside this slice, so this implementation does not claim full RFC 8785 number support. Occurrences and provenance, revisions and timestamps, and serialization metadata are excluded from semantic identity. `artifact_hash` detects those fields and omits its own slot plus the subsequently derived record `content_hash`; record `content_hash` then covers the complete record with only its own slot omitted.
+Its semantic hash covers normalized contribution meaning: stable work and exact source occurrence, role and granularity, broad contribution kind and tags, source characterization, normalized statement, canonical set-valued scope hints, and ordered narrative facets. Serialization uses the schema-pinned `agtxiv.record-canonical-json/1.0.0` profile: UTF-8; Unicode NFC and LF normalization; normalized map keys in Unicode code-point order; RFC-8785-compatible literals for the implemented `null`/Boolean/integer/string subset; schema-declared ordered arrays; and canonical-byte sorting with duplicate rejection for declared set arrays. Non-integral numbers are outside this slice, so this implementation does not claim full RFC 8785 number support. Occurrences and provenance, revisions and timestamps, and serialization metadata are excluded from semantic identity. `artifact_hash` detects those fields and omits its own slot plus the subsequently derived record `content_hash`; record `content_hash` then covers the complete record with only its own slot omitted.
 
 Profile association is an immutable external record. A new semantic or computational profile creates another association revision and does not mutate the `ScientificClaim`.
 
@@ -1158,7 +1205,7 @@ Envelope `content_hash` uses `agtxiv.record-canonical-json/1.0.0`: Unicode NFC, 
 
 Only target-bearing requests and records require `applies_to`. Policies, registry snapshots, manifests, and other non-target objects use immutable envelopes without a fabricated target.
 
-Normative object types without a specialized construction operation use the generic interface below. It covers ScientificClaims, anchors, contracts, inference steps, blueprint nodes, semantic contracts, reproductions, package capabilities, and manifests.
+Normative object types without a specialized construction operation use the generic interface below. It covers ScientificClaims, work-repository bindings, source-package records, anchors, contracts, inference steps, blueprint nodes, semantic contracts, reproductions, package capabilities, and manifests.
 
 ```yaml
 object_construction_request:
@@ -1181,7 +1228,7 @@ object_construction_result:
   validation_findings: []
 ```
 
-`SUCCEEDED` requires an exact object ID, revision, content hash, artifact hash, and pending registry-transaction write. Schema or policy invalidity is `REJECTED`; unresolved references are `BLOCKED`; execution failure creates no object. Visibility still requires the atomic transaction in Section 10.1.
+`SUCCEEDED` requires an exact object ID, revision, content hash, artifact hash, and pending registry-transaction write. Schema or policy invalidity is `REJECTED`; unresolved references are `BLOCKED`; execution failure creates no object. Visibility still requires the atomic transaction in Section 10.2.
 
 In examples, `<... TargetRef>` is a schema macro requiring the complete object below; it is never a literal wire value. `TargetRef` is extensible. `target_kind` is a namespaced identifier, not a closed enum, and `type_schema` pins its interpretation.
 
@@ -1219,6 +1266,33 @@ The governing-ClaimIR rules are mechanical:
 4. `claim_ir_members` is sorted lexicographically by `(id, revision, semantic_content_hash)`, contains no duplicate tuple, and must contain every governing ClaimIR.
 5. A single ClaimIR must never be duplicated in `claim_ir_members`. Relations, chains, graph closures, exports, and query resolutions use the singular or member form according to their exact membership.
 6. An artifact-bearing ClaimIR reference is valid only when registry resolution finds exactly one immutable artifact matching `(id, revision, semantic_content_hash, schema_uri, schema_version, serialization_profile.id, serialization_profile.content_hash, artifact_hash)`. A semantic-only reference cannot be passed to a serialized-content consumer.
+
+A `PublicationRef` is a separate distribution and localization reference. It binds a stable provider repository identity and human-facing URL to a release tag, full target commit, tree, provider release identity, release URL, release-asset hashes, and exact AgtXIv `ReleaseManifest` reference:
+
+```yaml
+publication_ref:
+  schema: agtxiv.publication-ref/1.0.0
+  work_repository_binding:
+    id: work-repository-binding:stable-id
+    record_revision: 1
+    content_hash: sha256:...
+  git_release:
+    tag_name: agtxiv-v1
+    tag_object_oid: <full annotated-tag object ID or null>
+    target_commit_oid: <full commit object ID>
+    target_tree_oid: <full tree object ID>
+    provider_release_id: <stable provider release ID>
+    release_url: https://github.com/owner/repository/releases/tag/agtxiv-v1
+    payload_release_asset_hashes: []
+  agtxiv_release_manifest:
+    id: agtxiv-release-manifest:work-slug:release-tag
+    record_revision: 1
+    content_hash: sha256:...
+```
+
+It may locate a source artifact or PaperAgent package, but it never replaces `TargetRef`: repository paths identify bytes at one commit, whereas `TargetRef` identifies a schema-governed scientific object, revision, semantic content, artifact serialization, or component. Branch names and unresolved ``latest'' URLs are invalid `PublicationRef` coordinates.
+
+The target commit cannot be embedded directly or indirectly in a manifest committed inside that same target tree without creating a self-reference. Therefore `PaperAgentManifest` records the source payload path, schema, and artifact hashes but not a `SourcePackageRecord` whose hash depends on the target commit. The post-commit AgtXIv `ReleaseManifest` binds the exact PaperAgent manifest, `SourcePackageRecord`, tag, commit, tree, provider release, and assets.
 
 #### 5.1.3 Canonical ClaimIR semantic hashing
 
@@ -1841,7 +1915,7 @@ A `CompositeRegistrySnapshot` atomically pins the read boundary of every registr
 ```yaml
 composite_registry_snapshot:
   schema: agtxiv.composite-registry-snapshot/1.0.0
-  id: composite-snapshot:release-17
+  id: composite-snapshot:registry-boundary-17
   record_revision: 1
   supersedes: null
   produced_at: 2026-08-22T00:00:00Z
@@ -1868,7 +1942,7 @@ index_snapshot_request:
   extends: agtxiv.request-envelope/1.0.0
   schema: agtxiv.index-snapshot-request/1.0.0
   composite_registry_snapshot:
-    id: composite-snapshot:release-17
+    id: composite-snapshot:registry-boundary-17
     record_revision: 1
     content_hash: sha256:...
   source_registry_ids: [ExternalRecordRegistry]
@@ -1897,7 +1971,7 @@ index_snapshot:
   supersedes: null
   produced_at: 2026-08-22T00:00:00Z
   composite_registry_snapshot:
-    id: composite-snapshot:release-17
+    id: composite-snapshot:registry-boundary-17
     record_revision: 1
     content_hash: sha256:...
   source_registry_ids: [ExternalRecordRegistry]
@@ -2059,7 +2133,7 @@ The following compact rule tables are the exhaustive pilot contents of the pinne
 | `agtxiv.semantic-alignment-evidence/1.0.0` | `AGENT_REVIEWED`, `HUMAN_REVIEWED`, `CONTESTED`, `BLOCKED` map identically to `semantic_alignment` |
 | `agtxiv.approximation-evidence/1.0.0` | `DECLARED_ONLY`, `PARTIALLY_CHECKED`, `CHECKED_IN_STATED_REGIME`, `FAILED`, `BLOCKED` map identically to `approximation_regime` |
 | `agtxiv.semantic-evidence/1.0.0`, `empirical_support` | `SOURCE_GROUNDED`, `PARTIAL`, `SUPPORTED_IN_RECORDED_REGIME`, `CONTESTED`, `BLOCKED` map identically to `empirical_support` |
-| `agtxiv.reproduction/1.0.0` | `REPRODUCED`, `REPRODUCED_WITH_TOLERANCE`, `QUALITATIVE_ONLY`, `FAILED` map identically to `computation`; `NOT_ATTEMPTED → NOT_ATTEMPTED`; blocked attempt `→ BLOCKED` |
+| `agtxiv.reproduction/1.1.0` | `REPRODUCED`, `REPRODUCED_WITH_TOLERANCE`, `QUALITATIVE_ONLY`, `FAILED` map identically to `computation`; `NOT_ATTEMPTED → NOT_ATTEMPTED`; blocked attempt `→ BLOCKED` |
 | `agtxiv.human-review-evidence/1.0.0` | `PERFORMED`, `PARTIAL`, `NOT_PERFORMED`, `CONTESTED`, `REJECTED` map identically to `human_review` |
 
 For multiple applicable contributions, the lowest value in the complete axis order is selected, except that a later evidence record supersedes an earlier record with the same logical ID only when the snapshot exposes a unique supersession head. Missing applicable evidence contributes the axis-specific untested value.
@@ -2107,7 +2181,7 @@ status_derivation_request:
     content_hash: sha256:...
   acceptance_profile: KERNEL_CHECKED_ALIGNED
   composite_registry_snapshot:
-    id: composite-snapshot:release-17
+    id: composite-snapshot:registry-boundary-17
     record_revision: 1
     content_hash: sha256:...
   evidence_snapshot:
@@ -2142,7 +2216,7 @@ status_view:
   policy: {id: status-policy:default, record_revision: 1, content_hash: 'sha256:...'}
   required_scope: {id: verification-scope:math-import, revision: 1, content_hash: 'sha256:...'}
   acceptance_profile: KERNEL_CHECKED_ALIGNED
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   evidence_snapshot: {id: evidence-index:snapshot-7, record_revision: 1, content_hash: 'sha256:...'}
   blocker_snapshot: {id: blocker-index:snapshot-4, record_revision: 1, content_hash: 'sha256:...'}
   axes:
@@ -2180,7 +2254,7 @@ import_acceptance_request:
   extends: agtxiv.request-envelope/1.0.0
   schema: agtxiv.import-acceptance-request/1.0.0
   applies_to: <exact ClaimContract TargetRef including governing ClaimIR>
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   consumer:
     id: agent:intermediate-paper
     manifest_revision: 1
@@ -2226,7 +2300,7 @@ claim_import_receipt:
   supersedes: null
   produced_at: 2026-08-22T00:00:00Z
   applies_to: <same exact ClaimContract TargetRef>
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   consumer: agent:intermediate-paper
   decision: ACCEPTED | CONDITIONAL
   accepted_status_view: {id: status-view:..., record_revision: 1, content_hash: 'sha256:...'}
@@ -2282,7 +2356,8 @@ statement_interface:
     definitions: []
     theorems: []
 source_manifestations:
-  - paper_id: arxiv:...
+  - work_id: work:stable-id
+    source_version_id: arxiv:...vN
     anchor: anchor:paper:theorem
 compatibility:
   policy: math-contract-compatibility/1.0.0
@@ -2302,12 +2377,13 @@ External records are discovered through registries. A contract revision changes 
 A stable location in an immutable source artifact.
 
 ```yaml
-schema: agtxiv.source-anchor/1.0.0
+schema: agtxiv.source-anchor/1.1.0
 id: anchor:paper-id:theorem-2
 record_revision: 1
 supersedes: null
-produced_at: 2026-08-18T00:00:00Z
-paper_id: arxiv:xxxx.xxxxxv2
+produced_at: 2026-08-26T00:00:00Z
+work_id: work:stable-id
+source_version_id: arxiv:xxxx.xxxxxv2
 artifact: main.tex
 artifact_hash: sha256:...
 location:
@@ -2321,12 +2397,13 @@ content_hash: sha256:...
 When only a PDF is available:
 
 ```yaml
-schema: agtxiv.source-anchor/1.0.0
+schema: agtxiv.source-anchor/1.1.0
 id: anchor:paper-id:pdf-p7-eq12
 record_revision: 1
 supersedes: null
-produced_at: 2026-08-18T00:00:00Z
-paper_id: doi:...
+produced_at: 2026-08-26T00:00:00Z
+work_id: work:stable-id
+source_version_id: doi:...
 artifact: paper.pdf
 artifact_hash: sha256:...
 location:
@@ -2335,6 +2412,8 @@ location:
   bounding_box: [72, 214, 518, 296]
 content_hash: sha256:...
 ```
+
+Legacy `agtxiv.source-anchor/1.0.0` records whose `paper_id` is an exact version remain valid. New `1.1.0` anchors separate stable `work_id` from exact `source_version_id`; this schema migration does not permit reusing an anchor across source versions.
 
 ### 5.4 Candidate and accepted relations
 
@@ -2385,7 +2464,7 @@ relation_acceptance_request:
   extends: agtxiv.request-envelope/1.0.0
   schema: agtxiv.relation-acceptance-request/1.0.0
   applies_to: <exact CandidateRelation TargetRef>
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   validation_record: {id: relation-validation:..., record_revision: 1, content_hash: 'sha256:...'}
   acceptance_policy: {id: relation-acceptance-policy:dependency/1.0.0, record_revision: 1, content_hash: 'sha256:...'}
   required_scope: {id: relation-scope:query-build, revision: 1, content_hash: 'sha256:...'}
@@ -2541,34 +2620,48 @@ Evidence does not automatically prove a theorem or validate an approximation out
 A `ReproductionRecord` is an immutable computational evidence record.
 
 ```yaml
-schema: agtxiv.reproduction/1.0.0
+schema: agtxiv.reproduction/1.1.0
 id: reproduction:paper-id:result-R
 record_revision: 1
 supersedes: null
-produced_at: 2026-08-18T00:00:00Z
+produced_at: 2026-08-26T00:00:00Z
 applies_to: <exact ScientificClaim TargetRef, with claim_ir when one exists>
+repository_state:
+  work_repository_binding_ref: <exact WorkRepositoryBinding TargetRef>
+  target_commit_oid: <full Git commit object ID>
+  target_tree_oid: <full Git tree object ID>
 role: LOAD_BEARING
-source_code:
-  repository: ...
-  commit: ...
-data:
-  identifier: ...
-  hashes: []
-environment:
-  lockfile: ...
-parameters: {}
-random_seed: ...
-command: ...
-reported_output: ...
-reproduced_output: ...
-tolerance: ...
-attempt_state: COMPLETED | FAILED_TO_RUN | NOT_ATTEMPTED
+layers:
+  source:
+    implementation_kind: AUTHORITATIVE | INDEPENDENT
+    artifacts: [{commit_path: reproduction/code/..., artifact_hash: 'sha256:...'}]
+  data:
+    artifacts: [{commit_path_or_immutable_locator: reproduction/data/..., artifact_hash: 'sha256:...'}]
+  environment:
+    artifacts: [{commit_path: reproduction/environment/..., artifact_hash: 'sha256:...'}]
+    environment_hash: sha256:...
+  execution:
+    workflow_path: reproduction/workflows/reproduce.yaml
+    workflow_hash: sha256:...
+    command: ...
+    parameters: {}
+    random_seed: ...
+    execution_input_hash: sha256:...
+  output:
+    reported_output: ...
+    reproduced_output: ...
+    tolerance: ...
+    artifacts: [{commit_path: reproduction/outputs/..., artifact_hash: 'sha256:...'}]
+  evidence:
+    comparison_artifact: {commit_path: reproduction/outputs/comparison.json, artifact_hash: 'sha256:...'}
+    log_artifacts: [{commit_path: reproduction/logs/..., artifact_hash: 'sha256:...'}]
+    blocker_refs: []
+attempt_state: COMPLETED | BLOCKED | FAILED_TO_RUN | NOT_ATTEMPTED
 observed_result: REPRODUCED | REPRODUCED_WITH_TOLERANCE | QUALITATIVE_ONLY | FAILED | null
-artifacts: []
 content_hash: sha256:...
 ```
 
-The observed result is evidence input, not aggregate claim status. The record has no mandatory internal DAG and no Lean requirement.
+The observed result is evidence input, not aggregate claim status. Every non-null path resolves against `repository_state.target_commit_oid`, and every consumed or produced artifact has an independent hash. `repository_state` deliberately omits the later `ReleaseManifest`; the certification transaction binds this already-hashed record to the public release without creating a forward-reference cycle. `execution_input_hash` binds the exact source, data, environment, workflow, parameters, and seed; evidence and outputs therefore cannot be silently mixed across runs. `BLOCKED` requires at least one exact blocker reference and a null `observed_result`. The record has no mandatory internal DAG and no Lean requirement.
 
 ### 5.10 LeanPackageCapabilityRecord
 
@@ -2625,7 +2718,7 @@ graph_build_request:
   applies_to: <exact query-resolution or target TargetRef>
   graph_kind: org.agtxiv.math_claim_dependency_dag
   root_set: [<canonically ordered TargetRef values>]
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   accepted_relation_snapshot: {id: relation-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
   node_manifest: {id: dependency-node-manifest:..., record_revision: 1, content_hash: 'sha256:...'}
   import_receipt_snapshot: {id: import-receipt-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
@@ -2682,7 +2775,7 @@ closure_artifact:
   graph_ref: {id: graph:resolution-id:math-dag, record_revision: 1, content_hash: 'sha256:...'}
   inputs:
     root_set: [<same ordered TargetRef values>]
-    composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+    composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
     accepted_relation_snapshot: {id: relation-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
     node_manifest: {id: dependency-node-manifest:..., record_revision: 1, content_hash: 'sha256:...'}
     import_receipt_snapshot: {id: import-receipt-index:snapshot-..., record_revision: 1, content_hash: 'sha256:...'}
@@ -2712,11 +2805,11 @@ The paper-level projection uses a separate normative operation. Its mapping snap
 ```yaml
 claim_to_paper_agent_mapping_snapshot:
   schema: agtxiv.claim-to-paper-agent-mapping-snapshot/1.0.0
-  id: claim-paper-mapping:release-17
+  id: claim-paper-mapping:registry-boundary-17
   record_revision: 1
   supersedes: null
   produced_at: 2026-08-22T00:00:00Z
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   mappings:
     - claim_target: <exact claim-DAG node TargetRef>
       paper_agent_target: <exact PaperAgentManifest TargetRef>
@@ -2725,7 +2818,7 @@ claim_to_paper_agent_mapping_snapshot:
   content_hash: sha256:...
 ```
 
-Mappings are sorted by `(canonical(claim_target), canonical(paper_agent_target))`. Every claim-DAG node has exactly one visible mapping; duplicates, omissions, forks, floating PaperAgent heads, and mappings to a different composite snapshot are invalid.
+Mappings are sorted by `(canonical(claim_target), canonical(paper_agent_target))`. Here ownership means the exact release/build unit that packages the node for this query, not intellectual priority or historical authorship. Every claim-DAG node has exactly one visible mapping; the mapped manifest must have one unambiguous publication-release binding visible through the pinned release manifest and composite snapshot. Duplicates, omissions, forks, floating PaperAgent heads, cross-snapshot mappings, and invented paper ownership for source-independent shared contracts are invalid.
 
 ```yaml
 paper_build_dag_request:
@@ -2737,8 +2830,8 @@ paper_build_dag_request:
     record_revision: 1
     content_hash: sha256:...
     graph_hash: sha256:...
-  claim_to_paper_agent_mapping_snapshot: {id: claim-paper-mapping:release-17, record_revision: 1, content_hash: 'sha256:...'}
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  claim_to_paper_agent_mapping_snapshot: {id: claim-paper-mapping:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   projection_policy: {id: paper-projection-policy:default, record_revision: 1, content_hash: 'sha256:...'}
   scc_algorithm:
     id: agtxiv.deterministic-paper-scc-condensation/1.0.0
@@ -2776,8 +2869,8 @@ paper_build_dag_artifact:
       record_revision: 1
       content_hash: sha256:...
       graph_hash: sha256:...
-    claim_to_paper_agent_mapping_snapshot: {id: claim-paper-mapping:release-17, record_revision: 1, content_hash: 'sha256:...'}
-    composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+    claim_to_paper_agent_mapping_snapshot: {id: claim-paper-mapping:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
+    composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
     projection_policy: {id: paper-projection-policy:default, record_revision: 1, content_hash: 'sha256:...'}
     scc_algorithm: {id: agtxiv.deterministic-paper-scc-condensation/1.0.0, content_hash: 'sha256:...'}
   projected_paper_nodes: [<canonically ordered exact PaperAgentManifest TargetRefs>]
@@ -2883,31 +2976,36 @@ Import acceptance is performed by the external interface in Section 5.1.14. The 
 A published Agent manifest is immutable and holds exact registry references plus local staging or audit artifact hashes.
 
 ```yaml
-schema: agtxiv.paper-agent-manifest/1.0.0
-id: agent-manifest:paper-id
+schema: agtxiv.paper-agent-manifest/1.1.0
+id: agent-manifest:work-slug
 record_revision: 1
 supersedes: null
-produced_at: 2026-08-18T00:00:00Z
+produced_at: 2026-08-26T00:00:00Z
 agent:
-  id: agent:paper-id
-  paper_id: arxiv:xxxx.xxxxxv2
+  id: agent:work-slug
+  work_id: work:stable-id
   roles: [root, intermediate, target]
-source:
-  canonical_artifact: source/main.tex
-  artifact_hash: sha256:...
+work_repository_binding_ref: <exact WorkRepositoryBinding TargetRef>
+source_occurrence:
+  source_version_id: arxiv:xxxx.xxxxxv2
+  source_manifest_payload:
+    commit_path: source/manifest.json
+    type_schema: agtxiv.paper-source/0.2
+    artifact_hash: sha256:...
+  canonical_source_artifact_hash: sha256:...
 paper_graph_refs: []
 local_delta:
   scientific_claim_refs: []
   claim_ir_refs:
-    - id: math-claim-ir:paper-id:claim-C
+    - id: math-claim-ir:work-slug:claim-C
       revision: 1
       semantic_content_hash: sha256:...
   inference_step_refs: []
 staging_and_audit_artifacts:
-  normalization_attempts: agents/paper-id/knowledge/staging/
-  formalization_payloads: agents/paper-id/formal/lean/
-  backtranslation_payloads: agents/paper-id/alignment/backtranslations/
-  evidence_payloads: agents/paper-id/verification/evidence-artifacts/
+  normalization_attempts: agtxiv/staging/normalization/
+  formalization_payloads: formal/
+  backtranslation_payloads: agtxiv/audit/backtranslations/
+  evidence_payloads: agtxiv/audit/evidence/
 content_hash: sha256:...
 ```
 
@@ -3266,9 +3364,11 @@ The target must be claim-specific. “Understand the whole paper” does not pas
 1. Fix the paper version.
 2. Prefer author-provided TeX or repository source.
 3. Hash every source artifact used.
-4. Record the canonical manuscript.
-5. Resolve supplements, code, data, and formal artifacts.
-6. Build stable anchors for the target claim and its immediate derivation.
+4. Resolve the stable `work_id`, its one public publication repository, and the exact `source_version_id`.
+5. Record the canonical source artifact for this acquisition boundary.
+6. Resolve supplements, code, data, and formal artifacts.
+7. Build stable anchors for the target claim and its immediate derivation.
+8. Prepare a repository commit candidate; do not identify the publication by a branch or floating head.
 
 #### Output
 
@@ -3312,7 +3412,7 @@ agents/<agent-id>/knowledge/staging/<request-id>/
 agents/<agent-id>/knowledge/registry-refs.yaml
 ```
 
-`MathClaimIRRegistry` is authoritative for ClaimIR, normalization, and decomposition records. Agent directories contain only staging attempts, audit payloads, and exact registry references. These outputs contain no mathematical verification status; later records are published to the single authoritative home assigned in Section 10.1.
+`MathClaimIRRegistry` is authoritative for ClaimIR, normalization, and decomposition records. Agent directories contain only staging attempts, audit payloads, and exact registry references. These outputs contain no mathematical verification status; later records are published to the single authoritative home assigned in Section 10.2.
 
 #### Gate
 
@@ -3451,7 +3551,7 @@ claim_import_receipt_excerpt:
   id: import-receipt:intermediate-paper:theorem-T
   record_revision: 1
   applies_to: <exact ClaimContract TargetRef>
-  composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  composite_registry_snapshot: {id: composite-snapshot:registry-boundary-17, record_revision: 1, content_hash: 'sha256:...'}
   consumer: agent:intermediate-paper
   decision: CONDITIONAL
   accepted_status_view:
@@ -3524,6 +3624,7 @@ Which semantic or numerical coordinates remain open?
 4. Emit separate semantic, approximation, and empirical evidence inputs and derive their statuses only in external `StatusView` records.
 5. Create a `ReproductionRecord` only when numerical checking is useful or load-bearing.
 6. Classify the numerical role as illustrative, supporting, or load-bearing.
+7. Map every attempted reproduction to exact release-commit paths for source, data, environment, execution, outputs, and evidence; retain independent hashes because Git location alone is not computational evidence.
 
 #### Gate
 
@@ -3585,7 +3686,15 @@ release manifest
 
 #### Release rule
 
-The release must make incompleteness visible. A partial but explicit graph is preferable to a polished narrative that silently bridges unsupported steps.
+A publication release is created only after the repository tree is committed. The release operation:
+
+1. creates a new, never-retargeted tag and public Git release for the exact commit;
+2. records the commit, tree, provider release identity, release assets, and hashes;
+3. atomically publishes the required AgtXIv records and registry-side `ReleaseManifest`;
+4. attaches or otherwise exposes the AgtXIv manifest as a release asset without attempting to insert the commit's own identifier into its tree; and
+5. verifies that the public tag still resolves to the recorded commit.
+
+A new source version or correction creates a new release. Earlier releases, source manifests, anchors, records, and registry snapshots remain replayable. The release must make incompleteness visible. A partial but explicit graph is preferable to a polished narrative that silently bridges unsupported steps.
 
 ---
 
@@ -4068,7 +4177,7 @@ comparison:
 
 #### Preserve evidence
 
-Store commands, logs, generated data, plots, environment lock files, output hashes, and failure traces. A screenshot alone is not a reproduction record.
+Store commands, logs, generated data, plots, environment lock files, output hashes, and failure traces under the canonical publication-repository layers in Section 10.1. A screenshot alone is not a reproduction record. Large data may use release assets, Git LFS, or external archives only when the record resolves the exact object and verifies an independent content hash; a mutable URL or unresolved LFS pointer is insufficient.
 
 ### 9.6 Closure semantics for computation
 
@@ -4091,16 +4200,94 @@ or a scientific closure that explicitly requires numerical reproduction.
 
 ---
 
-## 10. Repository Layout and Agent Interface
+## 10. Publication Repositories, Registry Service, and Agent Interface
 
-### 10.1 Authoritative registry ownership and publication
+### 10.1 Per-publication repository and canonical referencing
 
-Every normative object has exactly one authoritative home. Each registry's own manifest and append-log segments are authoritative in that registry and nowhere else:
+Each traced `work_id` has one public Git repository. The repository is the evolving publication container; a release-bound commit is one immutable publication instance. The canonical layout is role-based rather than tool-based:
+
+```text
+README.md
+CITATION.cff
+LICENSE
+source/
+  manifest.json               # canonical release-commit acquisition payload
+  anchors.jsonl               # derived SourceRegistry export; carries derived_from
+  upstream/                  # exact redistributable inputs only
+  locators/                  # hashes and stable external locators
+paper/
+  manuscript/
+  bibliography/
+  figures/
+formal/
+  lean-toolchain
+  lakefile.toml
+  lake-manifest.json
+  formal-environment.yaml
+  AgtXIv/
+reproduction/
+  manifest.yaml
+  code/
+  data/
+  environment/
+  workflows/
+  outputs/
+  logs/
+  blockers/
+agtxiv/
+  paper-agent-manifest.yaml    # derived PaperAgentRegistry export; carries derived_from
+  registry-refs/
+  audit/
+  staging/
+  graph/                     # derived, rebuildable views only
+docs/
+  limitations.md
+  release-notes.md
+.github/workflows/           # automation, not scientific authority
+```
+
+The layout expresses six reproducibility layers:
+
+| Layer | Canonical contents |
+|---|---|
+| source | exact redistributable manuscript/code bytes or hash-addressed restricted locators, plus independent implementations and provenance |
+| data | exact inputs or content-addressed external locators |
+| environment | lockfiles, containers, toolchains, hardware-sensitive settings |
+| execution | deterministic commands, parameters, seeds, and workflows |
+| output | regenerated values, figures, tables, and output hashes |
+| evidence | comparisons, logs, validation reports, failures, and blockers |
+
+The **canonical structure and referencing principle** applies across the repository and registries:
+
+1. Every authoritative artifact or record has one owning path or registry home.
+2. Other locations contain exact references, not independently maintained copies.
+3. A necessary mirror declares `derived_from` together with the exact revision, content hash, and artifact hash; generated views are marked rebuildable.
+4. Git history does not make duplicated paths non-duplicative, and a path is only a locator at one commit.
+5. Cross-repository reuse points to the same authoritative registry object instead of vendoring a second authority.
+6. Distinct semantic layers such as ClaimIR, formalization, evidence, blocker, and status view are not duplicates merely because they concern the same claim.
+
+`source/manifest.json` is the canonical release-commit acquisition payload. `SourceRegistry` owns the immutable `SourcePackageRecord` that wraps its exact commit path, schema, serialization profile, artifact hash, and semantic fields. By contrast, `source/anchors.jsonl` and `agtxiv/paper-agent-manifest.yaml` are release serializations of registry-owned records and must carry `derived_from` metadata. They have no independent authority.
+
+Git and provider features divide responsibility as follows:
+
+| Capability | Reused repository feature | AgtXIv boundary |
+|---|---|---|
+| file evolution and comparison | commits, trees, diffs, blame, branches | byte history is not semantic revision history |
+| publication snapshot | full commit and tree identifiers; signed tag; provider release and immutable-release enforcement | `ReleaseManifest` verifies the binding and asset hashes; branches and tag names alone are insufficient |
+| collaboration | forks, pull requests, reviews, issues, discussions | events are provenance or candidate evidence until represented by accepted AgtXIv records |
+| automation | versioned workflows, checks, logs, artifacts | ephemeral CI output is not durable verification evidence unless captured and hashed |
+| citation and preservation | `CITATION.cff`, release notes, signatures, attestations, external archive or DOI | mutable repository metadata is not an exact citation; scientific correctness is not inferred |
+| large artifacts | release assets, Git LFS, external archives | every dependency needs an immutable locator and independent content hash |
+
+### 10.2 Authoritative registry-service ownership and publication
+
+Every normative object has exactly one authoritative home. This registry-service ownership complements, rather than duplicates, the per-publication repository layout. Each registry's own manifest and append-log segments are authoritative in that registry and nowhere else:
 
 | Objects | Authoritative home |
 |---|---|
 | `ScientificClaim` (including records with `claim_role: CONTRIBUTION`), `ProfileAssociationRecord` | `ScientificClaimRegistry` |
-| frozen raw/expanded source artifacts, source manifests, and `SourceAnchor` | `SourceRegistry` |
+| `SourcePackageRecord`, registered source-artifact envelopes, and `SourceAnchor`; exact release-commit source payloads are addressed through those records | `SourceRegistry` |
+| stable work identity and `WorkRepositoryBinding` | `WorkRegistry` |
 | `CandidateRelation`, validation records, `AcceptedRelation` | `RelationRegistry` |
 | `MathClaimIR`, `MathematicalPropositionIR`, normalization, decomposition, semantic revision, migration | `MathClaimIRRegistry` |
 | `MathContract`, `ClaimContract`, immutable export interfaces | `ContractRegistry` |
@@ -4120,6 +4307,7 @@ Every normative object has exactly one authoritative home. Each registry's own m
 The corresponding normative layout is:
 
 ```text
+WorkRegistry/
 SourceRegistry/
 ScientificClaimRegistry/
 RelationRegistry/
@@ -4147,12 +4335,25 @@ A release manifest is authoritative only in `ReceiptRegistry`:
 
 ```yaml
 release_manifest:
-  schema: agtxiv.release-manifest/1.0.0
-  id: release:...
+  schema: agtxiv.release-manifest/1.1.0
+  id: agtxiv-release-manifest:work-slug:release-tag
   record_revision: 1
   supersedes: null
-  produced_at: 2026-08-22T00:00:00Z
-  composite_registry_snapshot: {id: composite-snapshot:release-18, record_revision: 1, content_hash: 'sha256:...'}
+  supersedes_publication_ref: null
+  produced_at: 2026-08-26T00:00:00Z
+  publication:
+    work_repository_binding_ref: <exact WorkRepositoryBinding TargetRef>
+    git_release:
+      tag_name: agtxiv-v1
+      tag_object_oid: <full annotated-tag object ID or null>
+      target_commit_oid: <full commit object ID>
+      target_tree_oid: <full tree object ID>
+      provider_release_id: <stable provider release ID>
+      release_url: https://github.com/owner/repository/releases/tag/agtxiv-v1
+      payload_release_asset_hashes: []
+  paper_agent_manifest: <exact PaperAgentManifest TargetRef>
+  source_package_ref: <exact SourcePackageRecord TargetRef>
+  content_registry_snapshot: {id: composite-snapshot:content-boundary-18, record_revision: 1, content_hash: 'sha256:...'}
   dependency_manifests: []
   published_objects: []
   external_associations: []
@@ -4160,24 +4361,26 @@ release_manifest:
   content_hash: sha256:...
 ```
 
-All arrays are canonical sorted sets of exact references. `external_associations` is the permitted home for status-view, blocker, attribution, and receipt associations that immutable targets do not own.
+Each release tag defines a distinct logical manifest ID and normally starts at `record_revision: 1`; `supersedes` is reserved for correcting an unpublished registry record with the same logical ID. Once public, a correction uses a new tag and manifest ID and records cross-publication lineage only in `supersedes_publication_ref`.
 
-Cross-registry publication is atomic through this interface:
+All arrays are canonical sorted sets of exact references. `payload_release_asset_hashes` covers release assets other than the serialized AgtXIv manifest itself, avoiding a self-hash cycle. The manifest asset uses the canonical JSON serialization declared by its schema; validation parses those bytes and recomputes the record `content_hash` with only the `content_hash` field omitted. This is record-hash verification, not an assertion that the complete asset-byte hash equals `content_hash`. Provider attestation or a later external evidence record may additionally preserve the complete manifest-asset byte hash. `external_associations` is the permitted home for status-view, blocker, attribution, and receipt associations that immutable targets do not own.
+
+Cross-registry writes are atomic through this interface. The excerpt shows the second, release-certification transaction; an ordinary content transaction uses the same interface with `release_manifest_artifact_hash: null`:
 
 ```yaml
 registry_transaction_request:
   extends: agtxiv.request-envelope/1.0.0
   schema: agtxiv.registry-transaction-request/1.0.0
-  base_composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
+  base_composite_registry_snapshot: {id: composite-snapshot:content-boundary-18, record_revision: 1, content_hash: 'sha256:...'}
   expected_registry_heads:
-    - registry_id: MathClaimIRRegistry
-      manifest_revision: 17
+    - registry_id: ReceiptRegistry
+      manifest_revision: 18
       manifest_content_hash: sha256:...
   writes:
-    - registry_id: MathClaimIRRegistry
-      object_id: math-claim-ir:...
+    - registry_id: ReceiptRegistry
+      object_id: agtxiv-release-manifest:work-slug:release-tag
       object_revision: 1
-      semantic_content_hash: sha256:...
+      content_hash: sha256:...
       artifact_hash: sha256:...
   release_manifest_artifact_hash: sha256:...
 ```
@@ -4201,11 +4404,10 @@ registry_transaction_receipt:
   supersedes: null
   produced_at: 2026-08-22T00:00:00Z
   request_ref: {id: request:registry-transaction:..., record_revision: 1, content_hash: 'sha256:...'}
-  base_composite_registry_snapshot: {id: composite-snapshot:release-17, record_revision: 1, content_hash: 'sha256:...'}
-  resulting_composite_registry_snapshot: {id: composite-snapshot:release-18, record_revision: 1, content_hash: 'sha256:...'}
+  base_composite_registry_snapshot: {id: composite-snapshot:content-boundary-18, record_revision: 1, content_hash: 'sha256:...'}
   precondition_heads: []
   committed_writes: []
-  resulting_registry_manifests: []
+  committed_write_set_hash: sha256:...
   release_manifest_artifact_hash: sha256:...
   committed_at: 2026-08-22T00:00:00Z
   producer:
@@ -4215,11 +4417,13 @@ registry_transaction_receipt:
   content_hash: sha256:...
 ```
 
-It pins the exact base and resulting composite snapshots, all precondition heads, writes, resulting registry manifests, release manifest hash, and commit time. `expected_registry_heads` must contain exactly the participating registries and equal their boundaries in the base composite snapshot; omission, addition, or mismatch is `REJECTED`. The service deterministically constructs the resulting composite snapshot from all resulting manifests and supersession states; the release manifest must pin that exact snapshot. All writes become visible together. Invalid ownership or object schema is `REJECTED`. A stale head or unresolved cross-reference is `BLOCKED` and publishes nothing. `FAILED_TO_RUN` publishes nothing. Crash recovery either exposes the complete receipt and all writes or none; partial visibility is forbidden.
+The receipt pins the exact base snapshot, all precondition heads, committed writes, canonical write-set hash, release-manifest artifact hash, and commit time. It deliberately contains no post-transaction registry-manifest hash or resulting `CompositeRegistrySnapshot`: either would make the receipt hash depend on a registry state that already contains the receipt. `expected_registry_heads` must contain exactly the participating registries and equal their boundaries in the base composite snapshot; omission, addition, or mismatch is `REJECTED`. All writes and the receipt become visible together. After that commit, the snapshot service creates a separate `CompositeRegistrySnapshot` over the resulting manifests; no object inside that boundary points forward to the boundary itself.
 
-A release is accepted only through such a receipt. Release manifests may index exact status views, blockers, and receipts, but immutable claims, contracts, exports, blueprints, and relations do not acquire reverse links to them.
+Publication uses two acyclic boundaries. First, a content transaction publishes claims, contracts, evidence, graphs, and the PaperAgent manifest, after which the snapshot service emits the `content_registry_snapshot`. Second, after the repository commit and provider release exist, a certification transaction publishes the `ReleaseManifest`, which pins that prior content snapshot, the exact Git release, and its payload assets. A later publication snapshot may include the manifest and both transaction receipts, but the manifest does not point to that later snapshot. Invalid ownership or object schema is `REJECTED`. A stale head or unresolved cross-reference is `BLOCKED` and publishes nothing. `FAILED_TO_RUN` publishes nothing. Crash recovery either exposes each complete transaction and its writes or none; partial visibility is forbidden.
 
-### 10.2 Generic Agent query interface
+An AgtXIv registry release is accepted only through such a receipt. A public publication instance additionally requires successful verification that the recorded repository, tag, commit, tree, provider release, and release assets exist and match the `ReleaseManifest`. The Git release is the distribution coordinate; the AgtXIv manifest is its registry-side certificate and index. Release manifests may index exact status views, blockers, and receipts, but immutable claims, contracts, exports, blueprints, and relations do not acquire reverse links to them.
+
+### 10.3 Generic Agent query interface
 
 ```yaml
 agent_query_request:
@@ -4245,7 +4449,7 @@ agent_query_result:
 
 `SUCCEEDED` returns exact immutable references. Invalid operation or target is `REJECTED`; not-found, ambiguous resolution, or unusable snapshot is `BLOCKED` with candidates where available; execution failure returns no inferred answer. No result fabricates a ClaimIR or copies aggregate status.
 
-### 10.3 Graph query interface
+### 10.4 Graph query interface
 
 ```yaml
 graph_query_request:
@@ -4271,7 +4475,7 @@ graph_query_result:
 
 Success returns exact hashes and canonically ordered TargetRefs. Invalid operation or target is `REJECTED`; missing or invalid snapshot and unresolved closure are `BLOCKED`; execution failure returns no graph. Partial output is allowed only as a separately hashed audit artifact and is never an accepted closure. Non-ClaimIR targets use generic `StatusView`; singular and multi-member governing ClaimIR fields follow Section 5.1.2.
 
-### 10.4 Response discipline
+### 10.5 Response discipline
 
 Every PaperAgent answer classifies its basis as `DIRECT_SOURCE`, `IMPORTED_CONTRACT`, `DERIVED_FROM_ACCEPTED_CHAIN`, `AUTOFORMALIZED_AND_ALIGNED`, `UNVERIFIED_INFERENCE`, `BLOCKED`, or `DISPUTED`.
 
@@ -4692,7 +4896,11 @@ These systems can provide candidates. AgtXIv treats their outputs as retrieval i
 
 AgtXIv does not aim to develop a complete Lean package for every physical subfield. It builds a capability registry over existing packages, routes claims by field and formal object, checks exact declaration compatibility, and constructs only small paper-specific bridges when feasible.
 
-### 14.5 Positioning statement
+### 14.5 Repository-centered publication protocols
+
+- **Agentic Publication Protocol**, [`PROTOCOL.md` at commit `712c11b5`](https://github.com/LionSR/AgenticPublicationProtocol/blob/712c11b5290de184256166fc63e81d7331c15800/PROTOCOL.md), defines a publication around a public Git repository and a tagged release, requires a verified publication manifest, and applies canonical-location rules to paper, code, data, environment, and reproduction artifacts. AgtXIv adopts its repository-plus-release envelope and non-duplication discipline while retaining claim-level semantic revisions, `TargetRef`, multi-registry snapshots, verification semantics, and cross-repository scientific DAGs.
+
+### 14.6 Positioning statement
 
 AgtXIv is not another general theorem search engine, paper chatbot, or universal autoformalizer. It is a verification-aware incremental query planner and build system over candidate literature graphs and formal libraries:
 
@@ -4712,4 +4920,4 @@ candidate claim and relation extraction
 
 The central research question is:
 
-> Given frozen PaperAgents, noisy candidate claim relations, formal declarations, semantic records, and heterogeneous verification states, how can a system compute the largest trustworthy reusable mathematical closure and the smallest remaining local delta, while using verification failure to refine the graph without allowing unaccepted status or semantic drift to propagate downstream?
+> Given release-bound PaperAgents, noisy candidate claim relations, formal declarations, semantic records, and heterogeneous verification states, how can a system compute the largest trustworthy reusable mathematical closure and the smallest remaining local delta, while using verification failure to refine the graph without allowing unaccepted status or semantic drift to propagate downstream?

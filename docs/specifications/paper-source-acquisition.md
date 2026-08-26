@@ -2,28 +2,29 @@
 
 **Status:** Normative MVP specification
 
-**Schema version:** `agtxiv.paper-source/0.1`
+**Schema version:** `agtxiv.paper-source/0.2`
 
-**Scope:** PAPER queries, canonical full-text acquisition, LaTeX preprocessing, source anchoring, and publication-witness alignment
+**Scope:** PAPER queries, stable work and publication-repository resolution, canonical full-text acquisition, LaTeX preprocessing, source anchoring, and publisher-witness alignment
 
 ## 1. Purpose
 
-This specification defines the first stage after a user submits a paper query. The stage resolves one paper, obtains its highest-priority full-text artifact, extracts source-grounded content, expands paper-defined mathematical macros when LaTeX source is available, and records locations that later pipeline stages can cite.
+This specification defines the first stage after a user submits a paper query. The stage resolves a stable intellectual work, allocates or resolves its single public publication repository, obtains one exact highest-priority source occurrence, extracts source-grounded content, expands paper-defined mathematical macros when LaTeX source is available, and records locations that later pipeline stages can cite. Acquisition prepares content for a future repository release; it does not by itself create an accepted scientific publication.
 
-Source resolution, macro expansion, and publication alignment establish content identity and source fidelity. They do not establish scientific correctness.
+Source resolution, macro expansion, and publisher alignment establish content identity and source fidelity. They do not establish scientific correctness.
 
 This stage answers:
 
-1. Which paper does the query identify?
-2. Which artifact is canonical under the AgtXIv source policy?
-3. Which additional publication artifact, if any, serves as a witness?
-4. Where does each extracted passage occur?
-5. Which mathematical passages have been expanded into the approved standard LaTeX vocabulary?
-6. Which publication differences were matched, applied to derived content, deferred for review, or superseded by a later arXiv version?
+1. Which stable `work_id` does the query identify?
+2. Which single public publication repository is assigned to that work?
+3. Which exact `source_version_id` and canonical source artifact are selected at the recorded observation boundary?
+4. Which additional publisher artifact, if any, serves as a witness?
+5. Where does each extracted passage occur?
+6. Which mathematical passages have been expanded into the approved standard LaTeX vocabulary?
+7. Which publisher differences were matched, applied to derived content, deferred for review, or superseded by a later arXiv version?
 
 ## 2. Supported Query
 
-AgtXIv v0.1 supports only `PAPER` queries. A `PAPER` query requests complete ingestion and processing of one paper. It does not ask the acquisition, extraction, claim-processing, dependency, or verification stages to answer a research question.
+This acquisition profile supports only `PAPER` queries. A `PAPER` query requests complete ingestion and processing of one paper. It does not ask the acquisition, extraction, claim-processing, dependency, or verification stages to answer a research question.
 
 A query may identify a paper by:
 
@@ -115,11 +116,11 @@ BLOCKED
 
 `BLOCKED` means that the final records do not support a reliable answer. A blocked question must not be answered by guessing. The final answer record belongs to the end-of-pipeline query-response stage and is outside the scope of this specification.
 
-## 3. Canonical Artifact and Publication Witness
+## 3. Canonical Source Artifact and Publisher Witness
 
-A canonical artifact is the full-text object from which AgtXIv derives the paper's active structured content. Canonical status concerns paper identity and content, not scientific correctness.
+A canonical source artifact is the full-text object from which AgtXIv derives the work's active structured content for one acquisition boundary and eventual publication release. Canonical-source status concerns source identity and content, not scientific correctness. ``Latest'' below means latest as resolved from authoritative metadata at `latest_version_resolution.observed_at`; after publication, the selected `source_version_id` is fixed for that release.
 
-AgtXIv v0.1 uses this strict priority order:
+This acquisition profile uses this strict priority order:
 
 1. **Latest arXiv source bundle.** If an arXiv source bundle exists, the latest available version is canonical, including when a publisher PDF also exists.
 2. **Publisher PDF fallback.** Only after authoritative evidence establishes that no arXiv record or source bundle exists, a publisher PDF may become canonical.
@@ -132,15 +133,21 @@ When arXiv source is canonical:
 - the manifest records the arXiv version and submission date;
 - the extractor identifies the root LaTeX entry point;
 - relevant macro, environment, and package context is extracted into `head.tex`;
-- a publisher PDF, when available, is stored as a `publication_witness`.
+- a publisher PDF, when available, is stored as a `publisher_witness`.
 
-A publication witness provides evidence for locating and comparing the published presentation. It is not canonical while arXiv source is available. Alignment must not modify the arXiv bundle or publisher PDF.
+A publisher witness provides evidence for locating and comparing the published presentation. It is not canonical while arXiv source is available. Alignment must not modify the arXiv bundle or publisher PDF.
 
 When only a publisher PDF is available, it is canonical and is read using `PDF_TEXT` or `OCR`. OCR output is derived evidence and never replaces the original PDF.
 
-The MVP does not introduce authority-conflict, multi-canonical, or archival version states.
+The active acquisition workspace does not introduce authority-conflict or multi-canonical states. Published repository releases are nevertheless immutable historical instances and remain replayable.
 
-### 3.1 Retrieval backend policy
+### 3.1 Work and publication-repository assignment
+
+A resolved query produces one stable `work_id` and resolves the unique eligible `WorkRepositoryBinding` containing provider, stable provider repository identity, and canonical URL. The repository belongs to the work, not to one arXiv version. A newer `source_version_id` reuses the same repository and may later produce a new release. Repository allocation failure blocks publication packaging but does not change the scientific source-selection priority.
+
+The source manifest records repository identity but not a future release commit. The exact commit, tree, tag, provider release, and release assets are bound after the tree is committed by the AgtXIv `ReleaseManifest`. A mutable branch or unresolved ``latest'' repository URL never identifies a publication instance.
+
+### 3.2 Retrieval backend policy
 
 Retrieval backend selection does not change canonical authority. A configured arXiv Kaggle dataset and the official arXiv e-print/source endpoint are transports for obtaining `ARXIV_SOURCE`; neither is a new canonical source type. A metadata-only Kaggle dataset is not a source backend: the configured dataset must contain source archives.
 
@@ -167,7 +174,7 @@ NOT_ATTEMPTED
 
 A Kaggle `INVALID_CANDIDATE` triggers the official endpoint, which may resolve that lower-priority candidate failure by succeeding. An official `INVALID_CANDIDATE` never permits publisher fallback: deterministic official identity, version, or content conflict produces canonical `REVIEW_REQUIRED`, while suspected transport damage is classified as `TRANSIENT_FAILURE` and produces `RETRY_REQUIRED`. Publisher fallback remains permitted only at the deterministic `NOT_FOUND` boundary above.
 
-Every arXiv candidate must match the resolved paper identifier and exact requested version. A Kaggle attempt records `version_evidence`; unproved version identity makes the candidate invalid. The archive must be readable and extractable, contain a non-empty source payload, reject absolute paths and `..` traversal, and reject every symbolic link and hard link. Every attempt that obtains any bytes, including an invalid or partial candidate, records a retained `candidate_path`.
+Every arXiv candidate must match the resolved paper identifier and exact requested version. A Kaggle attempt records `version_evidence`; unproved version identity makes the candidate invalid. The archive must be readable and extractable, contain a non-empty source payload, reject absolute paths and `..` traversal, and reject every symbolic link and hard link. Every attempt that obtains any bytes, including an invalid or partial candidate, records a retained `candidate_path`. Invalid, partial, conflicting, or not-yet-validated bytes remain quarantined and are never committed to the public publication tree. When redistribution rights do not permit public inclusion, the repository stores exact hashes, metadata, and stable locators rather than the restricted bytes. `redistribution_dispositions` is exhaustive per obtained object: the canonical source, publisher witness, every supplement, and every successful, invalid, partial, or conflicting retrieval candidate each receive their own disposition and decision evidence.
 
 Each obtained archive records a locally computed `archive_sha256` for transport provenance and a deterministic `source_tree_sha256` for content comparison after successful extraction. The MVP source-tree manifest is an array containing only regular files; directories and all links are excluded because links are rejected. Each object has exactly `path`, `type`, and `sha256`, where `type` is `file`, `path` is a relative POSIX path encoded as valid UTF-8, and `sha256` is the file-byte SHA-256. Paths must not undergo Unicode normalization or case folding. Sort objects by the UTF-8 bytes of `path`, encode the array as UTF-8 using the RFC 8785 JSON Canonicalization Scheme, and SHA-256 those bytes. Outer compression, tar ordering, timestamps, ownership, or other container metadata can change `archive_sha256` without creating a source-content conflict.
 
@@ -188,7 +195,7 @@ REVIEW_REQUIRED
 
 ### 4.1 `RESOLVED`
 
-`RESOLVED` means that AgtXIv obtained exactly one active canonical artifact: the latest arXiv source bundle, or a publisher PDF after the fallback boundary in Section 3.1 was satisfied. Only a resolved paper may proceed to preprocessing, content extraction, and anchor generation.
+`RESOLVED` means that AgtXIv obtained exactly one active canonical artifact: the latest arXiv source bundle, or a publisher PDF after the fallback boundary in Section 3.2 was satisfied. Only a resolved paper may proceed to preprocessing, content extraction, and anchor generation.
 
 ### 4.2 `UNAVAILABLE`
 
@@ -311,7 +318,7 @@ The PDF remains unchanged. Extracted text and OCR output are derived evidence. E
 - the canonical artifact;
 - the canonical source span or PDF location;
 - macro-expanded content when available;
-- the publication-witness location when available;
+- the publisher-witness location when available;
 - the alignment decision and its basis.
 
 Corrections are stored only in `aligned_content`. The system must not edit the canonical arXiv source, publisher PDF, `raw_latex`, `expanded_latex`, or witness extraction.
@@ -324,11 +331,11 @@ Let the latest arXiv submission time be $d_{\mathrm{arXiv}}$ and the publisher p
 ARXIV_NEWER
 ARXIV_NOT_LATER
 ORDER_UNRESOLVED
-NO_PUBLICATION_WITNESS
+NO_PUBLISHER_WITNESS
 PDF_ONLY
 ```
 
-`ARXIV_NEWER` means $d_{\mathrm{arXiv}} > d_{\mathrm{pub}}$. `ARXIV_NOT_LATER` means $d_{\mathrm{arXiv}} \leq d_{\mathrm{pub}}$. `ORDER_UNRESOLVED` means that both artifacts exist but their order cannot be established safely. `NO_PUBLICATION_WITNESS` means arXiv source is canonical and no publisher PDF is available. `PDF_ONLY` means no arXiv source exists.
+`ARXIV_NEWER` means $d_{\mathrm{arXiv}} > d_{\mathrm{pub}}$. `ARXIV_NOT_LATER` means $d_{\mathrm{arXiv}} \leq d_{\mathrm{pub}}$. `ORDER_UNRESOLVED` means that both artifacts exist but their order cannot be established safely. `NO_PUBLISHER_WITNESS` means arXiv source is canonical and no publisher PDF is available. `PDF_ONLY` means no arXiv source exists.
 
 #### Later arXiv source
 
@@ -381,38 +388,36 @@ For `SOURCE_ONLY`, `MATCHED`, and `ARXIV_NEWER_PREFERRED`, `aligned_content.cont
 
 These statuses describe individual anchor alignment. They do not replace canonical resolution status, preprocessing status, macro-expansion status, or extraction confidence.
 
-## 8. Replacement Policy
+## 8. Active-Source Replacement and Published-Release Preservation
 
-AgtXIv v0.1 retains only the current active canonical artifact.
+The acquisition service exposes one current active canonical source artifact per work. A newer source occurrence may replace that active input, but it never rewrites a published repository release.
 
-The canonical artifact is replaced when:
+The active artifact changes when:
 
 1. a newer arXiv source version becomes available;
-2. arXiv source becomes available for a paper currently represented by a publisher PDF; or
+2. arXiv source becomes available for a work currently represented by a publisher PDF; or
 3. a corrected retrieval replaces a corrupt or incorrectly identified active artifact.
 
-If arXiv source becomes available for a PDF-only paper, the arXiv source becomes canonical and the existing publisher PDF becomes a publication witness.
+If arXiv source becomes available for a PDF-only work, the arXiv source becomes active and the existing publisher PDF becomes a publisher witness.
 
-Replacement must trigger:
+An active-source change must trigger:
 
 ```text
-replace canonical artifact
+acquire and validate a new exact source occurrence
 → recompute artifact hashes
 → identify the root LaTeX document when applicable
-→ regenerate head.tex when applicable
-→ regenerate macro classification and expansion
-→ regenerate anchors and witness alignment
-→ regenerate aligned content
-→ invalidate and regenerate all derived claims and relations
+→ regenerate head.tex, macro classification, and expansion
+→ regenerate anchors, publisher-witness alignment, and aligned content
+→ invalidate and supersede affected derived claims and relations
+→ prepare a new repository commit
+→ create a new tag, public Git release, and AgtXIv ReleaseManifest
 ```
 
-Old anchors must never be reused after replacement. Files, lines, pages, labels, macros, wording, and alignment decisions may have changed.
-
-The MVP does not retain the replaced artifact as an active historical canonical version.
+No anchor is reused across source versions merely because a path, line, page, or label appears unchanged. The active workspace need not expose several source versions simultaneously, but every published release retains its exact source manifest, anchors, records, and registry snapshot and remains replayable.
 
 ## 9. Source Package
 
-Each paper source is represented by:
+Each work release candidate uses the canonical `source/` subtree of its publication repository:
 
 ```text
 source/
@@ -420,20 +425,68 @@ source/
 └── anchors.jsonl
 ```
 
-`manifest.json` records paper identity, sanitized query provenance, latest-version resolution, canonical resolution, ordered retrieval attempts, stable locators, candidate validation and hashes, selected-attempt or comparison decisions, dates, extraction tools, macro-expansion policy, and alignment policy. Retrieval provenance must locate retained objects without treating a transport backend as a canonical source type.
+`manifest.json` records stable work and publication-repository identity, exact source version, sanitized query provenance, latest-version resolution, canonical resolution, ordered retrieval attempts, stable locators, candidate validation and hashes, selected-attempt or comparison decisions, dates, extraction tools, macro-expansion policy, and alignment policy. Retrieval provenance must locate retained objects without treating a transport backend as a canonical source type.
 
-`anchors.jsonl` records source passages, expanded mathematical content, publication-witness locations, and derived aligned content. It is empty or absent unless canonical resolution is `RESOLVED`; unresolved-root preprocessing with status `REVIEW_REQUIRED` also produces no anchors.
+`anchors.jsonl` records source passages, expanded mathematical content, publisher-witness locations, and derived aligned content. It is empty or absent unless canonical resolution is `RESOLVED`; unresolved-root preprocessing with status `REVIEW_REQUIRED` also produces no anchors.
 
-Original arXiv bundles and publisher PDFs remain under the project's existing reference-material structure. Source-derived `head.tex` remains in the existing source or reference structure. The manifest points to these objects rather than duplicating them in the source package.
+Redistributable exact inputs may appear once under `source/upstream/`. Restricted artifacts remain external and are represented under `source/locators/` by stable retrieval metadata and independent hashes. Source-derived `head.tex` is audit material and has one canonical path. The manifest references these objects rather than creating parallel copies.
+
+### 9.1 Registry wrapping and canonical references
+
+After the repository tree is committed, `SourceRegistry` wraps the canonical payload in an immutable record:
+
+```yaml
+source_package_record:
+  schema: agtxiv.source-package-record/1.0.0
+  id: source-package:work-slug:source-version-slug
+  record_revision: 1
+  supersedes: null
+  work_id: work:stable-id
+  source_version_id: arxiv:xxxx.xxxxxvN
+  work_repository_binding_ref: <exact WorkRepositoryBinding TargetRef>
+  manifest_artifact:
+    target_commit_oid: <full Git commit object ID>
+    commit_path: source/manifest.json
+    type_schema: agtxiv.paper-source/0.2
+    serialization_profile: {id: rfc8785-json/1.0.0, content_hash: 'sha256:...'}
+    artifact_hash: sha256:...
+  canonical_source_artifact_ref: <exact registered source-artifact TargetRef>
+  source_anchor_refs: [<canonically sorted exact SourceAnchor TargetRefs>]
+  content_hash: sha256:...
+```
+
+This `SourcePackageRecord`, not the repository path alone, is the post-commit source target used by `ReleaseManifest`. An in-tree `PaperAgentManifest` records only source payload paths, schemas, and artifact hashes so that it does not depend indirectly on its own target commit. Each `anchors.jsonl` row is registered as an `agtxiv.source-anchor/1.1.0` record with immutable-envelope `id`, `record_revision`, `supersedes`, `work_id`, `source_version_id`, artifact address and hash, location, and `content_hash`. The committed `anchors.jsonl` file is a derived registry export carrying `derived_from` metadata; it is not a second authority. Registration fails if the payload work, source version, repository binding, commit, schema, or hashes disagree.
 
 ## 10. `manifest.json`
 
-### 10.1 Canonical arXiv source with publication witness
+### 10.1 Canonical arXiv source with publisher witness
 
 ```json
 {
-  "schema_version": "agtxiv.paper-source/0.1",
-  "paper_id": "arxiv:1609.07488v3",
+  "schema_version": "agtxiv.paper-source/0.2",
+  "work_id": "work:1609.07488",
+  "source_version_id": "arxiv:1609.07488v3",
+  "work_repository_binding_ref": {"id": "work-repository-binding:stable-id", "record_revision": 1, "content_hash": "sha256:..."},
+  "redistribution_dispositions": [
+    {
+      "artifact_or_attempt_id": "attempt:kaggle:1",
+      "artifact_sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+      "rights_status": "REDISTRIBUTABLE",
+      "decision_basis": "The recorded source license permits redistribution.",
+      "public_tree_inclusion": "INCLUDED",
+      "public_path": "source/upstream/arxiv-source-v3.tar",
+      "local_quarantine_path": null
+    },
+    {
+      "artifact_or_attempt_id": "publisher-witness:example-paper",
+      "artifact_sha256": "93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135",
+      "rights_status": "RESTRICTED",
+      "decision_basis": "Publisher terms permit verification access but not public redistribution.",
+      "public_tree_inclusion": "LOCATOR_ONLY",
+      "public_path": null,
+      "local_quarantine_path": "quarantine/example-paper/publisher.pdf"
+    }
+  ],
   "document_type": "PAPER",
   "query": {
     "query_type": "PAPER",
@@ -467,7 +520,7 @@ Original arXiv bundles and publisher PDFs remain under the project's existing re
     "resolved_at": "2026-08-21T10:00:00Z"
   },
   "canonical_artifact": {
-    "path": "Reference/example-paper/arxiv-source-v3.tar",
+    "path": "source/upstream/arxiv-source-v3.tar",
     "media_type": "application/x-tar",
     "arxiv_version": 3,
     "arxiv_submitted_at": "2017-06-02T11:30:00Z",
@@ -496,7 +549,7 @@ Original arXiv bundles and publisher PDFs remain under the project's existing re
         "requested_arxiv_version": "v3",
         "attempted_at": "2026-08-21T09:58:00Z",
         "result": "SUCCEEDED",
-        "candidate_path": "Reference/example-paper/candidates/kaggle-v3.tar",
+        "candidate_path": "quarantine/example-paper/candidates/kaggle-v3.tar",
         "version_evidence": {
           "arxiv_id": "1609.07488",
           "arxiv_version": "v3",
@@ -537,7 +590,7 @@ Original arXiv bundles and publisher PDFs remain under the project's existing re
     "tool": "agtxiv-latex-reader",
     "generated_at": "2026-08-21T10:05:00Z",
     "head_file": {
-      "path": "Reference/example-paper/derived/head.tex",
+      "path": "source/audit/head.tex",
       "sha256": "dcad2aeb52798a585f8f15d72d1bffceb911b4e91a54104d71f5f955632f0f85",
       "role": "PREPROCESSING_AND_AUDIT_ONLY"
     },
@@ -550,8 +603,8 @@ Original arXiv bundles and publisher PDFs remain under the project's existing re
       "unresolved": "PRESERVE_AND_REQUIRE_REVIEW"
     }
   },
-  "publication_witness": {
-    "path": "Reference/example-paper/publisher.pdf",
+  "publisher_witness": {
+    "path": "quarantine/example-paper/publisher.pdf",
     "media_type": "application/pdf",
     "source_url": "https://publisher.example/paper.pdf",
     "publication_date": "2017-03-15",
@@ -619,8 +672,21 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
 
 ```json
 {
-  "schema_version": "agtxiv.paper-source/0.1",
-  "paper_id": "doi:10.xxxx/example",
+  "schema_version": "agtxiv.paper-source/0.2",
+  "work_id": "work:doi:10.xxxx/example",
+  "source_version_id": "publisher-pdf:sha256:93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135",
+  "work_repository_binding_ref": {"id": "work-repository-binding:stable-id", "record_revision": 1, "content_hash": "sha256:..."},
+  "redistribution_dispositions": [
+    {
+      "artifact_or_attempt_id": "attempt:publisher:3",
+      "artifact_sha256": "93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135",
+      "rights_status": "RESTRICTED",
+      "decision_basis": "Publisher terms permit verification access but not public redistribution.",
+      "public_tree_inclusion": "LOCATOR_ONLY",
+      "public_path": null,
+      "local_quarantine_path": "quarantine/example-paper/candidates/publisher.pdf"
+    }
+  ],
   "document_type": "PAPER",
   "query": {
     "query_type": "PAPER",
@@ -651,7 +717,7 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
     "resolved_at": "2026-08-21T10:00:00Z"
   },
   "canonical_artifact": {
-    "path": "Reference/example-paper/publisher.pdf",
+    "path": "quarantine/example-paper/publisher.pdf",
     "media_type": "application/pdf",
     "source_url": "https://publisher.example/paper.pdf",
     "publication_date": "2024-05-17",
@@ -695,7 +761,7 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
         "requested_arxiv_version": null,
         "attempted_at": "2026-08-21T09:58:00Z",
         "result": "SUCCEEDED",
-        "candidate_path": "Reference/example-paper/candidates/publisher.pdf",
+        "candidate_path": "quarantine/example-paper/candidates/publisher.pdf",
         "version_evidence": null,
         "validation": {
           "status": "PASSED",
@@ -716,7 +782,7 @@ For the clear-publication-correction branch, the same arXiv-canonical manifest s
     "head_file": null,
     "macro_expansion": null
   },
-  "publication_witness": null,
+  "publisher_witness": null,
   "alignment": {
     "tool": null,
     "generated_at": "2026-08-21T10:05:00Z",
@@ -741,14 +807,17 @@ If the PDF has a reliable text layer, `source_preprocessing.method` is `PDF_TEXT
 
 For Kaggle, either `locator.dataset_revision` is an immutable dataset version or revision, or both `snapshot_path` and `snapshot_sha256` identify a retained local snapshot. At least one of those alternatives must be complete. Angle-bracket strings in these examples are neutral placeholders, not claims about a real dataset identifier, member layout, or URL. A mutable slug and observation date alone are insufficient.
 
-For arXiv source, `validation.archive_sha256` is locally computed over retrieved archive bytes and `validation.source_tree_sha256` is the basis for backend comparison. Publisher attempts instead record a local `document_sha256`. These fields do not imply a Kaggle-provided checksum or real-time dataset freshness. Publisher retrieval uses `PUBLISHER_URL` and may proceed only after the ordered arXiv evidence satisfies Section 3.1.
+For arXiv source, `validation.archive_sha256` is locally computed over retrieved archive bytes and `validation.source_tree_sha256` is the basis for backend comparison. Publisher attempts instead record a local `document_sha256`. These fields do not imply a Kaggle-provided checksum or real-time dataset freshness. Publisher retrieval uses `PUBLISHER_URL` and may proceed only after the ordered arXiv evidence satisfies Section 3.2.
 
 ### 10.3 Unavailable source
 
 ```json
 {
-  "schema_version": "agtxiv.paper-source/0.1",
-  "paper_id": "doi:10.xxxx/example",
+  "schema_version": "agtxiv.paper-source/0.2",
+  "work_id": "work:doi:10.xxxx/example",
+  "source_version_id": null,
+  "work_repository_binding_ref": {"id": "work-repository-binding:stable-id", "record_revision": 1, "content_hash": "sha256:..."},
+  "redistribution_dispositions": [],
   "document_type": "PAPER",
   "query": {
     "query_type": "PAPER",
@@ -819,7 +888,7 @@ For arXiv source, `validation.archive_sha256` is locally computed over retrieved
     "comparison": null
   },
   "source_preprocessing": null,
-  "publication_witness": null,
+  "publisher_witness": null,
   "alignment": null
 }
 ```
@@ -880,7 +949,7 @@ Different source trees for the same exact version require review. This branch is
         "requested_arxiv_version": "v2",
         "attempted_at": "2026-08-21T09:56:00Z",
         "result": "SUCCEEDED",
-        "candidate_path": "Reference/example-paper/candidates/kaggle-v2.tar",
+        "candidate_path": "quarantine/example-paper/candidates/kaggle-v2.tar",
         "version_evidence": {"arxiv_id": "<arxiv-id>", "arxiv_version": "v2", "basis": "<dataset-specific-version-evidence>"},
         "validation": {
           "status": "PASSED",
@@ -903,7 +972,7 @@ Different source trees for the same exact version require review. This branch is
         "result": "SUCCEEDED",
         "trigger": "OFFICIAL_CROSS_CHECK",
         "reason": "The configured mode cross-checks the first candidate from this dataset revision.",
-        "candidate_path": "Reference/example-paper/candidates/official-v2.tar",
+        "candidate_path": "quarantine/example-paper/candidates/official-v2.tar",
         "version_evidence": {"arxiv_id": "<arxiv-id>", "arxiv_version": "v2", "basis": "OFFICIAL_VERSIONED_ENDPOINT"},
         "validation": {
           "status": "PASSED",
@@ -922,13 +991,13 @@ Different source trees for the same exact version require review. This branch is
     "comparison": {
       "status": "REVIEW_REQUIRED",
       "candidates": [
-        {"attempt_id": "attempt:kaggle:1", "candidate_path": "Reference/example-paper/candidates/kaggle-v2.tar", "archive_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source_tree_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
-        {"attempt_id": "attempt:arxiv:2", "candidate_path": "Reference/example-paper/candidates/official-v2.tar", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "source_tree_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}
+        {"attempt_id": "attempt:kaggle:1", "candidate_path": "quarantine/example-paper/candidates/kaggle-v2.tar", "archive_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "source_tree_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        {"attempt_id": "attempt:arxiv:2", "candidate_path": "quarantine/example-paper/candidates/official-v2.tar", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "source_tree_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}
       ]
     }
   },
   "source_preprocessing": null,
-  "publication_witness": null,
+  "publisher_witness": null,
   "alignment": null
 }
 ```
@@ -953,7 +1022,7 @@ The following complete retrieval and canonical fragment shows the official endpo
     "resolved_at": "2026-08-21T10:00:00Z"
   },
   "canonical_artifact": {
-    "path": "Reference/example-paper/arxiv-source-v2.tar",
+    "path": "source/upstream/arxiv-source-v2.tar",
     "media_type": "application/x-tar",
     "arxiv_version": 2,
     "arxiv_submitted_at": "2024-05-01T12:00:00Z",
@@ -984,7 +1053,7 @@ The following complete retrieval and canonical fragment shows the official endpo
         "result": "SUCCEEDED",
         "trigger": "FALLBACK_AFTER_KAGGLE_NOT_FOUND",
         "reason": "The dataset had no exact-version member.",
-        "candidate_path": "Reference/example-paper/candidates/official-v2.tar",
+        "candidate_path": "quarantine/example-paper/candidates/official-v2.tar",
         "version_evidence": {"arxiv_id": "<arxiv-id>", "arxiv_version": "v2", "basis": "OFFICIAL_VERSIONED_ENDPOINT"},
         "validation": {
           "status": "PASSED",
@@ -1007,7 +1076,7 @@ The following complete retrieval and canonical fragment shows the official endpo
 
 ## 11. `anchors.jsonl`
 
-Each line of `anchors.jsonl` is one JSON object. An anchor connects derived content to exact evidence in the current canonical artifact and, when available, the publication witness.
+Each line of `anchors.jsonl` is one JSON object. An anchor connects derived content to exact evidence in the current canonical artifact and, when available, the publisher witness.
 
 Every anchor must contain:
 
@@ -1018,26 +1087,26 @@ Every anchor must contain:
 - a content kind;
 - derived aligned content and its alignment status;
 - hashes for stored content representations;
-- publication-witness evidence when used.
+- publisher-witness evidence when used.
 
 ArXiv-derived mathematical anchors must also contain exact `raw_latex` and a macro-expansion object. `expanded_latex` is non-null only for `EXPANDED`; partial and failed cases use the fields defined in Section 5.4. PDF-only anchors do not have source LaTeX; their `raw_latex` and macro-expansion fields are `null`.
 
 ### 11.1 Matched arXiv and publisher content
 
 ```json
-{"anchor_id":"anchor:example-paper:001","paper_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"main.tex","line_start":120,"line_end":124,"section":"Main Result","structural_type":"theorem","label":"thm:main"},"raw_latex":"\\begin{theorem}\\label{thm:main} For every $\\rho\\in\\Dens(\\cH)$, $\\RoM(\\rho)\\geq 1$. \\end{theorem}","raw_latex_sha256":"8a8e84652117d16d3fc821cf33139fd4b7bb7952327a979955d28f22fc98180e","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"For every $\\rho\\in\\mathcal{D}(\\mathcal{H})$, $\\operatorname{RoM}(\\rho)\\geq 1$.","expanded_latex_sha256":"b378095fd4c67e1d42e062806268152e8f635db0d4a2552f1fc83df965ea2532","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":5,"bounding_box":[72,214,510,328]},"extraction_method":"PDF_TEXT","extracted_text":"Theorem 1. For every rho in D(H), RoM(rho) is at least 1.","extracted_text_sha256":"40ea2b694d7b795260e216115249703e391abbeb2b32fad72390f860efdc9e0d"},"aligned_content":{"status":"MATCHED","content_format":"STANDARD_LATEX","content":"For every $\\rho\\in\\mathcal{D}(\\mathcal{H})$, $\\operatorname{RoM}(\\rho)\\geq 1$.","content_sha256":"b378095fd4c67e1d42e062806268152e8f635db0d4a2552f1fc83df965ea2532","resolution_basis":"The arXiv source and publisher witness state the same mathematical claim."},"automatic_math_normalization_eligible":true}
+{"anchor_id":"anchor:example-paper:001","work_id":"work:1609.07488","source_version_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"main.tex","line_start":120,"line_end":124,"section":"Main Result","structural_type":"theorem","label":"thm:main"},"raw_latex":"\\begin{theorem}\\label{thm:main} For every $\\rho\\in\\Dens(\\cH)$, $\\RoM(\\rho)\\geq 1$. \\end{theorem}","raw_latex_sha256":"8a8e84652117d16d3fc821cf33139fd4b7bb7952327a979955d28f22fc98180e","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"For every $\\rho\\in\\mathcal{D}(\\mathcal{H})$, $\\operatorname{RoM}(\\rho)\\geq 1$.","expanded_latex_sha256":"b378095fd4c67e1d42e062806268152e8f635db0d4a2552f1fc83df965ea2532","partial_expansion_latex":null,"unresolved_macros":[]},"publisher_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":5,"bounding_box":[72,214,510,328]},"extraction_method":"PDF_TEXT","extracted_text":"Theorem 1. For every rho in D(H), RoM(rho) is at least 1.","extracted_text_sha256":"40ea2b694d7b795260e216115249703e391abbeb2b32fad72390f860efdc9e0d"},"aligned_content":{"status":"MATCHED","content_format":"STANDARD_LATEX","content":"For every $\\rho\\in\\mathcal{D}(\\mathcal{H})$, $\\operatorname{RoM}(\\rho)\\geq 1$.","content_sha256":"b378095fd4c67e1d42e062806268152e8f635db0d4a2552f1fc83df965ea2532","resolution_basis":"The arXiv source and publisher witness state the same mathematical claim."},"automatic_math_normalization_eligible":true}
 ```
 
 ### 11.2 Later arXiv content preferred
 
 ```json
-{"anchor_id":"anchor:example-paper:002","paper_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"appendix.tex","line_start":42,"line_end":46,"section":"Corrections","structural_type":"lemma","label":"lem:corrected-bound"},"raw_latex":"\\begin{lemma}\\label{lem:corrected-bound} If $n\\geq 2$, then $f(n)\\leq n^2+1$. \\end{lemma}","raw_latex_sha256":"6924e8d4dd97238a47bcf1352db872ecca05b07637d51f85603b9f5120ec776d","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","expanded_latex_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":11,"bounding_box":[70,180,515,260]},"extraction_method":"PDF_TEXT","extracted_text":"Lemma 4. If n is at least 1, then f(n) is at most n squared.","extracted_text_sha256":"6cad1e57978ef22c616080741e1c5f3614969c537e0c1e77e7d721898b73fd85"},"aligned_content":{"status":"ARXIV_NEWER_PREFERRED","content_format":"STANDARD_LATEX","content":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","content_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","resolution_basis":"The canonical arXiv version was submitted after publication; the older publisher wording does not override it."},"automatic_math_normalization_eligible":true}
+{"anchor_id":"anchor:example-paper:002","work_id":"work:1609.07488","source_version_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"appendix.tex","line_start":42,"line_end":46,"section":"Corrections","structural_type":"lemma","label":"lem:corrected-bound"},"raw_latex":"\\begin{lemma}\\label{lem:corrected-bound} If $n\\geq 2$, then $f(n)\\leq n^2+1$. \\end{lemma}","raw_latex_sha256":"6924e8d4dd97238a47bcf1352db872ecca05b07637d51f85603b9f5120ec776d","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","expanded_latex_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","partial_expansion_latex":null,"unresolved_macros":[]},"publisher_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":11,"bounding_box":[70,180,515,260]},"extraction_method":"PDF_TEXT","extracted_text":"Lemma 4. If n is at least 1, then f(n) is at most n squared.","extracted_text_sha256":"6cad1e57978ef22c616080741e1c5f3614969c537e0c1e77e7d721898b73fd85"},"aligned_content":{"status":"ARXIV_NEWER_PREFERRED","content_format":"STANDARD_LATEX","content":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","content_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","resolution_basis":"The canonical arXiv version was submitted after publication; the older publisher wording does not override it."},"automatic_math_normalization_eligible":true}
 ```
 
 ### 11.3 Clear publisher correction applied to derived content
 
 ```json
-{"anchor_id":"anchor:example-paper:003","paper_id":"arxiv:examplev1","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"main.tex","line_start":210,"line_end":214,"section":"Bounds","structural_type":"lemma","label":"lem:published-bound"},"raw_latex":"\\begin{lemma}\\label{lem:published-bound} If $n\\geq 2$, then $f(n)\\leq n^2$. \\end{lemma}","raw_latex_sha256":"347f5ac8c0c5a8abb016bd83b6ee80d33c59d5c14937ff55fc81b1338157bac9","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"If $n\\geq 2$, then $f(n)\\leq n^2$.","expanded_latex_sha256":"e2fe75db00794480221d612689e7b69ae5cd275cea21ca46d57ad5b1e81e207c","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":8,"bounding_box":[70,180,515,260]},"extraction_method":"PDF_TEXT","extracted_text":"Lemma 3. If n is at least 2, then f(n) is at most n squared plus 1.","extracted_text_sha256":"e79afe926010c028c2765501db0d385fb4a7f0d55549290c2871ba589804c0ba"},"aligned_content":{"status":"PDF_CORRECTION_APPLIED","content_format":"STANDARD_LATEX","content":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","content_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","resolution_basis":"The arXiv source predates publication, and the publisher witness unambiguously adds the term +1 to the bound; only aligned_content applies that change."},"automatic_math_normalization_eligible":true}
+{"anchor_id":"anchor:example-paper:003","work_id":"work:example","source_version_id":"arxiv:examplev1","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"main.tex","line_start":210,"line_end":214,"section":"Bounds","structural_type":"lemma","label":"lem:published-bound"},"raw_latex":"\\begin{lemma}\\label{lem:published-bound} If $n\\geq 2$, then $f(n)\\leq n^2$. \\end{lemma}","raw_latex_sha256":"347f5ac8c0c5a8abb016bd83b6ee80d33c59d5c14937ff55fc81b1338157bac9","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"If $n\\geq 2$, then $f(n)\\leq n^2$.","expanded_latex_sha256":"e2fe75db00794480221d612689e7b69ae5cd275cea21ca46d57ad5b1e81e207c","partial_expansion_latex":null,"unresolved_macros":[]},"publisher_witness":{"artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","location":{"type":"PDF_REGION","page":8,"bounding_box":[70,180,515,260]},"extraction_method":"PDF_TEXT","extracted_text":"Lemma 3. If n is at least 2, then f(n) is at most n squared plus 1.","extracted_text_sha256":"e79afe926010c028c2765501db0d385fb4a7f0d55549290c2871ba589804c0ba"},"aligned_content":{"status":"PDF_CORRECTION_APPLIED","content_format":"STANDARD_LATEX","content":"If $n\\geq 2$, then $f(n)\\leq n^2+1$.","content_sha256":"21851044eb05bded444b3ac10f86007da27e20fb08c3aea7be8ce788fcc31ebb","resolution_basis":"The arXiv source predates publication, and the publisher witness unambiguously adds the term +1 to the bound; only aligned_content applies that change."},"automatic_math_normalization_eligible":true}
 ```
 
 The manifest branch for this anchor uses `ARXIV_NOT_LATER`. The canonical arXiv source, its `raw_latex`, its expanded source representation, and the publisher witness remain unchanged.
@@ -1045,13 +1114,13 @@ The manifest branch for this anchor uses `ARXIV_NOT_LATER`. The canonical arXiv 
 ### 11.4 ArXiv source without a matched witness passage
 
 ```json
-{"anchor_id":"anchor:example-paper:004","paper_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"supplement.tex","line_start":88,"line_end":91,"section":"Supplementary Lemmas","structural_type":"lemma","label":"lem:aux"},"raw_latex":"\\begin{lemma}\\label{lem:aux} $g(0)=0$. \\end{lemma}","raw_latex_sha256":"2c82d1b9356e84182a7a184dac8a377f508a234f6f8061a16929102aacc9cb10","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"$g(0)=0$.","expanded_latex_sha256":"6e8d4ad71b4f72804e82bfb07ed1e6e9b25895fa55d0d87812da2be73738ddce","partial_expansion_latex":null,"unresolved_macros":[]},"publication_witness":null,"aligned_content":{"status":"SOURCE_ONLY","content_format":"STANDARD_LATEX","content":"$g(0)=0$.","content_sha256":"6e8d4ad71b4f72804e82bfb07ed1e6e9b25895fa55d0d87812da2be73738ddce","resolution_basis":"The canonical arXiv source contains the passage, and no corresponding publisher-witness passage is available."},"automatic_math_normalization_eligible":true}
+{"anchor_id":"anchor:example-paper:004","work_id":"work:1609.07488","source_version_id":"arxiv:1609.07488v3","canonical_artifact_sha256":"48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d","content_kind":"MATHEMATICS","source_location":{"type":"LATEX_LINES","file":"supplement.tex","line_start":88,"line_end":91,"section":"Supplementary Lemmas","structural_type":"lemma","label":"lem:aux"},"raw_latex":"\\begin{lemma}\\label{lem:aux} $g(0)=0$. \\end{lemma}","raw_latex_sha256":"2c82d1b9356e84182a7a184dac8a377f508a234f6f8061a16929102aacc9cb10","macro_expansion":{"status":"EXPANDED","approved_vocabulary":"agtxiv-standard-latex/0.1","expanded_latex":"$g(0)=0$.","expanded_latex_sha256":"6e8d4ad71b4f72804e82bfb07ed1e6e9b25895fa55d0d87812da2be73738ddce","partial_expansion_latex":null,"unresolved_macros":[]},"publisher_witness":null,"aligned_content":{"status":"SOURCE_ONLY","content_format":"STANDARD_LATEX","content":"$g(0)=0$.","content_sha256":"6e8d4ad71b4f72804e82bfb07ed1e6e9b25895fa55d0d87812da2be73738ddce","resolution_basis":"The canonical arXiv source contains the passage, and no corresponding publisher-witness passage is available."},"automatic_math_normalization_eligible":true}
 ```
 
 ### 11.5 Publisher-PDF-only content
 
 ```json
-{"anchor_id":"anchor:example-paper:005","paper_id":"doi:10.xxxx/example","canonical_artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","content_kind":"MATHEMATICS","source_location":{"type":"PDF_REGION","page":7,"bounding_box":[72,214,510,328]},"raw_latex":null,"raw_latex_sha256":null,"macro_expansion":null,"pdf_extraction":{"method":"OCR","tool":"existing-ocr-skill","extracted_text":"For every state rho, F of rho is less than or equal to g of n.","extracted_text_sha256":"85020f1d94b670fc6252bdefe4a78cf40ddcb110362a8b76f2f894bb06d9fe87","confidence":0.97},"publication_witness":null,"aligned_content":{"status":"PDF_ONLY","content_format":"EXTRACTED_TEXT","content":"For every state rho, F of rho is less than or equal to g of n.","content_sha256":"85020f1d94b670fc6252bdefe4a78cf40ddcb110362a8b76f2f894bb06d9fe87","resolution_basis":"No arXiv source exists; content was extracted from the canonical publisher PDF."},"automatic_math_normalization_eligible":false}
+{"anchor_id":"anchor:example-paper:005","work_id":"work:doi:10.xxxx/example","source_version_id":"publisher-pdf:sha256:93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","canonical_artifact_sha256":"93fb61d8b94fd76116428bdcc44ea396ea5a4caad62a42353486c007541f9135","content_kind":"MATHEMATICS","source_location":{"type":"PDF_REGION","page":7,"bounding_box":[72,214,510,328]},"raw_latex":null,"raw_latex_sha256":null,"macro_expansion":null,"pdf_extraction":{"method":"OCR","tool":"existing-ocr-skill","extracted_text":"For every state rho, F of rho is less than or equal to g of n.","extracted_text_sha256":"85020f1d94b670fc6252bdefe4a78cf40ddcb110362a8b76f2f894bb06d9fe87","confidence":0.97},"publisher_witness":null,"aligned_content":{"status":"PDF_ONLY","content_format":"EXTRACTED_TEXT","content":"For every state rho, F of rho is less than or equal to g of n.","content_sha256":"85020f1d94b670fc6252bdefe4a78cf40ddcb110362a8b76f2f894bb06d9fe87","resolution_basis":"No arXiv source exists; content was extracted from the canonical publisher PDF."},"automatic_math_normalization_eligible":false}
 ```
 
 A `PDF_CORRECTION_APPLIED` anchor contains both arXiv and publisher evidence. Its `aligned_content.content` contains the clear publication correction, and its `resolution_basis` records the exact difference and why automatic application was unambiguous.
@@ -1087,17 +1156,21 @@ A source package is valid only if:
 23. every arXiv-derived mathematical anchor preserves exact `raw_latex`; only `EXPANDED` approved-vocabulary mathematics is automatically eligible for math-claim normalization;
 24. unresolved macros are preserved and never guessed, and partial or failed expansion has null `expanded_latex`;
 25. publisher PDF extraction uses `PDF_TEXT` or `OCR`, and OCR remains derived evidence tied to the PDF hash;
-26. a publisher PDF accompanying canonical arXiv source is a publication witness, not a second canonical artifact;
+26. a publisher PDF accompanying canonical arXiv source is a publisher witness, not a second canonical artifact;
 27. alignment changes appear only in derived `aligned_content`; later arXiv content is not overwritten by an older witness, and ambiguous source-witness discrepancies receive alignment `REVIEW_REQUIRED` with null aligned content;
-28. every anchor and witness location refers to the current corresponding artifact hash; and
-29. canonical replacement invalidates all prior anchors, aligned content, claims, and relations.
+28. every anchor and witness location refers to the current corresponding artifact hash;
+29. `work_id` is stable across source versions, `work_repository_binding_ref` resolves to the unique eligible `WorkRegistry` binding head, and the payload work ID agrees with that binding;
+30. `source_version_id` identifies one exact source occurrence and is never a floating ``latest'' value; it is null exactly when no canonical source occurrence has been resolved;
+31. no branch, mutable tag name, or repository path substitutes for a full release binding, independent artifact hash, or canonical `TargetRef`;
+32. `redistribution_dispositions` has exactly one entry for every obtained canonical source, publisher witness, supplement, and retrieval candidate; each entry records its byte hash, rights status, decision basis, public-tree inclusion mode, and mutually consistent public or quarantine paths. The package-level summary, if emitted, is derived from these entries. Quarantined or restricted bytes are excluded from the public tree, with omitted restricted artifacts represented by exact hashes and stable locators; and
+33. active-source replacement invalidates and supersedes affected current outputs without changing any previously published release binding.
 
 ## 13. MVP Boundary
 
-AgtXIv v0.1 deliberately does not:
+This acquisition profile deliberately does not:
 
 - support thesis, book, dataset, or software queries;
-- preserve an active archive of earlier canonical versions;
+- expose several source versions as simultaneously active acquisition inputs, although every published release remains immutable and replayable;
 - maintain multiple canonical artifacts;
 - treat a retrieval backend, including the arXiv Kaggle dataset, as a canonical source type or authority;
 - treat publisher presentation as automatically authoritative over arXiv source;
@@ -1112,4 +1185,4 @@ AgtXIv v0.1 deliberately does not:
 - use or answer a deferred question before every configured stage has produced a final explicit result; or
 - treat OCR output as a replacement for the source PDF.
 
-The next pipeline stage begins only after a resolved source package and its anchors are available. Downstream processing uses derived aligned content while retaining links to canonical source, raw LaTeX, macro expansion, publication-witness evidence, and alignment decisions. Any deferred question remains isolated until the completed pipeline exposes final records to the query-response stage.
+The next pipeline stage begins only after a resolved source package and its anchors are available. Downstream processing uses derived aligned content while retaining links to stable work identity, publication repository, exact source version, canonical source, raw LaTeX, macro expansion, publisher-witness evidence, and alignment decisions. Any deferred question remains isolated until the completed pipeline exposes final records to the query-response stage.
