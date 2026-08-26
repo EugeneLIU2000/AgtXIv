@@ -18,12 +18,16 @@ ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "Stabilizerness/ScientificClaimRegistry/claims/contribution-role-scientific-claims.jsonl"
 CALIBRATIONS = ROOT / "Stabilizerness/ExternalRecordRegistry/scientific-claim-calibrations/scientific-claim-calibrations.jsonl"
 SUPPORT = ROOT / "Stabilizerness/ExternalRecordRegistry/claim-support-associations/scientific-claim-support.jsonl"
+BRIDGES = ROOT / "Stabilizerness/ExternalRecordRegistry/bridges/predicting-magic-from-very-few-measurements.jsonl"
+BRIDGE_ASSESSMENTS = ROOT / "Stabilizerness/ExternalRecordRegistry/bridge-assessments/predicting-magic-from-very-few-measurements.jsonl"
 TARGET_REF_SCHEMA = ROOT / "schemas/target-ref.schema.json"
 PROFILE = ROOT / "schemas/record-canonical-json-v1.profile.json"
 SCHEMAS = {
     "agtxiv.scientific-claim/1.1.0": ROOT / "Stabilizerness/ScientificClaimRegistry/schema/scientific-claim.schema.json",
     "agtxiv.scientific-claim-calibration-record/1.1.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/scientific-claim-calibration-record.schema.json",
     "agtxiv.claim-support-association/1.1.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/claim-support-association.schema.json",
+    "agtxiv.claim-math-bridge/1.0.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/claim-math-bridge.schema.json",
+    "agtxiv.bridge-assessment/1.0.0": ROOT / "Stabilizerness/ExternalRecordRegistry/schema/bridge-assessment.schema.json",
 }
 SET_VALUED_KEYS = {"claim_ir_members", "contribution_tags", "links", "reason_codes", "scope_hints"}
 FORBIDDEN_CONTRIBUTION_KEYS = {
@@ -287,8 +291,12 @@ def validate_manifest_discovery(root: Path) -> list[str]:
         (scientific, "serialization_profile_files", str(PROFILE.relative_to(ROOT))),
         (external, "scientific_claim_calibration_files", str(CALIBRATIONS.relative_to(ROOT))),
         (external, "claim_support_association_files", str(SUPPORT.relative_to(ROOT))),
+        (external, "bridge_files", str(BRIDGES.relative_to(ROOT))),
+        (external, "bridge_assessment_files", str(BRIDGE_ASSESSMENTS.relative_to(ROOT))),
         (external, "schema_files", str(SCHEMAS["agtxiv.scientific-claim-calibration-record/1.1.0"].relative_to(ROOT))),
         (external, "schema_files", str(SCHEMAS["agtxiv.claim-support-association/1.1.0"].relative_to(ROOT))),
+        (external, "schema_files", str(SCHEMAS["agtxiv.claim-math-bridge/1.0.0"].relative_to(ROOT))),
+        (external, "schema_files", str(SCHEMAS["agtxiv.bridge-assessment/1.0.0"].relative_to(ROOT))),
         (external, "shared_schema_files", str(TARGET_REF_SCHEMA.relative_to(ROOT))),
     )
     for manifest, field, path in expected:
@@ -349,6 +357,336 @@ def validate_association_identity(records: list[dict[str, Any]], label: str) -> 
         previous_target = previous.get("scientific_claim_ref", {}).get("target_id")
         if current_target != previous_target:
             errors.append(f"{row.get('id')} revision {revision}: {label} association cannot switch contribution-role ScientificClaim identity from {previous_target} to {current_target}")
+    return errors
+
+
+def formal_scientific_claim_ref(claim: dict[str, Any], root: Path = ROOT) -> dict[str, Any]:
+    schema_path = root / "Stabilizerness/ScientificClaimRegistry/schema/scientific-claim.schema.json"
+    return {
+        "target_kind": "org.agtxiv.scientific_claim",
+        "type_schema": {"uri": "https://agtxiv.org/schema/scientific-claim/1.1.0", "content_hash": file_hash(schema_path)},
+        "target_id": claim["id"], "target_revision": claim["record_revision"],
+        "target_content_hash": claim["content_hash"], "target_artifact": None,
+        "component_path": None, "claim_ir": None, "claim_ir_members": [],
+    }
+
+
+def bridge_target_ref(bridge: dict[str, Any], root: Path = ROOT) -> dict[str, Any]:
+    schema_path = root / "Stabilizerness/ExternalRecordRegistry/schema/claim-math-bridge.schema.json"
+    return {
+        "target_kind": "org.agtxiv.claim_math_bridge",
+        "type_schema": {"uri": "https://agtxiv.org/schema/claim-math-bridge/1.0.0", "content_hash": file_hash(schema_path)},
+        "target_id": bridge["id"], "target_revision": bridge["record_revision"],
+        "target_content_hash": bridge["content_hash"], "target_artifact": None,
+        "component_path": None, "claim_ir": None, "claim_ir_members": [],
+    }
+
+
+def resolve_json_pointer(document: Any, pointer: Any) -> tuple[Any | None, list[str], str | None]:
+    """Resolve a nonempty RFC 6901 JSON Pointer without accepting array append syntax."""
+    if not isinstance(pointer, str) or not pointer or not pointer.startswith("/"):
+        return None, [], "component_path must be a nonempty RFC 6901 JSON Pointer"
+    tokens: list[str] = []
+    for raw_token in pointer.split("/")[1:]:
+        token = ""
+        index = 0
+        while index < len(raw_token):
+            if raw_token[index] != "~":
+                token += raw_token[index]
+                index += 1
+                continue
+            if index + 1 >= len(raw_token) or raw_token[index + 1] not in "01":
+                return None, tokens, f"malformed RFC 6901 escape in component_path {pointer}"
+            token += "/" if raw_token[index + 1] == "1" else "~"
+            index += 2
+        tokens.append(token)
+
+    current = document
+    for token in tokens:
+        if isinstance(current, dict):
+            if token not in current:
+                return None, tokens, f"component_path does not exist: {pointer}"
+            current = current[token]
+        elif isinstance(current, list):
+            if token == "-" or not token.isdigit() or (len(token) > 1 and token.startswith("0")):
+                return None, tokens, f"invalid array index in component_path {pointer}"
+            array_index = int(token)
+            if array_index >= len(current):
+                return None, tokens, f"invalid array index in component_path {pointer}"
+            current = current[array_index]
+        else:
+            return None, tokens, f"component_path traverses a scalar at {pointer}"
+    return current, tokens, None
+
+
+def validate_mapped_role(target: dict[str, Any], pointer: str, tokens: list[str], role: Any) -> str | None:
+    """Apply the minimal V1 role-to-component compatibility rules after resolution."""
+    conclusion_path = pointer == "/structured_statement/conclusion" or pointer.startswith("/structured_statement/conclusion/")
+    if role == "CONCLUSION":
+        return None if conclusion_path else "CONCLUSION must resolve at /structured_statement/conclusion or below"
+    if role == "ASSUMPTION":
+        exact_assumption = (
+            tokens[:2] == ["structured_statement", "assumptions"] and len(tokens) >= 4
+            or tokens[:2] == ["structured_statement", "quantifiers"] and len(tokens) >= 3
+            or tokens[:2] == ["structured_statement", "mathematical_mode"] and len(tokens) >= 3
+        )
+        return None if exact_assumption else "ASSUMPTION must resolve to an exact assumption, quantifier, or mathematical-mode item/value"
+    if role == "DEFINITION":
+        conclusion = target.get("structured_statement", {}).get("conclusion", {})
+        is_definition = target.get("statement_kind") == "definition" or conclusion.get("relation") == "definition"
+        return None if conclusion_path and is_definition else "DEFINITION must resolve to the conclusion of a definition mathematical record"
+    if role == "DEPENDENCY":
+        return None
+    return f"unknown mapped role {role}"
+
+
+def nested_keys(value: Any, forbidden: set[str], path: str = "") -> list[str]:
+    found: list[str] = []
+    if isinstance(value, dict):
+        for key, child in value.items():
+            child_path = f"{path}.{key}" if path else key
+            if key.lower() in forbidden:
+                found.append(child_path)
+            found.extend(nested_keys(child, forbidden, child_path))
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            found.extend(nested_keys(child, forbidden, f"{path}[{index}]"))
+    return found
+
+
+def validate_bridge_records(bridges: list[dict[str, Any]], assessments: list[dict[str, Any]], root: Path = ROOT) -> list[str]:
+    """Validate the V1 two-record bridge boundary and its bounded demo projection."""
+    errors: list[str] = []
+    target_schema = json.loads((root / "schemas/target-ref.schema.json").read_text())
+    registry = Registry().with_resource(target_schema["$id"], Resource.from_contents(target_schema))
+    schemas = {name: json.loads(path.read_text()) for name, path in SCHEMAS.items() if name.startswith(("agtxiv.claim-math-bridge", "agtxiv.bridge-assessment"))}
+    for label, rows in (("bridge", bridges), ("bridge assessment", assessments)):
+        for index, row in enumerate(rows, 1):
+            schema = schemas.get(row.get("schema"))
+            if schema is None:
+                errors.append(f"{label} {index}: unknown schema {row.get('schema')}")
+                continue
+            try:
+                jsonschema.Draft202012Validator(schema, registry=registry, format_checker=jsonschema.FormatChecker()).validate(row)
+            except jsonschema.ValidationError as exc:
+                errors.append(f"{label} {index}: schema validation failed: {exc.message}")
+            if row.get("content_hash") != external_content_hash(row):
+                errors.append(f"{row.get('id', label)}: content_hash mismatch")
+
+    scientific_claims: dict[tuple[str, int], dict[str, Any]] = {}
+    scientific_manifest = json.loads((root / "Stabilizerness/ScientificClaimRegistry/manifest.json").read_text())
+    for relative in scientific_manifest.get("claim_files", []):
+        for row in load_jsonl(root / relative):
+            scientific_claims[(row.get("id"), row.get("record_revision"))] = row
+    math_targets, target_errors = existing_support_targets(root)
+    errors.extend(target_errors)
+
+    external = json.loads((root / "Stabilizerness/ExternalRecordRegistry/manifest.json").read_text())
+    evidence: dict[str, dict[str, Any]] = {}
+    blockers: dict[str, dict[str, Any]] = {}
+    classifications: dict[str, dict[str, Any]] = {}
+    for field, destination in (("evidence_files", evidence), ("blocker_files", blockers), ("source_claim_classification_files", classifications)):
+        for relative in external.get(field, []):
+            for row in load_jsonl(root / relative):
+                destination[row["id"]] = row
+
+    bridge_by_id = {row.get("id"): row for row in bridges}
+    assessment_by_bridge: dict[str, list[dict[str, Any]]] = {}
+    forbidden_bridge_fields = {
+        "acceptance", "accepted", "scientific_acceptance", "verification", "verification_status",
+        "verified", "truth_status", "novelty", "contribution", "coverage", "aggregate_coverage",
+    }
+    for bridge in bridges:
+        identifier = bridge.get("id", "<missing-id>")
+        forbidden = nested_keys(bridge, forbidden_bridge_fields)
+        if forbidden:
+            errors.append(f"{identifier}: bridge embeds acceptance/verification/contribution/coverage fields: {forbidden}")
+        ref = bridge.get("scientific_claim_ref", {})
+        claim = scientific_claims.get((ref.get("target_id"), ref.get("target_revision")))
+        if claim is None:
+            errors.append(f"{identifier}: unknown ScientificClaim reference")
+        else:
+            if ref != formal_scientific_claim_ref(claim, root):
+                errors.append(f"{identifier}: ScientificClaim reference is not exact and canonical")
+            if bridge.get("source_anchors") != claim.get("source_anchors"):
+                errors.append(f"{identifier}: bridge must preserve the exact ScientificClaim source anchors")
+        component_ids: list[str] = []
+        for component in bridge.get("source_components", []):
+            component_id = component.get("component_id")
+            component_ids.append(component_id)
+            if component.get("disposition") == "MAPPED" and not component.get("mapped_targets"):
+                errors.append(f"{identifier}: {component_id} is neither mapped nor residual")
+            if component.get("disposition") == "RESIDUAL" and not component.get("residual_physical_semantics"):
+                errors.append(f"{identifier}: erased residual semantics for {component_id}")
+            if not set(component.get("source_anchors", [])) <= set(bridge.get("source_anchors", [])):
+                errors.append(f"{identifier}: {component_id} uses an anchor outside the ScientificClaim")
+            for mapped in component.get("mapped_targets", []):
+                target_ref = mapped.get("target_ref", {})
+                target = math_targets.get((target_ref.get("target_id"), target_ref.get("target_revision")))
+                if target is None:
+                    errors.append(f"{identifier}: unknown mapped mathematical reference {target_ref.get('target_id')}")
+                    continue
+                expected = target_ref_for_existing(target, root)
+                expected["component_path"] = target_ref.get("component_path")
+                if target_ref != expected:
+                    errors.append(f"{identifier}: mapped mathematical reference is not exact and canonical for {target.get('id')}")
+                _, pointer_tokens, pointer_error = resolve_json_pointer(target, target_ref.get("component_path"))
+                if pointer_error:
+                    errors.append(f"{identifier}: {component_id}: {pointer_error}")
+                    continue
+                role_error = validate_mapped_role(target, target_ref["component_path"], pointer_tokens, mapped.get("role"))
+                if role_error:
+                    errors.append(f"{identifier}: {component_id}: mapped role mismatch: {role_error}")
+        if len(component_ids) != len(set(component_ids)):
+            errors.append(f"{identifier}: source component IDs must be unique")
+
+    for assessment in assessments:
+        identifier = assessment.get("id", "<missing-id>")
+        bridge_ref = assessment.get("bridge_ref", {})
+        bridge = bridge_by_id.get(bridge_ref.get("target_id"))
+        if bridge is None:
+            errors.append(f"{identifier}: unknown bridge reference")
+            continue
+        if bridge_ref != bridge_target_ref(bridge, root):
+            errors.append(f"{identifier}: bridge reference is not exact and canonical")
+        assessment_by_bridge.setdefault(bridge["id"], []).append(assessment)
+        evidence_ids: set[str] = set()
+        for ref in assessment.get("evidence_refs", []):
+            row = evidence.get(ref.get("id"))
+            evidence_ids.add(ref.get("id"))
+            if row is None or ref != {"id": row["id"], "record_revision": row["record_revision"], "content_hash": row["content_hash"]}:
+                errors.append(f"{identifier}: unknown or inexact evidence reference {ref.get('id')}")
+        blocker_ids: set[str] = set()
+        for ref in assessment.get("blocker_refs", []):
+            row = blockers.get(ref.get("id"))
+            blocker_ids.add(ref.get("id"))
+            if row is None or ref != {"id": row["id"], "record_revision": row["record_revision"], "content_hash": row["content_hash"]}:
+                errors.append(f"{identifier}: unknown or inexact blocker reference {ref.get('id')}")
+        classification_ids: set[str] = set()
+        for ref in assessment.get("classification_refs", []):
+            row = classifications.get(ref.get("id"))
+            classification_ids.add(ref.get("id"))
+            if row is None or ref != {"id": row["id"], "classification": row["classification"]}:
+                errors.append(f"{identifier}: unknown or inexact classification reference {ref.get('id')}")
+        outcome_ids = [row.get("source_component_id") for row in assessment.get("component_outcomes", [])]
+        expected_ids = [row.get("component_id") for row in bridge.get("source_components", [])]
+        if outcome_ids != expected_ids:
+            errors.append(f"{identifier}: component outcomes must cover bridge components once in declared order")
+        known_basis = evidence_ids | blocker_ids | classification_ids
+        bridge_components = {row.get("component_id"): row for row in bridge.get("source_components", [])}
+        for outcome in assessment.get("component_outcomes", []):
+            basis = set(outcome.get("basis_refs", []))
+            if not basis <= known_basis:
+                errors.append(f"{identifier}: component outcome has an unknown evidence/blocker/classification basis")
+            component = bridge_components.get(outcome.get("source_component_id"), {})
+            roles = {mapped.get("role") for mapped in component.get("mapped_targets", [])}
+            expected_kind = (
+                "RESIDUAL_REVIEW" if component.get("disposition") == "RESIDUAL"
+                else "APPLICABILITY_MATCH" if roles and roles <= {"ASSUMPTION", "DEFINITION"}
+                else "MATHEMATICAL_DISPOSITION"
+            )
+            if outcome.get("assessment_kind") != expected_kind:
+                errors.append(f"{identifier}: component assessment kind is incompatible with mapped role/disposition for {outcome.get('source_component_id')}")
+            if outcome.get("assessment_kind") == "MATHEMATICAL_DISPOSITION" and outcome.get("status") in {"VERIFIED", "REFUTED"} and not basis & (evidence_ids | classification_ids):
+                errors.append(f"{identifier}: VERIFIED/REFUTED mathematical disposition requires an evidence or classification basis")
+            if outcome.get("assessment_kind") == "MATHEMATICAL_DISPOSITION" and outcome.get("status") == "REFUTED" and not basis & evidence_ids:
+                errors.append(f"{identifier}: REFUTED mathematical disposition requires evidence")
+        conclusion = assessment.get("root_agent_conclusion", {})
+        if conclusion.get("outcome") in {"VERIFIED", "REFUTED"} and not evidence_ids:
+            errors.append(f"{identifier}: status projection has no evidence")
+        if conclusion.get("outcome") == "BLOCKED" and not blocker_ids:
+            errors.append(f"{identifier}: BLOCKED status projection has no blocker evidence")
+        if bridge.get("generation_provenance", {}).get("origin") == "ORACLE_PROPOSED" and assessment.get("scientific_acceptance") == "ACCEPTED":
+            errors.append(f"{identifier}: Oracle-generated bridge cannot be treated as scientifically accepted")
+        if any("coverage" in key.lower() for key in nested_keys(assessment, {"coverage", "facet_coverage", "provisional_facet_coverage"})):
+            errors.append(f"{identifier}: navigation coverage cannot be used as mathematical status")
+        if assessment.get("evidence_completeness") == assessment.get("scientific_acceptance") and assessment.get("evidence_completeness") not in {"UNKNOWN", "BLOCKED"}:
+            errors.append(f"{identifier}: evidence completeness is conflated with scientific acceptance")
+
+    for bridge_id in bridge_by_id:
+        if len(assessment_by_bridge.get(bridge_id, [])) != 1:
+            errors.append(f"{bridge_id}: exactly one BridgeAssessment is required")
+
+    fixture_bridge = bridge_by_id.get("claim-math-bridge:2602.18939v1:fixed-window-monotonicity")
+    fixture_assessment = next((row for row in assessments if row.get("id") == "bridge-assessment:2602.18939v1:fixed-window-monotonicity"), None)
+    if fixture_bridge and fixture_assessment:
+        if fixture_bridge.get("scientific_claim_ref", {}).get("target_id") != "claim:2602.18939v1:fixed-window-monotonicity-claimed":
+            errors.append("fixed-window bridge: required ScientificClaim is not pinned")
+        if fixture_bridge.get("source_anchors") != ["anchor:2602.18939v1:fixed-window-monotonicity-claim", "anchor:2602.18939v1:fixed-window-monotonicity-proof"]:
+            errors.append("fixed-window bridge: the two exact source anchors are not pinned")
+        if {row.get("id") for row in fixture_assessment.get("evidence_refs", [])} != {"evidence:2602.18939v1:fixed-window-monotonicity-counterexample"}:
+            errors.append("fixed-window assessment: exact counterexample evidence is not pinned")
+        if {row.get("id") for row in fixture_assessment.get("classification_refs", [])} != {"source-claim-classification:2602.18939v1:fixed-window-monotonicity"}:
+            errors.append("fixed-window assessment: exact source classification is not pinned")
+        required_components = {
+            "component:fixed-window-conclusion", "component:fixed-measurement-window", "component:deterministic-stabilizer-operation",
+            "component:finite-n-qubit-domain", "component:exact-noiseless-regime", "component:reduced-rom-definition",
+            "component:measurement-dependent-witness", "component:finite-shot-and-noise", "component:measurement-window-covariance",
+        }
+        components = {row.get("component_id"): row for row in fixture_bridge.get("source_components", [])}
+        if set(components) != required_components:
+            errors.append("fixed-window bridge: required source or residual components are missing")
+        residual_text = {key: (components.get(key, {}).get("residual_physical_semantics") or "").lower() for key in (
+            "component:measurement-dependent-witness", "component:finite-shot-and-noise", "component:measurement-window-covariance",
+        )}
+        witness_residual = residual_text["component:measurement-dependent-witness"]
+        if "measurement-dependent witness" not in witness_residual or "not" not in witness_residual or "general resource monotone" not in witness_residual:
+            errors.append("fixed-window bridge: witness-versus-monotone residual semantics were erased")
+        if "finite-shot" not in residual_text["component:finite-shot-and-noise"] or "noise" not in residual_text["component:finite-shot-and-noise"] or "established" not in residual_text["component:finite-shot-and-noise"]:
+            errors.append("fixed-window bridge: finite-shot/noise residual semantics were erased")
+        if "covariant" not in residual_text["component:measurement-window-covariance"] or "not established" not in residual_text["component:measurement-window-covariance"]:
+            errors.append("fixed-window bridge: measurement-window covariance residual semantics were erased")
+        if fixture_bridge.get("alignment") != "CONSERVATIVE":
+            errors.append("fixed-window bridge: projection must be CONSERVATIVE")
+        target_revisions = {(mapped.get("target_ref", {}).get("target_id"), mapped.get("target_ref", {}).get("target_revision")) for component in components.values() for mapped in component.get("mapped_targets", [])}
+        if ("math-claim-ir:2602.18939v1:fixed-window-monotonicity-claimed", 2) not in target_revisions:
+            errors.append("fixed-window bridge: MathClaimIR revision 2 is not pinned")
+        expected_component_paths = {
+            "component:deterministic-stabilizer-operation": {"/structured_statement/assumptions/explicit/0", "/structured_statement/assumptions/explicit/1"},
+            "component:finite-n-qubit-domain": {f"/structured_statement/quantifiers/{index}" for index in range(4)},
+            "component:exact-noiseless-regime": {"/structured_statement/mathematical_mode/exactness", "/structured_statement/mathematical_mode/finite_or_asymptotic"},
+        }
+        for component_id, expected_paths in expected_component_paths.items():
+            actual_paths = {mapped.get("target_ref", {}).get("component_path") for mapped in components.get(component_id, {}).get("mapped_targets", [])}
+            if actual_paths != expected_paths:
+                errors.append(f"fixed-window bridge: {component_id} must map exact mathematical components")
+        if any(mapped.get("role") == "DEPENDENCY" for component in components.values() for mapped in component.get("mapped_targets", [])):
+            errors.append("fixed-window bridge: bounded counterexample must not import the disputed V-representation as a dependency")
+        outcomes = {row.get("source_component_id"): row for row in fixture_assessment.get("component_outcomes", [])}
+        if fixture_assessment.get("assumption_object_match", {}).get("status") != "MATCHED":
+            errors.append("fixed-window assessment: counterexample assumptions and objects must be MATCHED")
+        if fixture_assessment.get("residual_semantics_review", {}).get("status") != "PRESERVED":
+            errors.append("fixed-window assessment: residual semantics must be PRESERVED")
+        conclusion_outcome = outcomes.get("component:fixed-window-conclusion", {})
+        if fixture_assessment.get("root_agent_conclusion", {}).get("outcome") != "REFUTED" or conclusion_outcome.get("assessment_kind") != "MATHEMATICAL_DISPOSITION" or conclusion_outcome.get("status") != "REFUTED":
+            errors.append("fixed-window assessment: REFUTED mathematical disposition cannot be replaced by VERIFIED or UNKNOWN")
+        mapped_applicability_ids = {
+            "component:fixed-measurement-window", "component:deterministic-stabilizer-operation", "component:finite-n-qubit-domain",
+            "component:exact-noiseless-regime", "component:reduced-rom-definition",
+        }
+        for component_id in mapped_applicability_ids:
+            outcome = outcomes.get(component_id, {})
+            if outcome.get("assessment_kind") != "APPLICABILITY_MATCH" or outcome.get("status") != "MATCHED" or not set(outcome.get("basis_refs", [])) & {"evidence:2602.18939v1:fixed-window-monotonicity-counterexample"}:
+                errors.append(f"fixed-window assessment: {component_id} MATCHED applicability requires counterexample evidence")
+        for component_id in {"component:measurement-dependent-witness", "component:finite-shot-and-noise", "component:measurement-window-covariance"}:
+            outcome = outcomes.get(component_id, {})
+            if outcome.get("assessment_kind") != "RESIDUAL_REVIEW" or outcome.get("status") != "PRESERVED":
+                errors.append(f"fixed-window assessment: {component_id} residual semantics must be PRESERVED")
+        scope = fixture_assessment.get("root_agent_conclusion", {}).get("bounded_scope", "").lower()
+        non_implications = " ".join(fixture_assessment.get("root_agent_conclusion", {}).get("non_implications", [])).lower()
+        overreaching_scope = any(term in scope for term in ("full robustness", "full-rom", "selective", "postselected"))
+        conservative_limits = (
+            "does not refute monotonicity of full robustness of magic" in non_implications
+            and "does not refute a proposition" in non_implications and "covariantly" in non_implications
+            and "does not assess selective" in non_implications
+            and "does not establish finite-shot performance" in non_implications
+            and "noise robustness" in non_implications and "confidence bounds" in non_implications
+            and "experimental acceptance threshold" in non_implications
+        )
+        if overreaching_scope or "reduced rom" not in scope or "fixed-window" not in scope or not conservative_limits:
+            errors.append("fixed-window assessment: full-RoM, covariant-window, selective-operation, or finite-shot/noise overreach")
+        if fixture_assessment.get("evidence_completeness") != "COMPLETE_FOR_BOUNDED_CONCLUSION" or fixture_assessment.get("scientific_acceptance") != "NOT_REVIEWED":
+            errors.append("fixed-window assessment: evidence completeness and scientific acceptance must remain separate")
     return errors
 
 
@@ -535,15 +873,23 @@ def validate_fixture_audit(claims: list[dict[str, Any]], calibrations: list[dict
     return errors
 
 
-def validate_records(claims: list[dict[str, Any]], calibrations: list[dict[str, Any]], support_records: list[dict[str, Any]], root: Path = ROOT) -> list[str]:
-    return validate_registry_records(claims, calibrations, support_records, root) + validate_fixture_audit(claims, calibrations, support_records)
+def validate_records(claims: list[dict[str, Any]], calibrations: list[dict[str, Any]], support_records: list[dict[str, Any]], root: Path = ROOT, bridges: list[dict[str, Any]] | None = None, assessments: list[dict[str, Any]] | None = None) -> list[str]:
+    bridge_records = load_jsonl(root / BRIDGES.relative_to(ROOT)) if bridges is None else bridges
+    assessment_records = load_jsonl(root / BRIDGE_ASSESSMENTS.relative_to(ROOT)) if assessments is None else assessments
+    return (
+        validate_registry_records(claims, calibrations, support_records, root)
+        + validate_fixture_audit(claims, calibrations, support_records)
+        + validate_bridge_records(bridge_records, assessment_records, root)
+    )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument("--check", action="store_true", help="validate without modifying files (the default behavior)"); parser.parse_args()
-    claims = load_jsonl(CLAIMS); calibrations = load_jsonl(CALIBRATIONS); support_records = load_jsonl(SUPPORT); errors = validate_records(claims, calibrations, support_records)
+    claims = load_jsonl(CLAIMS); calibrations = load_jsonl(CALIBRATIONS); support_records = load_jsonl(SUPPORT)
+    bridges = load_jsonl(BRIDGES); assessments = load_jsonl(BRIDGE_ASSESSMENTS)
+    errors = validate_records(claims, calibrations, support_records, bridges=bridges, assessments=assessments)
     for error in errors: print(error)
-    print(f"scientific_claims={len(claims)} calibrations={len(calibrations)} support_associations={len(support_records)} errors={len(errors)}")
+    print(f"scientific_claims={len(claims)} calibrations={len(calibrations)} support_associations={len(support_records)} bridges={len(bridges)} bridge_assessments={len(assessments)} errors={len(errors)}")
     return 1 if errors else 0
 
 

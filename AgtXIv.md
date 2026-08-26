@@ -1,10 +1,11 @@
 # AgtXIv: Verification-Aware Incremental Search over Scientific Claims
 
-**Status:** Math-first pilot specification
+**Status:** Bridge-first V1 pilot specification
 **Version:** 0.6
 **Date:** 2026-08-26
 **Primary target:** Mathematical claims in theoretical physics and mathematically structured sciences
 **Normative paper-source acquisition:** [AgtXIv Paper Source Acquisition](docs/specifications/paper-source-acquisition.md)
+**Normative V1 bridge:** [AgtXIv V1 Claim--Mathematics Bridge](docs/specifications/v1-bridge.md)
 **Normative mathematics detail:** [AgtXIv Mathematics Pipeline](docs/specifications/mathematics-pipeline.md)
 **Implementation roadmap:** [AgtXIv v1 vertical-slice checklist](docs/roadmaps/v1-implementation-checklist.md)
 **Revision note:** [Architecture changes from v0.3 to v0.4](docs/specifications/v0.3-to-v0.4-architecture-changes.md)
@@ -13,9 +14,9 @@
 
 ## Abstract
 
-AgtXIv is an experimental protocol for resolving a scientific query into a reusable, versioned, and partially verified dependency path. Instead of returning only a paper list or a fluent explanation, it returns the target claim's address in a contract registry, the source spans from which the claim was reconstructed, its accepted and conditional imports, the Lean declarations already connected to it, the unresolved frontier, and the local mathematical delta that remains to be built.
+AgtXIv is an experimental protocol for producing a bounded, auditable assessment of a scientific claim. Instead of returning only a paper list or a fluent explanation, V1 returns the exact source claim and spans, the mathematical statements and assumptions aligned with each relevant component, the evidence and blockers that bear on them, the physical semantics not covered by mathematics, and a conservative Root Agent conclusion. Dependency graphs and reusable contracts support this path but are not themselves the V1 product.
 
-The minimum viable system is **math-first**. Each traced work is assigned one public Git repository, and each citable publication instance is that repository together with one exact release. A source-bounded `PaperAgent` represents one frozen source occurrence of the work at such a release, but the primary reusable unit is a claim-level `MathContract`. PaperAgents are connected by a typed directed `PaperInteractionGraph`, which may contain cycles because two frozen companion papers can depend on different claims from one another. For a selected query, AgtXIv derives a strict `MathClaimDependencyDAG(q)` containing only the load-bearing mathematical claims required by the target. The corresponding `PaperBuildDAG(q)` is a query-relative build view obtained by projecting the claim DAG to PaperAgents and condensing any paper-level strongly connected components.
+The minimum viable system is **bridge-first and math-centered**. Each traced work is assigned one public Git repository, and each citable publication instance is that repository together with one exact release. A source-bounded `PaperAgent` represents one frozen source occurrence of the work at such a release, while `ScientificClaim`, `ClaimMathBridge`, `MathClaimIR`, and `BridgeAssessment` form the minimum V1 path. Claim-level `MathContract` objects and query-relative mathematical dependency DAGs provide reusable verification infrastructure. The broader typed `PaperInteractionGraph` and its derived `PaperBuildDAG(q)` remain later organizational views rather than V1 acceptance requirements.
 
 AgtXIv does not require a dedicated hypergraph data structure in the pilot. A multi-premise inference is represented by an explicit `InferenceStep` node: several claims point to the step, and the step points to its conclusion. This retains the joint-premise semantics while allowing the implementation to use an ordinary typed directed graph.
 
@@ -55,7 +56,11 @@ Lean 4 and pinned formal packages provide a trusted mathematical kernel. They ar
 
 ### 1.1 Goal
 
-For a narrowly selected scientific topic, AgtXIv constructs two connected graph views.
+The V1 goal is one bounded, auditable scientific assessment. AgtXIv freezes the source, reconstructs a source-faithful `ScientificClaim`, aligns each relevant source component with the mathematical claims, assumptions, and dependencies that represent it, and then projects verification results back to the original claim without dropping physical meaning. The final Root Agent answer states exactly what the evidence establishes and leaves unsupported parts `UNKNOWN` or `BLOCKED`.
+
+The bridge in this path is an alignment-and-projection boundary. It does not discover research directions, decide novelty, score contributions, or prune scientific claims. Generation provenance, evidence completeness, and scientific acceptance remain separate.
+
+For a narrowly selected scientific topic, AgtXIv may also construct two connected graph views.
 
 The literature-facing view is a typed directed graph:
 
@@ -108,17 +113,17 @@ The resulting knowledge base is **reasoning-centric**, not merely paper-centric 
 
 ### 1.2 Immediate objective
 
-The first implementation should cover one small scientific dependency closure:
+The first implementation should complete one small bridge-to-assessment path:
 
-- one target paper;
-- one primary target claim;
-- one to three query-relative Root Agents;
-- zero to three intermediate papers;
-- a small number of complete mathematical reasoning chains;
-- at least one Lean 4 reconstruction of a load-bearing result;
-- at least one automatic source-to-formal backtranslation and alignment audit;
-- at least one graph-refinement cycle triggered by a verification failure;
-- an optional semantic or numerical record when relevant.
+- one exact source version and one source-faithful `ScientificClaim`;
+- one component-complete `ClaimMathBridge`, in which every relevant source component is either mapped to exact `MathClaimIR` records or retained as residual scientific semantics;
+- explicit mathematical assumptions, dependencies, and physical applicability conditions;
+- existing verification evidence referenced rather than copied into the bridge;
+- one separate `BridgeAssessment` that keeps evidence completeness and scientific acceptance distinct;
+- one bounded Root Agent answer that preserves `UNKNOWN` and `BLOCKED` and does not strengthen the weakest load-bearing result;
+- one adversarial physics review, including a negative case in which formal or mathematical evidence must not be overgeneralized.
+
+Lean reconstruction is preferred for a selected load-bearing result when feasible, but graph optimization, root minimization, contribution modeling, and global closure are not V1 acceptance gates.
 
 ### 1.3 Non-goals of the pilot
 
@@ -138,7 +143,12 @@ The pilot does not attempt to:
 - require a computational dependency DAG;
 - formally verify arbitrary numerical packages or datasets;
 - regard a successful Lean build as proof that the encoded theorem matches the intended physics;
-- regard a frozen PaperAgent as an axiom or an automatically trusted source.
+- regard a frozen PaperAgent as an axiom or an automatically trusted source;
+- discover or rank new research directions;
+- score novelty, importance, priority, impact, or paper contribution;
+- hide or delete source-faithful claims through semantic pruning;
+- require contribution-role classification before a claim can enter the V1 bridge;
+- treat DAG reachability, navigation coverage, or source provenance as scientific acceptance.
 
 ### 1.4 Graph and profile boundaries
 
@@ -458,28 +468,21 @@ LLM extraction
 
 The extractor proposes atomic claims, source anchors, symbols, assumptions, and typed relations. It is not allowed to emit an accepted edge.
 
-Extraction begins with a deliberately coarse discourse pass. This pass identifies the small number of claims that the paper presents as central contributions, groups repeated textual realizations in the abstract, introduction, theorem statements, body, appendices, discussion, and conclusion, and proposes paper-level epistemic relations such as `supports`, `extends`, `qualifies`, `refutes`, and `background_to`. Abstract, Introduction, Conclusion, and Discussion are discovery zones, not mandatory locations. A realization cluster is only a `candidate_same_as` proposal until source calibration establishes one narrative identity; lexical or embedding similarity never merges claim identities.
-
-`ScientificClaim` supports two explicit granularities:
-
-- `FORMAL_ATOMIC`: one load-bearing mathematical proposition, definition, assumption, convention, equation, or semantic component suitable for query-relative decomposition;
-- `NARRATIVE_ATOMIC`: one source-grounded unit of what a paper presents as a principal result, method, construction, model, finding, synthesis, qualification, or limitation, possibly realized in several source locations.
-
-A ScientificClaim with `claim_role: CONTRIBUTION` and `granularity: NARRATIVE_ATOMIC` is the contribution-role narrative profile. `ScientificClaim` is the only paper-level scientific claim identity and type in `ScientificClaimRegistry`; the role is mutable narrative metadata and is deliberately absent from stable `claim:<paper-slug>:<descriptive-slug>` identity. Multiple source realizations may belong to one such ScientificClaim, but exactly one occurrence is `PRIMARY`; explicit body occurrences preserve the connection to technical support. The profile reports the paper's presentation. It does not encode correctness, novelty, priority, verification status, blockers, evidence, or mutable support links, and it never substitutes for `MathClaimIR` in `MathClaimDependencyDAG(q)`.
-
-A second, query-relative decomposition pass expands only a selected contribution-role ScientificClaim into the source-grounded objects needed for verification:
+V1 extraction begins from the exact source span needed for one selected question. It reconstructs a source-faithful `ScientificClaim`; it does not first decide whether the sentence is a contribution or search the paper for novelty. The bridge then accounts for every relevant source component:
 
 ```text
-ScientificClaim with claim_role: CONTRIBUTION
-→ definitions and typed objects
-→ explicit and source-supported implicit assumptions
-→ scope, regime, and conventions
-→ FORMAL_ATOMIC mathematical or semantic conclusions
-→ candidate intermediate claims and external foundations
-→ explicit multi-premise InferenceSteps
+source-faithful ScientificClaim
+→ exact source components
+→ mapped MathClaimIR definitions, assumptions, dependencies, and conclusions
+→ residual physical or empirical semantics retained verbatim
+→ independent mathematical evidence and blockers
+→ conservative BridgeAssessment
+→ bounded Root Agent answer
 ```
 
-The two granularities remain distinct. A narrative claim records what the paper emphasizes; a formal-atomic claim records one load-bearing proposition or semantic component. Each combined narrative exposes stable named facets. In this vertical slice, `ClaimSupportAssociation` is an immutable navigation mapping from those facets to exact `MathClaimIR` or `MathematicalPropositionIR` TargetRefs; it does not advertise unresolved target kinds. Its provisional facet outcome is pinned to the contribution-role ScientificClaim's immutable `/facets` basis and is neither eternal global coverage nor mathematical verification. `QueryResolution` later computes final query-relative coverage from the selected decomposition and composite registry snapshot. A generic ScientificClaim TargetRef or any `claim:` ID is invalid in every `MathClaimDependencyDAG(q)` node slot; only resolved `MathClaimIR` and `MathematicalPropositionIR` target kinds may enter the mathematical DAG. Broad paper-wide discovery may remain provisional, while formal-atomic decomposition is required only on the current query frontier. Existing `agtxiv.scientific-claim/1.0.0` formal-atomic records remain valid and require no bulk migration; new publication-aware records use schema `1.1.0` with separate work and source-version identity.
+`ClaimMathBridge` contains alignment and generation provenance only. It has no truth, verification, acceptance, novelty, contribution, or aggregate coverage field. `BridgeAssessment` is separate and references exact evidence; it reports mathematical disposition, assumption and object matching, residual-semantics review, evidence completeness, and scientific acceptance on separate axes. A result can be mathematically verified while its physical interpretation remains `UNKNOWN` or `BLOCKED`.
+
+Existing contribution-role `ScientificClaim` records and facet-aware `ClaimSupportAssociation` records remain immutable experimental/navigation artifacts. They may supply candidate source components or mappings, but contribution classification is not a V1 prerequisite, `COMPLETE` navigation coverage is not verification, and a `NONE` mapping never authorizes dropping source semantics. Broad discourse discovery, contribution modeling, and semantic pruning are post-V1 research. A generic ScientificClaim TargetRef or any `claim:` ID remains invalid in `MathClaimDependencyDAG(q)` node slots; only resolved `MathClaimIR` and `MathematicalPropositionIR` targets may enter the mathematical DAG.
 
 #### Constrained schema
 
@@ -1068,6 +1071,8 @@ origin:
   assertion_mode: SOURCE_EXPLICIT
 content_hash: sha256:...
 ```
+
+The following contribution profile is an immutable experimental profile retained for compatibility and post-V1 research. It is not part of the minimum V1 `ScientificClaim` identity, is not required to enter `ClaimMathBridge`, and cannot determine claim selection, verification, pruning, or scientific acceptance.
 
 The contribution profile is a constrained ScientificClaim role/profile selected by `claim_role: CONTRIBUTION`, not a parallel entity, target kind, identity ontology, or registry. It uses broad namespaced contribution kinds (`result`, `method`, `construction`, `model`, `empirical_finding`, `computational_finding`, `synthesis`, `qualification`, or `limitation`) and orthogonal namespaced source speech-act, formality, and conditionality fields. Fixture-specific cautions remain record data and validation policy rather than general ontology values.
 
@@ -4580,27 +4585,22 @@ A target may be `MATH_CLOSED` without being scientifically or computationally cl
 A realistic first release should contain:
 
 ```text
-1 target PaperAgent
-1–3 Root Agents or reusable root contracts
-0–3 intermediate PaperAgents
-5–15 accepted ScientificClaims
-3–8 InferenceStep chains
-1 query-relative MathClaimDependencyDAG
-1 query-relative PaperBuildDAG
-1–3 Lean declarations
-1 or more source-blind backtranslations
-1 or more alignment audits
-at least 1 GraphRepairRecord
-at least 1 LeanPackageCapabilityRecord
-0–1 ReproductionRecord
-1 adversarial review
-1 coverage and reuse-telemetry report
+1 exact frozen source occurrence
+1 source-faithful ScientificClaim
+1 ClaimMathBridge with total mapped-or-residual component accounting
+1 small set of exact MathClaimIR targets and explicit assumptions/dependencies
+1 evidence snapshot with VERIFIED, REFUTED, BLOCKED, UNKNOWN, or NOT_CHECKED dispositions
+1 separate BridgeAssessment
+1 bounded Root Agent answer
+1 adversarial physics review
 1 release manifest
 ```
 
-The first milestone is one complete, auditable path from target claim to root dependencies and back to a formally checked target reconstruction, including at least one visible repair cycle.
+The first milestone is one complete, auditable round trip from source language to mathematical verification and back to a scoped scientific conclusion. The bridge passes only when source identity is pinned, every relevant component is mapped or retained, assumptions and physical objects match, mathematical dispositions cite exact evidence, residual semantics remain visible, and the projected conclusion is no stronger than its weakest load-bearing result.
 
-### 11.6 Coverage and telemetry report
+A query-relative claim DAG may organize the selected dependencies, and Lean evidence may establish a selected mathematical disposition. A PaperBuildDAG, graph-repair cycle, reusable root optimization, contribution profile, semantic-pruning view, telemetry report, or global `VERIFICATION_CLOSED` result is useful later but is not a V1 acceptance requirement.
+
+### 11.6 Post-V1 coverage and telemetry report
 
 ```yaml
 coverage:
@@ -4653,7 +4653,9 @@ coverage:
 
 ---
 
-## 12. Construction Checklist
+## 12. Post-V1 construction checklist
+
+This checklist governs the larger graph, Lean, reuse, and closure program. It is retained as a post-V1 roadmap and is not a release gate for the bounded bridge prototype.
 
 ### Pilot scope
 
@@ -4776,65 +4778,38 @@ coverage:
 
 ## 13. Final Operational Rule
 
-AgtXIv builds scientific knowledge using distinct but connected graph views:
+The V1 operational rule is one conservative round trip:
 
 \[
 \boxed{
-\text{PaperInteractionGraph}
-\xrightarrow{\text{target query }q}
-\text{MathClaimDependencyDAG}(q)
-\xrightarrow{\text{project + condense}}
-\text{PaperBuildDAG}(q)
+\text{frozen source}
+\rightarrow
+\text{ScientificClaim}
+\rightarrow
+\text{ClaimMathBridge}
+\rightarrow
+\text{MathClaimIR and external evidence}
+\rightarrow
+\text{BridgeAssessment}
+\rightarrow
+\text{bounded Root Agent answer}
 }
 \]
 
-Verification proceeds in two directions:
+Every relevant source component is either aligned to exact mathematical objects or retained as residual scientific semantics. The bridge records mapping provenance but no truth or acceptance. The assessment cites evidence, preserves `UNKNOWN` and `BLOCKED`, checks physical applicability, and never projects a conclusion stronger than the weakest load-bearing component. AgtXIv prefers an explicit bounded or incomplete answer over a fluent unsupported one.
 
-\[
-\boxed{
-\text{Target}
-\xrightarrow{\text{trace backward}}
-\text{root contracts and Root Agents}
-\xrightarrow{\text{verify and build forward}}
-\text{Target}
-}
-\]
-
-and failures trigger local iteration:
-
-\[
-\boxed{
-\text{blocked frontier}
-\rightarrow
-\text{failure classification}
-\rightarrow
-\text{local graph repair}
-\rightarrow
-\text{recomputed frontier}
-}
-\]
-
-Every mathematical package should import explicit versioned contracts, reuse existing declarations before writing local proofs, verify only its residual local delta, generate a source-blind backtranslation, and export immutable claims whose assumptions, provenance, and scope are public, while release manifests or query results carry exact external status-view and import-receipt associations.
-
-PaperAgents organize frozen literature sources. They do not provide trust by authority. The strict mathematical DAG is query-relative. Paper-level directed cycles are allowed and are condensed only for build scheduling. Multi-premise deductions use explicit `InferenceStep` nodes rather than a specialized hypergraph implementation.
-
-`SemanticContract` unifies physical interpretation and evidence linkage as one natural-language-facing object, while external status views preserve separate semantic, approximation, empirical, and human-review axes. Numerical work remains an optional `ReproductionRecord`, not a required DAG or Lean target.
-
-AgtXIv should prefer an explicit incomplete registry with a visible missing frontier over a fluent but unverifiable account. Its minimum useful answer is a reusable path receipt:
+The minimum useful V1 answer contains:
 
 ```text
-target claim and source address
-+ validated claim dependencies
-+ accepted and conditional imports
-+ checked Lean declarations
-+ source-blind backtranslations
-+ alignment audits
-+ blocked frontier
-+ graph-repair history
-+ residual local delta
-+ dependency and package versions
-+ reuse telemetry
+exact source claim and anchors
++ mapped mathematical definitions, assumptions, dependencies, and conclusion
++ residual physical or empirical semantics
++ exact evidence, blocker, and classification references
++ separate evidence-completeness and scientific-acceptance states
++ bounded conclusion and explicit non-implications
 ```
+
+Paper interaction graphs, query-relative dependency DAGs, Root Agent build schedules, Lean package reuse, backtranslation, graph repair, and telemetry remain valuable post-V1 infrastructure. They organize and strengthen evidence, but graph reachability, a producer edge, a compiled declaration, or navigation coverage never supplies scientific acceptance.
 
 ---
 
@@ -4842,7 +4817,7 @@ target claim and source address
 
 The components of AgtXIv have substantial prior art. The project must not claim novelty for theorem search, statement extraction, claim relation classification, premise retrieval, growing formal libraries, long-horizon autoformalization, paper-to-Lean translation, or paper-level agents by themselves.
 
-Its proposed contribution is the verification-aware combination of:
+Its V1 contribution is the conservative round trip from source-faithful `ScientificClaim` through exact `ClaimMathBridge` alignment and external evidence to a bounded `BridgeAssessment`. Its longer-term proposed combination also includes:
 
 - frozen PaperAgents connected by claim-backed directed interactions;
 - a query-relative mathematical dependency DAG;
@@ -4902,7 +4877,7 @@ AgtXIv does not aim to develop a complete Lean package for every physical subfie
 
 ### 14.6 Positioning statement
 
-AgtXIv is not another general theorem search engine, paper chatbot, or universal autoformalizer. It is a verification-aware incremental query planner and build system over candidate literature graphs and formal libraries:
+Beyond the bounded V1 bridge, AgtXIv is not another general theorem search engine, paper chatbot, or universal autoformalizer. Its longer-term architecture is a verification-aware incremental query planner and build system over candidate literature graphs and formal libraries:
 
 ```text
 candidate claim and relation extraction
@@ -4918,6 +4893,8 @@ candidate claim and relation extraction
 → reusable QueryResolution receipt
 ```
 
-The central research question is:
+The post-V1 research question is:
 
-> Given release-bound PaperAgents, noisy candidate claim relations, formal declarations, semantic records, and heterogeneous verification states, how can a system compute the largest trustworthy reusable mathematical closure and the smallest remaining local delta, while using verification failure to refine the graph without allowing unaccepted status or semantic drift to propagate downstream?
+> Given release-bound PaperAgents, noisy candidate claim relations, formal declarations, semantic records, and heterogeneous verification states, how can a system compute a trustworthy reusable mathematical closure and a small remaining local delta, while using verification failure to refine the graph without allowing unaccepted status or semantic drift to propagate downstream?
+
+This longer-term optimization question does not replace the V1 product question: whether one exact source claim can be aligned to mathematics and assessed conservatively without losing physical meaning.

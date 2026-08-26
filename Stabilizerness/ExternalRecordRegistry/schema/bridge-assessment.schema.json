@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/bridge-assessment/1.0.0",
+  "title": "AgtXIv V1 BridgeAssessment",
+  "description": "Root Agent assessment of one ClaimMathBridge. Evidence completeness and scientific acceptance are independent axes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "produced_at", "bridge_ref", "evidence_refs", "blocker_refs", "classification_refs", "component_outcomes", "assumption_object_match", "residual_semantics_review", "root_agent_conclusion", "unresolved_questions", "evidence_completeness", "scientific_acceptance", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.bridge-assessment/1.0.0"},
+    "id": {"type": "string", "pattern": "^bridge-assessment:"},
+    "record_revision": {"const": 1},
+    "produced_at": {"type": "string", "format": "date-time"},
+    "bridge_ref": {"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"},
+    "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/externalRef"}},
+    "blocker_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/externalRef"}},
+    "classification_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/classificationRef"}},
+    "component_outcomes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/componentOutcome"}},
+    "assumption_object_match": {"$ref": "#/$defs/assumptionObjectMatch"},
+    "residual_semantics_review": {"$ref": "#/$defs/residualSemanticsReview"},
+    "root_agent_conclusion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["outcome", "bounded_scope", "non_implications"],
+      "properties": {
+        "outcome": {"$ref": "#/$defs/outcome"},
+        "bounded_scope": {"type": "string", "minLength": 1},
+        "non_implications": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "unresolved_questions": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "evidence_completeness": {"enum": ["COMPLETE_FOR_BOUNDED_CONCLUSION", "PARTIAL", "NONE", "UNKNOWN", "BLOCKED"]},
+    "scientific_acceptance": {"enum": ["NOT_REVIEWED", "ACCEPTED", "REJECTED", "UNKNOWN", "BLOCKED"]},
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "outcome": {"enum": ["VERIFIED", "REFUTED", "BLOCKED", "UNKNOWN", "NOT_CHECKED"]},
+    "externalRef": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "record_revision", "content_hash"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^(evidence|blocker):"},
+        "record_revision": {"type": "integer", "minimum": 1},
+        "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "classificationRef": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "classification"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^source-claim-classification:"},
+        "classification": {"enum": ["REFUTED"]}
+      }
+    },
+    "componentOutcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_component_id", "assessment_kind", "status", "basis_refs"],
+      "properties": {
+        "source_component_id": {"type": "string", "pattern": "^component:"},
+        "assessment_kind": {"enum": ["MATHEMATICAL_DISPOSITION", "APPLICABILITY_MATCH", "RESIDUAL_REVIEW"]},
+        "status": {"type": "string"},
+        "basis_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^(evidence|blocker|source-claim-classification):"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"assessment_kind": {"const": "MATHEMATICAL_DISPOSITION"}}}, "then": {"properties": {"status": {"enum": ["VERIFIED", "REFUTED", "BLOCKED", "UNKNOWN", "NOT_CHECKED"]}}}},
+        {"if": {"properties": {"assessment_kind": {"const": "APPLICABILITY_MATCH"}}}, "then": {"properties": {"status": {"enum": ["MATCHED", "PARTIAL", "MISMATCH", "UNKNOWN", "BLOCKED"]}}}},
+        {"if": {"properties": {"assessment_kind": {"const": "RESIDUAL_REVIEW"}}}, "then": {"properties": {"status": {"enum": ["PRESERVED", "INCOMPLETE", "UNKNOWN", "BLOCKED"]}}}}
+      ]
+    },
+    "assumptionObjectMatch": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "statement"],
+      "properties": {
+        "status": {"enum": ["MATCHED", "PARTIAL", "MISMATCH", "UNKNOWN", "BLOCKED"]},
+        "statement": {"type": "string", "minLength": 1}
+      }
+    },
+    "residualSemanticsReview": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "statement"],
+      "properties": {
+        "status": {"enum": ["PRESERVED", "INCOMPLETE", "UNKNOWN", "BLOCKED"]},
+        "statement": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

@@ -18,6 +18,8 @@ class ScientificClaimValidationTests(unittest.TestCase):
         cls.claims = validator.load_jsonl(validator.CLAIMS)
         cls.calibrations = validator.load_jsonl(validator.CALIBRATIONS)
         cls.support = validator.load_jsonl(validator.SUPPORT)
+        cls.bridges = validator.load_jsonl(validator.BRIDGES)
+        cls.bridge_assessments = validator.load_jsonl(validator.BRIDGE_ASSESSMENTS)
 
     def validate(self, claims=None, calibrations=None, support=None) -> list[str]:
         return validator.validate_records(
@@ -25,6 +27,18 @@ class ScientificClaimValidationTests(unittest.TestCase):
             copy.deepcopy(self.calibrations if calibrations is None else calibrations),
             copy.deepcopy(self.support if support is None else support),
         )
+
+    def validate_bridge(self, bridges=None, assessments=None) -> list[str]:
+        return validator.validate_bridge_records(
+            copy.deepcopy(self.bridges if bridges is None else bridges),
+            copy.deepcopy(self.bridge_assessments if assessments is None else assessments),
+        )
+
+    @staticmethod
+    def rehash_bridge_pair(bridge: dict, assessment: dict) -> None:
+        bridge["content_hash"] = validator.external_content_hash(bridge)
+        assessment["bridge_ref"]["target_content_hash"] = bridge["content_hash"]
+        assessment["content_hash"] = validator.external_content_hash(assessment)
 
     @staticmethod
     def rehash_claim(claim: dict) -> None:
@@ -301,6 +315,175 @@ class ScientificClaimValidationTests(unittest.TestCase):
         claim["source_characterization"]["speech_act"] = "org.agtxiv.speech_act.proves"
         self.rehash_claim(claim)
         self.assertTrue(any("cannot be promoted to a theorem contribution" in error for error in self.validate(claims=claims)))
+
+    def test_v1_bridge_fixture_pins_bounded_fixed_window_counterexample(self) -> None:
+        self.assertEqual(self.validate_bridge(), [])
+        bridge = self.bridges[0]
+        assessment = self.bridge_assessments[0]
+        self.assertEqual(bridge["scientific_claim_ref"]["target_id"], "claim:2602.18939v1:fixed-window-monotonicity-claimed")
+        self.assertEqual(bridge["source_anchors"], [
+            "anchor:2602.18939v1:fixed-window-monotonicity-claim",
+            "anchor:2602.18939v1:fixed-window-monotonicity-proof",
+        ])
+        self.assertEqual(assessment["root_agent_conclusion"]["outcome"], "REFUTED")
+        self.assertEqual(assessment["assumption_object_match"]["status"], "MATCHED")
+        self.assertEqual(assessment["residual_semantics_review"]["status"], "PRESERVED")
+        outcomes = {row["source_component_id"]: row for row in assessment["component_outcomes"]}
+        self.assertEqual(outcomes["component:fixed-window-conclusion"]["assessment_kind"], "MATHEMATICAL_DISPOSITION")
+        self.assertEqual(outcomes["component:fixed-window-conclusion"]["status"], "REFUTED")
+        self.assertEqual(outcomes["component:fixed-measurement-window"]["assessment_kind"], "APPLICABILITY_MATCH")
+        self.assertEqual(outcomes["component:fixed-measurement-window"]["status"], "MATCHED")
+        self.assertEqual(outcomes["component:finite-shot-and-noise"]["assessment_kind"], "RESIDUAL_REVIEW")
+        self.assertEqual(outcomes["component:finite-shot-and-noise"]["status"], "PRESERVED")
+        self.assertEqual(outcomes["component:measurement-window-covariance"]["status"], "PRESERVED")
+        components = {row["component_id"]: row for row in bridge["source_components"]}
+        self.assertEqual(
+            {row["target_ref"]["component_path"] for row in components["component:deterministic-stabilizer-operation"]["mapped_targets"]},
+            {"/structured_statement/assumptions/explicit/0", "/structured_statement/assumptions/explicit/1"},
+        )
+        self.assertFalse(any(row["role"] == "DEPENDENCY" for component in components.values() for row in component["mapped_targets"]))
+        non_implications = " ".join(assessment["root_agent_conclusion"]["non_implications"])
+        self.assertIn("finite-shot performance", non_implications)
+        self.assertIn("noise robustness", non_implications)
+        self.assertIn("confidence bounds", non_implications)
+        self.assertIn("experimental acceptance threshold", non_implications)
+        self.assertEqual(assessment["scientific_acceptance"], "NOT_REVIEWED")
+
+    def test_bridge_assessment_axes_preserve_unknown_and_blocked(self) -> None:
+        schema = json.loads((validator.ROOT / "Stabilizerness/ExternalRecordRegistry/schema/bridge-assessment.schema.json").read_text())
+        self.assertTrue({"UNKNOWN", "BLOCKED"} <= set(schema["properties"]["evidence_completeness"]["enum"]))
+        self.assertTrue({"UNKNOWN", "BLOCKED"} <= set(schema["properties"]["scientific_acceptance"]["enum"]))
+
+    def test_bridge_rejects_embedded_acceptance_verification_and_coverage_status(self) -> None:
+        for field, value in (("verification_status", "VERIFIED"), ("scientific_acceptance", "ACCEPTED"), ("coverage", "VERIFIED")):
+            with self.subTest(field=field):
+                bridges = copy.deepcopy(self.bridges)
+                bridges[0][field] = value
+                self.rehash_external(bridges[0])
+                errors = self.validate_bridge(bridges=bridges)
+                self.assertTrue(any("embeds acceptance/verification/contribution/coverage" in error for error in errors))
+
+    def test_assessment_rejects_navigation_coverage_as_mathematical_status(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["coverage"] = "VERIFIED"
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("navigation coverage cannot be used as mathematical status" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_bridge_requires_every_source_component_to_be_mapped_or_residual(self) -> None:
+        bridges = copy.deepcopy(self.bridges)
+        component = bridges[0]["source_components"][0]
+        component["mapped_targets"] = []
+        self.rehash_external(bridges[0])
+        self.assertTrue(any("neither mapped nor residual" in error for error in self.validate_bridge(bridges=bridges)))
+
+    def test_bridge_rejects_unknown_and_inexact_references(self) -> None:
+        bridges = copy.deepcopy(self.bridges)
+        bridges[0]["source_components"][0]["mapped_targets"][0]["target_ref"]["target_id"] = "math-claim-ir:unknown"
+        self.rehash_external(bridges[0])
+        self.assertTrue(any("unknown mapped mathematical reference" in error for error in self.validate_bridge(bridges=bridges)))
+
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["evidence_refs"][0]["id"] = "evidence:unknown"
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("unknown or inexact evidence reference" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_mapped_component_paths_must_resolve_after_rehashing(self) -> None:
+        cases = (
+            ("/structured_statement/not-present", "component_path does not exist"),
+            ("/structured_statement/assumptions/explicit/99", "invalid array index"),
+        )
+        for pointer, expected_error in cases:
+            with self.subTest(pointer=pointer):
+                bridges = copy.deepcopy(self.bridges)
+                assessments = copy.deepcopy(self.bridge_assessments)
+                mapped = bridges[0]["source_components"][0]["mapped_targets"][0]
+                mapped["target_ref"]["component_path"] = pointer
+                self.rehash_bridge_pair(bridges[0], assessments[0])
+                errors = self.validate_bridge(bridges=bridges, assessments=assessments)
+                self.assertTrue(any(expected_error in error for error in errors))
+
+    def test_mapped_roles_must_match_resolved_components(self) -> None:
+        cases = (
+            ("component:fixed-window-conclusion", "ASSUMPTION", "ASSUMPTION must resolve"),
+            ("component:fixed-measurement-window", "CONCLUSION", "CONCLUSION must resolve"),
+            ("component:reduced-rom-definition", "ASSUMPTION", "ASSUMPTION must resolve"),
+        )
+        for component_id, role, expected_error in cases:
+            with self.subTest(component_id=component_id, role=role):
+                bridges = copy.deepcopy(self.bridges)
+                assessments = copy.deepcopy(self.bridge_assessments)
+                component = next(row for row in bridges[0]["source_components"] if row["component_id"] == component_id)
+                component["mapped_targets"][0]["role"] = role
+                self.rehash_bridge_pair(bridges[0], assessments[0])
+                errors = self.validate_bridge(bridges=bridges, assessments=assessments)
+                self.assertTrue(any("mapped role mismatch" in error and expected_error in error for error in errors))
+
+    def test_oracle_bridge_cannot_be_marked_scientifically_accepted(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["scientific_acceptance"] = "ACCEPTED"
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("Oracle-generated bridge cannot be treated as scientifically accepted" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_bridge_rejects_erased_residual_physical_semantics(self) -> None:
+        bridges = copy.deepcopy(self.bridges)
+        residual = next(row for row in bridges[0]["source_components"] if row["disposition"] == "RESIDUAL")
+        residual["residual_physical_semantics"] = ""
+        self.rehash_external(bridges[0])
+        self.assertTrue(any("erased residual semantics" in error for error in self.validate_bridge(bridges=bridges)))
+
+    def test_verified_and_refuted_mathematical_dispositions_require_resolvable_bases(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        disposition = next(row for row in assessments[0]["component_outcomes"] if row["assessment_kind"] == "MATHEMATICAL_DISPOSITION")
+        disposition["status"] = "VERIFIED"
+        disposition["basis_refs"] = []
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("VERIFIED/REFUTED mathematical disposition requires an evidence or classification basis" in error for error in self.validate_bridge(assessments=assessments)))
+
+        assessments = copy.deepcopy(self.bridge_assessments)
+        refuted = next(row for row in assessments[0]["component_outcomes"] if row["status"] == "REFUTED")
+        refuted["basis_refs"] = ["source-claim-classification:2602.18939v1:fixed-window-monotonicity"]
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("REFUTED mathematical disposition requires evidence" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_assessment_rejects_status_projection_without_evidence(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["evidence_refs"] = []
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("status projection has no evidence" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_assessment_rejects_full_rom_covariant_or_selective_overreach(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["root_agent_conclusion"]["bounded_scope"] = "All robustness of magic monotonicity is false."
+        assessments[0]["root_agent_conclusion"]["non_implications"] = ["No exceptions remain."]
+        self.rehash_external(assessments[0])
+        self.assertTrue(any("full-RoM, covariant-window, selective-operation, or finite-shot/noise overreach" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_assessment_requires_finite_shot_noise_non_implication(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["root_agent_conclusion"]["non_implications"] = [
+            statement for statement in assessments[0]["root_agent_conclusion"]["non_implications"]
+            if "finite-shot performance" not in statement
+        ]
+        self.rehash_external(assessments[0])
+        errors = self.validate_bridge(assessments=assessments)
+        self.assertTrue(any("finite-shot/noise overreach" in error for error in errors))
+
+    def test_assessment_cannot_replace_refuted_with_verified_or_unknown(self) -> None:
+        for replacement in ("VERIFIED", "UNKNOWN"):
+            with self.subTest(replacement=replacement):
+                assessments = copy.deepcopy(self.bridge_assessments)
+                assessments[0]["root_agent_conclusion"]["outcome"] = replacement
+                conclusion = next(row for row in assessments[0]["component_outcomes"] if row["source_component_id"] == "component:fixed-window-conclusion")
+                conclusion["status"] = replacement
+                self.rehash_external(assessments[0])
+                self.assertTrue(any("REFUTED mathematical disposition cannot be replaced" in error for error in self.validate_bridge(assessments=assessments)))
+
+    def test_assessment_keeps_evidence_completeness_separate_from_acceptance(self) -> None:
+        assessments = copy.deepcopy(self.bridge_assessments)
+        assessments[0]["scientific_acceptance"] = assessments[0]["evidence_completeness"]
+        self.rehash_external(assessments[0])
+        errors = self.validate_bridge(assessments=assessments)
+        self.assertTrue(any("evidence completeness is conflated with scientific acceptance" in error for error in errors))
 
     def test_source_fidelity_detects_text_drift(self) -> None:
         claims = copy.deepcopy(self.claims)

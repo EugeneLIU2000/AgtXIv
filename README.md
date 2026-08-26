@@ -1,13 +1,14 @@
 # AgtXIv
 
-AgtXIv is a verification-aware protocol and pilot implementation for resolving scientific claims into source-grounded, reusable contracts and query-relative dependency graphs. Each traced work is assigned one public Git repository, and each citable publication instance is identified by that repository plus an exact release.
+AgtXIv is a verification-aware protocol and pilot implementation for turning source-faithful scientific claims into bounded, evidence-backed assessments. Its V1 bridge aligns claim components with mathematical claims and projects verification results back without erasing physical meaning; query-relative dependency graphs remain supporting infrastructure. Each traced work is assigned one public Git repository, and each citable publication instance is identified by that repository plus an exact release.
 
 ## Start here
 
 | Document or project | Role |
 |---|---|
 | [`AgtXIv.md`](AgtXIv.md) | **Current system specification** (v0.6); the single canonical design entry point |
-| [`docs/specifications/mathematics-pipeline.md`](docs/specifications/mathematics-pipeline.md) | Normative detail for mathematical claim decomposition, Oracle search, Lean construction, DAG optimization, and reuse |
+| [`docs/specifications/v1-bridge.md`](docs/specifications/v1-bridge.md) | **V1 normative slice:** ScientificClaim--MathClaim alignment, conservative verification projection, and bounded Root Agent assessment |
+| [`docs/specifications/mathematics-pipeline.md`](docs/specifications/mathematics-pipeline.md) | Mathematical decomposition and verification detail; graph optimization and reuse are post-V1 capabilities |
 | [`docs/specifications/v0.3-to-v0.4-architecture-changes.md`](docs/specifications/v0.3-to-v0.4-architecture-changes.md) | Historical explanation of the v0.3-to-v0.4 architectural revision |
 | [`docs/roadmaps/v1-implementation-checklist.md`](docs/roadmaps/v1-implementation-checklist.md) | Product-v1 implementation and release checklist for the Stabilizerness vertical slice |
 | [`Stabilizerness/`](Stabilizerness/) | Active pilot artifacts, registry, claim DAGs, readers, and domain implementation |

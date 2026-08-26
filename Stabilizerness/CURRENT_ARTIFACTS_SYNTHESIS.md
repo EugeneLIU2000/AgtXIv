@@ -2,6 +2,8 @@
 
 > 本报告是一次只读整理。它只转述工作区内现有源码、JSON/JSONL 记录和说明文档，不重新运行 Lean build、validator、测试、哈希检查或科学正确性审查。凡涉及 ``通过''、``失败''、``已检查'' 等状态，均应理解为**现有记录所述**，而不是本报告的独立背书。
 
+> **V1 状态更新。** 当前 V1 的规范发布门是 `docs/specifications/v1-bridge.md` 定义的单 claim 往返：`ScientificClaim → ClaimMathBridge → MathClaimIR / 外部证据 → BridgeAssessment → 有边界的 Root Agent 结论`。对应 Stabilizerness 工件位于 `Stabilizerness/ExternalRecordRegistry/bridges/` 和 `bridge-assessments/`。下文的 74 节点 Oracle DAG、root partitions、closed-form release manifest、PaperBuildDAG、root 最小化和旧 query 输出均保留为实验、导航或迁移工件；它们不是 V1 bridge truth 或 scientific acceptance 的权威来源。Oracle 图始终是 `ORACLE_PROPOSED / UNVERIFIED`。
+
 ## 1. 执行摘要
 
 当前文件体系已经形成一条可查询但尚未科学验收的纵向原型：冻结论文来源经 reader 层重构为聚焦读本，整篇论文被拆成 74 个节点、129 条边的 claim DAG，首个闭式等式切片又被实例化为 Paper Agent 的 Statement、ReasoningStep、VerificationRecord 和 ClaimContract；三个概念根的选定数学接口另落在 Lean 4 工程中。总发布状态仍是 `PARTIALLY_VERIFIED`，`accepted_release=false`，目标合同 `contract:2607.26154v1:closed-form-equality` 的 `accepted=false`（`release-manifest.json`；`agents/graph-theoretic-nonstabilizerness/exports/closed-form-equality.json`）。
@@ -10,7 +12,7 @@
 
 1. `Stabilizerness/dag/claim-dag.json` 是**整篇论文的语义审计图**，覆盖定义、主定理、capacity、Clifford、数值和 SRE 等分支；`graph/claim-dependencies.json` 只是闭式等式 pilot 的 20 节点推理切片，不能替代前者（`Stabilizerness/DAG_AND_ROOTS.md`；`graph/claim-dependencies.json`）。
 2. `formal/AgtXIvRootMath/` 形式化的是 Gottesman → Veitch → Howard--Campbell 三个**概念根的选定数学接口**，不是目标论文的图论闭式定理。目标论文目前只存在排队中的形式合同 `formalization-contract:2607.26154v1:sign-max-and-affine-span`，两个预期声明尚未实现（`formal/AgtXIvRootMath/README.md`；`agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json`）。
-3. 现有记录把两类 Varela 问题分开：V-representation 是 `PROOF_GAP` / `THEOREM_NOT_REFUTED` / `CONDITIONAL_REPAIR`；fixed-window monotonicity 是独立的 `CLAIM_FALSE` / `EXPLICIT_COUNTEREXAMPLE`。二者不能合并解释（`Stabilizerness/dag/claim-dag.json` 的 `root:varela-reduced-polytope` 与 `claim:fixed-window-monotonicity`；`agents/predicting-magic-from-very-few-measurements/blockers/*.json`）。
+3. 现有记录把两类 Varela 问题分开。V-representation 的**原文坐标子句**已由精确反例判为 `REFUTED`；使用修正坐标子句的独立命题仍是 `CONDITIONAL_REPAIR` / `BLOCKED`，不得改写成原文定理已获证明。fixed-window monotonicity 则是另一个独立的 `REFUTED` / `EXPLICIT_COUNTEREXAMPLE`。两者不能合并解释，也不能以较早 DAG 中的 `PROOF_GAP` 或 `THEOREM_NOT_REFUTED` 标签覆盖较新的外部分类（`Stabilizerness/ExternalRecordRegistry/claim-classifications/predicting-magic-from-very-few-measurements.jsonl`；`Stabilizerness/ExternalRecordRegistry/evidence/predicting-magic-from-very-few-measurements.jsonl`；`Stabilizerness/MathClaimIRRegistry/migrations/predicting-magic-from-very-few-measurements.jsonl`）。
 4. 新增的 `Stabilizerness/agtxiv/` 是非破坏式 canonical overlay：它只保存 manifest、node/agent/declaration 映射和历史路径分类，不替换原 DAG，不改变 Lean 可见性，也不提升任何 verification 或 acceptance 状态（`Stabilizerness/agtxiv/README.md`；`Stabilizerness/agtxiv/manifest.json`）。
 
 ## 2. 目录地图
@@ -371,7 +373,7 @@ Whole-paper 对应 `claim:closed-form-rom`；输入边来自 `claim:exact-graph-
 | 已形成的回归证据 | 4 个 deterministic finite-instance checks | 现有记录称 `REPRODUCED`；不是 universal proof 或 Fig. 2 reproduction | `agents/graph-theoretic-nonstabilizerness/verification/logs/finite-instance-results.json`；`coverage.json` |
 | 候选/部分形式化 | Varela repair | `PARTIALLY_FORMALIZED` / conditional repair；公开前提未闭合 | `agents/predicting-magic-from-very-few-measurements/formal/repaired-reduced-polytope-vrep.json`；`reasoning/repaired-vrep-proof-candidate.md` |
 | 候选/排队 | target sign-max 与 affine-span lemmas | `QUEUED`；预期声明未实现 | `agents/graph-theoretic-nonstabilizerness/formal/formalization-contract.json` |
-| 阻塞 | V-representation source proof | `gap_found`，theorem 未被现有记录判为 refuted | `agents/predicting-magic-from-very-few-measurements/verification/records.jsonl`；`Stabilizerness/DAG_AND_ROOTS.md` |
+| 失败原文 claim / 阻塞修正命题 | V-representation | 原文坐标子句 `REFUTED`；独立修正命题仍为 conditional / `BLOCKED` | `Stabilizerness/ExternalRecordRegistry/claim-classifications/predicting-magic-from-very-few-measurements.jsonl`；`Stabilizerness/ExternalRecordRegistry/evidence/predicting-magic-from-very-few-measurements.jsonl`；`Stabilizerness/MathClaimIRRegistry/migrations/predicting-magic-from-very-few-measurements.jsonl` |
 | 失败 claim | fixed-window monotonicity | `CLAIM_FALSE` / explicit counterexample | `agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json` |
 | 阻塞 | perfect-graph weighted duality source alignment | primary source alignment pending | `agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json`；`roots.json` |
 | 阻塞 | conceptual roots 的 source/physical semantic acceptance | Lean 数学状态不使 export accepted | `agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json`；另两个 root blockers |
@@ -386,7 +388,7 @@ Whole-paper 对应 `claim:closed-form-rom`；输入边来自 `claim:exact-graph-
 4. **active dependency**：本文物理对象应写 `Pauli-active dependency`；AgtXIv 的 scientific claim dependency 是另一概念（`Stabilizerness/reader/translation_notes.md`）。
 5. **full RoM 与 reduced RoM**：Lean 工程的 monotonicity 是 full-state、deterministic、atom-preserving map 接口；它不能转移到 fixed-window reduced RoM（`agents/robustness-of-magic/formal/qubit-full-rom-kernel.json`）。
 6. **`ROOT_MATH_KERNEL_COMPLETE` 与目标 theorem**：前者只覆盖三个 conceptual roots 的选定数学接口；`coverage.json` 同时保留目标 theorem `kernel_checked=0`。
-7. **V-representation gap 与 monotonicity false**：前者是证明缺口且 theorem 未被现有记录推翻，后者有独立反例，必须保留两个 badge（`Stabilizerness/DAG_AND_ROOTS.md`）。
+7. **literal V-representation、repaired V-representation 与 monotonicity false**：原文 V-representation 已被精确反例判为 `REFUTED`；修正坐标后的独立命题仍是 conditional / `BLOCKED`；fixed-window monotonicity 由另一个独立反例判为 `REFUTED`。三个状态必须分别显示，旧 DAG 的 proof-gap 标签不是较新外部分类的替代品。
 8. **capacity、coverage、state magic**：`witness capacity`、Fig. 2 detection coverage、状态的 full magic 是三个对象，不应由一个量反推另一个（`Stabilizerness/AGTXIV_IMPLEMENTATION.md`）。
 9. **`SemanticClifford`**：Lean 中是 unitary Pauli normalizer 语义，不等于已给出 H/S/CNOT gate syntax synthesis（`formal/AgtXIvRootMath/README.md`）。
 10. **``通过''的主语**：`release-manifest.json` 同时记有 structural/root-math/Varela-interface ``PASSED'' 和 scientific `BLOCKED`；前几个状态不自动传递到 scientific acceptance。

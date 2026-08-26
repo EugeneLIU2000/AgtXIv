@@ -30,6 +30,8 @@ The parent specification calls the accepted query-relative mathematical build gr
 
 The present implementation does not train or fine-tune a DAG-search model. DAG search is an Oracle stage. In practical runs, a general-purpose language model proposes the initial graph. Every Oracle output remains `ORACLE_PROPOSED / UNVERIFIED` until independent gates accept its nodes and edges.
 
+**V1 boundary.** For the first release, the normative gate is one bounded `ScientificClaim` ↔ mathematical-IR alignment and `BridgeAssessment` as specified in [V1 claim–mathematics bridge](v1-bridge.md). Graph optimization, root minimization, contribution discovery or scoring, semantic pruning, and global closure are post-V1 work. Existing Oracle graphs remain experimental navigation input and do not replace the bounded bridge gate.
+
 ### 0.1 Normative stage contract
 
 | Stage | Required input | Primary output | Promotion gate |

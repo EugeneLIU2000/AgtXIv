@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/claim-math-bridge/1.0.0",
+  "title": "AgtXIv V1 ClaimMathBridge",
+  "description": "Immutable, source-faithful alignment from one ScientificClaim to mathematical IR. This record carries mapping-generation provenance, never verification or acceptance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "produced_at", "scientific_claim_ref", "source_anchors", "source_components", "alignment", "generation_provenance", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.claim-math-bridge/1.0.0"},
+    "id": {"type": "string", "pattern": "^claim-math-bridge:"},
+    "record_revision": {"const": 1},
+    "produced_at": {"type": "string", "format": "date-time"},
+    "scientific_claim_ref": {"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"},
+    "source_anchors": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^anchor:"}},
+    "source_components": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sourceComponent"}},
+    "alignment": {"enum": ["EQUIVALENT", "CONSERVATIVE", "PARTIAL"]},
+    "generation_provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generator", "origin", "epistemic_state"],
+      "properties": {
+        "generator": {"type": "string", "minLength": 1},
+        "origin": {"enum": ["HUMAN_AUTHORED", "AGENT_PROPOSED", "ORACLE_PROPOSED"]},
+        "epistemic_state": {"enum": ["UNVERIFIED"]}
+      }
+    },
+    "content_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "mappedTarget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_ref", "role"],
+      "properties": {
+        "target_ref": {"$ref": "https://agtxiv.org/schema/target-ref/1.0.0"},
+        "role": {"enum": ["CONCLUSION", "ASSUMPTION", "DEFINITION", "DEPENDENCY"]}
+      }
+    },
+    "sourceComponent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["component_id", "description", "source_anchors", "disposition", "mapped_targets", "residual_physical_semantics"],
+      "properties": {
+        "component_id": {"type": "string", "pattern": "^component:[a-z0-9][a-z0-9-]*$"},
+        "description": {"type": "string", "minLength": 1},
+        "source_anchors": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^anchor:"}},
+        "disposition": {"enum": ["MAPPED", "RESIDUAL"]},
+        "mapped_targets": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/mappedTarget"}},
+        "residual_physical_semantics": {"type": ["string", "null"]}
+      },
+      "allOf": [
+        {"if": {"properties": {"disposition": {"const": "MAPPED"}}}, "then": {"properties": {"mapped_targets": {"minItems": 1}, "residual_physical_semantics": {"type": "null"}}}},
+        {"if": {"properties": {"disposition": {"const": "RESIDUAL"}}}, "then": {"properties": {"mapped_targets": {"maxItems": 0}, "residual_physical_semantics": {"type": "string", "minLength": 1}}}}
+      ]
+    }
+  }
+}

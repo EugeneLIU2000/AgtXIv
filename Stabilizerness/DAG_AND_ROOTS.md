@@ -1,8 +1,22 @@
 # Stabilizerness：整篇 Claim DAG 与根选择
 
-## 为什么先画整篇 DAG
+## 本图在 V1 中的位置
 
-AgtXIv 的工作顺序是：
+本文档保留整篇 claim DAG 和 root 选择的实验设计。它们是 post-V1 的导航和闭包基础设施，不是当前 V1 发布门。当前规范路径是：
+
+```text
+ScientificClaim
+  → ClaimMathBridge
+  → exact MathClaimIR + external evidence
+  → BridgeAssessment
+  → bounded Root Agent conclusion
+```
+
+当前 bridge 和 assessment 工件位于 `Stabilizerness/ExternalRecordRegistry/bridges/` 与 `bridge-assessments/`。本文件下述 whole-paper DAG、root partitions、standardization priority 和旧 query 图均保持 `ORACLE_PROPOSED / UNVERIFIED` 或历史迁移状态，不得产生 bridge truth、verification 或 scientific acceptance。
+
+## 为什么为后续阶段保留整篇 DAG
+
+Post-V1 的图构建顺序是：
 
 ```text
 整篇论文的原子 claim DAG
@@ -50,10 +64,11 @@ flowchart TD
 
 主闭式定理的承重主干是 `VR → FG/SR → E → X → F`。这里刻意把反对易图 `FG` 与 Pauli 符号关系 `SR` 画成两个节点：普通无向图不能恢复乘积关系的相位和奇偶约束。Capacity、Clifford、数值结果和 stabilizer Rényi entropy（SRE）是从共享定义分出的独立 branches，不能并入同一个 ClaimContract。
 
-### 两个必须分开的 Varela badges
+### 三个必须分开的 Varela badges
 
-- Exact V-representation：**`PROOF_GAP` · `THEOREM_NOT_REFUTED` · `CONDITIONAL_REPAIR`**。缺口位于来源证明；目前没有该 theorem 的反例，独立修补尚未完成验收。
-- Fixed-window monotonicity：**`FALSE` · `EXPLICIT_COUNTEREXAMPLE`**。这是已被反例推翻的独立 claim，不能隐藏在 V-representation 的 blocker 中。
+- Literal exact V-representation：**`REFUTED` · `EXPLICIT_COUNTEREXAMPLE`**。原文坐标条件 $f(P)P\in S$ 在单量子位 $\mathcal M=\{Z\}$ 上给出错误的候选凸包；较早的 `PROOF_GAP` / `THEOREM_NOT_REFUTED` 标签已被较新的精确分类取代。
+- Repaired V-representation proposition：**`CONDITIONAL_REPAIR` · `BLOCKED`**。把坐标条件改为 $P\in S$ 后得到的是独立修正命题，不是对原文定理的静默改写，公开前提和验收仍未闭合。
+- Fixed-window monotonicity：**`REFUTED` · `EXPLICIT_COUNTEREXAMPLE`**。这是由另一个反例推翻的独立 claim，不能隐藏在 V-representation 的 blocker 中。
 
 ## 整篇主要 branches
 
@@ -135,9 +150,9 @@ Nielsen–Chuang、Shor、Gottesman–Chuang、García、Heinrich、Karp、Maced
 
 ## 已知 blockers 与失败 claim
 
-### 1. V-representation 的 source proof gap
+### 1. Literal V-representation 已反驳，修正命题仍受阻
 
-Varela source 中“full-rank stabilizer 与测量集之交自动 maximal”的中间断言有反例。V-representation statement 尚未发现反例。现在已经建立独立 Lean 切片，严格检查了测量坐标投影、投影凸体的 top-down 语义，以及“候选点可实现 + 任意投影 atom 可细分 ⇒ 两个凸包相等”的条件推导；但这两个前提和候选点极端性仍是公开义务。因此 root export 只能是 `PARTIALLY_FORMALIZED/PARTIALLY_VERIFIED`，`accepted=false`。Source fidelity 通过不能自动传递成 source derivation 或数学正确性通过。
+Varela source 中“full-rank stabilizer 与测量集之交自动 maximal”的中间断言有反例；更直接地，原文坐标条件 $f(P)P\in S$ 在单量子位 $\mathcal M=\{Z\}$ 上生成 $[0,1]$ 而不是实际投影稳定子多面体 $[-1,1]$，因此 literal V-representation 已由外部分类记为 `REFUTED`。把坐标条件修正为 $P\in S$ 后得到的是独立 Agent proposition。现有 Lean 切片只条件性检查“候选点可实现 + 任意投影 atom 可细分 ⇒ 两个凸包相等”；其前提和候选点极端性仍是公开义务，所以 repaired proposition 只能是 `CONDITIONAL_REPAIR/BLOCKED`，不得回写或提升原文 theorem。Source fidelity、conditional Lean implication 和 scientific acceptance 三者不相互自动传递。
 
 物理图像是：我们只从几个 Pauli 坐标给完整稳定子凸体拍一张照片。原凸体的一些尖角在照片中会重叠到边或内部；影子的候选尖角来自把一个 inclusion-maximal 的相容测量语境饱和到允许的正负号。Lean 目前已经检查“如果这些候选点确实可实现，而且所有原尖角的照片都能混合成它们，那么影子凸体正是它们的凸包”，但还在继续证明两个“确实”。
 
@@ -169,4 +184,4 @@ Declared external foundation: standard finite LP duality
 
 图论根采用显式外部基础策略：Lean 下游定理必须把 perfect-graph 加权对偶作为参数传入；可以内核检查“在该参数下推出的后果”，但不会声明自定义 `axiom`，也不会把 Chvátal 定理本身标成 `KERNEL_CHECKED`。当前 primary-source statement alignment 仍为 `PENDING`。
 
-上述两个 roots 只是 closed-form theorem subgraph 的技术 roots，不能被展示成项目的全局第一步。当前全局门仍是三个 conceptual Root PaperAgents；它们本轮均已落盘但 `accepted=false`，所以 Varela/Chvátal 技术闭包也尚不能成为已接受的最终发布闭包。
+上述两个 roots 只是 closed-form theorem subgraph 的技术 roots，不能被展示成项目的全局第一步。Post-V1 closed-form program 的门仍包括三个 conceptual Root PaperAgents；它们本轮均已落盘但 `accepted=false`，所以 Varela/Chvátal 技术闭包也尚不能成为已接受的最终发布闭包。该门不影响当前 bounded V1 bridge prototype 的发布判断。
