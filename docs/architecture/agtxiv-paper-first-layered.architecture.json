@@ -1,0 +1,499 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "AgtXIv Paper-First 分层架构",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/EugeneLIU2000/AgtXIv",
+      "revision": "cb42f4123706b85e80817fcf552fc92afa360e65"
+    },
+    "viewBox": [
+      1600,
+      800
+    ],
+    "views": [
+      {
+        "id": "paper_baseline",
+        "label": "整篇论文基线",
+        "focus": [
+          "paper_release",
+          "whole_paper_analysis",
+          "understanding_snapshot"
+        ],
+        "note": "先独立回答“这篇论文讲了什么”，具体 query 不参与全文拆解。"
+      },
+      {
+        "id": "query_activation",
+        "label": "Query 激活",
+        "focus": [
+          "query_intent",
+          "understanding_snapshot",
+          "query_activation",
+          "scientific_claim"
+        ],
+        "note": "冻结的问题只在全文基线完成后激活，并解析到精确 ScientificClaim。"
+      },
+      {
+        "id": "verification_path",
+        "label": "验证路径",
+        "focus": [
+          "scientific_claim",
+          "claim_math_bridge",
+          "math_ir_dag",
+          "verification_evidence",
+          "bridge_assessment"
+        ],
+        "note": "数学验证、物理适用性、证据完整性和科学接受始终分开。"
+      },
+      {
+        "id": "bounded_answer",
+        "label": "有限回答",
+        "focus": [
+          "bridge_assessment",
+          "root_answer"
+        ],
+        "note": "最终输出保留 UNKNOWN、BLOCKED、NOT_CHECKED 和明确的非蕴含。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "query_intent",
+      "type": "external",
+      "label": "QueryIntent",
+      "sublabel": "提取、规范化、冻结后搁置",
+      "tag": "先冻结",
+      "pos": [
+        80,
+        60
+      ],
+      "size": [
+        250,
+        78
+      ],
+      "sources": [
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/query-intent.json",
+          "line": 1,
+          "end_line": 27,
+          "label": "已验证 pilot"
+        }
+      ]
+    },
+    {
+      "id": "paper_release",
+      "type": "cloud",
+      "label": "冻结论文版本",
+      "sublabel": "公开仓库／精确 release／source hashes",
+      "tag": "不可变来源",
+      "pos": [
+        500,
+        60
+      ],
+      "size": [
+        280,
+        78
+      ],
+      "sources": [
+        {
+          "path": "AgtXIv.md",
+          "line": 272,
+          "end_line": 315,
+          "label": "publication identity"
+        },
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/source/source-hashes.json",
+          "line": 1,
+          "label": "pilot source freeze"
+        }
+      ]
+    },
+    {
+      "id": "whole_paper_analysis",
+      "type": "backend",
+      "label": "整篇论文分析",
+      "sublabel": "研究问题、结构、claims、假设、证据、限制",
+      "tag": "Query 隔离",
+      "pos": [
+        500,
+        205
+      ],
+      "size": [
+        300,
+        84
+      ],
+      "sources": [
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/understanding/overview.md",
+          "line": 1,
+          "end_line": 65,
+          "label": "whole-paper overview"
+        }
+      ]
+    },
+    {
+      "id": "understanding_snapshot",
+      "type": "database",
+      "label": "PaperUnderstandingSnapshot",
+      "sublabel": "Query-independent 全文语义基线",
+      "tag": "冻结基线",
+      "pos": [
+        930,
+        205
+      ],
+      "size": [
+        310,
+        84
+      ],
+      "sources": [
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/understanding/paper-understanding.json",
+          "line": 1,
+          "end_line": 40,
+          "label": "已验证 snapshot"
+        }
+      ]
+    },
+    {
+      "id": "query_activation",
+      "type": "messagebus",
+      "label": "Query Activation",
+      "sublabel": "基线完成后解析 bounded target",
+      "tag": "Gate",
+      "pos": [
+        280,
+        350
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "sources": [
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/activation.json",
+          "line": 1,
+          "end_line": 37,
+          "label": "ordering proof"
+        }
+      ]
+    },
+    {
+      "id": "scientific_claim",
+      "type": "backend",
+      "label": "ScientificClaim",
+      "sublabel": "精确 source anchors 与字面科学命题",
+      "pos": [
+        680,
+        350
+      ],
+      "size": [
+        280,
+        82
+      ],
+      "sources": [
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/scientific-claim.json",
+          "line": 1,
+          "label": "V1 source claim"
+        }
+      ]
+    },
+    {
+      "id": "claim_math_bridge",
+      "type": "security",
+      "label": "ClaimMathBridge",
+      "sublabel": "组件完整映射＋残余科学语义",
+      "tag": "不含真值",
+      "pos": [
+        1050,
+        350
+      ],
+      "size": [
+        280,
+        82
+      ],
+      "sources": [
+        {
+          "path": "docs/specifications/v1-bridge.md",
+          "line": 43,
+          "end_line": 61,
+          "label": "normative contract"
+        },
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/claim-math-bridge.json",
+          "line": 1,
+          "label": "conforming pilot"
+        }
+      ]
+    },
+    {
+      "id": "math_ir_dag",
+      "type": "backend",
+      "label": "MathClaimIR ＋ Dependency DAG",
+      "sublabel": "对象、假设、结论与承重依赖",
+      "pos": [
+        330,
+        505
+      ],
+      "size": [
+        310,
+        86
+      ],
+      "sources": [
+        {
+          "path": "AgtXIv.md",
+          "line": 1143,
+          "end_line": 1170,
+          "label": "MathClaimIR"
+        },
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/dependency-dag.json",
+          "line": 1,
+          "label": "query DAG"
+        }
+      ]
+    },
+    {
+      "id": "verification_evidence",
+      "type": "security",
+      "label": "Verification ＋ Evidence",
+      "sublabel": "来源、符号、Lean、语义、复现、blockers",
+      "tag": "分轴验证",
+      "pos": [
+        800,
+        505
+      ],
+      "size": [
+        320,
+        86
+      ],
+      "sources": [
+        {
+          "path": "AgtXIv.md",
+          "line": 798,
+          "end_line": 940,
+          "label": "trusted layers"
+        },
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/verification/check-result.json",
+          "line": 1,
+          "label": "reproducible check"
+        }
+      ]
+    },
+    {
+      "id": "bridge_assessment",
+      "type": "backend",
+      "label": "BridgeAssessment",
+      "sublabel": "逐组件 disposition、适用性与残余审查",
+      "tag": "保守投射",
+      "pos": [
+        470,
+        660
+      ],
+      "size": [
+        310,
+        86
+      ],
+      "sources": [
+        {
+          "path": "docs/specifications/v1-bridge.md",
+          "line": 63,
+          "end_line": 90,
+          "label": "assessment rules"
+        },
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/bridge-assessment.json",
+          "line": 1,
+          "label": "conforming pilot"
+        }
+      ]
+    },
+    {
+      "id": "root_answer",
+      "type": "frontend",
+      "label": "Bounded Root Agent Answer",
+      "sublabel": "全文概览＋具体回答＋限制与非蕴含",
+      "tag": "最终输出",
+      "pos": [
+        920,
+        660
+      ],
+      "size": [
+        330,
+        86
+      ],
+      "sources": [
+        {
+          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/response.md",
+          "line": 1,
+          "label": "pilot answer"
+        },
+        {
+          "path": "AgtXIv.md",
+          "line": 4483,
+          "end_line": 4510,
+          "label": "response discipline"
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "第 1 层｜输入与不可变冻结",
+      "wraps": [
+        "query_intent",
+        "paper_release"
+      ],
+      "pad": 34
+    },
+    {
+      "kind": "region",
+      "label": "第 2 层｜Query-independent 整篇论文理解",
+      "wraps": [
+        "whole_paper_analysis",
+        "understanding_snapshot"
+      ],
+      "pad": 34
+    },
+    {
+      "kind": "region",
+      "label": "第 3 层｜Query 激活与科学主张定位",
+      "wraps": [
+        "query_activation",
+        "scientific_claim",
+        "claim_math_bridge"
+      ],
+      "pad": 34
+    },
+    {
+      "kind": "region",
+      "label": "第 4 层｜数学依赖、验证与证据",
+      "wraps": [
+        "math_ir_dag",
+        "verification_evidence"
+      ],
+      "pad": 34
+    },
+    {
+      "kind": "region",
+      "label": "第 5 层｜保守评估与有限回答",
+      "wraps": [
+        "bridge_assessment",
+        "root_answer"
+      ],
+      "pad": 34
+    }
+  ],
+  "connections": [
+    {
+      "id": "freeze_source",
+      "from": "paper_release",
+      "to": "whole_paper_analysis",
+      "label": "冻结版本作为唯一来源",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "publish_baseline",
+      "from": "whole_paper_analysis",
+      "to": "understanding_snapshot",
+      "label": "发布全文基线",
+      "variant": "emphasis"
+    },
+    {
+      "id": "activate_after_baseline",
+      "from": "understanding_snapshot",
+      "to": "query_activation",
+      "label": "基线完成后允许激活",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "release_frozen_query",
+      "from": "query_intent",
+      "to": "query_activation",
+      "label": "读取冻结问题",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "resolve_claim",
+      "from": "query_activation",
+      "to": "scientific_claim",
+      "label": "解析 bounded target",
+      "variant": "emphasis"
+    },
+    {
+      "id": "map_components",
+      "from": "scientific_claim",
+      "to": "claim_math_bridge",
+      "label": "逐组件映射",
+      "variant": "security"
+    },
+    {
+      "id": "build_math_view",
+      "from": "claim_math_bridge",
+      "to": "math_ir_dag",
+      "label": "引用数学对象与依赖",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "check_frontier",
+      "from": "math_ir_dag",
+      "to": "verification_evidence",
+      "label": "仅检查承重 frontier",
+      "variant": "security"
+    },
+    {
+      "id": "assess_math",
+      "from": "verification_evidence",
+      "to": "bridge_assessment",
+      "label": "提交证据与 blockers",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "pin_alignment",
+      "from": "claim_math_bridge",
+      "to": "bridge_assessment",
+      "label": "固定映射边界",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          1390,
+          391
+        ],
+        [
+          1390,
+          630
+        ],
+        [
+          400,
+          630
+        ],
+        [
+          400,
+          703
+        ]
+      ]
+    },
+    {
+      "id": "project_answer",
+      "from": "bridge_assessment",
+      "to": "root_answer",
+      "label": "保守投射",
+      "variant": "emphasis"
+    }
+  ]
+}
