@@ -1,0 +1,235 @@
+{
+  "schema_version": "0.1.0-experimental",
+  "paper_id": "arxiv:2608.22855v1",
+  "map_status": "SOURCE_GROUNDED_NOT_VERIFIED",
+  "node_sets": {
+    "internal_claim_definition_assumption_nodes": [
+      "definition:2608.22855v1:shellworld",
+      "assumption:2608.22855v1:thin-wall-tension",
+      "claim:2608.22855v1:junction-reduction",
+      "assumption:2608.22855v1:weak-4d-limit",
+      "claim:2608.22855v1:critical-tension",
+      "assumption:2608.22855v1:charged-ordering",
+      "claim:2608.22855v1:charged-friedmann",
+      "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+      "assumption:2608.22855v1:bounce-discriminant",
+      "claim:2608.22855v1:lambda-regimes",
+      "definition:2608.22855v1:geometric-stability",
+      "claim:2608.22855v1:bounce-and-horizon-roots",
+      "assumption:2608.22855v1:outside-horizon-inequality",
+      "claim:2608.22855v1:outside-horizon-region",
+      "claim:2608.22855v1:geometric-resolution",
+      "assumption:2608.22855v1:test-scalar",
+      "claim:2608.22855v1:scalar-mode-equation",
+      "claim:2608.22855v1:scalar-regularity",
+      "limitation:2608.22855v1:full-perturbations",
+      "assumption:2608.22855v1:string-cloud",
+      "claim:2608.22855v1:string-matter-term",
+      "claim:2608.22855v1:string-bounce-regimes",
+      "claim:2608.22855v1:string-outside-horizon-example",
+      "limitation:2608.22855v1:string-exact-conditions"
+    ],
+    "external_background_nodes": [
+      "external:israel-junction",
+      "external:shellworld-framework",
+      "external:charged-ads-metric",
+      "external:cauchy-instability",
+      "external:string-cloud"
+    ]
+  },
+  "edges": [
+    {
+      "id": "edge:internal:01",
+      "from": "claim:2608.22855v1:junction-reduction",
+      "to": "claim:2608.22855v1:charged-friedmann",
+      "type": "DERIVES_MODEL_EQUATION",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:02",
+      "from": "assumption:2608.22855v1:charged-ordering",
+      "to": "claim:2608.22855v1:charged-friedmann",
+      "type": "SETS_PARAMETER_REGIME",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:03",
+      "from": "claim:2608.22855v1:charged-friedmann",
+      "to": "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+      "type": "SPECIALIZE_AND_SOLVE_AT_ZERO_LAMBDA",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:04",
+      "from": "assumption:2608.22855v1:bounce-discriminant",
+      "to": "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+      "type": "SUPPLIES_EXISTENCE_CONDITION",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:05",
+      "from": "claim:2608.22855v1:charged-friedmann",
+      "to": "claim:2608.22855v1:lambda-regimes",
+      "type": "REFORMULATE_AS_EFFECTIVE_POTENTIAL",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:06",
+      "from": "claim:2608.22855v1:charged-friedmann",
+      "to": "claim:2608.22855v1:bounce-and-horizon-roots",
+      "type": "DETERMINES_BOUNCE_ROOT",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:07",
+      "from": "definition:2608.22855v1:geometric-stability",
+      "to": "assumption:2608.22855v1:outside-horizon-inequality",
+      "type": "DEFINES_REQUIRED_INEQUALITY",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:08",
+      "from": "claim:2608.22855v1:bounce-and-horizon-roots",
+      "to": "assumption:2608.22855v1:outside-horizon-inequality",
+      "type": "ENABLES_ROOT_COMPARISON",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:09",
+      "from": "assumption:2608.22855v1:outside-horizon-inequality",
+      "to": "claim:2608.22855v1:outside-horizon-region",
+      "type": "CLASSIFIED_BY_NUMERICAL_SCAN",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:10",
+      "from": "claim:2608.22855v1:outside-horizon-region",
+      "to": "claim:2608.22855v1:geometric-resolution",
+      "type": "SUPPORTS_GEOMETRIC_INTERPRETATION",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:11",
+      "from": "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+      "to": "assumption:2608.22855v1:test-scalar",
+      "type": "PROVIDES_BACKGROUND",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:12",
+      "from": "assumption:2608.22855v1:test-scalar",
+      "to": "claim:2608.22855v1:scalar-mode-equation",
+      "type": "SETS_EFFECTIVE_PERTURBATION_MODEL",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:13",
+      "from": "claim:2608.22855v1:scalar-mode-equation",
+      "to": "claim:2608.22855v1:scalar-regularity",
+      "type": "ANALYZE_SHORT_AND_LONG_WAVELENGTH_LIMITS",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:14",
+      "from": "claim:2608.22855v1:scalar-regularity",
+      "to": "limitation:2608.22855v1:full-perturbations",
+      "type": "BOUNDED_BY_EXPLICIT_LIMITATION",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:15",
+      "from": "claim:2608.22855v1:junction-reduction",
+      "to": "claim:2608.22855v1:string-matter-term",
+      "type": "DERIVES_EXTENDED_MODEL_EQUATION",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:16",
+      "from": "assumption:2608.22855v1:string-cloud",
+      "to": "claim:2608.22855v1:string-matter-term",
+      "type": "ADDS_BULK_MATTER_MODEL",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:17",
+      "from": "claim:2608.22855v1:string-matter-term",
+      "to": "claim:2608.22855v1:string-bounce-regimes",
+      "type": "REFORMULATE_AND_INSPECT_EFFECTIVE_POTENTIAL",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:18",
+      "from": "claim:2608.22855v1:string-matter-term",
+      "to": "claim:2608.22855v1:string-outside-horizon-example",
+      "type": "COMPARE_PLOTTED_ROOTS",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:internal:19",
+      "from": "claim:2608.22855v1:string-outside-horizon-example",
+      "to": "limitation:2608.22855v1:string-exact-conditions",
+      "type": "BOUNDED_BY_EXPLICIT_LIMITATION",
+      "relation_class": "LOAD_BEARING_INTERNAL",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:imported:01",
+      "from": "external:israel-junction",
+      "to": "claim:2608.22855v1:junction-reduction",
+      "type": "IMPORTS_FORMALISM",
+      "relation_class": "IMPORTED_OR_BACKGROUND",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:imported:02",
+      "from": "external:shellworld-framework",
+      "to": "definition:2608.22855v1:shellworld",
+      "type": "IMPORTS_MODEL_BACKGROUND",
+      "relation_class": "IMPORTED_OR_BACKGROUND",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:imported:03",
+      "from": "external:charged-ads-metric",
+      "to": "claim:2608.22855v1:charged-friedmann",
+      "type": "IMPORTS_BULK_SOLUTION",
+      "relation_class": "IMPORTED_OR_BACKGROUND",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:imported:04",
+      "from": "external:cauchy-instability",
+      "to": "definition:2608.22855v1:geometric-stability",
+      "type": "MOTIVATES_CRITERION",
+      "relation_class": "IMPORTED_OR_BACKGROUND",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    },
+    {
+      "id": "edge:imported:05",
+      "from": "external:string-cloud",
+      "to": "claim:2608.22855v1:string-matter-term",
+      "type": "IMPORTS_BULK_SOLUTION",
+      "relation_class": "IMPORTED_OR_BACKGROUND",
+      "status": "CANDIDATE_SOURCE_GROUNDED"
+    }
+  ],
+  "interpretation_note": "Edges encode the paper's stated argument structure only. Imported or background relations are separated from load-bearing internal relations. No edge is an accepted verification dependency."
+}

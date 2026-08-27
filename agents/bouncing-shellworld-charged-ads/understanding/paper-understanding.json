@@ -1,0 +1,420 @@
+{
+  "schema_version": "0.1.0-experimental",
+  "snapshot_id": "paper-understanding:2608.22855v1:whole-paper-baseline",
+  "immutability": "IMMUTABLE_EXPERIMENTAL_SNAPSHOT",
+  "identity": {
+    "paper_id": "arxiv:2608.22855v1",
+    "title": "Bouncing shellworld embedded in charged AdS spacetime",
+    "authors": [
+      "Karma P. Sherpa",
+      "Rishi Pokhrel",
+      "Indra K. P. Chettri",
+      "Tanay K. Dey"
+    ]
+  },
+  "revision": {
+    "arxiv_version": "v1",
+    "snapshot_scope": "WHOLE_PAPER_QUERY_INDEPENDENT",
+    "epistemic_stage": "SOURCE_ATTESTATION_ONLY",
+    "verification_promotion": false
+  },
+  "exact_source_refs": {
+    "metadata": "agents/bouncing-shellworld-charged-ads/source/metadata.json",
+    "source_hashes": "agents/bouncing-shellworld-charged-ads/source/source-hashes.json",
+    "anchors": "agents/bouncing-shellworld-charged-ads/source/anchors.jsonl",
+    "claims": "agents/bouncing-shellworld-charged-ads/understanding/claims.jsonl",
+    "consumed_artifacts": [
+      "References/2608.22855v1/00README.json",
+      "References/2608.22855v1/Reference.bib",
+      "References/2608.22855v1/paper_2.tex",
+      "References/2608.22855v1/bubble_w_charge_b_stable.pdf",
+      "References/2608.22855v1/bubble_w_charge_b_unstable.pdf",
+      "References/2608.22855v1/bubble_w_charge_stable.pdf",
+      "References/2608.22855v1/bubble_w_charge_unstable.pdf",
+      "References/2608.22855v1/bubble_w_q_different_Lambda.pdf",
+      "References/2608.22855v1/bubble_w_string_different_L.pdf",
+      "References/2608.22855v1/phase_diagram.pdf"
+    ]
+  },
+  "research_question": "Can an asymmetric spherical shellworld in a five-dimensional charged AdS bulk realize a nonsingular bounce outside the bulk horizons, retain regular linear test-scalar modes across the bounce, and continue to do so when a uniform radial string cloud supplies effective brane matter?",
+  "thesis": "The paper argues that the bulk charge generates a nonsingular shellworld bounce; selected parameter regions place it outside both horizons, linear massless test-scalar modes remain finite near the zero-Lambda_4 bounce, and a string-cloud extension preserves both the bounce and tuned examples of outside-horizon evolution.",
+  "scope": [
+    "A spherical thin brane separating two five-dimensional AdS regions without Z2 symmetry.",
+    "Charged Reissner-Nordstrom-AdS bulk geometries, first without and then with a uniform radial string cloud.",
+    "Homogeneous brane evolution from an effective Friedmann equation and effective potential.",
+    "Analytic zero-Lambda_4 scale-factor and root formulas in the no-string model.",
+    "Numerical and graphical parameter examples for horizon avoidance.",
+    "Linear massless minimally coupled test-scalar modes on the brane with negligible backreaction."
+  ],
+  "non_scope": [
+    "A full five-dimensional perturbation analysis.",
+    "Coupled scalar and metric perturbations or their backreaction.",
+    "Independent reproduction or verification of algebra, numerics, or plots.",
+    "General analytic outside-horizon conditions for the string-cloud model.",
+    "Observational predictions or data comparison.",
+    "A sentence-exhaustive claim extraction."
+  ],
+  "discourse_structure": [
+    {
+      "order": 1,
+      "part": "Introduction",
+      "anchor": "anchor:2608.22855v1:introduction",
+      "function": "Motivates bouncing braneworlds, Cauchy-horizon instability, and the shellworld alternative; previews results."
+    },
+    {
+      "order": 2,
+      "part": "The shellworld scenario",
+      "anchor": "anchor:2608.22855v1:shellworld-section",
+      "function": "Defines asymmetric inside/outside AdS geometry, induced metric, junction condition, and critical tension."
+    },
+    {
+      "order": 3,
+      "part": "Charged AdS bulk",
+      "anchor": "anchor:2608.22855v1:charged-ads-section",
+      "function": "Derives the effective Friedmann equation, exact zero-Lambda_4 solution, and effective-potential regimes."
+    },
+    {
+      "order": 4,
+      "part": "Geometric Stability",
+      "anchor": "anchor:2608.22855v1:geometric-stability-subsection",
+      "function": "Compares bounce and horizon roots and maps numerical parameter regions."
+    },
+    {
+      "order": 5,
+      "part": "Evolution of Test Scalar Fluctuations",
+      "anchor": "anchor:2608.22855v1:scalar-fluctuations-subsection",
+      "function": "Studies short- and long-wavelength massless test-scalar modes near the bounce."
+    },
+    {
+      "order": 6,
+      "part": "Charged AdS bulk with string cloud",
+      "anchor": "anchor:2608.22855v1:string-cloud-section",
+      "function": "Adds an a^-3 effective matter term and presents bounce and horizon-position examples."
+    },
+    {
+      "order": 7,
+      "part": "Summary",
+      "anchor": "anchor:2608.22855v1:summary",
+      "function": "Restates the claimed bounce, geometric avoidance, test-field regularity, and string-cloud extension."
+    }
+  ],
+  "methods": [
+    {
+      "id": "method:israel-junction",
+      "type": "ANALYTIC_MODEL_REDUCTION",
+      "description": "Insert each bulk metric function into the asymmetric Israel junction condition to obtain a four-dimensional Friedmann equation.",
+      "anchors": [
+        "anchor:2608.22855v1:shellworld-geometry-junction",
+        "anchor:2608.22855v1:charged-metric-friedmann",
+        "anchor:2608.22855v1:string-cloud-friedmann"
+      ]
+    },
+    {
+      "id": "method:exact-zero-lambda",
+      "type": "ANALYTIC_SOLUTION",
+      "description": "Solve the no-string Friedmann equation in conformal time at Lambda_4=0 and identify extrema and a discriminant condition.",
+      "anchors": [
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ]
+    },
+    {
+      "id": "method:effective-potential",
+      "type": "QUALITATIVE_DYNAMICAL_ANALYSIS",
+      "description": "Rewrite the evolution as adot^2+U(a)=0 and classify allowed intervals by U(a)<=0.",
+      "anchors": [
+        "anchor:2608.22855v1:effective-potential-regimes",
+        "anchor:2608.22855v1:string-cloud-regimes"
+      ]
+    },
+    {
+      "id": "method:horizon-comparison",
+      "type": "ANALYTIC_AND_NUMERICAL_ROOT_COMPARISON",
+      "description": "Compare the smallest positive bounce root with outer-horizon roots; scan selected M_+ and Q_+ values in the no-string case and plot tuned examples.",
+      "anchors": [
+        "anchor:2608.22855v1:bounce-radius",
+        "anchor:2608.22855v1:horizon-radius",
+        "anchor:2608.22855v1:phase-space-method",
+        "anchor:2608.22855v1:string-cloud-geometric-example"
+      ]
+    },
+    {
+      "id": "method:test-field-asymptotics",
+      "type": "LINEAR_EFFECTIVE_PERTURBATION_ANALYSIS",
+      "description": "Reduce a massless test scalar to a Mukhanov-Sasaki equation and inspect short- and long-wavelength solutions near the bounce.",
+      "anchors": [
+        "anchor:2608.22855v1:test-scalar-setup",
+        "anchor:2608.22855v1:finite-bounce-short-modes",
+        "anchor:2608.22855v1:long-modes-regularity"
+      ]
+    }
+  ],
+  "principal_claim_ids": [
+    "claim:2608.22855v1:charged-friedmann",
+    "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+    "claim:2608.22855v1:lambda-regimes",
+    "claim:2608.22855v1:outside-horizon-region",
+    "claim:2608.22855v1:geometric-resolution",
+    "claim:2608.22855v1:scalar-regularity",
+    "claim:2608.22855v1:string-matter-term",
+    "claim:2608.22855v1:string-bounce-regimes",
+    "claim:2608.22855v1:string-outside-horizon-example"
+  ],
+  "secondary_claim_ids": [
+    "claim:2608.22855v1:junction-reduction",
+    "claim:2608.22855v1:critical-tension",
+    "claim:2608.22855v1:bounce-and-horizon-roots",
+    "claim:2608.22855v1:scalar-mode-equation"
+  ],
+  "definition_ids": [
+    "definition:2608.22855v1:shellworld",
+    "definition:2608.22855v1:geometric-stability"
+  ],
+  "assumption_ids": [
+    "assumption:2608.22855v1:thin-wall-tension",
+    "assumption:2608.22855v1:weak-4d-limit",
+    "assumption:2608.22855v1:charged-ordering",
+    "assumption:2608.22855v1:bounce-discriminant",
+    "assumption:2608.22855v1:outside-horizon-inequality",
+    "assumption:2608.22855v1:test-scalar",
+    "assumption:2608.22855v1:string-cloud"
+  ],
+  "limitation_ids": [
+    "limitation:2608.22855v1:full-perturbations",
+    "limitation:2608.22855v1:string-exact-conditions"
+  ],
+  "assumptions_and_regimes": [
+    {
+      "id": "regime:asymmetric-ads",
+      "description": "Two AdS sides satisfy L_+>L_- and lack Z2 symmetry.",
+      "refs": [
+        "definition:2608.22855v1:shellworld"
+      ]
+    },
+    {
+      "id": "regime:charged-ordering",
+      "description": "The charged setup states M_+>M_- and Q_+>Q_-.",
+      "refs": [
+        "assumption:2608.22855v1:charged-ordering"
+      ]
+    },
+    {
+      "id": "regime:zero-lambda-exact",
+      "description": "The analytic cyclic scale factor and perturbation background use Lambda_4=0.",
+      "refs": [
+        "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+        "assumption:2608.22855v1:test-scalar"
+      ]
+    },
+    {
+      "id": "regime:physical-potential",
+      "description": "Classical evolution is restricted to U(a)<=0 and turning points satisfy U(a)=0.",
+      "refs": [
+        "claim:2608.22855v1:lambda-regimes"
+      ]
+    },
+    {
+      "id": "regime:geometric-criterion",
+      "description": "Horizon avoidance means a_b is larger than the outer horizon on each side.",
+      "refs": [
+        "definition:2608.22855v1:geometric-stability",
+        "assumption:2608.22855v1:outside-horizon-inequality"
+      ]
+    },
+    {
+      "id": "regime:test-field",
+      "description": "The scalar is massless, minimally coupled, brane-confined, linear, and non-backreacting; beta<1 is used at the bounce.",
+      "refs": [
+        "assumption:2608.22855v1:test-scalar",
+        "claim:2608.22855v1:scalar-regularity"
+      ]
+    },
+    {
+      "id": "regime:string-cloud",
+      "description": "Strings are uniform, radial, and anchored to the brane; displayed conclusions use specific parameter choices.",
+      "refs": [
+        "assumption:2608.22855v1:string-cloud",
+        "claim:2608.22855v1:string-bounce-regimes",
+        "claim:2608.22855v1:string-outside-horizon-example"
+      ]
+    }
+  ],
+  "evidence_types": [
+    {
+      "type": "DISPLAYED_ANALYTIC_EQUATIONS",
+      "supports": [
+        "claim:2608.22855v1:charged-friedmann",
+        "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+        "claim:2608.22855v1:bounce-and-horizon-roots",
+        "claim:2608.22855v1:scalar-regularity",
+        "claim:2608.22855v1:string-matter-term"
+      ]
+    },
+    {
+      "type": "QUALITATIVE_EFFECTIVE_POTENTIAL_PLOTS",
+      "artifacts": [
+        "References/2608.22855v1/bubble_w_q_different_Lambda.pdf",
+        "References/2608.22855v1/bubble_w_string_different_L.pdf"
+      ],
+      "supports": [
+        "claim:2608.22855v1:lambda-regimes",
+        "claim:2608.22855v1:string-bounce-regimes"
+      ]
+    },
+    {
+      "type": "NUMERICAL_PHASE_CLASSIFICATION",
+      "artifacts": [
+        "References/2608.22855v1/phase_diagram.pdf"
+      ],
+      "supports": [
+        "claim:2608.22855v1:outside-horizon-region"
+      ]
+    },
+    {
+      "type": "PLOTTED_ROOT_ORDERING_EXAMPLES",
+      "artifacts": [
+        "References/2608.22855v1/bubble_w_charge_unstable.pdf",
+        "References/2608.22855v1/bubble_w_charge_stable.pdf",
+        "References/2608.22855v1/bubble_w_charge_b_unstable.pdf",
+        "References/2608.22855v1/bubble_w_charge_b_stable.pdf"
+      ],
+      "supports": [
+        "claim:2608.22855v1:geometric-resolution",
+        "claim:2608.22855v1:string-outside-horizon-example"
+      ]
+    },
+    {
+      "type": "ASYMPTOTIC_MODE_SOLUTIONS",
+      "supports": [
+        "claim:2608.22855v1:scalar-regularity"
+      ]
+    },
+    {
+      "type": "LITERATURE_IMPORTS",
+      "supports": [
+        "Background shellworld construction, Israel junction conditions, charged AdS metric, string-cloud metric, and the stated standard-braneworld Cauchy-horizon problem."
+      ]
+    }
+  ],
+  "external_dependency_candidates": [
+    {
+      "id": "external:israel-junction",
+      "relation": "IMPORTED_FORMALISM",
+      "citation_keys": [
+        "Israel:1966rt"
+      ],
+      "used_for": [
+        "claim:2608.22855v1:junction-reduction"
+      ]
+    },
+    {
+      "id": "external:shellworld-framework",
+      "relation": "IMPORTED_MODEL_BACKGROUND",
+      "citation_keys": [
+        "Banerjee:2018qey",
+        "Banerjee:2019fzz"
+      ],
+      "used_for": [
+        "definition:2608.22855v1:shellworld"
+      ]
+    },
+    {
+      "id": "external:charged-ads-metric",
+      "relation": "IMPORTED_BULK_SOLUTION",
+      "citation_keys": [
+        "Chamblin:1999tk"
+      ],
+      "used_for": [
+        "claim:2608.22855v1:charged-friedmann"
+      ]
+    },
+    {
+      "id": "external:cauchy-instability",
+      "relation": "IMPORTED_BACKGROUND_CLAIM",
+      "citation_keys": [
+        "Hovdebo:2003ug",
+        "DeRisi:2007dn"
+      ],
+      "used_for": [
+        "definition:2608.22855v1:geometric-stability",
+        "claim:2608.22855v1:geometric-resolution"
+      ]
+    },
+    {
+      "id": "external:string-cloud",
+      "relation": "IMPORTED_MATTER_MODEL_AND_METRIC",
+      "citation_keys": [
+        "Letelier:1979ej",
+        "Pokhrel:2023plp"
+      ],
+      "used_for": [
+        "assumption:2608.22855v1:string-cloud",
+        "claim:2608.22855v1:string-matter-term"
+      ]
+    }
+  ],
+  "limitations": [
+    {
+      "id": "limitation:2608.22855v1:full-perturbations",
+      "description": "The test-field calculation is not a complete stability analysis; coupled scalar and metric perturbations, the full five-dimensional background, and backreaction are deferred.",
+      "explicit": true
+    },
+    {
+      "id": "limitation:2608.22855v1:string-exact-conditions",
+      "description": "For the string-cloud model, the paper does not obtain exact general conditions for a bounce outside the horizons because the relevant equations are analytically nontrivial; it gives plotted examples under parameter tuning instead.",
+      "explicit": true
+    },
+    {
+      "id": "scope-limit:geometric-not-complete",
+      "description": "The horizon-position criterion addresses geometric Cauchy-horizon avoidance but is not presented as a complete stability proof.",
+      "explicit": true,
+      "anchor": "anchor:2608.22855v1:phase-space-method"
+    },
+    {
+      "id": "scope-limit:plotted-parameters",
+      "description": "The positive numerical conclusions are tied to displayed scans or tuned examples rather than a complete parameter classification, especially with the string cloud.",
+      "explicit": false,
+      "anchors": [
+        "anchor:2608.22855v1:phase-space-method",
+        "anchor:2608.22855v1:string-cloud-geometric-example"
+      ]
+    }
+  ],
+  "unresolved_ambiguities": [
+    {
+      "id": "ambiguity:metadata",
+      "description": "Submission date, arXiv category, and license are absent from the package files."
+    },
+    {
+      "id": "ambiguity:duplicate-labels",
+      "description": "The TeX source reuses labels sec4 and sec5 for different headings, so labels alone are not stable section identifiers."
+    },
+    {
+      "id": "ambiguity:critical-lambda",
+      "description": "The text describes small, intermediate, critical, and large Lambda_4 regimes but does not provide a general closed-form critical value."
+    },
+    {
+      "id": "ambiguity:string-density-notation",
+      "description": "The prose introduces b as string-cloud density while the equations use side-dependent b_+ and b_- without separately defining their ordering or sign conditions."
+    },
+    {
+      "id": "ambiguity:phase-scan-procedure",
+      "description": "The numerical scan algorithm, resolution, and code used to produce the phase diagram are not included in the source package."
+    },
+    {
+      "id": "ambiguity:arctangent-branch",
+      "description": "The displayed long-wavelength antiderivative is given without a branch prescription across complete cycles; the paper's claim is local regularity near a bounce."
+    },
+    {
+      "id": "ambiguity:bibliography-duplicates",
+      "description": "The bibliography contains duplicate entry keys for several works; this baseline treats cited background only as dependency candidates."
+    }
+  ],
+  "source_coverage": {
+    "statement": "The baseline was built from the complete 305-line TeX manuscript, the complete 674-line bibliography, the downloader manifest, and all seven one-page PDF figures in the designated package. Anchors cover the abstract, every section and subsection, all principal claims represented in the inventory, essential model definitions, assumptions and equations, both explicit limitations, and the summary. Claims are argument-level rather than exhaustive sentence-level extraction. No calculation, citation, numerical scan, or figure was independently verified.",
+    "tex_lines_read": 305,
+    "bibliography_lines_read": 674,
+    "figures_read": 7,
+    "query_specific_fields_present": false,
+    "truth_or_verification_promotion": false
+  }
+}
