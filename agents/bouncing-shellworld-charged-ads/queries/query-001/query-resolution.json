@@ -1,0 +1,80 @@
+{
+  "schema": "agtxiv.query-resolution/1.0.0",
+  "id": "query-resolution:2608.22855v1:query-001",
+  "record_revision": 1,
+  "query_intent_ref": {
+    "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/query-intent.json",
+    "sha256": "30aa651cf0e83bb2c19b1458509467587340ba03add84040647ba0fc4ff0e424"
+  },
+  "scientific_claim_ref": {
+    "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/scientific-claim.json",
+    "id": "claim:2608.22855v1:zero-lambda-charged-bounce-source",
+    "record_revision": 1,
+    "content_hash": "sha256:1e16ebe28d819d0f37341fc26e7108bd4ec36e5424b1c7405e915e1cad4b62f6"
+  },
+  "resolved_target": {
+    "label": "Literal source claim and conditional mathematics for the no-string zero-Lambda_4 charged-shellworld bounce",
+    "baseline_claim_ids": [
+      "claim:2608.22855v1:charged-friedmann",
+      "claim:2608.22855v1:zero-lambda-cyclic-bounce",
+      "assumption:2608.22855v1:bounce-discriminant",
+      "claim:2608.22855v1:bounce-and-horizon-roots"
+    ],
+    "scope": "Thin spherical brane with constant tension; source L, M, and Q orderings; pre-string-cloud charged model; Lambda_4=0; displayed reduced equation as a conditional input; exact solution; literal rho<=1 condition; positive scale-factor applicability; minimum location; and intrinsic turning polynomial.",
+    "conditional_mathematical_proposition": "Conditional on the displayed reduced equation, D>0, E>0, and 0<rho<1, the exact scale factor is positive, nonconstant, pi-periodic, and has strict minima at eta=n*pi.",
+    "literal_scientific_proposition": "The source-level physical conclusion that the charged shellworld admits a nonsingular cyclic bounce under the literal rho<=1 condition.",
+    "why_match": [
+      "It is the smallest analytic baseline target answering bounce existence and conditions.",
+      "It separates the exactly checkable reduced-equation identity from unresolved source-level model applicability.",
+      "It includes the intrinsic bounce turning polynomial while avoiding horizon ordering."
+    ]
+  },
+  "included_neighbor_component": {
+    "claim_id": "claim:2608.22855v1:bounce-and-horizon-roots",
+    "included_portion": "The intrinsic bounce quartic and smallest turning root only.",
+    "excluded_portion": "The side-specific horizon polynomial, outer-horizon root, and any comparison a_b>a_h."
+  },
+  "excluded_neighboring_scope": [
+    {
+      "scope": "Horizon ordering and outside-horizon phase region",
+      "claim_ids": [
+        "assumption:2608.22855v1:outside-horizon-inequality",
+        "claim:2608.22855v1:outside-horizon-region",
+        "claim:2608.22855v1:geometric-resolution"
+      ],
+      "reason": "The intrinsic bounce root is retained, but horizon roots/order and the unavailable phase scan are not needed for the bounded analytic identity."
+    },
+    {
+      "scope": "Nonzero Lambda_4 potential regimes",
+      "claim_ids": [
+        "claim:2608.22855v1:lambda-regimes"
+      ],
+      "reason": "Qualitative and plot-based."
+    },
+    {
+      "scope": "Perturbations",
+      "claim_ids": [
+        "claim:2608.22855v1:scalar-mode-equation",
+        "claim:2608.22855v1:scalar-regularity"
+      ],
+      "reason": "Downstream of bounce existence."
+    },
+    {
+      "scope": "String-cloud extension",
+      "claim_ids": [
+        "claim:2608.22855v1:string-matter-term",
+        "claim:2608.22855v1:string-bounce-regimes",
+        "claim:2608.22855v1:string-outside-horizon-example"
+      ],
+      "reason": "Outside the exact no-string target."
+    }
+  ],
+  "unresolved_model_boundary": "The junction-to-Friedmann derivation and its exact/approximate regime are unidentified and blocked for this run. Source M/Q orderings are preserved without adding unstated nonnegativity assumptions; D>0 and E>0 appear only in the separate Agent-derived conditional proposition.",
+  "non_implications": [
+    "Conditional mathematical verification does not verify the literal scientific claim.",
+    "The literal rho<=1 proposition is not silently replaced by 0<rho<1.",
+    "Intrinsic turning radii do not imply outside-horizon ordering.",
+    "No scientific acceptance, full stability, nonzero-Lambda_4 result, or string-cloud result follows."
+  ],
+  "resolution_status": "V1_BOUNDED_PARTIAL_ALIGNMENT"
+}

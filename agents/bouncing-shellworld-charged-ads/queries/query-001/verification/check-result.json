@@ -1,0 +1,134 @@
+{
+  "aggregate_checks": {
+    "equivalent_first_integral": true,
+    "exact_spot_check": true,
+    "nonconstancy_for_beta_positive": true,
+    "period_pi": true,
+    "rho_one_static_endpoint": true,
+    "rho_zero_singular_endpoint": true,
+    "second_derivative_signs_for_beta_positive": true,
+    "stationary_extrema": true,
+    "strict_positive_minimum_for_zero_lt_beta_lt_one": true,
+    "turning_polynomial_discriminant": true,
+    "turning_polynomial_roots": true
+  },
+  "aggregate_passed": true,
+  "command": "python3 agents/bouncing-shellworld-charged-ads/queries/query-001/verification/derive_and_check.py",
+  "conditional_input": {
+    "equation": "H^2=-a^-2+omega_4 D a^-4-(3 omega_4^2 E/16)a^-6 at Lambda_4=0",
+    "status": "SOURCE_ATTESTED_NOT_DERIVED_IN_THIS_RUN",
+    "unresolved_reduction": "The junction-to-Friedmann derivation and its approximation status are not checked."
+  },
+  "conditional_mathematical_outcome": "VERIFIED_WITH_ENDPOINT_QUALIFICATION",
+  "definitions": {
+    "D": "(M_+ L_+ - M_- L_-)/(L_+ - L_-)",
+    "E": "(Q_+^2 L_+ - Q_-^2 L_-)/(L_+ - L_-)",
+    "beta": "sqrt(1-rho)",
+    "rho": "3E/(4D^2)",
+    "x": "a^2=(omega_4 D/2)(1-beta cos(2 eta))"
+  },
+  "endpoint_checks": [
+    {
+      "case": "rho=0",
+      "finding": "beta=1 and x_min=0, so the nominal bounce endpoint is singular.",
+      "passed": true,
+      "status": "VERIFIED"
+    },
+    {
+      "case": "rho=1",
+      "finding": "beta=0 and x is constant, so this endpoint is static rather than a nonconstant bounce.",
+      "passed": true,
+      "status": "VERIFIED"
+    },
+    {
+      "case": "0<rho<1",
+      "finding": "0<beta<1 gives x_min>0, nonconstancy, and a strict local minimum at eta=n*pi.",
+      "passed": true,
+      "status": "VERIFIED"
+    }
+  ],
+  "id": "check-result:2608.22855v1:zero-lambda-bounce",
+  "literal_scientific_claim_outcome": "NOT_CHECKED",
+  "numerical_spot_check": {
+    "a_max_squared": "3",
+    "a_min_squared": "1",
+    "first_integral_residual": "0",
+    "parameters": {
+      "D": "2",
+      "E": "4",
+      "beta": "1/2",
+      "omega_4": "2",
+      "rho": "3/4"
+    },
+    "passed": true,
+    "solution_squared": "2 - cos(2*eta)"
+  },
+  "qualification": "Conditional on the stated reduced equation and D>0, E>0, the nonconstant positive bounce regime is 0<rho<1. The literal source rho<=1 proposition includes the static rho=1 endpoint and does not by itself close physical applicability.",
+  "runtime": {
+    "network_required": false,
+    "platform": "macOS-26.3-arm64-arm-64bit",
+    "python_implementation": "CPython",
+    "python_version": "3.12.2",
+    "sympy_version": "1.14.0"
+  },
+  "schema": "agtxiv.symbolic-check-result/1.0.0",
+  "scientific_acceptance": "NOT_REVIEWED",
+  "scope_note": "No Lean checking, junction reduction, horizon ordering, phase scan, perturbative stability, or full scientific acceptance is claimed.",
+  "symbolic_checks": {
+    "equivalent_first_integral": {
+      "passed": true,
+      "residual_after_beta_relation": "0",
+      "residual_before_beta_relation": "omega_4**2*(4*D**2*beta**2 - 4*D**2 + 3*E)/4"
+    },
+    "nonconstancy_for_beta_positive": {
+      "passed": true,
+      "x_pi_over_2_minus_x_zero": "D*beta*omega_4"
+    },
+    "period_pi": {
+      "passed": true,
+      "residual": "0"
+    },
+    "rho_one_static_endpoint": {
+      "beta": "0",
+      "constancy_residual": "0",
+      "derivative": "0",
+      "passed": true,
+      "x": "D*omega_4/2"
+    },
+    "rho_zero_singular_endpoint": {
+      "beta": "1",
+      "passed": true,
+      "x_at_nominal_minimum": "0",
+      "x_min": "0"
+    },
+    "second_derivative_signs_for_beta_positive": {
+      "maximum_negative_proved": true,
+      "minimum_positive_proved": true,
+      "passed": true,
+      "x_second_at_pi_over_2": "-2*D*beta*omega_4",
+      "x_second_at_zero": "2*D*beta*omega_4"
+    },
+    "stationary_extrema": {
+      "passed": true,
+      "x_prime_at_pi_over_2": "0",
+      "x_prime_at_zero": "0"
+    },
+    "strict_positive_minimum_for_zero_lt_beta_lt_one": {
+      "counterexample_inequalities_reduce_to": "False",
+      "passed": true,
+      "x_min": "-D*omega_4*(beta - 1)/2"
+    },
+    "turning_polynomial_discriminant": {
+      "after_beta_relation": "D**2*beta**2*omega_4**2",
+      "in_D_E": "omega_4**2*(4*D**2 - 3*E)/4",
+      "passed": true
+    },
+    "turning_polynomial_roots": {
+      "maximum_residual": "0",
+      "minimum_residual": "0",
+      "passed": true,
+      "x_max": "D*omega_4*(beta + 1)/2",
+      "x_min": "-D*omega_4*(beta - 1)/2"
+    }
+  }
+}

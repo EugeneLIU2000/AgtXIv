@@ -1,0 +1,37 @@
+{
+  "schema": "agtxiv.query-activation/0.1.0-experimental",
+  "id": "activation:2608.22855v1:query-001",
+  "query_intent": {
+    "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/query-intent.json",
+    "id": "query-intent:2608.22855v1:bounce-conditions",
+    "sha256": "30aa651cf0e83bb2c19b1458509467587340ba03add84040647ba0fc4ff0e424",
+    "lifecycle_status_at_activation": "FROZEN_PENDING_PAPER_ANALYSIS"
+  },
+  "whole_paper_snapshot": {
+    "path": "agents/bouncing-shellworld-charged-ads/understanding/paper-understanding.json",
+    "id": "paper-understanding:2608.22855v1:whole-paper-baseline",
+    "sha256": "75e30448e4f85e3ef947a837e40ae764f4336c3b8609ae2a7ae53bc9a845807a",
+    "immutability": "IMMUTABLE_EXPERIMENTAL_SNAPSHOT"
+  },
+  "activation_status": "ACTIVATED_BOUNDED_TARGET_RESOLVED",
+  "activated_at": "2026-08-27T10:29:34Z",
+  "temporal_proof": {
+    "query_freeze_commit": "a422f9a05122ac4abefacac63e65f24214df06b1",
+    "query_freeze_commit_time": "2026-08-27T10:20:14Z",
+    "baseline_commit": "d94cbd1584c476d98dbccfbe6a55bae83fad5cb2",
+    "baseline_commit_time": "2026-08-27T10:28:22Z",
+    "activation_time": "2026-08-27T10:29:34Z",
+    "baseline_is_ancestor_of_activation_checkout": true,
+    "checkout_head_at_activation": "d94cbd1584c476d98dbccfbe6a55bae83fad5cb2",
+    "ordering_assertion": "query freeze time < baseline commit time < activation time",
+    "ordering_verified": true,
+    "git_evidence_commands": [
+      "git log --follow --format='%H %cI %s' -- agents/bouncing-shellworld-charged-ads/queries/query-001/query-intent.json",
+      "git show -s --format='%H %cI %s' d94cbd1",
+      "git merge-base --is-ancestor d94cbd1 HEAD",
+      "git rev-parse HEAD",
+      "date -u +'%Y-%m-%dT%H:%M:%SZ'"
+    ]
+  },
+  "activation_boundary": "The frozen query was matched only after loading the immutable whole-paper snapshot. No query-specific field was added to or inferred into the baseline."
+}

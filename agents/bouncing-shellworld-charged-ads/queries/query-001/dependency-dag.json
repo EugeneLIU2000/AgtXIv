@@ -1,0 +1,140 @@
+{
+  "schema": "agtxiv.query-dependency-dag/1.0.0",
+  "id": "dependency-dag:2608.22855v1:zero-lambda-charged-bounce-v1",
+  "scope": "Load-bearing bounded nodes only; horizon ordering is excluded while the intrinsic turning polynomial is retained.",
+  "nodes": [
+    {
+      "id": "N1",
+      "type": "SOURCE_MODEL_ASSUMPTIONS",
+      "label": "Thin brane, constant tension, and source L/M/Q orderings",
+      "status": "SOURCE_ATTESTED_NOT_VERIFIED"
+    },
+    {
+      "id": "N2",
+      "type": "IMPORTED_FORMALISM",
+      "label": "Charged AdS metric and asymmetric junction condition",
+      "status": "CANDIDATE_NOT_ACCEPTED",
+      "literature_dependency": true
+    },
+    {
+      "id": "N3",
+      "type": "MODEL_REDUCTION_BLOCKER",
+      "label": "Junction-to-Friedmann derivation and approximation status",
+      "status": "BLOCKED",
+      "blocker_ref": "blocker:2608.22855v1:junction-reduction-approximation-unresolved"
+    },
+    {
+      "id": "N4",
+      "type": "CONDITIONAL_INPUT",
+      "label": "Displayed reduced Friedmann equation at Lambda_4=0",
+      "status": "SOURCE_ATTESTED_NOT_CHECKED"
+    },
+    {
+      "id": "N5",
+      "type": "SOURCE_CONCLUSION",
+      "label": "Displayed exact conformal-time solution",
+      "status": "VERIFIED_CONDITIONAL_ON_N4"
+    },
+    {
+      "id": "N6",
+      "type": "SOURCE_CONCLUSION",
+      "label": "Literal source condition rho<=1",
+      "status": "UNKNOWN_FOR_LITERAL_BOUNCE"
+    },
+    {
+      "id": "N7",
+      "type": "AGENT_DERIVED_PROPOSITION",
+      "label": "D>0, E>0, and 0<rho<1 imply a positive nonconstant periodic bounce",
+      "status": "VERIFIED_WITH_ENDPOINT_QUALIFICATION"
+    },
+    {
+      "id": "N8",
+      "type": "INTRINSIC_TURNING_RESULT",
+      "label": "Turning polynomial and minimum at eta=n*pi",
+      "status": "VERIFIED_CONDITIONAL_ON_N4"
+    },
+    {
+      "id": "N9",
+      "type": "LITERAL_SCIENTIFIC_CONCLUSION",
+      "label": "Physical charged shellworld admits the claimed nonsingular cyclic bounce",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "N10",
+      "type": "EXCLUDED_BLOCKER",
+      "label": "Outside-horizon phase scan",
+      "status": "BLOCKED_NOT_LOAD_BEARING_FOR_INTRINSIC_TARGET",
+      "blocker_ref": "blocker:2608.22855v1:phase-scan-code-absent"
+    }
+  ],
+  "edges": [
+    {
+      "id": "DE-01",
+      "from": "N1",
+      "to": "N4",
+      "type": "SOURCE_APPLICABILITY_CONTEXT",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "DE-02",
+      "from": "N2",
+      "to": "N3",
+      "type": "REQUIRES_INDEPENDENT_REDUCTION",
+      "status": "CANDIDATE"
+    },
+    {
+      "id": "DE-03",
+      "from": "N3",
+      "to": "N4",
+      "type": "BLOCKS_UNCONDITIONAL_MODEL_PROMOTION",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "DE-04",
+      "from": "N4",
+      "to": "N5",
+      "type": "SOLVED_BY_DISPLAYED_FORMULA",
+      "status": "VERIFIED_CONDITIONALLY"
+    },
+    {
+      "id": "DE-05",
+      "from": "N5",
+      "to": "N7",
+      "type": "EXACT_SUBSTITUTION_AND_ENDPOINT_ANALYSIS",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "DE-06",
+      "from": "N6",
+      "to": "N7",
+      "type": "QUALIFIED_NOT_REPLACED",
+      "status": "PARTIAL",
+      "note": "The source rho<=1 proposition and Agent 0<rho<1 proposition remain distinct."
+    },
+    {
+      "id": "DE-07",
+      "from": "N4",
+      "to": "N8",
+      "type": "TURNING_POLYNOMIAL",
+      "status": "VERIFIED_CONDITIONALLY"
+    },
+    {
+      "id": "DE-08",
+      "from": "N7",
+      "to": "N9",
+      "type": "INSUFFICIENT_FOR_LITERAL_PHYSICAL_PROJECTION",
+      "status": "UNKNOWN"
+    },
+    {
+      "id": "DE-09",
+      "from": "N3",
+      "to": "N9",
+      "type": "BLOCKS_SOURCE_LEVEL_CLOSURE",
+      "status": "BLOCKED"
+    }
+  ],
+  "acyclic": true,
+  "literature_dependencies_accepted": false,
+  "first_unresolved_frontier": "N2 -> N3 -> N4: the reduced equation and approximation regime are not independently established.",
+  "non_promotion": "N7 is accepted only as conditional mathematics; N9 remains UNKNOWN and scientific acceptance remains NOT_REVIEWED."
+}

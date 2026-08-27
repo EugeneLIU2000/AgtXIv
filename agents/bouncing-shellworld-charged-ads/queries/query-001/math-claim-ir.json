@@ -1,0 +1,236 @@
+{
+  "schema": "agtxiv.math-claimir/1.0.0",
+  "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+  "revision": 1,
+  "supersedes": null,
+  "produced_at": "2026-08-27T11:15:00Z",
+  "claim": {
+    "id": "claim:2608.22855v1:zero-lambda-charged-bounce-source",
+    "record_revision": 1,
+    "content_hash": "sha256:1e16ebe28d819d0f37341fc26e7108bd4ec36e5424b1c7405e915e1cad4b62f6"
+  },
+  "source": {
+    "occurrence_work": "arxiv:2608.22855v1",
+    "statement_anchors": [
+      "anchor:2608.22855v1:shellworld-geometry-junction",
+      "anchor:2608.22855v1:charged-metric-friedmann",
+      "anchor:2608.22855v1:zero-lambda-solution",
+      "anchor:2608.22855v1:bounce-radius"
+    ],
+    "proof_anchors": [],
+    "source_statement_expanded_latex": "H^2=-a^{-2}+\\omega_4Da^{-4}-\\frac{3\\omega_4^2E}{16}a^{-6},\\quad a(\\eta)^2=\\frac{\\omega_4D}{2}(1-\\sqrt{1-\\rho}\\cos 2\\eta),\\quad \\rho\\leq1."
+  },
+  "statement_kind": "claim",
+  "normalized_statement_expanded_latex": "Conditionally on the displayed reduced equation, D>0, E>0, and \\Lambda_4=0, the displayed solution is a strictly positive nonconstant periodic bounce for 0<\\rho<1; the literal source condition remains \\rho\\leq1.",
+  "structured_statement": {
+    "typed_objects": [
+      {
+        "symbol_latex": "a",
+        "semantic_type": "shellworld scale-factor function",
+        "carrier_latex": "\\mathbb R\\to\\mathbb R_{>0}",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "\\eta",
+        "semantic_type": "conformal time",
+        "carrier_latex": "\\mathbb R",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "L_\\pm",
+        "semantic_type": "AdS curvature radii",
+        "carrier_latex": "\\mathbb R_{>0}",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "M_\\pm",
+        "semantic_type": "ADM mass parameters",
+        "carrier_latex": "\\mathbb R",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "Q_\\pm",
+        "semantic_type": "charge parameters",
+        "carrier_latex": "\\mathbb R",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "D",
+        "semantic_type": "mass combination defined by the source equation",
+        "carrier_latex": "\\mathbb R",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "E",
+        "semantic_type": "charge combination defined by the source equation",
+        "carrier_latex": "\\mathbb R",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "\\rho",
+        "semantic_type": "dimensionless discriminant ratio 3E/(4D^2)",
+        "carrier_latex": "\\mathbb R",
+        "scope": "claim"
+      },
+      {
+        "symbol_latex": "\\beta",
+        "semantic_type": "principal square root sqrt(1-rho)",
+        "carrier_latex": "\\mathbb R_{\\geq0}",
+        "scope": "claim"
+      }
+    ],
+    "quantifiers": [
+      {
+        "binder": "forall",
+        "variable_latex": "\\eta",
+        "domain_latex": "\\mathbb R",
+        "origin": "SOURCE_IMPLICIT"
+      },
+      {
+        "binder": "forall",
+        "variable_latex": "n",
+        "domain_latex": "\\mathbb Z",
+        "origin": "SOURCE_EXPLICIT"
+      }
+    ],
+    "assumptions": {
+      "explicit": [
+        {
+          "id": "thin-wall-tension",
+          "expression_latex": "\\text{The spherical brane is a thin shell with constant tension }\\sigma.",
+          "origin": "SOURCE_EXPLICIT",
+          "source_anchor": "anchor:2608.22855v1:shellworld-geometry-junction"
+        },
+        {
+          "id": "ads-radius-order",
+          "expression_latex": "L_+>L_-",
+          "origin": "SOURCE_EXPLICIT",
+          "source_anchor": "anchor:2608.22855v1:shellworld-geometry-junction"
+        },
+        {
+          "id": "mass-charge-order",
+          "expression_latex": "M_+>M_-\\;\\land\\;Q_+>Q_-",
+          "origin": "SOURCE_EXPLICIT",
+          "source_anchor": "anchor:2608.22855v1:charged-metric-friedmann"
+        },
+        {
+          "id": "zero-lambda",
+          "expression_latex": "\\Lambda_4=0",
+          "origin": "SOURCE_EXPLICIT",
+          "source_anchor": "anchor:2608.22855v1:zero-lambda-solution"
+        }
+      ],
+      "source_implicit": [
+        {
+          "id": "positive-scale-factor-domain",
+          "expression_latex": "a(\\eta)>0\\text{ on a nonsingular bounce trajectory}",
+          "origin": "SOURCE_IMPLICIT",
+          "source_anchor": "anchor:2608.22855v1:zero-lambda-solution"
+        },
+        {
+          "id": "no-string-regime",
+          "expression_latex": "b_+=b_-=0\\text{ (the pre-string-cloud charged model)}",
+          "origin": "SOURCE_IMPLICIT",
+          "source_anchor": "anchor:2608.22855v1:charged-metric-friedmann"
+        },
+        {
+          "id": "agent-conditional-positivity",
+          "expression_latex": "D>0\\;\\land\\;E>0",
+          "origin": "IMPORTED",
+          "source_anchor": null
+        },
+        {
+          "id": "conditional-reduced-equation-input",
+          "expression_latex": "\\text{The displayed reduced Friedmann equation is assumed as input; its junction reduction is not established here.}",
+          "origin": "IMPORTED",
+          "source_anchor": "anchor:2608.22855v1:charged-metric-friedmann"
+        }
+      ]
+    },
+    "local_binders": [
+      {
+        "symbol_latex": "D",
+        "definition_latex": "(M_+L_+-M_-L_-)/(L_+-L_-)"
+      },
+      {
+        "symbol_latex": "E",
+        "definition_latex": "(Q_+^2L_+-Q_-^2L_-)/(L_+-L_-)"
+      },
+      {
+        "symbol_latex": "\\rho",
+        "definition_latex": "3E/(4D^2)"
+      },
+      {
+        "symbol_latex": "\\beta",
+        "definition_latex": "\\sqrt{1-\\rho}"
+      },
+      {
+        "symbol_latex": "x",
+        "definition_latex": "a^2"
+      }
+    ],
+    "conclusion": {
+      "relation": "compound_source_and_conditional",
+      "expression_latex": "\\text{Source: }\\rho\\leq1\\text{ and a nonsingular cyclic bounce. Conditional mathematics: }0<\\rho<1\\Rightarrow\\text{a positive nonconstant periodic bounce.}",
+      "reduced_friedmann_equation": {
+        "relation": "equality",
+        "expression_latex": "H^2=-a^{-2}+\\omega_4Da^{-4}-\\frac{3\\omega_4^2E}{16}a^{-6}"
+      },
+      "exact_solution": {
+        "relation": "equality",
+        "expression_latex": "a(\\eta)^2=\\frac{\\omega_4D}{2}(1-\\beta\\cos 2\\eta)"
+      },
+      "source_discriminant_condition": {
+        "relation": "less_than_or_equal",
+        "expression_latex": "\\rho\\leq1"
+      },
+      "source_bounce_conclusion": {
+        "relation": "source_assertion",
+        "expression_latex": "\\text{The displayed solution represents a nonsingular bouncing cyclic universe.}"
+      },
+      "source_minimum_location": {
+        "relation": "equality",
+        "expression_latex": "\\eta=n\\pi"
+      },
+      "intrinsic_turning_polynomial": {
+        "relation": "equality",
+        "expression_latex": "x^2-\\omega_4Dx+\\frac{3\\omega_4^2E}{16}=0"
+      },
+      "agent_derived_strict_condition": {
+        "relation": "strict_interval",
+        "expression_latex": "0<\\rho<1"
+      },
+      "conditional_mathematical_result": {
+        "relation": "conditional_verified_proposition",
+        "expression_latex": "D>0\\land E>0\\land0<\\rho<1\\Longrightarrow a(\\eta)>0\\text{ is nonconstant and }\\pi\\text{-periodic with strict minima at }\\eta=n\\pi."
+      }
+    },
+    "mathematical_mode": {
+      "exactness": "unknown",
+      "finite_or_asymptotic": "finite"
+    },
+    "conventions": [
+      "d\\tau=a(\\eta)d\\eta",
+      "x=a^2",
+      "Algebraic substitution is exact conditional on the reduced equation; the source does not label the model reduction as exact or approximate."
+    ]
+  },
+  "normalization": {
+    "profile": "agtxiv.expanded-standard-latex/1.0.0",
+    "relation_to_source": "SOURCE_IMPLICIT_CONTEXT_EXPLICIT",
+    "unresolved_symbols": [
+      "junction-to-Friedmann approximation status"
+    ],
+    "preprocessing_record_ref": "query-local:2608.22855v1:source-anchors"
+  },
+  "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+  "artifact": {
+    "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+    "schema_version": "1.0.0",
+    "serialization_profile": {
+      "id": "agtxiv.canonical-json/1.0.0",
+      "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+    },
+    "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+  }
+}

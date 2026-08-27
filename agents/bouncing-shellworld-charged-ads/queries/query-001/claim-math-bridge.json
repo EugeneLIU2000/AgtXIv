@@ -1,0 +1,516 @@
+{
+  "schema": "agtxiv.claim-math-bridge/1.0.0",
+  "id": "claim-math-bridge:2608.22855v1:zero-lambda-charged-bounce-v1",
+  "record_revision": 1,
+  "produced_at": "2026-08-27T11:15:00Z",
+  "scientific_claim_ref": {
+    "target_kind": "org.agtxiv.scientific_claim",
+    "type_schema": {
+      "uri": "https://agtxiv.org/schema/scientific-claim/1.1.0",
+      "content_hash": "sha256:c8cf9771c79b5c3f24a860567ebd501c7efe5d78916104228f5dcc5f79f9e405"
+    },
+    "target_id": "claim:2608.22855v1:zero-lambda-charged-bounce-source",
+    "target_revision": 1,
+    "target_content_hash": "sha256:1e16ebe28d819d0f37341fc26e7108bd4ec36e5424b1c7405e915e1cad4b62f6",
+    "target_artifact": null,
+    "component_path": null,
+    "claim_ir": null,
+    "claim_ir_members": []
+  },
+  "source_anchors": [
+    "anchor:2608.22855v1:shellworld-geometry-junction",
+    "anchor:2608.22855v1:charged-metric-friedmann",
+    "anchor:2608.22855v1:zero-lambda-solution",
+    "anchor:2608.22855v1:bounce-radius"
+  ],
+  "source_components": [
+    {
+      "component_id": "component:thin-brane-constant-tension",
+      "description": "The source models the spherical brane as a thin shell with constant tension.",
+      "source_anchors": [
+        "anchor:2608.22855v1:shellworld-geometry-junction"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/assumptions/explicit/0",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "ASSUMPTION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:ads-radius-order",
+      "description": "The source assumes L_+>L_- for the outside and inside AdS radii.",
+      "source_anchors": [
+        "anchor:2608.22855v1:shellworld-geometry-junction"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/assumptions/explicit/1",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "ASSUMPTION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:mass-charge-order",
+      "description": "The charged setup states M_+>M_- and Q_+>Q_-.",
+      "source_anchors": [
+        "anchor:2608.22855v1:charged-metric-friedmann"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/assumptions/explicit/2",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "ASSUMPTION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:positive-scale-factor-domain",
+      "description": "A nonsingular shellworld scale factor is required to remain positive.",
+      "source_anchors": [
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/assumptions/source_implicit/0",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "ASSUMPTION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:no-string-zero-lambda-regime",
+      "description": "The bounded source passage is the charged model before the string-cloud extension and sets Lambda_4=0.",
+      "source_anchors": [
+        "anchor:2608.22855v1:charged-metric-friedmann",
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/assumptions/source_implicit/1",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "ASSUMPTION"
+        },
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/assumptions/explicit/3",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "ASSUMPTION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:reduced-friedmann-equation",
+      "description": "The displayed reduced Friedmann equation supplies the dynamics used for the exact solution.",
+      "source_anchors": [
+        "anchor:2608.22855v1:charged-metric-friedmann"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/conclusion/reduced_friedmann_equation",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "DEPENDENCY"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:exact-conformal-time-solution",
+      "description": "The source gives the displayed exact conformal-time scale factor at Lambda_4=0.",
+      "source_anchors": [
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/conclusion/exact_solution",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "CONCLUSION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:literal-rho-condition",
+      "description": "The source states the literal condition rho<=1 for the nonsingular charged bounce.",
+      "source_anchors": [
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/conclusion/source_discriminant_condition",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "CONCLUSION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:literal-nonsingular-cyclic-bounce",
+      "description": "The source concludes that the displayed solution is nonsingular, bouncing, and cyclic.",
+      "source_anchors": [
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/conclusion/source_bounce_conclusion",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "CONCLUSION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:minimum-at-integer-pi",
+      "description": "The source places the minimum radius at eta=n pi.",
+      "source_anchors": [
+        "anchor:2608.22855v1:zero-lambda-solution"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/conclusion/source_minimum_location",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "CONCLUSION"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:intrinsic-turning-polynomial",
+      "description": "The intrinsic turning radii obey the displayed quartic, equivalently the stated quadratic in x=a^2.",
+      "source_anchors": [
+        "anchor:2608.22855v1:bounce-radius"
+      ],
+      "disposition": "MAPPED",
+      "mapped_targets": [
+        {
+          "target_ref": {
+            "target_kind": "org.agtxiv.claim_ir",
+            "type_schema": {
+              "uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "content_hash": "sha256:9983c5c869e91cf089f1d61f11e301c055b03bcd36434179f867d1713520aab5"
+            },
+            "target_id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+            "target_revision": 1,
+            "target_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9",
+            "target_artifact": {
+              "schema_uri": "https://agtxiv.org/schema/math-claimir/1.0.0",
+              "schema_version": "1.0.0",
+              "serialization_profile": {
+                "id": "agtxiv.canonical-json/1.0.0",
+                "content_hash": "sha256:5d1274af89953b515bfc41caf2813dad2334b9de2176e942366aa650127a434c"
+              },
+              "artifact_hash": "sha256:609ff9164d922bd0f9303e865571d0fc3ca113cb996ca9d4f1570226aa07530f"
+            },
+            "component_path": "/structured_statement/conclusion/intrinsic_turning_polynomial",
+            "claim_ir": {
+              "id": "math-claim-ir:2608.22855v1:zero-lambda-charged-bounce",
+              "revision": 1,
+              "semantic_content_hash": "sha256:d411ac2a8335435cc9151ae4eedc08b051b294575918a743a4c44eae268001c9"
+            },
+            "claim_ir_members": []
+          },
+          "role": "DEPENDENCY"
+        }
+      ],
+      "residual_physical_semantics": null
+    },
+    {
+      "component_id": "component:model-reduction-approximation-status",
+      "description": "The source says that substituting the charged metric into the junction condition gives the Friedmann equation but does not identify whether this reduction is exact or approximate.",
+      "source_anchors": [
+        "anchor:2608.22855v1:shellworld-geometry-junction",
+        "anchor:2608.22855v1:charged-metric-friedmann"
+      ],
+      "disposition": "RESIDUAL",
+      "mapped_targets": [],
+      "residual_physical_semantics": "The junction-to-Friedmann reduction, including any hidden critical-tension, weak-four-dimensional, sign, or approximation requirements, remains unidentified and is not erased by the conditional algebraic encoding."
+    }
+  ],
+  "alignment": "PARTIAL",
+  "generation_provenance": {
+    "generator": "paper-first pilot query-stage mapping agent after independent audit 39b13632357a",
+    "origin": "ORACLE_PROPOSED",
+    "epistemic_state": "UNVERIFIED"
+  },
+  "content_hash": "sha256:c6bf147bece0618d493fe430f83186a5f1e06a960c3e1d9aa4b1b3dd6aa65387"
+}
