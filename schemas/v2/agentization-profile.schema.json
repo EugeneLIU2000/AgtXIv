@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/agentization-profile/2.0.0",
+  "title": "AgtXIv V2 AgentizationProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "record_revision",
+    "paper_release",
+    "inventory_classes",
+    "required_artifact_classes",
+    "allowed_dispositions",
+    "content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.agentization-profile/2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^agentization-profile:"
+    },
+    "record_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "paper_release": {
+      "$ref": "#/$defs/paperRelease"
+    },
+    "inventory_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "SCIENTIFIC_CLAIM",
+          "MATH_CLAIM",
+          "DEFINITION",
+          "ASSUMPTION",
+          "FORMALIZATION_TARGET",
+          "EVIDENCE_TARGET",
+          "ALIGNMENT_TARGET",
+          "ASSESSMENT_TARGET"
+        ]
+      }
+    },
+    "required_artifact_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "SOURCE_BYTES",
+          "FORMAL_ENVIRONMENT_DESCRIPTOR",
+          "MATH_CLAIM_IR",
+          "FORMALIZATION_RECORD"
+        ]
+      }
+    },
+    "allowed_dispositions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "ADMITTED",
+          "CONDITIONAL",
+          "BLOCKED",
+          "DEFERRED",
+          "NOT_APPLICABLE",
+          "FAILED"
+        ]
+      }
+    },
+    "content_hash": {
+      "$ref": "#/$defs/hash"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "paperRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "paper_id",
+        "release_id",
+        "source_uri",
+        "source_hash",
+        "source_path"
+      ],
+      "properties": {
+        "paper_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "source_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

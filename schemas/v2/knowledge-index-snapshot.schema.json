@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/knowledge-index-snapshot/2.0.0",
+  "title": "AgtXIv V2 KnowledgeIndexSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "record_revision",
+    "source_release_ref",
+    "release_certificate_ref",
+    "entries",
+    "content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.knowledge-index-snapshot/2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^knowledge-index-snapshot:"
+    },
+    "record_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "source_release_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "release_certificate_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/admission"
+      },
+      "uniqueItems": true
+    },
+    "content_hash": {
+      "$ref": "#/$defs/hash"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "exactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_revision",
+        "content_hash"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_ref",
+        "inventory_entry_id",
+        "admission_status"
+      ],
+      "properties": {
+        "record_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "inventory_entry_id": {
+          "type": "string",
+          "pattern": "^inventory-entry:"
+        },
+        "admission_status": {
+          "enum": [
+            "ADMITTED",
+            "CONDITIONAL"
+          ]
+        }
+      }
+    }
+  }
+}

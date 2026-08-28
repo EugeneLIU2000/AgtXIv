@@ -1,7 +1,10 @@
 # AgtXIv V1 claim–mathematics bridge
 
-**Status:** normative for V1.
+**Status:** normative and frozen for V1 compatibility.
 **Scope:** bidirectional alignment and conservative status projection for one bounded claim at a time.
+**V2 authority:** [AgtXIv V2 paper agentization](v2-paper-agentization.md).
+
+> **Compatibility boundary.** In V2 this bounded, query-relative bridge is a downstream/legacy view over exact released records. It is not canonical Paper Agent package construction, does not define profile-relative release completion, and does not authorize the V2 coordinator, auditor, or certifier roles. The V1 Root Agent is not reused as a V2 release authority.
 
 ## 1. Purpose
 

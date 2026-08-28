@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/paper-agent-release-manifest/2.0.0",
+  "title": "AgtXIv V2 PaperAgentReleaseManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "profile_ref", "scope_ref", "coordinator", "artifacts", "disposition_ledger", "release_hash", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.paper-agent-release-manifest/2.0.0"},
+    "id": {"type": "string", "pattern": "^paper-agent-release-manifest:"},
+    "record_revision": {"type": "integer", "minimum": 1},
+    "profile_ref": {"$ref": "#/$defs/exactRef"},
+    "scope_ref": {"$ref": "#/$defs/exactRef"},
+    "coordinator": {"$ref": "#/$defs/actor"},
+    "artifacts": {"type": "array", "minItems": 1, "items": {"oneOf": [{"$ref": "#/$defs/recordArtifact"}, {"$ref": "#/$defs/byteArtifact"}]}},
+    "disposition_ledger": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/disposition"}},
+    "release_hash": {"$ref": "#/$defs/hash"},
+    "content_hash": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "exactRef": {"type": "object", "additionalProperties": false, "required": ["id", "record_revision", "content_hash"], "properties": {"id": {"type": "string", "minLength": 1}, "record_revision": {"type": "integer", "minimum": 1}, "content_hash": {"$ref": "#/$defs/hash"}}},
+    "actor": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "AGENTIZATION_COORDINATOR"}}},
+    "recordArtifact": {"type": "object", "additionalProperties": false, "required": ["artifact_category", "artifact_id", "record_revision", "artifact_class", "schema_uri", "content_hash", "path"], "properties": {"artifact_category": {"const": "RECORD"}, "artifact_id": {"type": "string", "minLength": 1}, "record_revision": {"type": "integer", "minimum": 1}, "artifact_class": {"enum": ["MATH_CLAIM_IR", "FORMALIZATION_RECORD"]}, "schema_uri": {"type": "string", "format": "uri"}, "content_hash": {"$ref": "#/$defs/hash"}, "path": {"type": "string", "minLength": 1}}},
+    "byteArtifact": {"type": "object", "additionalProperties": false, "required": ["artifact_category", "artifact_id", "artifact_class", "media_type", "content_hash", "path"], "properties": {"artifact_category": {"const": "BYTE"}, "artifact_id": {"type": "string", "minLength": 1}, "artifact_class": {"enum": ["SOURCE_BYTES", "FORMAL_ENVIRONMENT_DESCRIPTOR"]}, "media_type": {"enum": ["text/plain", "application/toml"]}, "content_hash": {"$ref": "#/$defs/hash"}, "path": {"type": "string", "minLength": 1}}},
+    "disposition": {"type": "object", "additionalProperties": false, "required": ["inventory_entry_id", "disposition", "basis_refs"], "properties": {"inventory_entry_id": {"type": "string", "pattern": "^inventory-entry:"}, "disposition": {"enum": ["ADMITTED", "CONDITIONAL", "BLOCKED", "DEFERRED", "NOT_APPLICABLE", "FAILED"]}, "basis_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/exactRef"}}}}
+  }
+}

@@ -7,7 +7,10 @@
 **Date:** 2026-08-16
 
 **Parent specification:** [AgtXIv](../../AgtXIv.md)
+**V2 authority:** [AgtXIv V2 paper agentization](v2-paper-agentization.md)
 **Implementation roadmap:** [AgtXIv v1 vertical-slice checklist](../roadmaps/v1-implementation-checklist.md)
+
+> **Compatibility boundary.** This document preserves the V1/query-relative mathematics workflow. In V2, its query DAGs, Root Agent procedure, and query receipts are downstream or legacy consumers of a certified, query-independent Paper Agent Release; they are not the canonical package-construction pipeline and cannot establish V2 release completion.
 
 ## 0. Purpose
 
@@ -976,6 +979,8 @@ The reference algorithm specifies state transitions, not a mandatory implementat
 ### 10.1 Reusable unit
 
 The reusable unit is the versioned `MathContract`, not the whole Paper Agent. A Paper Agent packages source-bounded provenance; a mathematical contract packages a normalized statement, assumptions, imports, formal binding, evidence, version, and blockers.
+
+> **Non-retroactive V2 ownership note.** The sentence above is restored verbatim as the V1 contract language and is not reinterpreted in place. New V2 records follow [V2 paper agentization](v2-paper-agentization.md): evidence and blocker facts are independently owned records referenced by release artifacts and assessments.
 
 ### 10.2 Compatibility predicate
 

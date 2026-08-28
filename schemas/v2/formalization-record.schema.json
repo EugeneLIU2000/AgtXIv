@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/formalization-record/2.0.0",
+  "title": "AgtXIv V2 FormalizationRecord",
+  "description": "Generated outcomes and artifacts only; verification, alignment, and acceptance are separate records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "record_revision",
+    "request_ref",
+    "mode",
+    "target_ref",
+    "boundary",
+    "environment",
+    "inventory_entry_id",
+    "generation_outcome",
+    "generated_artifacts",
+    "diagnostics",
+    "content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.formalization-record/2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^formalization-record:"
+    },
+    "record_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "request_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "mode": {
+      "const": "AUTOMATED"
+    },
+    "target_ref": {
+      "$ref": "#/$defs/componentRef"
+    },
+    "boundary": {
+      "$ref": "#/$defs/boundary"
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "generation_outcome": {
+      "enum": [
+        "SUCCEEDED",
+        "PARTIAL",
+        "FAILED"
+      ]
+    },
+    "generated_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "content_hash": {
+      "$ref": "#/$defs/hash"
+    },
+    "inventory_entry_id": {
+      "type": "string",
+      "pattern": "^inventory-entry:"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "exactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_revision",
+        "content_hash"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "componentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_revision",
+        "content_hash",
+        "component_path"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "component_path": {
+          "type": "string",
+          "pattern": "^/([^~/]|~[01])+(?:/([^~/]|~[01])*)*$"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "boundary_id",
+        "source_component_hash",
+        "inventory_entry_id"
+      ],
+      "properties": {
+        "boundary_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_component_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "inventory_entry_id": {
+          "type": "string",
+          "pattern": "^inventory-entry:"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment_id",
+        "descriptor_path",
+        "descriptor_hash"
+      ],
+      "properties": {
+        "environment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "descriptor_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "descriptor_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_kind",
+        "path",
+        "content_hash"
+      ],
+      "properties": {
+        "artifact_kind": {
+          "enum": [
+            "TARGET_STATEMENT",
+            "SOURCE_MODULE",
+            "BUILD_REPORT",
+            "GENERATED_PROOF"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    }
+  }
+}

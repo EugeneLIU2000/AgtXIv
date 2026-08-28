@@ -1,0 +1,86 @@
+{
+  "schema": "agtxiv.paper-agent-release-manifest/2.0.0",
+  "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+  "record_revision": 1,
+  "profile_ref": {
+    "id": "agentization-profile:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:f615a3c51bce8075979cf8eee24b0fbcc40b8812d025c7ae0349d4032971eca6"
+  },
+  "scope_ref": {
+    "id": "inventory-scope:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:43f46d6d91515bfec566078eb521cc1e0149003af6ad4d79879ee97f48cc3fcd"
+  },
+  "coordinator": {
+    "actor_id": "actor:coordinator-alpha",
+    "role": "AGENTIZATION_COORDINATOR"
+  },
+  "artifacts": [
+    {
+      "artifact_category": "BYTE",
+      "artifact_id": "source-release:arxiv:2608.00001:v1",
+      "artifact_class": "SOURCE_BYTES",
+      "media_type": "text/plain",
+      "content_hash": "sha256:40aaf92109f890f21539d99000131d8adb062d451c600105c4725a9adf614e96",
+      "path": "source/paper-release.txt"
+    },
+    {
+      "artifact_category": "BYTE",
+      "artifact_id": "lean:4.30.0-rc2+mathlib:c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+      "artifact_class": "FORMAL_ENVIRONMENT_DESCRIPTOR",
+      "media_type": "application/toml",
+      "content_hash": "sha256:e1850fd1524486a2f26856278e80059a12ec201a2aac29333ecd9f59ba655cf8",
+      "path": "environment/lean-environment.toml"
+    },
+    {
+      "artifact_category": "RECORD",
+      "artifact_id": "math-claim-ir:2608.00001v1:theorem-1",
+      "record_revision": 1,
+      "artifact_class": "MATH_CLAIM_IR",
+      "schema_uri": "https://agtxiv.org/schema/v2/math-claim-ir/2.0.0",
+      "content_hash": "sha256:96a42d6eb2cb833be57fdb56de334c1953913505de73bb13ca7a17b08fef7b29",
+      "path": "math-claim-ir.json"
+    },
+    {
+      "artifact_category": "RECORD",
+      "artifact_id": "formalization-record:2608.00001v1:theorem-1",
+      "record_revision": 1,
+      "artifact_class": "FORMALIZATION_RECORD",
+      "schema_uri": "https://agtxiv.org/schema/v2/formalization-record/2.0.0",
+      "content_hash": "sha256:37776e37f6e972717bb50023e7fe8bc4d00189346489f4400dfec31a0c0cae5a",
+      "path": "formalization-record.json"
+    }
+  ],
+  "disposition_ledger": [
+    {
+      "inventory_entry_id": "inventory-entry:claim-main",
+      "disposition": "ADMITTED",
+      "basis_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:96a42d6eb2cb833be57fdb56de334c1953913505de73bb13ca7a17b08fef7b29"
+        }
+      ]
+    },
+    {
+      "inventory_entry_id": "inventory-entry:formal-main",
+      "disposition": "CONDITIONAL",
+      "basis_refs": [
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:37776e37f6e972717bb50023e7fe8bc4d00189346489f4400dfec31a0c0cae5a"
+        }
+      ]
+    },
+    {
+      "inventory_entry_id": "inventory-entry:evidence-appendix",
+      "disposition": "BLOCKED",
+      "basis_refs": []
+    }
+  ],
+  "release_hash": "sha256:b644b63492a57c1e6b1797f405335c6ccac57dba14d5d7dfc7ad8e14e0540c6b",
+  "content_hash": "sha256:b8f685a14ec1cafb68c7ea07f09de3ad9faa588710e5ddf8f6e1fd9b751f748b"
+}

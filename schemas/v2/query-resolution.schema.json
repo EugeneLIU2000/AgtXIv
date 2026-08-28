@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/query-resolution/2.0.0",
+  "title": "AgtXIv V2 QueryResolution",
+  "oneOf": [{"$ref": "#/$defs/packageBacked"}, {"$ref": "#/$defs/provisional"}],
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "exactRef": {"type": "object", "additionalProperties": false, "required": ["id", "record_revision", "content_hash"], "properties": {"id": {"type": "string", "minLength": 1}, "record_revision": {"type": "integer", "minimum": 1}, "content_hash": {"$ref": "#/$defs/hash"}}},
+    "packageBacked": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "id", "record_revision", "query_id", "question", "mode", "access", "release_manifest_ref", "release_certificate_ref", "knowledge_index_snapshot", "returned_record_refs", "content_hash"],
+      "properties": {
+        "schema": {"const": "agtxiv.query-resolution/2.0.0"}, "id": {"type": "string", "pattern": "^query-resolution:"}, "record_revision": {"type": "integer", "minimum": 1}, "query_id": {"type": "string", "minLength": 1}, "question": {"type": "string", "minLength": 1},
+        "mode": {"const": "PACKAGE_BACKED"}, "access": {"const": "READ_ONLY"},
+        "release_manifest_ref": {"$ref": "#/$defs/exactRef"}, "release_certificate_ref": {"$ref": "#/$defs/exactRef"}, "knowledge_index_snapshot": {"$ref": "#/$defs/exactRef"}, "returned_record_refs": {"type": "array", "items": {"$ref": "#/$defs/exactRef"}}, "content_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "provisional": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "id", "record_revision", "query_id", "question", "mode", "authority", "agentization_trigger", "candidates", "canonical_effects", "content_hash"],
+      "properties": {
+        "schema": {"const": "agtxiv.query-resolution/2.0.0"}, "id": {"type": "string", "pattern": "^query-resolution:"}, "record_revision": {"type": "integer", "minimum": 1}, "query_id": {"type": "string", "minLength": 1}, "question": {"type": "string", "minLength": 1},
+        "mode": {"const": "PROVISIONAL_FAST_PATH"}, "authority": {"const": "NON_AUTHORITATIVE"},
+        "agentization_trigger": {"type": "object", "additionalProperties": false, "required": ["intake_id", "intake_status", "profile_ref", "scope_ref", "scope_control"], "properties": {"intake_id": {"type": "string", "pattern": "^agentization-intake:"}, "intake_status": {"enum": ["REGISTERED", "ALREADY_RUNNING"]}, "profile_ref": {"$ref": "#/$defs/exactRef"}, "scope_ref": {"$ref": "#/$defs/exactRef"}, "scope_control": {"const": "QUERY_INDEPENDENT"}}},
+        "candidates": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["candidate_id", "statement", "provenance"], "properties": {"candidate_id": {"type": "string", "minLength": 1}, "statement": {"type": "string", "minLength": 1}, "provenance": {"const": "PROVISIONAL"}}}},
+        "canonical_effects": {"type": "object", "additionalProperties": false, "required": ["mutation", "publication", "contract_admission", "knowledge_base_promotion"], "properties": {"mutation": {"const": "FORBIDDEN"}, "publication": {"const": "FORBIDDEN"}, "contract_admission": {"const": "FORBIDDEN"}, "knowledge_base_promotion": {"const": "FORBIDDEN"}}},
+        "content_hash": {"$ref": "#/$defs/hash"}
+      }
+    }
+  }
+}

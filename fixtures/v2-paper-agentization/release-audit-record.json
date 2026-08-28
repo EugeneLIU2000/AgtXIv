@@ -1,0 +1,53 @@
+{
+  "schema": "agtxiv.release-audit-record/2.0.0",
+  "id": "release-audit-record:2608.00001v1:theory-standard",
+  "record_revision": 1,
+  "manifest_ref": {
+    "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:b8f685a14ec1cafb68c7ea07f09de3ad9faa588710e5ddf8f6e1fd9b751f748b"
+  },
+  "profile_ref": {
+    "id": "agentization-profile:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:f615a3c51bce8075979cf8eee24b0fbcc40b8812d025c7ae0349d4032971eca6"
+  },
+  "scope_ref": {
+    "id": "inventory-scope:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:43f46d6d91515bfec566078eb521cc1e0149003af6ad4d79879ee97f48cc3fcd"
+  },
+  "coordinator": {
+    "actor_id": "actor:coordinator-alpha",
+    "role": "AGENTIZATION_COORDINATOR"
+  },
+  "auditor": {
+    "actor_id": "actor:auditor-beta",
+    "role": "RELEASE_AUDITOR"
+  },
+  "checks": [
+    {
+      "check": "EXACT_INPUTS",
+      "status": "PASSED"
+    },
+    {
+      "check": "TOTAL_DISPOSITION_ACCOUNTING",
+      "status": "PASSED"
+    },
+    {
+      "check": "ARTIFACT_INTEGRITY",
+      "status": "PASSED"
+    },
+    {
+      "check": "PROFILE_CONFORMANCE",
+      "status": "PASSED"
+    },
+    {
+      "check": "ROLE_SEPARATION",
+      "status": "PASSED"
+    }
+  ],
+  "outcome": "PASSED",
+  "audited_release_hash": "sha256:b644b63492a57c1e6b1797f405335c6ccac57dba14d5d7dfc7ad8e14e0540c6b",
+  "content_hash": "sha256:3388953479735c387fc936f534970444ea12a82186715e7a711cc8cbd3931592"
+}

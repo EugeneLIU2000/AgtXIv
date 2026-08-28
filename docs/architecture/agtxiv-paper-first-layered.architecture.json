@@ -2,61 +2,58 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "AgtXIv V2 — Paper-First Claim Architecture",
+    "title": "AgtXIv V2 — Paper Agent Release Architecture",
     "locale": "en",
     "quality_profile": "showcase",
-    "repository": {
-      "url": "https://github.com/EugeneLIU2000/AgtXIv",
-      "revision": "2380c3a33b7718d3da810a4ab484ffcf790cce2d"
-    },
     "views": [
       {
-        "id": "paper_baseline",
-        "label": "Paper Baseline",
+        "id": "canonical_release",
+        "label": "Canonical Release",
         "focus": [
           "exact_paper_release",
-          "whole_paper_analysis",
-          "paper_understanding_snapshot"
+          "profile_scope",
+          "paper_analysis",
+          "claims_math_ir",
+          "formal_evidence_alignment",
+          "release_audit",
+          "release_certifier",
+          "paper_agent_release"
         ],
-        "note": "Start from an exact paper release and produce a revision-bound understanding snapshot."
+        "note": "Construct a query-independent package, then audit and certify it with separated roles."
       },
       {
-        "id": "query_activation_view",
-        "label": "Query Activation",
+        "id": "knowledge_admission",
+        "label": "Knowledge Admission",
         "focus": [
-          "paper_understanding_snapshot",
+          "paper_agent_release",
+          "knowledge_base"
+        ],
+        "note": "Package certification permits mixed statuses; each knowledge entry still has its own admission gate."
+      },
+      {
+        "id": "package_query",
+        "label": "Package-Backed Query",
+        "focus": [
+          "paper_agent_release",
+          "knowledge_base",
+          "query_resolution"
+        ],
+        "note": "Standard queries retrieve read-only records from the certified release and derived index."
+      },
+      {
+        "id": "provisional_path",
+        "label": "Provisional Fast Path",
+        "focus": [
           "query_intent",
-          "query_activation",
-          "scientific_claim"
+          "provisional_fast_path",
+          "query_resolution"
         ],
-        "note": "Activate only the claims needed for the query while preserving their assertion identity."
-      },
-      {
-        "id": "claim_ir_alignment_view",
-        "label": "Claim / IR Alignment",
-        "focus": [
-          "scientific_claim",
-          "math_claim_ir",
-          "claim_math_alignment"
-        ],
-        "note": "MathClaimIR owns canonical mathematics and links to an exact ScientificClaim revision; alignment maps components or records residuals."
-      },
-      {
-        "id": "bounded_answer_view",
-        "label": "Bounded Assessment & Answer",
-        "focus": [
-          "formalization_record",
-          "evidence_blockers",
-          "claim_math_alignment",
-          "scoped_assessments",
-          "bounded_answer"
-        ],
-        "note": "Select exact scoped assessments and retain uncertainty and non-implications in the answer."
+        "note": "Fast assistance triggers or links the same query-independent agentization without entering release or the knowledge base."
       }
     ],
     "viewBox": [
       1390,
-      696
+      700
     ]
   },
   "components": [
@@ -64,398 +61,367 @@
       "id": "exact_paper_release",
       "type": "external",
       "label": "Exact Paper Release",
-      "sublabel": "Exact version + revision",
-      "tag": "paper baseline",
+      "sublabel": "Pinned source bytes and hash",
+      "tag": "canonical input",
       "pos": [
-        40,
-        30
+        30,
+        80
       ],
       "size": [
-        190,
-        78
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
+        220,
+        82
       ]
     },
     {
-      "id": "whole_paper_analysis",
-      "type": "backend",
-      "label": "Whole-Paper Analysis",
-      "sublabel": "Context, dependencies, evidence",
-      "tag": "paper-first",
+      "id": "profile_scope",
+      "type": "security",
+      "label": "Agentization Profile / Inventory Scope",
+      "sublabel": "Exact obligations and inventory",
+      "tag": "completion boundary",
       "pos": [
-        274,
-        30
+        30,
+        240
+      ],
+      "size": [
+        260,
+        92
+      ]
+    },
+    {
+      "id": "paper_analysis",
+      "type": "backend",
+      "label": "Profile-Scoped Paper Analysis",
+      "sublabel": "Whole release, query-independent",
+      "tag": "coordinator",
+      "pos": [
+        350,
+        155
+      ],
+      "size": [
+        250,
+        88
+      ]
+    },
+    {
+      "id": "claims_math_ir",
+      "type": "database",
+      "label": "Claims & MathClaimIR",
+      "sublabel": "Source-bound identities and math IR",
+      "tag": "canonical records",
+      "pos": [
+        700,
+        155
+      ],
+      "size": [
+        230,
+        88
+      ]
+    },
+    {
+      "id": "formal_evidence_alignment",
+      "type": "messagebus",
+      "label": "Formalization, Evidence, Alignment & Assessments",
+      "sublabel": "Separate records and authority axes",
+      "tag": "mixed outcomes",
+      "pos": [
+        1010,
+        145
+      ],
+      "size": [
+        340,
+        108
+      ]
+    },
+    {
+      "id": "release_audit",
+      "type": "security",
+      "label": "Release Audit",
+      "sublabel": "Independent integrity and completeness",
+      "tag": "auditor ≠ coordinator",
+      "pos": [
+        1110,
+        342
+      ],
+      "size": [
+        230,
+        88
+      ]
+    },
+    {
+      "id": "release_certifier",
+      "type": "security",
+      "label": "Release Certifier",
+      "sublabel": "Binds passing audit to release hash",
+      "tag": "distinct from coordinator and auditor",
+      "pos": [
+        850,
+        342
       ],
       "size": [
         210,
-        78
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
+        88
       ]
     },
     {
-      "id": "paper_understanding_snapshot",
-      "type": "database",
-      "label": "Paper Understanding Snapshot",
-      "sublabel": "Versioned view + provenance",
-      "tag": "reproducible",
+      "id": "paper_agent_release",
+      "type": "cloud",
+      "label": "Paper Agent Release",
+      "sublabel": "Certified package; mixed entry statuses",
+      "tag": "certifier distinct",
       "pos": [
-        544,
-        30
+        570,
+        340
       ],
       "size": [
-        240,
-        82
+        220,
+        92
+      ]
+    },
+    {
+      "id": "knowledge_base",
+      "type": "database",
+      "label": "Verification-Aware Knowledge Base",
+      "sublabel": "Derived per-entry admission index",
+      "tag": "not aggregate truth",
+      "pos": [
+        570,
+        500
       ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
+      "size": [
+        250,
+        92
+      ]
+    },
+    {
+      "id": "query_resolution",
+      "type": "frontend",
+      "label": "Query Resolution",
+      "sublabel": "Package-backed read-only retrieval",
+      "tag": "downstream consumer",
+      "pos": [
+        920,
+        500
+      ],
+      "size": [
+        300,
+        92
       ]
     },
     {
       "id": "query_intent",
       "type": "external",
       "label": "Query Intent",
-      "sublabel": "Scope, target, requested answer",
-      "tag": "held input",
+      "sublabel": "Question and retrieval intent",
       "pos": [
-        274,
-        195
+        30,
+        525
       ],
       "size": [
-        190,
-        76
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
+        220,
+        80
       ]
     },
     {
-      "id": "query_activation",
+      "id": "provisional_fast_path",
       "type": "backend",
-      "label": "Query Activation",
-      "sublabel": "Selects relevant claims",
+      "label": "Provisional Fast Path",
+      "sublabel": "Candidates plus canonical intake link",
+      "tag": "no release or KB writes",
       "pos": [
-        544,
-        195
-      ],
-      "size": [
-        200,
-        78
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "scientific_claim",
-      "type": "backend",
-      "label": "ScientificClaim",
-      "sublabel": "Stable assertion identity",
-      "tag": "identity owner",
-      "pos": [
-        814,
-        195
-      ],
-      "size": [
-        210,
-        78
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "math_claim_ir",
-      "type": "database",
-      "label": "MathClaimIR",
-      "sublabel": "Canonical math; exact claim revision",
-      "tag": "concrete ClaimIR",
-      "pos": [
-        1102,
-        195
+        300,
+        520
       ],
       "size": [
         240,
-        86
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "claim_math_alignment",
-      "type": "messagebus",
-      "label": "ClaimMathAlignment",
-      "sublabel": "Stable IDs + paths; mapped or residual",
-      "tag": "V2 successor",
-      "pos": [
-        360,
-        360
-      ],
-      "size": [
-        280,
-        94
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "formalization_record",
-      "type": "database",
-      "label": "FormalizationRecord",
-      "sublabel": "Target artifacts, environment, candidates",
-      "tag": "target-system owner",
-      "pos": [
-        1097,
-        360
-      ],
-      "size": [
-        250,
-        94
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "evidence_blockers",
-      "type": "external",
-      "label": "Evidence & Blocker Records",
-      "sublabel": "Independent external facts",
-      "tag": "external records",
-      "pos": [
-        740,
-        360
-      ],
-      "size": [
-        260,
-        94
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "scoped_assessments",
-      "type": "security",
-      "label": "Scoped Assessments",
-      "sublabel": "Versioned, scope-bound axes",
-      "tag": "scope-bound",
-      "pos": [
-        740,
-        535
-      ],
-      "size": [
-        280,
-        94
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
-      ]
-    },
-    {
-      "id": "bounded_answer",
-      "type": "frontend",
-      "label": "Bounded Answer",
-      "sublabel": "Uncertainty + non-implications",
-      "tag": "query result",
-      "pos": [
-        1060,
-        535
-      ],
-      "size": [
-        300,
-        94
-      ],
-      "sources": [
-        {
-          "path": "AgtXIv.md",
-          "label": "Current system boundaries"
-        }
+        90
       ]
     }
   ],
   "boundaries": [
     {
       "kind": "region",
-      "label": "Paper Baseline",
+      "label": "Canonical Paper Agentization",
       "wraps": [
         "exact_paper_release",
-        "whole_paper_analysis",
-        "paper_understanding_snapshot"
-      ],
-      "pad": 24
-    },
-    {
-      "kind": "region",
-      "label": "Query-Scoped Reasoning",
-      "wraps": [
-        "query_activation",
-        "scientific_claim",
-        "math_claim_ir",
-        "claim_math_alignment",
-        "formalization_record",
-        "evidence_blockers",
-        "scoped_assessments",
-        "bounded_answer"
+        "profile_scope",
+        "paper_analysis",
+        "claims_math_ir",
+        "formal_evidence_alignment",
+        "release_audit",
+        "release_certifier",
+        "paper_agent_release"
       ],
       "pad": 24
     }
   ],
   "connections": [
     {
-      "id": "release_analysis",
+      "id": "release_to_analysis",
       "from": "exact_paper_release",
-      "to": "whole_paper_analysis",
-      "label": "analyze",
-      "variant": "emphasis"
-    },
-    {
-      "id": "analysis_snapshot",
-      "from": "whole_paper_analysis",
-      "to": "paper_understanding_snapshot",
-      "label": "snapshot",
-      "variant": "emphasis"
-    },
-    {
-      "id": "snapshot_activation",
-      "from": "paper_understanding_snapshot",
-      "to": "query_activation",
-      "label": "activate after baseline",
+      "to": "paper_analysis",
+      "label": "exact source",
       "variant": "emphasis",
+      "labelAt": [
+        300,
+        125
+      ]
+    },
+    {
+      "id": "scope_to_analysis",
+      "from": "profile_scope",
+      "to": "paper_analysis",
+      "label": "profile + scope",
+      "variant": "emphasis",
+      "labelAt": [
+        315,
+        346
+      ]
+    },
+    {
+      "id": "analysis_to_claims",
+      "from": "paper_analysis",
+      "to": "claims_math_ir",
+      "label": "claim records",
+      "variant": "emphasis",
+      "labelAt": [
+        650,
+        200
+      ]
+    },
+    {
+      "id": "claims_to_records",
+      "from": "claims_math_ir",
+      "to": "formal_evidence_alignment",
+      "label": "exact targets",
+      "variant": "emphasis",
+      "labelAt": [
+        970,
+        200
+      ]
+    },
+    {
+      "id": "records_to_audit",
+      "from": "formal_evidence_alignment",
+      "to": "release_audit",
+      "label": "audit package",
+      "variant": "emphasis",
+      "labelAt": [
+        1180,
+        300
+      ],
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "intent_activation",
+      "id": "audit_to_certifier",
+      "from": "release_audit",
+      "to": "release_certifier",
+      "label": "passing audit",
+      "variant": "security",
+      "labelAt": [
+        1085,
+        336
+      ],
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "straight"
+    },
+    {
+      "id": "certifier_to_release",
+      "from": "release_certifier",
+      "to": "paper_agent_release",
+      "label": "certifies hash",
+      "variant": "security",
+      "labelAt": [
+        820,
+        336
+      ],
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "straight"
+    },
+    {
+      "id": "release_to_kb",
+      "from": "paper_agent_release",
+      "to": "knowledge_base",
+      "label": "eligible entries",
+      "variant": "emphasis",
+      "labelAt": [
+        680,
+        465
+      ],
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "kb_to_query",
+      "from": "knowledge_base",
+      "to": "query_resolution",
+      "label": "read-only",
+      "variant": "emphasis",
+      "labelAt": [
+        870,
+        480
+      ]
+    },
+    {
+      "id": "intent_to_provisional",
       "from": "query_intent",
-      "to": "query_activation",
-      "label": "scope",
-      "variant": "dashed"
+      "to": "provisional_fast_path",
+      "label": "fast request",
+      "variant": "dashed",
+      "labelAt": [
+        275,
+        516
+      ]
     },
     {
-      "id": "activation_claim",
-      "from": "query_activation",
-      "to": "scientific_claim",
-      "label": "select",
-      "variant": "emphasis"
-    },
-    {
-      "id": "claim_ir",
-      "from": "scientific_claim",
-      "to": "math_claim_ir",
-      "label": "revision ref",
-      "variant": "emphasis"
-    },
-    {
-      "id": "claim_alignment",
-      "from": "scientific_claim",
-      "to": "claim_math_alignment",
+      "id": "provisional_to_query",
+      "from": "provisional_fast_path",
+      "to": "query_resolution",
+      "label": "provisional only",
+      "variant": "dashed",
+      "labelAt": [
+        850,
+        675
+      ],
       "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "ir_alignment",
-      "from": "math_claim_ir",
-      "to": "claim_math_alignment",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "ir_formalization",
-      "from": "math_claim_ir",
-      "to": "formalization_record",
-      "variant": "emphasis",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "alignment_assessment",
-      "from": "claim_math_alignment",
-      "to": "scoped_assessments",
-      "label": "mapped or residual",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "formalization_assessment",
-      "from": "formalization_record",
-      "to": "scoped_assessments",
-      "label": "artifacts and candidates",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "evidence_assessment",
-      "from": "evidence_blockers",
-      "to": "scoped_assessments",
-      "label": "independent facts",
-      "fromSide": "bottom",
-      "toSide": "top",
-      "labelDy": 24
-    },
-    {
-      "id": "assessment_answer",
-      "from": "scoped_assessments",
-      "to": "bounded_answer",
-      "label": "select",
-      "variant": "emphasis"
+      "toSide": "bottom",
+      "via": [
+        [
+          420,
+          680
+        ],
+        [
+          1070,
+          680
+        ]
+      ]
     }
   ],
   "cards": [
     {
-      "dot": "violet",
-      "title": "Identity, Representation, and Alignment",
+      "dot": "emerald",
+      "title": "Release completion is accounting, not truth",
       "items": [
-        "ScientificClaim owns assertion identity; MathClaimIR owns the canonical mathematical representation and links to an exact ScientificClaim revision.",
-        "Exact reference binding does not by itself establish semantic equivalence.",
-        "ClaimMathAlignment uses stable component IDs, exact paths, and mapped-or-residual completeness."
+        "Every in-scope inventory entry has exactly one disposition under the exact profile and scope.",
+        "Certification attests package integrity and profile conformance while preserving blocked, deferred, or failed entries."
       ]
     },
     {
-      "dot": "emerald",
-      "title": "Artifacts, Facts, and Scoped Conclusions",
+      "dot": "violet",
+      "title": "Authority stays separated",
       "items": [
-        "FormalizationRecord owns target-system artifacts, environments, and candidates; Evidence and Blocker records own independent external facts.",
-        "Versioned assessments separately evaluate formalizability, verification, applicability, and acceptance.",
-        "A bounded answer selects exact assessments and retains uncertainty and non-implications; AgtXIv.md supplies current boundary evidence."
+        "The AgentizationCoordinator, ReleaseAuditor, and ReleaseCertifier are distinct identities; the legacy Root Agent is not a V2 release role.",
+        "FormalizationRecord stores generated outcomes and artifacts only; verification, alignment, and acceptance remain independent records."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Queries consume releases",
+      "items": [
+        "PACKAGE_BACKED is read-only and follows certified package references plus the verification-aware index.",
+        "PROVISIONAL_FAST_PATH triggers or links query-independent standard agentization, but cannot narrow its profile/scope, write a release, or promote a knowledge-base entry."
       ]
     }
   ]

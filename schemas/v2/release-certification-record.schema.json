@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/release-certification-record/2.0.0",
+  "title": "AgtXIv V2 ReleaseCertificationRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "record_revision", "manifest_ref", "audit_ref", "coordinator", "auditor", "certifier", "certified_release_hash", "decision", "content_hash"],
+  "properties": {
+    "schema": {"const": "agtxiv.release-certification-record/2.0.0"},
+    "id": {"type": "string", "pattern": "^release-certification-record:"}, "record_revision": {"type": "integer", "minimum": 1},
+    "manifest_ref": {"$ref": "#/$defs/exactRef"}, "audit_ref": {"$ref": "#/$defs/exactRef"},
+    "coordinator": {"$ref": "#/$defs/coordinator"}, "auditor": {"$ref": "#/$defs/auditor"}, "certifier": {"$ref": "#/$defs/certifier"},
+    "certified_release_hash": {"$ref": "#/$defs/hash"}, "decision": {"const": "CERTIFIED"}, "content_hash": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "exactRef": {"type": "object", "additionalProperties": false, "required": ["id", "record_revision", "content_hash"], "properties": {"id": {"type": "string", "minLength": 1}, "record_revision": {"type": "integer", "minimum": 1}, "content_hash": {"$ref": "#/$defs/hash"}}},
+    "coordinator": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "AGENTIZATION_COORDINATOR"}}},
+    "auditor": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "RELEASE_AUDITOR"}}},
+    "certifier": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "RELEASE_CERTIFIER"}}}
+  }
+}

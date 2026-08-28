@@ -1,22 +1,25 @@
-# AgtXIv: Verification-Aware Incremental Search over Scientific Claims
+# AgtXIv: Standardized Paper Agentization and Verification-Aware Knowledge
 
-**Status:** Bridge-first V1 pilot specification
-**Version:** 0.6
-**Date:** 2026-08-26
+**Status:** V1 compatibility body with V2 primary architecture
+**Version:** 0.6 compatibility text; V2 contracts are version 2.0.0
+**Date:** 2026-08-28
 **Primary target:** Mathematical claims in theoretical physics and mathematically structured sciences
+**Normative V2 paper agentization:** [AgtXIv V2 Paper Agentization](docs/specifications/v2-paper-agentization.md)
 **Normative paper-source acquisition:** [AgtXIv Paper Source Acquisition](docs/specifications/paper-source-acquisition.md)
 **Normative V1 bridge:** [AgtXIv V1 Claim--Mathematics Bridge](docs/specifications/v1-bridge.md)
 **Normative mathematics detail:** [AgtXIv Mathematics Pipeline](docs/specifications/mathematics-pipeline.md)
 **Implementation roadmap:** [AgtXIv v1 vertical-slice checklist](docs/roadmaps/v1-implementation-checklist.md)
 **Revision note:** [Architecture changes from v0.3 to v0.4](docs/specifications/v0.3-to-v0.4-architecture-changes.md)
 
-`AgtXIv.md` is the system-wide specification. The paper-source acquisition specification governs canonical full-text acquisition, and the mathematics pipeline refines the mathematics profile. Each document is normative within its stated scope; if wording appears to conflict, the system-wide safety and non-promotion rules in this document take precedence.
+The [V2 paper-agentization specification](docs/specifications/v2-paper-agentization.md) establishes the primary release-centered, query-independent architecture and is authoritative for V2 construction, completion, roles, releases, and query modes. The current body of `AgtXIv.md` preserves V1 compatibility semantics for bounded query-relative `ClaimMathBridge` / `BridgeAssessment` workflows; it must not be read as making those workflows canonical V2 package construction. The paper-source acquisition specification governs canonical full-text acquisition, and the mathematics pipeline documents legacy/downstream mathematics workflows. Safety and non-promotion rules remain mandatory across versions.
 
 ## Abstract
 
-AgtXIv is an experimental protocol for producing a bounded, auditable assessment of a scientific claim. Instead of returning only a paper list or a fluent explanation, V1 returns the exact source claim and spans, the mathematical statements and assumptions aligned with each relevant component, the evidence and blockers that bear on them, the physical semantics not covered by mathematics, and a conservative Root Agent conclusion. Dependency graphs and reusable contracts support this path but are not themselves the V1 product.
+AgtXIv V2 is a paper-agentization framework. It begins from one exact paper release and an exact `AgentizationProfile` / `InventoryScope`, performs query-independent profile-scoped analysis of the whole release, and produces an independently audited and certified `Paper Agent Release`. Claims, `MathClaimIR`, generated formalization artifacts, evidence, alignments, assessments, blockers, and mixed per-entry dispositions remain separately inspectable rather than being collapsed into a fluent summary or an aggregate truth label.
 
-The minimum viable system is **bridge-first and math-centered**. Each traced work is assigned one public Git repository, and each citable publication instance is that repository together with one exact release. A source-bounded `PaperAgent` represents one frozen source occurrence of the work at such a release, while `ScientificClaim`, `ClaimMathBridge`, `MathClaimIR`, and `BridgeAssessment` form the minimum V1 path. Claim-level `MathContract` objects and query-relative mathematical dependency DAGs provide reusable verification infrastructure. The broader typed `PaperInteractionGraph` and its derived `PaperBuildDAG(q)` remain later organizational views rather than V1 acceptance requirements.
+A certified package feeds a derived verification-aware Knowledge Base through per-entry admission gates. Standard queries are downstream, read-only retrieval over the exact certified release and index. Release completion means total profile/scope-relative disposition accounting; it does not mean whole-paper truth, aggregate verification, scientific acceptance, or admission of every packaged entry.
+
+**V1 compatibility paragraph.** The remainder of this document preserves the earlier bounded, query-relative claim-assessment design rather than silently rewriting it. Under that frozen path, `ScientificClaim`, `ClaimMathBridge`, `MathClaimIR`, and `BridgeAssessment` support a conservative Root Agent conclusion for one bounded claim. Those records and query-relative dependency views remain readable downstream in V2, but they are not canonical V2 package construction, and the V1 Root Agent is not a V2 release role.
 
 AgtXIv does not require a dedicated hypergraph data structure in the pilot. A multi-premise inference is represented by an explicit `InferenceStep` node: several claims point to the step, and the step points to its conclusion. This retains the joint-premise semantics while allowing the implementation to use an ordinary typed directed graph.
 

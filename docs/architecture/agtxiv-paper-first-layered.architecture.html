@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 2.16.0-dev.0">
-  <title>AgtXIv V2 — Paper-First Claim Architecture Diagram</title>
+  <title>AgtXIv V2 — Paper Agent Release Architecture Diagram</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -4955,12 +4955,12 @@
            data-preset-badge-blueprint="BLUEPRINT / REV 01"
            data-preset-badge-editorial="EDITORIAL / FIELD NOTE">
         <div class="pulse-dot"></div>
-        <h1>AgtXIv V2 — Paper-First Claim Architecture</h1>
+        <h1>AgtXIv V2 — Paper Agent Release Architecture</h1>
       </div>
     </div>
 
-    <script id="archify-guided-views-data" type="application/json">[{"id":"paper_baseline","label":"Paper Baseline","focus":["exact_paper_release","whole_paper_analysis","paper_understanding_snapshot"],"note":"Start from an exact paper release and produce a revision-bound understanding snapshot."},{"id":"query_activation_view","label":"Query Activation","focus":["paper_understanding_snapshot","query_intent","query_activation","scientific_claim"],"note":"Activate only the claims needed for the query while preserving their assertion identity."},{"id":"claim_ir_alignment_view","label":"Claim / IR Alignment","focus":["scientific_claim","math_claim_ir","claim_math_alignment"],"note":"MathClaimIR owns canonical mathematics and links to an exact ScientificClaim revision; alignment maps components or records residuals."},{"id":"bounded_answer_view","label":"Bounded Assessment \u0026 Answer","focus":["formalization_record","evidence_blockers","claim_math_alignment","scoped_assessments","bounded_answer"],"note":"Select exact scoped assessments and retain uncertainty and non-implications in the answer."}]</script>
-    <script id="archify-source-evidence-data" type="application/json">{"schemaVersion":1,"verified":true,"repository":{"url":"https://github.com/EugeneLIU2000/AgtXIv","revision":"2380c3a33b7718d3da810a4ab484ffcf790cce2d","shortRevision":"2380c3a"},"referenceCount":12,"nodes":{"exact_paper_release":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"whole_paper_analysis":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"paper_understanding_snapshot":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"query_intent":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"query_activation":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"scientific_claim":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"math_claim_ir":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"claim_math_alignment":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"formalization_record":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"evidence_blockers":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"scoped_assessments":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}],"bounded_answer":[{"path":"AgtXIv.md","label":"Current system boundaries","href":"https://github.com/EugeneLIU2000/AgtXIv/blob/2380c3a33b7718d3da810a4ab484ffcf790cce2d/AgtXIv.md"}]}}</script>
+    <script id="archify-guided-views-data" type="application/json">[{"id":"canonical_release","label":"Canonical Release","focus":["exact_paper_release","profile_scope","paper_analysis","claims_math_ir","formal_evidence_alignment","release_audit","release_certifier","paper_agent_release"],"note":"Construct a query-independent package, then audit and certify it with separated roles."},{"id":"knowledge_admission","label":"Knowledge Admission","focus":["paper_agent_release","knowledge_base"],"note":"Package certification permits mixed statuses; each knowledge entry still has its own admission gate."},{"id":"package_query","label":"Package-Backed Query","focus":["paper_agent_release","knowledge_base","query_resolution"],"note":"Standard queries retrieve read-only records from the certified release and derived index."},{"id":"provisional_path","label":"Provisional Fast Path","focus":["query_intent","provisional_fast_path","query_resolution"],"note":"Fast assistance triggers or links the same query-independent agentization without entering release or the knowledge base."}]</script>
+
     <script id="archify-i18n-data" type="application/json">{"locale":"en","messages":{"viewer.kind.frontend":"Frontend","viewer.kind.backend":"Backend","viewer.kind.database":"Database","viewer.kind.cloud":"Cloud","viewer.kind.security":"Security","viewer.kind.messagebus":"Message bus","viewer.kind.external":"External","viewer.kind.neutral":"Neutral","viewer.kind.node":"Node","viewer.kind.start":"Start","viewer.kind.active":"Active","viewer.kind.waiting":"Waiting","viewer.kind.decision":"Decision","viewer.kind.success":"Success","viewer.kind.failure":"Failure","viewer.toolbar.actions":"Diagram actions","viewer.theme.toggle.title":"Toggle theme (T)","viewer.theme.toggle":"Toggle color theme","viewer.theme.dark":"Dark","viewer.theme.light":"Light","viewer.preset.choose.title":"Choose visual style (S cycles)","viewer.preset.choose":"Choose visual style","viewer.preset.style":"Style","viewer.preset.menu":"Visual style","viewer.preset.identity":"Visual identity","viewer.preset.cycles":"S cycles","viewer.preset.classic":"Classic","viewer.preset.classic.short":"Classic","viewer.preset.classic.hint":"Stable technical default","viewer.preset.flow":"Signal Flow","viewer.preset.flow.short":"Flow","viewer.preset.flow.hint":"Motion-forward presentation","viewer.preset.blueprint":"Blueprint","viewer.preset.blueprint.hint":"Engineering review","viewer.preset.editorial":"Editorial","viewer.preset.editorial.hint":"Publication and launch notes","viewer.preset.badge.signalFlow":"SIGNAL FLOW","viewer.preset.badge.blueprint":"BLUEPRINT / REV 01","viewer.preset.badge.editorial":"EDITORIAL / FIELD NOTE","viewer.preset.badge.editorialPlate":"ARCHIFY / PLATE 04","viewer.preset.current":"Visual style: {style}. Choose visual style","viewer.motion.live":"Live","viewer.motion.still":"Still","viewer.motion.pause":"Pause motion","viewer.motion.resume":"Resume motion","viewer.motion.reduced":"Motion paused by reduced-motion preference","viewer.motion.hidden":"Motion paused while this page is hidden","viewer.motion.yielding":"Pause motion; currently yielding to {owner}","viewer.motion.yielding.title":"Live preview enabled · yielding to {owner}","viewer.owner.story":"the guided story","viewer.owner.chapter":"the active chapter","viewer.owner.chapterPreview":"the chapter delta preview","viewer.owner.handoff":"the chapter handoff","viewer.owner.route":"Route Probe","viewer.owner.lens":"Semantic Lens","viewer.owner.relationship":"Relationship Preview","viewer.owner.intent":"Intent Trace","viewer.owner.focus":"semantic focus","viewer.owner.legend":"legend preview","viewer.owner.reader":"reader interaction","viewer.present.enter":"Enter presentation stage","viewer.present.enter.title":"Presentation stage (F)","viewer.present.exit":"Exit presentation stage","viewer.present.exit.title":"Exit presentation stage (F or Escape)","viewer.present.present":"Present","viewer.present.exit.label":"Exit","viewer.export.button":"Export","viewer.export.button.title":"Export diagram (E)","viewer.export.diagram":"Export diagram","viewer.export.menu":"Export","viewer.export.subtitle":"Portable, clean outputs","viewer.export.share":"Share","viewer.export.shareCard":"Share Card","viewer.export.routeShareCard":"Route Share Card","viewer.export.reachShareCard":"Reach Share Card","viewer.export.copyShareCard":"Copy Share Card","viewer.export.copyDiagram":"Copy diagram","viewer.export.clipboardPng":"PNG to clipboard","viewer.export.raster":"Raster images","viewer.export.image":"Image","viewer.export.lossless":"Lossless image","viewer.export.compact":"Compact image","viewer.export.modern":"Modern image","viewer.export.vectorMotion":"Vector and motion","viewer.export.vectorMotion.heading":"Vector \u0026 motion","viewer.export.editable":"Editable vector","viewer.export.motion6s":"6s motion","viewer.export.unsupported":"Not supported by this browser","viewer.export.clipboardUnsupported":"Clipboard image write not supported by this browser","viewer.export.clipboardUnsupported.period":"Clipboard image write not supported by this browser.","viewer.export.clipboardUnsupported.short":"Clipboard image write not supported in this browser.","viewer.export.motionUnavailable":"Motion capture unavailable in this browser","viewer.export.webmUnavailable":"WebM unavailable in this browser","viewer.export.failed":"Export failed: {message}","viewer.export.unknownVariant":"Unknown Share Card variant: {variant}","viewer.export.routeRequired":"Trace a route before exporting a Route Share Card","viewer.export.reachRequired":"Trace authored reach before exporting a Reach Share Card","viewer.export.unknown":"unknown","viewer.export.routeFailed":"Route Share Card export failed: {message}","viewer.export.reachFailed":"Reach Share Card export failed: {message}","viewer.export.copyFailed":"Copy failed: {message}","viewer.export.copiedPng":"Copied PNG to clipboard","viewer.export.copiedShare":"Copied Share Card","viewer.export.downloadedShare":"Downloaded Share Card","viewer.export.downloadedRoute":"Downloaded Route Share Card","viewer.export.downloadedReach":"Downloaded Reach Share Card","viewer.export.downloadedWebm":"Downloaded WebM","viewer.export.recording":"Recording 6 seconds of motion…","viewer.export.card.routeSummary.one":"Route: {source} → {target} · {count} directed hop","viewer.export.card.routeSummary.other":"Route: {source} → {target} · {count} directed hops","viewer.export.card.reachSummary":"Authored {direction} from {origin} · {nodes} · {links} · max {hops}","viewer.export.card.node.one":"{count} node","viewer.export.card.node.other":"{count} nodes","viewer.export.card.link.one":"{count} link","viewer.export.card.link.other":"{count} links","viewer.export.card.hop.one":"{count} hop","viewer.export.card.hop.other":"{count} hops","viewer.export.card.routeBadge":"ARCHIFY · ROUTE · {hops}","viewer.export.card.reachBadge":"ARCHIFY · {direction} REACH","viewer.export.card.defaultBadge":"ARCHIFY · {preset} · {theme}","viewer.export.direction.upstream":"Upstream","viewer.export.direction.downstream":"Downstream","viewer.export.error.canvasUnavailable":"Canvas unavailable for {label}","viewer.export.error.contextUnavailable":"2D canvas context unavailable for {label}","viewer.export.error.toBlobUnavailable":"canvas.toBlob unavailable for {label}","viewer.export.error.toBlobNull":"canvas.toBlob returned no data for {label}","viewer.export.error.variantsCombined":"Share Card variants cannot be combined","viewer.export.error.viewerState":"Share Card export could not remove temporary viewer state","viewer.export.error.routeState":"Route Card export could not preserve the resolved route safely","viewer.export.error.reachState":"Reach Card export could not preserve authored reach safely","viewer.export.error.webmRequirements":"WebM motion export requires a trace animation and browser MediaRecorder support","viewer.export.error.mediaRecorder":"MediaRecorder failed","viewer.export.error.emptyWebm":"MediaRecorder produced an empty WebM","viewer.export.error.webmBackground":"SVG background could not be loaded for WebM export","viewer.guided.region":"Guided diagram views","viewer.guided.previous":"Previous guided view","viewer.guided.previous.title":"Previous guided view ([)","viewer.guided.next":"Next guided view","viewer.guided.next.title":"Next guided view (])","viewer.guided.views":"Guided views","viewer.guided.explore":"Explore this system","viewer.guided.intro":"Step through curated paths without changing the source diagram.","viewer.guided.trail":"Story trail","viewer.guided.beat":"Beat","viewer.guided.nextBeat":"Next","viewer.guided.play":"Play guided story","viewer.guided.play.title":"Play guided story (P)","viewer.guided.pause":"Pause guided story","viewer.guided.pause.title":"Pause guided story (P)","viewer.guided.replay":"Replay guided story","viewer.guided.replay.title":"Replay guided story (P)","viewer.guided.playStory":"Play story","viewer.guided.pauseStory":"Pause","viewer.guided.replayStory":"Replay story","viewer.guided.motionUnavailable":"Story playback unavailable while motion is Still","viewer.guided.enableMotion":"Switch motion to Live to play the guided story","viewer.guided.selectBeatLink":"Select a Story Beat to copy its exact link","viewer.guided.copyMoment":"Copy moment","viewer.guided.momentCopied":"Moment link copied","viewer.guided.momentCopyFailed":"Could not copy story moment link","viewer.guided.copied":"Copied","viewer.guided.copyFailed":"Copy failed","viewer.guided.showAll":"Show all","viewer.guided.showAll.aria":"Show entire diagram","viewer.guided.chapters":"Story chapters","viewer.guided.storyTrail":"Story trail for {label}: {count} beats","viewer.guided.chapter.open":"Open chapter {index} of {total}: {label}, {count} stops","viewer.guided.chapter.current":"Current chapter {index} of {total}: {label}, {count} stops","viewer.guided.chapter.selectedNodes":"{count} selected nodes","viewer.guided.chapter.stops":"{count} stops","viewer.guided.chapter.stop.one":"{count} stop","viewer.guided.chapter.stop.other":"{count} stops","viewer.guided.chapter.current.title":"{label} — current chapter, {count} stops","viewer.guided.chapter.delta.expanded":"{stay} stay, {enter} enter, {leave} leave","viewer.guided.chapter.delta.aria":"Open chapter {index} of {total}: {label}. Chapter focus delta: {delta}","viewer.guided.chapter.delta.title":"{label} — {delta} chapter focus","viewer.guided.handoff":"{from} → {to} · via {label}","viewer.guided.share.chapter":"Chapter {index} / {total}","viewer.guided.share.initial":"Chapter 01 / 01","viewer.guided.share.default":"Guided chapter","viewer.guided.state.ready":"Ready","viewer.guided.state.playing":"Playing","viewer.guided.state.settled":"Settled","viewer.guided.state.paused":"Paused","viewer.guided.state.pinned":"Pinned","viewer.guided.state.still":"Still","viewer.guided.share.step":"Step {index} / {total} · {label}","viewer.guided.share.staticMoment":"{step} · Static moment","viewer.guided.share.complete":"{count} steps complete · {note}","viewer.guided.share.settled":"Path settled for reading.","viewer.guided.share.staticPath":"{count} steps · Static path","viewer.guided.share.ready":"{count} steps · Ready","viewer.guided.share.aria":"{state} chapter {index} of {total}: {label}. {beat}. {route}","viewer.guided.beat.start":"Beat {index} / {total} · {label} · starting point","viewer.guided.beat.forward":"Beat {index} / {total} · {from} → {to}","viewer.guided.beat.reverse":"Beat {index} / {total} · {from} → {to} · reverse authored link","viewer.guided.beat.multiple":"Beat {index} / {total} · {from} ⇄ {to} · {count} authored links","viewer.guided.beat.group":"Beat {index} / {total} · {from} · {to} · grouped · no direct link","viewer.guided.beat.aria.prefix":"Story beat {index} of {total}: {label}. ","viewer.guided.beat.aria.start":"Starting point.","viewer.guided.beat.aria.forward":"From {from} through one authored forward relationship.","viewer.guided.beat.aria.reverse":"From {from}; the authored relationship points from {to} to {from}.","viewer.guided.beat.aria.multiple":"From {from} through {count} authored relationships; shown without arbitrary motion.","viewer.guided.beat.aria.group":"Grouped from {from} with no direct authored relationship.","viewer.guided.caption.start":"Starting point","viewer.guided.caption.grouped":"Grouped transition · no direct authored link","viewer.guided.caption.more":" +{count} more","viewer.guided.caption.reverse":"Reverse authored relationship","viewer.guided.caption.relationships":"{count} authored relationships","viewer.guided.caption.relationship":"Authored relationship","viewer.guided.caption.direction":"authored direction: {from} → {to}","viewer.guided.caption.starting":"Authored starting point","viewer.guided.beatLink":"Copy link to current story moment: Beat {index} of {total}: {label}","viewer.guided.noStory":"This diagram has no authored guided story.","viewer.guide.eyebrow":"Diagram guide","viewer.guide.close":"Close diagram guide","viewer.guide.inspecting":"Inspecting compiled semantics","viewer.guide.actions":"Diagram exploration actions","viewer.guide.find":"Find any node","viewer.guide.find.hint":"Search labels, responsibilities, kinds, and stable IDs.","viewer.guide.route":"Trace a route","viewer.guide.route.aria":"Trace a directed route","viewer.guide.route.hint":"Ask how two semantic nodes connect in authored direction.","viewer.guide.map":"See the whole system","viewer.guide.map.hint":"Open Semantic Radar with a live viewport and stable nodes.","viewer.guide.lens":"Compare semantic kinds","viewer.guide.lens.hint":"Count roles, reveal their traffic, and compare direct authored links.","viewer.guide.story":"Play the guided story","viewer.guide.story.hint":"Walk the authored chapters and real relationships.","viewer.guide.present":"Enter Presentation Stage","viewer.guide.present.hint":"Give the live diagram the viewport without changing export.","viewer.guide.shortcuts":"Additional keyboard shortcuts","viewer.guide.shortcut.export":"Export","viewer.guide.shortcut.theme":"Theme","viewer.guide.shortcut.style":"Style","viewer.guide.shortcut.reset":"Reset","viewer.guide.shortcut.zoomIn":"Zoom in","viewer.guide.shortcut.zoomOut":"Zoom out","viewer.guide.shortcut.close":"Close","viewer.guide.facts":"{nodes} · {relationships} · {views}","viewer.guide.fact.node.one":"{count} semantic node","viewer.guide.fact.node.other":"{count} semantic nodes","viewer.guide.fact.relationship.one":"{count} relationship","viewer.guide.fact.relationship.other":"{count} relationships","viewer.guide.fact.view.one":"{count} guided view","viewer.guide.fact.view.other":"{count} guided views","viewer.guide.story.available.one":"Walk {count} authored chapter and its real relationships.","viewer.guide.story.available.other":"Walk {count} authored chapters and their real relationships.","viewer.guide.story.unavailable":"No authored guided story in this diagram.","viewer.guide.open":"Open diagram guide","viewer.guide.noStory":"This diagram has no authored guided story.","viewer.finder.title":"Find a node","viewer.finder.close":"Close node finder","viewer.finder.placeholder":"Search labels or IDs","viewer.finder.search":"Search diagram nodes","viewer.finder.results":"Diagram nodes","viewer.finder.empty":"No matching nodes","viewer.finder.result.focus":"Focus {label}","viewer.finder.result.routeStart":"Choose {label} as route start","viewer.finder.result.routeTarget":"Choose {label} as route destination, {links}","viewer.finder.status.empty":"No matching nodes","viewer.finder.status.count.one":"{count} matching node","viewer.finder.status.count.other":"{count} matching nodes","viewer.finder.noun.nodes":"nodes","viewer.finder.link.one":"{count} link","viewer.finder.link.other":"{count} links","viewer.finder.result.focus.one":"Focus {label}, {count} related connection","viewer.finder.result.focus.other":"Focus {label}, {count} related connections","viewer.finder.status.filtered":"{visible} of {available} {noun}","viewer.finder.status.all":"{available} {noun}","viewer.passport.eyebrow":"Semantic passport","viewer.passport.metadata":"Node metadata","viewer.passport.evidence":"Verified source evidence","viewer.passport.verified":"Verified source","viewer.passport.reach":"Authored reach","viewer.passport.reach.trace":"Trace authored reachability","viewer.passport.upstream":"Upstream","viewer.passport.downstream":"Downstream","viewer.passport.upstream.trace":"Trace upstream authored reachability","viewer.passport.downstream.trace":"Trace downstream authored reachability","viewer.passport.close":"Close semantic passport","viewer.passport.copy":"Copy link","viewer.passport.copy.focus":"Copy link to focused node","viewer.passport.relations":"Relations","viewer.passport.relations.show":"Show connected relationships","viewer.passport.relations.hide":"Hide connected relationships","viewer.passport.relations.list":"Connected relationships","viewer.passport.copyRelation":"Copy relation","viewer.passport.copyNode":"Copy node","viewer.passport.copyPinned":"Copy link to pinned relationship","viewer.passport.copySource":"Copy link to source node","viewer.passport.copy.focused.success":"Focused node link copied","viewer.passport.copy.pinned.success":"Pinned relationship link copied","viewer.passport.copy.focused.failed":"Could not copy focused node link","viewer.passport.copy.pinned.failed":"Could not copy pinned relationship link","viewer.passport.relationship.none":"No connected relationships","viewer.passport.relationship.count.one":"{count} relation","viewer.passport.relationship.count.other":"{count} relations","viewer.passport.relationship.show.one":"Show {count} connected relationship","viewer.passport.relationship.show.other":"Show {count} connected relationships","viewer.passport.relationship.summary":"{out} outgoing · {in} incoming{loops}","viewer.passport.relationship.loops":" · {count} loop","viewer.passport.relationship.explorer":"Direct relationship explorer","viewer.passport.relationship.help":"Use arrow keys to explore relationships. Press Enter or Space to pin details; Escape clears.","viewer.passport.relationship.loopsBack":"loops back","viewer.passport.relationship.connectsTo":"connects to","viewer.passport.relationship.connectsFrom":"connects from","viewer.passport.relationship.pinned":"Pinned relationship · {from} → {to} · {label}","viewer.passport.relationship.inspect":"Inspect relationship {index} of {total}: {from} to {to}, {label}. Press Enter for details.","viewer.passport.relationship.group.out":"Outgoing","viewer.passport.relationship.group.in":"Incoming","viewer.passport.relationship.group.loop":"Self loops","viewer.passport.relationship.row":"{group}: {relationship}, {neighbor}","viewer.passport.relationship.direction.out":"OUT →","viewer.passport.relationship.direction.in":"← IN","viewer.passport.relationship.direction.loop":"LOOP","viewer.passport.sourceCount.one":"{count} verified source reference","viewer.passport.sourceCount.other":"{count} verified source references","viewer.passport.sourceMarker":"SRC","viewer.passport.beacon.one":"{count} verified source; focus this node to inspect","viewer.passport.beacon.other":"{count} verified sources; focus this node to inspect","viewer.passport.repository.open":"Open verified repository revision {revision}","viewer.passport.source.open":"Open verified source {path} at revision {revision}","viewer.passport.source.openLink":"Open ↗","viewer.passport.reach.upstream.one":"Trace {count} upstream authored node","viewer.passport.reach.upstream.other":"Trace {count} upstream authored nodes","viewer.passport.reach.downstream.one":"Trace {count} downstream authored node","viewer.passport.reach.downstream.other":"Trace {count} downstream authored nodes","viewer.passport.reach.noUpstream":"No upstream authored nodes","viewer.passport.reach.noDownstream":"No downstream authored nodes","viewer.passport.reach.status":"{direction} · {nodes} nodes · {links} links · max {hops} hops","viewer.route.eyebrow":"Route probe","viewer.route.start":"Choose a start node","viewer.route.start.find":"Find start","viewer.route.start.find.aria":"Find a route start","viewer.route.copy":"Copy link","viewer.route.copy.aria":"Copy link to traced route","viewer.route.clear":"Clear","viewer.route.clear.aria":"Clear route probe","viewer.route.traced":"Traced route","viewer.route.pickTwo":"Pick two semantic nodes on the diagram","viewer.route.pickOne":"Pick a semantic node on the diagram","viewer.route.controls":"Route journey controls","viewer.route.previous":"Previous route position","viewer.route.play":"Play route journey","viewer.route.pause":"Pause route journey","viewer.route.replay":"Replay route journey","viewer.route.next":"Next route position","viewer.route.journey":"Journey","viewer.route.pause.label":"Pause","viewer.route.replay.label":"Replay","viewer.route.overview":"Overview","viewer.route.overview.aria":"Show complete route overview","viewer.route.instructions":"Choose the source, then the destination. Direction matters.","viewer.route.destination":"Choose a destination from {label}","viewer.route.destination.find":"Find target","viewer.route.destination.find.aria":"Find a reachable route destination","viewer.route.differentDestination":"Choose a different destination","viewer.route.distinct":"A route needs two distinct semantic nodes.","viewer.route.unreachable":"No directed route to {label}","viewer.route.unreachable.detail":"{target} is not reachable from {source}. Pick a highlighted destination.","viewer.route.start.instructions":"Select the source. The next step will reveal only directed destinations.","viewer.route.copy.success":"Traced route link copied","viewer.route.copy.failed":"Could not copy traced route link","viewer.route.position":"Route position {index} of {total}: {label}","viewer.route.step":"Step {index} of {total} · {phase} · {label}","viewer.route.motionRequired":"Automatic journey requires Live motion","viewer.route.trigger.clear":"Clear traced route","viewer.route.overview.status":"{nodes} · {hops} · shortest authored route","viewer.route.overview.node.one":"{count} node","viewer.route.overview.node.other":"{count} nodes","viewer.route.overview.hop.one":"{count} directed hop","viewer.route.overview.hop.other":"{count} directed hops","viewer.route.phase.playing":"Playing","viewer.route.phase.complete":"Complete","viewer.route.phase.inspecting":"Inspecting","viewer.route.destination.count.one":"{count} directed destination available. Pick a highlighted node.","viewer.route.destination.count.other":"{count} directed destinations available. Pick a highlighted node.","viewer.route.noOutgoing":"No outgoing route starts here. Clear and choose another source.","viewer.route.result.title":"{source} to {target}","viewer.route.finder.source.title":"Choose route start","viewer.route.finder.source.placeholder":"Search route sources","viewer.route.finder.source.empty":"No matching route sources","viewer.route.finder.source.results":"Nodes that can start a route","viewer.route.finder.source.noun":"route sources","viewer.route.finder.source.badge":"start","viewer.route.finder.target.title":"Destination from {label}","viewer.route.finder.target.placeholder":"Search reachable destinations","viewer.route.finder.target.empty":"No matching reachable destinations","viewer.route.finder.target.results":"Reachable route destinations","viewer.route.finder.target.noun":"reachable destinations","viewer.route.hop.one":"{count} hop","viewer.route.hop.other":"{count} hops","viewer.lens.eyebrow":"Semantic lens","viewer.lens.title":"Compare system roles","viewer.lens.close":"Close semantic lens","viewer.lens.instruction":"Choose up to two semantic kinds. One reveals its real traffic; two compare only direct authored relationships.","viewer.lens.kinds":"Semantic kinds","viewer.lens.choose":"Choose a kind to inspect its nodes and touching relationships.","viewer.lens.copy":"Copy link to semantic lens","viewer.lens.clear":"Clear semantic lens","viewer.lens.open":"Open semantic lens","viewer.lens.openActive":"Open active semantic lens","viewer.lens.legend":"Semantic legend","viewer.lens.legend.inspect.one":"Inspect {label}, {count} node","viewer.lens.legend.inspect.other":"Inspect {label}, {count} nodes","viewer.lens.kind.count.one":"{label}, {count} node","viewer.lens.kind.count.other":"{label}, {count} nodes","viewer.lens.compare.one":"{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} direct relationship","viewer.lens.compare.other":"{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} direct relationships","viewer.lens.single":"{nodes} · {relationships} · connected peers remain visible","viewer.lens.node.one":"{count} {label} node","viewer.lens.node.other":"{count} {label} nodes","viewer.lens.relationship.one":"{count} touching relationship","viewer.lens.relationship.other":"{count} touching relationships","viewer.radar.title":"Semantic radar","viewer.radar.building":"Building overview","viewer.radar.openFull":"Open full semantic radar","viewer.radar.open":"Open radar","viewer.radar.close":"Close semantic radar","viewer.radar.surface":"Diagram overview. Click a node to focus it, or use arrow keys to pan.","viewer.radar.click":"Click node","viewer.radar.drag":"Drag to pan","viewer.radar.space":"Semantic radar needs more MAP space.","viewer.radar.nodes":"Semantic diagram radar nodes","viewer.radar.focus":"Focus {label} from Semantic Radar","viewer.radar.status":"{count} nodes · {viewport}","viewer.radar.fullMap":"{count} nodes · full map","viewer.radar.compacted":"Radar compacted to avoid covering the Semantic Passport or MAP controls.","viewer.radar.cancelWaiting":"Cancel semantic radar waiting for more MAP space","viewer.radar.needsSpace":"Semantic radar needs more visible MAP space","viewer.radar.viewport.full":"full map","viewer.radar.viewport.width":"{percent}% width","viewer.radar.viewport.scale":"{percent}% viewport","viewer.nav.controls":"Diagram view controls","viewer.nav.route":"Trace a directed route","viewer.nav.route.title":"Trace route (R)","viewer.nav.route.short":"PATH","viewer.nav.radar":"Open semantic radar","viewer.nav.radar.title":"Semantic radar (M)","viewer.nav.radar.short":"MAP","viewer.nav.lens":"Open semantic lens","viewer.nav.lens.title":"Semantic lens (L)","viewer.nav.lens.short":"LENS","viewer.nav.find":"Find a node","viewer.nav.find.title":"Find a node (/)","viewer.nav.guide":"Open diagram guide","viewer.nav.guide.title":"Diagram guide (?)","viewer.nav.zoomOut":"Zoom out","viewer.nav.zoomOut.title":"Zoom out (-)","viewer.nav.reset":"Reset diagram view","viewer.nav.reset.title":"Reset view (0)","viewer.nav.read":"READ","viewer.nav.zoomIn":"Zoom in","viewer.nav.zoomIn.title":"Zoom in (+)","viewer.nav.camera":"{hint}. Reset diagram view","viewer.nav.camera.title":"{semantic}{hint} · reset view (0)","viewer.nav.camera.semantic":"Semantic camera active · ","viewer.nav.level.map":"MAP","viewer.nav.level.read":"READ","viewer.nav.level.full":"FULL","viewer.nav.level.auto":"AUTO","viewer.nav.detail.map":"Zoom in to reveal relationship labels and node context","viewer.nav.detail.read":"Zoom in again to reveal tags and annotations","viewer.nav.detail.full":"Full diagram detail","viewer.intent.summary":"{label}. {out} outgoing, {in} incoming{loops}. {total} connections. Press Enter for details.","viewer.intent.loops":", {count} self loop","viewer.common.copied":"Copied","viewer.common.copyFailed":"Copy failed","viewer.common.copyLink":"Copy link","viewer.common.clear":"Clear","viewer.common.close":"Close"}}</script>
     <div class="guided-views no-print" id="guided-views" hidden aria-label="Guided diagram views">
       <button id="guided-view-prev" type="button" aria-label="Previous guided view" title="Previous guided view ([)">&#8592;</button>
@@ -5004,8 +5004,8 @@
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / PLATE 04">
-      <svg viewBox="0 0 1390 696" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-        <title id="archify-diagram-title">AgtXIv V2 — Paper-First Claim Architecture</title>
+      <svg viewBox="0 0 1390 700" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
+        <title id="archify-diagram-title">AgtXIv V2 — Paper Agent Release Architecture</title>
         <desc id="archify-diagram-description">An architecture diagram generated by Archify.</desc>
         <!-- Definitions -->
         <defs>
@@ -5030,236 +5030,228 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="Paper Baseline" x="16" y="6" width="792" height="126" rx="12" class="c-region" stroke-width="1"/>
-
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" data-composition-frame-label="Query-Scoped Reasoning" x="336" y="171" width="1048" height="478" rx="12" class="c-region" stroke-width="1"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="Canonical Paper Agentization" x="6" y="56" width="1368" height="396" rx="12" class="c-region" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="exact_paper_release" data-edge-to="whole_paper_analysis" data-edge-label="analyze" data-edge-key="0" data-edge-id="release_analysis" data-composition-points="230,69;274,69" d="M 230 69 L 274 69" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="whole_paper_analysis" data-edge-to="paper_understanding_snapshot" data-edge-label="snapshot" data-edge-key="1" data-edge-id="analysis_snapshot" data-composition-points="484,69;544,69" d="M 484 69 L 544 69" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="paper_understanding_snapshot" data-edge-to="query_activation" data-edge-label="activate after baseline" data-edge-key="2" data-edge-id="snapshot_activation" data-composition-points="664,112;664,153.5;644,153.5;644,195" d="M 664 112 L 664 145.5 Q 664 153.5 656 153.5 L 652 153.5 Q 644 153.5 644 161.5 L 644 195" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="query_intent" data-edge-to="query_activation" data-edge-label="scope" data-edge-key="3" data-edge-id="intent_activation" data-composition-points="464,233;544,233" d="M 464 233 L 544 233" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="query_activation" data-edge-to="scientific_claim" data-edge-label="select" data-edge-key="4" data-edge-id="activation_claim" data-composition-points="744,234;814,234" d="M 744 234 L 814 234" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="scientific_claim" data-edge-to="math_claim_ir" data-edge-label="revision ref" data-edge-key="5" data-edge-id="claim_ir" data-composition-points="1024,234;1102,234" d="M 1024 234 L 1102 234" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="scientific_claim" data-edge-to="claim_math_alignment" data-edge-key="6" data-edge-id="claim_alignment" data-composition-points="919,273;919,316.5;493,316.5;493,360" d="M 919 273 L 919 308.5 Q 919 316.5 911 316.5 L 501 316.5 Q 493 316.5 493 324.5 L 493 360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="math_claim_ir" data-edge-to="claim_math_alignment" data-edge-key="7" data-edge-id="ir_alignment" data-composition-points="1215,281;1215,320.5;507,320.5;507,360" d="M 1215 281 L 1215 312.5 Q 1215 320.5 1207 320.5 L 515 320.5 Q 507 320.5 507 328.5 L 507 360" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="math_claim_ir" data-edge-to="formalization_record" data-edge-key="8" data-edge-id="ir_formalization" data-composition-points="1229,281;1229,360" d="M 1229 281 L 1229 360" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="claim_math_alignment" data-edge-to="scoped_assessments" data-edge-label="mapped or residual" data-edge-key="9" data-edge-id="alignment_assessment" data-composition-points="500,454;500,494.5;866,494.5;866,535" d="M 500 454 L 500 486.5 Q 500 494.5 508 494.5 L 858 494.5 Q 866 494.5 866 502.5 L 866 535" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="formalization_record" data-edge-to="scoped_assessments" data-edge-label="artifacts and candidates" data-edge-key="10" data-edge-id="formalization_assessment" data-composition-points="1222,454;1222,494.5;894,494.5;894,535" d="M 1222 454 L 1222 486.5 Q 1222 494.5 1214 494.5 L 902 494.5 Q 894 494.5 894 502.5 L 894 535" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="evidence_blockers" data-edge-to="scoped_assessments" data-edge-label="independent facts" data-edge-key="11" data-edge-id="evidence_assessment" data-composition-points="880,454;880,535" d="M 880 454 L 880 535" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="scoped_assessments" data-edge-to="bounded_answer" data-edge-label="select" data-edge-key="12" data-edge-id="assessment_answer" data-composition-points="1020,582;1060,582" d="M 1020 582 L 1060 582" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="exact_paper_release" data-edge-to="paper_analysis" data-edge-label="exact source" data-edge-key="0" data-edge-id="release_to_analysis" data-composition-points="250,121;300,121;300,199;350,199" d="M 250 121 L 292 121 Q 300 121 300 129 L 300 191 Q 300 199 308 199 L 350 199" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="profile_scope" data-edge-to="paper_analysis" data-edge-label="profile + scope" data-edge-key="1" data-edge-id="scope_to_analysis" data-composition-points="290,286;320,286;320,199;350,199" d="M 290 286 L 312 286 Q 320 286 320 278 L 320 207 Q 320 199 328 199 L 350 199" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="paper_analysis" data-edge-to="claims_math_ir" data-edge-label="claim records" data-edge-key="2" data-edge-id="analysis_to_claims" data-composition-points="600,199;700,199" d="M 600 199 L 700 199" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="claims_math_ir" data-edge-to="formal_evidence_alignment" data-edge-label="exact targets" data-edge-key="3" data-edge-id="claims_to_records" data-composition-points="930,199;1010,199" d="M 930 199 L 1010 199" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="formal_evidence_alignment" data-edge-to="release_audit" data-edge-label="audit package" data-edge-key="4" data-edge-id="records_to_audit" data-composition-points="1180,253;1180,297.5;1225,297.5;1225,342" d="M 1180 253 L 1180 289.5 Q 1180 297.5 1188 297.5 L 1217 297.5 Q 1225 297.5 1225 305.5 L 1225 342" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="release_audit" data-edge-to="release_certifier" data-edge-label="passing audit" data-edge-key="5" data-edge-id="audit_to_certifier" data-composition-points="1110,386;1060,386" d="M 1110 386 L 1060 386" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="release_certifier" data-edge-to="paper_agent_release" data-edge-label="certifies hash" data-edge-key="6" data-edge-id="certifier_to_release" data-composition-points="850,386;790,386" d="M 850 386 L 790 386" class="a-security" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="paper_agent_release" data-edge-to="knowledge_base" data-edge-label="eligible entries" data-edge-key="7" data-edge-id="release_to_kb" data-composition-points="680,432;680,456;711,456;711,476;695,476;695,500" d="M 680 432 L 680 448 Q 680 456 688 456 L 703 456 Q 711 456 711 464 L 711 468 Q 711 476 703 476 L 703 476 Q 695 476 695 484 L 695 500" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="knowledge_base" data-edge-to="query_resolution" data-edge-label="read-only" data-edge-key="8" data-edge-id="kb_to_query" data-composition-points="820,546;920,546" d="M 820 546 L 920 546" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="query_intent" data-edge-to="provisional_fast_path" data-edge-label="fast request" data-edge-key="9" data-edge-id="intent_to_provisional" data-composition-points="250,565;300,565" d="M 250 565 L 300 565" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="provisional_fast_path" data-edge-to="query_resolution" data-edge-label="provisional only" data-edge-key="10" data-edge-id="provisional_to_query" data-composition-points="420,610;420,680;1070,680;1070,592" d="M 420 610 L 420 672 Q 420 680 428 680 L 1062 680 Q 1070 680 1070 672 L 1070 592" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
-        <g id="node-exact_paper_release" data-node-id="exact_paper_release" data-node-label="Exact Paper Release" tabindex="0" role="button" aria-label="Focus Exact Paper Release, Exact version + revision, Paper Baseline" aria-pressed="false" data-node-kind="external" data-node-sublabel="Exact version + revision" data-node-tag="paper baseline" data-node-context="Paper Baseline">
-          <title>Exact Paper Release · Exact version + revision · Paper Baseline · paper baseline</title>
-          <rect x="40" y="30" width="190" height="78" rx="6" class="c-mask"/>
-          <rect x="40" y="30" width="190" height="78" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(46 36) scale(0.6875)">
+        <g id="node-exact_paper_release" data-node-id="exact_paper_release" data-node-label="Exact Paper Release" tabindex="0" role="button" aria-label="Focus Exact Paper Release, Pinned source bytes and hash, Canonical Paper Agentization" aria-pressed="false" data-node-kind="external" data-node-sublabel="Pinned source bytes and hash" data-node-tag="canonical input" data-node-context="Canonical Paper Agentization">
+          <title>Exact Paper Release · Pinned source bytes and hash · Canonical Paper Agentization · canonical input</title>
+          <rect x="30" y="80" width="220" height="82" rx="6" class="c-mask"/>
+          <rect x="30" y="80" width="220" height="82" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(36 86) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="135" y="67" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Exact Paper Release</text>
-        <text data-detail="context" x="135" y="83" class="t-muted" font-size="9" text-anchor="middle">Exact version + revision</text>
-        <text data-detail="fine" x="135" y="100" class="t-external" font-size="7" text-anchor="middle">paper baseline</text>
+          <text data-node-label="" data-detail-anchor="" x="140" y="119" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Exact Paper Release</text>
+        <text data-detail="context" x="140" y="135" class="t-muted" font-size="9" text-anchor="middle">Pinned source bytes and hash</text>
+        <text data-detail="fine" x="140" y="154" class="t-external" font-size="7" text-anchor="middle">canonical input</text>
         </g>
 
-        <g id="node-whole_paper_analysis" data-node-id="whole_paper_analysis" data-node-label="Whole-Paper Analysis" tabindex="0" role="button" aria-label="Focus Whole-Paper Analysis, Context, dependencies, evidence, Paper Baseline" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Context, dependencies, evidence" data-node-tag="paper-first" data-node-context="Paper Baseline">
-          <title>Whole-Paper Analysis · Context, dependencies, evidence · Paper Baseline · paper-first</title>
-          <rect x="274" y="30" width="210" height="78" rx="6" class="c-mask"/>
-          <rect x="274" y="30" width="210" height="78" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(280 36) scale(0.6875)">
+        <g id="node-profile_scope" data-node-id="profile_scope" data-node-label="Agentization Profile / Inventory Scope" tabindex="0" role="button" aria-label="Focus Agentization Profile / Inventory Scope, Exact obligations and inventory, Canonical Paper Agentization" aria-pressed="false" data-node-kind="security" data-node-sublabel="Exact obligations and inventory" data-node-tag="completion boundary" data-node-context="Canonical Paper Agentization">
+          <title>Agentization Profile / Inventory Scope · Exact obligations and inventory · Canonical Paper Agentization · completion boundary</title>
+          <rect x="30" y="240" width="260" height="92" rx="6" class="c-mask"/>
+          <rect x="30" y="240" width="260" height="92" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(36 246) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="160" y="284" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Agentization Profile / Inventory Scope</text>
+        <text data-detail="context" x="160" y="300" class="t-muted" font-size="9" text-anchor="middle">Exact obligations and inventory</text>
+        <text data-detail="fine" x="160" y="324" class="t-security" font-size="7" text-anchor="middle">completion boundary</text>
+        </g>
+
+        <g id="node-paper_analysis" data-node-id="paper_analysis" data-node-label="Profile-Scoped Paper Analysis" tabindex="0" role="button" aria-label="Focus Profile-Scoped Paper Analysis, Whole release, query-independent, Canonical Paper Agentization" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Whole release, query-independent" data-node-tag="coordinator" data-node-context="Canonical Paper Agentization">
+          <title>Profile-Scoped Paper Analysis · Whole release, query-independent · Canonical Paper Agentization · coordinator</title>
+          <rect x="350" y="155" width="250" height="88" rx="6" class="c-mask"/>
+          <rect x="350" y="155" width="250" height="88" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(356 161) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="379" y="67" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Whole-Paper Analysis</text>
-        <text data-detail="context" x="379" y="83" class="t-muted" font-size="9" text-anchor="middle">Context, dependencies, evidence</text>
-        <text data-detail="fine" x="379" y="100" class="t-backend" font-size="7" text-anchor="middle">paper-first</text>
+          <text data-node-label="" data-detail-anchor="" x="475" y="197" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Profile-Scoped Paper Analysis</text>
+        <text data-detail="context" x="475" y="213" class="t-muted" font-size="9" text-anchor="middle">Whole release, query-independent</text>
+        <text data-detail="fine" x="475" y="235" class="t-backend" font-size="7" text-anchor="middle">coordinator</text>
         </g>
 
-        <g id="node-paper_understanding_snapshot" data-node-id="paper_understanding_snapshot" data-node-label="Paper Understanding Snapshot" tabindex="0" role="button" aria-label="Focus Paper Understanding Snapshot, Versioned view + provenance, Paper Baseline" aria-pressed="false" data-node-kind="database" data-node-sublabel="Versioned view + provenance" data-node-tag="reproducible" data-node-context="Paper Baseline">
-          <title>Paper Understanding Snapshot · Versioned view + provenance · Paper Baseline · reproducible</title>
-          <rect x="544" y="30" width="240" height="82" rx="6" class="c-mask"/>
-          <rect x="544" y="30" width="240" height="82" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(550 36) scale(0.6875)">
+        <g id="node-claims_math_ir" data-node-id="claims_math_ir" data-node-label="Claims &amp; MathClaimIR" tabindex="0" role="button" aria-label="Focus Claims &amp; MathClaimIR, Source-bound identities and math IR, Canonical Paper Agentization" aria-pressed="false" data-node-kind="database" data-node-sublabel="Source-bound identities and math IR" data-node-tag="canonical records" data-node-context="Canonical Paper Agentization">
+          <title>Claims &amp; MathClaimIR · Source-bound identities and math IR · Canonical Paper Agentization · canonical records</title>
+          <rect x="700" y="155" width="230" height="88" rx="6" class="c-mask"/>
+          <rect x="700" y="155" width="230" height="88" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(706 161) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="664" y="69" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Paper Understanding Snapshot</text>
-        <text data-detail="context" x="664" y="85" class="t-muted" font-size="9" text-anchor="middle">Versioned view + provenance</text>
-        <text data-detail="fine" x="664" y="104" class="t-database" font-size="7" text-anchor="middle">reproducible</text>
+          <text data-node-label="" data-detail-anchor="" x="815" y="197" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Claims &amp; MathClaimIR</text>
+        <text data-detail="context" x="815" y="213" class="t-muted" font-size="9" text-anchor="middle">Source-bound identities and math IR</text>
+        <text data-detail="fine" x="815" y="235" class="t-database" font-size="7" text-anchor="middle">canonical records</text>
         </g>
 
-        <g id="node-query_intent" data-node-id="query_intent" data-node-label="Query Intent" tabindex="0" role="button" aria-label="Focus Query Intent, Scope, target, requested answer, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Scope, target, requested answer" data-node-tag="held input" data-node-context="Architecture component">
-          <title>Query Intent · Scope, target, requested answer · Architecture component · held input</title>
-          <rect x="274" y="195" width="190" height="76" rx="6" class="c-mask"/>
-          <rect x="274" y="195" width="190" height="76" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(280 201) scale(0.6875)">
-            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
-            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="369" y="231" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Query Intent</text>
-        <text data-detail="context" x="369" y="247" class="t-muted" font-size="9" text-anchor="middle">Scope, target, requested answer</text>
-        <text data-detail="fine" x="369" y="263" class="t-external" font-size="7" text-anchor="middle">held input</text>
-        </g>
-
-        <g id="node-query_activation" data-node-id="query_activation" data-node-label="Query Activation" tabindex="0" role="button" aria-label="Focus Query Activation, Selects relevant claims, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Selects relevant claims" data-node-context="Query-Scoped Reasoning">
-          <title>Query Activation · Selects relevant claims · Query-Scoped Reasoning</title>
-          <rect x="544" y="195" width="200" height="78" rx="6" class="c-mask"/>
-          <rect x="544" y="195" width="200" height="78" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(550 201) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="644" y="232" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Query Activation</text>
-        <text data-detail="context" x="644" y="248" class="t-muted" font-size="9" text-anchor="middle">Selects relevant claims</text>
-        </g>
-
-        <g id="node-scientific_claim" data-node-id="scientific_claim" data-node-label="ScientificClaim" tabindex="0" role="button" aria-label="Focus ScientificClaim, Stable assertion identity, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Stable assertion identity" data-node-tag="identity owner" data-node-context="Query-Scoped Reasoning">
-          <title>ScientificClaim · Stable assertion identity · Query-Scoped Reasoning · identity owner</title>
-          <rect x="814" y="195" width="210" height="78" rx="6" class="c-mask"/>
-          <rect x="814" y="195" width="210" height="78" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(820 201) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="919" y="232" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ScientificClaim</text>
-        <text data-detail="context" x="919" y="248" class="t-muted" font-size="9" text-anchor="middle">Stable assertion identity</text>
-        <text data-detail="fine" x="919" y="265" class="t-backend" font-size="7" text-anchor="middle">identity owner</text>
-        </g>
-
-        <g id="node-math_claim_ir" data-node-id="math_claim_ir" data-node-label="MathClaimIR" tabindex="0" role="button" aria-label="Focus MathClaimIR, Canonical math; exact claim revision, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="database" data-node-sublabel="Canonical math; exact claim revision" data-node-tag="concrete ClaimIR" data-node-context="Query-Scoped Reasoning">
-          <title>MathClaimIR · Canonical math; exact claim revision · Query-Scoped Reasoning · concrete ClaimIR</title>
-          <rect x="1102" y="195" width="240" height="86" rx="6" class="c-mask"/>
-          <rect x="1102" y="195" width="240" height="86" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1108 201) scale(0.6875)">
-            <ellipse cx="8" cy="4" rx="5" ry="2"/>
-            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="1222" y="236" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">MathClaimIR</text>
-        <text data-detail="context" x="1222" y="252" class="t-muted" font-size="9" text-anchor="middle">Canonical math; exact claim revision</text>
-        <text data-detail="fine" x="1222" y="273" class="t-database" font-size="7" text-anchor="middle">concrete ClaimIR</text>
-        </g>
-
-        <g id="node-claim_math_alignment" data-node-id="claim_math_alignment" data-node-label="ClaimMathAlignment" tabindex="0" role="button" aria-label="Focus ClaimMathAlignment, Stable IDs + paths; mapped or residual, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="Stable IDs + paths; mapped or residual" data-node-tag="V2 successor" data-node-context="Query-Scoped Reasoning">
-          <title>ClaimMathAlignment · Stable IDs + paths; mapped or residual · Query-Scoped Reasoning · V2 successor</title>
-          <rect x="360" y="360" width="280" height="94" rx="6" class="c-mask"/>
-          <rect x="360" y="360" width="280" height="94" rx="6" class="c-messagebus" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(366 366) scale(0.6875)">
+        <g id="node-formal_evidence_alignment" data-node-id="formal_evidence_alignment" data-node-label="Formalization, Evidence, Alignment &amp; Assessments" tabindex="0" role="button" aria-label="Focus Formalization, Evidence, Alignment &amp; Assessments, Separate records and authority axes, Canonical Paper Agentization" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="Separate records and authority axes" data-node-tag="mixed outcomes" data-node-context="Canonical Paper Agentization">
+          <title>Formalization, Evidence, Alignment &amp; Assessments · Separate records and authority axes · Canonical Paper Agentization · mixed outcomes</title>
+          <rect x="1010" y="145" width="340" height="108" rx="6" class="c-mask"/>
+          <rect x="1010" y="145" width="340" height="108" rx="6" class="c-messagebus" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(1016 151) scale(0.6875)">
             <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
             <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
             <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="500" y="405" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ClaimMathAlignment</text>
-        <text data-detail="context" x="500" y="421" class="t-muted" font-size="9" text-anchor="middle">Stable IDs + paths; mapped or residual</text>
-        <text data-detail="fine" x="500" y="446" class="t-messagebus" font-size="7" text-anchor="middle">V2 successor</text>
+          <text data-node-label="" data-detail-anchor="" x="1180" y="197" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Formalization, Evidence, Alignment &amp; Assessments</text>
+        <text data-detail="context" x="1180" y="213" class="t-muted" font-size="9" text-anchor="middle">Separate records and authority axes</text>
+        <text data-detail="fine" x="1180" y="245" class="t-messagebus" font-size="7" text-anchor="middle">mixed outcomes</text>
         </g>
 
-        <g id="node-formalization_record" data-node-id="formalization_record" data-node-label="FormalizationRecord" tabindex="0" role="button" aria-label="Focus FormalizationRecord, Target artifacts, environment, candidates, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="database" data-node-sublabel="Target artifacts, environment, candidates" data-node-tag="target-system owner" data-node-context="Query-Scoped Reasoning">
-          <title>FormalizationRecord · Target artifacts, environment, candidates · Query-Scoped Reasoning · target-system owner</title>
-          <rect x="1097" y="360" width="250" height="94" rx="6" class="c-mask"/>
-          <rect x="1097" y="360" width="250" height="94" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(1103 366) scale(0.6875)">
-            <ellipse cx="8" cy="4" rx="5" ry="2"/>
-            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="1222" y="405" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">FormalizationRecord</text>
-        <text data-detail="context" x="1222" y="421" class="t-muted" font-size="9" text-anchor="middle">Target artifacts, environment, candidates</text>
-        <text data-detail="fine" x="1222" y="446" class="t-database" font-size="7" text-anchor="middle">target-system owner</text>
-        </g>
-
-        <g id="node-evidence_blockers" data-node-id="evidence_blockers" data-node-label="Evidence &amp; Blocker Records" tabindex="0" role="button" aria-label="Focus Evidence &amp; Blocker Records, Independent external facts, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="external" data-node-sublabel="Independent external facts" data-node-tag="external records" data-node-context="Query-Scoped Reasoning">
-          <title>Evidence &amp; Blocker Records · Independent external facts · Query-Scoped Reasoning · external records</title>
-          <rect x="740" y="360" width="260" height="94" rx="6" class="c-mask"/>
-          <rect x="740" y="360" width="260" height="94" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(746 366) scale(0.6875)">
-            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
-            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="870" y="405" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Evidence &amp; Blocker Records</text>
-        <text data-detail="context" x="870" y="421" class="t-muted" font-size="9" text-anchor="middle">Independent external facts</text>
-        <text data-detail="fine" x="870" y="446" class="t-external" font-size="7" text-anchor="middle">external records</text>
-        </g>
-
-        <g id="node-scoped_assessments" data-node-id="scoped_assessments" data-node-label="Scoped Assessments" tabindex="0" role="button" aria-label="Focus Scoped Assessments, Versioned, scope-bound axes, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="security" data-node-sublabel="Versioned, scope-bound axes" data-node-tag="scope-bound" data-node-context="Query-Scoped Reasoning">
-          <title>Scoped Assessments · Versioned, scope-bound axes · Query-Scoped Reasoning · scope-bound</title>
-          <rect x="740" y="535" width="280" height="94" rx="6" class="c-mask"/>
-          <rect x="740" y="535" width="280" height="94" rx="6" class="c-security" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(746 541) scale(0.6875)">
+        <g id="node-release_audit" data-node-id="release_audit" data-node-label="Release Audit" tabindex="0" role="button" aria-label="Focus Release Audit, Independent integrity and completeness, Canonical Paper Agentization" aria-pressed="false" data-node-kind="security" data-node-sublabel="Independent integrity and completeness" data-node-tag="auditor ≠ coordinator" data-node-context="Canonical Paper Agentization">
+          <title>Release Audit · Independent integrity and completeness · Canonical Paper Agentization · auditor ≠ coordinator</title>
+          <rect x="1110" y="342" width="230" height="88" rx="6" class="c-mask"/>
+          <rect x="1110" y="342" width="230" height="88" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(1116 348) scale(0.6875)">
             <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="880" y="580" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Scoped Assessments</text>
-        <text data-detail="context" x="880" y="596" class="t-muted" font-size="9" text-anchor="middle">Versioned, scope-bound axes</text>
-        <text data-detail="fine" x="880" y="621" class="t-security" font-size="7" text-anchor="middle">scope-bound</text>
+          <text data-node-label="" data-detail-anchor="" x="1225" y="384" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Release Audit</text>
+        <text data-detail="context" x="1225" y="400" class="t-muted" font-size="9" text-anchor="middle">Independent integrity and completeness</text>
+        <text data-detail="fine" x="1225" y="422" class="t-security" font-size="7" text-anchor="middle">auditor ≠ coordinator</text>
         </g>
 
-        <g id="node-bounded_answer" data-node-id="bounded_answer" data-node-label="Bounded Answer" tabindex="0" role="button" aria-label="Focus Bounded Answer, Uncertainty + non-implications, Query-Scoped Reasoning" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Uncertainty + non-implications" data-node-tag="query result" data-node-context="Query-Scoped Reasoning">
-          <title>Bounded Answer · Uncertainty + non-implications · Query-Scoped Reasoning · query result</title>
-          <rect x="1060" y="535" width="300" height="94" rx="6" class="c-mask"/>
-          <rect x="1060" y="535" width="300" height="94" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(1066 541) scale(0.6875)">
+        <g id="node-release_certifier" data-node-id="release_certifier" data-node-label="Release Certifier" tabindex="0" role="button" aria-label="Focus Release Certifier, Binds passing audit to release hash, Canonical Paper Agentization" aria-pressed="false" data-node-kind="security" data-node-sublabel="Binds passing audit to release hash" data-node-tag="distinct from coordinator and auditor" data-node-context="Canonical Paper Agentization">
+          <title>Release Certifier · Binds passing audit to release hash · Canonical Paper Agentization · distinct from coordinator and auditor</title>
+          <rect x="850" y="342" width="210" height="88" rx="6" class="c-mask"/>
+          <rect x="850" y="342" width="210" height="88" rx="6" class="c-security" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(856 348) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
+            <path d="m5.8 8 1.5 1.5 3-3"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="955" y="384" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Release Certifier</text>
+        <text data-detail="context" x="955" y="400" class="t-muted" font-size="9" text-anchor="middle">Binds passing audit to release hash</text>
+        <text data-detail="fine" x="955" y="422" class="t-security" font-size="7" text-anchor="middle">distinct from coordinator and auditor</text>
+        </g>
+
+        <g id="node-paper_agent_release" data-node-id="paper_agent_release" data-node-label="Paper Agent Release" tabindex="0" role="button" aria-label="Focus Paper Agent Release, Certified package; mixed entry statuses, Canonical Paper Agentization" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Certified package; mixed entry statuses" data-node-tag="certifier distinct" data-node-context="Canonical Paper Agentization">
+          <title>Paper Agent Release · Certified package; mixed entry statuses · Canonical Paper Agentization · certifier distinct</title>
+          <rect x="570" y="340" width="220" height="92" rx="6" class="c-mask"/>
+          <rect x="570" y="340" width="220" height="92" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(576 346) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="680" y="384" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Paper Agent Release</text>
+        <text data-detail="context" x="680" y="400" class="t-muted" font-size="9" text-anchor="middle">Certified package; mixed entry statuses</text>
+        <text data-detail="fine" x="680" y="424" class="t-cloud" font-size="7" text-anchor="middle">certifier distinct</text>
+        </g>
+
+        <g id="node-knowledge_base" data-node-id="knowledge_base" data-node-label="Verification-Aware Knowledge Base" tabindex="0" role="button" aria-label="Focus Verification-Aware Knowledge Base, Derived per-entry admission index, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="Derived per-entry admission index" data-node-tag="not aggregate truth" data-node-context="Architecture component">
+          <title>Verification-Aware Knowledge Base · Derived per-entry admission index · Architecture component · not aggregate truth</title>
+          <rect x="570" y="500" width="250" height="92" rx="6" class="c-mask"/>
+          <rect x="570" y="500" width="250" height="92" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(576 506) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="695" y="544" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Verification-Aware Knowledge Base</text>
+        <text data-detail="context" x="695" y="560" class="t-muted" font-size="9" text-anchor="middle">Derived per-entry admission index</text>
+        <text data-detail="fine" x="695" y="584" class="t-database" font-size="7" text-anchor="middle">not aggregate truth</text>
+        </g>
+
+        <g id="node-query_resolution" data-node-id="query_resolution" data-node-label="Query Resolution" tabindex="0" role="button" aria-label="Focus Query Resolution, Package-backed read-only retrieval, Architecture component" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Package-backed read-only retrieval" data-node-tag="downstream consumer" data-node-context="Architecture component">
+          <title>Query Resolution · Package-backed read-only retrieval · Architecture component · downstream consumer</title>
+          <rect x="920" y="500" width="300" height="92" rx="6" class="c-mask"/>
+          <rect x="920" y="500" width="300" height="92" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(926 506) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1210" y="580" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Bounded Answer</text>
-        <text data-detail="context" x="1210" y="596" class="t-muted" font-size="9" text-anchor="middle">Uncertainty + non-implications</text>
-        <text data-detail="fine" x="1210" y="621" class="t-frontend" font-size="7" text-anchor="middle">query result</text>
+          <text data-node-label="" data-detail-anchor="" x="1070" y="544" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Query Resolution</text>
+        <text data-detail="context" x="1070" y="560" class="t-muted" font-size="9" text-anchor="middle">Package-backed read-only retrieval</text>
+        <text data-detail="fine" x="1070" y="584" class="t-frontend" font-size="7" text-anchor="middle">downstream consumer</text>
+        </g>
+
+        <g id="node-query_intent" data-node-id="query_intent" data-node-label="Query Intent" tabindex="0" role="button" aria-label="Focus Query Intent, Question and retrieval intent, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="Question and retrieval intent" data-node-context="Architecture component">
+          <title>Query Intent · Question and retrieval intent · Architecture component</title>
+          <rect x="30" y="525" width="220" height="80" rx="6" class="c-mask"/>
+          <rect x="30" y="525" width="220" height="80" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(36 531) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="140" y="563" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Query Intent</text>
+        <text data-detail="context" x="140" y="579" class="t-muted" font-size="9" text-anchor="middle">Question and retrieval intent</text>
+        </g>
+
+        <g id="node-provisional_fast_path" data-node-id="provisional_fast_path" data-node-label="Provisional Fast Path" tabindex="0" role="button" aria-label="Focus Provisional Fast Path, Candidates plus canonical intake link, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Candidates plus canonical intake link" data-node-tag="no release or KB writes" data-node-context="Architecture component">
+          <title>Provisional Fast Path · Candidates plus canonical intake link · Architecture component · no release or KB writes</title>
+          <rect x="300" y="520" width="240" height="90" rx="6" class="c-mask"/>
+          <rect x="300" y="520" width="240" height="90" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(306 526) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="420" y="563" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Provisional Fast Path</text>
+        <text data-detail="context" x="420" y="579" class="t-muted" font-size="9" text-anchor="middle">Candidates plus canonical intake link</text>
+        <text data-detail="fine" x="420" y="602" class="t-backend" font-size="7" text-anchor="middle">no release or KB writes</text>
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="exact_paper_release" data-edge-to="whole_paper_analysis" data-edge-label="analyze" data-edge-key="0" data-edge-id="release_analysis">
-          <rect x="230.2" y="49" width="43.6" height="14" rx="3" class="c-mask"/>
-          <text x="252" y="59" class="t-backend" font-size="8" text-anchor="middle">analyze</text>
+        <g data-detail="context" data-edge-from="exact_paper_release" data-edge-to="paper_analysis" data-edge-label="exact source" data-edge-key="0" data-edge-id="release_to_analysis">
+          <rect x="266.2" y="115" width="67.6" height="14" rx="3" class="c-mask"/>
+          <text x="300" y="125" class="t-backend" font-size="8" text-anchor="middle">exact source</text>
         </g>
-        <g data-detail="context" data-edge-from="whole_paper_analysis" data-edge-to="paper_understanding_snapshot" data-edge-label="snapshot" data-edge-key="1" data-edge-id="analysis_snapshot">
-          <rect x="489.8" y="49" width="48.4" height="14" rx="3" class="c-mask"/>
-          <text x="514" y="59" class="t-backend" font-size="8" text-anchor="middle">snapshot</text>
+        <g data-detail="context" data-edge-from="profile_scope" data-edge-to="paper_analysis" data-edge-label="profile + scope" data-edge-key="1" data-edge-id="scope_to_analysis">
+          <rect x="274" y="336" width="82" height="14" rx="3" class="c-mask"/>
+          <text x="315" y="346" class="t-backend" font-size="8" text-anchor="middle">profile + scope</text>
         </g>
-        <g data-detail="context" data-edge-from="paper_understanding_snapshot" data-edge-to="query_activation" data-edge-label="activate after baseline" data-edge-key="2" data-edge-id="snapshot_activation">
-          <rect x="593.8" y="133.5" width="120.39999999999999" height="14" rx="3" class="c-mask"/>
-          <text x="654" y="143.5" class="t-backend" font-size="8" text-anchor="middle">activate after baseline</text>
+        <g data-detail="context" data-edge-from="paper_analysis" data-edge-to="claims_math_ir" data-edge-label="claim records" data-edge-key="2" data-edge-id="analysis_to_claims">
+          <rect x="613.8" y="190" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="650" y="200" class="t-backend" font-size="8" text-anchor="middle">claim records</text>
         </g>
-        <g data-detail="context" data-edge-from="query_intent" data-edge-to="query_activation" data-edge-label="scope" data-edge-key="3" data-edge-id="intent_activation">
-          <rect x="487" y="213" width="34" height="14" rx="3" class="c-mask"/>
-          <text x="504" y="223" class="t-messagebus" font-size="8" text-anchor="middle">scope</text>
+        <g data-detail="context" data-edge-from="claims_math_ir" data-edge-to="formal_evidence_alignment" data-edge-label="exact targets" data-edge-key="3" data-edge-id="claims_to_records">
+          <rect x="933.8" y="190" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="970" y="200" class="t-backend" font-size="8" text-anchor="middle">exact targets</text>
         </g>
-        <g data-detail="context" data-edge-from="query_activation" data-edge-to="scientific_claim" data-edge-label="select" data-edge-key="4" data-edge-id="activation_claim">
-          <rect x="759.6" y="214" width="38.8" height="14" rx="3" class="c-mask"/>
-          <text x="779" y="224" class="t-backend" font-size="8" text-anchor="middle">select</text>
+        <g data-detail="context" data-edge-from="formal_evidence_alignment" data-edge-to="release_audit" data-edge-label="audit package" data-edge-key="4" data-edge-id="records_to_audit">
+          <rect x="1143.8" y="290" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="1180" y="300" class="t-backend" font-size="8" text-anchor="middle">audit package</text>
         </g>
-        <g data-detail="context" data-edge-from="scientific_claim" data-edge-to="math_claim_ir" data-edge-label="revision ref" data-edge-key="5" data-edge-id="claim_ir">
-          <rect x="1029.2" y="214" width="67.6" height="14" rx="3" class="c-mask"/>
-          <text x="1063" y="224" class="t-backend" font-size="8" text-anchor="middle">revision ref</text>
+        <g data-detail="context" data-edge-from="release_audit" data-edge-to="release_certifier" data-edge-label="passing audit" data-edge-key="5" data-edge-id="audit_to_certifier">
+          <rect x="1048.8" y="326" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="1085" y="336" class="t-security" font-size="8" text-anchor="middle">passing audit</text>
         </g>
-
-
-
-        <g data-detail="context" data-edge-from="claim_math_alignment" data-edge-to="scoped_assessments" data-edge-label="mapped or residual" data-edge-key="9" data-edge-id="alignment_assessment">
-          <rect x="634.8" y="474.5" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
-          <text x="683" y="484.5" class="t-muted" font-size="8" text-anchor="middle">mapped or residual</text>
+        <g data-detail="context" data-edge-from="release_certifier" data-edge-to="paper_agent_release" data-edge-label="certifies hash" data-edge-key="6" data-edge-id="certifier_to_release">
+          <rect x="781.4" y="326" width="77.2" height="14" rx="3" class="c-mask"/>
+          <text x="820" y="336" class="t-security" font-size="8" text-anchor="middle">certifies hash</text>
         </g>
-        <g data-detail="context" data-edge-from="formalization_record" data-edge-to="scoped_assessments" data-edge-label="artifacts and candidates" data-edge-key="10" data-edge-id="formalization_assessment">
-          <rect x="995.4" y="474.5" width="125.19999999999999" height="14" rx="3" class="c-mask"/>
-          <text x="1058" y="484.5" class="t-muted" font-size="8" text-anchor="middle">artifacts and candidates</text>
+        <g data-detail="context" data-edge-from="paper_agent_release" data-edge-to="knowledge_base" data-edge-label="eligible entries" data-edge-key="7" data-edge-id="release_to_kb">
+          <rect x="636.6" y="455" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="680" y="465" class="t-backend" font-size="8" text-anchor="middle">eligible entries</text>
         </g>
-        <g data-detail="context" data-edge-from="evidence_blockers" data-edge-to="scoped_assessments" data-edge-label="independent facts" data-edge-key="11" data-edge-id="evidence_assessment">
-          <rect x="834.2" y="458" width="91.6" height="14" rx="3" class="c-mask"/>
-          <text x="880" y="468" class="t-muted" font-size="8" text-anchor="middle">independent facts</text>
+        <g data-detail="context" data-edge-from="knowledge_base" data-edge-to="query_resolution" data-edge-label="read-only" data-edge-key="8" data-edge-id="kb_to_query">
+          <rect x="843.4" y="470" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="870" y="480" class="t-backend" font-size="8" text-anchor="middle">read-only</text>
         </g>
-        <g data-detail="context" data-edge-from="scoped_assessments" data-edge-to="bounded_answer" data-edge-label="select" data-edge-key="12" data-edge-id="assessment_answer">
-          <rect x="1020.6" y="562" width="38.8" height="14" rx="3" class="c-mask"/>
-          <text x="1040" y="572" class="t-backend" font-size="8" text-anchor="middle">select</text>
+        <g data-detail="context" data-edge-from="query_intent" data-edge-to="provisional_fast_path" data-edge-label="fast request" data-edge-key="9" data-edge-id="intent_to_provisional">
+          <rect x="241.2" y="506" width="67.6" height="14" rx="3" class="c-mask"/>
+          <text x="275" y="516" class="t-messagebus" font-size="8" text-anchor="middle">fast request</text>
+        </g>
+        <g data-detail="context" data-edge-from="provisional_fast_path" data-edge-to="query_resolution" data-edge-label="provisional only" data-edge-key="10" data-edge-id="provisional_to_query">
+          <rect x="806.6" y="665" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="850" y="675" class="t-messagebus" font-size="8" text-anchor="middle">provisional only</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="Paper Baseline">
-          <rect data-graph-role="structural-frame-label-mask" x="20" y="10" width="85.6" height="16" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="24" y="23" class="t-cloud" font-size="9" font-weight="600">Paper Baseline</text>
-        </g>
-
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="1" data-composition-frame-kind="region" data-composition-frame-label="Query-Scoped Reasoning">
-          <rect data-graph-role="structural-frame-label-mask" x="340" y="175" width="128.8" height="16" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="344" y="188" class="t-cloud" font-size="9" font-weight="600">Query-Scoped Reasoning</text>
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="Canonical Paper Agentization">
+          <rect data-graph-role="structural-frame-label-mask" x="10" y="60" width="161.2" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="14" y="73" class="t-cloud" font-size="9" font-weight="600">Canonical Paper Agentization</text>
         </g>
 
         <!-- Legend -->
@@ -5452,25 +5444,34 @@
     <div class="cards">
       <div class="card">
         <div class="card-header">
-          <div class="card-dot violet"></div>
-          <h3>Identity, Representation, and Alignment</h3>
+          <div class="card-dot emerald"></div>
+          <h3>Release completion is accounting, not truth</h3>
         </div>
         <ul>
-          <li>&bull; ScientificClaim owns assertion identity; MathClaimIR owns the canonical mathematical representation and links to an exact ScientificClaim revision.</li>
-          <li>&bull; Exact reference binding does not by itself establish semantic equivalence.</li>
-          <li>&bull; ClaimMathAlignment uses stable component IDs, exact paths, and mapped-or-residual completeness.</li>
+          <li>&bull; Every in-scope inventory entry has exactly one disposition under the exact profile and scope.</li>
+          <li>&bull; Certification attests package integrity and profile conformance while preserving blocked, deferred, or failed entries.</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
-          <div class="card-dot emerald"></div>
-          <h3>Artifacts, Facts, and Scoped Conclusions</h3>
+          <div class="card-dot violet"></div>
+          <h3>Authority stays separated</h3>
         </div>
         <ul>
-          <li>&bull; FormalizationRecord owns target-system artifacts, environments, and candidates; Evidence and Blocker records own independent external facts.</li>
-          <li>&bull; Versioned assessments separately evaluate formalizability, verification, applicability, and acceptance.</li>
-          <li>&bull; A bounded answer selects exact assessments and retains uncertainty and non-implications; AgtXIv.md supplies current boundary evidence.</li>
+          <li>&bull; The AgentizationCoordinator, ReleaseAuditor, and ReleaseCertifier are distinct identities; the legacy Root Agent is not a V2 release role.</li>
+          <li>&bull; FormalizationRecord stores generated outcomes and artifacts only; verification, alignment, and acceptance remain independent records.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Queries consume releases</h3>
+        </div>
+        <ul>
+          <li>&bull; PACKAGE_BACKED is read-only and follows certified package references plus the verification-aware index.</li>
+          <li>&bull; PROVISIONAL_FAST_PATH triggers or links query-independent standard agentization, but cannot narrow its profile/scope, write a release, or promote a knowledge-base entry.</li>
         </ul>
       </div>
     </div>
