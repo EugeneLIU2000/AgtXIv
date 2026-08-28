@@ -2,179 +2,165 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "AgtXIv Paper-First 分层架构",
+    "title": "AgtXIv V2 — Paper-First Claim Architecture",
+    "locale": "en",
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/EugeneLIU2000/AgtXIv",
-      "revision": "cb42f4123706b85e80817fcf552fc92afa360e65"
+      "revision": "2380c3a33b7718d3da810a4ab484ffcf790cce2d"
     },
-    "viewBox": [
-      1600,
-      800
-    ],
     "views": [
       {
         "id": "paper_baseline",
-        "label": "整篇论文基线",
+        "label": "Paper Baseline",
         "focus": [
-          "paper_release",
+          "exact_paper_release",
           "whole_paper_analysis",
-          "understanding_snapshot"
+          "paper_understanding_snapshot"
         ],
-        "note": "先独立回答“这篇论文讲了什么”，具体 query 不参与全文拆解。"
+        "note": "Start from an exact paper release and produce a revision-bound understanding snapshot."
       },
       {
-        "id": "query_activation",
-        "label": "Query 激活",
+        "id": "query_activation_view",
+        "label": "Query Activation",
         "focus": [
+          "paper_understanding_snapshot",
           "query_intent",
-          "understanding_snapshot",
           "query_activation",
           "scientific_claim"
         ],
-        "note": "冻结的问题只在全文基线完成后激活，并解析到精确 ScientificClaim。"
+        "note": "Activate only the claims needed for the query while preserving their assertion identity."
       },
       {
-        "id": "verification_path",
-        "label": "验证路径",
+        "id": "claim_ir_alignment_view",
+        "label": "Claim / IR Alignment",
         "focus": [
           "scientific_claim",
-          "claim_math_bridge",
-          "math_ir_dag",
-          "verification_evidence",
-          "bridge_assessment"
+          "math_claim_ir",
+          "claim_math_alignment"
         ],
-        "note": "数学验证、物理适用性、证据完整性和科学接受始终分开。"
+        "note": "MathClaimIR owns canonical mathematics and links to an exact ScientificClaim revision; alignment maps components or records residuals."
       },
       {
-        "id": "bounded_answer",
-        "label": "有限回答",
+        "id": "bounded_answer_view",
+        "label": "Bounded Assessment & Answer",
         "focus": [
-          "bridge_assessment",
-          "root_answer"
+          "formalization_record",
+          "evidence_blockers",
+          "claim_math_alignment",
+          "scoped_assessments",
+          "bounded_answer"
         ],
-        "note": "最终输出保留 UNKNOWN、BLOCKED、NOT_CHECKED 和明确的非蕴含。"
+        "note": "Select exact scoped assessments and retain uncertainty and non-implications in the answer."
       }
+    ],
+    "viewBox": [
+      1390,
+      696
     ]
   },
   "components": [
     {
-      "id": "query_intent",
+      "id": "exact_paper_release",
       "type": "external",
-      "label": "QueryIntent",
-      "sublabel": "提取、规范化、冻结后搁置",
-      "tag": "先冻结",
+      "label": "Exact Paper Release",
+      "sublabel": "Exact version + revision",
+      "tag": "paper baseline",
       "pos": [
-        80,
-        60
+        40,
+        30
       ],
       "size": [
-        250,
-        78
-      ],
-      "sources": [
-        {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/query-intent.json",
-          "line": 1,
-          "end_line": 27,
-          "label": "已验证 pilot"
-        }
-      ]
-    },
-    {
-      "id": "paper_release",
-      "type": "cloud",
-      "label": "冻结论文版本",
-      "sublabel": "公开仓库／精确 release／source hashes",
-      "tag": "不可变来源",
-      "pos": [
-        500,
-        60
-      ],
-      "size": [
-        280,
+        190,
         78
       ],
       "sources": [
         {
           "path": "AgtXIv.md",
-          "line": 272,
-          "end_line": 315,
-          "label": "publication identity"
-        },
-        {
-          "path": "agents/bouncing-shellworld-charged-ads/source/source-hashes.json",
-          "line": 1,
-          "label": "pilot source freeze"
+          "label": "Current system boundaries"
         }
       ]
     },
     {
       "id": "whole_paper_analysis",
       "type": "backend",
-      "label": "整篇论文分析",
-      "sublabel": "研究问题、结构、claims、假设、证据、限制",
-      "tag": "Query 隔离",
+      "label": "Whole-Paper Analysis",
+      "sublabel": "Context, dependencies, evidence",
+      "tag": "paper-first",
       "pos": [
-        500,
-        205
+        274,
+        30
       ],
       "size": [
-        300,
-        84
+        210,
+        78
       ],
       "sources": [
         {
-          "path": "agents/bouncing-shellworld-charged-ads/understanding/overview.md",
-          "line": 1,
-          "end_line": 65,
-          "label": "whole-paper overview"
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
         }
       ]
     },
     {
-      "id": "understanding_snapshot",
+      "id": "paper_understanding_snapshot",
       "type": "database",
-      "label": "PaperUnderstandingSnapshot",
-      "sublabel": "Query-independent 全文语义基线",
-      "tag": "冻结基线",
+      "label": "Paper Understanding Snapshot",
+      "sublabel": "Versioned view + provenance",
+      "tag": "reproducible",
       "pos": [
-        930,
-        205
+        544,
+        30
       ],
       "size": [
-        310,
-        84
+        240,
+        82
       ],
       "sources": [
         {
-          "path": "agents/bouncing-shellworld-charged-ads/understanding/paper-understanding.json",
-          "line": 1,
-          "end_line": 40,
-          "label": "已验证 snapshot"
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
+        }
+      ]
+    },
+    {
+      "id": "query_intent",
+      "type": "external",
+      "label": "Query Intent",
+      "sublabel": "Scope, target, requested answer",
+      "tag": "held input",
+      "pos": [
+        274,
+        195
+      ],
+      "size": [
+        190,
+        76
+      ],
+      "sources": [
+        {
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
         }
       ]
     },
     {
       "id": "query_activation",
-      "type": "messagebus",
+      "type": "backend",
       "label": "Query Activation",
-      "sublabel": "基线完成后解析 bounded target",
-      "tag": "Gate",
+      "sublabel": "Selects relevant claims",
       "pos": [
-        280,
-        350
+        544,
+        195
       ],
       "size": [
-        270,
-        82
+        200,
+        78
       ],
       "sources": [
         {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/activation.json",
-          "line": 1,
-          "end_line": 37,
-          "label": "ordering proof"
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
         }
       ]
     },
@@ -182,159 +168,146 @@
       "id": "scientific_claim",
       "type": "backend",
       "label": "ScientificClaim",
-      "sublabel": "精确 source anchors 与字面科学命题",
+      "sublabel": "Stable assertion identity",
+      "tag": "identity owner",
       "pos": [
-        680,
-        350
+        814,
+        195
       ],
       "size": [
-        280,
-        82
+        210,
+        78
       ],
       "sources": [
         {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/scientific-claim.json",
-          "line": 1,
-          "label": "V1 source claim"
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
         }
       ]
     },
     {
-      "id": "claim_math_bridge",
-      "type": "security",
-      "label": "ClaimMathBridge",
-      "sublabel": "组件完整映射＋残余科学语义",
-      "tag": "不含真值",
+      "id": "math_claim_ir",
+      "type": "database",
+      "label": "MathClaimIR",
+      "sublabel": "Canonical math; exact claim revision",
+      "tag": "concrete ClaimIR",
       "pos": [
-        1050,
-        350
+        1102,
+        195
       ],
       "size": [
-        280,
-        82
-      ],
-      "sources": [
-        {
-          "path": "docs/specifications/v1-bridge.md",
-          "line": 43,
-          "end_line": 61,
-          "label": "normative contract"
-        },
-        {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/claim-math-bridge.json",
-          "line": 1,
-          "label": "conforming pilot"
-        }
-      ]
-    },
-    {
-      "id": "math_ir_dag",
-      "type": "backend",
-      "label": "MathClaimIR ＋ Dependency DAG",
-      "sublabel": "对象、假设、结论与承重依赖",
-      "pos": [
-        330,
-        505
-      ],
-      "size": [
-        310,
+        240,
         86
       ],
       "sources": [
         {
           "path": "AgtXIv.md",
-          "line": 1143,
-          "end_line": 1170,
-          "label": "MathClaimIR"
-        },
-        {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/dependency-dag.json",
-          "line": 1,
-          "label": "query DAG"
+          "label": "Current system boundaries"
         }
       ]
     },
     {
-      "id": "verification_evidence",
-      "type": "security",
-      "label": "Verification ＋ Evidence",
-      "sublabel": "来源、符号、Lean、语义、复现、blockers",
-      "tag": "分轴验证",
+      "id": "claim_math_alignment",
+      "type": "messagebus",
+      "label": "ClaimMathAlignment",
+      "sublabel": "Stable IDs + paths; mapped or residual",
+      "tag": "V2 successor",
       "pos": [
-        800,
-        505
+        360,
+        360
       ],
       "size": [
-        320,
-        86
+        280,
+        94
       ],
       "sources": [
         {
           "path": "AgtXIv.md",
-          "line": 798,
-          "end_line": 940,
-          "label": "trusted layers"
-        },
-        {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/verification/check-result.json",
-          "line": 1,
-          "label": "reproducible check"
+          "label": "Current system boundaries"
         }
       ]
     },
     {
-      "id": "bridge_assessment",
-      "type": "backend",
-      "label": "BridgeAssessment",
-      "sublabel": "逐组件 disposition、适用性与残余审查",
-      "tag": "保守投射",
+      "id": "formalization_record",
+      "type": "database",
+      "label": "FormalizationRecord",
+      "sublabel": "Target artifacts, environment, candidates",
+      "tag": "target-system owner",
       "pos": [
-        470,
-        660
+        1097,
+        360
       ],
       "size": [
-        310,
-        86
+        250,
+        94
       ],
       "sources": [
         {
-          "path": "docs/specifications/v1-bridge.md",
-          "line": 63,
-          "end_line": 90,
-          "label": "assessment rules"
-        },
-        {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/bridge-assessment.json",
-          "line": 1,
-          "label": "conforming pilot"
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
         }
       ]
     },
     {
-      "id": "root_answer",
+      "id": "evidence_blockers",
+      "type": "external",
+      "label": "Evidence & Blocker Records",
+      "sublabel": "Independent external facts",
+      "tag": "external records",
+      "pos": [
+        740,
+        360
+      ],
+      "size": [
+        260,
+        94
+      ],
+      "sources": [
+        {
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
+        }
+      ]
+    },
+    {
+      "id": "scoped_assessments",
+      "type": "security",
+      "label": "Scoped Assessments",
+      "sublabel": "Versioned, scope-bound axes",
+      "tag": "scope-bound",
+      "pos": [
+        740,
+        535
+      ],
+      "size": [
+        280,
+        94
+      ],
+      "sources": [
+        {
+          "path": "AgtXIv.md",
+          "label": "Current system boundaries"
+        }
+      ]
+    },
+    {
+      "id": "bounded_answer",
       "type": "frontend",
-      "label": "Bounded Root Agent Answer",
-      "sublabel": "全文概览＋具体回答＋限制与非蕴含",
-      "tag": "最终输出",
+      "label": "Bounded Answer",
+      "sublabel": "Uncertainty + non-implications",
+      "tag": "query result",
       "pos": [
-        920,
-        660
+        1060,
+        535
       ],
       "size": [
-        330,
-        86
+        300,
+        94
       ],
       "sources": [
         {
-          "path": "agents/bouncing-shellworld-charged-ads/queries/query-001/response.md",
-          "line": 1,
-          "label": "pilot answer"
-        },
-        {
           "path": "AgtXIv.md",
-          "line": 4483,
-          "end_line": 4510,
-          "label": "response discipline"
+          "label": "Current system boundaries"
         }
       ]
     }
@@ -342,158 +315,148 @@
   "boundaries": [
     {
       "kind": "region",
-      "label": "第 1 层｜输入与不可变冻结",
+      "label": "Paper Baseline",
       "wraps": [
-        "query_intent",
-        "paper_release"
-      ],
-      "pad": 34
-    },
-    {
-      "kind": "region",
-      "label": "第 2 层｜Query-independent 整篇论文理解",
-      "wraps": [
+        "exact_paper_release",
         "whole_paper_analysis",
-        "understanding_snapshot"
+        "paper_understanding_snapshot"
       ],
-      "pad": 34
+      "pad": 24
     },
     {
       "kind": "region",
-      "label": "第 3 层｜Query 激活与科学主张定位",
+      "label": "Query-Scoped Reasoning",
       "wraps": [
         "query_activation",
         "scientific_claim",
-        "claim_math_bridge"
+        "math_claim_ir",
+        "claim_math_alignment",
+        "formalization_record",
+        "evidence_blockers",
+        "scoped_assessments",
+        "bounded_answer"
       ],
-      "pad": 34
-    },
-    {
-      "kind": "region",
-      "label": "第 4 层｜数学依赖、验证与证据",
-      "wraps": [
-        "math_ir_dag",
-        "verification_evidence"
-      ],
-      "pad": 34
-    },
-    {
-      "kind": "region",
-      "label": "第 5 层｜保守评估与有限回答",
-      "wraps": [
-        "bridge_assessment",
-        "root_answer"
-      ],
-      "pad": 34
+      "pad": 24
     }
   ],
   "connections": [
     {
-      "id": "freeze_source",
-      "from": "paper_release",
+      "id": "release_analysis",
+      "from": "exact_paper_release",
       "to": "whole_paper_analysis",
-      "label": "冻结版本作为唯一来源",
+      "label": "analyze",
+      "variant": "emphasis"
+    },
+    {
+      "id": "analysis_snapshot",
+      "from": "whole_paper_analysis",
+      "to": "paper_understanding_snapshot",
+      "label": "snapshot",
+      "variant": "emphasis"
+    },
+    {
+      "id": "snapshot_activation",
+      "from": "paper_understanding_snapshot",
+      "to": "query_activation",
+      "label": "activate after baseline",
       "variant": "emphasis",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "publish_baseline",
-      "from": "whole_paper_analysis",
-      "to": "understanding_snapshot",
-      "label": "发布全文基线",
-      "variant": "emphasis"
-    },
-    {
-      "id": "activate_after_baseline",
-      "from": "understanding_snapshot",
-      "to": "query_activation",
-      "label": "基线完成后允许激活",
-      "variant": "security",
-      "fromSide": "bottom",
-      "toSide": "top"
-    },
-    {
-      "id": "release_frozen_query",
+      "id": "intent_activation",
       "from": "query_intent",
       "to": "query_activation",
-      "label": "读取冻结问题",
-      "variant": "dashed",
-      "fromSide": "bottom",
-      "toSide": "top"
+      "label": "scope",
+      "variant": "dashed"
     },
     {
-      "id": "resolve_claim",
+      "id": "activation_claim",
       "from": "query_activation",
       "to": "scientific_claim",
-      "label": "解析 bounded target",
+      "label": "select",
       "variant": "emphasis"
     },
     {
-      "id": "map_components",
+      "id": "claim_ir",
       "from": "scientific_claim",
-      "to": "claim_math_bridge",
-      "label": "逐组件映射",
-      "variant": "security"
+      "to": "math_claim_ir",
+      "label": "revision ref",
+      "variant": "emphasis"
     },
     {
-      "id": "build_math_view",
-      "from": "claim_math_bridge",
-      "to": "math_ir_dag",
-      "label": "引用数学对象与依赖",
+      "id": "claim_alignment",
+      "from": "scientific_claim",
+      "to": "claim_math_alignment",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "ir_alignment",
+      "from": "math_claim_ir",
+      "to": "claim_math_alignment",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "ir_formalization",
+      "from": "math_claim_ir",
+      "to": "formalization_record",
       "variant": "emphasis",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "check_frontier",
-      "from": "math_ir_dag",
-      "to": "verification_evidence",
-      "label": "仅检查承重 frontier",
-      "variant": "security"
-    },
-    {
-      "id": "assess_math",
-      "from": "verification_evidence",
-      "to": "bridge_assessment",
-      "label": "提交证据与 blockers",
-      "variant": "emphasis",
+      "id": "alignment_assessment",
+      "from": "claim_math_alignment",
+      "to": "scoped_assessments",
+      "label": "mapped or residual",
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "pin_alignment",
-      "from": "claim_math_bridge",
-      "to": "bridge_assessment",
-      "label": "固定映射边界",
-      "variant": "dashed",
-      "fromSide": "right",
-      "toSide": "left",
-      "via": [
-        [
-          1390,
-          391
-        ],
-        [
-          1390,
-          630
-        ],
-        [
-          400,
-          630
-        ],
-        [
-          400,
-          703
-        ]
+      "id": "formalization_assessment",
+      "from": "formalization_record",
+      "to": "scoped_assessments",
+      "label": "artifacts and candidates",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "evidence_assessment",
+      "from": "evidence_blockers",
+      "to": "scoped_assessments",
+      "label": "independent facts",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "id": "assessment_answer",
+      "from": "scoped_assessments",
+      "to": "bounded_answer",
+      "label": "select",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Identity, Representation, and Alignment",
+      "items": [
+        "ScientificClaim owns assertion identity; MathClaimIR owns the canonical mathematical representation and links to an exact ScientificClaim revision.",
+        "Exact reference binding does not by itself establish semantic equivalence.",
+        "ClaimMathAlignment uses stable component IDs, exact paths, and mapped-or-residual completeness."
       ]
     },
     {
-      "id": "project_answer",
-      "from": "bridge_assessment",
-      "to": "root_answer",
-      "label": "保守投射",
-      "variant": "emphasis"
+      "dot": "emerald",
+      "title": "Artifacts, Facts, and Scoped Conclusions",
+      "items": [
+        "FormalizationRecord owns target-system artifacts, environments, and candidates; Evidence and Blocker records own independent external facts.",
+        "Versioned assessments separately evaluate formalizability, verification, applicability, and acceptance.",
+        "A bounded answer selects exact assessments and retains uncertainty and non-implications; AgtXIv.md supplies current boundary evidence."
+      ]
     }
   ]
 }
