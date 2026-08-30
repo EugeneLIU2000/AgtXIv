@@ -199,12 +199,14 @@ Every graph snapshot declares its kind, node and edge ontology revisions, direct
 
 ### D9. Controlled outbound network boundaries
 
-Only two components may initiate outbound network requests:
+Only two components in the paper-processing plane may initiate external Internet egress:
 
 1. the acquisition worker may access allowlisted source endpoints; it has no release-signing or knowledge-write credentials and writes only quarantine objects;
 2. an optional model gateway may call a configured hosted model when the exact profile and data-use policy permit it.
 
 The model gateway receives only the minimum approved payload, has no storage, signing, review, or knowledge-admission credentials, and records provider, model/version, policy, request digest, response digest, retention setting, and attempt identity. A local-model adapter uses the same interface without network access. Extraction, TeX/PDF handling, general analysis workers, generated code, and formal builds run without network access and with explicit CPU, memory, byte, file-count, and time limits. Papers and generated content never receive network or tool authority.
+
+Authenticated internal database, object-store, queue, and service traffic is not external Internet egress and follows separate service-identity and network allowlists. CI and release automation use a separately governed supply-chain egress policy. Neither category is controllable by paper content.
 
 ### D10. Walking slices precede production infrastructure
 
