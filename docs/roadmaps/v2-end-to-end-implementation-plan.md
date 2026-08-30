@@ -56,20 +56,33 @@ A successful proof answers only the second question. V2 must not collapse these 
 
 ## 3. Current repository baseline
 
-The repository is not starting from zero. It currently contains a healthy V2 contract slice plus substantial V1 implementations, but not an arbitrary-paper production pipeline.
+The repository is not starting from zero. The initial survey found a promising
+V2 contract prototype plus substantial V1 implementations, but not an
+arbitrary-paper production pipeline. This section records the 2026-08-30 primary
+working-tree observation; it is not wholly committed branch evidence. The clean
+baseline and the uncommitted-material reconciliation are recorded separately in
+`docs/audits/v2-m0-execution-checkpoint-2026-08-31.md` and
+`docs/audits/v2-uncommitted-wip-reconciliation-2026-08-31.md`.
 
 ### 3.1 Implemented and reusable
 
-- 12 V2 JSON Schemas, 13 V2 top-level fixture records, a cross-record validator, and tests for the current paper-agentization contract slice.
+- The observed working tree held 12 V2 JSON Schemas, 13 V2 top-level fixture
+  records, a cross-record validator, and tests for a paper-agentization contract
+  prototype. Some of those bytes remain uncommitted WIP and are not yet adopted
+  V2 contracts.
 - V1 ScientificClaim extraction and validation, rich `MathClaimIR` records and migrations, source anchors, claim/dependency graph validation, root partitioning, blocker/frontier concepts, and query closure logic.
 - Pilot records containing paper agents, anchors, artifacts, reasoning, verification, and blocker records.
 - Dynamic Lean build, placeholder, declaration, and axiom audits for the RootMath and Varela examples.
 - A static landing experience, a ScientificClaim graph, a MathContract graph, and an interactive V2 architecture visualization.
-- A Git-backed/SQLite-derived database prototype whose vocabulary and offline-index idea are reusable.
+- An uncommitted Git-backed/SQLite-derived legacy database prototype whose exact
+  hash/provenance and rebuildable-index ideas may inform migration work after
+  reconciliation; it is not the V2 standard database.
 
 ### 3.2 Verified baseline on 2026-08-30
 
-- Full test suite with the repository-capable Python environment: `234 passed`.
+- Full test suite in the dirty primary working tree: `234 passed`. This was a
+  historical workstation observation, not a clean commit-defined baseline. The
+  later clean `f86b98f` baseline is `202 passed`; see the M0 checkpoint.
 - V2 paper-agentization validation: 13 JSON records against 12 schemas, passed.
 - V1 claim, DAG, pilot, root-partition, interface-study, semantic-contribution, and database structural validators: passed.
 - RootMath dynamic Lean rebuild: passed; 43 declarations; placeholder and axiom audits passed.
@@ -84,7 +97,10 @@ The repository is not starting from zero. It currently contains a healthy V2 con
 - Machine contracts and producers are still missing for source acquisition, paper structure, V2 ScientificClaim decomposition, inference/dependency graphs, formal evidence, backtranslation, alignment, residual semantics, production blockers, archive receipts, and V1 migration.
 - The current V2 `MathClaimIR` is materially poorer than the existing V1 semantic representation and must not replace it as written.
 - A published Shellworld V1 run currently fails only its immutable-manifest check because it hashes the mutable path `docs/specifications/v1-bridge.md`. The document changed after the run was recorded. V2 must bind runs to an immutable contract release, not to the current working-tree contents.
-- There is no complete production dependency lock, migration system, service API, durable worker, production transaction store, threat model, contributor policy, or release policy.
+- There is no complete formal-toolchain/supply-chain lock, migration system,
+  service API, durable worker, or production transaction store. Initial threat,
+  contributor, and release policies now exist, but their named M0 governance and
+  enforcement blockers remain open.
 
 ## 4. Frozen architecture decisions
 
@@ -381,7 +397,7 @@ Milestones are walking slices. The web shell, V1 compatibility, security, and co
 
 | Milestone | User-visible outcome | Definitive gate artifact or command | Current state | Principal blocker |
 |---|---|---|---|---|
-| M0 | One reproducible validation entry point and public project policy | M0 baseline report + aggregate validation command | In progress | no locked project environment; known stale V1 run |
+| M0 | One reproducible validation entry point and public project policy | M0 baseline report + aggregate validation command | In progress | Lean bootstrap/isolation, CI hardening, governance decisions, and stale-run supersession remain open |
 | M1 | Exact contracts explain every obligation, actor, result, and review | first `ContractBundleRelease` candidate + contract suite | Not started | missing common authority/catalog/review contracts |
 | M1.5 | Several real papers run locally to auditable replay bundles | content-addressed local bundle roots + offline replay command | Not started | no intake/CAS/runner seam |
 | M2 | Durable API, events, storage, retries, and policy enforcement | storage conformance + crash/atomicity integration report | Not started | contracts must survive M1.5 first |
@@ -399,7 +415,9 @@ A milestone is marked `DONE` only when every listed Deliver item exists, every E
 
 Deliver:
 
-- V2 branch and commit policy; baseline report containing the passing tests and known stale Shellworld run;
+- V2 branch and commit policy; baseline report containing the exact baseline
+  commit, deterministic test inventory, observed results, and known stale
+  Shellworld run;
 - Python 3.12 project metadata, locked dependencies, one bootstrap command, and one aggregate validation command;
 - ADRs for D1–D10, initial threat model, LICENSE decision, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, CITATION, changelog and release policy;
 - CI baseline for formatting, static analysis, tests, schemas, current validators, secret/dependency scan, and generated-file drift;
@@ -407,7 +425,11 @@ Deliver:
 
 Exit:
 
-- clean checkout bootstraps reproducibly and runs the existing 234-test baseline;
+- clean checkout bootstraps reproducibly and runs the exact test inventory
+  determined by the baseline commit and dependency lock; the report records the
+  collection command, node identities or deterministic inventory digest,
+  skips/deselections, and observed count, and every later inventory change has a
+  reviewed diff;
 - every baseline validator has a named result, including the intentional stale-run failure;
 - no unrelated dirty working-tree files are included in V2 commits.
 

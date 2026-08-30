@@ -19,19 +19,21 @@ production path that accepts an arbitrary supported arXiv input and constructs a
 complete V2 replay bundle, durable review transaction, database projection, and
 live web view.
 
-The most important interpretation is that current green checks establish
-different scopes:
+The most important interpretation is that the green checks observed in this
+historical snapshot establish different scopes:
 
-- `234 passed` establishes the current Python test baseline;
+- `234 passed` records the initial dirty-worktree Python observation; it is not
+  a clean, commit-defined test baseline;
 - 12 schemas and 13 V2 records establish one cross-record contract fixture;
 - RootMath's 43 declarations and Varela's 6 declarations establish the audited
   mathematical interfaces in those pinned Lean projects;
 - none of those facts establishes whole-paper scientific acceptance or the
   completion of the arbitrary-paper V2 pipeline.
 
-This audit is a historical baseline, not a release certificate. M0 work may
-supersede it with a new immutable report but must not edit its observations to
-make later checks appear retroactively green.
+This audit is a historical baseline, not a release certificate. The M0
+execution checkpoint has partially superseded its operational snapshot, and
+future immutable reports may supersede it further, but they must not edit these
+observations to make later checks appear retroactively green.
 
 ## 2. Environment observed
 
@@ -50,7 +52,7 @@ from versioned project metadata and locked dependencies.
 
 | Area | Baseline command or evidence | Result | Meaning and limit |
 |---|---|---|---|
-| Full Python suite | `/opt/anaconda3/bin/python -m pytest -q` | **PASS: 234 passed** | Current tests pass in the repository-capable environment; this is not yet a locked clean-checkout result. |
+| Full Python suite | `/opt/anaconda3/bin/python -m pytest -q` | **PASS: 234 passed** | The observed dirty-worktree suite passed in the repository-capable environment; this is not a locked clean-checkout result. |
 | V2 contract slice | `/opt/anaconda3/bin/python tools/validate_v2_paper_agentization.py` | **PASS: 13 JSON records / 12 schemas** | Validates the current mixed-disposition paper-agentization fixture and cross-record invariants; does not prove whole-paper producer coverage. |
 | ScientificClaim | `tools/validate_scientific_claims.py` plus its tests | **PASS** | V1 claim structures are reusable inputs, not V2 whole-paper authority. |
 | Claim DAG | `tools/validate_claim_dag.py` | **PASS** | Validates the existing graph contract; its Oracle/candidate edges are not thereby accepted scientific dependencies. |
@@ -179,18 +181,25 @@ offline-verifiable bundle. A timer must never be displayed as producer progress.
 | D9 | Network and sandbox boundaries are design requirements, not yet enforced production controls. |
 | D10 | M1.5 must prove semantics on real pinned papers with filesystem CAS/in-process runner before M2 infrastructure freeze. |
 
-Open M0 risks include the unlocked Python environment, absence of one aggregate
-validation command, the acknowledged stale V1 run, missing Stabilizerness dynamic
-validator, missing public-project governance/security files, and incomplete CI
-coverage. These are baseline facts, not permission to weaken later gates.
+At the time of this historical audit, open M0 risks included the unlocked Python
+environment, absence of one aggregate validation command, the acknowledged stale
+V1 run, missing Stabilizerness dynamic validator, missing public-project
+governance/security files, and incomplete CI coverage. Later commits and
+`docs/audits/v2-m0-execution-checkpoint-2026-08-31.md` supersede parts of that
+snapshot while retaining its evidence. These facts are not permission to weaken
+later gates.
 
 ## 9. M0 exit evidence required
 
 M0 can be declared complete only when a superseding versioned report records:
 
 1. a clean-checkout Python 3.12+ bootstrap from locked project metadata;
-2. one aggregate command with named results for the 234-test baseline, V1/V2
-   validators, Pages, Lean lanes, and the intentional Shellworld failure;
+2. one aggregate command with named results for the exact test inventory
+   determined by the baseline commit and dependency lock, V1/V2 validators,
+   Pages, Lean lanes, and the intentional Shellworld failure; the report must
+   record the deterministic inventory or node-identity digest (a deterministic
+   hash of the complete test-name list), selection policy, skips/deselections,
+   and observed count rather than treating `234` as a mutable invariant;
 3. generated-file and contract drift checks;
 4. ADRs, threat model, public governance/license/release files, and CI baseline;
 5. the non-destructive stale-run supersession policy and an explicit status for

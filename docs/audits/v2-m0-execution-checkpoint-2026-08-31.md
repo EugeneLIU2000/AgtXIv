@@ -13,8 +13,8 @@
 
 This checkpoint records the first version-managed M0 execution slice. It proves
 that the committed branch can reproduce its Python environment and run one
-offline aggregate validation command from a clean worktree. It also records the
-remaining blockers instead of calling M0 complete prematurely.
+offline-intended aggregate validation command from a clean worktree. It also
+records the remaining blockers instead of calling M0 complete prematurely.
 
 The intuitive distinction is between a clean laboratory bench and the completed
 laboratory. The bench now has a pinned tool cabinet, one inspection switchboard,
@@ -57,6 +57,11 @@ Observed results:
 - final Git status: empty;
 - validator side effects on tracked historical evidence: none.
 
+`Offline-intended` is deliberately weaker than `network-isolated`: the checks
+were designed to use preloaded local inputs, but this run did not place their
+processes inside an operating-system network sandbox. Environment variables and
+proxy settings are cooperative signals, not an egress security boundary.
+
 The exact `KNOWN_STALE` result is the Shellworld V1 run's mutable specification
 binding:
 
@@ -85,11 +90,13 @@ state. The WIP needs its own inventory, independent review, authorization,
 compatibility decision, and focused V2 commit before its additional tests can
 become branch evidence.
 
-The roadmap's current M0 exit text still names the historical `234-test`
-baseline. That gate is unresolved: either the relevant pre-existing tests must
-be independently reviewed and committed, or the roadmap must be versioned to
-replace a mutable count with an exact test inventory and commit identity. Merely
-quarantining the WIP would not satisfy the gate as currently written.
+At checkpoint creation, the roadmap's M0 exit text still named the historical
+`234-test` observation. The documentation slice that records this reconciliation
+also replaces that mutable count with an exact commit/lock/test-inventory gate.
+The wording defect is therefore corrected when this slice is committed and
+reviewed. The gate itself remains unmet until the deterministic inventory or
+node-identity digest is versioned; independently reviewing or quarantining the
+WIP does not substitute for that evidence.
 
 ## 5. Broader local validation
 
@@ -114,7 +121,8 @@ Stabilizerness dynamic validator remain named work.
   provide one documented entry surface.
 - The aggregate validator distinguishes `PASS`, `KNOWN_STALE`,
   `EXPECTED_BLOCKED`, `FAIL`, `MISSING_TOOL`, and `SKIPPED`; it uses the active
-  locked interpreter and defaults declared checks to offline operation.
+  locked interpreter and gives declared checks an offline-intended environment.
+  This does not yet prove network isolation.
 - Pull-request continuous integration (CI) uses immutable action commit
   identifiers, complete Git history, the pinned Python/Node/uv versions, the fast
   aggregate profile, a static-site smoke test, and one stable `ci-required`
@@ -149,16 +157,17 @@ roadmap Deliver or Exit item:
 8. the required `CODE_OF_CONDUCT` and `CITATION` files and their approved
    project-specific contents;
 9. the missing CI lanes for formatting, static analysis, secret scanning,
-   dependency scanning, and generated-file drift;
+   dependency scanning, generated-file drift, and an operating-system-enforced
+   no-egress plus read-only-input/bounded-write validation lane;
 10. clean-checkout bootstrap for the pinned Lean/LeanQuantum inputs and a dynamic
    Stabilizerness validator;
 11. a non-destructive compatibility contract/replay that supersedes, rather than
    edits, the stale Shellworld run;
 12. an independently reviewed, authorized focused commit for the existing V2
     WIP, or an explicit decision to supersede or quarantine each of its files;
-13. reconciliation of the roadmap's fixed `234-test` exit wording with a
-    versioned exact test inventory and commit identity, unless the independently
-    reviewed WIP is committed and establishes the intended baseline directly.
+13. generation and review of the deterministic baseline test inventory or
+    node-identity digest required by the corrected roadmap, including explicit
+    skip/deselection policy and observed count.
 
 ## 8. Non-implications
 
