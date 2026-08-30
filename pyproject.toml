@@ -1,0 +1,26 @@
+[project]
+name = "agtxiv"
+version = "2.0.0.dev0"
+description = "Verification-aware paper agentization and reusable scientific knowledge"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "jsonschema[format-nongpl]==4.23.0",
+  "referencing==0.30.2",
+]
+
+[dependency-groups]
+test = [
+  "pytest==7.4.4",
+]
+validation = [
+  "numpy==2.3.5",
+  "sympy==1.14.0",
+]
+
+[tool.uv]
+required-version = "==0.10.0"
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

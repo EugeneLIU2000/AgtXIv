@@ -6,6 +6,8 @@ AgtXIv is a verification-aware protocol and pilot implementation for turning sou
 
 | Document or project | Role |
 |---|---|
+| [`docs/specifications/v2-paper-agentization.md`](docs/specifications/v2-paper-agentization.md) | **V2 normative architecture:** paper-first agentization, release, certification, and knowledge ingestion |
+| [`docs/roadmaps/v2-end-to-end-implementation-plan.md`](docs/roadmaps/v2-end-to-end-implementation-plan.md) | **V2 execution baseline:** audited decisions, artifact coverage, M0--M8 milestones, and exit gates |
 | [`AgtXIv.md`](AgtXIv.md) | **Current system specification** (v0.6); the single canonical design entry point |
 | [`docs/specifications/v1-bridge.md`](docs/specifications/v1-bridge.md) | **V1 normative slice:** ScientificClaim--MathClaim alignment, conservative verification projection, and bounded Root Agent assessment |
 | [`docs/specifications/mathematics-pipeline.md`](docs/specifications/mathematics-pipeline.md) | Mathematical decomposition and verification detail; graph optimization and reuse are post-V1 capabilities |
@@ -41,13 +43,16 @@ This monorepository develops the protocol, registries, and pilot. It is not the 
 Run the repository checks from the project root:
 
 ```bash
-python3 tools/validate_claim_dag.py
-python3 tools/validate_root_partitions.py
-python3 tools/validate_pilot.py
-python3 tools/validate_lean_formalization.py
-python3 tools/validate_varela_formalization.py
-python3 tools/validate_pages_site.py _site
+make bootstrap
+make check
 ```
+
+The project pins Python and its validation dependencies in `.python-version`,
+`pyproject.toml`, and `uv.lock`. `make check` runs the offline fast profile through
+the repository's aggregate validator. Use `make list-checks`, `make check-full`,
+or `make check-nightly` to inspect or run the broader profiles. The full and
+nightly profiles also require their declared Node, Lean, Bash, and `rsync`
+toolchains; missing tools are reported explicitly rather than silently skipped.
 
 The GitHub Pages workflow assembles the release with:
 

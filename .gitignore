@@ -2,6 +2,15 @@
 .tools/
 **/__pycache__/
 **/.lake/
+.venv/
+.uv-cache/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.coverage
+coverage.xml
+htmlcov/
 *.olean
 *.ilean
 _site/
@@ -11,7 +20,14 @@ Reference/LeanQuantum/
 # Local render and inspection output
 /tmp/
 /draft/build/
+/slides/build/
 ~$*
+
+# Derived database sidecars
+*.sqlite-wal
+*.sqlite-shm
+*.db-wal
+*.db-shm
 
 # LaTeX build products (source-supplied .bbl files remain trackable)
 *.aux
