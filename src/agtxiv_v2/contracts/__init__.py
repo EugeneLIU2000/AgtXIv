@@ -24,6 +24,12 @@ from .references import (
     validate_immutable_envelope,
     validate_immutable_record,
 )
+from .registry import (
+    ContractSchemaRegistry,
+    SchemaAssetBinding,
+    build_schema_registry,
+)
+from .schema_validation import validate_immutable_record_payload
 
 __all__ = [
     "Diagnostic",
@@ -47,4 +53,8 @@ __all__ = [
     "resolve_exact_record_ref",
     "validate_immutable_envelope",
     "validate_immutable_record",
+    "ContractSchemaRegistry",
+    "SchemaAssetBinding",
+    "build_schema_registry",
+    "validate_immutable_record_payload",
 ]
