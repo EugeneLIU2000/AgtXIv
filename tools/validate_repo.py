@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Run the AgtXIv repository validation profiles.
 
-The runner is deliberately offline and read-only with respect to tracked source
-artifacts.  It provides one inventory for the existing validators while keeping
-known historical exceptions narrow, explicit, and machine-readable.
+The runner selects checks intended to consume local, preloaded inputs and checks
+declared protected artifacts for mutation.  It does not enforce operating-system
+network or filesystem isolation.  Known historical exceptions remain narrow,
+explicit, and machine-readable.
 """
 
 from __future__ import annotations
@@ -12,8 +13,12 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 import os
+import selectors
+import signal
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -29,7 +34,172 @@ from typing import Any
 
 REPO = Path(__file__).resolve().parents[1]
 MINIMUM_PYTHON = (3, 12)
-REPORT_SCHEMA = "agtxiv.repository-validation-report/0.1.0"
+REPORT_SCHEMA = "agtxiv.repository-validation-report/0.2.0"
+NETWORK_MODE = "OFFLINE_INTENDED_PRELOADED_ONLY"
+MAX_CAPTURE_BYTES = 2 * 1024 * 1024
+PROCESS_GROUP_GRACE_SECONDS = 5
+POST_EXIT_DRAIN_SECONDS = 1
+TIMEOUT_EXIT_CODE = 124
+OUTPUT_LIMIT_EXIT_CODE = 125
+BACKGROUND_PROCESS_EXIT_CODE = 126
+MAX_PROTECTED_FILE_BYTES = 64 * 1024 * 1024
+STABILIZERNESS_BLOCKER_CODE = "UNVERIFIED_FUTURE_LEAN_CACHE_CLOSURE"
+STABILIZERNESS_EVIDENCE_ID = (
+    "lean-verification:stabilizerness-local-delta:2026-08-16"
+)
+STABILIZERNESS_HISTORICAL_STATUS = "TARGET_LOCAL_DELTA_KERNEL_CHECKED"
+STABILIZERNESS_BLOCKER_REASON = (
+    "consumed_cache_closure=NOT_VERIFIED: a future Lean run would consume preloaded "
+    ".lake artifacts without an external exact type/mode/content manifest; clean "
+    "scratch execution, OS-level no-egress, and executable byte locks are also "
+    "not implemented"
+)
+STABILIZERNESS_SCIENTIFIC_EFFECT = (
+    "NONE; this static run only confirms that the anchored source and historical "
+    "record bytes associated with four target-local and three imported declaration "
+    "names remain unchanged. It does not type-check or build those declarations, "
+    "audit their axioms, reassess mapping correctness or source alignment, modify "
+    "the registry, establish scientific acceptance, or prove the closed-form theorem."
+)
+STABILIZERNESS_NETWORK_NOTE = (
+    "No dynamic command ran. This validator does not enforce operating-system "
+    "outbound network blocking."
+)
+STABILIZERNESS_SIDE_EFFECT_KEYS = frozenset(
+    {
+        "method",
+        "observed_paths",
+        "reused_unmeasured_cache_roots",
+        "paths_outside_observed_formal_and_evidence_closure",
+        "future_dynamic_note",
+        "filesystem_isolation_enforced",
+    }
+)
+STABILIZERNESS_SIDE_EFFECT_METHOD = (
+    "two pure-Python lstat/O_NOFOLLOW raw-byte snapshots of the exact "
+    "anchored evidence, artifact, and three-project formal inventories"
+)
+STABILIZERNESS_REUSED_UNMEASURED_CACHE_ROOTS = (
+    "formal/AgtXIvStabilizerness/.lake/**",
+    "formal/AgtXIvRootMath/.lake/**",
+    "formal/AgtXIvVarela/.lake/**",
+    "Reference/LeanQuantum/.lake/**",
+)
+STABILIZERNESS_OUTSIDE_OBSERVED_CLOSURE = "NOT_MEASURED"
+STABILIZERNESS_FUTURE_DYNAMIC_NOTE = (
+    "A future Lean run would consume these unverified cache roots; this "
+    "static diagnostic did not consume or validate them."
+)
+STABILIZERNESS_OBSERVED_PATHS_SHA256 = (
+    "529247c6326e749370207bb84dff73c98a25b873ae1c697b1f5822d402c71ed3"
+)
+STABILIZERNESS_ADMISSION_NOTE = (
+    "An EXPECTED_BLOCKED diagnostic must not be used for database admission, "
+    "merge approval, or a threat-model security gate."
+)
+STABILIZERNESS_REMAINING_M0_SECURITY_BLOCKERS = (
+    "externally anchored consumed .lake cache closure or clean scratch rebuild",
+    "clean scratch workspace",
+    "operating-system enforced no-egress execution",
+    "cryptographic lock for Lean, Lake, and Git executable bytes",
+)
+STABILIZERNESS_SCOPE_LIMITATIONS = (
+    "The affine-span declaration is only a generic reduction from vector span "
+    "and does not prove claim:relaxed-affine-span.",
+    "The sign-maximization declaration does not by itself prove "
+    "claim:relaxed-mwis-dual; the LP-to-MWIS bridge remains open.",
+    "Weighted perfect-graph duality remains an explicit external foundation and "
+    "is not proved by this project.",
+)
+STABILIZERNESS_ENVIRONMENT_POLICY_KEYS = frozenset(
+    {"network_mode", "credential_minimized"}
+)
+STABILIZERNESS_TOOLCHAIN_BIN_RELATIVE = Path(
+    ".tools/elan/toolchains/leanprover--lean4---v4.30.0-rc2/bin"
+)
+STABILIZERNESS_TOOL_PATHS = {
+    "lake": str(REPO / STABILIZERNESS_TOOLCHAIN_BIN_RELATIVE / "lake"),
+    "lean": str(REPO / STABILIZERNESS_TOOLCHAIN_BIN_RELATIVE / "lean"),
+}
+IJSON_MAX_INTEGER = (1 << 53) - 1
+STABILIZERNESS_LOCAL_DECLARATIONS = {
+    "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+    "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+    "AgtXIv.Stabilizerness.max_abs_signed_sum",
+    "AgtXIv.Stabilizerness.affineSpan_eq_top_of_vectorSpan_eq_top",
+}
+STABILIZERNESS_IMPORTED_DECLARATIONS = {
+    "AgtXIv.GraphFoundation.independentFinsets",
+    "AgtXIv.GraphFoundation.maxWeightIndependent",
+    "AgtXIv.GraphFoundation.IsPerfect",
+}
+STABILIZERNESS_REPORT_TOP_LEVEL_KEYS = frozenset(
+    {
+        "schema",
+        "historical_evidence_schema_version",
+        "project",
+        "assurance_tier",
+        "cache_mode",
+        "consumed_cache_closure",
+        "source_clean_rebuild",
+        "network_mode",
+        "network_isolation_enforced",
+        "filesystem_isolation_enforced",
+        "network_note",
+        "evidence_id",
+        "declared_historical_status",
+        "effective_validation_status",
+        "dynamic_execution",
+        "dynamic_blocker_code",
+        "dynamic_blocker_reason",
+        "kernel_build",
+        "kernel_build_failure_excerpt",
+        "axiom_audit",
+        "declarations_audited",
+        "target_local_declarations_audited",
+        "imported_declarations_audited",
+        "expected_target_local_declarations",
+        "expected_imported_declarations",
+        "declaration_audit",
+        "reported_axioms",
+        "evidence_anchors",
+        "artifact_hashes",
+        "formal_input_inventory",
+        "environment_binding",
+        "tool_identity",
+        "dependency_git_identity",
+        "placeholder_scan",
+        "protected_input_integrity",
+        "side_effect_observation_scope",
+        "external_commands",
+        "admission_eligible",
+        "security_gate_eligible",
+        "m0_completion_effect",
+        "admission_note",
+        "remaining_m0_security_blockers",
+        "errors",
+        "formalization_validation",
+        "scientific_acceptance_effect",
+        "scope_limitations",
+        "environment_policy",
+    }
+)
+STABILIZERNESS_DECLARATION_ENTRY_KEYS = frozenset(
+    {"scope", "audit_status", "axioms"}
+)
+STABILIZERNESS_TOOL_IDENTITY_KEYS = frozenset(
+    {
+        "validation",
+        "static_path_validation",
+        "dynamic_identity",
+        "paths",
+        "resolved_git_executable",
+    }
+)
+STABILIZERNESS_TOOL_PATH_KEYS = frozenset({"lake", "lean"})
+STABILIZERNESS_DEPENDENCY_IDENTITY_KEYS = frozenset(
+    {"validation", "source_tree_closure", "consumed_cache_closure"}
+)
 
 SHELLWORLD_MANIFEST = Path(
     "agents/bouncing-shellworld-charged-ads/queries/query-001/run-manifest.json"
@@ -122,6 +292,22 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
     repository_lake = ToolRequirement(
         "repository-executable", ".tools/elan/bin/lake", "repository-local lake"
     )
+    direct_lake = ToolRequirement(
+        "repository-executable",
+        (
+            ".tools/elan/toolchains/leanprover--lean4---v4.30.0-rc2/"
+            "bin/lake"
+        ),
+        "direct pinned lake",
+    )
+    direct_lean = ToolRequirement(
+        "repository-executable",
+        (
+            ".tools/elan/toolchains/leanprover--lean4---v4.30.0-rc2/"
+            "bin/lean"
+        ),
+        "direct pinned lean",
+    )
     return (
         CheckSpec(
             "preflight-node",
@@ -137,9 +323,9 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
         ),
         CheckSpec(
             "preflight-lake",
-            "The pinned repository-local Lean lake executable is available.",
+            "The direct pinned Lean and Lake executables are available.",
             full,
-            requirements=(repository_lake,),
+            requirements=(direct_lake, direct_lean),
         ),
         CheckSpec(
             "v2-paper-agentization",
@@ -251,6 +437,15 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
             protected_paths=FORMAL_VERIFICATION_RECORDS,
         ),
         CheckSpec(
+            "lean-stabilizerness-dynamic",
+            "Audit the pinned Stabilizerness inputs and report the unverified-cache blocker.",
+            full,
+            _python("tools/validate_stabilizerness_formalization.py"),
+            classifier="stabilizerness-expected-blocked",
+            timeout_seconds=120,
+            protected_paths=FORMAL_VERIFICATION_RECORDS,
+        ),
+        CheckSpec(
             "claim-interface-final-readiness",
             "Run the stronger final-readiness checks for the claim-interface study.",
             nightly,
@@ -264,17 +459,8 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
             classifier="pilot-expected-blocked",
         ),
         CheckSpec(
-            "lean-stabilizerness-dynamic",
-            "Dynamically rebuild the Stabilizerness Lean example.",
-            nightly,
-            expected_blocker=(
-                "M5 has not yet supplied a dynamic Stabilizerness validator; the current "
-                "record is checked only as a frozen artifact."
-            ),
-        ),
-        CheckSpec(
             "arxiv-intake-adversarial-corpus",
-            "Run the grammar-complete offline arXiv intake and archive-security corpus.",
+            "Run the grammar-complete preloaded arXiv intake and archive-security corpus.",
             nightly,
             expected_blocker=(
                 "M3 intake grammar, safe acquisition, and adversarial archive corpus are "
@@ -309,11 +495,168 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+class ProtectedHashError(RuntimeError):
+    pass
+
+
+def _stat_signature(value: os.stat_result) -> tuple[int, int, int, int, int, int]:
+    return (
+        value.st_dev,
+        value.st_ino,
+        value.st_mode,
+        value.st_size,
+        value.st_mtime_ns,
+        value.st_ctime_ns,
+    )
+
+
+def _directory_identity(value: os.stat_result) -> tuple[int, int, int]:
+    """Identify a directory without rejecting unrelated changes to its children."""
+    return (value.st_dev, value.st_ino, value.st_mode)
+
+
+def _guarded_protected_bytes(
+    root: Path, relative: str, max_bytes: int = MAX_PROTECTED_FILE_BYTES
+) -> bytes | None:
+    """Read a protected regular file through a revalidated dirfd/openat chain."""
+    pure = PurePosixPath(relative)
+    if (
+        not relative
+        or pure.is_absolute()
+        or "\\" in relative
+        or "\x00" in relative
+        or any(part in {"", ".", ".."} for part in relative.split("/"))
+    ):
+        raise ProtectedHashError(f"unsafe protected path: {relative!r}")
+    root = root.absolute()
+    if root.anchor != os.sep:
+        raise ProtectedHashError(f"protected root is not an absolute POSIX path: {root}")
+    if any(
+        not hasattr(os, name) for name in ("O_DIRECTORY", "O_NOFOLLOW", "O_NONBLOCK")
+    ):
+        raise ProtectedHashError("required dirfd/openat safety flags are unavailable")
+    directory_flags = (
+        os.O_RDONLY
+        | os.O_DIRECTORY
+        | os.O_NOFOLLOW
+        | getattr(os, "O_CLOEXEC", 0)
+    )
+    file_flags = (
+        os.O_RDONLY
+        | os.O_NOFOLLOW
+        | os.O_NONBLOCK
+        | getattr(os, "O_CLOEXEC", 0)
+    )
+    directory_fds: list[int] = []
+    chain: list[tuple[int, str, int, tuple[int, int, int]]] = []
+    file_fd: int | None = None
+    final_observed = False
+    try:
+        current_fd = os.open(Path(root.anchor), directory_flags)
+        directory_fds.append(current_fd)
+        for part in [*root.parts[1:], *pure.parts[:-1]]:
+            before = os.stat(part, dir_fd=current_fd, follow_symlinks=False)
+            if not stat.S_ISDIR(before.st_mode) or stat.S_ISLNK(before.st_mode):
+                raise ProtectedHashError(
+                    f"protected path component is not a real directory: {relative!r}/{part}"
+                )
+            child_fd = os.open(part, directory_flags, dir_fd=current_fd)
+            opened = os.fstat(child_fd)
+            if _directory_identity(before) != _directory_identity(opened):
+                os.close(child_fd)
+                raise ProtectedHashError(
+                    f"protected path component changed during open: {relative!r}/{part}"
+                )
+            chain.append((current_fd, part, child_fd, _directory_identity(before)))
+            directory_fds.append(child_fd)
+            current_fd = child_fd
+        final_name = pure.parts[-1]
+        before_file = os.stat(final_name, dir_fd=current_fd, follow_symlinks=False)
+        final_observed = True
+        if not stat.S_ISREG(before_file.st_mode) or stat.S_ISLNK(before_file.st_mode):
+            raise ProtectedHashError(
+                f"protected artifact is not a regular non-symlink file: {relative}"
+            )
+        if before_file.st_size > max_bytes:
+            raise ProtectedHashError(
+                f"protected artifact exceeds {max_bytes} bytes: {relative}"
+            )
+        file_fd = os.open(final_name, file_flags, dir_fd=current_fd)
+        opened_file = os.fstat(file_fd)
+        if (
+            not stat.S_ISREG(opened_file.st_mode)
+            or _stat_signature(before_file) != _stat_signature(opened_file)
+        ):
+            raise ProtectedHashError(
+                f"protected artifact changed before safe open: {relative}"
+            )
+        chunks: list[bytes] = []
+        remaining = max_bytes + 1
+        while remaining:
+            chunk = os.read(file_fd, min(1024 * 1024, remaining))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        payload = b"".join(chunks)
+        if len(payload) > max_bytes:
+            raise ProtectedHashError(
+                f"protected artifact grew beyond {max_bytes} bytes: {relative}"
+            )
+        after_fd = os.fstat(file_fd)
+        after_path = os.stat(final_name, dir_fd=current_fd, follow_symlinks=False)
+        if (
+            _stat_signature(before_file) != _stat_signature(after_fd)
+            or _stat_signature(before_file) != _stat_signature(after_path)
+            or len(payload) != before_file.st_size
+        ):
+            raise ProtectedHashError(
+                f"protected artifact changed while being read: {relative}"
+            )
+        for parent_fd, part, child_fd, expected in chain:
+            path_state = os.stat(part, dir_fd=parent_fd, follow_symlinks=False)
+            fd_state = os.fstat(child_fd)
+            if (
+                _directory_identity(path_state) != expected
+                or _directory_identity(fd_state) != expected
+            ):
+                raise ProtectedHashError(
+                    f"protected directory chain changed while reading: {relative!r}/{part}"
+                )
+        return payload
+    except FileNotFoundError as exc:
+        if final_observed:
+            raise ProtectedHashError(
+                f"protected artifact disappeared during guarded read: {relative}: {exc}"
+            ) from exc
+        return None
+    except ProtectedHashError:
+        raise
+    except OSError as exc:
+        raise ProtectedHashError(
+            f"protected artifact guarded read failed: {relative}: {exc}"
+        ) from exc
+    finally:
+        if file_fd is not None:
+            try:
+                os.close(file_fd)
+            except OSError:
+                pass
+        for descriptor in reversed(directory_fds):
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+
+
 def _protected_hashes(root: Path, paths: Sequence[str]) -> dict[str, str | None]:
-    return {
-        relative: _sha256(root / relative) if (root / relative).is_file() else None
-        for relative in paths
-    }
+    result: dict[str, str | None] = {}
+    for relative in paths:
+        payload = _guarded_protected_bytes(root, relative)
+        result[relative] = (
+            hashlib.sha256(payload).hexdigest() if payload is not None else None
+        )
+    return result
 
 
 def _default_requirement_probe(
@@ -324,7 +667,11 @@ def _default_requirement_probe(
         return resolved is not None, resolved
     if requirement.kind == "repository-executable":
         candidate = root / requirement.value
-        available = candidate.is_file() and os.access(candidate, os.X_OK)
+        available = (
+            not candidate.is_symlink()
+            and candidate.is_file()
+            and os.access(candidate, os.X_OK)
+        )
         return available, str(candidate) if available else None
     if requirement.kind == "python-module":
         available = importlib.util.find_spec(requirement.value) is not None
@@ -332,22 +679,42 @@ def _default_requirement_probe(
     raise ValueError(f"unknown tool requirement kind: {requirement.kind}")
 
 
-def _offline_environment() -> dict[str, str]:
-    environment = os.environ.copy()
-    for key in (
+def _preloaded_validation_environment() -> dict[str, str]:
+    """Pass a credential-minimized environment; this is not an egress sandbox."""
+    passthrough = {
+        "LANG",
+        "LC_ALL",
+        "LC_CTYPE",
+        "PATH",
+        "SSL_CERT_DIR",
+        "SSL_CERT_FILE",
+        "SYSTEMROOT",
+        "TERM",
+        "TMPDIR",
+        "TZ",
+    }
+    proxy_policy = {
         "ALL_PROXY",
         "HTTPS_PROXY",
         "HTTP_PROXY",
+        "NO_PROXY",
         "all_proxy",
         "https_proxy",
         "http_proxy",
-    ):
-        environment.pop(key, None)
+        "no_proxy",
+    }
+    environment = {
+        key: value
+        for key, value in os.environ.items()
+        if key in passthrough or key in proxy_policy
+    }
+    for key in proxy_policy:
+        value = environment.get(key)
+        if value and "@" in value:
+            environment[key] = "http://127.0.0.1:9"
     environment.update(
         {
-            "AGTXIV_OFFLINE": "1",
-            "NO_PROXY": "*",
-            "no_proxy": "*",
+            "AGTXIV_NETWORK_MODE": NETWORK_MODE,
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONHASHSEED": "0",
         }
@@ -359,30 +726,154 @@ def _subprocess_runner(
     command: Sequence[str], cwd: Path, environment: Mapping[str, str], timeout: int
 ) -> Invocation:
     started = time.monotonic()
+    command_list = list(command)
     try:
-        completed = subprocess.run(
-            list(command),
+        process = subprocess.Popen(
+            command_list,
             cwd=cwd,
             env=dict(environment),
-            text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            check=False,
-            timeout=timeout,
+            start_new_session=os.name == "posix",
         )
-        return Invocation(
-            completed.returncode,
-            completed.stdout,
-            completed.stderr,
-            time.monotonic() - started,
-        )
-    except FileNotFoundError as exc:
+    except OSError as exc:
         return Invocation(127, "", str(exc), time.monotonic() - started)
-    except subprocess.TimeoutExpired as exc:
-        stdout = exc.stdout if isinstance(exc.stdout, str) else ""
-        stderr = exc.stderr if isinstance(exc.stderr, str) else ""
-        message = f"command timed out after {timeout} seconds"
-        return Invocation(124, stdout, f"{stderr}\n{message}".strip(), time.monotonic() - started)
+    assert process.stdout is not None and process.stderr is not None
+    selector = selectors.DefaultSelector()
+    buffers = {"stdout": bytearray(), "stderr": bytearray()}
+    streams = {process.stdout.fileno(): "stdout", process.stderr.fileno(): "stderr"}
+    open_fds = set(streams)
+    for descriptor in open_fds:
+        os.set_blocking(descriptor, False)
+        selector.register(descriptor, selectors.EVENT_READ)
+    deadline = time.monotonic() + timeout
+    leader_exit_seen: float | None = None
+    forced_code: int | None = None
+    forced_message = ""
+    captured = 0
+    try:
+        while open_fds:
+            now = time.monotonic()
+            if now >= deadline:
+                forced_code = TIMEOUT_EXIT_CODE
+                forced_message = f"command timed out after {timeout} seconds"
+                break
+            if process.poll() is not None and leader_exit_seen is None:
+                leader_exit_seen = now
+            if (
+                leader_exit_seen is not None
+                and now - leader_exit_seen >= POST_EXIT_DRAIN_SECONDS
+                and (_process_group_alive(process) or open_fds)
+            ):
+                forced_code = BACKGROUND_PROCESS_EXIT_CODE
+                forced_message = (
+                    "command leader exited while descendants or inherited pipes remained active"
+                )
+                break
+            for key, _ in selector.select(min(0.1, max(0.0, deadline - now))):
+                descriptor = key.fd
+                while True:
+                    try:
+                        chunk = os.read(descriptor, 65536)
+                    except BlockingIOError:
+                        break
+                    if not chunk:
+                        selector.unregister(descriptor)
+                        open_fds.discard(descriptor)
+                        break
+                    available = MAX_CAPTURE_BYTES - captured
+                    if available > 0:
+                        buffers[streams[descriptor]].extend(chunk[:available])
+                    captured += len(chunk)
+                    if captured > MAX_CAPTURE_BYTES:
+                        forced_code = OUTPUT_LIMIT_EXIT_CODE
+                        forced_message = f"command output exceeded {MAX_CAPTURE_BYTES} bytes"
+                        break
+                if forced_code is not None:
+                    break
+            if forced_code is not None:
+                break
+            if process.poll() is not None and not open_fds:
+                if _process_group_alive(process):
+                    if leader_exit_seen is None:
+                        leader_exit_seen = time.monotonic()
+                    continue
+                break
+    finally:
+        selector.close()
+    if forced_code is not None:
+        _terminate_process_group(process)
+    else:
+        try:
+            process.wait(timeout=PROCESS_GROUP_GRACE_SECONDS)
+        except subprocess.TimeoutExpired:
+            forced_code = BACKGROUND_PROCESS_EXIT_CODE
+            forced_message = "command leader did not finish after pipe closure"
+            _terminate_process_group(process)
+        if (
+            forced_code is None
+            and os.name == "posix"
+            and _process_group_alive(process)
+        ):
+            forced_code = BACKGROUND_PROCESS_EXIT_CODE
+            forced_message = (
+                "command leader exited but its original POSIX process group remained active"
+            )
+            _terminate_process_group(process)
+    process.stdout.close()
+    process.stderr.close()
+    stdout = bytes(buffers["stdout"]).decode("utf-8", errors="surrogateescape")
+    stderr = bytes(buffers["stderr"]).decode("utf-8", errors="surrogateescape")
+    if forced_message:
+        stderr = f"{stderr}\n{forced_message}; process group terminated".strip()
+    return Invocation(
+        forced_code if forced_code is not None else int(process.returncode or 0),
+        stdout,
+        stderr,
+        time.monotonic() - started,
+    )
+
+
+def _process_group_alive(process: subprocess.Popen[bytes]) -> bool:
+    if os.name != "posix":
+        return process.poll() is None
+    try:
+        os.killpg(process.pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def _terminate_process_group(process: subprocess.Popen[bytes]) -> None:
+    try:
+        if os.name == "posix":
+            os.killpg(process.pid, signal.SIGTERM)
+        elif process.poll() is None:
+            process.terminate()
+    except OSError:
+        pass
+    deadline = time.monotonic() + PROCESS_GROUP_GRACE_SECONDS
+    while time.monotonic() < deadline and _process_group_alive(process):
+        try:
+            process.wait(timeout=min(0.1, max(0.0, deadline - time.monotonic())))
+        except subprocess.TimeoutExpired:
+            pass
+        if os.name != "posix" and process.poll() is not None:
+            break
+    if _process_group_alive(process):
+        try:
+            if os.name == "posix":
+                os.killpg(process.pid, signal.SIGKILL)
+            else:
+                process.kill()
+        except OSError:
+            pass
+    try:
+        process.wait(timeout=PROCESS_GROUP_GRACE_SECONDS)
+    except subprocess.TimeoutExpired:
+        pass
 
 
 def _resolve_command(
@@ -462,10 +953,72 @@ def _prepare_shellworld_validation_tree(root: Path, destination: Path) -> Path:
     )
 
 
+class DuplicateJSONKeyError(ValueError):
+    pass
+
+
+class StrictJSONValueError(ValueError):
+    pass
+
+
+def _strict_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise DuplicateJSONKeyError(f"duplicate JSON object key: {key}")
+        result[key] = value
+    return result
+
+
+def _parse_ijson_integer(token: str) -> int:
+    digits = token[1:] if token.startswith("-") else token
+    if not digits or len(digits) > len(str(IJSON_MAX_INTEGER)):
+        raise StrictJSONValueError("JSON integer is outside the I-JSON exact range")
+    value = int(token)
+    if not -IJSON_MAX_INTEGER <= value <= IJSON_MAX_INTEGER:
+        raise StrictJSONValueError("JSON integer is outside the I-JSON exact range")
+    return value
+
+
+def _parse_finite_json_float(token: str) -> float:
+    value = float(token)
+    if not math.isfinite(value):
+        raise StrictJSONValueError("JSON floating-point value is not finite")
+    return value
+
+
+def _reject_json_constant(token: str) -> None:
+    raise StrictJSONValueError(f"non-standard JSON constant is forbidden: {token}")
+
+
+def _stable_json_sha256(value: Any) -> str:
+    encoded = json.dumps(
+        value, ensure_ascii=False, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def _parse_json_output(invocation: Invocation) -> dict[str, Any] | None:
+    if not isinstance(invocation.stdout, str):
+        return None
     try:
-        payload = json.loads(invocation.stdout)
-    except (json.JSONDecodeError, TypeError):
+        encoded = invocation.stdout.encode("utf-8", errors="strict")
+        if len(encoded) > MAX_CAPTURE_BYTES:
+            return None
+        payload = json.loads(
+            invocation.stdout,
+            object_pairs_hook=_strict_json_object,
+            parse_int=_parse_ijson_integer,
+            parse_float=_parse_finite_json_float,
+            parse_constant=_reject_json_constant,
+        )
+    except (
+        ValueError,
+        TypeError,
+        UnicodeError,
+        OverflowError,
+        RecursionError,
+    ):
         return None
     return payload if isinstance(payload, dict) else None
 
@@ -576,6 +1129,169 @@ def _pilot_blocked_result(
     return result
 
 
+def _stabilizerness_blocked_result(
+    spec: CheckSpec, invocation: Invocation, command: list[str]
+) -> CheckResult:
+    result = _normal_result(spec, invocation, command)
+    payload = _parse_json_output(invocation)
+    tool_identity = payload.get("tool_identity") if isinstance(payload, dict) else None
+    dependency_identity = (
+        payload.get("dependency_git_identity") if isinstance(payload, dict) else None
+    )
+    declaration_audit = (
+        payload.get("declaration_audit") if isinstance(payload, dict) else None
+    )
+    side_effect_scope = (
+        payload.get("side_effect_observation_scope")
+        if isinstance(payload, dict)
+        else None
+    )
+    environment_policy = (
+        payload.get("environment_policy") if isinstance(payload, dict) else None
+    )
+    top_level_exact = bool(
+        isinstance(payload, dict)
+        and set(payload) == STABILIZERNESS_REPORT_TOP_LEVEL_KEYS
+    )
+    declaration_entries_exact = bool(
+        isinstance(declaration_audit, dict)
+        and set(declaration_audit)
+        == STABILIZERNESS_LOCAL_DECLARATIONS | STABILIZERNESS_IMPORTED_DECLARATIONS
+        and all(
+            isinstance(declaration_audit.get(name), dict)
+            and set(declaration_audit[name]) == STABILIZERNESS_DECLARATION_ENTRY_KEYS
+            and declaration_audit[name].get("scope") == "target-local"
+            and declaration_audit[name].get("audit_status") == "NOT_RUN"
+            and declaration_audit[name].get("axioms") == []
+            for name in STABILIZERNESS_LOCAL_DECLARATIONS
+        )
+        and all(
+            isinstance(declaration_audit.get(name), dict)
+            and set(declaration_audit[name]) == STABILIZERNESS_DECLARATION_ENTRY_KEYS
+            and declaration_audit[name].get("scope") == "imported"
+            and declaration_audit[name].get("audit_status") == "NOT_RUN"
+            and declaration_audit[name].get("axioms") == []
+            for name in STABILIZERNESS_IMPORTED_DECLARATIONS
+        )
+    )
+    observed_paths = (
+        side_effect_scope.get("observed_paths")
+        if isinstance(side_effect_scope, dict)
+        else None
+    )
+    side_effect_scope_exact = bool(
+        isinstance(side_effect_scope, dict)
+        and set(side_effect_scope) == STABILIZERNESS_SIDE_EFFECT_KEYS
+        and side_effect_scope.get("method") == STABILIZERNESS_SIDE_EFFECT_METHOD
+        and isinstance(observed_paths, list)
+        and all(isinstance(path, str) and bool(path) for path in observed_paths)
+        and observed_paths == sorted(observed_paths)
+        and len(observed_paths) == len(set(observed_paths))
+        and _stable_json_sha256(observed_paths)
+        == STABILIZERNESS_OBSERVED_PATHS_SHA256
+        and side_effect_scope.get("reused_unmeasured_cache_roots")
+        == list(STABILIZERNESS_REUSED_UNMEASURED_CACHE_ROOTS)
+        and side_effect_scope.get(
+            "paths_outside_observed_formal_and_evidence_closure"
+        )
+        == STABILIZERNESS_OUTSIDE_OBSERVED_CLOSURE
+        and side_effect_scope.get("future_dynamic_note")
+        == STABILIZERNESS_FUTURE_DYNAMIC_NOTE
+        and side_effect_scope.get("filesystem_isolation_enforced") is False
+    )
+    environment_policy_exact = bool(
+        isinstance(environment_policy, dict)
+        and set(environment_policy) == STABILIZERNESS_ENVIRONMENT_POLICY_KEYS
+        and environment_policy.get("network_mode") == NETWORK_MODE
+        and environment_policy.get("credential_minimized") is True
+    )
+    exact_blocker = bool(
+        invocation.returncode == 2
+        and invocation.stderr == ""
+        and top_level_exact
+        and payload.get("schema")
+        == "agtxiv.stabilizerness-dynamic-validation-report/0.1.0"
+        and payload.get("historical_evidence_schema_version") == "0.1.0-prototype"
+        and payload.get("project") == "formal/AgtXIvStabilizerness"
+        and payload.get("evidence_id") == STABILIZERNESS_EVIDENCE_ID
+        and payload.get("declared_historical_status")
+        == STABILIZERNESS_HISTORICAL_STATUS
+        and payload.get("effective_validation_status") == "EXPECTED_BLOCKED"
+        and payload.get("formalization_validation") == "EXPECTED_BLOCKED"
+        and payload.get("dynamic_execution") == "EXPECTED_BLOCKED"
+        and payload.get("dynamic_blocker_code") == STABILIZERNESS_BLOCKER_CODE
+        and payload.get("dynamic_blocker_reason") == STABILIZERNESS_BLOCKER_REASON
+        and payload.get("assurance_tier") == "LOCAL_PRELOADED_DIAGNOSTIC"
+        and payload.get("cache_mode")
+        == "DYNAMIC_NOT_RUN_FUTURE_PRELOADED_CACHE_UNVERIFIED"
+        and payload.get("consumed_cache_closure") == "NOT_VERIFIED"
+        and payload.get("source_clean_rebuild") is False
+        and payload.get("network_mode") == NETWORK_MODE
+        and payload.get("network_isolation_enforced") is False
+        and payload.get("filesystem_isolation_enforced") is False
+        and payload.get("network_note") == STABILIZERNESS_NETWORK_NOTE
+        and payload.get("evidence_anchors") == "PASSED"
+        and payload.get("artifact_hashes") == "PASSED"
+        and payload.get("formal_input_inventory") == "PASSED"
+        and payload.get("environment_binding") == "PASSED"
+        and payload.get("placeholder_scan") == "PASSED"
+        and payload.get("protected_input_integrity") == "PASSED"
+        and isinstance(tool_identity, dict)
+        and set(tool_identity) == STABILIZERNESS_TOOL_IDENTITY_KEYS
+        and tool_identity.get("validation") == "NOT_RUN"
+        and tool_identity.get("static_path_validation") == "PASSED"
+        and tool_identity.get("dynamic_identity") == "NOT_RUN"
+        and tool_identity.get("resolved_git_executable") is None
+        and isinstance(tool_identity.get("paths"), dict)
+        and set(tool_identity["paths"]) == STABILIZERNESS_TOOL_PATH_KEYS
+        and tool_identity["paths"] == STABILIZERNESS_TOOL_PATHS
+        and isinstance(dependency_identity, dict)
+        and set(dependency_identity) == STABILIZERNESS_DEPENDENCY_IDENTITY_KEYS
+        and dependency_identity.get("validation") == "NOT_RUN"
+        and dependency_identity.get("source_tree_closure") == "NOT_RUN"
+        and dependency_identity.get("consumed_cache_closure") == "NOT_VERIFIED"
+        and payload.get("kernel_build") == "NOT_RUN"
+        and payload.get("kernel_build_failure_excerpt") == []
+        and payload.get("axiom_audit") == "NOT_RUN"
+        and type(payload.get("declarations_audited")) is int
+        and payload["declarations_audited"] == 0
+        and type(payload.get("target_local_declarations_audited")) is int
+        and payload["target_local_declarations_audited"] == 0
+        and type(payload.get("imported_declarations_audited")) is int
+        and payload["imported_declarations_audited"] == 0
+        and payload.get("expected_target_local_declarations")
+        == sorted(STABILIZERNESS_LOCAL_DECLARATIONS)
+        and payload.get("expected_imported_declarations")
+        == sorted(STABILIZERNESS_IMPORTED_DECLARATIONS)
+        and payload.get("reported_axioms") == []
+        and declaration_entries_exact
+        and side_effect_scope_exact
+        and environment_policy_exact
+        and payload.get("external_commands") == []
+        and payload.get("admission_eligible") is False
+        and payload.get("security_gate_eligible") is False
+        and payload.get("m0_completion_effect") == "NONE"
+        and payload.get("admission_note") == STABILIZERNESS_ADMISSION_NOTE
+        and payload.get("remaining_m0_security_blockers")
+        == list(STABILIZERNESS_REMAINING_M0_SECURITY_BLOCKERS)
+        and payload.get("scientific_acceptance_effect")
+        == STABILIZERNESS_SCIENTIFIC_EFFECT
+        and payload.get("scope_limitations")
+        == list(STABILIZERNESS_SCOPE_LIMITATIONS)
+        and payload.get("errors") == []
+    )
+    result.details["exact_reviewed_blocker_state"] = exact_blocker
+    if exact_blocker:
+        result.status = ResultStatus.EXPECTED_BLOCKED
+        result.details["blocker_code"] = STABILIZERNESS_BLOCKER_CODE
+        result.details["reason"] = STABILIZERNESS_BLOCKER_REASON
+        result.details["policy"] = (
+            "This local static diagnostic cannot authorize admission or merge; add "
+            "an externally anchored cache closure or a clean isolated rebuild first."
+        )
+    return result
+
+
 def execute_check(
     spec: CheckSpec,
     *,
@@ -633,8 +1349,22 @@ def execute_check(
             details={"resolved_tools": resolved_tools},
         )
 
-    before = _protected_hashes(root, spec.protected_paths)
-    environment = _offline_environment()
+    try:
+        before = _protected_hashes(root, spec.protected_paths)
+    except ProtectedHashError as exc:
+        return CheckResult(
+            spec.check_id,
+            spec.description,
+            ResultStatus.FAIL,
+            command=_resolve_command(spec, root),
+            stderr=f"protected artifact pre-check failed: {exc}",
+            details={
+                "protected_hash_phase": "before",
+                "protected_hash_error": str(exc),
+                "resolved_tools": resolved_tools,
+            },
+        )
+    environment = _preloaded_validation_environment()
     if spec.site_build:
         temporary_parent = root / "tmp"
         temporary_parent.mkdir(exist_ok=True)
@@ -684,6 +1414,8 @@ def execute_check(
         result = _shellworld_result(spec, invocation, command, root)
     elif spec.classifier == "pilot-expected-blocked":
         result = _pilot_blocked_result(spec, invocation, command)
+    elif spec.classifier == "stabilizerness-expected-blocked":
+        result = _stabilizerness_blocked_result(spec, invocation, command)
     elif spec.classifier == "normal":
         result = _normal_result(spec, invocation, command)
     else:
@@ -691,11 +1423,20 @@ def execute_check(
 
     result.details.setdefault("resolved_tools", resolved_tools)
     if spec.classifier == "shellworld-known-stale":
-        result.details["execution_isolation"] = (
+        result.details["filesystem_execution_isolation"] = (
             "manifest-declared inputs copied to a temporary tree; tracked history "
             "was read-only"
         )
-    after = _protected_hashes(root, spec.protected_paths)
+    try:
+        after = _protected_hashes(root, spec.protected_paths)
+    except ProtectedHashError as exc:
+        result.status = ResultStatus.FAIL
+        result.details["protected_hash_phase"] = "after"
+        result.details["protected_hash_error"] = str(exc)
+        result.stderr = (
+            f"{result.stderr}\nprotected artifact post-check failed: {exc}"
+        ).strip()
+        return result
     changed = sorted(path for path in before if before[path] != after[path])
     if changed:
         result.status = ResultStatus.FAIL
@@ -768,7 +1509,14 @@ def build_report(
     return {
         "schema": REPORT_SCHEMA,
         "profile": profile,
-        "offline": True,
+        "network_mode": NETWORK_MODE,
+        "network_isolation_enforced": False,
+        "filesystem_isolation_enforced": False,
+        "assurance_tier": "LOCAL_REPOSITORY_DIAGNOSTIC",
+        "network_note": (
+            "Checks are selected for local, preloaded inputs; this runner does not "
+            "enforce operating-system outbound network blocking."
+        ),
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "repository_root": str(REPO),
         "python": {
@@ -803,7 +1551,8 @@ def _print_list(catalog: Sequence[CheckSpec]) -> None:
 def _print_human_report(report: Mapping[str, Any]) -> None:
     print(
         f"AgtXIv repository validation: profile={report['profile']} "
-        f"offline=yes outcome={report['outcome']}"
+        "network=offline-intended/preloaded OS-network-blocking=not-enforced "
+        f"outcome={report['outcome']}"
     )
     for result in report["results"]:
         print(
