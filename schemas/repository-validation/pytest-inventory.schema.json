@@ -1,0 +1,416 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schemas/repository-validation/pytest-inventory.schema.json",
+  "title": "AgtXIv deterministic pytest inventory",
+  "$comment": "This JSON Schema is the structural interoperability layer only. The Python validator is the normative authority for semantic invariants, canonical ordering, Unicode normalization, and exact Python numeric types. JSON Schema validators may treat lexical 1 and 1.0 as the same integer value; the Python validator deliberately does not. Schema validation alone never establishes baseline acceptance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "evidence_scope",
+    "collection_contract",
+    "input_bindings",
+    "runtime",
+    "counts",
+    "node_ids",
+    "selected_node_ids",
+    "deselected_node_ids",
+    "collection_skips",
+    "marker_declarations",
+    "node_set_sha256",
+    "node_order_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.pytest-inventory/1.0.0"
+    },
+    "evidence_scope": {
+      "const": "COLLECTION_IDENTITY_ONLY_NOT_TEST_EXECUTION_RESULT"
+    },
+    "collection_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "config",
+        "rootdir",
+        "test_paths",
+        "import_mode",
+        "plugin_autoload",
+        "cacheprovider",
+        "config_addopts_enabled",
+        "keyword_selection",
+        "marker_selection",
+        "deselection_policy",
+        "collection_skip_policy",
+        "double_collection_required",
+        "set_digest_scope",
+        "order_digest_scope"
+      ],
+      "properties": {
+        "config": {
+          "const": "pyproject.toml"
+        },
+        "rootdir": {
+          "const": "."
+        },
+        "test_paths": {
+          "const": [
+            "tests"
+          ]
+        },
+        "import_mode": {
+          "const": "prepend"
+        },
+        "plugin_autoload": {
+          "const": false
+        },
+        "cacheprovider": {
+          "const": false
+        },
+        "config_addopts_enabled": {
+          "const": false
+        },
+        "keyword_selection": {
+          "type": "null"
+        },
+        "marker_selection": {
+          "type": "null"
+        },
+        "deselection_policy": {
+          "const": "RECORDED_EXACT"
+        },
+        "collection_skip_policy": {
+          "const": "RECORDED_EXACT"
+        },
+        "double_collection_required": {
+          "const": true
+        },
+        "set_digest_scope": {
+          "const": "FULL_COLLECTED_NODE_SET"
+        },
+        "order_digest_scope": {
+          "const": "SELECTED_EXECUTION_ORDER"
+        }
+      }
+    },
+    "input_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        ".python-version",
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "properties": {
+        ".python-version": {
+          "$ref": "#/$defs/input_binding"
+        },
+        "pyproject.toml": {
+          "$ref": "#/$defs/input_binding"
+        },
+        "uv.lock": {
+          "$ref": "#/$defs/input_binding"
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python_implementation",
+        "python_version",
+        "pytest_version",
+        "pluggy_version",
+        "uv_version",
+        "platform",
+        "installed_distributions"
+      ],
+      "properties": {
+        "python_implementation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "python_version": {
+          "$ref": "#/$defs/version"
+        },
+        "pytest_version": {
+          "$ref": "#/$defs/version"
+        },
+        "pluggy_version": {
+          "$ref": "#/$defs/version"
+        },
+        "uv_version": {
+          "$ref": "#/$defs/version"
+        },
+        "platform": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "os_name",
+            "sys_platform",
+            "system",
+            "release",
+            "machine",
+            "python_platform",
+            "cache_tag"
+          ],
+          "properties": {
+            "os_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sys_platform": {
+              "type": "string",
+              "minLength": 1
+            },
+            "system": {
+              "type": "string",
+              "minLength": 1
+            },
+            "release": {
+              "type": "string",
+              "minLength": 1
+            },
+            "machine": {
+              "type": "string",
+              "minLength": 1
+            },
+            "python_platform": {
+              "type": "string",
+              "minLength": 1
+            },
+            "cache_tag": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "installed_distributions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "version"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collected",
+        "selected",
+        "deselected",
+        "collection_skipped",
+        "marker_declarations"
+      ],
+      "properties": {
+        "collected": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "selected": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "deselected": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "collection_skipped": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "marker_declarations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "node_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/node_id"
+      }
+    },
+    "selected_node_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/node_id"
+      }
+    },
+    "deselected_node_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/node_id"
+      }
+    },
+    "collection_skips": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "node_id",
+          "reason"
+        ],
+        "properties": {
+          "node_id": {
+            "$ref": "#/$defs/node_id"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\u0000]*(?![\\s\\S])"
+          }
+        }
+      }
+    },
+    "marker_declarations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "node_id",
+          "markers"
+        ],
+        "properties": {
+          "node_id": {
+            "$ref": "#/$defs/node_id"
+          },
+          "markers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "args",
+                "kwargs"
+              ],
+              "properties": {
+                "name": {
+                  "enum": [
+                    "skip",
+                    "skipif",
+                    "xfail"
+                  ]
+                },
+                "args": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/stable_json_value"
+                  }
+                },
+                "kwargs": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/stable_json_value"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "node_set_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "node_order_sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+(?:\\.[0-9]+)+(?:[-+._a-zA-Z0-9]*)?(?![\\s\\S])"
+    },
+    "input_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "byte_size",
+        "sha256"
+      ],
+      "properties": {
+        "byte_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "Every node ID is also semantically checked for Unicode NFC; JSON Schema cannot express normalization.",
+      "pattern": "^tests/(?!\\.\\.(?:/|::|$)|\\.(?:/|::|$))[^/\\\\\\r\\n\\u0000:]+(?:/(?!\\.\\.(?:/|::|$)|\\.(?:/|::|$))[^/\\\\\\r\\n\\u0000:]+)*(?:::(?:(?!::)[^\\r\\n\\u0000])+)*(?![\\s\\S])"
+    },
+    "stable_json_value": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stable_json_value"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/stable_json_value"
+          }
+        }
+      ]
+    }
+  }
+}
