@@ -1152,7 +1152,6 @@ def _is_exact_node_id(value: object) -> bool:
         not isinstance(value, str)
         or not value
         or value.startswith("/")
-        or "\\" in value
         or any(character in value for character in ("\x00", "\r", "\n"))
         or unicodedata.normalize("NFC", value) != value
     ):
@@ -1164,6 +1163,7 @@ def _is_exact_node_id(value: object) -> bool:
         len(parts) >= 2
         and parts[0] == "tests"
         and ":" not in path_text
+        and "\\" not in path_text
         and "//" not in path_text
         and all(part not in {"", ".", ".."} for part in parts)
         and all(component != "" for component in components[1:])

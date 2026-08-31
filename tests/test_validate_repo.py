@@ -20,7 +20,9 @@ def invocation(returncode: int = 0, stdout: str = "", stderr: str = "") -> valid
 
 
 def pytest_identity_report() -> dict:
-    node_ids = ["tests/test_alpha.py::test_alpha"]
+    # Pytest escapes control characters inside parameter IDs. Backslashes are
+    # therefore valid after the repository-relative path separator ``::``.
+    node_ids = [r"tests/test_alpha.py::test_alpha[lf-\n]"]
     selected_node_ids = list(node_ids)
     identity = {
         "schema": validator.PYTEST_IDENTITY_SCHEMA,
@@ -359,6 +361,15 @@ def test_exact_pytest_identity_diagnostic_is_expected_blocked() -> None:
         if item.check_id == "pytest-test-identity"
     )
     payload = pytest_identity_report()
+    assert validator._is_exact_node_id(
+        r"tests/test_alpha.py::test_alpha[unicode-\uD800]"
+    )
+    assert not validator._is_exact_node_id(
+        r"tests\test_alpha.py::test_alpha[lf-\n]"
+    )
+    assert not validator._is_exact_node_id(
+        "tests/test_alpha.py::test_alpha[lf-\n]"
+    )
     result = validator._pytest_test_identity_result(
         spec,
         invocation(0, json.dumps(payload, sort_keys=True), ""),
