@@ -1,0 +1,650 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/terminal/typed-terminal-result/1.0.0",
+  "title": "AgtXIv intrinsic typed terminal result",
+  "description": "Records one operationally terminated attempt without claiming artifact production, obligation satisfaction, or lifecycle authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "envelope",
+    "payload",
+    "content_hash"
+  ],
+  "properties": {
+    "envelope": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "record_type",
+            "producer_context"
+          ],
+          "properties": {
+            "record_type": {
+              "$ref": "#/$defs/recordType"
+            }
+          }
+        }
+      ]
+    },
+    "payload": {
+      "$ref": "#/$defs/payload"
+    },
+    "content_hash": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+    }
+  },
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.typed-terminal-result/1.0.0"
+    },
+    "namespacedId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 512,
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+    },
+    "upperLabel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Z][A-Z0-9_]*(?![\\s\\S])"
+    },
+    "declaredReasonCode": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 256,
+      "pattern": "^AGTXIV\\.[A-Z][A-Z0-9_]*(?:\\.[A-Z][A-Z0-9_]*)+(?![\\s\\S])"
+    },
+    "nonBlankText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "[^\\s]"
+    },
+    "nonNegativeIjsonInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "planRef": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        {
+          "type": "object",
+          "required": [
+            "record_type"
+          ],
+          "properties": {
+            "record_type": {
+              "const": "agtxiv.agentization-plan/1.0.0"
+            }
+          }
+        }
+      ]
+    },
+    "scopeRef": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        {
+          "type": "object",
+          "required": [
+            "record_type"
+          ],
+          "properties": {
+            "record_type": {
+              "const": "agtxiv.frozen-inventory-scope/1.0.0"
+            }
+          }
+        }
+      ]
+    },
+    "profileBoundContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_mode",
+        "profile_ref",
+        "catalog_ref"
+      ],
+      "properties": {
+        "context_mode": {
+          "const": "PROFILE_BOUND"
+        },
+        "profile_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "catalog_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        }
+      }
+    },
+    "planBoundContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_mode",
+        "profile_ref",
+        "catalog_ref",
+        "plan_ref"
+      ],
+      "properties": {
+        "context_mode": {
+          "const": "PLAN_BOUND"
+        },
+        "profile_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "catalog_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "plan_ref": {
+          "$ref": "#/$defs/planRef"
+        }
+      }
+    },
+    "frozenScopeBoundContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_mode",
+        "profile_ref",
+        "catalog_ref",
+        "plan_ref",
+        "scope_ref"
+      ],
+      "properties": {
+        "context_mode": {
+          "const": "FROZEN_SCOPE_BOUND"
+        },
+        "profile_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "catalog_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "plan_ref": {
+          "$ref": "#/$defs/planRef"
+        },
+        "scope_ref": {
+          "$ref": "#/$defs/scopeRef"
+        }
+      }
+    },
+    "bindingContext": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/profileBoundContext"
+        },
+        {
+          "$ref": "#/$defs/planBoundContext"
+        },
+        {
+          "$ref": "#/$defs/frozenScopeBoundContext"
+        }
+      ]
+    },
+    "assetBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis_kind",
+        "asset_ref"
+      ],
+      "properties": {
+        "basis_kind": {
+          "const": "ASSET"
+        },
+        "asset_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        }
+      }
+    },
+    "recordBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis_kind",
+        "record_ref"
+      ],
+      "properties": {
+        "basis_kind": {
+          "const": "RECORD"
+        },
+        "record_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        }
+      }
+    },
+    "componentBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis_kind",
+        "component_ref"
+      ],
+      "properties": {
+        "basis_kind": {
+          "const": "COMPONENT"
+        },
+        "component_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-component-ref/1.0.0"
+        }
+      }
+    },
+    "basis": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/assetBasis"
+        },
+        {
+          "$ref": "#/$defs/recordBasis"
+        },
+        {
+          "$ref": "#/$defs/componentBasis"
+        }
+      ]
+    },
+    "targetObligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_key",
+        "stage_id",
+        "family_id",
+        "basis"
+      ],
+      "properties": {
+        "obligation_key": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "stage_id": {
+          "$ref": "#/$defs/upperLabel"
+        },
+        "family_id": {
+          "$ref": "#/$defs/upperLabel"
+        },
+        "basis": {
+          "$ref": "#/$defs/basis"
+        }
+      }
+    },
+    "declaredReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared_reason_code",
+        "summary"
+      ],
+      "properties": {
+        "declared_reason_code": {
+          "$ref": "#/$defs/declaredReasonCode"
+        },
+        "summary": {
+          "$ref": "#/$defs/nonBlankText"
+        }
+      }
+    },
+    "evidenceAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "evidence_role",
+        "evidence_kind",
+        "asset_ref"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "evidence_role": {
+          "$ref": "#/$defs/evidenceRole"
+        },
+        "evidence_kind": {
+          "const": "ASSET"
+        },
+        "asset_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        }
+      }
+    },
+    "evidenceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "evidence_role",
+        "evidence_kind",
+        "record_ref"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "evidence_role": {
+          "$ref": "#/$defs/evidenceRole"
+        },
+        "evidence_kind": {
+          "const": "RECORD"
+        },
+        "record_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        }
+      }
+    },
+    "evidenceComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "evidence_role",
+        "evidence_kind",
+        "component_ref"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "evidence_role": {
+          "$ref": "#/$defs/evidenceRole"
+        },
+        "evidence_kind": {
+          "const": "COMPONENT"
+        },
+        "component_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-component-ref/1.0.0"
+        }
+      }
+    },
+    "evidenceRole": {
+      "enum": [
+        "INPUT_STATE",
+        "TOOL_DIAGNOSTIC",
+        "RESOURCE_OBSERVATION",
+        "POLICY_OBSERVATION",
+        "REVIEW_REQUEST"
+      ]
+    },
+    "evidenceItem": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/evidenceAsset"
+        },
+        {
+          "$ref": "#/$defs/evidenceRecord"
+        },
+        {
+          "$ref": "#/$defs/evidenceComponent"
+        }
+      ]
+    },
+    "retry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "retry_disposition",
+            "retry_condition"
+          ],
+          "properties": {
+            "retry_disposition": {
+              "const": "RETRY_AFTER_CONDITION"
+            },
+            "retry_condition": {
+              "$ref": "#/$defs/nonBlankText"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "retry_disposition",
+            "context_change_required"
+          ],
+          "properties": {
+            "retry_disposition": {
+              "const": "NO_RETRY_IN_CURRENT_CONTEXT"
+            },
+            "context_change_required": {
+              "$ref": "#/$defs/nonBlankText"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "retry_disposition",
+            "review_condition"
+          ],
+          "properties": {
+            "retry_disposition": {
+              "const": "REVIEW_DECIDES"
+            },
+            "review_condition": {
+              "$ref": "#/$defs/nonBlankText"
+            }
+          }
+        }
+      ]
+    },
+    "deadline": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "deadline_kind",
+            "no_deadline_reason"
+          ],
+          "properties": {
+            "deadline_kind": {
+              "const": "NO_DEADLINE"
+            },
+            "no_deadline_reason": {
+              "$ref": "#/$defs/nonBlankText"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "deadline_kind",
+            "deadline_at"
+          ],
+          "properties": {
+            "deadline_kind": {
+              "const": "FIXED_DEADLINE"
+            },
+            "deadline_at": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,9})?Z(?![\\s\\S])"
+            }
+          }
+        }
+      ]
+    },
+    "nextAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_code",
+        "description",
+        "responsible_actor",
+        "responsible_role",
+        "deadline"
+      ],
+      "properties": {
+        "action_code": {
+          "enum": [
+            "PROVIDE_INPUT",
+            "RESOLVE_DEPENDENCY",
+            "RETRY",
+            "MANUAL_REVIEW",
+            "RESOLVE_POLICY",
+            "ESCALATE",
+            "FIX_IMPLEMENTATION"
+          ]
+        },
+        "description": {
+          "$ref": "#/$defs/nonBlankText"
+        },
+        "responsible_actor": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/actor-identity/1.0.0"
+        },
+        "responsible_role": {
+          "$ref": "#/$defs/upperLabel"
+        },
+        "deadline": {
+          "$ref": "#/$defs/deadline"
+        }
+      }
+    },
+    "observedResources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wall_time_ms": {
+          "$ref": "#/$defs/nonNegativeIjsonInteger"
+        },
+        "cpu_time_ms": {
+          "$ref": "#/$defs/nonNegativeIjsonInteger"
+        },
+        "peak_memory_bytes": {
+          "$ref": "#/$defs/nonNegativeIjsonInteger"
+        },
+        "input_bytes": {
+          "$ref": "#/$defs/nonNegativeIjsonInteger"
+        },
+        "output_bytes": {
+          "$ref": "#/$defs/nonNegativeIjsonInteger"
+        },
+        "network_requests": {
+          "$ref": "#/$defs/nonNegativeIjsonInteger"
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "limit",
+        "observed",
+        "unobserved_metrics",
+        "relation"
+      ],
+      "properties": {
+        "limit": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/resource-budget/1.0.0"
+        },
+        "observed": {
+          "$ref": "#/$defs/observedResources"
+        },
+        "unobserved_metrics": {
+          "type": "array",
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "wall_time_ms",
+              "cpu_time_ms",
+              "peak_memory_bytes",
+              "input_bytes",
+              "output_bytes",
+              "network_requests"
+            ]
+          }
+        },
+        "relation": {
+          "enum": [
+            "WITHIN_OBSERVED_LIMITS",
+            "EXCEEDED_OBSERVED_LIMIT",
+            "INDETERMINATE"
+          ]
+        }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "terminal_for_attempt",
+        "terminal_scope",
+        "successful_artifact_produced",
+        "satisfaction_claim",
+        "attempt_id",
+        "binding_context",
+        "target_obligation",
+        "outcome",
+        "declared_reason",
+        "evidence",
+        "retry",
+        "next_action",
+        "resources"
+      ],
+      "properties": {
+        "terminal_for_attempt": {
+          "const": true
+        },
+        "terminal_scope": {
+          "const": "ATTEMPT_ONLY"
+        },
+        "successful_artifact_produced": {
+          "const": false
+        },
+        "satisfaction_claim": {
+          "const": "NONE"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "binding_context": {
+          "$ref": "#/$defs/bindingContext"
+        },
+        "target_obligation": {
+          "$ref": "#/$defs/targetObligation"
+        },
+        "outcome": {
+          "enum": [
+            "UNAVAILABLE",
+            "RETRY_REQUIRED",
+            "REVIEW_REQUIRED",
+            "BLOCKED",
+            "FAILED"
+          ]
+        },
+        "declared_reason": {
+          "$ref": "#/$defs/declaredReason"
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/evidenceItem"
+          }
+        },
+        "retry": {
+          "$ref": "#/$defs/retry"
+        },
+        "next_action": {
+          "$ref": "#/$defs/nextAction"
+        },
+        "resources": {
+          "$ref": "#/$defs/resources"
+        }
+      }
+    }
+  }
+}

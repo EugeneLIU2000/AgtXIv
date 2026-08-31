@@ -30,6 +30,7 @@ from .registry import (
     build_schema_registry,
 )
 from .schema_validation import validate_immutable_record_payload
+from .terminal_validation import validate_typed_terminal_result_intrinsic
 
 __all__ = [
     "Diagnostic",
@@ -57,4 +58,5 @@ __all__ = [
     "SchemaAssetBinding",
     "build_schema_registry",
     "validate_immutable_record_payload",
+    "validate_typed_terminal_result_intrinsic",
 ]
