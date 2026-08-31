@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0",
+  "title": "AgtXIv exact asset reference",
+  "description": "Identifies supplied raw asset bytes. path_hint is display-only and MUST NOT be used to resolve the asset.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "asset_id",
+    "media_type",
+    "byte_size",
+    "sha256"
+  ],
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 256,
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+    },
+    "media_type": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 127,
+      "pattern": "^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*(?![\\s\\S])"
+    },
+    "byte_size": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "sha256": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+    },
+    "path_hint": {
+      "description": "Non-authoritative navigation text; resolvers MUST ignore this field.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "schema_uri": {
+      "description": "Immutable AgtXIv schema identity, not a network retrieval instruction.",
+      "type": "string",
+      "maxLength": 2048,
+      "format": "uri",
+      "pattern": "^https://agtxiv\\.org/schema/v2/contract-kernel/[a-z0-9-]+(?:/[a-z0-9-]+)+/(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?![\\s\\S])"
+    }
+  }
+}

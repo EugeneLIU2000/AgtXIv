@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/common/resource-budget/1.0.0",
+  "title": "AgtXIv resource budget",
+  "description": "Explicit non-negative maxima. A value of zero forbids consumption of that resource.",
+  "type": "object",
+  "additionalProperties": false,
+  "minProperties": 1,
+  "properties": {
+    "max_wall_time_ms": {
+      "$ref": "#/$defs/nonNegativeIjsonInteger"
+    },
+    "max_cpu_time_ms": {
+      "$ref": "#/$defs/nonNegativeIjsonInteger"
+    },
+    "max_peak_memory_bytes": {
+      "$ref": "#/$defs/nonNegativeIjsonInteger"
+    },
+    "max_input_bytes": {
+      "$ref": "#/$defs/nonNegativeIjsonInteger"
+    },
+    "max_output_bytes": {
+      "$ref": "#/$defs/nonNegativeIjsonInteger"
+    },
+    "max_network_requests": {
+      "$ref": "#/$defs/nonNegativeIjsonInteger"
+    }
+  },
+  "$defs": {
+    "nonNegativeIjsonInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    }
+  }
+}

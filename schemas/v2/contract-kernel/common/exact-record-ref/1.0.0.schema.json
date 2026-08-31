@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0",
+  "title": "AgtXIv exact record reference",
+  "description": "Pins one immutable record revision, its exact schema bytes, and its canonical content hash.",
+  "$defs": {
+    "schemaAssetRef": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        {
+          "type": "object",
+          "required": [
+            "media_type"
+          ],
+          "properties": {
+            "media_type": {
+              "const": "application/schema+json"
+            }
+          }
+        }
+      ]
+    },
+    "recordRefFields": {
+      "type": "object",
+      "required": [
+        "record_type",
+        "record_id",
+        "record_revision",
+        "schema_ref",
+        "content_hash"
+      ],
+      "properties": {
+        "record_type": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 256,
+          "pattern": "^agtxiv\\.[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)*/(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?![\\s\\S])"
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512,
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "schema_ref": {
+          "$ref": "#/$defs/schemaAssetRef"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/recordRefFields"
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/common/actor-identity/1.0.0",
+  "title": "AgtXIv actor identity",
+  "description": "A stable declared actor identity. This shape alone grants no role, authentication, independence, or production authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "actor_kind",
+    "actor_id"
+  ],
+  "properties": {
+    "actor_kind": {
+      "enum": [
+        "HUMAN",
+        "AGENT",
+        "MECHANICAL_SERVICE"
+      ]
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 512,
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0",
+  "title": "AgtXIv producer context",
+  "description": "Exact declared producer, attempt, implementation, and execution-environment inputs. Authorization remains a separate policy decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "producer",
+    "role",
+    "attempt_id",
+    "implementation_ref",
+    "environment_ref"
+  ],
+  "properties": {
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/actor-identity/1.0.0"
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Z][A-Z0-9_]*(?![\\s\\S])"
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 512,
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+    },
+    "implementation_ref": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+    },
+    "environment_ref": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+    }
+  }
+}

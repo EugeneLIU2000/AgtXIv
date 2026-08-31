@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-component-ref/1.0.0",
+  "title": "AgtXIv exact component reference",
+  "description": "An exact record reference plus a stable component identity and an RFC 6901 JSON Pointer.",
+  "allOf": [
+    {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0#/$defs/recordRefFields"
+    },
+    {
+      "type": "object",
+      "required": [
+        "component_id",
+        "json_pointer"
+      ],
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512,
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        },
+        "json_pointer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?:/(?:[^~/\\r\\n]|~[01])*)+(?![\\s\\S])"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

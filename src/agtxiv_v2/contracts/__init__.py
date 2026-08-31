@@ -15,6 +15,15 @@ from .canonical import (
     record_hash_projection_bytes,
 )
 from .diagnostics import Diagnostic, DiagnosticCode
+from .references import (
+    SuppliedAsset,
+    raw_asset_sha256,
+    resolve_exact_asset_ref,
+    resolve_exact_component_ref,
+    resolve_exact_record_ref,
+    validate_immutable_envelope,
+    validate_immutable_record,
+)
 
 __all__ = [
     "Diagnostic",
@@ -31,4 +40,11 @@ __all__ = [
     "parse_canonical_json",
     "record_content_hash",
     "record_hash_projection_bytes",
+    "SuppliedAsset",
+    "raw_asset_sha256",
+    "resolve_exact_asset_ref",
+    "resolve_exact_component_ref",
+    "resolve_exact_record_ref",
+    "validate_immutable_envelope",
+    "validate_immutable_record",
 ]
