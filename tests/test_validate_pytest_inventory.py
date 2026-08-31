@@ -115,10 +115,18 @@ def base_collection() -> dict:
 
 def make_inventory(root: Path, collection: dict | None = None) -> dict:
     write_runtime_inputs(root)
-    return validator.build_inventory(
+    return validator.build_test_identity(
         root,
         collection or base_collection(),
-        runtime_provider=runtime_provider,
+    )
+
+
+def load_test_identity_schema() -> dict:
+    return json.loads(
+        (
+            validator.REPO
+            / "schemas/repository-validation/pytest-test-identity.schema.json"
+        ).read_text(encoding="utf-8")
     )
 
 
@@ -134,6 +142,7 @@ def repository_files(marker: bytes = b"committed\n") -> dict[str, bytes]:
         ".python-version": (platform.python_version() + "\n").encode(),
         "pyproject.toml": b'[tool.uv]\nrequired-version = "==0.10.0"\n',
         "tests/test_marker.py": marker,
+        validator.VALIDATOR_RELATIVE_PATH: Path(validator.__file__).read_bytes(),
         "uv.lock": b'version = 1\n[[package]]\nname = "pytest"\nversion = "7.4.4"\n'
         b'[[package]]\nname = "pluggy"\nversion = "1.6.0"\n',
     }
@@ -185,12 +194,7 @@ def fake_git_io(
 
 def test_schema_is_meta_valid_and_accepts_generated_inventory(tmp_path: Path) -> None:
     inventory = make_inventory(tmp_path)
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     Draft202012Validator.check_schema(schema)
     Draft202012Validator(schema).validate(inventory)
     assert inventory["counts"] == {
@@ -203,38 +207,28 @@ def test_schema_is_meta_valid_and_accepts_generated_inventory(tmp_path: Path) ->
     assert inventory["marker_declarations"][0]["markers"][0]["name"] == "skipif"
 
 
-def test_schema_patterns_use_ecma_absolute_end_and_share_distribution_rule() -> None:
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
-    distribution_pattern = schema["properties"]["runtime"]["properties"][
-        "installed_distributions"
-    ]["items"]["properties"]["name"]["pattern"]
+def test_schema_patterns_use_ecma_absolute_end() -> None:
+    schema = load_test_identity_schema()
     patterns = [
-        distribution_pattern,
         schema["$defs"]["sha256"]["pattern"],
-        schema["$defs"]["version"]["pattern"],
         schema["$defs"]["node_id"]["pattern"],
+        schema["properties"]["collection_skips"]["items"]["properties"][
+            "reason"
+        ]["pattern"],
     ]
     assert all(pattern.endswith(r"(?![\s\S])") for pattern in patterns)
-    assert distribution_pattern == validator.DISTRIBUTION_NAME_PATTERN
 
 
 def test_schema_documents_python_semantic_authority_and_i_json_bounds() -> None:
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     comment = schema["$comment"]
-    assert "structural interoperability layer only" in comment
+    assert "structural interoperability layer" in comment
     assert "Python validator is the normative authority" in comment
     assert "lexical 1 and 1.0" in comment
     assert "Schema validation alone never establishes baseline acceptance" in comment
+    assert "LOCKED_RUNTIME_MATCHED" in comment
+    assert "environment qualification" in comment
+    assert "are identical" in comment
     for count_schema in schema["properties"]["counts"]["properties"].values():
         assert count_schema["maximum"] == validator.I_JSON_EXACT_INTEGER_MAX
     assert schema["$defs"]["input_binding"]["properties"]["byte_size"][
@@ -257,32 +251,22 @@ def test_schema_may_accept_lexical_float_integer_but_python_rejects_it(
 ) -> None:
     inventory = make_inventory(tmp_path)
     inventory["marker_declarations"][0]["markers"][0]["args"] = [1.0]
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     # Draft 2020-12 treats mathematically integral 1.0 as an integer.  The
-    # top-level schema comment explicitly delegates exact runtime types to Python.
+    # top-level schema comment explicitly delegates exact numeric types to Python.
     assert Draft202012Validator(schema).is_valid(inventory)
     with pytest.raises(validator.InventoryError) as error:
-        validator._validate_inventory_document(inventory)
+        validator._validate_test_identity_document(inventory)
     assert error.value.code == "INVALID_BASELINE"
 
 
 def test_collection_skip_nul_is_rejected_by_schema_and_python(tmp_path: Path) -> None:
     inventory = make_inventory(tmp_path)
     inventory["collection_skips"][0]["reason"] = "invalid\x00reason"
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     assert not Draft202012Validator(schema).is_valid(inventory)
     with pytest.raises(validator.InventoryError) as error:
-        validator._validate_inventory_document(inventory)
+        validator._validate_test_identity_document(inventory)
     assert error.value.code == "INVALID_BASELINE"
 
 
@@ -295,9 +279,7 @@ def test_candidate_marker_integer_must_be_in_i_json_exact_range(
         validator.I_JSON_EXACT_INTEGER_MAX + 1
     ]
     with pytest.raises(validator.InventoryError) as error:
-        validator.build_inventory(
-            tmp_path, collection, runtime_provider=runtime_provider
-        )
+        validator.build_test_identity(tmp_path, collection)
     assert error.value.code == "UNSTABLE_MARKER_VALUE"
 
 
@@ -332,31 +314,21 @@ def test_candidate_marker_integer_must_be_in_i_json_exact_range(
         "uppercase",
     ],
 )
-def test_distribution_name_schema_regex_and_loader_are_differentially_aligned(
-    tmp_path: Path, name: str, accepted: bool
+def test_distribution_name_runtime_loader_is_strict(
+    name: str, accepted: bool
 ) -> None:
-    inventory = make_inventory(tmp_path)
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
-    name_schema = schema["properties"]["runtime"]["properties"][
-        "installed_distributions"
-    ]["items"]["properties"]["name"]
-    schema_accepts_name = Draft202012Validator(name_schema).is_valid(name)
     python_accepts_name = validator.DISTRIBUTION_NAME_RE.fullmatch(name) is not None
-    assert schema_accepts_name is accepted
     assert python_accepts_name is accepted
 
     if accepted:
         return
-    inventory["runtime"]["installed_distributions"][0]["name"] = name
-    assert not Draft202012Validator(schema).is_valid(inventory)
+    runtime = copy.deepcopy(RUNTIME)
+    runtime["installed_distributions"][0]["name"] = name
     with pytest.raises(validator.InventoryError) as error:
-        validator._validate_inventory_document(inventory)
-    assert error.value.code == "INVALID_BASELINE"
+        validator._validate_runtime_document(
+            runtime, error_code="RUNTIME_CONTRACT_VIOLATION"
+        )
+    assert error.value.code == "RUNTIME_CONTRACT_VIOLATION"
 
 
 @pytest.mark.parametrize(
@@ -369,48 +341,31 @@ def test_collection_contract_rejects_integer_bool_impostors(
 ) -> None:
     inventory = make_inventory(tmp_path)
     inventory["collection_contract"][field] = value
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     assert not Draft202012Validator(schema).is_valid(inventory)
     with pytest.raises(validator.InventoryError) as error:
-        validator._validate_inventory_document(inventory)
+        validator._validate_test_identity_document(inventory)
     assert error.value.code == "INVALID_BASELINE"
 
 
 @pytest.mark.parametrize(
     "pattern_target",
-    ["distribution", "sha256", "version", "node_id"],
+    ["sha256", "node_id"],
 )
 def test_schema_and_loader_both_reject_pattern_values_with_trailing_lf(
     tmp_path: Path, pattern_target: str
 ) -> None:
     inventory = make_inventory(tmp_path)
-    if pattern_target == "distribution":
-        inventory["runtime"]["installed_distributions"][0]["name"] += "\n"
-    elif pattern_target == "sha256":
+    if pattern_target == "sha256":
         inventory["node_set_sha256"] += "\n"
-    elif pattern_target == "version":
-        inventory["runtime"]["pytest_version"] += "\n"
-        for distribution in inventory["runtime"]["installed_distributions"]:
-            if distribution["name"] == "pytest":
-                distribution["version"] += "\n"
     else:
         inventory["node_ids"][0] += "\n"
         inventory["selected_node_ids"][0] += "\n"
         inventory["marker_declarations"][0]["node_id"] += "\n"
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     assert not Draft202012Validator(schema).is_valid(inventory)
     with pytest.raises(validator.InventoryError) as error:
-        validator._validate_inventory_document(inventory)
+        validator._validate_test_identity_document(inventory)
     assert error.value.code == "INVALID_BASELINE"
 
 
@@ -461,15 +416,13 @@ def test_duplicate_and_selected_deselected_overlap_are_rejected(tmp_path: Path) 
     duplicate = base_collection()
     duplicate["node_ids"].append(duplicate["node_ids"][0])
     with pytest.raises(validator.InventoryError) as error:
-        validator.build_inventory(
-            tmp_path, duplicate, runtime_provider=runtime_provider
-        )
+        validator.build_test_identity(tmp_path, duplicate)
     assert error.value.code == "DUPLICATE_NODE_ID"
 
     overlap = base_collection()
     overlap["deselected_node_ids"] = [overlap["node_ids"][0]]
     with pytest.raises(validator.InventoryError) as error:
-        validator.build_inventory(tmp_path, overlap, runtime_provider=runtime_provider)
+        validator.build_test_identity(tmp_path, overlap)
     assert error.value.code == "INVALID_COLLECTION_PAYLOAD"
 
 
@@ -606,13 +559,11 @@ def test_marker_values_reject_unstable_objects(tmp_path: Path) -> None:
     collection = base_collection()
     collection["marker_declarations"][0]["markers"][0]["args"] = [object()]
     with pytest.raises(validator.InventoryError) as error:
-        validator.build_inventory(
-            tmp_path, collection, runtime_provider=runtime_provider
-        )
+        validator.build_test_identity(tmp_path, collection)
     assert error.value.code == "UNSTABLE_MARKER_VALUE"
 
 
-def test_skip_deselection_and_raw_binding_drift_change_inventory_digest(
+def test_skip_deselection_and_raw_binding_drift_change_test_identity_digest(
     tmp_path: Path,
 ) -> None:
     original = make_inventory(tmp_path)
@@ -622,22 +573,22 @@ def test_skip_deselection_and_raw_binding_drift_change_inventory_digest(
         "tests/test_alpha.py::test_other_deselection"
     ]
     changed_collection["node_ids"][-1] = changed_collection["deselected_node_ids"][0]
-    changed = validator.build_inventory(
-        tmp_path, changed_collection, runtime_provider=runtime_provider
+    changed = validator.build_test_identity(tmp_path, changed_collection)
+    assert validator._test_identity_digest(changed) != validator._test_identity_digest(
+        original
     )
-    assert validator._inventory_digest(changed) != validator._inventory_digest(original)
 
     (tmp_path / "pyproject.toml").write_text(
         (tmp_path / "pyproject.toml").read_text(encoding="utf-8") + "\n# byte drift\n",
         encoding="utf-8",
     )
-    rebound = validator.build_inventory(
-        tmp_path, base_collection(), runtime_provider=runtime_provider
-    )
+    rebound = validator.build_test_identity(tmp_path, base_collection())
     assert rebound["input_bindings"]["pyproject.toml"] != original["input_bindings"][
         "pyproject.toml"
     ]
-    assert validator._inventory_digest(rebound) != validator._inventory_digest(original)
+    assert validator._test_identity_digest(rebound) != validator._test_identity_digest(
+        original
+    )
 
 
 def test_collection_environment_clears_pytest_injection(monkeypatch) -> None:
@@ -700,9 +651,7 @@ def test_collection_error_and_worker_error_do_not_become_inventory(
         {"node_id": "tests/test_bad.py", "reason": "import failed"}
     ]
     with pytest.raises(validator.InventoryError) as error:
-        validator.build_inventory(
-            tmp_path, collection, runtime_provider=runtime_provider
-        )
+        validator.build_test_identity(tmp_path, collection)
     assert error.value.code == "PYTEST_COLLECTION_FAILED"
 
     collection = base_collection()
@@ -711,9 +660,7 @@ def test_collection_error_and_worker_error_do_not_become_inventory(
         "message": "pytest import failed",
     }
     with pytest.raises(validator.InventoryError) as error:
-        validator.build_inventory(
-            tmp_path, collection, runtime_provider=runtime_provider
-        )
+        validator.build_test_identity(tmp_path, collection)
     assert error.value.code == "PYTEST_IMPORT_FAILED"
 
 
@@ -809,6 +756,16 @@ def test_source_ref_uses_verified_raw_blobs_not_dirty_worktree(
             "branch_evidence_eligible": False,
             "filesystem_isolation_enforced": False,
             "network_isolation_enforced": False,
+            "validator_binding": {
+                "path": validator.VALIDATOR_RELATIVE_PATH,
+                "status": "PARENT_BYTES_MATCHED_SOURCE_COMMIT",
+                "git_blob_oid": git_blob_oid(
+                    Path(validator.__file__).read_bytes()
+                ),
+                "sha256": hashlib.sha256(
+                    Path(validator.__file__).read_bytes()
+                ).hexdigest(),
+            },
         }
     assert sum("rev-parse" in call for call in calls) == 1
     assert sum("ls-tree" in call for call in calls) == 1
@@ -878,6 +835,339 @@ def test_git_unavailability_is_injectable_and_machine_classified(tmp_path: Path)
             "details": {"exit_code": 127},
         }
     ]
+    assert set(result) == {
+        "schema",
+        "operation",
+        "outcome",
+        "source",
+        "test_identity",
+        "test_identity_sha256",
+        "environment_qualification",
+        "errors",
+    }
+    assert result["test_identity"] is None
+    assert result["test_identity_sha256"] is None
+    assert result["environment_qualification"] is None
+
+
+def test_legacy_v1_baseline_is_rejected_before_git_runtime_or_collection(
+    tmp_path: Path,
+) -> None:
+    legacy = make_inventory(tmp_path)
+    legacy["schema"] = "agtxiv.pytest-inventory/1.0.0"
+    baseline = tmp_path / "legacy-v1.json"
+    baseline.write_text(json.dumps(legacy), encoding="utf-8")
+    calls = {"process": 0, "blob": 0, "runtime": 0, "collection": 0}
+
+    def process_runner(*args):
+        calls["process"] += 1
+        raise AssertionError("legacy baseline must fail before Git")
+
+    def blob_runner(*args):
+        calls["blob"] += 1
+        raise AssertionError("legacy baseline must fail before blob acquisition")
+
+    def rejected_runtime(*args):
+        calls["runtime"] += 1
+        raise AssertionError("legacy baseline must fail before runtime qualification")
+
+    def rejected_collection(*args):
+        calls["collection"] += 1
+        raise AssertionError("legacy baseline must fail before collection")
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CHECK", baseline=baseline, source_ref=COMMIT),
+        repo=tmp_path,
+        process_runner=process_runner,
+        git_blob_runner=blob_runner,
+        runtime_provider=rejected_runtime,
+        collection_runner=rejected_collection,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == "INVALID_BASELINE"
+    assert calls == {"process": 0, "blob": 0, "runtime": 0, "collection": 0}
+
+
+def test_environment_observation_is_qualified_but_not_part_of_portable_identity(
+    tmp_path: Path,
+) -> None:
+    write_runtime_inputs(tmp_path)
+    runner, _, _ = fake_git_io()
+    first_runtime = copy.deepcopy(RUNTIME)
+    second_runtime = copy.deepcopy(RUNTIME)
+    second_runtime["platform"]["release"] = "different-qualified-host-release"
+    second_runtime["platform"]["machine"] = "different-qualified-machine"
+
+    def provider_for(runtime: dict):
+        return lambda root, process_runner: copy.deepcopy(runtime)
+
+    candidate_code, candidate = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE"),
+        repo=tmp_path,
+        process_runner=runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=provider_for(first_runtime),
+    )
+    assert candidate_code == 0
+    baseline = tmp_path / "portable-identity.json"
+    baseline.write_text(json.dumps(candidate["test_identity"]), encoding="utf-8")
+
+    check_code, check = validator.evaluate(
+        validator.EvaluationOptions("CHECK", baseline=baseline),
+        repo=tmp_path,
+        process_runner=runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=provider_for(second_runtime),
+    )
+    assert check_code == 0
+    assert check["outcome"] == "PASS"
+    assert check["test_identity"] == candidate["test_identity"]
+    assert check["test_identity_sha256"] == candidate["test_identity_sha256"]
+    assert check["environment_qualification"] != candidate[
+        "environment_qualification"
+    ]
+    assert check["environment_qualification"]["status"] == (
+        validator.ENVIRONMENT_QUALIFICATION_STATUS
+    )
+    assert check["environment_qualification"]["security_role"] == (
+        "REQUIRED_LOCK_QUALIFICATION_EXCLUDED_ONLY_FROM_CROSS_ENVIRONMENT_IDENTITY"
+    )
+    assert check["environment_qualification"]["qualification_scope"] == (
+        "VERSION_LOCK_AND_INSTALLED_DISTRIBUTION_MATCH_NOT_OS_OR_NETWORK_ISOLATION"
+    )
+    assert "runtime" not in check["test_identity"]
+    assert "platform" not in check["test_identity"]
+    assert "installed_distributions" not in check["test_identity"]
+
+
+def test_runtime_lock_failure_prevents_pytest_collection(tmp_path: Path) -> None:
+    write_runtime_inputs(tmp_path)
+    runner, _, _ = fake_git_io()
+    collection_calls = 0
+
+    def rejected_runtime(root: Path, process_runner) -> dict:
+        raise validator.InventoryError(
+            "RUNTIME_LOCK_MISMATCH", "actual runtime does not match exact locks"
+        )
+
+    def collection(root: Path) -> dict:
+        nonlocal collection_calls
+        collection_calls += 1
+        return base_collection()
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE"),
+        repo=tmp_path,
+        process_runner=runner,
+        collection_runner=collection,
+        runtime_provider=rejected_runtime,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == "RUNTIME_LOCK_MISMATCH"
+    assert result["environment_qualification"] is None
+    assert collection_calls == 0
+
+
+def test_runtime_observation_must_match_across_double_collection(
+    tmp_path: Path,
+) -> None:
+    write_runtime_inputs(tmp_path)
+    runner, _, _ = fake_git_io()
+    runtime_calls = 0
+
+    def changing_runtime(root: Path, process_runner) -> dict:
+        nonlocal runtime_calls
+        runtime_calls += 1
+        runtime = copy.deepcopy(RUNTIME)
+        runtime["platform"]["release"] = f"qualified-observation-{runtime_calls}"
+        return runtime
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE"),
+        repo=tmp_path,
+        process_runner=runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=changing_runtime,
+    )
+    assert code == 1
+    assert result["errors"][0]["code"] == "NONDETERMINISTIC_COLLECTION"
+    assert result["errors"][0]["details"] == {
+        "differing_components": ["runtime"]
+    }
+
+
+def test_default_worker_uses_each_materialized_snapshot_validator(
+    tmp_path: Path,
+) -> None:
+    roots = [tmp_path / "first", tmp_path / "second"]
+    commands: list[tuple[str, ...]] = []
+    for root in roots:
+        tool = root / validator.VALIDATOR_RELATIVE_PATH
+        tool.parent.mkdir(parents=True)
+        tool.write_bytes(b"snapshot-specific-validator")
+
+    def process_runner(command, cwd, environment, timeout):
+        command = tuple(command)
+        commands.append(command)
+        assert cwd in roots
+        assert environment["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
+        return validator.ProcessResult(
+            0, validator._canonical_json_bytes(base_collection())
+        )
+
+    for root in roots:
+        assert validator._default_collection_runner(root, process_runner) == (
+            base_collection()
+        )
+    assert [Path(command[5]) for command in commands] == [
+        root / validator.VALIDATOR_RELATIVE_PATH for root in roots
+    ]
+    assert [Path(command[-1]) for command in commands] == roots
+    assert all(Path(command[5]) != Path(validator.__file__) for command in commands)
+
+
+def test_source_ref_executes_exact_tool_from_each_fresh_snapshot(
+    tmp_path: Path,
+) -> None:
+    files = repository_files(b"def test_committed():\n    pass\n")
+    git_runner, blob_runner, _ = fake_git_io(files)
+    worker_commands: list[tuple[str, ...]] = []
+
+    def hybrid_runner(command, cwd, environment, timeout):
+        if "--_collect-worker" in command:
+            worker_commands.append(tuple(command))
+            return validator._default_process_runner(
+                command, cwd, environment, timeout
+            )
+        return git_runner(command, cwd, environment, timeout)
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE", source_ref=COMMIT),
+        repo=tmp_path,
+        process_runner=hybrid_runner,
+        git_blob_runner=blob_runner,
+        runtime_provider=runtime_provider,
+    )
+    assert code == 0, result
+    assert result["outcome"] == "PASS"
+    assert len(worker_commands) == 2
+    worker_paths = [Path(command[5]) for command in worker_commands]
+    assert worker_paths[0] != worker_paths[1]
+    assert all(path.name == "validate_pytest_inventory.py" for path in worker_paths)
+    assert all(path != Path(validator.__file__) for path in worker_paths)
+    assert all(not path.exists() for path in worker_paths)
+    assert result["source"]["validator_binding"]["git_blob_oid"] == git_blob_oid(
+        Path(validator.__file__).read_bytes()
+    )
+
+
+@pytest.mark.parametrize("fixture_kind", ["missing", "dirty"])
+def test_source_ref_rejects_unbound_validator_before_collection(
+    tmp_path: Path, fixture_kind: str
+) -> None:
+    files = repository_files()
+    if fixture_kind == "missing":
+        del files[validator.VALIDATOR_RELATIVE_PATH]
+    else:
+        files[validator.VALIDATOR_RELATIVE_PATH] += b"\n# dirty instrument\n"
+    runner, blob_runner, _ = fake_git_io(files)
+    collection_calls = 0
+
+    def collection(root: Path) -> dict:
+        nonlocal collection_calls
+        collection_calls += 1
+        return base_collection()
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE", source_ref=COMMIT),
+        repo=tmp_path,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=collection,
+        runtime_provider=runtime_provider,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == "VALIDATOR_SOURCE_BINDING_MISMATCH"
+    assert result["source"] is None
+    assert result["test_identity"] is None
+    assert collection_calls == 0
+
+
+def test_parent_validator_mutation_during_source_evaluation_is_detected(
+    tmp_path: Path, monkeypatch
+) -> None:
+    parent_tool = tmp_path / "measuring-instrument.py"
+    parent_tool.write_bytes(Path(validator.__file__).read_bytes())
+    monkeypatch.setattr(validator, "__file__", str(parent_tool))
+    files = repository_files()
+    runner, blob_runner, _ = fake_git_io(files)
+    collection_calls = 0
+
+    def mutating_collection(root: Path) -> dict:
+        nonlocal collection_calls
+        collection_calls += 1
+        if collection_calls == 1:
+            parent_tool.write_bytes(parent_tool.read_bytes() + b"\n# mutated\n")
+            raise validator.InventoryError(
+                "MALICIOUS_COLLECTION_ERROR",
+                "collection attempted to hide a measuring-instrument mutation",
+            )
+        return base_collection()
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE", source_ref=COMMIT),
+        repo=tmp_path,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=mutating_collection,
+        runtime_provider=runtime_provider,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == (
+        "SOURCE_VALIDATOR_CHANGED_DURING_EVALUATION"
+    )
+
+
+def test_baseline_postcheck_outranks_parent_and_collection_errors(
+    tmp_path: Path, monkeypatch
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    baseline_identity = make_inventory(repo)
+    baseline = tmp_path / "baseline.json"
+    baseline.write_text(json.dumps(baseline_identity), encoding="utf-8")
+
+    parent_tool = tmp_path / "measuring-instrument.py"
+    parent_tool.write_bytes(Path(validator.__file__).read_bytes())
+    monkeypatch.setattr(validator, "__file__", str(parent_tool))
+    files = repository_files()
+    runner, blob_runner, _ = fake_git_io(files)
+
+    def mutating_collection(root: Path) -> dict:
+        parent_tool.write_bytes(parent_tool.read_bytes() + b"\n# mutated\n")
+        baseline.write_bytes(baseline.read_bytes() + b"\n")
+        raise validator.InventoryError(
+            "MALICIOUS_COLLECTION_ERROR",
+            "collection attempted to hide two protected-file mutations",
+        )
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_ref=COMMIT
+        ),
+        repo=repo,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=mutating_collection,
+        runtime_provider=runtime_provider,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == "BASELINE_CHANGED_DURING_EVALUATION"
 
 
 def test_candidate_and_check_are_machine_readable_without_commit_self_reference(
@@ -893,13 +1183,25 @@ def test_candidate_and_check_are_machine_readable_without_commit_self_reference(
         runtime_provider=runtime_provider,
     )
     assert candidate_code == 0
+    assert candidate["schema"] == validator.EVALUATION_SCHEMA
     assert candidate["outcome"] == "PASS"
     assert candidate["source"]["evaluated_commit"] == COMMIT
-    assert "source" not in candidate["inventory"]
+    assert "source" not in candidate["test_identity"]
+    assert "runtime" not in candidate["test_identity"]
+    assert candidate["environment_qualification"] == {
+        "status": validator.ENVIRONMENT_QUALIFICATION_STATUS,
+        "security_role": validator.ENVIRONMENT_SECURITY_ROLE,
+        "qualification_scope": validator.ENVIRONMENT_QUALIFICATION_SCOPE,
+        "runtime": RUNTIME,
+    }
+    assert candidate["test_identity_sha256"] == validator._test_identity_digest(
+        candidate["test_identity"]
+    )
+    assert not ({"inventory", "inventory_sha256"} & set(candidate))
 
     baseline = tmp_path / "baseline.json"
     baseline.write_text(
-        json.dumps(candidate["inventory"], ensure_ascii=False), encoding="utf-8"
+        json.dumps(candidate["test_identity"], ensure_ascii=False), encoding="utf-8"
     )
     check_code, check = validator.evaluate(
         validator.EvaluationOptions("CHECK", baseline=baseline),
@@ -960,6 +1262,9 @@ def test_sample(value):
 """.lstrip(),
         encoding="utf-8",
     )
+    worker_tool = tmp_path / validator.VALIDATOR_RELATIVE_PATH
+    worker_tool.parent.mkdir()
+    worker_tool.write_bytes(Path(validator.__file__).read_bytes())
     monkeypatch.setenv("PYTEST_ADDOPTS", "-k nothing_matches")
     monkeypatch.setenv("PYTEST_PLUGINS", "plugin_that_must_not_be_imported")
     payload = validator._collect_twice(tmp_path, validator._default_collection_runner)
@@ -977,12 +1282,7 @@ def test_sample(value):
 
 
 def test_schema_and_tool_share_structural_node_id_rules() -> None:
-    schema = json.loads(
-        (
-            validator.REPO
-            / "schemas/repository-validation/pytest-inventory.schema.json"
-        ).read_text(encoding="utf-8")
-    )
+    schema = load_test_identity_schema()
     node_schema = {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         **schema["$defs"]["node_id"],
@@ -1062,9 +1362,9 @@ def test_commit_evaluation_collects_two_fresh_exact_snapshots(tmp_path: Path) ->
     assert result["source"]["branch_evidence_eligible"] is False
     assert result["source"]["filesystem_isolation_enforced"] is False
     assert result["source"]["network_isolation_enforced"] is False
-    assert result["inventory"]["evidence_scope"] == validator.EVIDENCE_SCOPE
+    assert result["test_identity"]["evidence_scope"] == validator.EVIDENCE_SCOPE
     baseline = tmp_path / "source-ref-baseline.json"
-    baseline.write_text(json.dumps(result["inventory"]), encoding="utf-8")
+    baseline.write_text(json.dumps(result["test_identity"]), encoding="utf-8")
     check_code, check = validator.evaluate(
         validator.EvaluationOptions("CHECK", baseline=baseline, source_ref=COMMIT),
         repo=tmp_path,
@@ -1459,7 +1759,10 @@ def test_collection_cannot_rewrite_baseline_to_self_pass(
             json.dumps(inventory, sort_keys=True, separators=(",", ":")),
             encoding="utf-8",
         )
-        return base_collection()
+        raise validator.InventoryError(
+            "MALICIOUS_COLLECTION_ERROR",
+            "collection attempted to hide a frozen-baseline rewrite",
+        )
 
     code, result = validator.evaluate(
         validator.EvaluationOptions("CHECK", baseline=baseline),
@@ -1580,7 +1883,7 @@ def test_baseline_depth_and_selected_order_diff_are_explicit(tmp_path: Path) -> 
     actual["node_order_sha256"] = validator._length_prefixed_digest(
         validator.NODE_ORDER_DOMAIN, actual["selected_node_ids"]
     )
-    validator._validate_inventory_document(actual)
+    validator._validate_test_identity_document(actual)
     difference = validator._baseline_difference(expected, actual)
     assert difference["node_order_changed"] is False
     assert difference["selected_order_changed"] is True

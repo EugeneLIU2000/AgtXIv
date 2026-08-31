@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Collect and compare a deterministic pytest node inventory.
+"""Collect and compare a portable deterministic pytest test identity.
 
-The committed baseline is deliberately only the ``inventory`` object emitted by
-this tool.  Source commit information lives in the evaluation envelope instead:
-including the commit that contains a baseline inside that same baseline would
-create an impossible self-reference.
+The committed baseline is deliberately only the ``test_identity`` object emitted
+by this tool.  Host runtime qualification and source commit information live in
+the evaluation envelope instead.  Including the commit that contains a baseline
+inside that same baseline would create an impossible self-reference.
 
 This tool never writes or updates a baseline.  ``--candidate`` emits a candidate
 and ``--check`` compares a read-only baseline with a fresh collection.
@@ -40,11 +40,19 @@ from typing import Any, Iterator
 
 
 REPO = Path(__file__).resolve().parents[1]
-INVENTORY_SCHEMA = "agtxiv.pytest-inventory/1.0.0"
-EVALUATION_SCHEMA = "agtxiv.pytest-inventory-evaluation/1.0.0"
+TEST_IDENTITY_SCHEMA = "agtxiv.pytest-test-identity/1.0.0"
+EVALUATION_SCHEMA = "agtxiv.pytest-inventory-evaluation/2.0.0"
 NODE_SET_DOMAIN = b"agtxiv.pytest-node-set/1.0.0\0"
 NODE_ORDER_DOMAIN = b"agtxiv.pytest-node-order/1.0.0\0"
-INVENTORY_DOMAIN = b"agtxiv.pytest-inventory/1.0.0\0"
+TEST_IDENTITY_DOMAIN = b"agtxiv.pytest-test-identity/1.0.0\0"
+VALIDATOR_RELATIVE_PATH = "tools/validate_pytest_inventory.py"
+ENVIRONMENT_QUALIFICATION_STATUS = "LOCKED_RUNTIME_MATCHED"
+ENVIRONMENT_SECURITY_ROLE = (
+    "REQUIRED_LOCK_QUALIFICATION_EXCLUDED_ONLY_FROM_CROSS_ENVIRONMENT_IDENTITY"
+)
+ENVIRONMENT_QUALIFICATION_SCOPE = (
+    "VERSION_LOCK_AND_INSTALLED_DISTRIBUTION_MATCH_NOT_OS_OR_NETWORK_ISOLATION"
+)
 FULL_COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 VERSION_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)+(?:[-+._a-zA-Z0-9]*)?$")
 DISTRIBUTION_NAME_PATTERN = r"^[a-z0-9]+(?:-[a-z0-9]+)*(?![\s\S])"
@@ -836,8 +844,10 @@ def _length_prefixed_digest(domain: bytes, values: Sequence[str]) -> str:
     return digest.hexdigest()
 
 
-def _inventory_digest(inventory: Mapping[str, Any]) -> str:
-    return _sha256_bytes(INVENTORY_DOMAIN + _canonical_json_bytes(inventory))
+def _test_identity_digest(test_identity: Mapping[str, Any]) -> str:
+    return _sha256_bytes(
+        TEST_IDENTITY_DOMAIN + _canonical_json_bytes(test_identity)
+    )
 
 
 def normalize_node_id(raw: object) -> str:
@@ -1148,18 +1158,21 @@ def _collect_worker_cli(root_text: str) -> int:
     return 1 if used_fallback else 0
 
 
-def _default_collection_runner(root: Path) -> dict[str, Any]:
+def _default_collection_runner(
+    root: Path, process_runner: ProcessRunner = _default_process_runner
+) -> dict[str, Any]:
+    worker_validator = root / VALIDATOR_RELATIVE_PATH
     command = (
         sys.executable,
         "-B",
         "-P",
         "-X",
         "utf8",
-        str(Path(__file__).resolve()),
+        str(worker_validator),
         "--_collect-worker",
         str(root),
     )
-    result = _default_process_runner(
+    result = process_runner(
         command,
         root,
         _collection_environment(),
@@ -1343,7 +1356,7 @@ def _manifest_difference(
 def _guarded_collection(
     root: Path,
     *,
-    collection_runner: CollectionRunner,
+    collection_runner: CollectionRunner | None,
     process_runner: ProcessRunner,
     runtime_provider: RuntimeProvider,
     excluded_directory_names: frozenset[str] = frozenset(),
@@ -1357,7 +1370,11 @@ def _guarded_collection(
     collection: dict[str, Any] | None = None
     try:
         runtime = runtime_provider(root, process_runner)
-        collection = collection_runner(root)
+        collection = (
+            _default_collection_runner(root, process_runner)
+            if collection_runner is None
+            else collection_runner(root)
+        )
     except Exception as exc:  # mutation evidence must survive guarded-operation failure
         guarded_error = exc
     after = _filesystem_manifest(root, excluded_directory_names=excluded_directory_names)
@@ -1702,14 +1719,11 @@ def _validated_collection_skips(value: object) -> list[dict[str, str]]:
     return records
 
 
-def build_inventory(
+def build_test_identity(
     root: Path,
     collection: Mapping[str, Any],
     *,
-    process_runner: ProcessRunner = _default_process_runner,
-    runtime_provider: RuntimeProvider = _default_runtime_provider,
     input_bindings: Mapping[str, Mapping[str, Any]] | None = None,
-    runtime: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     _validate_collection_payload(collection)
     node_ids = _validated_unique_node_ids(collection.get("node_ids"), label="node_ids")
@@ -1739,19 +1753,15 @@ def build_inventory(
         collection.get("marker_declarations"), selected_node_ids=node_ids
     )
     collection_skips = _validated_collection_skips(collection.get("collection_skips"))
-    bound_runtime = (
-        runtime_provider(root, process_runner) if runtime is None else dict(runtime)
-    )
     bound_inputs = (
         _input_bindings(root) if input_bindings is None else dict(input_bindings)
     )
     sorted_nodes = sorted(node_ids, key=lambda item: item.encode("utf-8"))
-    inventory = {
-        "schema": INVENTORY_SCHEMA,
+    test_identity = {
+        "schema": TEST_IDENTITY_SCHEMA,
         "evidence_scope": EVIDENCE_SCOPE,
         "collection_contract": dict(COLLECTION_CONTRACT),
         "input_bindings": bound_inputs,
-        "runtime": bound_runtime,
         "counts": {
             "collected": len(node_ids),
             "selected": len(selected),
@@ -1767,8 +1777,10 @@ def build_inventory(
         "node_set_sha256": _length_prefixed_digest(NODE_SET_DOMAIN, sorted_nodes),
         "node_order_sha256": _length_prefixed_digest(NODE_ORDER_DOMAIN, selected),
     }
-    _validate_inventory_document(inventory, error_code="INVALID_INVENTORY")
-    return inventory
+    _validate_test_identity_document(
+        test_identity, error_code="INVALID_TEST_IDENTITY"
+    )
+    return test_identity
 
 
 def _run_git(
@@ -1995,6 +2007,71 @@ def _resolve_source_ref(
     return PreparedGitSource(resolved, entries, tuple(blobs))
 
 
+def _source_validator_entry(prepared: PreparedGitSource) -> GitTreeEntry:
+    matching_entries = [
+        entry
+        for entry in prepared.entries
+        if entry.path == VALIDATOR_RELATIVE_PATH
+    ]
+    if len(matching_entries) != 1:
+        raise InventoryError(
+            "VALIDATOR_SOURCE_BINDING_MISMATCH",
+            "source commit must contain exactly one validator measuring instrument",
+        )
+    return matching_entries[0]
+
+
+def _source_validator_payload(prepared: PreparedGitSource) -> bytes:
+    entry = _source_validator_entry(prepared)
+    blob_by_id = {blob.object_id: blob.payload for blob in prepared.blobs}
+    payload = blob_by_id.get(entry.object_id)
+    if payload is None or len(payload) != entry.byte_size:
+        raise InventoryError(
+            "VALIDATOR_SOURCE_BINDING_MISMATCH",
+            "source validator blob is missing from the verified object set",
+        )
+    return payload
+
+
+def _freeze_parent_validator() -> SafeFileSnapshot:
+    return _safe_read_regular_file(
+        Path(__file__).resolve(strict=True),
+        max_bytes=MAX_INPUT_BYTES,
+        unsafe_code="VALIDATOR_SOURCE_BINDING_MISMATCH",
+        too_large_code="VALIDATOR_SOURCE_BINDING_MISMATCH",
+        label="parent validator measuring instrument",
+    )
+
+
+def _bind_frozen_parent_to_source(
+    frozen_parent: SafeFileSnapshot, prepared: PreparedGitSource
+) -> bytes:
+    source_payload = _source_validator_payload(prepared)
+    if frozen_parent.payload != source_payload:
+        raise InventoryError(
+            "VALIDATOR_SOURCE_BINDING_MISMATCH",
+            "parent validator bytes do not match the exact source commit",
+        )
+    return source_payload
+
+
+def _verify_source_validator_binding(
+    frozen_parent: SafeFileSnapshot, source_payload: bytes
+) -> None:
+    current = _safe_read_regular_file(
+        Path(frozen_parent.absolute_path),
+        max_bytes=MAX_INPUT_BYTES,
+        unsafe_code="SOURCE_VALIDATOR_CHANGED_DURING_EVALUATION",
+        too_large_code="SOURCE_VALIDATOR_CHANGED_DURING_EVALUATION",
+        label="parent validator post-evaluation verification",
+    )
+    if current != frozen_parent or current.payload != source_payload:
+        raise InventoryError(
+            "SOURCE_VALIDATOR_CHANGED_DURING_EVALUATION",
+            "parent validator bytes or identity changed during evaluation",
+        )
+
+
 def _resolve_commit(repo: Path, commit: str, process_runner: ProcessRunner) -> str:
     output = _run_git(
         process_runner,
@@ -2137,25 +2214,39 @@ def source_tree(
             "network_isolation_enforced": False,
         }
         return
-    prepared = _resolve_source_ref(
-        repo, source_ref, process_runner, git_blob_runner=git_blob_runner
-    )
-    with tempfile.TemporaryDirectory(prefix="agtxiv-pytest-inventory-") as temporary:
-        snapshot = Path(temporary) / "snapshot"
-        snapshot.mkdir()
-        _materialize_git_source(prepared, snapshot)
-        yield snapshot, {
-            "mode": "GIT_BLOB_SNAPSHOT",
-            "assurance_tier": "COMMIT_SNAPSHOT_UNSANDBOXED_DIAGNOSTIC",
-            "requested_ref": source_ref,
-            "evaluated_commit": prepared.commit,
-            "content_may_differ_from_evaluated_commit": False,
-            "baseline_commit_binding": "EXCLUDED_TO_AVOID_SELF_REFERENCE",
-            "git_manifest_sha256": _git_manifest_digest(prepared.entries),
-            "branch_evidence_eligible": False,
-            "filesystem_isolation_enforced": False,
-            "network_isolation_enforced": False,
-        }
+    frozen_parent = _freeze_parent_validator()
+    source_payload = frozen_parent.payload
+    try:
+        prepared = _resolve_source_ref(
+            repo, source_ref, process_runner, git_blob_runner=git_blob_runner
+        )
+        source_payload = _bind_frozen_parent_to_source(frozen_parent, prepared)
+        with tempfile.TemporaryDirectory(
+            prefix="agtxiv-pytest-inventory-"
+        ) as temporary:
+            snapshot = Path(temporary) / "snapshot"
+            snapshot.mkdir()
+            _materialize_git_source(prepared, snapshot)
+            yield snapshot, {
+                "mode": "GIT_BLOB_SNAPSHOT",
+                "assurance_tier": "COMMIT_SNAPSHOT_UNSANDBOXED_DIAGNOSTIC",
+                "requested_ref": source_ref,
+                "evaluated_commit": prepared.commit,
+                "content_may_differ_from_evaluated_commit": False,
+                "baseline_commit_binding": "EXCLUDED_TO_AVOID_SELF_REFERENCE",
+                "git_manifest_sha256": _git_manifest_digest(prepared.entries),
+                "validator_binding": {
+                    "path": VALIDATOR_RELATIVE_PATH,
+                    "status": "PARENT_BYTES_MATCHED_SOURCE_COMMIT",
+                    "git_blob_oid": _source_validator_entry(prepared).object_id,
+                    "sha256": _sha256_bytes(source_payload),
+                },
+                "branch_evidence_eligible": False,
+                "filesystem_isolation_enforced": False,
+                "network_isolation_enforced": False,
+            }
+    finally:
+        _verify_source_validator_binding(frozen_parent, source_payload)
 
 
 def _require_exact_keys(
@@ -2284,6 +2375,19 @@ def _validate_runtime_document(value: object, *, error_code: str) -> None:
         )
 
 
+def _environment_qualification(runtime: Mapping[str, Any]) -> dict[str, Any]:
+    runtime_record = dict(runtime)
+    _validate_runtime_document(
+        runtime_record, error_code="INVALID_ENVIRONMENT_QUALIFICATION"
+    )
+    return {
+        "status": ENVIRONMENT_QUALIFICATION_STATUS,
+        "security_role": ENVIRONMENT_SECURITY_ROLE,
+        "qualification_scope": ENVIRONMENT_QUALIFICATION_SCOPE,
+        "runtime": runtime_record,
+    }
+
+
 def _validate_collection_contract_document(
     value: object, *, error_code: str
 ) -> None:
@@ -2317,18 +2421,17 @@ def _validate_collection_contract_document(
             )
 
 
-def _validate_inventory_document(
+def _validate_test_identity_document(
     value: object, *, error_code: str = "INVALID_BASELINE"
 ) -> None:
     _validate_json_depth(value, error_code=error_code)
-    inventory = _require_exact_keys(
+    test_identity = _require_exact_keys(
         value,
         {
             "schema",
             "evidence_scope",
             "collection_contract",
             "input_bindings",
-            "runtime",
             "counts",
             "node_ids",
             "selected_node_ids",
@@ -2338,21 +2441,22 @@ def _validate_inventory_document(
             "node_set_sha256",
             "node_order_sha256",
         },
-        label="inventory",
+        label="test identity",
         error_code=error_code,
     )
-    if inventory["schema"] != INVENTORY_SCHEMA:
-        raise InventoryError(error_code, "inventory schema identifier is invalid")
-    if inventory["evidence_scope"] != EVIDENCE_SCOPE:
-        raise InventoryError(error_code, "inventory evidence scope is invalid")
+    if test_identity["schema"] != TEST_IDENTITY_SCHEMA:
+        raise InventoryError(error_code, "test identity schema identifier is invalid")
+    if test_identity["evidence_scope"] != EVIDENCE_SCOPE:
+        raise InventoryError(error_code, "test identity evidence scope is invalid")
     _validate_collection_contract_document(
-        inventory["collection_contract"], error_code=error_code
+        test_identity["collection_contract"], error_code=error_code
     )
-    _validate_input_binding_document(inventory["input_bindings"], error_code=error_code)
-    _validate_runtime_document(inventory["runtime"], error_code=error_code)
+    _validate_input_binding_document(
+        test_identity["input_bindings"], error_code=error_code
+    )
 
     counts = _require_exact_keys(
-        inventory["counts"],
+        test_identity["counts"],
         {
             "collected",
             "selected",
@@ -2369,33 +2473,39 @@ def _validate_inventory_document(
         or count > I_JSON_EXACT_INTEGER_MAX
         for count in counts.values()
     ):
-        raise InventoryError(error_code, "inventory count is invalid")
+        raise InventoryError(error_code, "test identity count is invalid")
 
     try:
-        node_ids = _validated_unique_node_ids(inventory["node_ids"], label="node_ids")
+        node_ids = _validated_unique_node_ids(
+            test_identity["node_ids"], label="node_ids"
+        )
         selected = _validated_unique_node_ids(
-            inventory["selected_node_ids"], label="selected_node_ids"
+            test_identity["selected_node_ids"], label="selected_node_ids"
         )
         deselected = _validated_unique_node_ids(
-            inventory["deselected_node_ids"], label="deselected_node_ids"
+            test_identity["deselected_node_ids"], label="deselected_node_ids"
         )
-        skips = _validated_collection_skips(inventory["collection_skips"])
+        skips = _validated_collection_skips(test_identity["collection_skips"])
         markers = _validated_marker_declarations(
-            inventory["marker_declarations"], selected_node_ids=node_ids
+            test_identity["marker_declarations"], selected_node_ids=node_ids
         )
     except InventoryError as exc:
-        raise InventoryError(error_code, f"inventory semantics are invalid: {exc.code}") from exc
+        raise InventoryError(
+            error_code, f"test identity semantics are invalid: {exc.code}"
+        ) from exc
     if not node_ids or not selected:
-        raise InventoryError(error_code, "inventory must contain collected and selected nodes")
+        raise InventoryError(
+            error_code, "test identity must contain collected and selected nodes"
+        )
     if set(selected) & set(deselected):
         raise InventoryError(error_code, "selected and deselected node IDs overlap")
     if set(node_ids) != set(selected) | set(deselected):
         raise InventoryError(
             error_code, "collected nodes do not equal selected plus deselected nodes"
         )
-    if skips != inventory["collection_skips"]:
+    if skips != test_identity["collection_skips"]:
         raise InventoryError(error_code, "collection skips are not canonically ordered")
-    if markers != inventory["marker_declarations"]:
+    if markers != test_identity["marker_declarations"]:
         raise InventoryError(error_code, "marker declarations are not canonical")
     expected_counts = {
         "collected": len(node_ids),
@@ -2405,14 +2515,16 @@ def _validate_inventory_document(
         "marker_declarations": len(markers),
     }
     if counts != expected_counts:
-        raise InventoryError(error_code, "inventory counts disagree with inventory arrays")
+        raise InventoryError(
+            error_code, "test identity counts disagree with identity arrays"
+        )
     expected_set_digest = _length_prefixed_digest(
         NODE_SET_DOMAIN, sorted(node_ids, key=lambda item: item.encode("utf-8"))
     )
     expected_order_digest = _length_prefixed_digest(NODE_ORDER_DOMAIN, selected)
-    if inventory["node_set_sha256"] != expected_set_digest:
+    if test_identity["node_set_sha256"] != expected_set_digest:
         raise InventoryError(error_code, "node_set_sha256 is not derived from node_ids")
-    if inventory["node_order_sha256"] != expected_order_digest:
+    if test_identity["node_order_sha256"] != expected_order_digest:
         raise InventoryError(
             error_code, "node_order_sha256 is not derived from selected_node_ids"
         )
@@ -2431,7 +2543,7 @@ def _load_baseline(path: Path) -> FrozenBaseline:
         payload = _strict_json_loads(baseline_text, label="baseline")
     except UnicodeDecodeError as exc:
         raise InventoryError("INVALID_JSON", "baseline is not UTF-8") from exc
-    _validate_inventory_document(payload)
+    _validate_test_identity_document(payload)
     assert isinstance(payload, dict)
     return FrozenBaseline(payload, _sha256_bytes(snapshot.payload), snapshot)
 
@@ -2461,8 +2573,8 @@ def _baseline_difference(
     expected_selected = expected.get("selected_node_ids")
     actual_selected = actual.get("selected_node_ids")
     return {
-        "expected_inventory_sha256": _inventory_digest(expected),
-        "actual_inventory_sha256": _inventory_digest(actual),
+        "expected_test_identity_sha256": _test_identity_digest(expected),
+        "actual_test_identity_sha256": _test_identity_digest(actual),
         "added_node_ids": sorted(
             actual_set - expected_set, key=lambda item: str(item).encode("utf-8")
         ),
@@ -2529,15 +2641,15 @@ def _commit_source_record(
     }
 
 
-def _collect_current_inventory(
+def _collect_current_test_identity(
     options: EvaluationOptions,
     *,
     repo: Path,
     process_runner: ProcessRunner,
-    collection_runner: CollectionRunner,
+    collection_runner: CollectionRunner | None,
     runtime_provider: RuntimeProvider,
     git_blob_runner: GitBlobRunner,
-) -> tuple[dict[str, Any], dict[str, Any]]:
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     if options.source_ref is None:
         commit = _resolve_head(repo, process_runner)
         source = _worktree_source_record(commit)
@@ -2557,47 +2669,69 @@ def _collect_current_inventory(
             excluded_directory_names=WORKTREE_MANIFEST_EXCLUDED_DIRECTORY_NAMES,
         )
     else:
-        prepared = _resolve_source_ref(
-            repo,
-            options.source_ref,
-            process_runner,
-            git_blob_runner=git_blob_runner,
-        )
-        source = _commit_source_record(options.source_ref, prepared)
-        with tempfile.TemporaryDirectory(
-            prefix="agtxiv-pytest-inventory-first-"
-        ) as first_temporary, tempfile.TemporaryDirectory(
-            prefix="agtxiv-pytest-inventory-second-"
-        ) as second_temporary:
-            first_root = Path(first_temporary) / "snapshot"
-            second_root = Path(second_temporary) / "snapshot"
-            first_root.mkdir()
-            second_root.mkdir()
-            _materialize_git_source(prepared, first_root)
-            first = _guarded_collection(
-                first_root,
-                collection_runner=collection_runner,
-                process_runner=process_runner,
-                runtime_provider=runtime_provider,
+        frozen_parent = _freeze_parent_validator()
+        source_payload: bytes | None = None
+        source_operation_error: Exception | None = None
+        try:
+            prepared = _resolve_source_ref(
+                repo,
+                options.source_ref,
+                process_runner,
+                git_blob_runner=git_blob_runner,
             )
-            _materialize_git_source(prepared, second_root)
-            second = _guarded_collection(
-                second_root,
-                collection_runner=collection_runner,
-                process_runner=process_runner,
-                runtime_provider=runtime_provider,
+            source_payload = _bind_frozen_parent_to_source(
+                frozen_parent, prepared
             )
+            source = _commit_source_record(options.source_ref, prepared)
+            source["validator_binding"] = {
+                "path": VALIDATOR_RELATIVE_PATH,
+                "status": "PARENT_BYTES_MATCHED_SOURCE_COMMIT",
+                "git_blob_oid": _source_validator_entry(prepared).object_id,
+                "sha256": _sha256_bytes(source_payload),
+            }
+            with tempfile.TemporaryDirectory(
+                prefix="agtxiv-pytest-inventory-first-"
+            ) as first_temporary, tempfile.TemporaryDirectory(
+                prefix="agtxiv-pytest-inventory-second-"
+            ) as second_temporary:
+                first_root = Path(first_temporary) / "snapshot"
+                second_root = Path(second_temporary) / "snapshot"
+                first_root.mkdir()
+                second_root.mkdir()
+                _materialize_git_source(prepared, first_root)
+                first = _guarded_collection(
+                    first_root,
+                    collection_runner=collection_runner,
+                    process_runner=process_runner,
+                    runtime_provider=runtime_provider,
+                )
+                _materialize_git_source(prepared, second_root)
+                second = _guarded_collection(
+                    second_root,
+                    collection_runner=collection_runner,
+                    process_runner=process_runner,
+                    runtime_provider=runtime_provider,
+                )
+        except Exception as exc:
+            source_operation_error = exc
+        try:
+            _verify_source_validator_binding(
+                frozen_parent,
+                frozen_parent.payload if source_payload is None else source_payload,
+            )
+        except InventoryError as verification_error:
+            raise verification_error from source_operation_error
+        if source_operation_error is not None:
+            raise source_operation_error
     _assert_guarded_collections_equal(first, second)
     source["collection_snapshot_manifest_sha256"] = first.manifest_sha256
-    inventory = build_inventory(
+    test_identity = build_test_identity(
         repo,
         first.collection,
-        process_runner=process_runner,
-        runtime_provider=runtime_provider,
         input_bindings=first.input_bindings,
-        runtime=first.runtime,
     )
-    return source, inventory
+    environment_qualification = _environment_qualification(first.runtime)
+    return source, test_identity, environment_qualification
 
 
 def evaluate(
@@ -2605,7 +2739,7 @@ def evaluate(
     *,
     repo: Path = REPO,
     process_runner: ProcessRunner = _default_process_runner,
-    collection_runner: CollectionRunner = _default_collection_runner,
+    collection_runner: CollectionRunner | None = None,
     runtime_provider: RuntimeProvider = _default_runtime_provider,
     git_blob_runner: GitBlobRunner = _default_git_blob_runner,
 ) -> tuple[int, dict[str, Any]]:
@@ -2622,9 +2756,14 @@ def evaluate(
             frozen_baseline = _load_baseline(options.baseline)
 
         operation_error: Exception | None = None
-        inventory: dict[str, Any] | None = None
+        test_identity: dict[str, Any] | None = None
+        environment_qualification: dict[str, Any] | None = None
         try:
-            source, inventory = _collect_current_inventory(
+            (
+                source,
+                test_identity,
+                environment_qualification,
+            ) = _collect_current_test_identity(
                 options,
                 repo=repo,
                 process_runner=process_runner,
@@ -2642,27 +2781,31 @@ def evaluate(
                 raise verification_error from operation_error
         if operation_error is not None:
             raise operation_error
-        assert inventory is not None
+        assert test_identity is not None
+        assert environment_qualification is not None
 
         result: dict[str, Any] = {
             "schema": EVALUATION_SCHEMA,
             "operation": options.operation,
             "outcome": "PASS",
             "source": source,
-            "inventory_sha256": _inventory_digest(inventory),
-            "inventory": inventory,
+            "test_identity_sha256": _test_identity_digest(test_identity),
+            "test_identity": test_identity,
+            "environment_qualification": environment_qualification,
             "errors": [],
         }
         if frozen_baseline is not None:
             result["baseline_sha256"] = frozen_baseline.sha256
             baseline = frozen_baseline.document
-            if _canonical_json_bytes(baseline) != _canonical_json_bytes(inventory):
+            if _canonical_json_bytes(baseline) != _canonical_json_bytes(
+                test_identity
+            ):
                 result["outcome"] = "FAIL"
                 result["errors"] = [
                     _error_record(
                         "BASELINE_MISMATCH",
-                        "actual pytest inventory differs from the baseline",
-                        details=_baseline_difference(baseline, inventory),
+                        "actual pytest test identity differs from the baseline",
+                        details=_baseline_difference(baseline, test_identity),
                     )
                 ]
                 return 1, result
@@ -2673,7 +2816,9 @@ def evaluate(
             "operation": options.operation,
             "outcome": "ERROR",
             "source": source,
-            "inventory": None,
+            "test_identity": None,
+            "test_identity_sha256": None,
+            "environment_qualification": None,
             "errors": [exc.record()],
         }
     except OSError as exc:
@@ -2682,7 +2827,9 @@ def evaluate(
             "operation": options.operation,
             "outcome": "ERROR",
             "source": source,
-            "inventory": None,
+            "test_identity": None,
+            "test_identity_sha256": None,
+            "environment_qualification": None,
             "errors": [
                 _error_record(
                     "FILESYSTEM_ERROR",
@@ -2696,7 +2843,9 @@ def evaluate(
             "operation": options.operation,
             "outcome": "ERROR",
             "source": source,
-            "inventory": None,
+            "test_identity": None,
+            "test_identity_sha256": None,
+            "environment_qualification": None,
             "errors": [
                 _error_record(
                     "INTERNAL_INVENTORY_ERROR",
@@ -2713,7 +2862,7 @@ def _parse_options(argv: Sequence[str] | None) -> EvaluationOptions:
     parser = argparse.ArgumentParser(description=__doc__)
     operation = parser.add_mutually_exclusive_group(required=True)
     operation.add_argument(
-        "--candidate", action="store_true", help="emit a candidate inventory as JSON"
+        "--candidate", action="store_true", help="emit a candidate test identity as JSON"
     )
     operation.add_argument(
         "--check", metavar="BASELINE", type=Path, help="compare with a read-only baseline"
@@ -2740,7 +2889,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             "operation": options.operation,
             "outcome": "ERROR",
             "source": None,
-            "inventory": None,
+            "test_identity": None,
+            "test_identity_sha256": None,
+            "environment_qualification": None,
             "errors": [
                 _error_record(
                     "INTERNAL_INVENTORY_ERROR",
@@ -2753,7 +2904,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         "operation": options.operation,
         "outcome": "ERROR",
         "source": None,
-        "inventory": None,
+        "test_identity": None,
+        "test_identity_sha256": None,
+        "environment_qualification": None,
         "errors": [
             {
                 "code": "MACHINE_OUTPUT_ENCODING_FAILED",
