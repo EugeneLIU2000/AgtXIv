@@ -1,0 +1,36 @@
+{
+  "schema": "agtxiv.canonical-golden-provenance/1.0.0",
+  "profile_id": "agtxiv.record-canonical-json/2.0.0-candidate.1",
+  "reference_commit": "f86b98f4c98c4b5a356d6cd3ef067d402ff17cab",
+  "clean_sources": [
+    {
+      "path": "schemas/record-canonical-json-v1.profile.json",
+      "git_blob_id": "a180dcdd25d31bd112f82d347f96935543d06689",
+      "sha256": "sha256:6445ca1b595f1894b4f5e52dd70cf6b2b2c9b4a7be02ee573754b8a7ee073b6e",
+      "use": "Primitive null, boolean, integer, ordered-array, object-order, UTF-8, newline, NFC, and SHA-256 behavior was used only to select a minimal compatibility subset."
+    },
+    {
+      "path": "tools/validate_v2_paper_agentization.py",
+      "git_blob_id": "8bd0bcd7e9eb634f12c15c4318093f17acf6f84a",
+      "sha256": "sha256:d6f297fc0cd13caf27a14a1d5cfc979196c291fdf7d257e1ae8009e0f6976566",
+      "use": "The clean committed integer-only canonicalization implementation was inspected only to identify shared primitive cases; no current working-tree bytes were read into a vector."
+    }
+  ],
+  "clean_minimal_subset_vector_ids": [
+    "positive-empty-array",
+    "positive-empty-object",
+    "positive-null",
+    "positive-boolean-true",
+    "positive-boolean-false",
+    "positive-integer-negative",
+    "positive-integer-zero",
+    "positive-integer-multidigit",
+    "positive-ordered-array"
+  ],
+  "independent_edge_vector_policy": "Every vector labelled INDEPENDENT_PROFILE_EDGE was authored for the new candidate profile and is not attributed to a prototype fixture or validator.",
+  "non_adoption": [
+    "No modified, untracked, or otherwise dirty V2 working-tree file is a source for these vectors.",
+    "No prototype record, schema meaning, scientific status, release status, or admission status is adopted.",
+    "The clean-source bindings establish provenance for a deliberately minimal primitive compatibility subset only."
+  ]
+}

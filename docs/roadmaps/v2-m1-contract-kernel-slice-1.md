@@ -117,7 +117,7 @@ fixtures/v2-contract-kernel/releases/0.1.0-candidate.1/
   negative/<case-id>/
 fixtures/v2-contract-kernel/normative/0.1.0-candidate.1/
   family-vectors/<family-id>/
-fixtures/v2-contract-kernel/canonicalization-profile/1.0.0/
+fixtures/v2-contract-kernel/canonicalization-profile/2.0.0-candidate.1/
   golden-vectors.jsonl
   provenance.json
 
@@ -206,6 +206,14 @@ record semantics, not arbitrary paper bytes. It is intentionally a small,
 project-specific profile rather than an imprecise claim of compatibility with a
 larger canonical-JSON standard.
 
+Its identity is exactly
+`agtxiv.record-canonical-json/2.0.0-candidate.1`, mirrored by the single code
+constant `PROFILE_ID` and the fixture directory
+`canonicalization-profile/2.0.0-candidate.1`. The clean committed
+`agtxiv.record-canonical-json/1.0.0` profile retains its original identity and
+bytes; this breaking candidate neither overwrites it nor reuses its fixture
+namespace.
+
 ### 4.1 Accepted input and parsing
 
 1. The input is a byte string decoded with strict UTF-8. A byte-order mark,
@@ -285,7 +293,7 @@ bytes separately.
 
 ### 4.5 Mandatory golden vectors
 
-`fixtures/v2-contract-kernel/canonicalization-profile/1.0.0/golden-vectors.jsonl`
+`fixtures/v2-contract-kernel/canonicalization-profile/2.0.0-candidate.1/golden-vectors.jsonl`
 stores each raw test input as base64-encoded UTF-8 bytes so duplicate keys and
 lexical number forms survive the fixture loader. A positive row contains the
 vector ID, input bytes, expected canonical UTF-8 bytes, and expected SHA-256. A
@@ -1000,6 +1008,15 @@ change contract interpretation must exist in one already committed source
 revision before a bundle can name that source revision. Files added after the
 bundle are conformance evidence only and cannot be silently pulled into its
 authority.
+
+The three commits below are **sealing boundaries**, not a ban on smaller reviewed
+implementation checkpoints before Boundary 1. For example, the canonicalizer
+and its golden vectors may land first as an explicitly incomplete checkpoint.
+Such a checkpoint has no bundle, release, production, archive, or admission
+authority. Boundary 1 is reached only when the complete normative asset closure
+listed below exists in one exact source revision; Boundary 2 may bind only that
+closure revision. This preserves reviewable version history without weakening
+the one-way hash graph.
 
 ### Commit 1: complete normative asset closure
 
