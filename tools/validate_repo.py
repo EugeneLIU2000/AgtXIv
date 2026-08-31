@@ -15,14 +15,17 @@ import importlib.util
 import json
 import math
 import os
+import re
 import selectors
 import signal
 import shutil
 import stat
+import struct
 import subprocess
 import sys
 import tempfile
 import time
+import unicodedata
 from collections import Counter
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import asdict, dataclass, field
@@ -122,6 +125,54 @@ STABILIZERNESS_TOOL_PATHS = {
     "lean": str(REPO / STABILIZERNESS_TOOLCHAIN_BIN_RELATIVE / "lean"),
 }
 IJSON_MAX_INTEGER = (1 << 53) - 1
+PYTEST_IDENTITY_BASELINE_PATH = (
+    "baselines/repository-validation/pytest/test-identity-v1.json"
+)
+PYTEST_IDENTITY_TOOL_PATH = "tools/validate_pytest_inventory.py"
+PYTEST_IDENTITY_SCHEMA_PATH = (
+    "schemas/repository-validation/pytest-test-identity.schema.json"
+)
+PYTEST_IDENTITY_EVALUATION_SCHEMA = "agtxiv.pytest-inventory-evaluation/2.0.0"
+PYTEST_IDENTITY_SCHEMA = "agtxiv.pytest-test-identity/1.0.0"
+PYTEST_IDENTITY_EVIDENCE_SCOPE = (
+    "COLLECTION_IDENTITY_ONLY_NOT_TEST_EXECUTION_RESULT"
+)
+PYTEST_IDENTITY_BLOCKER_CODE = (
+    "UNSANDBOXED_PYTEST_COLLECTION_NOT_BRANCH_EVIDENCE"
+)
+PYTEST_IDENTITY_ENVIRONMENT_STATUS = "LOCKED_RUNTIME_MATCHED"
+PYTEST_IDENTITY_ENVIRONMENT_SECURITY_ROLE = (
+    "REQUIRED_LOCK_QUALIFICATION_EXCLUDED_ONLY_FROM_CROSS_ENVIRONMENT_IDENTITY"
+)
+PYTEST_IDENTITY_ENVIRONMENT_SCOPE = (
+    "VERSION_LOCK_AND_INSTALLED_DISTRIBUTION_MATCH_NOT_OS_OR_NETWORK_ISOLATION"
+)
+PYTEST_IDENTITY_VALIDATOR_BINDING_STATUS = (
+    "PARENT_BYTES_MATCHED_SOURCE_COMMIT"
+)
+PYTEST_IDENTITY_BASELINE_BINDING_STATUS = (
+    "FROZEN_BASELINE_BYTES_MATCHED_SOURCE_COMMIT"
+)
+PYTEST_IDENTITY_HEAD_BINDING_STATUS = "HEAD_UNCHANGED_DURING_EVALUATION"
+PYTEST_IDENTITY_VERSION_RE = re.compile(
+    r"^[0-9]+(?:\.[0-9]+)+(?:[-+._a-zA-Z0-9]*)?$"
+)
+PYTEST_IDENTITY_COLLECTION_CONTRACT = {
+    "config": "pyproject.toml",
+    "rootdir": ".",
+    "test_paths": ["tests"],
+    "import_mode": "prepend",
+    "plugin_autoload": False,
+    "cacheprovider": False,
+    "config_addopts_enabled": False,
+    "keyword_selection": None,
+    "marker_selection": None,
+    "deselection_policy": "RECORDED_EXACT",
+    "collection_skip_policy": "RECORDED_EXACT",
+    "double_collection_required": True,
+    "set_digest_scope": "FULL_COLLECTED_NODE_SET",
+    "order_digest_scope": "SELECTED_EXECUTION_ORDER",
+}
 STABILIZERNESS_LOCAL_DECLARATIONS = {
     "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
     "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
@@ -399,6 +450,36 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
                     "verification/check-result.json"
                 ),
             ),
+        ),
+        CheckSpec(
+            "pytest-test-identity",
+            "Compare the reviewed portable pytest identity without promoting it to branch evidence.",
+            every,
+            _python(
+                PYTEST_IDENTITY_TOOL_PATH,
+                "--check",
+                PYTEST_IDENTITY_BASELINE_PATH,
+                "--source-head",
+            ),
+            requirements=(
+                module("pytest"),
+                executable("git"),
+                executable("uv"),
+            ),
+            classifier="pytest-test-identity-expected-blocked",
+            timeout_seconds=300,
+            protected_paths=(
+                PYTEST_IDENTITY_BASELINE_PATH,
+                PYTEST_IDENTITY_TOOL_PATH,
+                PYTEST_IDENTITY_SCHEMA_PATH,
+                "tools/validate_repo.py",
+            ),
+            required_repository_paths=(
+                PYTEST_IDENTITY_TOOL_PATH,
+                PYTEST_IDENTITY_SCHEMA_PATH,
+                PYTEST_IDENTITY_BASELINE_PATH,
+            ),
+            missing_repository_status=ResultStatus.EXPECTED_BLOCKED,
         ),
         CheckSpec(
             "test-suite",
@@ -1036,6 +1117,497 @@ def _normal_result(spec: CheckSpec, invocation: Invocation, command: list[str]) 
     )
 
 
+def _is_sha256(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def _is_git_object_id(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{40}", value) is not None
+
+
+def _length_prefixed_sha256(domain: bytes, values: Sequence[str]) -> str:
+    digest = hashlib.sha256(domain)
+    for value in values:
+        encoded = value.encode("utf-8")
+        digest.update(struct.pack(">Q", len(encoded)))
+        digest.update(encoded)
+    return digest.hexdigest()
+
+
+def _pytest_identity_digest(identity: Mapping[str, Any]) -> str:
+    encoded = json.dumps(
+        identity,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(
+        b"agtxiv.pytest-test-identity/1.0.0\0" + encoded
+    ).hexdigest()
+
+
+def _is_exact_node_id(value: object) -> bool:
+    if (
+        not isinstance(value, str)
+        or not value
+        or value.startswith("/")
+        or "\\" in value
+        or any(character in value for character in ("\x00", "\r", "\n"))
+        or unicodedata.normalize("NFC", value) != value
+    ):
+        return False
+    components = value.split("::")
+    path_text = components[0]
+    parts = path_text.split("/")
+    return bool(
+        len(parts) >= 2
+        and parts[0] == "tests"
+        and ":" not in path_text
+        and "//" not in path_text
+        and all(part not in {"", ".", ".."} for part in parts)
+        and all(component != "" for component in components[1:])
+    )
+
+
+def _is_stable_marker_value(value: Any) -> bool:
+    if value is None or type(value) is bool or isinstance(value, str):
+        return True
+    if type(value) is int:
+        return -IJSON_MAX_INTEGER <= value <= IJSON_MAX_INTEGER
+    if isinstance(value, list):
+        return all(_is_stable_marker_value(item) for item in value)
+    if isinstance(value, dict):
+        return all(
+            isinstance(key, str) and _is_stable_marker_value(item)
+            for key, item in value.items()
+        )
+    return False
+
+
+def _is_exact_input_bindings(value: object) -> bool:
+    if not isinstance(value, dict) or set(value) != {
+        ".python-version",
+        "pyproject.toml",
+        "uv.lock",
+    }:
+        return False
+    for binding in value.values():
+        if not isinstance(binding, dict) or set(binding) != {"byte_size", "sha256"}:
+            return False
+        byte_size = binding.get("byte_size")
+        if (
+            type(byte_size) is not int
+            or not 1 <= byte_size <= IJSON_MAX_INTEGER
+            or not _is_sha256(binding.get("sha256"))
+        ):
+            return False
+    return True
+
+
+def _is_exact_pytest_collection_contract(value: object) -> bool:
+    if not isinstance(value, dict) or set(value) != set(
+        PYTEST_IDENTITY_COLLECTION_CONTRACT
+    ):
+        return False
+    for field, expected in PYTEST_IDENTITY_COLLECTION_CONTRACT.items():
+        actual = value.get(field)
+        if type(actual) is not type(expected):
+            return False
+        if isinstance(expected, list):
+            if (
+                len(actual) != len(expected)
+                or any(type(item) is not str for item in actual)
+                or any(
+                    type(item) is not type(expected_item) or item != expected_item
+                    for item, expected_item in zip(actual, expected, strict=True)
+                )
+            ):
+                return False
+        elif actual != expected:
+            return False
+    return True
+
+
+def _is_exact_marker_declarations(
+    value: object, node_ids: Sequence[str]
+) -> bool:
+    if not isinstance(value, list):
+        return False
+    node_order = {node_id: index for index, node_id in enumerate(node_ids)}
+    seen: set[str] = set()
+    last_index = -1
+    for declaration in value:
+        if not isinstance(declaration, dict) or set(declaration) != {
+            "node_id",
+            "markers",
+        }:
+            return False
+        node_id = declaration.get("node_id")
+        markers = declaration.get("markers")
+        if (
+            not isinstance(node_id, str)
+            or node_id not in node_order
+            or node_id in seen
+            or node_order[node_id] <= last_index
+            or not isinstance(markers, list)
+            or not markers
+        ):
+            return False
+        canonical_markers: list[bytes] = []
+        for marker in markers:
+            if not isinstance(marker, dict) or set(marker) != {"name", "args", "kwargs"}:
+                return False
+            if marker.get("name") not in {"skip", "skipif", "xfail"}:
+                return False
+            if not isinstance(marker.get("args"), list) or not isinstance(
+                marker.get("kwargs"), dict
+            ):
+                return False
+            if not _is_stable_marker_value(marker["args"]) or not _is_stable_marker_value(
+                marker["kwargs"]
+            ):
+                return False
+            try:
+                canonical_markers.append(
+                    json.dumps(
+                        marker,
+                        ensure_ascii=False,
+                        allow_nan=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                )
+            except (TypeError, ValueError, UnicodeError):
+                return False
+        if canonical_markers != sorted(canonical_markers):
+            return False
+        seen.add(node_id)
+        last_index = node_order[node_id]
+    return True
+
+
+def _is_exact_collection_skips(value: object) -> bool:
+    if not isinstance(value, list):
+        return False
+    seen: set[str] = set()
+    node_ids: list[str] = []
+    for record in value:
+        if not isinstance(record, dict) or set(record) != {"node_id", "reason"}:
+            return False
+        node_id = record.get("node_id")
+        reason = record.get("reason")
+        if (
+            not _is_exact_node_id(node_id)
+            or node_id in seen
+            or not isinstance(reason, str)
+            or not reason
+            or "\x00" in reason
+        ):
+            return False
+        seen.add(node_id)
+        node_ids.append(node_id)
+    return node_ids == sorted(node_ids, key=lambda item: item.encode("utf-8"))
+
+
+def _is_exact_test_identity(value: object, digest: object) -> bool:
+    expected_keys = {
+        "schema",
+        "evidence_scope",
+        "collection_contract",
+        "input_bindings",
+        "counts",
+        "node_ids",
+        "selected_node_ids",
+        "deselected_node_ids",
+        "collection_skips",
+        "marker_declarations",
+        "node_set_sha256",
+        "node_order_sha256",
+    }
+    if not isinstance(value, dict) or set(value) != expected_keys:
+        return False
+    if (
+        value.get("schema") != PYTEST_IDENTITY_SCHEMA
+        or value.get("evidence_scope") != PYTEST_IDENTITY_EVIDENCE_SCOPE
+        or not _is_exact_pytest_collection_contract(
+            value.get("collection_contract")
+        )
+        or not _is_exact_input_bindings(value.get("input_bindings"))
+    ):
+        return False
+    node_ids = value.get("node_ids")
+    selected = value.get("selected_node_ids")
+    deselected = value.get("deselected_node_ids")
+    if not all(isinstance(items, list) for items in (node_ids, selected, deselected)):
+        return False
+    assert isinstance(node_ids, list)
+    assert isinstance(selected, list)
+    assert isinstance(deselected, list)
+    if (
+        not node_ids
+        or not selected
+        or not all(_is_exact_node_id(item) for item in (*node_ids, *selected, *deselected))
+        or len(node_ids) != len(set(node_ids))
+        or len(selected) != len(set(selected))
+        or len(deselected) != len(set(deselected))
+        or set(selected) & set(deselected)
+        or set(node_ids) != set(selected) | set(deselected)
+    ):
+        return False
+    skips = value.get("collection_skips")
+    markers = value.get("marker_declarations")
+    if not _is_exact_collection_skips(skips) or not _is_exact_marker_declarations(
+        markers, node_ids
+    ):
+        return False
+    assert isinstance(skips, list)
+    assert isinstance(markers, list)
+    counts = value.get("counts")
+    expected_counts = {
+        "collected": len(node_ids),
+        "selected": len(selected),
+        "deselected": len(deselected),
+        "collection_skipped": len(skips),
+        "marker_declarations": len(markers),
+    }
+    if (
+        not isinstance(counts, dict)
+        or set(counts) != set(expected_counts)
+        or any(type(item) is not int for item in counts.values())
+        or counts != expected_counts
+    ):
+        return False
+    expected_set_digest = _length_prefixed_sha256(
+        b"agtxiv.pytest-node-set/1.0.0\0",
+        sorted(node_ids, key=lambda item: item.encode("utf-8")),
+    )
+    expected_order_digest = _length_prefixed_sha256(
+        b"agtxiv.pytest-node-order/1.0.0\0", selected
+    )
+    try:
+        expected_identity_digest = _pytest_identity_digest(value)
+    except (TypeError, ValueError, UnicodeError):
+        return False
+    return bool(
+        value.get("node_set_sha256") == expected_set_digest
+        and value.get("node_order_sha256") == expected_order_digest
+        and digest == expected_identity_digest
+    )
+
+
+def _is_exact_runtime(value: object) -> bool:
+    if not isinstance(value, dict) or set(value) != {
+        "python_implementation",
+        "python_version",
+        "pytest_version",
+        "pluggy_version",
+        "uv_version",
+        "platform",
+        "installed_distributions",
+    }:
+        return False
+    if not isinstance(value.get("python_implementation"), str) or not value[
+        "python_implementation"
+    ]:
+        return False
+    if any(
+        not isinstance(value.get(field), str)
+        or PYTEST_IDENTITY_VERSION_RE.fullmatch(value[field]) is None
+        for field in ("python_version", "pytest_version", "pluggy_version", "uv_version")
+    ):
+        return False
+    platform_record = value.get("platform")
+    if not isinstance(platform_record, dict) or set(platform_record) != {
+        "os_name",
+        "sys_platform",
+        "system",
+        "release",
+        "machine",
+        "python_platform",
+        "cache_tag",
+    } or any(not isinstance(item, str) or not item for item in platform_record.values()):
+        return False
+    distributions = value.get("installed_distributions")
+    if not isinstance(distributions, list) or not distributions:
+        return False
+    names: list[str] = []
+    versions: dict[str, str] = {}
+    for record in distributions:
+        if not isinstance(record, dict) or set(record) != {"name", "version"}:
+            return False
+        name = record.get("name")
+        version = record.get("version")
+        if (
+            not isinstance(name, str)
+            or re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name) is None
+            or not isinstance(version, str)
+            or not version
+            or name in versions
+        ):
+            return False
+        names.append(name)
+        versions[name] = version
+    return bool(
+        names == sorted(names, key=lambda item: item.encode("utf-8"))
+        and versions.get("pytest") == value.get("pytest_version")
+        and versions.get("pluggy") == value.get("pluggy_version")
+    )
+
+
+def _is_exact_environment_qualification(value: object) -> bool:
+    return bool(
+        isinstance(value, dict)
+        and set(value) == {"status", "security_role", "qualification_scope", "runtime"}
+        and value.get("status") == PYTEST_IDENTITY_ENVIRONMENT_STATUS
+        and value.get("security_role") == PYTEST_IDENTITY_ENVIRONMENT_SECURITY_ROLE
+        and value.get("qualification_scope") == PYTEST_IDENTITY_ENVIRONMENT_SCOPE
+        and _is_exact_runtime(value.get("runtime"))
+    )
+
+
+def _is_exact_pytest_source(value: object, baseline_sha256: object) -> bool:
+    expected_keys = {
+        "mode",
+        "assurance_tier",
+        "requested_ref",
+        "evaluated_commit",
+        "content_may_differ_from_evaluated_commit",
+        "baseline_commit_binding",
+        "git_manifest_sha256",
+        "validator_binding",
+        "baseline_binding",
+        "branch_evidence_eligible",
+        "filesystem_isolation_enforced",
+        "network_isolation_enforced",
+        "collection_snapshot_manifest_sha256",
+        "head_binding",
+    }
+    if not isinstance(value, dict) or set(value) != expected_keys:
+        return False
+    validator_binding = value.get("validator_binding")
+    baseline_binding = value.get("baseline_binding")
+    head_binding = value.get("head_binding")
+    if (
+        not isinstance(validator_binding, dict)
+        or set(validator_binding) != {"path", "status", "git_blob_oid", "sha256"}
+        or validator_binding.get("path") != PYTEST_IDENTITY_TOOL_PATH
+        or validator_binding.get("status")
+        != PYTEST_IDENTITY_VALIDATOR_BINDING_STATUS
+        or not _is_git_object_id(validator_binding.get("git_blob_oid"))
+        or not _is_sha256(validator_binding.get("sha256"))
+        or not isinstance(baseline_binding, dict)
+        or set(baseline_binding) != {"path", "status", "git_blob_oid", "sha256"}
+        or baseline_binding.get("path") != PYTEST_IDENTITY_BASELINE_PATH
+        or baseline_binding.get("status")
+        != PYTEST_IDENTITY_BASELINE_BINDING_STATUS
+        or not _is_git_object_id(baseline_binding.get("git_blob_oid"))
+        or not _is_sha256(baseline_binding.get("sha256"))
+        or baseline_binding.get("sha256") != baseline_sha256
+        or not isinstance(head_binding, dict)
+        or set(head_binding) != {"status", "start_commit", "end_commit"}
+        or head_binding.get("status") != PYTEST_IDENTITY_HEAD_BINDING_STATUS
+    ):
+        return False
+    requested = value.get("requested_ref")
+    evaluated = value.get("evaluated_commit")
+    start_commit = head_binding.get("start_commit")
+    end_commit = head_binding.get("end_commit")
+    return bool(
+        value.get("mode") == "GIT_BLOB_SNAPSHOT"
+        and value.get("assurance_tier")
+        == "COMMIT_SNAPSHOT_UNSANDBOXED_DIAGNOSTIC"
+        and _is_git_object_id(requested)
+        and requested == evaluated == start_commit == end_commit
+        and value.get("content_may_differ_from_evaluated_commit") is False
+        and value.get("baseline_commit_binding")
+        == "EXCLUDED_TO_AVOID_SELF_REFERENCE"
+        and _is_sha256(value.get("git_manifest_sha256"))
+        and _is_sha256(value.get("collection_snapshot_manifest_sha256"))
+        and value.get("branch_evidence_eligible") is False
+        and value.get("filesystem_isolation_enforced") is False
+        and value.get("network_isolation_enforced") is False
+    )
+
+
+def _pytest_test_identity_result(
+    spec: CheckSpec,
+    invocation: Invocation,
+    command: list[str],
+    protected_hashes: Mapping[str, str | None],
+) -> CheckResult:
+    result = _normal_result(spec, invocation, command)
+    payload = _parse_json_output(invocation)
+    exact_top_level = bool(
+        isinstance(payload, dict)
+        and set(payload)
+        == {
+            "schema",
+            "operation",
+            "outcome",
+            "source",
+            "test_identity_sha256",
+            "test_identity",
+            "environment_qualification",
+            "errors",
+            "baseline_sha256",
+        }
+    )
+    try:
+        exact_report = bool(
+            invocation.returncode == 0
+            and invocation.stderr == ""
+            and exact_top_level
+            and payload is not None
+            and payload.get("schema") == PYTEST_IDENTITY_EVALUATION_SCHEMA
+            and payload.get("operation") == "CHECK"
+            and payload.get("outcome") == "PASS"
+            and payload.get("errors") == []
+            and _is_sha256(payload.get("baseline_sha256"))
+            and _is_exact_test_identity(
+                payload.get("test_identity"), payload.get("test_identity_sha256")
+            )
+            and _is_exact_environment_qualification(
+                payload.get("environment_qualification")
+            )
+            and _is_exact_pytest_source(
+                payload.get("source"), payload.get("baseline_sha256")
+            )
+            and payload.get("baseline_sha256")
+            == protected_hashes.get(PYTEST_IDENTITY_BASELINE_PATH)
+            and isinstance(payload.get("source"), dict)
+            and isinstance(payload["source"].get("validator_binding"), dict)
+            and payload["source"]["validator_binding"].get("sha256")
+            == protected_hashes.get(PYTEST_IDENTITY_TOOL_PATH)
+        )
+    except Exception:
+        exact_report = False
+    result.status = (
+        ResultStatus.EXPECTED_BLOCKED if exact_report else ResultStatus.FAIL
+    )
+    result.details.update(
+        {
+            "exact_diagnostic_report": exact_report,
+            "diagnostic_comparison": "PASSED" if exact_report else "REJECTED",
+            "admission_eligible": False,
+            "security_gate_eligible": False,
+            "branch_evidence_eligible": False,
+            "m0_completion_effect": "NONE",
+        }
+    )
+    if exact_report:
+        result.details.update(
+            {
+                "blocker_code": PYTEST_IDENTITY_BLOCKER_CODE,
+                "reason": (
+                    "The reviewed pytest identity matched, but collection was not "
+                    "executed with operating-system filesystem or network isolation."
+                ),
+            }
+        )
+    return result
+
+
 def _shellworld_result(
     spec: CheckSpec, invocation: Invocation, command: list[str], root: Path
 ) -> CheckResult:
@@ -1305,17 +1877,28 @@ def execute_check(
         if not (root / relative).exists()
     ]
     if missing_paths:
+        missing_status = spec.missing_repository_status
+        missing_reason = (
+            "This declared validation slice is not present in the checkout; "
+            "no untracked working-tree artifact was assumed."
+        )
+        if (
+            spec.classifier == "pytest-test-identity-expected-blocked"
+            and missing_paths != [PYTEST_IDENTITY_BASELINE_PATH]
+        ):
+            missing_status = ResultStatus.FAIL
+            missing_reason = (
+                "A required normative pytest identity tool or schema is missing; "
+                "the dormant exception applies only to the unreviewed baseline."
+            )
         return CheckResult(
             spec.check_id,
             spec.description,
-            spec.missing_repository_status,
+            missing_status,
             command=_resolve_command(spec, root),
             details={
                 "missing_repository_paths": missing_paths,
-                "reason": (
-                    "This declared validation slice is not present in the checkout; "
-                    "no untracked working-tree artifact was assumed."
-                ),
+                "reason": missing_reason,
             },
         )
     missing: list[str] = []
@@ -1416,6 +1999,8 @@ def execute_check(
         result = _pilot_blocked_result(spec, invocation, command)
     elif spec.classifier == "stabilizerness-expected-blocked":
         result = _stabilizerness_blocked_result(spec, invocation, command)
+    elif spec.classifier == "pytest-test-identity-expected-blocked":
+        result = _pytest_test_identity_result(spec, invocation, command, before)
     elif spec.classifier == "normal":
         result = _normal_result(spec, invocation, command)
     else:

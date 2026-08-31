@@ -19,6 +19,110 @@ def invocation(returncode: int = 0, stdout: str = "", stderr: str = "") -> valid
     return validator.Invocation(returncode, stdout, stderr, 0.01)
 
 
+def pytest_identity_report() -> dict:
+    node_ids = ["tests/test_alpha.py::test_alpha"]
+    selected_node_ids = list(node_ids)
+    identity = {
+        "schema": validator.PYTEST_IDENTITY_SCHEMA,
+        "evidence_scope": validator.PYTEST_IDENTITY_EVIDENCE_SCOPE,
+        "collection_contract": copy.deepcopy(
+            validator.PYTEST_IDENTITY_COLLECTION_CONTRACT
+        ),
+        "input_bindings": {
+            relative: {"byte_size": 1, "sha256": character * 64}
+            for relative, character in (
+                (".python-version", "1"),
+                ("pyproject.toml", "2"),
+                ("uv.lock", "3"),
+            )
+        },
+        "counts": {
+            "collected": 1,
+            "selected": 1,
+            "deselected": 0,
+            "collection_skipped": 0,
+            "marker_declarations": 0,
+        },
+        "node_ids": node_ids,
+        "selected_node_ids": selected_node_ids,
+        "deselected_node_ids": [],
+        "collection_skips": [],
+        "marker_declarations": [],
+        "node_set_sha256": validator._length_prefixed_sha256(
+            b"agtxiv.pytest-node-set/1.0.0\0", node_ids
+        ),
+        "node_order_sha256": validator._length_prefixed_sha256(
+            b"agtxiv.pytest-node-order/1.0.0\0", selected_node_ids
+        ),
+    }
+    commit = "a" * 40
+    baseline_sha256 = "b" * 64
+    return {
+        "schema": validator.PYTEST_IDENTITY_EVALUATION_SCHEMA,
+        "operation": "CHECK",
+        "outcome": "PASS",
+        "source": {
+            "mode": "GIT_BLOB_SNAPSHOT",
+            "assurance_tier": "COMMIT_SNAPSHOT_UNSANDBOXED_DIAGNOSTIC",
+            "requested_ref": commit,
+            "evaluated_commit": commit,
+            "content_may_differ_from_evaluated_commit": False,
+            "baseline_commit_binding": "EXCLUDED_TO_AVOID_SELF_REFERENCE",
+            "git_manifest_sha256": "c" * 64,
+            "validator_binding": {
+                "path": validator.PYTEST_IDENTITY_TOOL_PATH,
+                "status": validator.PYTEST_IDENTITY_VALIDATOR_BINDING_STATUS,
+                "git_blob_oid": "d" * 40,
+                "sha256": "e" * 64,
+            },
+            "baseline_binding": {
+                "path": validator.PYTEST_IDENTITY_BASELINE_PATH,
+                "status": validator.PYTEST_IDENTITY_BASELINE_BINDING_STATUS,
+                "git_blob_oid": "f" * 40,
+                "sha256": baseline_sha256,
+            },
+            "branch_evidence_eligible": False,
+            "filesystem_isolation_enforced": False,
+            "network_isolation_enforced": False,
+            "collection_snapshot_manifest_sha256": "4" * 64,
+            "head_binding": {
+                "status": validator.PYTEST_IDENTITY_HEAD_BINDING_STATUS,
+                "start_commit": commit,
+                "end_commit": commit,
+            },
+        },
+        "test_identity_sha256": validator._pytest_identity_digest(identity),
+        "test_identity": identity,
+        "environment_qualification": {
+            "status": validator.PYTEST_IDENTITY_ENVIRONMENT_STATUS,
+            "security_role": validator.PYTEST_IDENTITY_ENVIRONMENT_SECURITY_ROLE,
+            "qualification_scope": validator.PYTEST_IDENTITY_ENVIRONMENT_SCOPE,
+            "runtime": {
+                "python_implementation": "CPython",
+                "python_version": "3.12.11",
+                "pytest_version": "7.4.4",
+                "pluggy_version": "1.6.0",
+                "uv_version": "0.10.0",
+                "platform": {
+                    "os_name": "posix",
+                    "sys_platform": "linux",
+                    "system": "Linux",
+                    "release": "fixture",
+                    "machine": "x86_64",
+                    "python_platform": "linux-x86_64",
+                    "cache_tag": "cpython-312",
+                },
+                "installed_distributions": [
+                    {"name": "pluggy", "version": "1.6.0"},
+                    {"name": "pytest", "version": "7.4.4"},
+                ],
+            },
+        },
+        "errors": [],
+        "baseline_sha256": baseline_sha256,
+    }
+
+
 def test_catalog_has_three_profiles_and_all_python_commands_use_current_interpreter() -> None:
     catalog = validator.validation_catalog()
     assert {profile for spec in catalog for profile in spec.profiles} == {
@@ -29,6 +133,37 @@ def test_catalog_has_three_profiles_and_all_python_commands_use_current_interpre
     ids = [spec.check_id for spec in catalog]
     assert len(ids) == len(set(ids))
     by_id = {spec.check_id: spec for spec in catalog}
+    pytest_identity = by_id["pytest-test-identity"]
+    assert ids.index("pytest-test-identity") + 1 == ids.index("test-suite")
+    assert pytest_identity.profiles == ("fast", "full", "nightly")
+    assert pytest_identity.command == (
+        "{python}",
+        validator.PYTEST_IDENTITY_TOOL_PATH,
+        "--check",
+        validator.PYTEST_IDENTITY_BASELINE_PATH,
+        "--source-head",
+    )
+    assert pytest_identity.classifier == "pytest-test-identity-expected-blocked"
+    assert pytest_identity.timeout_seconds == 300
+    assert pytest_identity.missing_repository_status == (
+        validator.ResultStatus.EXPECTED_BLOCKED
+    )
+    assert pytest_identity.required_repository_paths == (
+        validator.PYTEST_IDENTITY_TOOL_PATH,
+        validator.PYTEST_IDENTITY_SCHEMA_PATH,
+        validator.PYTEST_IDENTITY_BASELINE_PATH,
+    )
+    assert pytest_identity.protected_paths == (
+        validator.PYTEST_IDENTITY_BASELINE_PATH,
+        validator.PYTEST_IDENTITY_TOOL_PATH,
+        validator.PYTEST_IDENTITY_SCHEMA_PATH,
+        "tools/validate_repo.py",
+    )
+    assert [(item.kind, item.value) for item in pytest_identity.requirements] == [
+        ("python-module", "pytest"),
+        ("executable", "git"),
+        ("executable", "uv"),
+    ]
     assert by_id["test-suite"].profiles == ("fast", "full", "nightly")
     assert by_id["lean-stabilizerness-dynamic"].profiles == ("full", "nightly")
     assert by_id["lean-stabilizerness-dynamic"].expected_blocker is None
@@ -58,6 +193,7 @@ def test_profile_selection_and_only_are_stable() -> None:
     assert all("fast" in spec.profiles for spec in fast)
     fast_ids = {spec.check_id for spec in fast}
     assert "shellworld-v1-run" in fast_ids
+    assert "pytest-test-identity" in fast_ids
     assert "test-suite" in fast_ids
 
     selected = validator.select_checks(
@@ -122,6 +258,340 @@ def test_missing_tool_is_distinct_and_does_not_spawn() -> None:
     )
     assert result.status == validator.ResultStatus.MISSING_TOOL
     assert result.details["missing_tools"] == ["absent tool"]
+
+
+def test_pytest_identity_missing_baseline_is_expected_blocked_without_spawn(
+    tmp_path: Path,
+) -> None:
+    spec = next(
+        item
+        for item in validator.validation_catalog()
+        if item.check_id == "pytest-test-identity"
+    )
+    for relative in (
+        validator.PYTEST_IDENTITY_TOOL_PATH,
+        validator.PYTEST_IDENTITY_SCHEMA_PATH,
+    ):
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("fixture\n", encoding="utf-8")
+
+    def must_not_run(*args):
+        raise AssertionError("missing baseline must stop before probes or subprocesses")
+
+    result = validator.execute_check(
+        spec,
+        root=tmp_path,
+        command_runner=must_not_run,
+        requirement_probe=must_not_run,
+    )
+    assert result.status == validator.ResultStatus.EXPECTED_BLOCKED
+    assert result.details["missing_repository_paths"] == [
+        validator.PYTEST_IDENTITY_BASELINE_PATH
+    ]
+
+
+@pytest.mark.parametrize(
+    "missing_path",
+    [
+        validator.PYTEST_IDENTITY_TOOL_PATH,
+        validator.PYTEST_IDENTITY_SCHEMA_PATH,
+    ],
+)
+def test_pytest_identity_missing_tool_or_schema_fails_without_spawn(
+    tmp_path: Path, missing_path: str
+) -> None:
+    spec = next(
+        item
+        for item in validator.validation_catalog()
+        if item.check_id == "pytest-test-identity"
+    )
+    for relative in spec.required_repository_paths:
+        if relative == missing_path:
+            continue
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("fixture\n", encoding="utf-8")
+
+    def must_not_run(*args):
+        raise AssertionError("missing normative tool/schema must fail before spawning")
+
+    result = validator.execute_check(
+        spec,
+        root=tmp_path,
+        command_runner=must_not_run,
+        requirement_probe=must_not_run,
+    )
+    assert result.status == validator.ResultStatus.FAIL
+    assert result.details["missing_repository_paths"] == [missing_path]
+    assert "normative pytest identity tool or schema" in result.details["reason"]
+
+
+def test_pytest_identity_combined_missing_paths_cannot_use_dormant_exception(
+    tmp_path: Path,
+) -> None:
+    spec = next(
+        item
+        for item in validator.validation_catalog()
+        if item.check_id == "pytest-test-identity"
+    )
+
+    def must_not_run(*args):
+        raise AssertionError("combined missing paths must fail before spawning")
+
+    result = validator.execute_check(
+        spec,
+        root=tmp_path,
+        command_runner=must_not_run,
+        requirement_probe=must_not_run,
+    )
+    assert result.status == validator.ResultStatus.FAIL
+    assert result.details["missing_repository_paths"] == list(
+        spec.required_repository_paths
+    )
+    assert "dormant exception" in result.details["reason"]
+
+
+def test_exact_pytest_identity_diagnostic_is_expected_blocked() -> None:
+    spec = next(
+        item
+        for item in validator.validation_catalog()
+        if item.check_id == "pytest-test-identity"
+    )
+    payload = pytest_identity_report()
+    result = validator._pytest_test_identity_result(
+        spec,
+        invocation(0, json.dumps(payload, sort_keys=True), ""),
+        [sys.executable, validator.PYTEST_IDENTITY_TOOL_PATH],
+        {
+            validator.PYTEST_IDENTITY_BASELINE_PATH: payload["baseline_sha256"],
+            validator.PYTEST_IDENTITY_TOOL_PATH: payload["source"][
+                "validator_binding"
+            ]["sha256"],
+        },
+    )
+    assert result.status == validator.ResultStatus.EXPECTED_BLOCKED
+    assert result.details == {
+        "exact_diagnostic_report": True,
+        "diagnostic_comparison": "PASSED",
+        "admission_eligible": False,
+        "security_gate_eligible": False,
+        "branch_evidence_eligible": False,
+        "m0_completion_effect": "NONE",
+        "blocker_code": validator.PYTEST_IDENTITY_BLOCKER_CODE,
+        "reason": (
+            "The reviewed pytest identity matched, but collection was not "
+            "executed with operating-system filesystem or network isolation."
+        ),
+    }
+
+
+def test_execute_check_routes_exact_pytest_identity_report_through_classifier(
+    tmp_path: Path,
+) -> None:
+    spec = next(
+        item
+        for item in validator.validation_catalog()
+        if item.check_id == "pytest-test-identity"
+    )
+    for index, relative in enumerate(spec.protected_paths, start=1):
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(f"protected-{index}\n".encode())
+    protected = validator._protected_hashes(tmp_path, spec.protected_paths)
+    payload = pytest_identity_report()
+    payload["baseline_sha256"] = protected[
+        validator.PYTEST_IDENTITY_BASELINE_PATH
+    ]
+    payload["source"]["baseline_binding"]["sha256"] = payload[
+        "baseline_sha256"
+    ]
+    payload["source"]["validator_binding"]["sha256"] = protected[
+        validator.PYTEST_IDENTITY_TOOL_PATH
+    ]
+
+    def runner(command, cwd, environment, timeout):
+        assert command[-1] == "--source-head"
+        assert timeout == 300
+        return invocation(0, json.dumps(payload, sort_keys=True), "")
+
+    result = validator.execute_check(
+        spec,
+        root=tmp_path,
+        command_runner=runner,
+        requirement_probe=lambda requirement, root: (True, requirement.value),
+    )
+    assert result.status == validator.ResultStatus.EXPECTED_BLOCKED
+    assert result.details["diagnostic_comparison"] == "PASSED"
+    assert result.details["resolved_tools"] == {
+        "Python module pytest": "pytest",
+        "git": "git",
+        "uv": "uv",
+    }
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "returncode",
+        "stderr",
+        "top-extra",
+        "source-extra",
+        "identity-extra",
+        "environment-extra",
+        "validator-extra",
+        "baseline-binding-extra",
+        "head-extra",
+        "runtime-extra",
+        "platform-extra",
+        "distribution-extra",
+        "contract-extra",
+        "input-binding-extra",
+        "counts-extra",
+        "assurance-promotion",
+        "branch-promotion",
+        "filesystem-promotion",
+        "network-promotion",
+        "head-changed",
+        "baseline-status",
+        "validator-status",
+        "baseline-digest",
+        "protected-baseline-digest",
+        "protected-validator-digest",
+        "environment-status",
+        "environment-security-role",
+        "malformed-python-version",
+        "pytest-version-trailing-lf",
+        "identity-digest",
+        "contract-bool-impostor",
+        "count-bool",
+        "input-byte-size-bool",
+        "malformed-marker-node",
+        "errors",
+        "outcome",
+    ],
+)
+def test_pytest_identity_classifier_rejects_every_contradiction_and_unknown_field(
+    mutation: str,
+) -> None:
+    spec = next(
+        item
+        for item in validator.validation_catalog()
+        if item.check_id == "pytest-test-identity"
+    )
+    payload = pytest_identity_report()
+    returncode = 0
+    stderr = ""
+    protected = {
+        validator.PYTEST_IDENTITY_BASELINE_PATH: payload["baseline_sha256"],
+        validator.PYTEST_IDENTITY_TOOL_PATH: payload["source"]["validator_binding"][
+            "sha256"
+        ],
+    }
+    if mutation == "returncode":
+        returncode = 1
+    elif mutation == "stderr":
+        stderr = "unexpected diagnostics"
+    elif mutation == "top-extra":
+        payload["unexpected"] = True
+    elif mutation == "source-extra":
+        payload["source"]["unexpected"] = True
+    elif mutation == "identity-extra":
+        payload["test_identity"]["unexpected"] = True
+    elif mutation == "environment-extra":
+        payload["environment_qualification"]["unexpected"] = True
+    elif mutation == "validator-extra":
+        payload["source"]["validator_binding"]["unexpected"] = True
+    elif mutation == "baseline-binding-extra":
+        payload["source"]["baseline_binding"]["unexpected"] = True
+    elif mutation == "head-extra":
+        payload["source"]["head_binding"]["unexpected"] = True
+    elif mutation == "runtime-extra":
+        payload["environment_qualification"]["runtime"]["unexpected"] = True
+    elif mutation == "platform-extra":
+        payload["environment_qualification"]["runtime"]["platform"][
+            "unexpected"
+        ] = True
+    elif mutation == "distribution-extra":
+        payload["environment_qualification"]["runtime"][
+            "installed_distributions"
+        ][0]["unexpected"] = True
+    elif mutation == "contract-extra":
+        payload["test_identity"]["collection_contract"]["unexpected"] = True
+    elif mutation == "input-binding-extra":
+        payload["test_identity"]["input_bindings"]["uv.lock"][
+            "unexpected"
+        ] = True
+    elif mutation == "counts-extra":
+        payload["test_identity"]["counts"]["unexpected"] = 0
+    elif mutation == "assurance-promotion":
+        payload["source"]["assurance_tier"] = "BRANCH_EVIDENCE"
+    elif mutation == "branch-promotion":
+        payload["source"]["branch_evidence_eligible"] = True
+    elif mutation == "filesystem-promotion":
+        payload["source"]["filesystem_isolation_enforced"] = True
+    elif mutation == "network-promotion":
+        payload["source"]["network_isolation_enforced"] = True
+    elif mutation == "head-changed":
+        payload["source"]["head_binding"]["end_commit"] = "9" * 40
+    elif mutation == "baseline-status":
+        payload["source"]["baseline_binding"]["status"] = "UNREVIEWED"
+    elif mutation == "validator-status":
+        payload["source"]["validator_binding"]["status"] = "UNBOUND"
+    elif mutation == "baseline-digest":
+        payload["source"]["baseline_binding"]["sha256"] = "9" * 64
+    elif mutation == "protected-baseline-digest":
+        protected[validator.PYTEST_IDENTITY_BASELINE_PATH] = "9" * 64
+    elif mutation == "protected-validator-digest":
+        protected[validator.PYTEST_IDENTITY_TOOL_PATH] = "9" * 64
+    elif mutation == "environment-status":
+        payload["environment_qualification"]["status"] = "UNLOCKED"
+    elif mutation == "environment-security-role":
+        payload["environment_qualification"]["security_role"] = "IGNORED"
+    elif mutation == "malformed-python-version":
+        payload["environment_qualification"]["runtime"][
+            "python_version"
+        ] = "not-a-version"
+    elif mutation == "pytest-version-trailing-lf":
+        payload["environment_qualification"]["runtime"][
+            "pytest_version"
+        ] += "\n"
+    elif mutation == "identity-digest":
+        payload["test_identity_sha256"] = "9" * 64
+    elif mutation == "contract-bool-impostor":
+        payload["test_identity"]["collection_contract"]["plugin_autoload"] = 0
+    elif mutation == "count-bool":
+        payload["test_identity"]["counts"]["selected"] = True
+    elif mutation == "input-byte-size-bool":
+        payload["test_identity"]["input_bindings"]["uv.lock"][
+            "byte_size"
+        ] = True
+    elif mutation == "malformed-marker-node":
+        payload["test_identity"]["marker_declarations"] = [
+            {"node_id": [], "markers": []}
+        ]
+        payload["test_identity"]["counts"]["marker_declarations"] = 1
+    elif mutation == "errors":
+        payload["errors"] = [{"code": "CONTRADICTION", "message": "not a pass"}]
+    elif mutation == "outcome":
+        payload["outcome"] = "FAIL"
+    else:  # pragma: no cover - parameter list and implementation are one contract
+        raise AssertionError(mutation)
+
+    result = validator._pytest_test_identity_result(
+        spec,
+        invocation(returncode, json.dumps(payload, sort_keys=True), stderr),
+        [sys.executable, validator.PYTEST_IDENTITY_TOOL_PATH],
+        protected,
+    )
+    assert result.status == validator.ResultStatus.FAIL
+    assert result.status != validator.ResultStatus.KNOWN_STALE
+    assert result.details["exact_diagnostic_report"] is False
+    assert result.details["diagnostic_comparison"] == "REJECTED"
+    assert result.details["admission_eligible"] is False
+    assert result.details["security_gate_eligible"] is False
+    assert result.details["m0_completion_effect"] == "NONE"
+    assert "blocker_code" not in result.details
 
 
 def protected_check() -> validator.CheckSpec:

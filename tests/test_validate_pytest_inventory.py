@@ -21,6 +21,10 @@ from tools import validate_pytest_inventory as validator
 
 
 COMMIT = "1" * 40
+SECOND_COMMIT = "2" * 40
+BASELINE_RELATIVE_PATH = (
+    "baselines/repository-validation/pytest/test-identity-v1.json"
+)
 RUNTIME = {
     "python_implementation": "CPython",
     "python_version": platform.python_version(),
@@ -148,6 +152,25 @@ def repository_files(marker: bytes = b"committed\n") -> dict[str, bytes]:
     }
 
 
+def source_check_fixture(
+    root: Path,
+    *,
+    baseline_relative_path: str = BASELINE_RELATIVE_PATH,
+) -> tuple[dict[str, bytes], Path, dict]:
+    files = repository_files(b"def test_committed():\n    pass\n")
+    for relative in (".python-version", "pyproject.toml", "uv.lock"):
+        target = root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(files[relative])
+    identity = validator.build_test_identity(root, base_collection())
+    baseline_bytes = validator._canonical_json_bytes(identity)
+    baseline = root / baseline_relative_path
+    baseline.parent.mkdir(parents=True, exist_ok=True)
+    baseline.write_bytes(baseline_bytes)
+    files[baseline_relative_path] = baseline_bytes
+    return files, baseline, identity
+
+
 def repository_manifest(files: dict[str, bytes] | None = None) -> bytes:
     files = repository_files() if files is None else files
     return b"".join(
@@ -164,12 +187,15 @@ def fake_git_io(
     *,
     commit: str = COMMIT,
     manifest: bytes | None = None,
+    rev_parse_commits: list[str] | None = None,
 ):
     files = repository_files() if files is None else files
     blobs = {git_blob_oid(content): content for content in files.values()}
     calls: list[tuple[str, ...]] = []
+    rev_parse_index = 0
 
     def run(command, cwd, environment, timeout):
+        nonlocal rev_parse_index
         command = tuple(command)
         calls.append(command)
         assert environment["GIT_TERMINAL_PROMPT"] == "0"
@@ -177,7 +203,15 @@ def fake_git_io(
         if "cat-file" in command and "-e" in command:
             return validator.ProcessResult(0)
         if "rev-parse" in command:
-            return validator.ProcessResult(0, (commit + "\n").encode())
+            resolved = (
+                commit
+                if rev_parse_commits is None
+                else rev_parse_commits[
+                    min(rev_parse_index, len(rev_parse_commits) - 1)
+                ]
+            )
+            rev_parse_index += 1
+            return validator.ProcessResult(0, (resolved + "\n").encode())
         if "ls-tree" in command:
             return validator.ProcessResult(0, manifest or repository_manifest(files))
         raise AssertionError(f"unexpected command: {command}")
@@ -889,6 +923,237 @@ def test_legacy_v1_baseline_is_rejected_before_git_runtime_or_collection(
     assert calls == {"process": 0, "blob": 0, "runtime": 0, "collection": 0}
 
 
+def test_source_head_is_mutually_exclusive_with_source_ref() -> None:
+    with pytest.raises(SystemExit):
+        validator._parse_options(
+            [
+                "--check",
+                "baseline.json",
+                "--source-ref",
+                COMMIT,
+                "--source-head",
+            ]
+        )
+
+
+def test_source_head_rejects_candidate_without_git(tmp_path: Path) -> None:
+    calls = 0
+
+    def must_not_run(*args):
+        nonlocal calls
+        calls += 1
+        raise AssertionError("candidate source-head must fail before Git")
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions("CANDIDATE", source_head=True),
+        repo=tmp_path,
+        process_runner=must_not_run,
+        git_blob_runner=must_not_run,
+        collection_runner=must_not_run,
+        runtime_provider=must_not_run,
+    )
+    assert code == 1
+    assert result["errors"][0]["code"] == "INVALID_SOURCE_SELECTION"
+    assert calls == 0
+
+
+def test_source_head_check_freezes_baseline_before_any_runner(tmp_path: Path) -> None:
+    baseline = tmp_path / "invalid.json"
+    baseline.write_text("{not-json", encoding="utf-8")
+    calls = 0
+
+    def must_not_run(*args):
+        nonlocal calls
+        calls += 1
+        raise AssertionError("invalid baseline must fail before HEAD resolution")
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_head=True
+        ),
+        repo=tmp_path,
+        process_runner=must_not_run,
+        git_blob_runner=must_not_run,
+        collection_runner=must_not_run,
+        runtime_provider=must_not_run,
+    )
+    assert code == 1
+    assert result["errors"][0]["code"] == "INVALID_JSON"
+    assert calls == 0
+
+
+def test_source_backed_check_rejects_external_baseline_before_git(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _, internal_baseline, _ = source_check_fixture(repo)
+    external_baseline = tmp_path / "external-baseline.json"
+    external_baseline.write_bytes(internal_baseline.read_bytes())
+    calls = 0
+
+    def must_not_run(*args):
+        nonlocal calls
+        calls += 1
+        raise AssertionError("external baseline must fail before Git")
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=external_baseline, source_ref=COMMIT
+        ),
+        repo=repo,
+        process_runner=must_not_run,
+        git_blob_runner=must_not_run,
+        collection_runner=must_not_run,
+        runtime_provider=must_not_run,
+    )
+    assert code == 1
+    assert result["errors"][0]["code"] == (
+        "PYTEST_INVENTORY_BASELINE_BINDING_MISMATCH"
+    )
+    assert calls == 0
+
+
+def test_baseline_only_source_commit_binds_raw_bytes_and_passes(
+    tmp_path: Path,
+) -> None:
+    files, baseline, identity = source_check_fixture(tmp_path)
+    runner, blob_runner, _ = fake_git_io(files)
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_ref=COMMIT
+        ),
+        repo=tmp_path,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=runtime_provider,
+    )
+    assert code == 0, result
+    assert result["outcome"] == "PASS"
+    assert result["test_identity"] == identity
+    assert result["source"]["baseline_binding"] == {
+        "path": BASELINE_RELATIVE_PATH,
+        "status": validator.BASELINE_BINDING_STATUS,
+        "git_blob_oid": git_blob_oid(baseline.read_bytes()),
+        "sha256": hashlib.sha256(baseline.read_bytes()).hexdigest(),
+    }
+    assert result["baseline_sha256"] == result["source"]["baseline_binding"][
+        "sha256"
+    ]
+
+
+@pytest.mark.parametrize("source_state", ["missing", "dirty"])
+def test_source_check_rejects_missing_or_dirty_baseline_binding(
+    tmp_path: Path, source_state: str
+) -> None:
+    files, baseline, _ = source_check_fixture(tmp_path)
+    if source_state == "missing":
+        del files[BASELINE_RELATIVE_PATH]
+    else:
+        baseline.write_bytes(baseline.read_bytes() + b"\n")
+    runner, blob_runner, _ = fake_git_io(files)
+    collection_calls = 0
+
+    def collection(root: Path) -> dict:
+        nonlocal collection_calls
+        collection_calls += 1
+        return base_collection()
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_ref=COMMIT
+        ),
+        repo=tmp_path,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=collection,
+        runtime_provider=runtime_provider,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == (
+        "PYTEST_INVENTORY_BASELINE_BINDING_MISMATCH"
+    )
+    assert collection_calls == 0
+
+
+def test_source_head_records_unchanged_full_hashes(tmp_path: Path) -> None:
+    files, baseline, _ = source_check_fixture(tmp_path)
+    runner, blob_runner, calls = fake_git_io(files)
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_head=True
+        ),
+        repo=tmp_path,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=runtime_provider,
+    )
+    assert code == 0, result
+    assert result["source"]["requested_ref"] == COMMIT
+    assert result["source"]["evaluated_commit"] == COMMIT
+    assert result["source"]["head_binding"] == {
+        "status": validator.HEAD_BINDING_STATUS,
+        "start_commit": COMMIT,
+        "end_commit": COMMIT,
+    }
+    assert sum("rev-parse" in call for call in calls) == 3
+
+
+def test_source_head_change_fails_after_collection(tmp_path: Path) -> None:
+    files, baseline, _ = source_check_fixture(tmp_path)
+    runner, blob_runner, calls = fake_git_io(
+        files, rev_parse_commits=[COMMIT, COMMIT, SECOND_COMMIT]
+    )
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_head=True
+        ),
+        repo=tmp_path,
+        process_runner=runner,
+        git_blob_runner=blob_runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=runtime_provider,
+    )
+    assert code == 1
+    assert result["outcome"] == "ERROR"
+    assert result["errors"][0]["code"] == (
+        "PYTEST_INVENTORY_HEAD_CHANGED_DURING_EVALUATION"
+    )
+    assert sum("rev-parse" in call for call in calls) == 3
+
+
+def test_baseline_postcheck_outranks_source_head_change(tmp_path: Path) -> None:
+    files, baseline, _ = source_check_fixture(tmp_path)
+    base_runner, blob_runner, _ = fake_git_io(
+        files, rev_parse_commits=[COMMIT, COMMIT, SECOND_COMMIT]
+    )
+    rev_parse_calls = 0
+
+    def mutating_head_runner(command, cwd, environment, timeout):
+        nonlocal rev_parse_calls
+        if "rev-parse" in command:
+            rev_parse_calls += 1
+            if rev_parse_calls == 3:
+                baseline.write_bytes(baseline.read_bytes() + b"\n")
+        return base_runner(command, cwd, environment, timeout)
+
+    code, result = validator.evaluate(
+        validator.EvaluationOptions(
+            "CHECK", baseline=baseline, source_head=True
+        ),
+        repo=tmp_path,
+        process_runner=mutating_head_runner,
+        git_blob_runner=blob_runner,
+        collection_runner=lambda root: base_collection(),
+        runtime_provider=runtime_provider,
+    )
+    assert code == 1
+    assert result["errors"][0]["code"] == "BASELINE_CHANGED_DURING_EVALUATION"
+
+
 def test_environment_observation_is_qualified_but_not_part_of_portable_identity(
     tmp_path: Path,
 ) -> None:
@@ -1138,13 +1403,14 @@ def test_baseline_postcheck_outranks_parent_and_collection_errors(
     repo = tmp_path / "repo"
     repo.mkdir()
     baseline_identity = make_inventory(repo)
-    baseline = tmp_path / "baseline.json"
+    baseline = repo / "baseline.json"
     baseline.write_text(json.dumps(baseline_identity), encoding="utf-8")
 
     parent_tool = tmp_path / "measuring-instrument.py"
     parent_tool.write_bytes(Path(validator.__file__).read_bytes())
     monkeypatch.setattr(validator, "__file__", str(parent_tool))
     files = repository_files()
+    files["baseline.json"] = baseline.read_bytes()
     runner, blob_runner, _ = fake_git_io(files)
 
     def mutating_collection(root: Path) -> dict:
@@ -1365,16 +1631,25 @@ def test_commit_evaluation_collects_two_fresh_exact_snapshots(tmp_path: Path) ->
     assert result["test_identity"]["evidence_scope"] == validator.EVIDENCE_SCOPE
     baseline = tmp_path / "source-ref-baseline.json"
     baseline.write_text(json.dumps(result["test_identity"]), encoding="utf-8")
+    check_files = repository_files()
+    check_files["source-ref-baseline.json"] = baseline.read_bytes()
+    check_runner, check_blob_runner, _ = fake_git_io(check_files)
     check_code, check = validator.evaluate(
         validator.EvaluationOptions("CHECK", baseline=baseline, source_ref=COMMIT),
         repo=tmp_path,
-        process_runner=runner,
-        git_blob_runner=blob_runner,
+        process_runner=check_runner,
+        git_blob_runner=check_blob_runner,
         collection_runner=lambda root: base_collection(),
         runtime_provider=runtime_provider,
     )
     assert check_code == 0
     assert check["outcome"] == "PASS"
+    assert check["source"]["baseline_binding"] == {
+        "path": "source-ref-baseline.json",
+        "status": validator.BASELINE_BINDING_STATUS,
+        "git_blob_oid": git_blob_oid(baseline.read_bytes()),
+        "sha256": hashlib.sha256(baseline.read_bytes()).hexdigest(),
+    }
 
 
 def test_raw_blob_oid_and_size_mismatch_fail_closed(tmp_path: Path) -> None:

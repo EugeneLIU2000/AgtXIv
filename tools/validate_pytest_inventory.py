@@ -53,6 +53,8 @@ ENVIRONMENT_SECURITY_ROLE = (
 ENVIRONMENT_QUALIFICATION_SCOPE = (
     "VERSION_LOCK_AND_INSTALLED_DISTRIBUTION_MATCH_NOT_OS_OR_NETWORK_ISOLATION"
 )
+BASELINE_BINDING_STATUS = "FROZEN_BASELINE_BYTES_MATCHED_SOURCE_COMMIT"
+HEAD_BINDING_STATUS = "HEAD_UNCHANGED_DURING_EVALUATION"
 FULL_COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 VERSION_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)+(?:[-+._a-zA-Z0-9]*)?$")
 DISTRIBUTION_NAME_PATTERN = r"^[a-z0-9]+(?:-[a-z0-9]+)*(?![\s\S])"
@@ -197,6 +199,7 @@ class EvaluationOptions:
     operation: str
     baseline: Path | None = None
     source_ref: str | None = None
+    source_head: bool = False
 
 
 ProcessRunner = Callable[
@@ -2033,6 +2036,75 @@ def _source_validator_payload(prepared: PreparedGitSource) -> bytes:
     return payload
 
 
+def _canonical_baseline_relative_path(
+    repo: Path, frozen_baseline: FrozenBaseline
+) -> str:
+    code = "PYTEST_INVENTORY_BASELINE_BINDING_MISMATCH"
+    try:
+        repository_root = Path(os.path.abspath(os.fspath(repo)))
+        baseline_path = Path(frozen_baseline.file_snapshot.absolute_path)
+        relative = baseline_path.relative_to(repository_root)
+        relative_text = PurePosixPath(*relative.parts).as_posix()
+    except (OSError, TypeError, ValueError) as exc:
+        raise InventoryError(
+            code, "frozen baseline must be a regular file inside the repository"
+        ) from exc
+    if (
+        not relative_text
+        or relative_text == "."
+        or relative_text.startswith("/")
+        or "\\" in relative_text
+        or "\x00" in relative_text
+        or "//" in relative_text
+        or unicodedata.normalize("NFC", relative_text) != relative_text
+        or any(
+            part in {"", ".", ".."}
+            for part in relative_text.split("/")
+        )
+        or any(
+            ord(character) < 32 or ord(character) == 127
+            for character in relative_text
+        )
+    ):
+        raise InventoryError(code, "frozen baseline repository path is not canonical")
+    return relative_text
+
+
+def _bind_frozen_baseline_to_source(
+    frozen_baseline: FrozenBaseline,
+    relative_path: str,
+    prepared: PreparedGitSource,
+) -> dict[str, str]:
+    code = "PYTEST_INVENTORY_BASELINE_BINDING_MISMATCH"
+    entries = [entry for entry in prepared.entries if entry.path == relative_path]
+    if len(entries) != 1:
+        raise InventoryError(
+            code, "source commit must contain the exact frozen baseline path"
+        )
+    entry = entries[0]
+    blob_by_id = {blob.object_id: blob.payload for blob in prepared.blobs}
+    source_payload = blob_by_id.get(entry.object_id)
+    if (
+        source_payload is None
+        or len(source_payload) != entry.byte_size
+        or source_payload != frozen_baseline.file_snapshot.payload
+    ):
+        raise InventoryError(
+            code, "frozen baseline bytes do not match the exact source commit"
+        )
+    baseline_sha256 = _sha256_bytes(source_payload)
+    if baseline_sha256 != frozen_baseline.sha256:
+        raise InventoryError(
+            code, "frozen baseline digest does not match the exact source commit"
+        )
+    return {
+        "path": relative_path,
+        "status": BASELINE_BINDING_STATUS,
+        "git_blob_oid": entry.object_id,
+        "sha256": baseline_sha256,
+    }
+
+
 def _freeze_parent_validator() -> SafeFileSnapshot:
     return _safe_read_regular_file(
         Path(__file__).resolve(strict=True),
@@ -2645,6 +2717,8 @@ def _collect_current_test_identity(
     options: EvaluationOptions,
     *,
     repo: Path,
+    frozen_baseline: FrozenBaseline | None,
+    baseline_relative_path: str | None,
     process_runner: ProcessRunner,
     collection_runner: CollectionRunner | None,
     runtime_provider: RuntimeProvider,
@@ -2689,6 +2763,15 @@ def _collect_current_test_identity(
                 "git_blob_oid": _source_validator_entry(prepared).object_id,
                 "sha256": _sha256_bytes(source_payload),
             }
+            if options.operation == "CHECK":
+                if frozen_baseline is None or baseline_relative_path is None:
+                    raise InventoryError(
+                        "PYTEST_INVENTORY_BASELINE_BINDING_MISMATCH",
+                        "source-backed check requires one frozen repository baseline",
+                    )
+                source["baseline_binding"] = _bind_frozen_baseline_to_source(
+                    frozen_baseline, baseline_relative_path, prepared
+                )
             with tempfile.TemporaryDirectory(
                 prefix="agtxiv-pytest-inventory-first-"
             ) as first_temporary, tempfile.TemporaryDirectory(
@@ -2758,14 +2841,47 @@ def evaluate(
         operation_error: Exception | None = None
         test_identity: dict[str, Any] | None = None
         environment_qualification: dict[str, Any] | None = None
+        baseline_relative_path: str | None = None
+        initial_head: str | None = None
         try:
+            if options.operation not in {"CANDIDATE", "CHECK"}:
+                raise InventoryError(
+                    "INVALID_OPERATION", "operation must be CANDIDATE or CHECK"
+                )
+            if options.source_head and options.source_ref is not None:
+                raise InventoryError(
+                    "INVALID_SOURCE_SELECTION",
+                    "--source-head and --source-ref are mutually exclusive",
+                )
+            if options.source_head and options.operation != "CHECK":
+                raise InventoryError(
+                    "INVALID_SOURCE_SELECTION",
+                    "--source-head is available only for --check",
+                )
+            if frozen_baseline is not None and (
+                options.source_ref is not None or options.source_head
+            ):
+                baseline_relative_path = _canonical_baseline_relative_path(
+                    repo, frozen_baseline
+                )
+            effective_options = options
+            if options.source_head:
+                initial_head = _resolve_head(repo, process_runner)
+                effective_options = EvaluationOptions(
+                    options.operation,
+                    baseline=options.baseline,
+                    source_ref=initial_head,
+                    source_head=True,
+                )
             (
                 source,
                 test_identity,
                 environment_qualification,
             ) = _collect_current_test_identity(
-                options,
+                effective_options,
                 repo=repo,
+                frozen_baseline=frozen_baseline,
+                baseline_relative_path=baseline_relative_path,
                 process_runner=process_runner,
                 collection_runner=collection_runner,
                 runtime_provider=runtime_provider,
@@ -2773,6 +2889,23 @@ def evaluate(
             )
         except Exception as exc:
             operation_error = exc
+
+        if options.source_head and initial_head is not None:
+            try:
+                final_head = _resolve_head(repo, process_runner)
+                if final_head != initial_head:
+                    raise InventoryError(
+                        "PYTEST_INVENTORY_HEAD_CHANGED_DURING_EVALUATION",
+                        "repository HEAD changed during pytest identity evaluation",
+                    )
+                if source is not None:
+                    source["head_binding"] = {
+                        "status": HEAD_BINDING_STATUS,
+                        "start_commit": initial_head,
+                        "end_commit": final_head,
+                    }
+            except Exception as exc:
+                operation_error = exc
 
         if frozen_baseline is not None:
             try:
@@ -2867,15 +3000,30 @@ def _parse_options(argv: Sequence[str] | None) -> EvaluationOptions:
     operation.add_argument(
         "--check", metavar="BASELINE", type=Path, help="compare with a read-only baseline"
     )
-    parser.add_argument(
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument(
         "--source-ref",
         metavar="FULL_COMMIT",
         help="collect from raw verified Git blobs of one exact lowercase 40-hex commit",
     )
+    source.add_argument(
+        "--source-head",
+        action="store_true",
+        help="freeze HEAD, collect its raw Git blobs, and require HEAD to remain unchanged",
+    )
     args = parser.parse_args(argv)
     if args.candidate:
-        return EvaluationOptions("CANDIDATE", source_ref=args.source_ref)
-    return EvaluationOptions("CHECK", baseline=args.check, source_ref=args.source_ref)
+        return EvaluationOptions(
+            "CANDIDATE",
+            source_ref=args.source_ref,
+            source_head=args.source_head,
+        )
+    return EvaluationOptions(
+        "CHECK",
+        baseline=args.check,
+        source_ref=args.source_ref,
+        source_head=args.source_head,
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
