@@ -2,35 +2,251 @@
   "schema": "agtxiv.knowledge-index-snapshot/2.0.0",
   "id": "knowledge-index-snapshot:fixture-1",
   "record_revision": 1,
-  "source_release_ref": {
-    "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
-    "record_revision": 1,
-    "content_hash": "sha256:b8f685a14ec1cafb68c7ea07f09de3ad9faa588710e5ddf8f6e1fd9b751f748b"
+  "domain_id": "domain:mathematics",
+  "view_policy": {
+    "immutability": "IMMUTABLE_SNAPSHOT",
+    "conflict_behavior": "PRESERVE_ALL_ASSESSED_CONFLICTS",
+    "deduplication": "EXACT_ASSESSED_RELATIONS_ONLY"
   },
-  "release_certificate_ref": {
-    "id": "release-certification-record:2608.00001v1:theory-standard",
-    "record_revision": 1,
-    "content_hash": "sha256:3ba0f8c7a97d3c8b216d5a56f591489085d463a9c66ef0a6fdf4363c5280dd5b"
-  },
+  "package_bindings": [
+    {
+      "manifest_ref": {
+        "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+        "record_revision": 1,
+        "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+      },
+      "certificate_ref": {
+        "id": "release-certification-record:2608.00001v1:theory-standard",
+        "record_revision": 1,
+        "content_hash": "sha256:c3f42231f1f1c71347954f460a9033ebdd1574446763da62398b3ef41dfffc93"
+      },
+      "root_agent_audit_ref": {
+        "id": "release-audit-record:2608.00001v1:theory-standard",
+        "record_revision": 1,
+        "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
+      }
+    }
+  ],
+  "inventory_scope_refs": [
+    {
+      "id": "inventory-scope:2608.00001v1:theory-standard",
+      "record_revision": 1,
+      "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+    }
+  ],
   "entries": [
     {
+      "entry_id": "knowledge-entry:2608.00001v1:theorem-1-contract",
+      "domain_id": "domain:mathematics",
+      "entry_family": "CONTRACT",
       "record_ref": {
         "id": "math-claim-ir:2608.00001v1:theorem-1",
         "record_revision": 1,
-        "content_hash": "sha256:96a42d6eb2cb833be57fdb56de334c1953913505de73bb13ca7a17b08fef7b29"
+        "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
       },
-      "inventory_entry_id": "inventory-entry:claim-main",
-      "admission_status": "ADMITTED"
+      "component": {
+        "inventory_entry_id": "inventory-entry:claim-main",
+        "component_path": "/structured_statement/conclusion"
+      },
+      "scope_assumptions": {
+        "scope": "Exact source assertion normalized as MathClaimIR; no source-to-IR alignment assessment is claimed.",
+        "assumptions": []
+      },
+      "axes": {
+        "source_assertion": {
+          "status": "SOURCE_ALIGNMENT_ASSESSED",
+          "assessment_refs": [
+            {
+              "id": "assessment-record:2608.00001v1:theorem-1-source-alignment",
+              "record_revision": 1,
+              "content_hash": "sha256:d4ef33ee99468fb34cc6a890fab79da4ea154d99f5a54421fb8c8d2dea50d971"
+            }
+          ]
+        },
+        "formal_verification": {
+          "status": "NOT_APPLICABLE",
+          "assessment_refs": []
+        },
+        "scientific_acceptance": {
+          "status": "NOT_ASSESSED",
+          "assessment_refs": []
+        }
+      },
+      "formal_environment": null,
+      "alignment_refs": [],
+      "admission_status": "ADMITTED",
+      "provenance": {
+        "manifest_ref": {
+          "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+        },
+        "certificate_ref": {
+          "id": "release-certification-record:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:c3f42231f1f1c71347954f460a9033ebdd1574446763da62398b3ef41dfffc93"
+        },
+        "root_agent_audit_ref": {
+          "id": "release-audit-record:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
+        },
+        "inventory_scope_ref": {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        },
+        "source": {
+          "paper_id": "arxiv:2608.00001",
+          "release_id": "v1",
+          "source_uri": "https://arxiv.org/pdf/2608.00001v1",
+          "source_hash": "sha256:40aaf92109f890f21539d99000131d8adb062d451c600105c4725a9adf614e96",
+          "source_locator": "section:2/theorem:1",
+          "source_component_path": "source/components/claim-main.txt",
+          "source_component_hash": "sha256:1c1124e0bb8e6384b8c86651761d448f67e5a0ba2c5c917fa3c48a26390be02e"
+        }
+      }
     },
     {
+      "entry_id": "knowledge-entry:2608.00001v1:theorem-1-formal-artifact",
+      "domain_id": "domain:mathematics",
+      "entry_family": "FORMAL_ARTIFACT",
       "record_ref": {
         "id": "formalization-record:2608.00001v1:theorem-1",
         "record_revision": 1,
-        "content_hash": "sha256:37776e37f6e972717bb50023e7fe8bc4d00189346489f4400dfec31a0c0cae5a"
+        "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
       },
-      "inventory_entry_id": "inventory-entry:formal-main",
-      "admission_status": "CONDITIONAL"
+      "component": {
+        "inventory_entry_id": "inventory-entry:formal-main",
+        "component_path": "/structured_statement/conclusion"
+      },
+      "scope_assumptions": {
+        "scope": "Generated Lean artifact for the exact formalization boundary.",
+        "assumptions": [
+          "Generation success is not kernel verification, source fidelity, or scientific acceptance."
+        ]
+      },
+      "axes": {
+        "source_assertion": {
+          "status": "UNKNOWN",
+          "assessment_refs": []
+        },
+        "formal_verification": {
+          "status": "NOT_ASSESSED",
+          "assessment_refs": []
+        },
+        "scientific_acceptance": {
+          "status": "NOT_ASSESSED",
+          "assessment_refs": []
+        }
+      },
+      "formal_environment": {
+        "environment_id": "lean:4.30.0-rc2+mathlib:c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+        "descriptor_path": "environment/lean-environment.toml",
+        "descriptor_hash": "sha256:e1850fd1524486a2f26856278e80059a12ec201a2aac29333ecd9f59ba655cf8"
+      },
+      "alignment_refs": [],
+      "admission_status": "CONDITIONAL",
+      "provenance": {
+        "manifest_ref": {
+          "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+        },
+        "certificate_ref": {
+          "id": "release-certification-record:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:c3f42231f1f1c71347954f460a9033ebdd1574446763da62398b3ef41dfffc93"
+        },
+        "root_agent_audit_ref": {
+          "id": "release-audit-record:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
+        },
+        "inventory_scope_ref": {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        },
+        "source": {
+          "paper_id": "arxiv:2608.00001",
+          "release_id": "v1",
+          "source_uri": "https://arxiv.org/pdf/2608.00001v1",
+          "source_hash": "sha256:40aaf92109f890f21539d99000131d8adb062d451c600105c4725a9adf614e96",
+          "source_locator": "section:2/theorem:1/conclusion",
+          "source_component_path": "source/components/formal-main.txt",
+          "source_component_hash": "sha256:3ea6ecf92d19b2d54ca4901766b9c258607dc44dd987365679be60ab0a32a780"
+        }
+      }
+    },
+    {
+      "entry_id": "knowledge-entry:2608.00001v1:theorem-1-source-assessment",
+      "domain_id": "domain:mathematics",
+      "entry_family": "ASSESSMENT",
+      "record_ref": {
+        "id": "assessment-record:2608.00001v1:theorem-1-source-alignment",
+        "record_revision": 1,
+        "content_hash": "sha256:d4ef33ee99468fb34cc6a890fab79da4ea154d99f5a54421fb8c8d2dea50d971"
+      },
+      "component": {
+        "inventory_entry_id": "inventory-entry:claim-main",
+        "component_path": "/structured_statement/conclusion"
+      },
+      "scope_assumptions": {
+        "scope": "Independent source-to-MathClaimIR alignment assessment for the exact theorem component.",
+        "assumptions": []
+      },
+      "axes": {
+        "source_assertion": {
+          "status": "NOT_ASSESSED",
+          "assessment_refs": []
+        },
+        "formal_verification": {
+          "status": "NOT_APPLICABLE",
+          "assessment_refs": []
+        },
+        "scientific_acceptance": {
+          "status": "NOT_ASSESSED",
+          "assessment_refs": []
+        }
+      },
+      "formal_environment": null,
+      "alignment_refs": [],
+      "admission_status": "ADMITTED",
+      "provenance": {
+        "manifest_ref": {
+          "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+        },
+        "certificate_ref": {
+          "id": "release-certification-record:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:c3f42231f1f1c71347954f460a9033ebdd1574446763da62398b3ef41dfffc93"
+        },
+        "root_agent_audit_ref": {
+          "id": "release-audit-record:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
+        },
+        "inventory_scope_ref": {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        },
+        "source": {
+          "paper_id": "arxiv:2608.00001",
+          "release_id": "v1",
+          "source_uri": "https://arxiv.org/pdf/2608.00001v1",
+          "source_hash": "sha256:40aaf92109f890f21539d99000131d8adb062d451c600105c4725a9adf614e96",
+          "source_locator": "section:2/theorem:1",
+          "source_component_path": "source/components/claim-main.txt",
+          "source_component_hash": "sha256:1c1124e0bb8e6384b8c86651761d448f67e5a0ba2c5c917fa3c48a26390be02e"
+        }
+      }
     }
   ],
-  "content_hash": "sha256:ac46ee64d6df4ff78ad0922d5eca436f0734aa6d23f9940923e765242aa7849c"
+  "cross_paper_relations": [],
+  "environment_compatibility_receipts": [],
+  "content_hash": "sha256:442675ccc70756b2f6bd1c2d1b5489df0545b3f118554eb389716001711c6e48"
 }

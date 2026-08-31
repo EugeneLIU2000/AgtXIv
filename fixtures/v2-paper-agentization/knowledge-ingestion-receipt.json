@@ -1,0 +1,114 @@
+{
+  "schema": "agtxiv.knowledge-ingestion-receipt/2.0.0",
+  "id": "knowledge-ingestion-receipt:fixture-1",
+  "record_revision": 1,
+  "transaction_id": "knowledge-transaction:fixture-1",
+  "domain_id": "domain:mathematics",
+  "policy": {
+    "policy_id": "agtxiv-policy:atomic-domain-ingestion",
+    "policy_revision": 1,
+    "atomicity": "REQUIRED",
+    "partial_mutation": "FORBIDDEN"
+  },
+  "profile_ref": {
+    "id": "agentization-profile:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:b3b342582c9da227a17b189582f07dd0a1ccbc8425b53886e19a97e739409894"
+  },
+  "manifest_ref": {
+    "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+  },
+  "certificate_ref": {
+    "id": "release-certification-record:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:c3f42231f1f1c71347954f460a9033ebdd1574446763da62398b3ef41dfffc93"
+  },
+  "root_agent_audit_ref": {
+    "id": "release-audit-record:2608.00001v1:theory-standard",
+    "record_revision": 1,
+    "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
+  },
+  "before_snapshot_ref": {
+    "id": "knowledge-index-snapshot:domain-mathematics:genesis",
+    "record_revision": 0,
+    "content_hash": "sha256:f3d094015207128e8cc26db0d2978fc3aba03fd338773267f13edaf8adf97744"
+  },
+  "after_snapshot_ref": {
+    "id": "knowledge-index-snapshot:fixture-1",
+    "record_revision": 1,
+    "content_hash": "sha256:442675ccc70756b2f6bd1c2d1b5489df0545b3f118554eb389716001711c6e48"
+  },
+  "accepted_candidates": [
+    {
+      "candidate_id": "ingestion-candidate:fixture-1:1",
+      "entry_family": "CONTRACT",
+      "record_ref": {
+        "id": "math-claim-ir:2608.00001v1:theorem-1",
+        "record_revision": 1,
+        "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+      },
+      "inventory_entry_id": "inventory-entry:claim-main",
+      "knowledge_entry_id": "knowledge-entry:2608.00001v1:theorem-1-contract"
+    },
+    {
+      "candidate_id": "ingestion-candidate:fixture-1:2",
+      "entry_family": "FORMAL_ARTIFACT",
+      "record_ref": {
+        "id": "formalization-record:2608.00001v1:theorem-1",
+        "record_revision": 1,
+        "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+      },
+      "inventory_entry_id": "inventory-entry:formal-main",
+      "knowledge_entry_id": "knowledge-entry:2608.00001v1:theorem-1-formal-artifact"
+    },
+    {
+      "candidate_id": "ingestion-candidate:fixture-1:3",
+      "entry_family": "ASSESSMENT",
+      "record_ref": {
+        "id": "assessment-record:2608.00001v1:theorem-1-source-alignment",
+        "record_revision": 1,
+        "content_hash": "sha256:d4ef33ee99468fb34cc6a890fab79da4ea154d99f5a54421fb8c8d2dea50d971"
+      },
+      "inventory_entry_id": "inventory-entry:claim-main",
+      "knowledge_entry_id": "knowledge-entry:2608.00001v1:theorem-1-source-assessment"
+    }
+  ],
+  "rejected_candidates": [],
+  "blocked_candidates": [],
+  "outcome": "COMMITTED",
+  "content_hash": "sha256:2ecb176ce9ea99d8c52110529ff313e74e280af5bff70df497bfabf12c91d336",
+  "candidate_set": [
+    {
+      "candidate_id": "ingestion-candidate:fixture-1:1",
+      "entry_family": "CONTRACT",
+      "record_ref": {
+        "id": "math-claim-ir:2608.00001v1:theorem-1",
+        "record_revision": 1,
+        "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+      },
+      "inventory_entry_id": "inventory-entry:claim-main"
+    },
+    {
+      "candidate_id": "ingestion-candidate:fixture-1:2",
+      "entry_family": "FORMAL_ARTIFACT",
+      "record_ref": {
+        "id": "formalization-record:2608.00001v1:theorem-1",
+        "record_revision": 1,
+        "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+      },
+      "inventory_entry_id": "inventory-entry:formal-main"
+    },
+    {
+      "candidate_id": "ingestion-candidate:fixture-1:3",
+      "entry_family": "ASSESSMENT",
+      "record_ref": {
+        "id": "assessment-record:2608.00001v1:theorem-1-source-alignment",
+        "record_revision": 1,
+        "content_hash": "sha256:d4ef33ee99468fb34cc6a890fab79da4ea154d99f5a54421fb8c8d2dea50d971"
+      },
+      "inventory_entry_id": "inventory-entry:claim-main"
+    }
+  ]
+}

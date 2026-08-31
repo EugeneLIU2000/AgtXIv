@@ -1,16 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agtxiv.org/schema/v2/knowledge-index-snapshot/2.0.0",
-  "title": "AgtXIv V2 KnowledgeIndexSnapshot",
+  "title": "AgtXIv V2 Domain-Qualified KnowledgeIndexSnapshot",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema",
     "id",
     "record_revision",
-    "source_release_ref",
-    "release_certificate_ref",
+    "domain_id",
+    "view_policy",
+    "package_bindings",
+    "inventory_scope_refs",
     "entries",
+    "cross_paper_relations",
+    "environment_compatibility_receipts",
     "content_hash"
   ],
   "properties": {
@@ -23,18 +27,64 @@
     },
     "record_revision": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 0
     },
-    "source_release_ref": {
-      "$ref": "#/$defs/exactRef"
+    "domain_id": {
+      "type": "string",
+      "pattern": "^domain:"
     },
-    "release_certificate_ref": {
-      "$ref": "#/$defs/exactRef"
+    "view_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "immutability",
+        "conflict_behavior",
+        "deduplication"
+      ],
+      "properties": {
+        "immutability": {
+          "const": "IMMUTABLE_SNAPSHOT"
+        },
+        "conflict_behavior": {
+          "const": "PRESERVE_ALL_ASSESSED_CONFLICTS"
+        },
+        "deduplication": {
+          "const": "EXACT_ASSESSED_RELATIONS_ONLY"
+        }
+      }
+    },
+    "package_bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/packageBinding"
+      },
+      "uniqueItems": true
+    },
+    "inventory_scope_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/exactRef"
+      },
+      "uniqueItems": true
     },
     "entries": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/admission"
+        "$ref": "#/$defs/entry"
+      },
+      "uniqueItems": true
+    },
+    "cross_paper_relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relation"
+      },
+      "uniqueItems": true
+    },
+    "environment_compatibility_receipts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/exactRef"
       },
       "uniqueItems": true
     },
@@ -62,34 +112,364 @@
         },
         "record_revision": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 0
         },
         "content_hash": {
           "$ref": "#/$defs/hash"
         }
       }
     },
-    "admission": {
+    "packageBinding": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "record_ref",
-        "inventory_entry_id",
-        "admission_status"
+        "manifest_ref",
+        "certificate_ref",
+        "root_agent_audit_ref"
       ],
       "properties": {
-        "record_ref": {
+        "manifest_ref": {
           "$ref": "#/$defs/exactRef"
         },
+        "certificate_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "root_agent_audit_ref": {
+          "$ref": "#/$defs/exactRef"
+        }
+      }
+    },
+    "sourceProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "paper_id",
+        "release_id",
+        "source_uri",
+        "source_hash",
+        "source_locator",
+        "source_component_path",
+        "source_component_hash"
+      ],
+      "properties": {
+        "paper_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "source_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "source_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_component_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_component_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "scopeAssumptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "assumptions"
+      ],
+      "properties": {
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inventory_entry_id",
+        "component_path"
+      ],
+      "properties": {
         "inventory_entry_id": {
           "type": "string",
           "pattern": "^inventory-entry:"
+        },
+        "component_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "environment": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "environment_id",
+        "descriptor_path",
+        "descriptor_hash"
+      ],
+      "properties": {
+        "environment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "descriptor_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "descriptor_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "assessment_refs"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assessment_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/exactRef"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_assertion",
+        "formal_verification",
+        "scientific_acceptance"
+      ],
+      "properties": {
+        "source_assertion": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/axis"
+            },
+            {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "SOURCE_ALIGNMENT_ASSESSED",
+                    "SOURCE_ALIGNMENT_REJECTED",
+                    "UNKNOWN",
+                    "NOT_ASSESSED"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "formal_verification": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/axis"
+            },
+            {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "KERNEL_CHECKED",
+                    "KERNEL_REJECTED",
+                    "NOT_ASSESSED",
+                    "NOT_APPLICABLE"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "scientific_acceptance": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/axis"
+            },
+            {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "ACCEPTED",
+                    "REJECTED",
+                    "UNKNOWN",
+                    "NOT_ASSESSED"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_ref",
+        "certificate_ref",
+        "root_agent_audit_ref",
+        "inventory_scope_ref",
+        "source"
+      ],
+      "properties": {
+        "manifest_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "certificate_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "root_agent_audit_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "inventory_scope_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "source": {
+          "$ref": "#/$defs/sourceProvenance"
+        }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_id",
+        "domain_id",
+        "entry_family",
+        "record_ref",
+        "component",
+        "scope_assumptions",
+        "axes",
+        "formal_environment",
+        "alignment_refs",
+        "admission_status",
+        "provenance"
+      ],
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "pattern": "^knowledge-entry:"
+        },
+        "domain_id": {
+          "type": "string",
+          "pattern": "^domain:"
+        },
+        "entry_family": {
+          "description": "Currently admissible typed families. SOURCE_CLAIM, DEFINITION, INFERENCE_EDGE, and EVIDENCE are reserved until this V2 slice defines corresponding typed record classes.",
+          "enum": [
+            "CONTRACT",
+            "FORMAL_ARTIFACT",
+            "ASSESSMENT"
+          ]
+        },
+        "record_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "component": {
+          "$ref": "#/$defs/component"
+        },
+        "scope_assumptions": {
+          "$ref": "#/$defs/scopeAssumptions"
+        },
+        "axes": {
+          "$ref": "#/$defs/axes"
+        },
+        "formal_environment": {
+          "$ref": "#/$defs/environment"
+        },
+        "alignment_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/exactRef"
+          },
+          "uniqueItems": true
         },
         "admission_status": {
           "enum": [
             "ADMITTED",
             "CONDITIONAL"
           ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relation_id",
+        "left_entry_id",
+        "right_entry_id",
+        "relation",
+        "relation_assessment_ref",
+        "status"
+      ],
+      "properties": {
+        "relation_id": {
+          "type": "string",
+          "pattern": "^knowledge-relation:"
+        },
+        "left_entry_id": {
+          "type": "string",
+          "pattern": "^knowledge-entry:"
+        },
+        "right_entry_id": {
+          "type": "string",
+          "pattern": "^knowledge-entry:"
+        },
+        "relation": {
+          "enum": [
+            "EQUIVALENT",
+            "SPECIAL_CASE",
+            "GENERALIZES",
+            "INCOMPARABLE",
+            "CONFLICTING",
+            "CORRECTS",
+            "SUPPORTS",
+            "QUALIFIES",
+            "REFUTES"
+          ]
+        },
+        "relation_assessment_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "status": {
+          "const": "SEPARATELY_ASSESSED"
         }
       }
     }

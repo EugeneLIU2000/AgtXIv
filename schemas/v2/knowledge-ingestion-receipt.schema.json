@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/knowledge-ingestion-receipt/2.0.0",
+  "title": "AgtXIv V2 KnowledgeIngestionReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "record_revision",
+    "transaction_id",
+    "domain_id",
+    "policy",
+    "profile_ref",
+    "manifest_ref",
+    "certificate_ref",
+    "root_agent_audit_ref",
+    "before_snapshot_ref",
+    "after_snapshot_ref",
+    "candidate_set",
+    "accepted_candidates",
+    "rejected_candidates",
+    "blocked_candidates",
+    "outcome",
+    "content_hash"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.knowledge-ingestion-receipt/2.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^knowledge-ingestion-receipt:"
+    },
+    "record_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "transaction_id": {
+      "type": "string",
+      "pattern": "^knowledge-transaction:"
+    },
+    "domain_id": {
+      "type": "string",
+      "pattern": "^domain:"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_revision",
+        "atomicity",
+        "partial_mutation"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "atomicity": {
+          "const": "REQUIRED"
+        },
+        "partial_mutation": {
+          "const": "FORBIDDEN"
+        }
+      }
+    },
+    "profile_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "manifest_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "certificate_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "root_agent_audit_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "before_snapshot_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "after_snapshot_ref": {
+      "$ref": "#/$defs/exactRef"
+    },
+    "accepted_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/accepted"
+      },
+      "uniqueItems": true
+    },
+    "rejected_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/notAccepted"
+      },
+      "uniqueItems": true
+    },
+    "blocked_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/notAccepted"
+      },
+      "uniqueItems": true
+    },
+    "outcome": {
+      "enum": [
+        "COMMITTED",
+        "ABORTED"
+      ]
+    },
+    "content_hash": {
+      "$ref": "#/$defs/hash"
+    },
+    "candidate_set": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/candidateBase"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "exactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_revision",
+        "content_hash"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "candidateBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "entry_family",
+        "record_ref",
+        "inventory_entry_id"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^ingestion-candidate:"
+        },
+        "entry_family": {
+          "description": "Currently admissible typed families in this contract slice.",
+          "enum": [
+            "CONTRACT",
+            "FORMAL_ARTIFACT",
+            "ASSESSMENT"
+          ]
+        },
+        "record_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "inventory_entry_id": {
+          "type": "string",
+          "pattern": "^inventory-entry:"
+        }
+      }
+    },
+    "accepted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "entry_family",
+        "record_ref",
+        "inventory_entry_id",
+        "knowledge_entry_id"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^ingestion-candidate:"
+        },
+        "entry_family": {
+          "description": "Currently admissible typed families in this contract slice.",
+          "enum": [
+            "CONTRACT",
+            "FORMAL_ARTIFACT",
+            "ASSESSMENT"
+          ]
+        },
+        "record_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "inventory_entry_id": {
+          "type": "string",
+          "pattern": "^inventory-entry:"
+        },
+        "knowledge_entry_id": {
+          "type": "string",
+          "pattern": "^knowledge-entry:"
+        }
+      }
+    },
+    "notAccepted": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "entry_family",
+        "record_ref",
+        "inventory_entry_id",
+        "reason"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^ingestion-candidate:"
+        },
+        "entry_family": {
+          "description": "Currently admissible typed families in this contract slice.",
+          "enum": [
+            "CONTRACT",
+            "FORMAL_ARTIFACT",
+            "ASSESSMENT"
+          ]
+        },
+        "record_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "inventory_entry_id": {
+          "type": "string",
+          "pattern": "^inventory-entry:"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

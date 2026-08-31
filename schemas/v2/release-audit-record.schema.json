@@ -2,145 +2,38 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agtxiv.org/schema/v2/release-audit-record/2.0.0",
   "title": "AgtXIv V2 ReleaseAuditRecord",
+  "description": "Immutable paper-level verification record authored by the accountable V2 Root Agent.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema",
-    "id",
-    "record_revision",
-    "manifest_ref",
-    "profile_ref",
-    "scope_ref",
-    "coordinator",
-    "auditor",
-    "checks",
-    "outcome",
-    "audited_release_hash",
-    "content_hash"
-  ],
+  "required": ["schema", "id", "record_revision", "manifest_ref", "profile_ref", "scope_ref", "coordinator", "auditor", "verification_steps", "unresolved_frontier", "non_implications", "release_recommendation", "audited_release_hash", "content_hash"],
   "properties": {
-    "schema": {
-      "const": "agtxiv.release-audit-record/2.0.0"
-    },
-    "id": {
-      "type": "string",
-      "pattern": "^release-audit-record:"
-    },
-    "record_revision": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "manifest_ref": {
-      "$ref": "#/$defs/exactRef"
-    },
-    "profile_ref": {
-      "$ref": "#/$defs/exactRef"
-    },
-    "scope_ref": {
-      "$ref": "#/$defs/exactRef"
-    },
-    "coordinator": {
-      "$ref": "#/$defs/coordinator"
-    },
-    "auditor": {
-      "$ref": "#/$defs/auditor"
-    },
-    "checks": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "check",
-          "status"
-        ],
-        "properties": {
-          "check": {
-            "enum": [
-              "EXACT_INPUTS",
-              "TOTAL_DISPOSITION_ACCOUNTING",
-              "ARTIFACT_INTEGRITY",
-              "PROFILE_CONFORMANCE",
-              "ROLE_SEPARATION"
-            ]
-          },
-          "status": {
-            "const": "PASSED"
-          }
-        }
-      }
-    },
-    "outcome": {
-      "const": "PASSED"
-    },
-    "audited_release_hash": {
-      "$ref": "#/$defs/hash"
-    },
-    "content_hash": {
-      "$ref": "#/$defs/hash"
-    }
+    "schema": {"const": "agtxiv.release-audit-record/2.0.0"},
+    "id": {"type": "string", "pattern": "^release-audit-record:"},
+    "record_revision": {"type": "integer", "minimum": 1},
+    "manifest_ref": {"$ref": "#/$defs/exactRef"}, "profile_ref": {"$ref": "#/$defs/exactRef"}, "scope_ref": {"$ref": "#/$defs/exactRef"},
+    "coordinator": {"$ref": "#/$defs/coordinator"}, "auditor": {"$ref": "#/$defs/rootAgent"},
+    "verification_steps": {"type": "array", "prefixItems": [{"$ref": "#/$defs/sourceInventoryStep"}, {"$ref": "#/$defs/paperStructureStep"}, {"$ref": "#/$defs/claimInventoryStep"}, {"$ref": "#/$defs/mathClaimStep"}, {"$ref": "#/$defs/dependencyStep"}, {"$ref": "#/$defs/formalizationStep"}, {"$ref": "#/$defs/formalVerificationStep"}, {"$ref": "#/$defs/alignmentStep"}, {"$ref": "#/$defs/residualStep"}, {"$ref": "#/$defs/assessmentStep"}], "items": false, "minItems": 10, "maxItems": 10},
+    "unresolved_frontier": {"type": "array", "items": {"$ref": "#/$defs/frontier"}, "uniqueItems": true},
+    "non_implications": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"enum": ["NO_WHOLE_PAPER_TRUTH", "NO_STATUS_INHERITANCE", "KERNEL_CHECK_DOES_NOT_IMPLY_SOURCE_FIDELITY", "KERNEL_CHECK_DOES_NOT_IMPLY_SCIENTIFIC_ACCEPTANCE", "CERTIFICATION_DOES_NOT_IMPLY_ENTRY_ADMISSION"]}},
+    "release_recommendation": {"$ref": "#/$defs/recommendation"}, "audited_release_hash": {"$ref": "#/$defs/hash"}, "content_hash": {"$ref": "#/$defs/hash"}
   },
   "$defs": {
-    "hash": {
-      "type": "string",
-      "pattern": "^sha256:[0-9a-f]{64}$"
-    },
-    "exactRef": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "record_revision",
-        "content_hash"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "record_revision": {
-          "type": "integer",
-          "minimum": 1
-        },
-        "content_hash": {
-          "$ref": "#/$defs/hash"
-        }
-      }
-    },
-    "coordinator": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "actor_id",
-        "role"
-      ],
-      "properties": {
-        "actor_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "role": {
-          "const": "AGENTIZATION_COORDINATOR"
-        }
-      }
-    },
-    "auditor": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "actor_id",
-        "role"
-      ],
-      "properties": {
-        "actor_id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "role": {
-          "const": "RELEASE_AUDITOR"
-        }
-      }
-    }
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "exactRef": {"type": "object", "additionalProperties": false, "required": ["id", "record_revision", "content_hash"], "properties": {"id": {"type": "string", "minLength": 1}, "record_revision": {"type": "integer", "minimum": 1}, "content_hash": {"$ref": "#/$defs/hash"}}},
+    "coordinator": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "AGENTIZATION_COORDINATOR"}}},
+    "rootAgent": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "V2_ROOT_AGENT"}}},
+    "stepBase": {"type": "object", "additionalProperties": false, "required": ["stage", "sequence", "target_refs", "selected_assessment_refs", "evidence_refs", "outcome", "frontier_ids"], "properties": {"stage": {"type": "string"}, "sequence": {"type": "integer", "minimum": 1}, "target_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/exactRef"}, "uniqueItems": true}, "selected_assessment_refs": {"type": "array", "items": {"$ref": "#/$defs/exactRef"}, "uniqueItems": true}, "evidence_refs": {"type": "array", "items": {"$ref": "#/$defs/exactRef"}, "uniqueItems": true}, "outcome": {"enum": ["PASSED", "UNKNOWN", "BLOCKED", "REFUTED", "NOT_APPLICABLE"]}, "frontier_ids": {"type": "array", "items": {"type": "string", "pattern": "^frontier:"}, "uniqueItems": true}}},
+    "sourceInventoryStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "SOURCE_INVENTORY"}, "sequence": {"const": 1}}}]},
+    "paperStructureStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "PAPER_STRUCTURE"}, "sequence": {"const": 2}}}]},
+    "claimInventoryStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "CLAIM_INVENTORY_DECOMPOSITION"}, "sequence": {"const": 3}}}]},
+    "mathClaimStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "MATHCLAIM_EXTRACTION_IR"}, "sequence": {"const": 4}}}]},
+    "dependencyStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "DEPENDENCY_INFERENCE_GRAPH"}, "sequence": {"const": 5}}}]},
+    "formalizationStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "FORMALIZATION_DISPOSITION"}, "sequence": {"const": 6}}}]},
+    "formalVerificationStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "FORMAL_VERIFICATION"}, "sequence": {"const": 7}}}]},
+    "alignmentStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "SOURCE_IR_FORMAL_ALIGNMENT"}, "sequence": {"const": 8}}}]},
+    "residualStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "RESIDUAL_NON_MATHEMATICAL_SEMANTICS"}, "sequence": {"const": 9}}}]},
+    "assessmentStep": {"allOf": [{"$ref": "#/$defs/stepBase"}, {"properties": {"stage": {"const": "ASSESSMENT_SELECTION"}, "sequence": {"const": 10}}}]},
+    "frontier": {"type": "object", "additionalProperties": false, "required": ["frontier_id", "stage", "target_refs", "disposition", "reason"], "properties": {"frontier_id": {"type": "string", "pattern": "^frontier:"}, "stage": {"type": "string"}, "target_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/exactRef"}, "uniqueItems": true}, "disposition": {"enum": ["UNKNOWN", "BLOCKED", "REFUTED"]}, "reason": {"type": "string", "minLength": 1}}},
+    "recommendation": {"type": "object", "additionalProperties": false, "required": ["decision", "profile_completion", "retained_frontier_ids", "basis"], "properties": {"decision": {"enum": ["RECOMMEND_PROFILE_RELEASE", "DO_NOT_RELEASE"]}, "profile_completion": {"const": "MIXED_DISPOSITIONS_ACCOUNTED"}, "retained_frontier_ids": {"type": "array", "items": {"type": "string", "pattern": "^frontier:"}, "uniqueItems": true}, "basis": {"type": "string", "minLength": 1}}}
   }
 }

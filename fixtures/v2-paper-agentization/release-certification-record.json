@@ -5,26 +5,45 @@
   "manifest_ref": {
     "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
     "record_revision": 1,
-    "content_hash": "sha256:b8f685a14ec1cafb68c7ea07f09de3ad9faa588710e5ddf8f6e1fd9b751f748b"
+    "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
   },
-  "audit_ref": {
+  "root_agent_audit_ref": {
     "id": "release-audit-record:2608.00001v1:theory-standard",
     "record_revision": 1,
-    "content_hash": "sha256:3388953479735c387fc936f534970444ea12a82186715e7a711cc8cbd3931592"
+    "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
   },
   "coordinator": {
     "actor_id": "actor:coordinator-alpha",
     "role": "AGENTIZATION_COORDINATOR"
   },
-  "auditor": {
-    "actor_id": "actor:auditor-beta",
-    "role": "RELEASE_AUDITOR"
+  "root_agent": {
+    "actor_id": "actor:root-agent-beta",
+    "role": "V2_ROOT_AGENT"
   },
   "certifier": {
     "actor_id": "actor:certifier-gamma",
     "role": "RELEASE_CERTIFIER"
   },
-  "certified_release_hash": "sha256:b644b63492a57c1e6b1797f405335c6ccac57dba14d5d7dfc7ad8e14e0540c6b",
+  "mechanical_checks": [
+    {
+      "check": "ROOT_AGENT_AUDIT_RECOMMENDATION",
+      "status": "PASSED"
+    },
+    {
+      "check": "HASH_INTEGRITY",
+      "status": "PASSED"
+    },
+    {
+      "check": "POLICY_CONFORMANCE",
+      "status": "PASSED"
+    },
+    {
+      "check": "RELEASE_BINDING",
+      "status": "PASSED"
+    }
+  ],
+  "certified_release_hash": "sha256:6930a0ff50614098046353a562d80a56ac8a2eed78232a1a6bfb30b0e9eab3fe",
   "decision": "CERTIFIED",
-  "content_hash": "sha256:3ba0f8c7a97d3c8b216d5a56f591489085d463a9c66ef0a6fdf4363c5280dd5b"
+  "content_hash": "sha256:c3f42231f1f1c71347954f460a9033ebdd1574446763da62398b3ef41dfffc93",
+  "rejection_reasons": []
 }

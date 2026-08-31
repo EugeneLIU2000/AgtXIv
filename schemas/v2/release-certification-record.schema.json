@@ -1,22 +1,468 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agtxiv.org/schema/v2/release-certification-record/2.0.0",
-  "title": "AgtXIv V2 ReleaseCertificationRecord",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["schema", "id", "record_revision", "manifest_ref", "audit_ref", "coordinator", "auditor", "certifier", "certified_release_hash", "decision", "content_hash"],
-  "properties": {
-    "schema": {"const": "agtxiv.release-certification-record/2.0.0"},
-    "id": {"type": "string", "pattern": "^release-certification-record:"}, "record_revision": {"type": "integer", "minimum": 1},
-    "manifest_ref": {"$ref": "#/$defs/exactRef"}, "audit_ref": {"$ref": "#/$defs/exactRef"},
-    "coordinator": {"$ref": "#/$defs/coordinator"}, "auditor": {"$ref": "#/$defs/auditor"}, "certifier": {"$ref": "#/$defs/certifier"},
-    "certified_release_hash": {"$ref": "#/$defs/hash"}, "decision": {"const": "CERTIFIED"}, "content_hash": {"$ref": "#/$defs/hash"}
-  },
+  "title": "AgtXIv V2 Mechanical ReleaseCertificationRecord",
+  "description": "Independent mechanical certification or rejection of the exact Root Agent audit/recommendation, hashes, policy, and release binding.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "id",
+        "record_revision",
+        "manifest_ref",
+        "root_agent_audit_ref",
+        "coordinator",
+        "root_agent",
+        "certifier",
+        "content_hash",
+        "mechanical_checks",
+        "certified_release_hash",
+        "rejection_reasons",
+        "decision"
+      ],
+      "properties": {
+        "schema": {
+          "const": "agtxiv.release-certification-record/2.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^release-certification-record:"
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "manifest_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "root_agent_audit_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "coordinator": {
+          "$ref": "#/$defs/coordinator"
+        },
+        "root_agent": {
+          "$ref": "#/$defs/rootAgent"
+        },
+        "certifier": {
+          "$ref": "#/$defs/certifier"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "decision": {
+          "const": "CERTIFIED"
+        },
+        "mechanical_checks": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/passed0"
+            },
+            {
+              "$ref": "#/$defs/passed1"
+            },
+            {
+              "$ref": "#/$defs/passed2"
+            },
+            {
+              "$ref": "#/$defs/passed3"
+            }
+          ],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "certified_release_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "rejection_reasons": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "id",
+        "record_revision",
+        "manifest_ref",
+        "root_agent_audit_ref",
+        "coordinator",
+        "root_agent",
+        "certifier",
+        "content_hash",
+        "mechanical_checks",
+        "certified_release_hash",
+        "rejection_reasons",
+        "decision"
+      ],
+      "properties": {
+        "schema": {
+          "const": "agtxiv.release-certification-record/2.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^release-certification-record:"
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "manifest_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "root_agent_audit_ref": {
+          "$ref": "#/$defs/exactRef"
+        },
+        "coordinator": {
+          "$ref": "#/$defs/coordinator"
+        },
+        "root_agent": {
+          "$ref": "#/$defs/rootAgent"
+        },
+        "certifier": {
+          "$ref": "#/$defs/certifier"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        },
+        "decision": {
+          "const": "REJECTED"
+        },
+        "mechanical_checks": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/any0"
+            },
+            {
+              "$ref": "#/$defs/any1"
+            },
+            {
+              "$ref": "#/$defs/any2"
+            },
+            {
+              "$ref": "#/$defs/any3"
+            }
+          ],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4,
+          "contains": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "FAILED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "minContains": 1
+        },
+        "certified_release_hash": {
+          "const": null
+        },
+        "rejection_reasons": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
-    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
-    "exactRef": {"type": "object", "additionalProperties": false, "required": ["id", "record_revision", "content_hash"], "properties": {"id": {"type": "string", "minLength": 1}, "record_revision": {"type": "integer", "minimum": 1}, "content_hash": {"$ref": "#/$defs/hash"}}},
-    "coordinator": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "AGENTIZATION_COORDINATOR"}}},
-    "auditor": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "RELEASE_AUDITOR"}}},
-    "certifier": {"type": "object", "additionalProperties": false, "required": ["actor_id", "role"], "properties": {"actor_id": {"type": "string", "minLength": 1}, "role": {"const": "RELEASE_CERTIFIER"}}}
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "exactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_revision",
+        "content_hash"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_hash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "coordinator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_id",
+        "role"
+      ],
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "const": "AGENTIZATION_COORDINATOR"
+        }
+      }
+    },
+    "rootAgent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_id",
+        "role"
+      ],
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "const": "V2_ROOT_AGENT"
+        }
+      }
+    },
+    "certifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_id",
+        "role"
+      ],
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "const": "RELEASE_CERTIFIER"
+        }
+      }
+    },
+    "passed0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "ROOT_AGENT_AUDIT_RECOMMENDATION"
+        },
+        "status": {
+          "const": "PASSED"
+        }
+      }
+    },
+    "failed0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "ROOT_AGENT_AUDIT_RECOMMENDATION"
+        },
+        "status": {
+          "const": "FAILED"
+        }
+      }
+    },
+    "any0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "ROOT_AGENT_AUDIT_RECOMMENDATION"
+        },
+        "status": {
+          "enum": [
+            "PASSED",
+            "FAILED"
+          ]
+        }
+      }
+    },
+    "passed1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "HASH_INTEGRITY"
+        },
+        "status": {
+          "const": "PASSED"
+        }
+      }
+    },
+    "failed1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "HASH_INTEGRITY"
+        },
+        "status": {
+          "const": "FAILED"
+        }
+      }
+    },
+    "any1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "HASH_INTEGRITY"
+        },
+        "status": {
+          "enum": [
+            "PASSED",
+            "FAILED"
+          ]
+        }
+      }
+    },
+    "passed2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "POLICY_CONFORMANCE"
+        },
+        "status": {
+          "const": "PASSED"
+        }
+      }
+    },
+    "failed2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "POLICY_CONFORMANCE"
+        },
+        "status": {
+          "const": "FAILED"
+        }
+      }
+    },
+    "any2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "POLICY_CONFORMANCE"
+        },
+        "status": {
+          "enum": [
+            "PASSED",
+            "FAILED"
+          ]
+        }
+      }
+    },
+    "passed3": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "RELEASE_BINDING"
+        },
+        "status": {
+          "const": "PASSED"
+        }
+      }
+    },
+    "failed3": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "RELEASE_BINDING"
+        },
+        "status": {
+          "const": "FAILED"
+        }
+      }
+    },
+    "any3": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "const": "RELEASE_BINDING"
+        },
+        "status": {
+          "enum": [
+            "PASSED",
+            "FAILED"
+          ]
+        }
+      }
+    }
   }
 }

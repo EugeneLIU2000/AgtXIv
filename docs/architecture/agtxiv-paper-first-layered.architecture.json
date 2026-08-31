@@ -2,58 +2,63 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "AgtXIv V2 — Paper Agent Release Architecture",
+    "title": "AgtXIv V2 — Stepwise Paper Verification and Knowledge Lifecycle",
     "locale": "en",
     "quality_profile": "showcase",
     "views": [
       {
-        "id": "canonical_release",
-        "label": "Canonical Release",
+        "id": "construction",
+        "label": "Construction",
         "focus": [
           "exact_paper_release",
           "profile_scope",
           "paper_analysis",
           "claims_math_ir",
-          "formal_evidence_alignment",
+          "dependencies_inferences",
+          "formalization"
+        ],
+        "note": "Whole-paper construction is exact-profile, exact-scope, and query-independent."
+      },
+      {
+        "id": "verification",
+        "label": "Verification",
+        "focus": [
+          "formal_verification",
+          "backtranslation_alignment",
+          "residual_semantics",
+          "assessment_selection",
           "release_audit",
-          "release_certifier",
-          "paper_agent_release"
+          "release_certifier"
         ],
-        "note": "Construct a query-independent package, then audit and certify it with separated roles."
+        "note": "Independent producer records precede the accountable Root Agent audit and mechanical certification."
       },
       {
-        "id": "knowledge_admission",
-        "label": "Knowledge Admission",
+        "id": "release_knowledge",
+        "label": "Release & Knowledge",
         "focus": [
           "paper_agent_release",
-          "knowledge_base"
-        ],
-        "note": "Package certification permits mixed statuses; each knowledge entry still has its own admission gate."
-      },
-      {
-        "id": "package_query",
-        "label": "Package-Backed Query",
-        "focus": [
-          "paper_agent_release",
+          "package_archive",
+          "reusable_entry_admission",
           "knowledge_base",
           "query_resolution"
         ],
-        "note": "Standard queries retrieve read-only records from the certified release and derived index."
+        "note": "Package archival and reusable entry admission are distinct lifecycle gates."
       },
       {
-        "id": "provisional_path",
-        "label": "Provisional Fast Path",
+        "id": "provisional",
+        "label": "Provisional Path",
         "focus": [
           "query_intent",
           "provisional_fast_path",
-          "query_resolution"
+          "query_resolution",
+          "profile_scope"
         ],
-        "note": "Fast assistance triggers or links the same query-independent agentization without entering release or the knowledge base."
+        "note": "Fast assistance remains non-authoritative and links query-independent canonical intake."
       }
     ],
     "viewBox": [
       1390,
-      700
+      640
     ]
   },
   "components": [
@@ -65,7 +70,7 @@
       "tag": "canonical input",
       "pos": [
         30,
-        80
+        30
       ],
       "size": [
         220,
@@ -80,10 +85,10 @@
       "tag": "completion boundary",
       "pos": [
         30,
-        240
+        145
       ],
       "size": [
-        260,
+        270,
         92
       ]
     },
@@ -91,14 +96,14 @@
       "id": "paper_analysis",
       "type": "backend",
       "label": "Profile-Scoped Paper Analysis",
-      "sublabel": "Whole release, query-independent",
+      "sublabel": "Whole release; query-independent",
       "tag": "coordinator",
       "pos": [
-        350,
-        155
+        330,
+        85
       ],
       "size": [
-        250,
+        230,
         88
       ]
     },
@@ -106,56 +111,41 @@
       "id": "claims_math_ir",
       "type": "database",
       "label": "Claims & MathClaimIR",
-      "sublabel": "Source-bound identities and math IR",
+      "sublabel": "Source-bound claims and mathematical IR",
       "tag": "canonical records",
       "pos": [
-        700,
-        155
+        590,
+        85
       ],
       "size": [
-        230,
+        220,
         88
       ]
     },
     {
-      "id": "formal_evidence_alignment",
+      "id": "dependencies_inferences",
       "type": "messagebus",
-      "label": "Formalization, Evidence, Alignment & Assessments",
-      "sublabel": "Separate records and authority axes",
-      "tag": "mixed outcomes",
+      "label": "Dependencies & Inferences",
+      "sublabel": "Exact dependency and inference order",
+      "tag": "verification order",
       "pos": [
-        1010,
-        145
+        840,
+        80
       ],
       "size": [
-        340,
-        108
+        240,
+        98
       ]
     },
     {
-      "id": "release_audit",
-      "type": "security",
-      "label": "Release Audit",
-      "sublabel": "Independent integrity and completeness",
-      "tag": "auditor ≠ coordinator",
+      "id": "formalization",
+      "type": "backend",
+      "label": "Formalization",
+      "sublabel": "Requests and generated artifacts",
+      "tag": "generation only",
       "pos": [
-        1110,
-        342
-      ],
-      "size": [
-        230,
-        88
-      ]
-    },
-    {
-      "id": "release_certifier",
-      "type": "security",
-      "label": "Release Certifier",
-      "sublabel": "Binds passing audit to release hash",
-      "tag": "distinct from coordinator and auditor",
-      "pos": [
-        850,
-        342
+        1130,
+        85
       ],
       "size": [
         210,
@@ -163,14 +153,134 @@
       ]
     },
     {
+      "id": "formal_verification",
+      "type": "security",
+      "label": "Formal Verification",
+      "sublabel": "Independent kernel evidence",
+      "tag": "separate axis",
+      "pos": [
+        1130,
+        245
+      ],
+      "size": [
+        210,
+        92
+      ]
+    },
+    {
+      "id": "backtranslation_alignment",
+      "type": "security",
+      "label": "Backtranslation & Source/IR/Formal Alignment",
+      "sublabel": "Independent round-trip alignment",
+      "tag": "separate axis",
+      "pos": [
+        770,
+        240
+      ],
+      "size": [
+        330,
+        102
+      ]
+    },
+    {
+      "id": "residual_semantics",
+      "type": "backend",
+      "label": "Residual Semantics",
+      "sublabel": "Physical and non-mathematical meaning",
+      "tag": "preserved residuals",
+      "pos": [
+        520,
+        245
+      ],
+      "size": [
+        220,
+        92
+      ]
+    },
+    {
+      "id": "assessment_selection",
+      "type": "database",
+      "label": "Assessment Selection",
+      "sublabel": "Exact typed AssessmentRecord revisions",
+      "tag": "typed authority",
+      "pos": [
+        270,
+        245
+      ],
+      "size": [
+        220,
+        92
+      ]
+    },
+    {
+      "id": "release_audit",
+      "type": "security",
+      "label": "Root Agent Verification",
+      "sublabel": "Ordered audit and recommendation",
+      "tag": "accountable authority",
+      "pos": [
+        30,
+        245
+      ],
+      "size": [
+        210,
+        92
+      ]
+    },
+    {
+      "id": "release_certifier",
+      "type": "security",
+      "label": "Release Certifier",
+      "sublabel": "Mechanical release checks",
+      "tag": "independent certifier",
+      "pos": [
+        30,
+        390
+      ],
+      "size": [
+        210,
+        92
+      ]
+    },
+    {
       "id": "paper_agent_release",
       "type": "cloud",
       "label": "Paper Agent Release",
-      "sublabel": "Certified package; mixed entry statuses",
-      "tag": "certifier distinct",
+      "sublabel": "Certified package; mixed states",
+      "tag": "immutable release",
       "pos": [
-        570,
-        340
+        270,
+        390
+      ],
+      "size": [
+        210,
+        92
+      ]
+    },
+    {
+      "id": "package_archive",
+      "type": "cloud",
+      "label": "Package Archive",
+      "sublabel": "Exact package storage target",
+      "tag": "V2 target service",
+      "pos": [
+        510,
+        390
+      ],
+      "size": [
+        200,
+        92
+      ]
+    },
+    {
+      "id": "reusable_entry_admission",
+      "type": "backend",
+      "label": "Reusable Entry Admission",
+      "sublabel": "Atomic KnowledgeIngestionReceipt",
+      "tag": "implemented contract",
+      "pos": [
+        740,
+        390
       ],
       "size": [
         220,
@@ -180,78 +290,93 @@
     {
       "id": "knowledge_base",
       "type": "database",
-      "label": "Verification-Aware Knowledge Base",
-      "sublabel": "Derived per-entry admission index",
-      "tag": "not aggregate truth",
+      "label": "Domain-Qualified Knowledge Base",
+      "sublabel": "Verification-aware immutable views",
+      "tag": "conflicts preserved",
       "pos": [
-        570,
-        500
+        990,
+        385
       ],
       "size": [
-        250,
-        92
+        350,
+        102
       ]
     },
     {
       "id": "query_resolution",
       "type": "frontend",
       "label": "Query Resolution",
-      "sublabel": "Package-backed read-only retrieval",
+      "sublabel": "Read-only conflict-preserving closure",
       "tag": "downstream consumer",
       "pos": [
-        920,
-        500
+        990,
+        525
       ],
       "size": [
         300,
-        92
+        88
       ]
     },
     {
       "id": "query_intent",
       "type": "external",
       "label": "Query Intent",
-      "sublabel": "Question and retrieval intent",
+      "sublabel": "Question or knowledge gap",
       "pos": [
         30,
         525
       ],
       "size": [
         220,
-        80
+        82
       ]
     },
     {
       "id": "provisional_fast_path",
       "type": "backend",
       "label": "Provisional Fast Path",
-      "sublabel": "Candidates plus canonical intake link",
-      "tag": "no release or KB writes",
+      "sublabel": "Candidates plus canonical intake trigger",
+      "tag": "no canonical writes",
       "pos": [
         300,
         520
       ],
       "size": [
-        240,
-        90
+        250,
+        92
       ]
     }
   ],
   "boundaries": [
     {
       "kind": "region",
-      "label": "Canonical Paper Agentization",
+      "label": "Canonical Paper Agentization and Release",
       "wraps": [
         "exact_paper_release",
         "profile_scope",
         "paper_analysis",
         "claims_math_ir",
-        "formal_evidence_alignment",
+        "dependencies_inferences",
+        "formalization",
+        "formal_verification",
+        "backtranslation_alignment",
+        "residual_semantics",
+        "assessment_selection",
         "release_audit",
         "release_certifier",
         "paper_agent_release"
       ],
-      "pad": 24
+      "pad": 18
+    },
+    {
+      "kind": "region",
+      "label": "Archive and Reusable Knowledge Lifecycle",
+      "wraps": [
+        "package_archive",
+        "reusable_entry_admission",
+        "knowledge_base"
+      ],
+      "pad": 16
     }
   ],
   "connections": [
@@ -262,8 +387,8 @@
       "label": "exact source",
       "variant": "emphasis",
       "labelAt": [
-        300,
-        125
+        290,
+        60
       ]
     },
     {
@@ -273,96 +398,193 @@
       "label": "profile + scope",
       "variant": "emphasis",
       "labelAt": [
-        315,
-        346
+        380,
+        225
       ]
     },
     {
       "id": "analysis_to_claims",
       "from": "paper_analysis",
       "to": "claims_math_ir",
-      "label": "claim records",
+      "label": "claim inventory",
       "variant": "emphasis",
       "labelAt": [
-        650,
-        200
+        575,
+        65
       ]
     },
     {
-      "id": "claims_to_records",
+      "id": "claims_to_dependencies",
       "from": "claims_math_ir",
-      "to": "formal_evidence_alignment",
-      "label": "exact targets",
+      "to": "dependencies_inferences",
+      "label": "exact claims and IR",
       "variant": "emphasis",
       "labelAt": [
-        970,
-        200
+        825,
+        60
       ]
     },
     {
-      "id": "records_to_audit",
-      "from": "formal_evidence_alignment",
-      "to": "release_audit",
-      "label": "audit package",
+      "id": "dependencies_to_formalization",
+      "from": "dependencies_inferences",
+      "to": "formalization",
+      "label": "ordered targets",
       "variant": "emphasis",
       "labelAt": [
-        1180,
-        300
+        1115,
+        60
+      ]
+    },
+    {
+      "id": "formalization_to_verification",
+      "from": "formalization",
+      "to": "formal_verification",
+      "label": "verification target",
+      "variant": "emphasis",
+      "labelAt": [
+        1280,
+        220
       ],
       "fromSide": "bottom",
       "toSide": "top"
     },
     {
-      "id": "audit_to_certifier",
-      "from": "release_audit",
-      "to": "release_certifier",
-      "label": "passing audit",
-      "variant": "security",
+      "id": "verification_to_alignment",
+      "from": "formal_verification",
+      "to": "backtranslation_alignment",
+      "label": "kernel evidence",
+      "variant": "emphasis",
       "labelAt": [
-        1085,
-        336
+        1115,
+        230
       ],
       "fromSide": "left",
       "toSide": "right",
       "route": "straight"
+    },
+    {
+      "id": "alignment_to_residual",
+      "from": "backtranslation_alignment",
+      "to": "residual_semantics",
+      "label": "alignment result",
+      "variant": "emphasis",
+      "labelAt": [
+        755,
+        230
+      ],
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "straight"
+    },
+    {
+      "id": "residual_to_assessment",
+      "from": "residual_semantics",
+      "to": "assessment_selection",
+      "label": "residual disposition",
+      "variant": "emphasis",
+      "labelAt": [
+        505,
+        230
+      ],
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "straight"
+    },
+    {
+      "id": "assessment_to_root",
+      "from": "assessment_selection",
+      "to": "release_audit",
+      "label": "selected revisions",
+      "variant": "emphasis",
+      "labelAt": [
+        255,
+        350
+      ],
+      "fromSide": "left",
+      "toSide": "right",
+      "route": "straight"
+    },
+    {
+      "id": "root_to_certifier",
+      "from": "release_audit",
+      "to": "release_certifier",
+      "label": "audit + recommendation",
+      "variant": "security",
+      "labelAt": [
+        135,
+        375
+      ],
+      "fromSide": "bottom",
+      "toSide": "top"
     },
     {
       "id": "certifier_to_release",
       "from": "release_certifier",
       "to": "paper_agent_release",
-      "label": "certifies hash",
+      "label": "mechanical certification",
       "variant": "security",
       "labelAt": [
-        820,
-        336
+        255,
+        375
       ],
-      "fromSide": "left",
-      "toSide": "right",
+      "fromSide": "right",
+      "toSide": "left",
       "route": "straight"
     },
     {
-      "id": "release_to_kb",
+      "id": "release_to_archive",
       "from": "paper_agent_release",
-      "to": "knowledge_base",
-      "label": "eligible entries",
+      "to": "package_archive",
+      "label": "exact certified package",
       "variant": "emphasis",
       "labelAt": [
-        680,
-        465
+        495,
+        500
       ],
-      "fromSide": "bottom",
-      "toSide": "top"
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight"
+    },
+    {
+      "id": "archive_to_admission",
+      "from": "package_archive",
+      "to": "reusable_entry_admission",
+      "label": "admission candidates",
+      "variant": "emphasis",
+      "labelAt": [
+        725,
+        500
+      ],
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight"
+    },
+    {
+      "id": "admission_to_kb",
+      "from": "reusable_entry_admission",
+      "to": "knowledge_base",
+      "label": "atomic receipt",
+      "variant": "emphasis",
+      "labelAt": [
+        975,
+        500
+      ],
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight"
     },
     {
       "id": "kb_to_query",
       "from": "knowledge_base",
       "to": "query_resolution",
-      "label": "read-only",
+      "label": "relation closure",
       "variant": "emphasis",
       "labelAt": [
-        870,
-        480
-      ]
+        1150,
+        510
+      ],
+      "fromSide": "bottom",
+      "toSide": "top"
     },
     {
       "id": "intent_to_provisional",
@@ -372,57 +594,32 @@
       "variant": "dashed",
       "labelAt": [
         275,
-        516
+        510
       ]
     },
     {
       "id": "provisional_to_query",
       "from": "provisional_fast_path",
       "to": "query_resolution",
-      "label": "provisional only",
+      "label": "provisional response",
       "variant": "dashed",
       "labelAt": [
-        850,
-        675
+        760,
+        625
       ],
       "fromSide": "bottom",
       "toSide": "bottom",
       "via": [
         [
-          420,
-          680
+          425,
+          630
         ],
         [
-          1070,
-          680
+          1140,
+          630
         ]
       ]
     }
   ],
-  "cards": [
-    {
-      "dot": "emerald",
-      "title": "Release completion is accounting, not truth",
-      "items": [
-        "Every in-scope inventory entry has exactly one disposition under the exact profile and scope.",
-        "Certification attests package integrity and profile conformance while preserving blocked, deferred, or failed entries."
-      ]
-    },
-    {
-      "dot": "violet",
-      "title": "Authority stays separated",
-      "items": [
-        "The AgentizationCoordinator, ReleaseAuditor, and ReleaseCertifier are distinct identities; the legacy Root Agent is not a V2 release role.",
-        "FormalizationRecord stores generated outcomes and artifacts only; verification, alignment, and acceptance remain independent records."
-      ]
-    },
-    {
-      "dot": "amber",
-      "title": "Queries consume releases",
-      "items": [
-        "PACKAGE_BACKED is read-only and follows certified package references plus the verification-aware index.",
-        "PROVISIONAL_FAST_PATH triggers or links query-independent standard agentization, but cannot narrow its profile/scope, write a release, or promote a knowledge-base entry."
-      ]
-    }
-  ]
+  "cards": []
 }

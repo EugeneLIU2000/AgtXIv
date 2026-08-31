@@ -5,49 +5,328 @@
   "manifest_ref": {
     "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
     "record_revision": 1,
-    "content_hash": "sha256:b8f685a14ec1cafb68c7ea07f09de3ad9faa588710e5ddf8f6e1fd9b751f748b"
+    "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
   },
   "profile_ref": {
     "id": "agentization-profile:2608.00001v1:theory-standard",
     "record_revision": 1,
-    "content_hash": "sha256:f615a3c51bce8075979cf8eee24b0fbcc40b8812d025c7ae0349d4032971eca6"
+    "content_hash": "sha256:b3b342582c9da227a17b189582f07dd0a1ccbc8425b53886e19a97e739409894"
   },
   "scope_ref": {
     "id": "inventory-scope:2608.00001v1:theory-standard",
     "record_revision": 1,
-    "content_hash": "sha256:43f46d6d91515bfec566078eb521cc1e0149003af6ad4d79879ee97f48cc3fcd"
+    "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
   },
   "coordinator": {
     "actor_id": "actor:coordinator-alpha",
     "role": "AGENTIZATION_COORDINATOR"
   },
   "auditor": {
-    "actor_id": "actor:auditor-beta",
-    "role": "RELEASE_AUDITOR"
+    "actor_id": "actor:root-agent-beta",
+    "role": "V2_ROOT_AGENT"
   },
-  "checks": [
+  "verification_steps": [
     {
-      "check": "EXACT_INPUTS",
-      "status": "PASSED"
+      "stage": "SOURCE_INVENTORY",
+      "sequence": 1,
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "PASSED",
+      "frontier_ids": []
     },
     {
-      "check": "TOTAL_DISPOSITION_ACCOUNTING",
-      "status": "PASSED"
+      "stage": "PAPER_STRUCTURE",
+      "sequence": 2,
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "BLOCKED",
+      "frontier_ids": [
+        "frontier:paper-structure"
+      ]
     },
     {
-      "check": "ARTIFACT_INTEGRITY",
-      "status": "PASSED"
+      "stage": "CLAIM_INVENTORY_DECOMPOSITION",
+      "sequence": 3,
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "BLOCKED",
+      "frontier_ids": [
+        "frontier:claim-inventory-decomposition"
+      ]
     },
     {
-      "check": "PROFILE_CONFORMANCE",
-      "status": "PASSED"
+      "stage": "MATHCLAIM_EXTRACTION_IR",
+      "sequence": 4,
+      "target_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+        }
+      ],
+      "outcome": "PASSED",
+      "frontier_ids": []
     },
     {
-      "check": "ROLE_SEPARATION",
-      "status": "PASSED"
+      "stage": "DEPENDENCY_INFERENCE_GRAPH",
+      "sequence": 5,
+      "target_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "BLOCKED",
+      "frontier_ids": [
+        "frontier:dependency-graph"
+      ]
+    },
+    {
+      "stage": "FORMALIZATION_DISPOSITION",
+      "sequence": 6,
+      "target_refs": [
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+        }
+      ],
+      "outcome": "PASSED",
+      "frontier_ids": []
+    },
+    {
+      "stage": "FORMAL_VERIFICATION",
+      "sequence": 7,
+      "target_refs": [
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "UNKNOWN",
+      "frontier_ids": [
+        "frontier:formal-verification"
+      ]
+    },
+    {
+      "stage": "SOURCE_IR_FORMAL_ALIGNMENT",
+      "sequence": 8,
+      "target_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+        },
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "BLOCKED",
+      "frontier_ids": [
+        "frontier:alignment"
+      ]
+    },
+    {
+      "stage": "RESIDUAL_NON_MATHEMATICAL_SEMANTICS",
+      "sequence": 9,
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "BLOCKED",
+      "frontier_ids": [
+        "frontier:residual-semantics"
+      ]
+    },
+    {
+      "stage": "ASSESSMENT_SELECTION",
+      "sequence": 10,
+      "target_refs": [
+        {
+          "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+        }
+      ],
+      "selected_assessment_refs": [],
+      "evidence_refs": [],
+      "outcome": "BLOCKED",
+      "frontier_ids": [
+        "frontier:assessment-selection"
+      ]
     }
   ],
-  "outcome": "PASSED",
-  "audited_release_hash": "sha256:b644b63492a57c1e6b1797f405335c6ccac57dba14d5d7dfc7ad8e14e0540c6b",
-  "content_hash": "sha256:3388953479735c387fc936f534970444ea12a82186715e7a711cc8cbd3931592"
+  "unresolved_frontier": [
+    {
+      "frontier_id": "frontier:paper-structure",
+      "stage": "PAPER_STRUCTURE",
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "disposition": "BLOCKED",
+      "reason": "No production PaperStructureRecord schema is implemented in this contract slice."
+    },
+    {
+      "frontier_id": "frontier:claim-inventory-decomposition",
+      "stage": "CLAIM_INVENTORY_DECOMPOSITION",
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "disposition": "BLOCKED",
+      "reason": "No typed ScientificClaim inventory/decomposition producer record is present in the fixture."
+    },
+    {
+      "frontier_id": "frontier:dependency-graph",
+      "stage": "DEPENDENCY_INFERENCE_GRAPH",
+      "target_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+        }
+      ],
+      "disposition": "BLOCKED",
+      "reason": "No production dependency/inference graph record is present in the fixture."
+    },
+    {
+      "frontier_id": "frontier:formal-verification",
+      "stage": "FORMAL_VERIFICATION",
+      "target_refs": [
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+        }
+      ],
+      "disposition": "UNKNOWN",
+      "reason": "Generation succeeded, but no kernel-verification evidence is present."
+    },
+    {
+      "frontier_id": "frontier:alignment",
+      "stage": "SOURCE_IR_FORMAL_ALIGNMENT",
+      "target_refs": [
+        {
+          "id": "math-claim-ir:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:a42d3a3565edfe7ac74459ca318671c93f53fbfeea51c4eab299a77eebb559f3"
+        },
+        {
+          "id": "formalization-record:2608.00001v1:theorem-1",
+          "record_revision": 1,
+          "content_hash": "sha256:9ca1af9bc86f6cf0f82e53b5f39f7881e28d1b58d08f71055d78d710e139fca5"
+        }
+      ],
+      "disposition": "BLOCKED",
+      "reason": "No independent source/IR/formal alignment assessment is present."
+    },
+    {
+      "frontier_id": "frontier:residual-semantics",
+      "stage": "RESIDUAL_NON_MATHEMATICAL_SEMANTICS",
+      "target_refs": [
+        {
+          "id": "inventory-scope:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:efc44c3eb4186c3d86db5c0aad1bede3d864490ab9ada7cd21b454209f59ccac"
+        }
+      ],
+      "disposition": "BLOCKED",
+      "reason": "No residual non-mathematical semantics assessment record is present."
+    },
+    {
+      "frontier_id": "frontier:assessment-selection",
+      "stage": "ASSESSMENT_SELECTION",
+      "target_refs": [
+        {
+          "id": "paper-agent-release-manifest:2608.00001v1:theory-standard",
+          "record_revision": 1,
+          "content_hash": "sha256:f90009f769a59e9b55d3c7cb5460fd0f941b7942ba70ef5ada21ff7365452c90"
+        }
+      ],
+      "disposition": "BLOCKED",
+      "reason": "No compatible Root-stage AssessmentRecord is present for this blocked stage; no assessment revision is fabricated."
+    }
+  ],
+  "non_implications": [
+    "NO_WHOLE_PAPER_TRUTH",
+    "NO_STATUS_INHERITANCE",
+    "KERNEL_CHECK_DOES_NOT_IMPLY_SOURCE_FIDELITY",
+    "KERNEL_CHECK_DOES_NOT_IMPLY_SCIENTIFIC_ACCEPTANCE",
+    "CERTIFICATION_DOES_NOT_IMPLY_ENTRY_ADMISSION"
+  ],
+  "release_recommendation": {
+    "decision": "RECOMMEND_PROFILE_RELEASE",
+    "profile_completion": "MIXED_DISPOSITIONS_ACCOUNTED",
+    "retained_frontier_ids": [
+      "frontier:paper-structure",
+      "frontier:claim-inventory-decomposition",
+      "frontier:dependency-graph",
+      "frontier:formal-verification",
+      "frontier:alignment",
+      "frontier:residual-semantics",
+      "frontier:assessment-selection"
+    ],
+    "basis": "Every in-scope inventory entry has one disposition; unresolved scientific and verification states remain explicit."
+  },
+  "audited_release_hash": "sha256:6930a0ff50614098046353a562d80a56ac8a2eed78232a1a6bfb30b0e9eab3fe",
+  "content_hash": "sha256:e6cd34f44ccd7084bbe1f5cc47f9a806180b520f487bed68b31b24ba6557e1a6"
 }
