@@ -21,6 +21,13 @@ from .catalog_validation import (
     validate_m1_contract_requirement_set_intrinsic,
     validate_typed_terminal_result_catalog_constraints,
 )
+from .code_policy_validation import (
+    KernelValidationPolicyConstraints,
+    build_kernel_validation_policy_constraints,
+    validate_emitted_diagnostic_registration,
+    validate_stable_code_catalog_intrinsic,
+    validate_typed_terminal_result_kernel_constraints,
+)
 from .diagnostics import Diagnostic, DiagnosticCode
 from .references import (
     SuppliedAsset,
@@ -41,6 +48,11 @@ from .terminal_validation import validate_typed_terminal_result_intrinsic
 
 __all__ = [
     "CatalogProfileConstraints",
+    "KernelValidationPolicyConstraints",
+    "build_kernel_validation_policy_constraints",
+    "validate_emitted_diagnostic_registration",
+    "validate_stable_code_catalog_intrinsic",
+    "validate_typed_terminal_result_kernel_constraints",
     "RawContractAssetBinding",
     "build_catalog_profile_constraints",
     "validate_m1_contract_requirement_set_intrinsic",
