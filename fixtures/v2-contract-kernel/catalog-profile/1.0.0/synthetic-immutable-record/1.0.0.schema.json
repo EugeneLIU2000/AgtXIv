@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/fixture/checkpoint-c-synthetic-record/1.0.0",
+  "title": "Checkpoint C synthetic immutable record",
+  "description": "Non-normative record family used only to test Catalog/Profile structural linkage.",
+  "$defs": {
+    "recordType": {"const": "agtxiv.checkpoint-c-synthetic-record/1.0.0"},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_purpose", "synthetic_artifact_id", "synthetic_value"],
+      "properties": {
+        "fixture_purpose": {"const": "STRUCTURAL_INTEGRATION_ONLY"},
+        "synthetic_artifact_id": {"type": "string", "minLength": 3, "maxLength": 256, "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"},
+        "synthetic_value": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": ".*\\S.*"}
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["envelope", "payload", "content_hash"],
+  "properties": {
+    "envelope": {
+      "allOf": [
+        {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"},
+        {
+          "type": "object",
+          "required": ["record_type", "producer_context"],
+          "properties": {"record_type": {"$ref": "#/$defs/recordType"}}
+        }
+      ]
+    },
+    "payload": {"$ref": "#/$defs/payload"},
+    "content_hash": {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"}
+  }
+}

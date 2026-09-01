@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/contract/m1-contract-requirement-set/1.0.0",
+  "title": "AgtXIv M1 contract requirement set",
+  "description": "Closed, source-bound M1 acceptance denominator. It contains no coverage, authority, release, or admission claim.",
+  "$defs": {
+    "officialSchemaRef": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        {
+          "type": "object",
+          "required": ["media_type", "schema_uri"],
+          "properties": {
+            "media_type": {"const": "application/schema+json"},
+            "schema_uri": {"const": "https://agtxiv.org/schema/v2/contract-kernel/contract/m1-contract-requirement-set/1.0.0"}
+          }
+        }
+      ]
+    },
+    "roadmapRef": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        {
+          "type": "object",
+          "properties": {"media_type": {"const": "text/markdown"}},
+          "not": {
+            "anyOf": [
+              {"required": ["path_hint"]},
+              {"required": ["schema_uri"]}
+            ]
+          }
+        }
+      ]
+    },
+    "sourceOccurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_group", "source_position"],
+      "properties": {
+        "source_group": {"type": "string", "pattern": "^[A-Z][A-Za-z0-9]{2,63}(?![\\s\\S])"},
+        "source_position": {"type": "integer", "minimum": 1, "maximum": 64}
+      }
+    },
+    "sourceRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_table_row_ordinal", "source_group", "source_required_families_cell", "source_target_milestone_cell", "requirement_ordinals"],
+      "properties": {
+        "source_table_row_ordinal": {"type": "integer", "minimum": 1, "maximum": 256},
+        "source_group": {"type": "string", "pattern": "^[A-Z][A-Za-z0-9]{2,63}(?![\\s\\S])"},
+        "source_required_families_cell": {"type": "string", "minLength": 1, "maxLength": 2048, "pattern": ".*\\S.*"},
+        "source_target_milestone_cell": {"type": "string", "minLength": 2, "maxLength": 64, "pattern": "^M[0-9][A-Za-z0-9./-]*(?![\\s\\S])"},
+        "requirement_ordinals": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1, "maximum": 52}
+        }
+      }
+    },
+    "requirementItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ordinal", "item_id", "item_kind", "source_occurrences"],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 1, "maximum": 52},
+        "item_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,127}(?![\\s\\S])"},
+        "item_kind": {"enum": ["IMMUTABLE_RECORD_FAMILY", "RAW_CONTRACT_ASSET", "CROSS_RECORD_RULE"]},
+        "source_occurrences": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/sourceOccurrence"}
+        }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["document_type", "document_schema_ref", "denominator_id", "denominator_version", "source_binding", "selection_rule", "selected_source_rows", "item_count", "items"],
+  "properties": {
+    "document_type": {"const": "AGTXIV_M1_CONTRACT_REQUIREMENT_SET"},
+    "document_schema_ref": {"$ref": "#/$defs/officialSchemaRef"},
+    "denominator_id": {"const": "agtxiv.m1-contract-denominator/1.0.0"},
+    "denominator_version": {"const": "1.0.0"},
+    "source_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roadmap_ref", "source_git_commit", "source_git_blob_object_id", "section_start_heading", "section_end_heading", "section_byte_size", "section_sha256"],
+      "properties": {
+        "roadmap_ref": {"$ref": "#/$defs/roadmapRef"},
+        "source_git_commit": {"type": "string", "pattern": "^[0-9a-f]{40}(?![\\s\\S])"},
+        "source_git_blob_object_id": {"type": "string", "pattern": "^sha1:[0-9a-f]{40}(?![\\s\\S])"},
+        "section_start_heading": {"const": "## 6. Required artifact families\n"},
+        "section_end_heading": {"const": "## 7. Mathematical formalization chain\n"},
+        "section_byte_size": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+        "section_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"}
+      }
+    },
+    "selection_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selection_rule_id", "target_milestone_token", "token_separator", "match_mode"],
+      "properties": {
+        "selection_rule_id": {"const": "agtxiv.roadmap-exact-milestone-token/1.0.0"},
+        "target_milestone_token": {"const": "M1"},
+        "token_separator": {"const": "/"},
+        "match_mode": {"const": "EXACT_TOKEN"}
+      }
+    },
+    "selected_source_rows": {"type": "array", "minItems": 13, "maxItems": 13, "items": {"$ref": "#/$defs/sourceRow"}},
+    "item_count": {"const": 52},
+    "items": {"type": "array", "minItems": 52, "maxItems": 52, "items": {"$ref": "#/$defs/requirementItem"}}
+  }
+}

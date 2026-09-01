@@ -14,6 +14,13 @@ from .canonical import (
     record_content_hash,
     record_hash_projection_bytes,
 )
+from .catalog_validation import (
+    CatalogProfileConstraints,
+    RawContractAssetBinding,
+    build_catalog_profile_constraints,
+    validate_m1_contract_requirement_set_intrinsic,
+    validate_typed_terminal_result_catalog_constraints,
+)
 from .diagnostics import Diagnostic, DiagnosticCode
 from .references import (
     SuppliedAsset,
@@ -33,6 +40,11 @@ from .schema_validation import validate_immutable_record_payload
 from .terminal_validation import validate_typed_terminal_result_intrinsic
 
 __all__ = [
+    "CatalogProfileConstraints",
+    "RawContractAssetBinding",
+    "build_catalog_profile_constraints",
+    "validate_m1_contract_requirement_set_intrinsic",
+    "validate_typed_terminal_result_catalog_constraints",
     "Diagnostic",
     "DiagnosticCode",
     "IJSON_MAX_INTEGER",

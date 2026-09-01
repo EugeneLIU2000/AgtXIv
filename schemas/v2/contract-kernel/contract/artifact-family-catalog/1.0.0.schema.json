@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/contract/artifact-family-catalog/1.0.0",
+  "title": "AgtXIv artifact family catalog",
+  "description": "Closed reusable artifact-family policy. This document has no runtime, release, review, or admission authority.",
+  "$defs": {
+    "symbolicId": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,127}(?![\\s\\S])"},
+    "namespacedId": {"type": "string", "minLength": 3, "maxLength": 256, "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"},
+    "semver": {"type": "string", "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?![\\s\\S])"},
+    "recordType": {"type": "string", "minLength": 15, "maxLength": 256, "pattern": "^agtxiv\\.[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)*/(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?![\\s\\S])"},
+    "schemaRef": {
+      "allOf": [
+        {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"},
+        {"type": "object", "required": ["media_type", "schema_uri"], "properties": {"media_type": {"const": "application/schema+json"}}}
+      ]
+    },
+    "sourceRef": {
+      "allOf": [
+        {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"},
+        {"type": "object", "required": ["media_type"], "properties": {"media_type": {"const": "text/x-python"}}, "not": {"required": ["schema_uri"]}}
+      ]
+    },
+    "vectorRef": {
+      "allOf": [
+        {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"},
+        {"type": "object", "required": ["media_type"], "properties": {"media_type": {"const": "application/json"}}, "not": {"required": ["schema_uri"]}}
+      ]
+    },
+    "cardinality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_count", "maximum_count"],
+      "properties": {
+        "minimum_count": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "maximum_count": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991}
+      }
+    },
+    "terminalPolicy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["terminal_policy_mode"],
+          "properties": {"terminal_policy_mode": {"const": "FORBIDDEN"}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["terminal_policy_mode", "structurally_permitted_outcomes", "minimum_declared_context_mode", "declared_reason_policy"],
+          "properties": {
+            "terminal_policy_mode": {"const": "STRUCTURALLY_PERMITTED"},
+            "structurally_permitted_outcomes": {"type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": {"enum": ["UNAVAILABLE", "RETRY_REQUIRED", "REVIEW_REQUIRED", "BLOCKED", "FAILED"]}},
+            "minimum_declared_context_mode": {"enum": ["PROFILE_BOUND", "PLAN_BOUND", "FROZEN_SCOPE_BOUND"]},
+            "declared_reason_policy": {"const": "DEFERRED_TO_EXACT_ERROR_CATALOG"}
+          }
+        }
+      ]
+    },
+    "stagePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage_id", "applicability", "minimum_runtime_obligation", "accounting_unit", "cardinality", "allowed_producer_roles", "terminal_disposition_policy"],
+      "properties": {
+        "stage_id": {"$ref": "#/$defs/symbolicId"},
+        "applicability": {"enum": ["ALWAYS", "PROFILE_SELECTED"]},
+        "minimum_runtime_obligation": {"enum": ["CORE_REQUIRED", "OPTIONAL_ALLOWED"]},
+        "accounting_unit": {"enum": ["CONTRACT_ASSET_INSTANCE", "PAPER_ATTEMPT", "FROZEN_SCOPE_COMPONENT"]},
+        "cardinality": {"$ref": "#/$defs/cardinality"},
+        "allowed_producer_roles": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/symbolicId"}},
+        "terminal_disposition_policy": {"$ref": "#/$defs/terminalPolicy"}
+      }
+    },
+    "successfulArtifact": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_kind", "schema_ref", "media_type"],
+          "properties": {
+            "artifact_kind": {"const": "RAW_CONTRACT_ASSET"},
+            "schema_ref": {"$ref": "#/$defs/schemaRef"},
+            "media_type": {"type": "string", "minLength": 3, "maxLength": 127, "pattern": "^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*(?![\\s\\S])"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_kind", "schema_ref", "record_type"],
+          "properties": {
+            "artifact_kind": {"const": "IMMUTABLE_RECORD"},
+            "schema_ref": {"$ref": "#/$defs/schemaRef"},
+            "record_type": {"$ref": "#/$defs/recordType"}
+          }
+        }
+      ]
+    },
+    "familyRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_id", "family_version", "family_group", "successful_artifact", "stage_policies", "validator_ref", "validator_entry_point", "conformance_vector_ref", "positive_vector_ids", "negative_vector_ids"],
+      "properties": {
+        "family_id": {"$ref": "#/$defs/symbolicId"},
+        "family_version": {"$ref": "#/$defs/semver"},
+        "family_group": {"$ref": "#/$defs/symbolicId"},
+        "successful_artifact": {"$ref": "#/$defs/successfulArtifact"},
+        "stage_policies": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"$ref": "#/$defs/stagePolicy"}},
+        "validator_ref": {"$ref": "#/$defs/sourceRef"},
+        "validator_entry_point": {"type": "string", "minLength": 3, "maxLength": 512, "pattern": "^[A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)+(?![\\s\\S])"},
+        "conformance_vector_ref": {"$ref": "#/$defs/vectorRef"},
+        "positive_vector_ids": {"type": "array", "minItems": 1, "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/namespacedId"}},
+        "negative_vector_ids": {"type": "array", "minItems": 1, "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/namespacedId"}}
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["document_type", "document_schema_ref", "catalog_id", "catalog_version", "stages", "family_policy_rows"],
+  "properties": {
+    "document_type": {"const": "AGTXIV_ARTIFACT_FAMILY_CATALOG"},
+    "document_schema_ref": {
+      "allOf": [
+        {"$ref": "#/$defs/schemaRef"},
+        {"type": "object", "properties": {"schema_uri": {"const": "https://agtxiv.org/schema/v2/contract-kernel/contract/artifact-family-catalog/1.0.0"}}}
+      ]
+    },
+    "catalog_id": {"$ref": "#/$defs/namespacedId"},
+    "catalog_version": {"$ref": "#/$defs/semver"},
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage_id", "ordinal", "minimum_declared_context_mode"],
+        "properties": {
+          "stage_id": {"$ref": "#/$defs/symbolicId"},
+          "ordinal": {"type": "integer", "minimum": 1, "maximum": 64},
+          "minimum_declared_context_mode": {"enum": ["PROFILE_BOUND", "PLAN_BOUND", "FROZEN_SCOPE_BOUND"]}
+        }
+      }
+    },
+    "family_policy_rows": {"type": "array", "minItems": 1, "maxItems": 256, "items": {"$ref": "#/$defs/familyRow"}}
+  }
+}

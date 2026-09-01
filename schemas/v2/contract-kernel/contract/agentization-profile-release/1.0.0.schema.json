@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/contract/agentization-profile-release/1.0.0",
+  "title": "AgtXIv agentization profile release",
+  "description": "Closed reusable obligation policy. It is not a per-paper plan, frozen scope, approval, or release authority.",
+  "$defs": {
+    "symbolicId": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,127}(?![\\s\\S])"},
+    "namespacedId": {"type": "string", "minLength": 3, "maxLength": 256, "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"},
+    "semver": {"type": "string", "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?![\\s\\S])"},
+    "schemaRef": {
+      "allOf": [
+        {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"},
+        {"type": "object", "required": ["media_type", "schema_uri"], "properties": {"media_type": {"const": "application/schema+json"}}}
+      ]
+    },
+    "catalogRef": {
+      "allOf": [
+        {"$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"},
+        {"type": "object", "required": ["media_type"], "properties": {"media_type": {"const": "application/json"}}, "not": {"required": ["schema_uri"]}}
+      ]
+    },
+    "cardinality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_count", "maximum_count"],
+      "properties": {
+        "minimum_count": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "maximum_count": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991}
+      }
+    },
+    "terminalPolicy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["terminal_policy_mode"],
+          "properties": {"terminal_policy_mode": {"const": "FORBIDDEN"}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["terminal_policy_mode", "structurally_permitted_outcomes", "minimum_declared_context_mode", "declared_reason_policy"],
+          "properties": {
+            "terminal_policy_mode": {"const": "STRUCTURALLY_PERMITTED"},
+            "structurally_permitted_outcomes": {"type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": {"enum": ["UNAVAILABLE", "RETRY_REQUIRED", "REVIEW_REQUIRED", "BLOCKED", "FAILED"]}},
+            "minimum_declared_context_mode": {"enum": ["PROFILE_BOUND", "PLAN_BOUND", "FROZEN_SCOPE_BOUND"]},
+            "declared_reason_policy": {"const": "DEFERRED_TO_EXACT_ERROR_CATALOG"}
+          }
+        }
+      ]
+    },
+    "activeRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_id", "family_version", "stage_id", "profile_requirement_adjustment", "cardinality", "allowed_producer_roles", "terminal_disposition_policy"],
+      "properties": {
+        "family_id": {"$ref": "#/$defs/symbolicId"},
+        "family_version": {"$ref": "#/$defs/semver"},
+        "stage_id": {"$ref": "#/$defs/symbolicId"},
+        "profile_requirement_adjustment": {"enum": ["REQUIRED", "OPTIONAL"]},
+        "cardinality": {"$ref": "#/$defs/cardinality"},
+        "allowed_producer_roles": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/symbolicId"}},
+        "terminal_disposition_policy": {"$ref": "#/$defs/terminalPolicy"}
+      }
+    },
+    "notSelectedRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_id", "family_version", "stage_id", "profile_requirement_adjustment"],
+      "properties": {
+        "family_id": {"$ref": "#/$defs/symbolicId"},
+        "family_version": {"$ref": "#/$defs/semver"},
+        "stage_id": {"$ref": "#/$defs/symbolicId"},
+        "profile_requirement_adjustment": {"const": "NOT_SELECTED"}
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["document_type", "document_schema_ref", "profile_id", "profile_version", "profile_kind", "catalog_ref", "stage_rules", "family_stage_rules"],
+  "properties": {
+    "document_type": {"const": "AGTXIV_AGENTIZATION_PROFILE_RELEASE"},
+    "document_schema_ref": {
+      "allOf": [
+        {"$ref": "#/$defs/schemaRef"},
+        {"type": "object", "properties": {"schema_uri": {"const": "https://agtxiv.org/schema/v2/contract-kernel/contract/agentization-profile-release/1.0.0"}}}
+      ]
+    },
+    "profile_id": {"$ref": "#/$defs/namespacedId"},
+    "profile_version": {"$ref": "#/$defs/semver"},
+    "profile_kind": {"const": "REUSABLE_OBLIGATION_POLICY"},
+    "catalog_ref": {"$ref": "#/$defs/catalogRef"},
+    "stage_rules": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage_id", "minimum_declared_context_mode"],
+        "properties": {
+          "stage_id": {"$ref": "#/$defs/symbolicId"},
+          "minimum_declared_context_mode": {"enum": ["PROFILE_BOUND", "PLAN_BOUND", "FROZEN_SCOPE_BOUND"]}
+        }
+      }
+    },
+    "family_stage_rules": {"type": "array", "minItems": 1, "maxItems": 16384, "items": {"oneOf": [{"$ref": "#/$defs/activeRule"}, {"$ref": "#/$defs/notSelectedRule"}]}}
+  }
+}
