@@ -16,9 +16,9 @@ from types import MappingProxyType
 from typing import Any, Never
 
 from .canonical import ParsedCanonicalValue, build_canonical_value, canonical_bytes, parse_canonical_json
-from .catalog_validation import CatalogProfileConstraints, RawContractAssetBinding, _CONSTRUCTION_TOKEN, _constraints_parts, build_catalog_profile_constraints, validate_typed_terminal_result_catalog_constraints
+from .catalog_validation import CatalogProfileConstraints, RawContractAssetBinding, _constraints_parts, build_catalog_profile_constraints, validate_typed_terminal_result_catalog_constraints
 from .code_policy_validation import build_kernel_validation_policy_constraints
-from .code_policy_v1_1_validation import KernelValidationPolicyV11Constraints, _parts as _v11_parts, build_kernel_validation_policy_v1_1_constraints
+from .code_policy_v1_1_validation import KernelValidationPolicyV11Constraints, _parts as _v11_parts, build_kernel_validation_policy_v1_1_constraints, validate_planning_terminal_registration_v1_1
 from .diagnostics import Diagnostic, DiagnosticCode
 from .references import SuppliedAsset, raw_asset_sha256
 from .registry import ContractSchemaRegistry, _diagnostic, _registry_entries, _sort_diagnostics
@@ -33,6 +33,7 @@ MAX_COMPONENTS = 8192
 MAX_COMPONENT_ENTRY_BYTES = 4096
 MAX_FINDINGS = 4096
 MAX_SCOPE_ENTRIES = 16_384
+MAX_PREDECESSOR_DECLARATIONS = 256
 MAX_RECORD_BYTES = 41_943_040
 MAX_AGGREGATE_INPUT_BYTES = 134_217_728
 MAX_EXACT_REF_BYTES = 2048
@@ -271,6 +272,44 @@ PlanningScopeChain = _SealedView
 ScopeRevisionImpact = _SealedView
 
 
+class PlanningScopeChainDeclaration:
+    __slots__=("__records","__sources","__assets","__seal","__token")
+    def __init__(self,records: tuple[bytes,...],sources: tuple[tuple[str,bytes],...],assets: tuple[SuppliedAsset,...],*,_token: object=None):
+        if _token is not _TOKEN:raise TypeError("use build_planning_scope_chain_declaration")
+        raw=b"".join(_framed(value) for value in records)+b"".join(_framed(path.encode())+_framed(value) for path,value in sources)+b"".join(_framed(_canonical(_asset_ref(asset)))+_framed(asset.raw_bytes) for asset in assets)
+        object.__setattr__(self,"_PlanningScopeChainDeclaration__records",records);object.__setattr__(self,"_PlanningScopeChainDeclaration__sources",sources);object.__setattr__(self,"_PlanningScopeChainDeclaration__assets",assets);object.__setattr__(self,"_PlanningScopeChainDeclaration__seal",hashlib.sha256(raw).digest());object.__setattr__(self,"_PlanningScopeChainDeclaration__token",_TOKEN)
+    def __setattr__(self,name,value)->Never:raise AttributeError("planning chain declaration is immutable")
+    def __delattr__(self,name)->Never:raise AttributeError("planning chain declaration is immutable")
+    def __repr__(self)->str:return "PlanningScopeChainDeclaration(<sealed exact inputs>)"
+
+
+def _declaration_fields(value: Any):
+    if type(value) is not PlanningScopeChainDeclaration:return None
+    try:records=object.__getattribute__(value,"_PlanningScopeChainDeclaration__records");sources=object.__getattribute__(value,"_PlanningScopeChainDeclaration__sources");assets=object.__getattribute__(value,"_PlanningScopeChainDeclaration__assets");seal=object.__getattribute__(value,"_PlanningScopeChainDeclaration__seal");token=object.__getattribute__(value,"_PlanningScopeChainDeclaration__token")
+    except Exception:return None
+    if token is not _TOKEN or type(records) is not tuple or len(records)!=6 or any(type(raw) is not bytes for raw in records) or type(sources) is not tuple or any(type(row) is not tuple or len(row)!=2 or type(row[0]) is not str or type(row[1]) is not bytes for row in sources) or type(assets) is not tuple or any(type(asset) is not SuppliedAsset for asset in assets) or type(seal) is not bytes:return None
+    return records,sources,assets,seal
+
+
+def _declaration_parts(value: Any):
+    fields=_declaration_fields(value)
+    if fields is None:return None
+    records,sources,assets,seal=fields
+    try:raw=b"".join(_framed(item) for item in records)+b"".join(_framed(path.encode())+_framed(item) for path,item in sources)+b"".join(_framed(_canonical(_asset_ref(asset)))+_framed(asset.raw_bytes) for asset in assets)
+    except Exception:return None
+    return (records,sources,assets) if seal==hashlib.sha256(raw).digest() else None
+
+
+def build_planning_scope_chain_declaration(snapshot_raw: bytes,source_bytes_by_path: dict[str,bytes],plan_raw: bytes,discovery_raw: bytes,decision_raw: bytes,scope_raw: bytes,supplied_contract_assets: tuple[SuppliedAsset,...],bundle_raw: bytes) -> PlanningScopeChainDeclaration | tuple[Diagnostic,...]:
+    try:
+        diagnostics=_preflight((snapshot_raw,plan_raw,discovery_raw,decision_raw,scope_raw,bundle_raw),source_bytes_by_path,supplied_contract_assets)
+        if diagnostics:return diagnostics
+        if len(supplied_contract_assets)!=56:return _failure("declaration requires the complete exact bundle asset namespace","CHAIN_DECLARATION")
+        sources=tuple(sorted(source_bytes_by_path.items(),key=lambda row:row[0].encode()))
+        return PlanningScopeChainDeclaration((snapshot_raw,plan_raw,discovery_raw,decision_raw,scope_raw,bundle_raw),sources,supplied_contract_assets,_token=_TOKEN)
+    except Exception:return _failure("planning chain declaration failed closed","CHAIN_DECLARATION")
+
+
 def _valid_path(path: str) -> bool:
     if type(path) is not str or path != unicodedata.normalize("NFC", path): return False
     try: encoded = path.encode("utf-8", "strict")
@@ -359,30 +398,6 @@ def _referenced_asset_ids(value: Any) -> set[str]:
     return result
 
 
-def _active_catalog_constraints(requirements: SuppliedAsset, catalog: SuppliedAsset, profile: SuppliedAsset, support: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry) -> CatalogProfileConstraints | tuple[Diagnostic, ...]:
-    """Run C over its E vector-set compatibility projection, then restore exact E refs."""
-    catalog_doc=_parse_asset(catalog);profile_doc=_parse_asset(profile)
-    if catalog_doc is None or profile_doc is None:return _failure("active C roots are not canonical documents","PLAN_POLICY",code=DiagnosticCode.CATALOG_REFERENCE_INVALID)
-    vector_ids={row.get("conformance_vector_ref",{}).get("asset_id") for row in catalog_doc.get("family_policy_rows",[]) if type(row) is dict}
-    if vector_ids!={"vectors:checkpoint-e-planning-families/1.0.0"}:return _failure("active Catalog does not use the exact E vector asset","PLAN_POLICY",code=DiagnosticCode.CATALOG_REFERENCE_INVALID)
-    vector=next((asset for asset in support if asset.asset_id in vector_ids),None);vector_doc=_parse_asset(vector) if vector is not None else None
-    if vector is None or vector_doc is None or vector_doc.get("vector_set_id")!="vectors:checkpoint-e-planning-families":return _failure("active E vector identity or set identity is invalid","PLAN_POLICY",code=DiagnosticCode.CATALOG_REFERENCE_INVALID)
-    projected_vector_doc={**vector_doc,"vector_set_id":vector.asset_id};projected_vector=SuppliedAsset(vector.asset_id,vector.media_type,_canonical(projected_vector_doc),vector.schema_uri)
-    projected_catalog_doc=json.loads(json.dumps(catalog_doc))
-    for row in projected_catalog_doc["family_policy_rows"]:row["conformance_vector_ref"]=_asset_ref(projected_vector)
-    projected_catalog=SuppliedAsset(catalog.asset_id,catalog.media_type,_canonical(projected_catalog_doc),catalog.schema_uri)
-    projected_profile_doc=json.loads(json.dumps(profile_doc));projected_profile_doc["catalog_ref"]=_asset_ref(projected_catalog)
-    projected_profile=SuppliedAsset(profile.asset_id,profile.media_type,_canonical(projected_profile_doc),profile.schema_uri)
-    projected_support=tuple(projected_vector if asset.asset_id==vector.asset_id else asset for asset in support)
-    checked=build_catalog_profile_constraints(*(_raw_binding(asset) for asset in (requirements,projected_catalog,projected_profile)),projected_support,registry)
-    if type(checked) is tuple:return checked
-    parts=_constraints_parts(checked)
-    if parts is None:return _failure("active C projection failed seal integrity","PLAN_POLICY",code=DiagnosticCode.CATALOG_REFERENCE_INVALID)
-    catalog_ref=build_canonical_value(_asset_ref(catalog));profile_ref=build_canonical_value(_asset_ref(profile))
-    if type(catalog_ref) is not ParsedCanonicalValue or type(profile_ref) is not ParsedCanonicalValue:return _failure("active C refs are not canonical","PLAN_POLICY",code=DiagnosticCode.CATALOG_REFERENCE_INVALID)
-    return CatalogProfileConstraints(parts[0],catalog_ref,profile_ref,parts[3],parts[4],parts[5],parts[6],_token=_CONSTRUCTION_TOKEN)
-
-
 def _planning_constraints(assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, plan_payload: dict[str, Any]) -> tuple[CatalogProfileConstraints, KernelValidationPolicyV11Constraints] | tuple[Diagnostic, ...]:
     """Build the inherited D and active C/1.1 constraints from supplied bytes."""
     if type(assets) is not tuple or any(type(asset) is not SuppliedAsset for asset in assets) or type(registry) is not ContractSchemaRegistry or type(plan_payload) is not dict:
@@ -421,7 +436,7 @@ def _planning_constraints(assets: tuple[SuppliedAsset, ...], registry: ContractS
     registry_ids = {entry.asset_id for entry in (_registry_entries(registry) or ())}
     root_ids = {requirements.asset_id, active_catalog.asset_id, active_profile.asset_id}
     cids = set().union(*(_referenced_asset_ids(documents[asset_id]) for asset_id in root_ids)) - root_ids - registry_ids
-    c = _active_catalog_constraints(requirements,active_catalog,active_profile,tuple(asset for asset in assets if asset.asset_id in cids),registry)
+    c = build_catalog_profile_constraints(*(_raw_binding(asset) for asset in (requirements,active_catalog,active_profile)),tuple(asset for asset in assets if asset.asset_id in cids),registry)
     if type(c) is tuple:
         return c
 
@@ -603,7 +618,7 @@ def validate_inventory_discovery_result(discovery_raw: bytes, plan_raw: bytes, s
         if [x["obligation_id"] for x in dispositions] != [x["obligation_id"] for x in obligations]: return _failure("obligation dispositions do not mirror the plan", "DISCOVERY_OBLIGATION", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
         component_by_id = {c["component_id"]: c for c in components}; errors=payload["discovery_errors"];error_ids = [e["error_id"] for e in errors]
         if error_ids!=sorted(error_ids,key=str.encode) or len(error_ids) != len(set(error_ids)) or any(len({ref["asset_id"] for ref in error["evidence_refs"]})!=len(error["evidence_refs"]) or any(_resolve_asset(ref,asset_index) is None for ref in error["evidence_refs"]) for error in errors): return _failure("discovery errors are unordered, duplicated, or have unresolved evidence", "DISCOVERY_CLOSURE", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
-        error_set=set(error_ids); referenced_errors=set(); disposition_by_id={d["obligation_id"]:d for d in dispositions}
+        error_set=set(error_ids);errors_by_id={error["error_id"]:error for error in errors};referenced_errors=set();coverage_by_row={row["source_row_id"]:row for row in coverage}
         for obligation, disposition in zip(obligations, dispositions):
             matched=set(obligation["matched_source_row_ids"])
             relevant=[component for component in components if _component_matches_obligation(component,obligation,row_by_id)]
@@ -620,7 +635,18 @@ def validate_inventory_discovery_result(discovery_raw: bytes, plan_raw: bytes, s
             if status=="SATISFIED" and (not satisfied or refs):return _failure("SATISFIED disposition does not meet exact cardinality or carries error evidence", "DISCOVERY_OBLIGATION", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
             if status=="AMBIGUOUS" and not any(component["classification_state"]=="AMBIGUOUS" for component in relevant):return _failure("AMBIGUOUS disposition lacks matching ambiguous material", "DISCOVERY_OBLIGATION", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
             if status=="UNCLASSIFIED" and not any(component["classification_state"]=="UNCLASSIFIED" for component in relevant):return _failure("UNCLASSIFIED disposition lacks matching unclassified material", "DISCOVERY_OBLIGATION", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
-            if status=="BLOCKED" and (satisfied or not refs or any(next(row for row in coverage if row["source_row_id"]==component["source_row_id"])["coverage_status"]!="BLOCKED_WITH_EVIDENCE" for component in relevant)):return _failure("BLOCKED disposition is satisfied, lacks evidence, or is not coverage-bound", "DISCOVERY_OBLIGATION", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
+            if status=="BLOCKED":
+                fallbacks=[component for component in relevant if component["component_kind"]=="UNRESOLVED_SOURCE_REGION" and component["classification_state"] in {"AMBIGUOUS","UNCLASSIFIED"}]
+                affected_rows=[coverage_by_row[row_id] for row_id in matched if coverage_by_row[row_id]["coverage_status"]=="BLOCKED_WITH_EVIDENCE"]
+                fallback_ids={component["component_id"] for component in fallbacks};affected_component_ids={component_id for row in affected_rows for component_id in row["component_ids"]}
+                linked=True
+                for component in fallbacks:
+                    component_errors=[errors_by_id[ref] for ref in refs if errors_by_id[ref]["error_code"]==component["classification_or_issue_code"] and errors_by_id[ref]["evidence_refs"]==component["evidence_refs"]]
+                    if not component["evidence_refs"] or not component_errors:linked=False
+                for ref in refs:
+                    error=errors_by_id[ref]
+                    if not any(component["classification_or_issue_code"]==error["error_code"] and component["evidence_refs"]==error["evidence_refs"] for component in fallbacks):linked=False
+                if satisfied or not refs or not fallbacks or not affected_rows or fallback_ids-set(disposition["component_ids"]) or fallback_ids-affected_component_ids or any(not fallback_ids.intersection(row["component_ids"]) for row in affected_rows) or not linked:return _failure("BLOCKED disposition lacks exact affected rows, unresolved fallbacks, or bidirectional error/evidence closure", "DISCOVERY_OBLIGATION", code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
         if error_set != referenced_errors: return _failure("discovery contains dangling or multiply external errors", "DISCOVERY_CLOSURE", code=DiagnosticCode.REF_UNRESOLVED)
         for coverage_row in coverage:
             if coverage_row["coverage_status"]=="BLOCKED_WITH_EVIDENCE":
@@ -680,21 +706,7 @@ def _scope_delta(old: list[dict[str, Any]], new: list[dict[str, Any]]) -> dict[s
     return {"added_entry_ids": sorted(after.keys() - before.keys(), key=str.encode), "removed_entry_ids": sorted(before.keys() - after.keys(), key=str.encode), "classification_changed_entry_ids": sorted((x for x in common if before[x]["scope_state"] != after[x]["scope_state"]), key=str.encode), "source_binding_changed_entry_ids": sorted((x for x in common if any(before[x][k] != after[x][k] for k in binding)), key=str.encode)}
 
 
-def _scope_intrinsic(document: dict[str, Any], bundle_ref: dict[str, Any]) -> bool:
-    try:
-        envelope,payload=document["envelope"],document["payload"];revision=payload["scope_revision"];scope_id=payload["scope_id"]
-        record_id=f"inventory-scope-record:sha256:{scope_id.rsplit(':',1)[-1]}/revision/{revision}"
-        entries=payload["scope_entries"];keys=[(entry["normalized_path"].encode(),entry["byte_start"],entry["byte_end"],entry["component_id"].encode()) for entry in entries]
-        delta=payload["revision_delta"];sets=[delta[name] for name in ("added_entry_ids","removed_entry_ids","classification_changed_entry_ids","source_binding_changed_entry_ids")]
-        common=envelope["record_id"]==record_id and envelope["record_revision"]==revision and envelope.get("contract_bundle_ref")==bundle_ref and keys==sorted(keys) and len(keys)==len(set(keys)) and all(entry["scope_entry_id"]==_scope_entry(scope_id,{"component_id":entry["component_id"],"source_row_id":entry["source_row_id"],"source_unit_id":entry["source_unit_id"],"normalized_path":entry["normalized_path"],"byte_start":entry["byte_start"],"byte_end":entry["byte_end"],"component_kind":entry["component_kind"],"classification_state":entry["scope_state"],"source_anchor_hash":entry["source_anchor_hash"]})["scope_entry_id"] and _valid_path(entry["normalized_path"]) for entry in entries) and all(values==sorted(values,key=str.encode) and len(values)==len(set(values)) for values in sets) and not any(set(left)&set(right) for index,left in enumerate(sets) for right in sets[index+1:])
-        if not common:return False
-        if revision==1:return delta["kind"]=="GENESIS" and not any(sets) and "predecessor_scope_ref" not in payload and "supersedes_ref" not in envelope
-        predecessor=payload.get("predecessor_scope_ref");expected_predecessor_id=f"inventory-scope-record:sha256:{scope_id.rsplit(':',1)[-1]}/revision/{revision-1}"
-        return delta["kind"]=="SUCCESSOR" and any(sets[:3]) and not sets[3] and _ref_equal(predecessor,envelope.get("supersedes_ref")) and predecessor.get("record_type")=="agtxiv.frozen-inventory-scope/1.0.0" and predecessor.get("record_id")==expected_predecessor_id and predecessor.get("record_revision")==revision-1
-    except Exception:return False
-
-
-def validate_frozen_inventory_scope(scope_raw: bytes, decision_raw: bytes, discovery_raw: bytes, plan_raw: bytes, snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes, predecessor_scope_raw: bytes | None = None) -> _SealedView | tuple[Diagnostic, ...]:
+def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: bytes, discovery_raw: bytes, plan_raw: bytes, snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes, predecessor_scope_raw: bytes | None = None) -> _SealedView | tuple[Diagnostic, ...]:
     try:
         raws = (scope_raw, decision_raw, discovery_raw, plan_raw, snapshot_raw, bundle_raw) + (() if predecessor_scope_raw is None else (predecessor_scope_raw,))
         diagnostics = _preflight(raws, source_bytes_by_path, supplied_contract_assets)
@@ -725,13 +737,52 @@ def validate_frozen_inventory_scope(scope_raw: bytes, decision_raw: bytes, disco
             if diagnostics: return diagnostics
             assert predecessor_bound is not None
             predecessor = predecessor_bound[1]; expected_delta = {"kind":"SUCCESSOR", **_scope_delta(predecessor["payload"]["scope_entries"], expected)}
-            if not _scope_intrinsic(predecessor,_record_ref(bundle)) or payload["scope_id"] != predecessor["payload"]["scope_id"] or payload["scope_revision"] != predecessor["payload"]["scope_revision"] + 1 or not _ref_equal(payload.get("predecessor_scope_ref"), _record_ref(predecessor)) or not _ref_equal(envelope.get("supersedes_ref"), _record_ref(predecessor)) or payload["revision_delta"] != expected_delta or not any(expected_delta[key] for key in expected_delta if key != "kind") or expected_delta["source_binding_changed_entry_ids"]:
+            if payload["scope_id"] != predecessor["payload"]["scope_id"] or payload["scope_revision"] != predecessor["payload"]["scope_revision"] + 1 or payload["plan_ref"]!=predecessor["payload"]["plan_ref"] or payload["source_snapshot_ref"]!=predecessor["payload"]["source_snapshot_ref"] or envelope["contract_bundle_ref"]!=predecessor["envelope"]["contract_bundle_ref"] or not _ref_equal(payload.get("predecessor_scope_ref"), _record_ref(predecessor)) or not _ref_equal(envelope.get("supersedes_ref"), _record_ref(predecessor)) or payload["revision_delta"] != expected_delta or not any(expected_delta[key] for key in expected_delta if key != "kind") or expected_delta["source_binding_changed_entry_ids"]:
                 return _failure("successor lineage or mechanical revision delta is invalid", "SCOPE_REVISION", code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
         expected_record_id = f"inventory-scope-record:sha256:{payload['scope_id'].rsplit(':',1)[-1]}/revision/{payload['scope_revision']}"
         if envelope["record_id"] != expected_record_id or envelope["record_revision"] != payload["scope_revision"]: return _failure("scope record ID/revision projection is invalid", "SCOPE_REVISION", code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
         return _SealedView("FrozenInventoryScope", document, _token=_TOKEN)
     except Exception:
         return _failure("scope validation failed closed while inspecting hostile input")
+
+
+def _validated_predecessor_history(predecessor_history: tuple[PlanningScopeChainDeclaration,...],registry: ContractSchemaRegistry):
+    if type(predecessor_history) is not tuple or len(predecessor_history)>MAX_PREDECESSOR_DECLARATIONS or any(type(item) is not PlanningScopeChainDeclaration for item in predecessor_history):return _failure("predecessor history requires at most 256 exact sealed declarations","SCOPE_HISTORY")
+    validated=[];previous_raw=None;seen=set();baseline_assets=None;baseline_bundle=None
+    for index,declaration in enumerate(predecessor_history):
+        parts=_declaration_parts(declaration)
+        if parts is None:return _failure("predecessor declaration failed seal integrity","SCOPE_HISTORY")
+        records,source_rows,assets=parts;snapshot_raw,plan_raw,discovery_raw,decision_raw,scope_raw,bundle_raw=records;sources=dict(source_rows)
+        if baseline_assets is None:baseline_assets=assets;baseline_bundle=bundle_raw
+        if assets!=baseline_assets or bundle_raw!=baseline_bundle:return _failure("predecessor declarations do not share one exact bundle namespace","SCOPE_HISTORY",code=DiagnosticCode.REF_HASH_MISMATCH)
+        scope=_validate_frozen_inventory_scope_current(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,sources,assets,registry,bundle_raw,previous_raw)
+        if type(scope) is tuple:return scope
+        document=scope.to_python();identity=_canonical(_record_ref(document))
+        if identity in seen or document["payload"]["scope_revision"]!=index+1:return _failure("predecessor history is duplicated, reordered, or incomplete","SCOPE_HISTORY",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
+        seen.add(identity);validated.append((declaration,document,records,assets));previous_raw=scope_raw
+    return validated
+
+
+def validate_frozen_inventory_scope(scope_raw: bytes, decision_raw: bytes, discovery_raw: bytes, plan_raw: bytes, snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes, predecessor_history: tuple[PlanningScopeChainDeclaration,...]) -> _SealedView | tuple[Diagnostic,...]:
+    try:
+        if type(predecessor_history) is not tuple:return _failure("predecessor history requires an exact tuple","SCOPE_HISTORY")
+        declaration_bytes=0
+        for declaration in predecessor_history:
+            fields=_declaration_fields(declaration)
+            if fields is None:return _failure("predecessor declaration failed exact type integrity","SCOPE_HISTORY")
+            records,sources,assets,_=fields;declaration_bytes+=sum(map(len,records))+sum(len(raw) for _,raw in sources)+sum(len(asset.raw_bytes) for asset in assets)
+        current_bytes=sum(map(len,(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,bundle_raw)))+sum(len(raw) for raw in source_bytes_by_path.values())+sum(len(asset.raw_bytes) for asset in supplied_contract_assets) if type(source_bytes_by_path) is dict and type(supplied_contract_assets) is tuple else MAX_AGGREGATE_INPUT_BYTES+1
+        if declaration_bytes+current_bytes>MAX_AGGREGATE_INPUT_BYTES:return _failure("current chain plus predecessor history exceeds aggregate input limit","SCOPE_HISTORY",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
+        history=_validated_predecessor_history(predecessor_history,registry)
+        if type(history) is tuple and (not history or type(history[0]) is Diagnostic):return history
+        previous_raw=history[-1][2][4] if history else None
+        if history and (history[-1][3]!=supplied_contract_assets or history[-1][2][5]!=bundle_raw):return _failure("current scope bundle namespace differs from predecessor history","SCOPE_HISTORY",code=DiagnosticCode.REF_HASH_MISMATCH)
+        result=_validate_frozen_inventory_scope_current(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,source_bytes_by_path,supplied_contract_assets,registry,bundle_raw,previous_raw)
+        if type(result) is tuple:return result
+        revision=result.to_python()["payload"]["scope_revision"]
+        if len(predecessor_history)!=revision-1:return _failure("scope revision requires the complete oldest-to-immediate predecessor history","SCOPE_HISTORY",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
+        return result
+    except Exception:return _failure("scope history validation failed closed","SCOPE_HISTORY")
 
 
 @dataclass(frozen=True, slots=True)
@@ -765,24 +816,28 @@ def _lineage_parts(value: Any):
     return (nodes,edges) if token is _TOKEN and type(nodes) is tuple and type(edges) is tuple and seal==hashlib.sha256(raw).digest() else None
 
 
-def compute_scope_revision_impact(predecessor_scope_raw: bytes, successor_scope_raw: bytes, downstream_records: tuple[bytes, ...], lineage_projection: ScopeRevisionLineageProjection, supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes) -> ScopeRevisionImpact | tuple[Diagnostic, ...]:
+def compute_scope_revision_impact(predecessor_history: tuple[PlanningScopeChainDeclaration,...], successor_declaration: PlanningScopeChainDeclaration, downstream_records: tuple[bytes, ...], lineage_projection: ScopeRevisionLineageProjection, registry: ContractSchemaRegistry) -> ScopeRevisionImpact | tuple[Diagnostic, ...]:
     try:
-        diagnostics=_preflight((predecessor_scope_raw,successor_scope_raw,bundle_raw),assets=supplied_contract_assets,tuples=(downstream_records,))
-        if diagnostics:return diagnostics
+        if type(predecessor_history) is not tuple or not predecessor_history or len(predecessor_history)>MAX_PREDECESSOR_DECLARATIONS or type(successor_declaration) is not PlanningScopeChainDeclaration or successor_declaration in predecessor_history or type(downstream_records) is not tuple or any(type(raw) is not bytes for raw in downstream_records):return _failure("impact requires nonempty exact predecessor history, a distinct successor declaration, and exact downstream bytes","LINEAGE_INPUT")
+        predecessor_fields=[_declaration_fields(item) for item in predecessor_history];successor_fields=_declaration_fields(successor_declaration)
+        if any(fields is None for fields in predecessor_fields) or successor_fields is None:return _failure("impact declaration failed exact type integrity","LINEAGE_INPUT")
+        records,source_rows,supplied_contract_assets,_=successor_fields;snapshot_raw,plan_raw,discovery_raw,decision_raw,successor_scope_raw,bundle_raw=records
+        aggregate=sum(len(raw) for raw in downstream_records)+sum(sum(map(len,fields[0]))+sum(len(raw) for _,raw in fields[1])+sum(len(asset.raw_bytes) for asset in fields[2]) for fields in predecessor_fields)+sum(map(len,records))+sum(len(raw) for _,raw in source_rows)+sum(len(asset.raw_bytes) for asset in supplied_contract_assets)
+        if aggregate>MAX_AGGREGATE_INPUT_BYTES:return _failure("impact declarations and downstream records exceed aggregate limit","LINEAGE_INPUT",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
         parts=_lineage_parts(lineage_projection)
         if parts is None:return _failure("lineage projection failed exact type/seal integrity","LINEAGE_INPUT")
+        history=_validated_predecessor_history(predecessor_history,registry)
+        if type(history) is tuple:return history
+        if _declaration_parts(successor_declaration) is None:return _failure("successor declaration failed seal integrity","LINEAGE_INPUT")
+        successor=validate_frozen_inventory_scope(successor_scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,dict(source_rows),supplied_contract_assets,registry,bundle_raw,predecessor_history)
+        if type(successor) is tuple:return successor
+        old=history[-1][1];new=successor.to_python();delta=new["payload"]["revision_delta"]
         bundle,ds=_bundle(bundle_raw,registry,supplied_contract_assets)
         if ds:return ds
         assert bundle is not None
         bundle_ref=_record_ref(bundle)
-        oldb,ds=_parse_record(predecessor_scope_raw,registry,"agtxiv.frozen-inventory-scope/1.0.0","LINEAGE_SCOPE");
-        if ds:return ds
-        newb,ds=_parse_record(successor_scope_raw,registry,"agtxiv.frozen-inventory-scope/1.0.0","LINEAGE_SCOPE")
-        if ds:return ds
-        assert oldb and newb
-        old,new=oldb[1],newb[1];delta=new["payload"]["revision_delta"]
         mechanical={"kind":"SUCCESSOR",**_scope_delta(old["payload"]["scope_entries"],new["payload"]["scope_entries"])}
-        if not _scope_intrinsic(old,bundle_ref) or not _scope_intrinsic(new,bundle_ref) or new["payload"].get("predecessor_scope_ref")!=_record_ref(old) or new["envelope"].get("supersedes_ref")!=_record_ref(old) or new["payload"]["scope_id"]!=old["payload"]["scope_id"] or new["payload"]["scope_revision"]!=old["payload"]["scope_revision"]+1 or delta!=mechanical or not any(mechanical[key] for key in mechanical if key!="kind") or mechanical["source_binding_changed_entry_ids"]:return _failure("scope revisions fail exact semantic successor validation","LINEAGE_SCOPE",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
+        if new["payload"].get("predecessor_scope_ref")!=_record_ref(old) or new["envelope"].get("supersedes_ref")!=_record_ref(old) or delta!=mechanical:return _failure("scope revisions fail exact validated successor semantics","LINEAGE_SCOPE",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
         allowed={"agtxiv.checkpoint-e-entry-output/1.0.0","agtxiv.checkpoint-e-whole-scope-output/1.0.0","agtxiv.checkpoint-e-derived-output/1.0.0"}; docs=[]
         for raw in downstream_records:
             parsed=parse_canonical_json(raw)
@@ -823,18 +878,18 @@ def compute_scope_revision_impact(predecessor_scope_raw: bytes, successor_scope_
     except Exception:return _failure("revision impact failed closed while inspecting hostile input","LINEAGE_INPUT")
 
 
-def validate_planning_terminal_constraints(record: ParsedCanonicalValue, registry: ContractSchemaRegistry, catalog_profile_constraints: CatalogProfileConstraints, plan_raw: bytes, discovery_raw: bytes, decision_raw: bytes, supplied_contract_assets: tuple[SuppliedAsset, ...], bundle_raw: bytes) -> tuple[Diagnostic, ...]:
-    """Preflight, call C exactly once (and B indirectly once), then apply E."""
-    if type(record) is not ParsedCanonicalValue or type(registry) is not ContractSchemaRegistry or type(catalog_profile_constraints) is not CatalogProfileConstraints:
-        return _failure("terminal composition requires exact record, registry, and sealed C types","TERMINAL_E_INPUT")
+def validate_planning_terminal_constraints(record: ParsedCanonicalValue, registry: ContractSchemaRegistry, catalog_profile_constraints: CatalogProfileConstraints, kernel_policy_v1_1_constraints: KernelValidationPolicyV11Constraints, plan_raw: bytes, discovery_raw: bytes, decision_raw: bytes, supplied_contract_assets: tuple[SuppliedAsset, ...], bundle_raw: bytes) -> tuple[Diagnostic, ...]:
+    """Preflight, call C/B once, call the sealed 1.1 gate once, then bind E."""
+    if type(record) is not ParsedCanonicalValue or type(registry) is not ContractSchemaRegistry or type(catalog_profile_constraints) is not CatalogProfileConstraints or type(kernel_policy_v1_1_constraints) is not KernelValidationPolicyV11Constraints:
+        return _failure("terminal composition requires exact record, registry, sealed C, and sealed 1.1 types","TERMINAL_E_INPUT")
     preflight=_preflight((plan_raw,discovery_raw,decision_raw,bundle_raw),assets=supplied_contract_assets)
     if preflight:return preflight
     bundle,bundle_findings=_bundle(bundle_raw,registry,supplied_contract_assets)
     if bundle_findings:return bundle_findings
     assert bundle is not None
-    c_findings=validate_typed_terminal_result_catalog_constraints(record,registry,catalog_profile_constraints)
-    if c_findings:return c_findings
     try:
+        cparts=_constraints_parts(catalog_profile_constraints);eparts=_v11_parts(kernel_policy_v1_1_constraints)
+        if cparts is None or eparts is None:return _failure("terminal constraints failed seal integrity","TERMINAL_E_INPUT",code=DiagnosticCode.CODE_POLICY_REFERENCE_INVALID)
         docs=[];types=("agtxiv.agentization-plan/1.0.0","agtxiv.inventory-discovery-result/1.0.0","agtxiv.scope-freeze-decision/1.0.0")
         for raw,expected_type in zip((plan_raw,discovery_raw,decision_raw),types):
             parsed=parse_canonical_json(raw)
@@ -842,7 +897,14 @@ def validate_planning_terminal_constraints(record: ParsedCanonicalValue, registr
             document=parsed.to_python()
             if document.get("envelope",{}).get("record_type")!=expected_type or document.get("envelope",{}).get("contract_bundle_ref")!=_record_ref(bundle):return _failure("terminal planning ancestry has a wrong family or bundle binding","TERMINAL_E_BINDING",code=DiagnosticCode.RECORD_TYPE_SCHEMA_MISMATCH)
             docs.append(document)
-        terminal=record.to_python();envelope=terminal["envelope"];payload=terminal["payload"];plan,discovery,decision=docs;target=payload["target_obligation"];plan_ref=_record_ref(plan)
+        plan,discovery,decision=docs;plan_payload=plan["payload"];manifest_refs=[ref for name in ("schema_assets","contract_assets","validator_assets","specification_assets") for ref in bundle["payload"][name]]
+        constraint_refs=[cparts[0].to_python(),cparts[1].to_python(),cparts[2].to_python(),*(value.to_python() for value in eparts[0].values())]
+        if any(ref not in manifest_refs for ref in constraint_refs) or plan_payload.get("artifact_family_catalog_ref")!=cparts[1].to_python() or plan_payload.get("agentization_profile_ref")!=cparts[2].to_python() or plan_payload.get("stable_code_catalog_ref")!=eparts[0]["catalog"].to_python() or plan_payload.get("kernel_validation_policy_ref")!=eparts[0]["policy"].to_python():return _failure("terminal constraints are not the exact bundle-bound Plan roots","TERMINAL_E_INPUT",code=DiagnosticCode.CODE_POLICY_REFERENCE_INVALID)
+        c_findings=validate_typed_terminal_result_catalog_constraints(record,registry,catalog_profile_constraints)
+        if c_findings:return c_findings
+        policy_findings=validate_planning_terminal_registration_v1_1(record,kernel_policy_v1_1_constraints)
+        if policy_findings:return policy_findings
+        terminal=record.to_python();envelope=terminal["envelope"];payload=terminal["payload"];target=payload["target_obligation"];plan_ref=_record_ref(plan)
         if envelope.get("contract_bundle_ref")!=_record_ref(bundle) or discovery["payload"].get("plan_ref")!=plan_ref or decision["payload"].get("plan_ref")!=plan_ref or decision["payload"].get("discovery_ref")!=_record_ref(discovery) or decision["payload"].get("source_snapshot_ref")!=discovery["payload"].get("source_snapshot_ref") or decision["payload"].get("source_tree_root")!=discovery["payload"].get("source_tree_root"):
             return _failure("terminal planning ancestry is stale or cross-plan","TERMINAL_E_BINDING",code=DiagnosticCode.REF_HASH_MISMATCH)
         obligation_index=next((index for index,row in enumerate(plan["payload"]["profile_obligations"]) if row["obligation_id"]=="obligation:checkpoint-e/frozen-inventory-scope"),None)
@@ -875,19 +937,20 @@ def validate_planning_terminal_constraints(record: ParsedCanonicalValue, registr
     except Exception:return _failure("terminal E composition failed closed","TERMINAL_E_INPUT")
 
 
-def validate_planning_scope_chain(snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], plan_raw: bytes, discovery_raw: bytes, decision_raw: bytes, terminal_records_raw: tuple[bytes, ...], scope_records_raw: tuple[bytes, ...], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes) -> PlanningScopeChain | tuple[Diagnostic, ...]:
+def validate_planning_scope_chain(snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], plan_raw: bytes, discovery_raw: bytes, decision_raw: bytes, terminal_records_raw: tuple[bytes, ...], scope_records_raw: tuple[bytes, ...], predecessor_history: tuple[PlanningScopeChainDeclaration,...], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes) -> PlanningScopeChain | tuple[Diagnostic, ...]:
     try:
         diagnostics=_preflight((snapshot_raw,plan_raw,discovery_raw,decision_raw,bundle_raw),source_bytes_by_path,supplied_contract_assets,(terminal_records_raw,scope_records_raw))
         if diagnostics:return diagnostics
+        if type(predecessor_history) is not tuple or any(type(item) is not PlanningScopeChainDeclaration for item in predecessor_history) or len(predecessor_history)>MAX_PREDECESSOR_DECLARATIONS:return _failure("aggregate predecessor history requires at most 256 exact declarations","CHAIN_ISSUANCE")
         decision=validate_scope_freeze_decision(decision_raw,discovery_raw,plan_raw,snapshot_raw,source_bytes_by_path,supplied_contract_assets,registry,bundle_raw)
         if type(decision) is tuple:return decision
         branch=decision.to_python()["payload"]["decision"]
         if branch=="ACCEPT":
             if terminal_records_raw or len(scope_records_raw)!=1:return _failure("ACCEPT requires zero terminals and exactly one scope","CHAIN_ISSUANCE",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
-            scope=validate_frozen_inventory_scope(scope_records_raw[0],decision_raw,discovery_raw,plan_raw,snapshot_raw,source_bytes_by_path,supplied_contract_assets,registry,bundle_raw)
+            scope=validate_frozen_inventory_scope(scope_records_raw[0],decision_raw,discovery_raw,plan_raw,snapshot_raw,source_bytes_by_path,supplied_contract_assets,registry,bundle_raw,predecessor_history)
             if type(scope) is tuple:return scope
         else:
-            if len(terminal_records_raw)!=1 or scope_records_raw:return _failure("BLOCK requires exactly one terminal and zero scopes","CHAIN_ISSUANCE",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
+            if predecessor_history or len(terminal_records_raw)!=1 or scope_records_raw:return _failure("BLOCK requires empty history, exactly one terminal, and zero scopes","CHAIN_ISSUANCE",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
             parsed=parse_canonical_json(terminal_records_raw[0])
             if type(parsed) is not ParsedCanonicalValue or canonical_bytes(parsed)!=terminal_records_raw[0]:return _failure("BLOCK terminal is not canonical","CHAIN_ISSUANCE",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
             parsed_plan=parse_canonical_json(plan_raw)
@@ -895,7 +958,7 @@ def validate_planning_scope_chain(snapshot_raw: bytes, source_bytes_by_path: dic
             constraints=_planning_constraints(supplied_contract_assets,registry,parsed_plan.to_python()["payload"])
             if type(constraints) is tuple and constraints and type(constraints[0]) is Diagnostic:return constraints
             assert type(constraints) is tuple and type(constraints[0]) is CatalogProfileConstraints
-            terminal_findings=validate_planning_terminal_constraints(parsed,registry,constraints[0],plan_raw,discovery_raw,decision_raw,supplied_contract_assets,bundle_raw)
+            terminal_findings=validate_planning_terminal_constraints(parsed,registry,constraints[0],constraints[1],plan_raw,discovery_raw,decision_raw,supplied_contract_assets,bundle_raw)
             if terminal_findings:return terminal_findings
         all_raw=terminal_records_raw+scope_records_raw;ids=[];refs=[]
         for raw in all_raw:
@@ -907,4 +970,4 @@ def validate_planning_scope_chain(snapshot_raw: bytes, source_bytes_by_path: dic
     except Exception:return _failure("aggregate planning chain failed closed while inspecting hostile input")
 
 
-__all__=["PlanningScopeChain","ScopeRevisionImpact","ScopeRevisionLineageProjection","validate_paper_source_snapshot","validate_agentization_plan","validate_inventory_discovery_result","validate_scope_freeze_decision","validate_frozen_inventory_scope","validate_planning_scope_chain","compute_scope_revision_impact","validate_planning_terminal_constraints"]
+__all__=["PlanningScopeChain","PlanningScopeChainDeclaration","ScopeRevisionImpact","ScopeRevisionLineageProjection","build_planning_scope_chain_declaration","validate_paper_source_snapshot","validate_agentization_plan","validate_inventory_discovery_result","validate_scope_freeze_decision","validate_frozen_inventory_scope","validate_planning_scope_chain","compute_scope_revision_impact","validate_planning_terminal_constraints"]

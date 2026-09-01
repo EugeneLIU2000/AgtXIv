@@ -25,9 +25,9 @@ LEGACY = frozenset(("agtxiv.inventory-scope/2.0.0","https://agtxiv.org/schema/v2
 GATE_SUFFIX = ("TERMINAL_C_PUBLIC_INCLUDING_B_INTRINSIC_ONCE","TERMINAL_E_1_1_REASON_POLICY","TERMINAL_E_EXACT_PLANNING_BINDINGS")
 INHERITED_GATE_ORDER = ("CODE_CATALOG_INTRINSIC","PYTHON_DIAGNOSTIC_BIJECTION","POLICY_INTRINSIC_AND_EXACT_BINDING","EMITTED_DIAGNOSTIC_REGISTRATION","TERMINAL_C_PUBLIC_INCLUDING_B_INTRINSIC","TERMINAL_D_REASON_POLICY")
 INHERITED_ENTRY_POINTS = MappingProxyType({"catalog_intrinsic":"agtxiv_v2.contracts.code_policy_validation.validate_stable_code_catalog_intrinsic","policy_builder":"agtxiv_v2.contracts.code_policy_validation.build_kernel_validation_policy_constraints","diagnostic_registration":"agtxiv_v2.contracts.code_policy_validation.validate_emitted_diagnostic_registration","terminal_composition":"agtxiv_v2.contracts.code_policy_validation.validate_typed_terminal_result_kernel_constraints"})
-ENTRY_POINTS = MappingProxyType({"paper_source_snapshot":"agtxiv_v2.contracts.planning_validation.validate_paper_source_snapshot","agentization_plan":"agtxiv_v2.contracts.planning_validation.validate_agentization_plan","inventory_discovery_result":"agtxiv_v2.contracts.planning_validation.validate_inventory_discovery_result","scope_freeze_decision":"agtxiv_v2.contracts.planning_validation.validate_scope_freeze_decision","frozen_inventory_scope":"agtxiv_v2.contracts.planning_validation.validate_frozen_inventory_scope","planning_scope_chain":"agtxiv_v2.contracts.planning_validation.validate_planning_scope_chain","scope_revision_impact":"agtxiv_v2.contracts.planning_validation.compute_scope_revision_impact","planning_terminal_constraints":"agtxiv_v2.contracts.planning_validation.validate_planning_terminal_constraints"})
+ENTRY_POINTS = MappingProxyType({"paper_source_snapshot":"agtxiv_v2.contracts.planning_validation.validate_paper_source_snapshot","agentization_plan":"agtxiv_v2.contracts.planning_validation.validate_agentization_plan","inventory_discovery_result":"agtxiv_v2.contracts.planning_validation.validate_inventory_discovery_result","scope_freeze_decision":"agtxiv_v2.contracts.planning_validation.validate_scope_freeze_decision","frozen_inventory_scope":"agtxiv_v2.contracts.planning_validation.validate_frozen_inventory_scope","planning_scope_chain_declaration":"agtxiv_v2.contracts.planning_validation.build_planning_scope_chain_declaration","planning_scope_chain":"agtxiv_v2.contracts.planning_validation.validate_planning_scope_chain","scope_revision_impact":"agtxiv_v2.contracts.planning_validation.compute_scope_revision_impact","planning_terminal_constraints":"agtxiv_v2.contracts.planning_validation.validate_planning_terminal_constraints"})
 _E_VECTOR_ASSET_ID="vectors:checkpoint-e-planning-families/1.0.0"
-_E_VECTOR_SET_ID="vectors:checkpoint-e-planning-families"
+_E_VECTOR_SET_ID="vectors:checkpoint-e-planning-families/1.0.0"
 _E_VECTOR_TARGETS=(("CONTRACT_BUNDLE_RELEASE","CONTRACT_BOOTSTRAP","contract-bundle-release"),("PAPER_SOURCE_SNAPSHOT","SOURCE_FREEZE","paper-source-snapshot"),("AGENTIZATION_PLAN","PLANNING","agentization-plan"),("INVENTORY_DISCOVERY_RESULT","INVENTORY_DISCOVERY","inventory-discovery-result"),("SCOPE_FREEZE_DECISION","SCOPE_FREEZE","scope-freeze-decision"),("FROZEN_INVENTORY_SCOPE","SCOPE_FREEZE","frozen-inventory-scope"))
 _TOKEN=object()
 
@@ -73,11 +73,11 @@ def _schema_bound(document,registry,uri):
 
 
 class KernelValidationPolicyV11Constraints:
-    __slots__=("__refs","__reasons","__seal","__token")
-    def __init__(self,refs,reasons,*,_token=None):
+    __slots__=("__refs","__reasons","__registrations","__seal","__token")
+    def __init__(self,refs,reasons,registrations,*,_token=None):
         if _token is not _TOKEN:raise TypeError("constraints are builder-created")
-        raw=b"".join(canonical_bytes(x) for x in refs.values())+b"\x00".join(x.encode() for x in reasons)
-        object.__setattr__(self,"_KernelValidationPolicyV11Constraints__refs",refs);object.__setattr__(self,"_KernelValidationPolicyV11Constraints__reasons",reasons);object.__setattr__(self,"_KernelValidationPolicyV11Constraints__seal",hashlib.sha256(raw).digest());object.__setattr__(self,"_KernelValidationPolicyV11Constraints__token",_TOKEN)
+        frozen_registrations=tuple(canonical_bytes(_parsed(row)) for row in registrations);raw=b"".join(canonical_bytes(x) for x in refs.values())+b"\x00".join(x.encode() for x in reasons)+b"".join(frozen_registrations)
+        object.__setattr__(self,"_KernelValidationPolicyV11Constraints__refs",refs);object.__setattr__(self,"_KernelValidationPolicyV11Constraints__reasons",reasons);object.__setattr__(self,"_KernelValidationPolicyV11Constraints__registrations",frozen_registrations);object.__setattr__(self,"_KernelValidationPolicyV11Constraints__seal",hashlib.sha256(raw).digest());object.__setattr__(self,"_KernelValidationPolicyV11Constraints__token",_TOKEN)
     def __setattr__(self,n,v)->Never:raise AttributeError("constraints are immutable")
     @property
     def terminal_reason_codes(self):
@@ -87,9 +87,9 @@ class KernelValidationPolicyV11Constraints:
     def __repr__(self):return "KernelValidationPolicyV11Constraints(<sealed candidate constraints>)"
 def _parts(value):
     if type(value) is not KernelValidationPolicyV11Constraints:return None
-    try:refs=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__refs");reasons=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__reasons");seal=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__seal");token=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__token");raw=b"".join(canonical_bytes(x) for x in refs.values())+b"\x00".join(x.encode() for x in reasons)
+    try:refs=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__refs");reasons=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__reasons");registrations=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__registrations");seal=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__seal");token=object.__getattribute__(value,"_KernelValidationPolicyV11Constraints__token");raw=b"".join(canonical_bytes(x) for x in refs.values())+b"\x00".join(x.encode() for x in reasons)+b"".join(registrations)
     except Exception:return None
-    return (refs,reasons) if token is _TOKEN and type(refs) is MappingProxyType and type(reasons) is tuple and seal==hashlib.sha256(raw).digest() else None
+    return (refs,reasons,registrations) if token is _TOKEN and type(refs) is MappingProxyType and type(reasons) is tuple and type(registrations) is tuple and all(type(row) is bytes for row in registrations) and seal==hashlib.sha256(raw).digest() else None
 
 
 def validate_stable_code_catalog_v1_1_intrinsic(predecessor_catalog_binding: RawContractAssetBinding, successor_catalog_binding: RawContractAssetBinding, registry: ContractSchemaRegistry) -> tuple[Diagnostic,...]:
@@ -223,8 +223,30 @@ def build_kernel_validation_policy_v1_1_constraints(predecessor_catalog_binding:
         if len(registrations)!=2 or registrations[0]!=old.get("terminal_reason_registrations",[None])[0] or registrations[-1]!=expected:return _fail("policy does not contain the exact inherited registration followed by E registration","CODE_POLICY_V1_1_REGISTRATION",DiagnosticCode.CODE_POLICY_INVALID)
         refs={"catalog":_parsed(newc[1]),"policy":_parsed(newp[1]),"predecessor_catalog":_parsed(_document(predecessor_catalog_binding)[1]),"predecessor_policy":_parsed(old_ref)}
         if any(x is None for x in refs.values()):return _fail("constraint refs cannot be sealed")
-        return KernelValidationPolicyV11Constraints(MappingProxyType(refs),(registrations[0]["reason_code"],SCOPE_REASON),_token=_TOKEN)
+        return KernelValidationPolicyV11Constraints(MappingProxyType(refs),(registrations[0]["reason_code"],SCOPE_REASON),tuple(registrations),_token=_TOKEN)
     except Exception:return _fail("policy successor builder failed closed")
+
+
+def validate_planning_terminal_registration_v1_1(record: ParsedCanonicalValue, constraints: KernelValidationPolicyV11Constraints) -> tuple[Diagnostic,...]:
+    try:
+        parts=_parts(constraints)
+        if type(record) is not ParsedCanonicalValue or parts is None:return _fail("terminal record or 1.1 constraints failed exact type/seal integrity","TERMINAL_E_1_1",DiagnosticCode.CODE_POLICY_REFERENCE_INVALID)
+        document=record.to_python();payload=document.get("payload") if type(document) is dict else None
+        if type(payload) is not dict:return _fail("terminal record payload is unavailable","TERMINAL_E_1_1",DiagnosticCode.REASON_CONSTRAINT_MISMATCH)
+        registrations=[]
+        for raw in parts[2]:
+            parsed=parse_canonical_json(raw)
+            if type(parsed) is not ParsedCanonicalValue:return _fail("sealed 1.1 registration cannot be parsed","TERMINAL_E_1_1",DiagnosticCode.CODE_POLICY_REFERENCE_INVALID)
+            registrations.append(parsed.to_python())
+        reason=payload.get("declared_reason",{}).get("declared_reason_code");matches=[row for row in registrations if row.get("reason_code")==reason]
+        target=payload.get("target_obligation",{});retry=payload.get("retry",{});context=payload.get("binding_context",{})
+        if len(matches)!=1:return _fail("terminal reason is not uniquely registered by the sealed 1.1 policy","TERMINAL_E_1_1",DiagnosticCode.REASON_CONSTRAINT_MISMATCH)
+        registration=matches[0];targets=registration.get("targets",[])
+        allowed=payload.get("outcome") in registration.get("allowed_outcomes",[]) and retry.get("retry_disposition") in registration.get("allowed_retry_dispositions",[]) and context.get("context_mode") in registration.get("allowed_context_modes",[])
+        target_matches=any(row.get("family_id")==target.get("family_id") and row.get("stage_id")==target.get("stage_id") for row in targets if type(row) is dict)
+        if not allowed or not target_matches:return _fail("terminal outcome, retry, context, or target is outside the sealed 1.1 registration","TERMINAL_E_1_1",DiagnosticCode.REASON_CONSTRAINT_MISMATCH)
+        return ()
+    except Exception:return _fail("terminal 1.1 registration validation failed closed","TERMINAL_E_1_1",DiagnosticCode.REASON_CONSTRAINT_MISMATCH)
 
 
 def validate_emitted_diagnostic_registration_v1_1(diagnostics: tuple[Diagnostic,...], constraints: KernelValidationPolicyV11Constraints) -> tuple[Diagnostic,...]:
@@ -236,4 +258,4 @@ def validate_emitted_diagnostic_registration_v1_1(diagnostics: tuple[Diagnostic,
     except Exception:return _fail("diagnostic registration failed closed","DIAGNOSTIC_REGISTRATION")
 
 
-__all__=["CATALOG_LIMITS","POLICY_LIMITS","SCOPE_REASON","KernelValidationPolicyV11Constraints","validate_stable_code_catalog_v1_1_intrinsic","build_kernel_validation_policy_v1_1_constraints","validate_emitted_diagnostic_registration_v1_1"]
+__all__=["CATALOG_LIMITS","POLICY_LIMITS","SCOPE_REASON","KernelValidationPolicyV11Constraints","validate_stable_code_catalog_v1_1_intrinsic","build_kernel_validation_policy_v1_1_constraints","validate_planning_terminal_registration_v1_1","validate_emitted_diagnostic_registration_v1_1"]

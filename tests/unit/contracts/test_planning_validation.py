@@ -52,7 +52,7 @@ def _e_vector_document():
         target={"family_id":family,"family_version":"1.0.0","stage_id":stage,"artifact_kind":"IMMUTABLE_RECORD"};prefix=f"vector:checkpoint-e/{lower}/{stage.lower().replace('_','-')}";template=f"template:checkpoint-e/{lower}/valid-record"
         rows.extend(({"vector_id":prefix+"/positive-valid","polarity":"POSITIVE","vector_kind":"FAMILY_CONFORMANCE","target":target,"template_id":template,"expected_diagnostic_codes":[]},{"vector_id":prefix+"/negative-closed-or-binding","polarity":"NEGATIVE","vector_kind":"FAMILY_CONFORMANCE","target":target,"template_id":template,"mutation_id":"mutation:closed-or-exact-binding","expected_diagnostic_codes":["AGTXIV.RECORD.PAYLOAD_INVALID"]}))
     rows.sort(key=lambda row:row["vector_id"].encode())
-    return {"vector_set_id":"vectors:checkpoint-e-planning-families","vector_set_version":"1.0.0","fixture_purpose":"STRUCTURAL_CONFORMANCE_ONLY","vectors":rows}
+    return {"vector_set_id":"vectors:checkpoint-e-planning-families/1.0.0","vector_set_version":"1.0.0","fixture_purpose":"STRUCTURAL_CONFORMANCE_ONLY","vectors":rows}
 
 
 def successor_vector_targets():
@@ -150,7 +150,21 @@ def _full_chain_fixture(branch: str):
     else:
         scope_context=context("SCOPE_FREEZE_ISSUER","actor:issuer","attempt:scope-block/1");frozen_index=next(i for i,row_value in enumerate(plan["payload"]["profile_obligations"]) if row_value["obligation_id"]=="obligation:checkpoint-e/frozen-inventory-scope");plan_ref=planning._record_ref(plan);terminal_payload={"terminal_for_attempt":True,"terminal_scope":"ATTEMPT_ONLY","successful_artifact_produced":False,"satisfaction_claim":"NONE","attempt_id":scope_context["attempt_id"],"binding_context":{"context_mode":"PLAN_BOUND","profile_ref":plan["payload"]["agentization_profile_ref"],"catalog_ref":plan["payload"]["artifact_family_catalog_ref"],"plan_ref":plan_ref},"target_obligation":{"obligation_key":"obligation:checkpoint-e/frozen-inventory-scope","stage_id":"SCOPE_FREEZE","family_id":"FROZEN_INVENTORY_SCOPE","basis":{"basis_kind":"COMPONENT","component_ref":{**plan_ref,"component_id":"obligation:checkpoint-e/frozen-inventory-scope","json_pointer":f"/payload/profile_obligations/{frozen_index}"}}},"outcome":"BLOCKED","declared_reason":{"declared_reason_code":"AGTXIV.SCOPE.FREEZE_NOT_ACCEPTED","summary":"Scope freeze was not accepted for the exact plan-bound discovery; no FrozenInventoryScope was issued."},"evidence":[{"evidence_id":"evidence:scope-freeze/block-decision","evidence_role":"POLICY_OBSERVATION","evidence_kind":"RECORD","record_ref":planning._record_ref(decision)},{"evidence_id":"evidence:scope-freeze/discovery","evidence_role":"INPUT_STATE","evidence_kind":"RECORD","record_ref":planning._record_ref(discovery)}],"retry":{"retry_disposition":"NO_RETRY_IN_CURRENT_CONTEXT","context_change_required":"A new independently reviewed scope-freeze attempt is required before scope issuance."},"next_action":{"action_code":"ESCALATE","description":"Escalate the blocked scope-freeze decision for an independently authorized new attempt.","responsible_actor":reviewer,"responsible_role":"SCOPE_FREEZE_REVIEWER","deadline":{"deadline_kind":"NO_DEADLINE","no_deadline_reason":"No production review schedule is authorized by Checkpoint E."}},"resources":{"limit":{"max_wall_time_ms":60000,"max_cpu_time_ms":60000,"max_peak_memory_bytes":134217728,"max_input_bytes":134217728,"max_output_bytes":41943040,"max_network_requests":0},"observed":{"network_requests":0},"unobserved_metrics":["wall_time_ms","cpu_time_ms","peak_memory_bytes","input_bytes","output_bytes"],"relation":"INDETERMINATE"}}
         terminal_raw,_=_record({"record_type":"agtxiv.typed-terminal-result/1.0.0","schema_ref":planning._asset_ref(index["schema:typed-terminal-result:1.0.0"]),"record_id":"terminal:test/block/1","record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":scope_context},terminal_payload);terminals=(terminal_raw,);scopes=()
-    return (snapshot_raw,sources,plan_raw,discovery_raw,decision_raw,terminals,scopes,assets,registry,bundle_raw)
+    return (snapshot_raw,sources,plan_raw,discovery_raw,decision_raw,terminals,scopes,(),assets,registry,bundle_raw)
+
+
+def _successor_chain_fixture():
+    genesis_args=_full_chain_fixture("ACCEPT");snapshot_raw,sources,plan_raw,discovery_raw,decision_raw,_,genesis_scopes,_,assets,registry,bundle_raw=genesis_args;old_scope_raw=genesis_scopes[0];snapshot=json.loads(snapshot_raw);plan=json.loads(plan_raw);discovery=json.loads(discovery_raw);decision=json.loads(decision_raw);old_scope=json.loads(old_scope_raw);bundle=json.loads(bundle_raw);index={asset.asset_id:asset for asset in assets};row=snapshot["payload"]["source_files"][0]
+    component={**discovery["payload"]["classified_components"][0],"component_kind":"APPENDIX_TEXT","component_id":"pending","source_anchor_hash":"pending"};component["component_id"],component["source_anchor_hash"]=planning._component_identity(component,row,sources[row["normalized_path"]]);discovery["payload"]["classified_components"].append(component);discovery["payload"]["classified_components"].sort(key=lambda item:(item["normalized_path"].encode(),item["byte_start"],item["byte_end"],item["component_id"].encode()));discovery["payload"]["source_unit_coverage"][0]["component_ids"]=[item["component_id"] for item in discovery["payload"]["classified_components"]]
+    row_by_id={row["source_row_id"]:row}
+    for obligation,disposition in zip(plan["payload"]["profile_obligations"],discovery["payload"]["obligation_dispositions"]):disposition["component_ids"]=[item["component_id"] for item in discovery["payload"]["classified_components"] if planning._component_matches_obligation(item,obligation,row_by_id)]
+    discovery["payload"]["discovery_id"]="discovery:test/successor";discovery["envelope"]["record_id"]=discovery["payload"]["discovery_id"];discovery_raw,discovery=_record(discovery["envelope"],discovery["payload"])
+    decision["payload"]["decision_id"]="decision:test/successor";decision["payload"]["discovery_ref"]=planning._record_ref(discovery);decision["envelope"]["record_id"]=decision["payload"]["decision_id"];decision_raw,decision=_record(decision["envelope"],decision["payload"])
+    entries=[planning._scope_entry(old_scope["payload"]["scope_id"],item) for item in discovery["payload"]["classified_components"]];new_payload=deepcopy(old_scope["payload"]);new_payload.update({"scope_revision":2,"discovery_ref":planning._record_ref(discovery),"accept_decision_ref":planning._record_ref(decision),"predecessor_scope_ref":planning._record_ref(old_scope),"revision_delta":{"kind":"SUCCESSOR",**planning._scope_delta(old_scope["payload"]["scope_entries"],entries)},"scope_entries":entries});new_envelope=deepcopy(old_scope["envelope"]);new_envelope.update({"record_id":new_envelope["record_id"].rsplit("/",1)[0]+"/2","record_revision":2,"supersedes_ref":planning._record_ref(old_scope)});new_scope_raw,new_scope=_record(new_envelope,new_payload)
+    predecessor=planning.build_planning_scope_chain_declaration(snapshot_raw,sources,plan_raw,genesis_args[3],genesis_args[4],old_scope_raw,assets,bundle_raw);assert not isinstance(predecessor,tuple)
+    successor=planning.build_planning_scope_chain_declaration(snapshot_raw,sources,plan_raw,discovery_raw,decision_raw,new_scope_raw,assets,bundle_raw);assert not isinstance(successor,tuple)
+    chain_args=(snapshot_raw,sources,plan_raw,discovery_raw,decision_raw,(),(new_scope_raw,),(predecessor,),assets,registry,bundle_raw)
+    return chain_args,predecessor,successor,old_scope,new_scope
 
 
 def test_in_memory_snapshot_validates_without_future_fixture_roots() -> None:
@@ -165,11 +179,32 @@ def test_complete_exact_root_suite_validates_unpatched_positive_plan() -> None:
     assert not isinstance(result,tuple),result
 
 
+def test_authoritative_e_roots_pass_c_directly_and_unversioned_vector_set_fails() -> None:
+    _,_,assets,registry,_,_=_fixture();index={asset.asset_id:asset for asset in assets};root_ids=("requirements:m1-contract-requirement-set:1.0.0","catalog:checkpoint-e-planning-families/1.0.0-candidate.1","profile:checkpoint-e-planning-families/1.0.0-candidate.1");registry_ids={entry.asset_id for entry in planning._registry_entries(registry)};support_ids=set().union(*(planning._referenced_asset_ids(json.loads(index[asset_id].raw_bytes)) for asset_id in root_ids))-set(root_ids)-registry_ids;supports=tuple(asset for asset in assets if asset.asset_id in support_ids);result=catalog_validation.build_catalog_profile_constraints(*(planning._raw_binding(index[asset_id]) for asset_id in root_ids),supports,registry)
+    assert type(result) is CatalogProfileConstraints
+    vector=index["vectors:checkpoint-e-planning-families/1.0.0"];vector_doc=json.loads(vector.raw_bytes);vector_doc["vector_set_id"]="vectors:checkpoint-e-planning-families";changed_vector=SuppliedAsset(vector.asset_id,vector.media_type,_canonical(vector_doc));catalog_doc=json.loads(index[root_ids[1]].raw_bytes)
+    for row in catalog_doc["family_policy_rows"]:row["conformance_vector_ref"]=planning._asset_ref(changed_vector)
+    changed_catalog=SuppliedAsset(index[root_ids[1]].asset_id,"application/json",_canonical(catalog_doc));profile_doc=json.loads(index[root_ids[2]].raw_bytes);profile_doc["catalog_ref"]=planning._asset_ref(changed_catalog);changed_profile=SuppliedAsset(index[root_ids[2]].asset_id,"application/json",_canonical(profile_doc));changed_supports=tuple(changed_vector if asset.asset_id==vector.asset_id else asset for asset in supports)
+    assert isinstance(catalog_validation.build_catalog_profile_constraints(planning._raw_binding(index[root_ids[0]]),planning._raw_binding(changed_catalog),planning._raw_binding(changed_profile),changed_supports,registry),tuple)
+
+
 @pytest.mark.parametrize("branch",["ACCEPT","BLOCK"])
 def test_public_full_chain_validates_without_upstream_monkeypatches(branch: str) -> None:
     result=planning.validate_planning_scope_chain(*_full_chain_fixture(branch))
     assert not isinstance(result,tuple),result
     assert result.to_python()["decision"]==branch
+
+
+def test_public_successor_chain_validates_complete_oldest_to_immediate_history() -> None:
+    args,_,_,_,_=_successor_chain_fixture();result=planning.validate_planning_scope_chain(*args)
+    assert not isinstance(result,tuple),result
+
+
+def test_genesis_rejects_nonempty_history_and_successor_rejects_truncated_history() -> None:
+    genesis=list(_full_chain_fixture("ACCEPT"));declaration=planning.build_planning_scope_chain_declaration(genesis[0],genesis[1],genesis[2],genesis[3],genesis[4],genesis[6][0],genesis[8],genesis[10]);assert not isinstance(declaration,tuple);genesis[7]=(declaration,)
+    assert isinstance(planning.validate_planning_scope_chain(*genesis),tuple)
+    successor_args,_,_,_,_=_successor_chain_fixture();truncated=(*successor_args[:7],(),*successor_args[8:])
+    assert isinstance(planning.validate_planning_scope_chain(*truncated),tuple)
 
 
 @pytest.mark.parametrize("replacement",["text",bytearray(b"x"),memoryview(b"x")])
@@ -264,10 +299,11 @@ def test_every_public_planning_seam_fails_closed_on_exact_type_substitution() ->
         lambda:planning.validate_agentization_plan("bad",snapshot_raw,sources,assets,registry,bundle_raw),
         lambda:planning.validate_inventory_discovery_result("bad",b"bad",snapshot_raw,sources,assets,registry,bundle_raw),
         lambda:planning.validate_scope_freeze_decision("bad",b"bad",b"bad",snapshot_raw,sources,assets,registry,bundle_raw),
-        lambda:planning.validate_frozen_inventory_scope("bad",b"bad",b"bad",b"bad",snapshot_raw,sources,assets,registry,bundle_raw),
-        lambda:planning.validate_planning_scope_chain(snapshot_raw,sources,b"bad",b"bad",b"bad",[],(),assets,registry,bundle_raw),
-        lambda:planning.compute_scope_revision_impact(b"bad",b"bad",[],object(),(),registry,bundle_raw),
-        lambda:planning.validate_planning_terminal_constraints(object(),registry,object(),b"bad",b"bad",b"bad",(),b"bad"),
+        lambda:planning.validate_frozen_inventory_scope("bad",b"bad",b"bad",b"bad",snapshot_raw,sources,assets,registry,bundle_raw,()),
+        lambda:planning.build_planning_scope_chain_declaration("bad",sources,b"bad",b"bad",b"bad",b"bad",assets,bundle_raw),
+        lambda:planning.validate_planning_scope_chain(snapshot_raw,sources,b"bad",b"bad",b"bad",[],(),(),assets,registry,bundle_raw),
+        lambda:planning.compute_scope_revision_impact((),object(),[],object(),registry),
+        lambda:planning.validate_planning_terminal_constraints(object(),registry,object(),object(),b"bad",b"bad",b"bad",(),b"bad"),
     )
     for call in calls:
         result=call()
@@ -297,6 +333,27 @@ def _local_discovery_fixture(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(planning,"validate_paper_source_snapshot",lambda *args:planning._SealedView("PaperSourceSnapshot",snapshot,_token=planning._TOKEN))
     args=(raw,b"plan",snapshot_raw,sources,assets,registry,bundle_raw)
     return args,document
+
+
+def _blocked_discovery_fixture():
+    plan_raw,snapshot_raw,sources,assets,registry,bundle_raw,plan=_plan_fixture();snapshot=json.loads(snapshot_raw);bundle=json.loads(bundle_raw);index={asset.asset_id:asset for asset in assets};row=snapshot["payload"]["source_files"][0];evidence=[planning._asset_ref(index["canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance"])]
+    component={"component_id":"pending","source_row_id":row["source_row_id"],"source_unit_id":row["source_unit_id"],"normalized_path":row["normalized_path"],"byte_start":0,"byte_end":row["byte_size"],"component_kind":"UNRESOLVED_SOURCE_REGION","source_anchor_hash":"pending","classification_state":"UNCLASSIFIED","classification_or_issue_code":"AGTXIV.TEST.DISCOVERY_BLOCKED","evidence_refs":evidence};component["component_id"],component["source_anchor_hash"]=planning._component_identity(component,row,sources[row["normalized_path"]]);error={"error_id":"error:discovery/blocked","error_code":component["classification_or_issue_code"],"summary":"Discovery could not classify the supplied source region.","evidence_refs":evidence};context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:discoverer"},"role":"DISCOVERY_PRODUCER","attempt_id":"attempt:discovery/blocked","implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":bundle["payload"]["canonicalization_profile_ref"]};coverage={key:row[key] for key in ("source_row_id","normalized_path","source_unit_id","sha256","byte_size","media_type","content_kind")};coverage.update({"component_ids":[component["component_id"]],"coverage_status":"BLOCKED_WITH_EVIDENCE"});dispositions=[{"obligation_id":obligation["obligation_id"],"status":"BLOCKED","component_ids":[component["component_id"]],"finding_or_error_refs":[error["error_id"]]} for obligation in plan["payload"]["profile_obligations"]];payload={"discovery_id":"discovery:test/blocked","discovery_revision":1,"plan_ref":planning._record_ref(plan),"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"producer_context":context,"observed_resource_limits":{"maximum_discovery_components":8192,"maximum_discovery_obligations":256},"source_unit_coverage":[coverage],"classified_components":[],"ambiguous_components":[],"unclassified_components":[component],"obligation_dispositions":dispositions,"discovery_errors":[error],"completeness_claim":"TOTAL_ACCOUNTED_PROFILE_RELATIVE"};envelope={"record_type":"agtxiv.inventory-discovery-result/1.0.0","schema_ref":planning._asset_ref(index["schema:inventory-discovery-result:1.0.0"]),"record_id":payload["discovery_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context};raw,document=_record(envelope,payload)
+    return (raw,plan_raw,snapshot_raw,sources,assets,registry,bundle_raw),document
+
+
+def test_discovery_blocked_requires_bidirectional_affected_row_fallback_and_error_closure() -> None:
+    args,_=_blocked_discovery_fixture();result=planning.validate_inventory_discovery_result(*args)
+    assert not isinstance(result,tuple),result
+
+
+@pytest.mark.parametrize("mutation",["zero-affected-rows","zero-relevant-components","classified-fallback","one-way-evidence"])
+def test_discovery_blocked_reviewer_reproductions_fail(mutation: str) -> None:
+    args,document=_blocked_discovery_fixture();payload=document["payload"]
+    if mutation=="zero-affected-rows":payload["source_unit_coverage"][0]["coverage_status"]="COMPONENTS_RECORDED"
+    elif mutation=="zero-relevant-components":payload["obligation_dispositions"][0]["component_ids"]=[]
+    elif mutation=="classified-fallback":component=payload["unclassified_components"].pop();component["classification_state"]="CLASSIFIED";payload["classified_components"]=[component]
+    else:payload["unclassified_components"][0]["evidence_refs"]=[planning._asset_ref(args[4][0])]
+    changed,_=_record(document["envelope"],payload);assert isinstance(planning.validate_inventory_discovery_result(changed,*args[1:]),tuple)
 
 
 def test_discovery_local_closure_accepts_complete_matching_projection(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -391,7 +448,7 @@ def _local_scope_fixture(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(planning,"validate_inventory_discovery_result",lambda *args:planning._SealedView("InventoryDiscoveryResult",discovery,_token=planning._TOKEN))
     monkeypatch.setattr(planning,"validate_agentization_plan",lambda *args:planning._SealedView("AgentizationPlan",plan,_token=planning._TOKEN))
     monkeypatch.setattr(planning,"validate_paper_source_snapshot",lambda *args:planning._SealedView("PaperSourceSnapshot",snapshot,_token=planning._TOKEN))
-    args=(raw,b"decision",b"discovery",b"plan",snapshot_raw,sources,assets,registry,bundle_raw)
+    args=(raw,b"decision",b"discovery",b"plan",snapshot_raw,sources,assets,registry,bundle_raw,())
     return args,document
 
 
@@ -412,32 +469,23 @@ def test_scope_genesis_rejects_identity_delta_and_closure_mutations(monkeypatch:
 
 
 def _impact_fixture(monkeypatch: pytest.MonkeyPatch):
-    scope_args,old=_local_scope_fixture(monkeypatch);bundle_raw=scope_args[8];bundle=json.loads(bundle_raw)
-    downstream_paths=[ROOT/f"fixtures/v2-contract-kernel/planning-scope/1.0.0/downstream-schemas/{name}/1.0.0.schema.json" for name in ("entry-output","whole-scope-output","derived-output")]
-    scope_schema=ROOT/"schemas/v2/contract-kernel/inventory/frozen-inventory-scope/1.0.0.schema.json"
-    assets=scope_args[6];registry=scope_args[7];refs={path:planning._asset_ref(next(asset for asset in assets if asset.schema_uri==json.loads(path.read_bytes())["$id"])) for path in downstream_paths}
-    new_payload=deepcopy(old["payload"]);new_payload["scope_revision"]=2;entry_id=new_payload["scope_entries"][0]["scope_entry_id"];new_payload["scope_entries"][0]["scope_state"]="AMBIGUOUS";new_payload["predecessor_scope_ref"]=planning._record_ref(old);new_payload["revision_delta"]={"kind":"SUCCESSOR","added_entry_ids":[],"removed_entry_ids":[],"classification_changed_entry_ids":[entry_id],"source_binding_changed_entry_ids":[]}
-    new_envelope=deepcopy(old["envelope"]);new_envelope["record_revision"]=2;new_envelope["record_id"]=new_envelope["record_id"].rsplit("/",1)[0]+"/2";new_envelope["supersedes_ref"]=planning._record_ref(old)
-    new_raw,new=_record(new_envelope,new_payload);old_raw=_canonical(old)
-    records=[];nodes=[]
-    kinds=(("entry-output","agtxiv.checkpoint-e-entry-output/1.0.0","ENTRY_SET",[entry_id],[entry_id]),("whole-scope-output","agtxiv.checkpoint-e-whole-scope-output/1.0.0","WHOLE_SCOPE",[],[entry_id]),("derived-output","agtxiv.checkpoint-e-derived-output/1.0.0","ENTRY_SET",[entry_id],[]))
+    chain_args,predecessor,successor,old,new=_successor_chain_fixture();assets=chain_args[8];registry=chain_args[9];bundle=json.loads(chain_args[10]);downstream_paths=[ROOT/f"fixtures/v2-contract-kernel/planning-scope/1.0.0/downstream-schemas/{name}/1.0.0.schema.json" for name in ("entry-output","whole-scope-output","derived-output")];refs={path:planning._asset_ref(next(asset for asset in assets if asset.schema_uri==json.loads(path.read_bytes())["$id"])) for path in downstream_paths};entry_id=old["payload"]["scope_entries"][0]["scope_entry_id"]
+    records=[];nodes=[];kinds=(("entry-output","agtxiv.checkpoint-e-entry-output/1.0.0","ENTRY_SET",[entry_id],[entry_id]),("whole-scope-output","agtxiv.checkpoint-e-whole-scope-output/1.0.0","WHOLE_SCOPE",[],[entry_id]),("derived-output","agtxiv.checkpoint-e-derived-output/1.0.0","ENTRY_SET",[entry_id],[]))
     for index,(name,rtype,mode,inputs,outputs) in enumerate(kinds):
-        context=old["envelope"]["producer_context"];rid=f"downstream:{name}/{index}"
-        envelope={"record_type":rtype,"schema_ref":refs[downstream_paths[index]],"record_id":rid,"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context}
-        payload={"scope_ref":planning._record_ref(old),"coverage_mode":mode,"input_entry_ids":inputs,"output_entry_ids":outputs};raw,doc=_record(envelope,payload);records.append(raw);nodes.append((rid,rtype,_canonical(payload["scope_ref"]),mode,tuple(inputs),tuple(outputs)))
+        context=old["envelope"]["producer_context"];rid=f"downstream:{name}/{index}";envelope={"record_type":rtype,"schema_ref":refs[downstream_paths[index]],"record_id":rid,"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context};payload={"scope_ref":planning._record_ref(old),"coverage_mode":mode,"input_entry_ids":inputs,"output_entry_ids":outputs};raw,_=_record(envelope,payload);records.append(raw);nodes.append((rid,rtype,_canonical(payload["scope_ref"]),mode,tuple(inputs),tuple(outputs)))
     projection=ScopeRevisionLineageProjection.build(tuple(nodes),((nodes[0][0],nodes[2][0],"DERIVED_FROM"),));assert not isinstance(projection,tuple)
-    return (old_raw,new_raw,tuple(records),projection,assets,registry,bundle_raw),records,nodes
+    return ((predecessor,),successor,tuple(records),projection,registry),records,nodes
 
 
 def test_revision_impact_validates_semantic_scopes_and_record_specific_lineage(monkeypatch: pytest.MonkeyPatch) -> None:
     args,_,_=_impact_fixture(monkeypatch);result=planning.compute_scope_revision_impact(*args)
     assert not isinstance(result,tuple),result
-    impact=result.to_python();assert set(impact["directly_affected_record_ids"])==set(impact["topological_order"])
+    impact=result.to_python();assert impact["affected_whole_scope_output_ids"]==["downstream:whole-scope-output/1"]
 
 
 @pytest.mark.parametrize("mutation",["derived-output","unknown-input","cycle","stale-scope"])
 def test_revision_impact_rejects_record_specific_and_graph_mutations(monkeypatch: pytest.MonkeyPatch,mutation: str) -> None:
-    args,records,nodes=_impact_fixture(monkeypatch);old_raw,new_raw,_,projection,assets,registry,bundle_raw=args
+    args,records,nodes=_impact_fixture(monkeypatch);history,successor,_,projection,registry=args
     if mutation in {"derived-output","unknown-input","stale-scope"}:
         index=2 if mutation=="derived-output" else 0;document=json.loads(records[index])
         if mutation=="derived-output":document["payload"]["output_entry_ids"]=[nodes[0][4][0]]
@@ -446,62 +494,56 @@ def test_revision_impact_rejects_record_specific_and_graph_mutations(monkeypatch
         records[index],_=_record(document["envelope"],document["payload"])
     else:
         projection=ScopeRevisionLineageProjection.build(tuple(nodes),((nodes[0][0],nodes[2][0],"DERIVED_FROM"),(nodes[2][0],nodes[0][0],"DERIVED_FROM")));assert not isinstance(projection,tuple)
-    result=planning.compute_scope_revision_impact(old_raw,new_raw,tuple(records),projection,assets,registry,bundle_raw)
+    result=planning.compute_scope_revision_impact(history,successor,tuple(records),projection,registry)
     assert isinstance(result,tuple) and result
 
 
+def test_revision_impact_rejects_intrinsic_predecessor_with_forged_plan_ref(monkeypatch: pytest.MonkeyPatch) -> None:
+    args,_,_=_impact_fixture(monkeypatch);history,successor,records,projection,registry=args;parts=planning._declaration_parts(history[0]);assert parts is not None;raws,sources,assets=parts;snapshot_raw,plan_raw,discovery_raw,decision_raw,scope_raw,bundle_raw=raws;scope=json.loads(scope_raw);scope["payload"]["plan_ref"]={**scope["payload"]["plan_ref"],"content_hash":"sha256:"+"0"*64};scope_raw,_=_record(scope["envelope"],scope["payload"]);forged=planning.build_planning_scope_chain_declaration(snapshot_raw,dict(sources),plan_raw,discovery_raw,decision_raw,scope_raw,assets,bundle_raw);assert not isinstance(forged,tuple)
+    assert isinstance(planning.compute_scope_revision_impact((forged,),successor,records,projection,registry),tuple)
+
+
 def _terminal_fixture(monkeypatch: pytest.MonkeyPatch):
-    _,_,assets,registry,bundle_raw,_=_fixture();bundle=json.loads(bundle_raw);index={asset.asset_id:asset for asset in assets}
-    refs={TERMINAL_SCHEMA:planning._asset_ref(index["schema:typed-terminal-result:1.0.0"])}
-    asset=lambda name:{"asset_id":name,"media_type":"application/json","byte_size":0,"sha256":"sha256:"+"0"*64}
-    schema_uris={"agtxiv.agentization-plan/1.0.0":"https://agtxiv.org/schema/v2/contract-kernel/planning/agentization-plan/1.0.0","agtxiv.inventory-discovery-result/1.0.0":"https://agtxiv.org/schema/v2/contract-kernel/inventory/inventory-discovery-result/1.0.0","agtxiv.scope-freeze-decision/1.0.0":"https://agtxiv.org/schema/v2/contract-kernel/review/scope-freeze-decision/1.0.0","agtxiv.paper-source-snapshot/1.0.0":"https://agtxiv.org/schema/v2/contract-kernel/source/paper-source-snapshot/1.0.0","agtxiv.contract-bundle-release/1.0.0":"https://agtxiv.org/schema/v2/contract-kernel/contract/contract-bundle-release/1.0.0"}
-    record_ref=lambda rtype,rid,digit:{"record_type":rtype,"record_id":rid,"record_revision":1,"schema_ref":{"asset_id":f"schema:{rtype}","media_type":"application/schema+json","byte_size":0,"sha256":"sha256:"+digit*64,"schema_uri":schema_uris[rtype]},"content_hash":"sha256:"+digit*64}
-    plan_ref=record_ref("agtxiv.agentization-plan/1.0.0","plan:terminal/1","1");discovery_ref=record_ref("agtxiv.inventory-discovery-result/1.0.0","discovery:terminal/1","2");decision_ref=record_ref("agtxiv.scope-freeze-decision/1.0.0","decision:terminal/1","3")
-    catalog_ref=planning._asset_ref(index["catalog:checkpoint-e-planning-families/1.0.0-candidate.1"]);profile_ref=planning._asset_ref(index["profile:checkpoint-e-planning-families/1.0.0-candidate.1"])
-    plan=_document_from_ref(plan_ref,{"artifact_family_catalog_ref":catalog_ref,"agentization_profile_ref":profile_ref,"profile_obligations":[{"obligation_id":"obligation:checkpoint-e/frozen-inventory-scope"}]})
-    discovery=_document_from_ref(discovery_ref,{"plan_ref":plan_ref,"source_snapshot_ref":record_ref("agtxiv.paper-source-snapshot/1.0.0","snapshot:terminal/1","4"),"source_tree_root":"sha256:"+"5"*64,"source_unit_coverage":[],"ambiguous_components":[],"unclassified_components":[]})
-    bundle_ref=planning._record_ref(bundle)
-    for document_value in (plan,discovery):document_value["envelope"]["contract_bundle_ref"]=bundle_ref
-    reviewer={"actor_kind":"HUMAN","actor_id":"actor:checkpoint-e/scope-freeze-reviewer"}
-    decision=_document_from_ref(decision_ref,{"decision":"BLOCK","plan_ref":plan_ref,"discovery_ref":discovery_ref,"source_snapshot_ref":discovery["payload"]["source_snapshot_ref"],"source_tree_root":discovery["payload"]["source_tree_root"],"reviewer":reviewer})
-    decision["envelope"]["contract_bundle_ref"]=bundle_ref
-    context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:checkpoint-e/scope-freeze-issuer"},"role":"SCOPE_FREEZE_ISSUER","attempt_id":"attempt:checkpoint-e/scope-freeze-issuer/blocked-appendix/1","implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":planning._asset_ref(index["canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance"])}
-    payload={"terminal_for_attempt":True,"terminal_scope":"ATTEMPT_ONLY","successful_artifact_produced":False,"satisfaction_claim":"NONE","attempt_id":context["attempt_id"],"binding_context":{"context_mode":"PLAN_BOUND","profile_ref":profile_ref,"catalog_ref":catalog_ref,"plan_ref":plan_ref},"target_obligation":{"obligation_key":"obligation:checkpoint-e/frozen-inventory-scope","stage_id":"SCOPE_FREEZE","family_id":"FROZEN_INVENTORY_SCOPE","basis":{"basis_kind":"COMPONENT","component_ref":{**plan_ref,"component_id":"obligation:checkpoint-e/frozen-inventory-scope","json_pointer":"/payload/profile_obligations/0"}}},"outcome":"BLOCKED","declared_reason":{"declared_reason_code":"AGTXIV.SCOPE.FREEZE_NOT_ACCEPTED","summary":"Scope freeze was not accepted for the exact plan-bound discovery; no FrozenInventoryScope was issued."},"evidence":[{"evidence_id":"evidence:scope-freeze/block-decision","evidence_role":"POLICY_OBSERVATION","evidence_kind":"RECORD","record_ref":decision_ref},{"evidence_id":"evidence:scope-freeze/discovery","evidence_role":"INPUT_STATE","evidence_kind":"RECORD","record_ref":discovery_ref}],"retry":{"retry_disposition":"NO_RETRY_IN_CURRENT_CONTEXT","context_change_required":"A new independently reviewed scope-freeze attempt is required before scope issuance."},"next_action":{"action_code":"ESCALATE","description":"Escalate the blocked scope-freeze decision for an independently authorized new attempt.","responsible_actor":reviewer,"responsible_role":"SCOPE_FREEZE_REVIEWER","deadline":{"deadline_kind":"NO_DEADLINE","no_deadline_reason":"No production review schedule is authorized by Checkpoint E."}},"resources":{"limit":{"max_wall_time_ms":60000,"max_cpu_time_ms":60000,"max_peak_memory_bytes":134217728,"max_input_bytes":134217728,"max_output_bytes":41943040,"max_network_requests":0},"observed":{"network_requests":0},"unobserved_metrics":["wall_time_ms","cpu_time_ms","peak_memory_bytes","input_bytes","output_bytes"],"relation":"INDETERMINATE"}}
-    envelope={"record_type":"agtxiv.typed-terminal-result/1.0.0","schema_ref":refs[TERMINAL_SCHEMA],"record_id":"terminal:checkpoint-e/scope-freeze-blocked/1","record_revision":1,"contract_bundle_ref":bundle_ref,"created_at":"2026-09-01T00:00:00Z","producer_context":context}
-    raw,document=_record(envelope,payload);parsed=planning.parse_canonical_json(raw);assert type(parsed) is ParsedCanonicalValue
-    parsed_ref=lambda value:build_canonical_value(value)
-    policy=catalog_validation._Policy("FROZEN_INVENTORY_SCOPE","1.0.0","SCOPE_FREEZE","SELECTED",("SCOPE_FREEZE_ISSUER",),"STRUCTURALLY_PERMITTED",("BLOCKED",),"PLAN_BOUND")
-    constraints=CatalogProfileConstraints(parsed_ref(planning._asset_ref(index["requirements:m1-contract-requirement-set:1.0.0"])),parsed_ref(catalog_ref),parsed_ref(profile_ref),(),("FROZEN_INVENTORY_SCOPE",),("SCOPE_FREEZE",),(policy,),_token=catalog_validation._CONSTRUCTION_TOKEN)
-    monkeypatch.setattr(planning,"validate_immutable_record_payload",lambda *args:())
-    return parsed,raw,document,assets,registry,bundle_raw,constraints,_canonical(plan),_canonical(discovery),_canonical(decision),decision
+    chain_args=_full_chain_fixture("BLOCK");snapshot_raw,sources,plan_raw,discovery_raw,decision_raw,terminals,_,_,assets,registry,bundle_raw=chain_args;terminal_raw=terminals[0]
+    parsed=planning.parse_canonical_json(terminal_raw);parsed_plan=planning.parse_canonical_json(plan_raw);assert type(parsed) is ParsedCanonicalValue and type(parsed_plan) is ParsedCanonicalValue
+    constraints=planning._planning_constraints(assets,registry,parsed_plan.to_python()["payload"]);assert type(constraints) is tuple and len(constraints)==2 and type(constraints[0]) is CatalogProfileConstraints
+    return parsed,terminal_raw,parsed.to_python(),assets,registry,bundle_raw,constraints[0],constraints[1],plan_raw,discovery_raw,decision_raw,chain_args
 
 
 def test_terminal_composition_calls_c_once_and_freezes_complete_e_vector(monkeypatch: pytest.MonkeyPatch) -> None:
-    parsed,_,_,assets,registry,bundle_raw,constraints,plan_raw,discovery_raw,decision_raw,_=_terminal_fixture(monkeypatch)
-    original=planning.validate_typed_terminal_result_catalog_constraints;calls=[]
+    parsed,_,_,assets,registry,bundle_raw,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,_=_terminal_fixture(monkeypatch)
+    original_c=planning.validate_typed_terminal_result_catalog_constraints;original_e=planning.validate_planning_terminal_registration_v1_1;c_calls=[];e_calls=[]
+    def counted_c(*args):c_calls.append(1);return original_c(*args)
+    def counted_e(*args):e_calls.append(1);return original_e(*args)
+    monkeypatch.setattr(planning,"validate_typed_terminal_result_catalog_constraints",counted_c);monkeypatch.setattr(planning,"validate_planning_terminal_registration_v1_1",counted_e)
+    assert planning.validate_planning_terminal_constraints(parsed,registry,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,assets,bundle_raw)==()
+    assert c_calls==[1] and e_calls==[1]
+
+
+def test_terminal_rejects_forged_constraints_and_corrupt_bundle_policy_before_c(monkeypatch: pytest.MonkeyPatch) -> None:
+    parsed,_,_,assets,registry,bundle_raw,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,_=_terminal_fixture(monkeypatch);calls=[]
+    original=planning.validate_typed_terminal_result_catalog_constraints
     def counted(*args):calls.append(1);return original(*args)
-    monkeypatch.setattr(planning,"validate_typed_terminal_result_catalog_constraints",counted)
-    assert planning.validate_planning_terminal_constraints(parsed,registry,constraints,plan_raw,discovery_raw,decision_raw,assets,bundle_raw)==()
-    assert calls==[1]
+    monkeypatch.setattr(planning,"validate_typed_terminal_result_catalog_constraints",counted);object.__setattr__(e_constraints,"_KernelValidationPolicyV11Constraints__registrations",(b"{}",))
+    assert planning.validate_planning_terminal_constraints(parsed,registry,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,assets,bundle_raw) and calls==[]
+    fresh=_terminal_fixture(monkeypatch);parsed,_,_,assets,registry,bundle_raw,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,_=fresh;changed=list(assets);index=next(i for i,asset in enumerate(changed) if asset.asset_id=="validation-policy:checkpoint-e-kernel-candidate/1.1.0");asset=changed[index];changed[index]=SuppliedAsset(asset.asset_id,asset.media_type,asset.raw_bytes+b" ")
+    assert planning.validate_planning_terminal_constraints(parsed,registry,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,tuple(changed),bundle_raw)
 
 
 @pytest.mark.parametrize("mutation",["basis","evidence-order","resource","attempt","action"])
 def test_terminal_composition_rejects_each_frozen_binding_dimension(monkeypatch: pytest.MonkeyPatch,mutation: str) -> None:
-    _,_,document,assets,registry,bundle_raw,constraints,plan_raw,discovery_raw,decision_raw,_=_terminal_fixture(monkeypatch);payload=document["payload"]
+    _,_,document,assets,registry,bundle_raw,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,_=_terminal_fixture(monkeypatch);payload=document["payload"]
     if mutation=="basis":payload["target_obligation"]["basis"]["component_ref"]["record_id"]="plan:stale"
     elif mutation=="evidence-order":payload["evidence"].reverse()
     elif mutation=="resource":payload["resources"]["limit"]["max_network_requests"]=1
     elif mutation=="attempt":payload["attempt_id"]="attempt:stale"
     else:payload["next_action"]["responsible_role"]="DISCOVERY_PRODUCER"
     raw,_=_record(document["envelope"],payload);parsed=planning.parse_canonical_json(raw);assert type(parsed) is ParsedCanonicalValue
-    assert planning.validate_planning_terminal_constraints(parsed,registry,constraints,plan_raw,discovery_raw,decision_raw,assets,bundle_raw)
+    assert planning.validate_planning_terminal_constraints(parsed,registry,c_constraints,e_constraints,plan_raw,discovery_raw,decision_raw,assets,bundle_raw)
 
 
 def test_aggregate_block_invokes_terminal_composition_and_rejects_canonical_garbage(monkeypatch: pytest.MonkeyPatch) -> None:
-    parsed,terminal_raw,_,assets,registry,bundle_raw,constraints,plan_raw,discovery_raw,decision_raw,decision=_terminal_fixture(monkeypatch)
-    monkeypatch.setattr(planning,"validate_scope_freeze_decision",lambda *args:planning._SealedView("ScopeFreezeDecision",decision,_token=planning._TOKEN))
-    monkeypatch.setattr(planning,"_planning_constraints",lambda *args:(constraints,object()))
-    args=(b"{}",{},plan_raw,discovery_raw,decision_raw,(terminal_raw,),(),assets,registry,bundle_raw)
+    args=_full_chain_fixture("BLOCK")
     assert not isinstance(planning.validate_planning_scope_chain(*args),tuple)
     garbage_args=(*args[:5],(b"{}",),*args[6:])
     assert isinstance(planning.validate_planning_scope_chain(*garbage_args),tuple)

@@ -37,8 +37,10 @@ from .code_policy_v1_1_validation import (
 from .diagnostics import Diagnostic, DiagnosticCode
 from .planning_validation import (
     PlanningScopeChain,
+    PlanningScopeChainDeclaration,
     ScopeRevisionImpact,
     ScopeRevisionLineageProjection,
+    build_planning_scope_chain_declaration,
     compute_scope_revision_impact,
     validate_agentization_plan,
     validate_frozen_inventory_scope,
@@ -73,8 +75,10 @@ __all__ = [
     "validate_emitted_diagnostic_registration_v1_1",
     "validate_stable_code_catalog_v1_1_intrinsic",
     "PlanningScopeChain",
+    "PlanningScopeChainDeclaration",
     "ScopeRevisionImpact",
     "ScopeRevisionLineageProjection",
+    "build_planning_scope_chain_declaration",
     "compute_scope_revision_impact",
     "validate_agentization_plan",
     "validate_frozen_inventory_scope",
