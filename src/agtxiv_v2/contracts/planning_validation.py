@@ -706,9 +706,11 @@ def _scope_delta(old: list[dict[str, Any]], new: list[dict[str, Any]]) -> dict[s
     return {"added_entry_ids": sorted(after.keys() - before.keys(), key=str.encode), "removed_entry_ids": sorted(before.keys() - after.keys(), key=str.encode), "classification_changed_entry_ids": sorted((x for x in common if before[x]["scope_state"] != after[x]["scope_state"]), key=str.encode), "source_binding_changed_entry_ids": sorted((x for x in common if any(before[x][k] != after[x][k] for k in binding)), key=str.encode)}
 
 
-def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: bytes, discovery_raw: bytes, plan_raw: bytes, snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes, predecessor_scope_raw: bytes | None = None) -> _SealedView | tuple[Diagnostic, ...]:
+def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: bytes, discovery_raw: bytes, plan_raw: bytes, snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes, predecessor_scope_raw: bytes | None = None, predecessor_plan_raw: bytes | None = None, predecessor_snapshot_raw: bytes | None = None) -> _SealedView | tuple[Diagnostic, ...]:
     try:
-        raws = (scope_raw, decision_raw, discovery_raw, plan_raw, snapshot_raw, bundle_raw) + (() if predecessor_scope_raw is None else (predecessor_scope_raw,))
+        predecessor_raws=(predecessor_scope_raw,predecessor_plan_raw,predecessor_snapshot_raw)
+        if any(raw is None for raw in predecessor_raws) and any(raw is not None for raw in predecessor_raws):return _failure("successor validation requires the complete predecessor scope/Plan/snapshot input","SCOPE_HISTORY")
+        raws = (scope_raw, decision_raw, discovery_raw, plan_raw, snapshot_raw, bundle_raw) + (() if predecessor_scope_raw is None else predecessor_raws)
         diagnostics = _preflight(raws, source_bytes_by_path, supplied_contract_assets)
         if diagnostics: return diagnostics
         decision = validate_scope_freeze_decision(decision_raw, discovery_raw, plan_raw, snapshot_raw, source_bytes_by_path, supplied_contract_assets, registry, bundle_raw)
@@ -736,8 +738,12 @@ def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: byt
             predecessor_bound, diagnostics = _parse_record(predecessor_scope_raw, registry, "agtxiv.frozen-inventory-scope/1.0.0", "SCOPE_PREDECESSOR")
             if diagnostics: return diagnostics
             assert predecessor_bound is not None
-            predecessor = predecessor_bound[1]; expected_delta = {"kind":"SUCCESSOR", **_scope_delta(predecessor["payload"]["scope_entries"], expected)}
-            if payload["scope_id"] != predecessor["payload"]["scope_id"] or payload["scope_revision"] != predecessor["payload"]["scope_revision"] + 1 or payload["plan_ref"]!=predecessor["payload"]["plan_ref"] or payload["source_snapshot_ref"]!=predecessor["payload"]["source_snapshot_ref"] or envelope["contract_bundle_ref"]!=predecessor["envelope"]["contract_bundle_ref"] or not _ref_equal(payload.get("predecessor_scope_ref"), _record_ref(predecessor)) or not _ref_equal(envelope.get("supersedes_ref"), _record_ref(predecessor)) or payload["revision_delta"] != expected_delta or not any(expected_delta[key] for key in expected_delta if key != "kind") or expected_delta["source_binding_changed_entry_ids"]:
+            predecessor = predecessor_bound[1];previous_plan_parsed=parse_canonical_json(predecessor_plan_raw);previous_snapshot_parsed=parse_canonical_json(predecessor_snapshot_raw)
+            if type(previous_plan_parsed) is not ParsedCanonicalValue or type(previous_snapshot_parsed) is not ParsedCanonicalValue:return _failure("validated predecessor Plan or snapshot cannot be recovered","SCOPE_HISTORY",code=DiagnosticCode.REF_HASH_MISMATCH)
+            previous_plan=previous_plan_parsed.to_python();previous_snapshot=previous_snapshot_parsed.to_python();expected_delta = {"kind":"SUCCESSOR", **_scope_delta(predecessor["payload"]["scope_entries"], expected)}
+            stable_profile=pd["payload"]["agentization_profile_ref"]==previous_plan["payload"]["agentization_profile_ref"]
+            stable_paper=sd["payload"]["source_origin_kind"]==previous_snapshot["payload"]["source_origin_kind"] and sd["payload"]["source_label"]==previous_snapshot["payload"]["source_label"]
+            if payload["scope_id"] != predecessor["payload"]["scope_id"] or payload["scope_revision"] != predecessor["payload"]["scope_revision"] + 1 or not stable_profile or not stable_paper or envelope["contract_bundle_ref"]!=predecessor["envelope"]["contract_bundle_ref"] or not _ref_equal(payload.get("predecessor_scope_ref"), _record_ref(predecessor)) or not _ref_equal(envelope.get("supersedes_ref"), _record_ref(predecessor)) or payload["revision_delta"] != expected_delta or not any(expected_delta[key] for key in expected_delta if key != "kind") or expected_delta["source_binding_changed_entry_ids"]:
                 return _failure("successor lineage or mechanical revision delta is invalid", "SCOPE_REVISION", code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
         expected_record_id = f"inventory-scope-record:sha256:{payload['scope_id'].rsplit(':',1)[-1]}/revision/{payload['scope_revision']}"
         if envelope["record_id"] != expected_record_id or envelope["record_revision"] != payload["scope_revision"]: return _failure("scope record ID/revision projection is invalid", "SCOPE_REVISION", code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
@@ -748,18 +754,18 @@ def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: byt
 
 def _validated_predecessor_history(predecessor_history: tuple[PlanningScopeChainDeclaration,...],registry: ContractSchemaRegistry):
     if type(predecessor_history) is not tuple or len(predecessor_history)>MAX_PREDECESSOR_DECLARATIONS or any(type(item) is not PlanningScopeChainDeclaration for item in predecessor_history):return _failure("predecessor history requires at most 256 exact sealed declarations","SCOPE_HISTORY")
-    validated=[];previous_raw=None;seen=set();baseline_assets=None;baseline_bundle=None
+    validated=[];previous_raw=None;previous_plan_raw=None;previous_snapshot_raw=None;seen=set();baseline_assets=None;baseline_bundle=None
     for index,declaration in enumerate(predecessor_history):
         parts=_declaration_parts(declaration)
         if parts is None:return _failure("predecessor declaration failed seal integrity","SCOPE_HISTORY")
         records,source_rows,assets=parts;snapshot_raw,plan_raw,discovery_raw,decision_raw,scope_raw,bundle_raw=records;sources=dict(source_rows)
         if baseline_assets is None:baseline_assets=assets;baseline_bundle=bundle_raw
         if assets!=baseline_assets or bundle_raw!=baseline_bundle:return _failure("predecessor declarations do not share one exact bundle namespace","SCOPE_HISTORY",code=DiagnosticCode.REF_HASH_MISMATCH)
-        scope=_validate_frozen_inventory_scope_current(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,sources,assets,registry,bundle_raw,previous_raw)
+        scope=_validate_frozen_inventory_scope_current(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,sources,assets,registry,bundle_raw,previous_raw,previous_plan_raw,previous_snapshot_raw)
         if type(scope) is tuple:return scope
         document=scope.to_python();identity=_canonical(_record_ref(document))
         if identity in seen or document["payload"]["scope_revision"]!=index+1:return _failure("predecessor history is duplicated, reordered, or incomplete","SCOPE_HISTORY",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
-        seen.add(identity);validated.append((declaration,document,records,assets));previous_raw=scope_raw
+        seen.add(identity);validated.append((declaration,document,records,assets));previous_raw=scope_raw;previous_plan_raw=plan_raw;previous_snapshot_raw=snapshot_raw
     return validated
 
 
@@ -775,9 +781,9 @@ def validate_frozen_inventory_scope(scope_raw: bytes, decision_raw: bytes, disco
         if declaration_bytes+current_bytes>MAX_AGGREGATE_INPUT_BYTES:return _failure("current chain plus predecessor history exceeds aggregate input limit","SCOPE_HISTORY",code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
         history=_validated_predecessor_history(predecessor_history,registry)
         if type(history) is tuple and (not history or type(history[0]) is Diagnostic):return history
-        previous_raw=history[-1][2][4] if history else None
+        previous_raw=history[-1][2][4] if history else None;previous_plan_raw=history[-1][2][1] if history else None;previous_snapshot_raw=history[-1][2][0] if history else None
         if history and (history[-1][3]!=supplied_contract_assets or history[-1][2][5]!=bundle_raw):return _failure("current scope bundle namespace differs from predecessor history","SCOPE_HISTORY",code=DiagnosticCode.REF_HASH_MISMATCH)
-        result=_validate_frozen_inventory_scope_current(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,source_bytes_by_path,supplied_contract_assets,registry,bundle_raw,previous_raw)
+        result=_validate_frozen_inventory_scope_current(scope_raw,decision_raw,discovery_raw,plan_raw,snapshot_raw,source_bytes_by_path,supplied_contract_assets,registry,bundle_raw,previous_raw,previous_plan_raw,previous_snapshot_raw)
         if type(result) is tuple:return result
         revision=result.to_python()["payload"]["scope_revision"]
         if len(predecessor_history)!=revision-1:return _failure("scope revision requires the complete oldest-to-immediate predecessor history","SCOPE_HISTORY",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
