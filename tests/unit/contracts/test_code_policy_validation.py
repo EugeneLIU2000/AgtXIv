@@ -71,6 +71,8 @@ def _registry() -> ContractSchemaRegistry:
         "agentization-profile-release": "schema:agentization-profile-release:1.0.0",
         "stable-code-catalog": "schema:stable-code-catalog:1.0.0",
         "kernel-validation-policy": "schema:kernel-validation-policy:1.0.0",
+        "contract-bundle-release": "schema:contract-bundle-release:1.0.0",
+        "discovery-obligation-policy": "schema:discovery-obligation-policy:1.0.0",
     }
     for path in sorted((ROOT / "schemas/v2/contract-kernel/contract").glob("*/1.0.0.schema.json")):
         bindings.append(_schema_binding(path, names[path.parent.name]))

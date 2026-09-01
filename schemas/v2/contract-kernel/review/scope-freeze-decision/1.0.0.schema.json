@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/review/scope-freeze-decision/1.0.0",
+  "title": "agtxiv.scope-freeze-decision/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.scope-freeze-decision/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_id",
+        "decision_revision",
+        "plan_ref",
+        "discovery_ref",
+        "source_snapshot_ref",
+        "source_tree_root",
+        "reviewer",
+        "reviewer_role",
+        "producer_actor_ref",
+        "independence_declaration",
+        "conflict_declarations",
+        "review_policy_ref",
+        "findings",
+        "decision"
+      ],
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512
+        },
+        "decision_revision": {
+          "const": 1
+        },
+        "plan_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "discovery_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_snapshot_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_tree_root": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        },
+        "reviewer": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/actor-identity/1.0.0"
+        },
+        "reviewer_role": {
+          "const": "SCOPE_FREEZE_REVIEWER"
+        },
+        "producer_actor_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/actor-identity/1.0.0"
+        },
+        "independence_declaration": {
+          "const": "STRUCTURALLY_DISTINCT_ACTOR_IDS_DECLARED"
+        },
+        "conflict_declarations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "producer_actor_id",
+              "reviewer_actor_id",
+              "category",
+              "disposition"
+            ],
+            "properties": {
+              "producer_actor_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "reviewer_actor_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "category": {
+                "enum": [
+                  "IDENTITY",
+                  "ORGANIZATIONAL_CONTROL",
+                  "BENEFICIAL_OWNERSHIP",
+                  "OTHER"
+                ]
+              },
+              "disposition": {
+                "enum": [
+                  "NO_CONFLICT_DECLARED",
+                  "CONFLICT_DECLARED"
+                ]
+              }
+            }
+          }
+        },
+        "review_policy_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "findings": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "finding_id",
+              "severity",
+              "subject_kind",
+              "subject_id",
+              "finding_code",
+              "summary"
+            ],
+            "properties": {
+              "finding_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "severity": {
+                "enum": [
+                  "INFO",
+                  "WARNING",
+                  "BLOCKING"
+                ]
+              },
+              "subject_kind": {
+                "enum": [
+                  "PLAN",
+                  "DISCOVERY",
+                  "SOURCE_UNIT",
+                  "COMPONENT",
+                  "OBLIGATION",
+                  "ACTOR_DECLARATION"
+                ]
+              },
+              "subject_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "finding_code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            }
+          }
+        },
+        "decision": {
+          "enum": [
+            "ACCEPT",
+            "BLOCK"
+          ]
+        },
+        "terminal_requirement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "obligation_key",
+            "reason_code",
+            "family_id",
+            "stage_id",
+            "outcome",
+            "context_mode"
+          ],
+          "properties": {
+            "obligation_key": {
+              "const": "obligation:checkpoint-e/frozen-inventory-scope"
+            },
+            "reason_code": {
+              "const": "AGTXIV.SCOPE.FREEZE_NOT_ACCEPTED"
+            },
+            "family_id": {
+              "const": "FROZEN_INVENTORY_SCOPE"
+            },
+            "stage_id": {
+              "const": "SCOPE_FREEZE"
+            },
+            "outcome": {
+              "const": "BLOCKED"
+            },
+            "context_mode": {
+              "const": "PLAN_BOUND"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "BLOCK"
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "required": [
+              "terminal_requirement"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "terminal_requirement"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type",
+                "producer_context"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.scope-freeze-decision/1.0.0"
+                },
+                "producer_context": {
+                  "allOf": [
+                    {
+                      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "role"
+                      ],
+                      "properties": {
+                        "role": {
+                          "const": "SCOPE_FREEZE_REVIEWER"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

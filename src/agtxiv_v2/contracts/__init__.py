@@ -28,7 +28,26 @@ from .code_policy_validation import (
     validate_stable_code_catalog_intrinsic,
     validate_typed_terminal_result_kernel_constraints,
 )
+from .code_policy_v1_1_validation import (
+    KernelValidationPolicyV11Constraints,
+    build_kernel_validation_policy_v1_1_constraints,
+    validate_emitted_diagnostic_registration_v1_1,
+    validate_stable_code_catalog_v1_1_intrinsic,
+)
 from .diagnostics import Diagnostic, DiagnosticCode
+from .planning_validation import (
+    PlanningScopeChain,
+    ScopeRevisionImpact,
+    ScopeRevisionLineageProjection,
+    compute_scope_revision_impact,
+    validate_agentization_plan,
+    validate_frozen_inventory_scope,
+    validate_inventory_discovery_result,
+    validate_paper_source_snapshot,
+    validate_planning_scope_chain,
+    validate_planning_terminal_constraints,
+    validate_scope_freeze_decision,
+)
 from .references import (
     SuppliedAsset,
     raw_asset_sha256,
@@ -49,6 +68,21 @@ from .terminal_validation import validate_typed_terminal_result_intrinsic
 __all__ = [
     "CatalogProfileConstraints",
     "KernelValidationPolicyConstraints",
+    "KernelValidationPolicyV11Constraints",
+    "build_kernel_validation_policy_v1_1_constraints",
+    "validate_emitted_diagnostic_registration_v1_1",
+    "validate_stable_code_catalog_v1_1_intrinsic",
+    "PlanningScopeChain",
+    "ScopeRevisionImpact",
+    "ScopeRevisionLineageProjection",
+    "compute_scope_revision_impact",
+    "validate_agentization_plan",
+    "validate_frozen_inventory_scope",
+    "validate_inventory_discovery_result",
+    "validate_paper_source_snapshot",
+    "validate_planning_scope_chain",
+    "validate_planning_terminal_constraints",
+    "validate_scope_freeze_decision",
     "build_kernel_validation_policy_constraints",
     "validate_emitted_diagnostic_registration",
     "validate_stable_code_catalog_intrinsic",

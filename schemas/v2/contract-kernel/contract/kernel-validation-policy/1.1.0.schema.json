@@ -1,0 +1,491 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/contract/kernel-validation-policy/1.1.0",
+  "title": "AgtXIv kernel validation policy successor",
+  "$defs": {
+    "schemaRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "media_type",
+        "byte_size",
+        "sha256",
+        "schema_uri"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 256,
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        },
+        "media_type": {
+          "const": "application/schema+json"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "schema_uri": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 512
+        }
+      }
+    },
+    "jsonRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "media_type",
+        "byte_size",
+        "sha256"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 256,
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        },
+        "media_type": {
+          "const": "application/json"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+        }
+      }
+    },
+    "pythonRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "media_type",
+        "byte_size",
+        "sha256"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 256,
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        },
+        "media_type": {
+          "const": "text/x-python"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family_id",
+        "family_version",
+        "stage_id"
+      ],
+      "properties": {
+        "family_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}(?![\\s\\S])"
+        },
+        "family_version": {
+          "const": "1.0.0"
+        },
+        "stage_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{2,127}(?![\\s\\S])"
+        }
+      }
+    },
+    "registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason_code",
+        "registration_kind",
+        "allowed_outcomes",
+        "allowed_retry_dispositions",
+        "allowed_context_modes",
+        "targets"
+      ],
+      "properties": {
+        "reason_code": {
+          "type": "string",
+          "pattern": "^AGTXIV\\.[A-Z][A-Z0-9_]*(?:\\.[A-Z][A-Z0-9_]*)+(?![\\s\\S])"
+        },
+        "registration_kind": {
+          "enum": [
+            "SYNTHETIC_COMPOSITION_ONLY",
+            "PLANNING_SCOPE_BLOCK_ONLY"
+          ]
+        },
+        "allowed_outcomes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "UNAVAILABLE",
+              "RETRY_REQUIRED",
+              "REVIEW_REQUIRED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          }
+        },
+        "allowed_retry_dispositions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "RETRY_AFTER_CONDITION",
+              "NO_RETRY_IN_CURRENT_CONTEXT",
+              "REVIEW_DECIDES"
+            ]
+          }
+        },
+        "allowed_context_modes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "PROFILE_BOUND",
+              "PLAN_BOUND",
+              "FROZEN_SCOPE_BOUND"
+            ]
+          }
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/target"
+          }
+        }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_type",
+    "document_schema_ref",
+    "policy_id",
+    "policy_version",
+    "policy_kind",
+    "policy_status",
+    "revision_kind",
+    "predecessor_ref",
+    "predecessor_version",
+    "inherited_registration_context_ref",
+    "code_catalog_ref",
+    "structural_constraints_ref",
+    "terminal_schema_ref",
+    "validator_ref",
+    "validator_entry_points",
+    "conformance_vector_ref",
+    "gate_order",
+    "resource_limits",
+    "terminal_reason_registrations"
+  ],
+  "properties": {
+    "document_type": {
+      "const": "AGTXIV_KERNEL_VALIDATION_POLICY"
+    },
+    "document_schema_ref": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/schemaRef"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_uri": {
+              "const": "https://agtxiv.org/schema/v2/contract-kernel/contract/kernel-validation-policy/1.1.0"
+            }
+          }
+        }
+      ]
+    },
+    "policy_id": {
+      "const": "validation-policy:checkpoint-d-kernel-candidate"
+    },
+    "policy_version": {
+      "const": "1.1.0"
+    },
+    "policy_kind": {
+      "const": "CONTRACT_KERNEL_COMPOSITION"
+    },
+    "policy_status": {
+      "const": "CANDIDATE_NON_AUTHORITY"
+    },
+    "revision_kind": {
+      "const": "SUCCESSOR"
+    },
+    "code_catalog_ref": {
+      "$ref": "#/$defs/jsonRef"
+    },
+    "structural_constraints_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirements_ref",
+        "catalog_ref",
+        "profile_ref",
+        "discovery_policy_ref",
+        "constraint_source"
+      ],
+      "properties": {
+        "requirements_ref": {
+          "$ref": "#/$defs/jsonRef"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/jsonRef"
+        },
+        "profile_ref": {
+          "$ref": "#/$defs/jsonRef"
+        },
+        "constraint_source": {
+          "const": "CHECKPOINT_E_SEALED_PLANNING_CONSTRAINTS"
+        },
+        "discovery_policy_ref": {
+          "$ref": "#/$defs/jsonRef"
+        }
+      }
+    },
+    "terminal_schema_ref": {
+      "$ref": "#/$defs/schemaRef"
+    },
+    "validator_ref": {
+      "$ref": "#/$defs/pythonRef"
+    },
+    "conformance_vector_ref": {
+      "$ref": "#/$defs/jsonRef"
+    },
+    "validator_entry_points": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "catalog_intrinsic",
+        "policy_builder",
+        "diagnostic_registration",
+        "terminal_composition",
+        "paper_source_snapshot",
+        "agentization_plan",
+        "inventory_discovery_result",
+        "scope_freeze_decision",
+        "frozen_inventory_scope",
+        "planning_scope_chain",
+        "scope_revision_impact",
+        "planning_terminal_constraints"
+      ],
+      "properties": {
+        "catalog_intrinsic": {
+          "const": "agtxiv_v2.contracts.code_policy_validation.validate_stable_code_catalog_intrinsic"
+        },
+        "policy_builder": {
+          "const": "agtxiv_v2.contracts.code_policy_validation.build_kernel_validation_policy_constraints"
+        },
+        "diagnostic_registration": {
+          "const": "agtxiv_v2.contracts.code_policy_validation.validate_emitted_diagnostic_registration"
+        },
+        "terminal_composition": {
+          "const": "agtxiv_v2.contracts.code_policy_validation.validate_typed_terminal_result_kernel_constraints"
+        },
+        "paper_source_snapshot": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_paper_source_snapshot"
+        },
+        "agentization_plan": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_agentization_plan"
+        },
+        "inventory_discovery_result": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_inventory_discovery_result"
+        },
+        "scope_freeze_decision": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_scope_freeze_decision"
+        },
+        "frozen_inventory_scope": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_frozen_inventory_scope"
+        },
+        "planning_scope_chain": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_planning_scope_chain"
+        },
+        "scope_revision_impact": {
+          "const": "agtxiv_v2.contracts.planning_validation.compute_scope_revision_impact"
+        },
+        "planning_terminal_constraints": {
+          "const": "agtxiv_v2.contracts.planning_validation.validate_planning_terminal_constraints"
+        }
+      }
+    },
+    "gate_order": {
+      "const": [
+        "CODE_CATALOG_INTRINSIC",
+        "PYTHON_DIAGNOSTIC_BIJECTION",
+        "POLICY_INTRINSIC_AND_EXACT_BINDING",
+        "EMITTED_DIAGNOSTIC_REGISTRATION",
+        "TERMINAL_C_PUBLIC_INCLUDING_B_INTRINSIC",
+        "TERMINAL_D_REASON_POLICY",
+        "TERMINAL_C_PUBLIC_INCLUDING_B_INTRINSIC_ONCE",
+        "TERMINAL_E_1_1_REASON_POLICY",
+        "TERMINAL_E_EXACT_PLANNING_BINDINGS"
+      ]
+    },
+    "resource_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact_policy_roots",
+        "exact_support_assets",
+        "maximum_predecessor_total_root_bytes",
+        "maximum_catalog_root_bytes",
+        "maximum_policy_root_bytes",
+        "maximum_successor_total_root_bytes",
+        "maximum_total_root_bytes",
+        "maximum_exact_ref_bytes",
+        "maximum_validator_source_bytes",
+        "maximum_vectors",
+        "maximum_vector_entry_bytes",
+        "maximum_vector_index_bytes",
+        "maximum_obligation_policy_root_bytes",
+        "maximum_total_support_bytes",
+        "maximum_total_code_policy_input_bytes",
+        "exact_code_entries",
+        "exact_reason_registrations",
+        "exact_targets_per_registration",
+        "exact_total_reason_targets",
+        "maximum_emitted_diagnostics"
+      ],
+      "properties": {
+        "exact_policy_roots": {
+          "const": 4
+        },
+        "exact_support_assets": {
+          "const": 3
+        },
+        "maximum_predecessor_total_root_bytes": {
+          "const": 428976
+        },
+        "maximum_catalog_root_bytes": {
+          "const": 408832
+        },
+        "maximum_policy_root_bytes": {
+          "const": 49152
+        },
+        "maximum_successor_total_root_bytes": {
+          "const": 457984
+        },
+        "maximum_total_root_bytes": {
+          "const": 886960
+        },
+        "maximum_exact_ref_bytes": {
+          "const": 2048
+        },
+        "maximum_validator_source_bytes": {
+          "const": 1048576
+        },
+        "maximum_vectors": {
+          "const": 512
+        },
+        "maximum_vector_entry_bytes": {
+          "const": 2048
+        },
+        "maximum_vector_index_bytes": {
+          "const": 1064960
+        },
+        "maximum_obligation_policy_root_bytes": {
+          "const": 41943040
+        },
+        "maximum_total_support_bytes": {
+          "const": 44056576
+        },
+        "maximum_total_code_policy_input_bytes": {
+          "const": 44943536
+        },
+        "exact_code_entries": {
+          "const": 80
+        },
+        "exact_reason_registrations": {
+          "const": 2
+        },
+        "exact_targets_per_registration": {
+          "const": 1
+        },
+        "exact_total_reason_targets": {
+          "const": 2
+        },
+        "maximum_emitted_diagnostics": {
+          "const": 4096
+        }
+      }
+    },
+    "terminal_reason_registrations": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/registration"
+      }
+    },
+    "predecessor_ref": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+    },
+    "predecessor_version": {
+      "const": "1.0.0"
+    },
+    "inherited_registration_context_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirements_ref",
+        "catalog_ref",
+        "profile_ref",
+        "constraint_source"
+      ],
+      "properties": {
+        "requirements_ref": {
+          "$ref": "#/$defs/jsonRef"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/jsonRef"
+        },
+        "profile_ref": {
+          "$ref": "#/$defs/jsonRef"
+        },
+        "constraint_source": {
+          "const": "CHECKPOINT_C_SEALED_CONSTRAINTS"
+        }
+      }
+    }
+  }
+}

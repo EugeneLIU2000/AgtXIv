@@ -1,0 +1,549 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/inventory/inventory-discovery-result/1.0.0",
+  "title": "agtxiv.inventory-discovery-result/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.inventory-discovery-result/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "discovery_id",
+        "discovery_revision",
+        "plan_ref",
+        "source_snapshot_ref",
+        "source_tree_root",
+        "producer_context",
+        "observed_resource_limits",
+        "source_unit_coverage",
+        "classified_components",
+        "ambiguous_components",
+        "unclassified_components",
+        "obligation_dispositions",
+        "discovery_errors",
+        "completeness_claim"
+      ],
+      "properties": {
+        "discovery_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512
+        },
+        "discovery_revision": {
+          "const": 1
+        },
+        "plan_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_snapshot_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_tree_root": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        },
+        "producer_context": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0"
+        },
+        "observed_resource_limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maximum_discovery_components",
+            "maximum_discovery_obligations"
+          ],
+          "properties": {
+            "maximum_discovery_components": {
+              "const": 8192
+            },
+            "maximum_discovery_obligations": {
+              "const": 256
+            }
+          }
+        },
+        "source_unit_coverage": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "normalized_path",
+              "source_row_id",
+              "source_unit_id",
+              "sha256",
+              "byte_size",
+              "media_type",
+              "content_kind",
+              "component_ids",
+              "coverage_status"
+            ],
+            "properties": {
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "sha256": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              },
+              "byte_size": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 33554432
+              },
+              "media_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "content_kind": {
+                "enum": [
+                  "TEXT",
+                  "BINARY"
+                ]
+              },
+              "component_ids": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 8192,
+                "items": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 512
+                }
+              },
+              "coverage_status": {
+                "enum": [
+                  "COMPONENTS_RECORDED",
+                  "BLOCKED_WITH_EVIDENCE"
+                ]
+              }
+            }
+          }
+        },
+        "classified_components": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 8192,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component_id",
+              "source_row_id",
+              "source_unit_id",
+              "normalized_path",
+              "byte_start",
+              "byte_end",
+              "component_kind",
+              "source_anchor_hash",
+              "classification_state",
+              "classification_or_issue_code",
+              "evidence_refs"
+            ],
+            "properties": {
+              "component_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "byte_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "byte_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "component_kind": {
+                "enum": [
+                  "DOCUMENT_TEXT",
+                  "APPENDIX_TEXT",
+                  "BIBLIOGRAPHY_TEXT",
+                  "FIGURE_BINARY",
+                  "ARCHIVE_BINARY",
+                  "UNRESOLVED_SOURCE_REGION"
+                ]
+              },
+              "source_anchor_hash": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              },
+              "classification_state": {
+                "enum": [
+                  "CLASSIFIED",
+                  "AMBIGUOUS",
+                  "UNCLASSIFIED"
+                ]
+              },
+              "classification_or_issue_code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 64,
+                "items": {
+                  "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+                }
+              }
+            }
+          }
+        },
+        "ambiguous_components": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 8192,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component_id",
+              "source_row_id",
+              "source_unit_id",
+              "normalized_path",
+              "byte_start",
+              "byte_end",
+              "component_kind",
+              "source_anchor_hash",
+              "classification_state",
+              "classification_or_issue_code",
+              "evidence_refs"
+            ],
+            "properties": {
+              "component_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "byte_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "byte_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "component_kind": {
+                "enum": [
+                  "DOCUMENT_TEXT",
+                  "APPENDIX_TEXT",
+                  "BIBLIOGRAPHY_TEXT",
+                  "FIGURE_BINARY",
+                  "ARCHIVE_BINARY",
+                  "UNRESOLVED_SOURCE_REGION"
+                ]
+              },
+              "source_anchor_hash": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              },
+              "classification_state": {
+                "enum": [
+                  "CLASSIFIED",
+                  "AMBIGUOUS",
+                  "UNCLASSIFIED"
+                ]
+              },
+              "classification_or_issue_code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 64,
+                "items": {
+                  "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+                }
+              }
+            }
+          }
+        },
+        "unclassified_components": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 8192,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component_id",
+              "source_row_id",
+              "source_unit_id",
+              "normalized_path",
+              "byte_start",
+              "byte_end",
+              "component_kind",
+              "source_anchor_hash",
+              "classification_state",
+              "classification_or_issue_code",
+              "evidence_refs"
+            ],
+            "properties": {
+              "component_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "byte_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "byte_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "component_kind": {
+                "enum": [
+                  "DOCUMENT_TEXT",
+                  "APPENDIX_TEXT",
+                  "BIBLIOGRAPHY_TEXT",
+                  "FIGURE_BINARY",
+                  "ARCHIVE_BINARY",
+                  "UNRESOLVED_SOURCE_REGION"
+                ]
+              },
+              "source_anchor_hash": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              },
+              "classification_state": {
+                "enum": [
+                  "CLASSIFIED",
+                  "AMBIGUOUS",
+                  "UNCLASSIFIED"
+                ]
+              },
+              "classification_or_issue_code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 64,
+                "items": {
+                  "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+                }
+              }
+            }
+          }
+        },
+        "obligation_dispositions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "obligation_id",
+              "status",
+              "component_ids",
+              "finding_or_error_refs"
+            ],
+            "properties": {
+              "obligation_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "status": {
+                "enum": [
+                  "SATISFIED",
+                  "AMBIGUOUS",
+                  "UNCLASSIFIED",
+                  "BLOCKED"
+                ]
+              },
+              "component_ids": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 8192,
+                "items": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 512
+                }
+              },
+              "finding_or_error_refs": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 4096,
+                "items": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 512
+                }
+              }
+            }
+          }
+        },
+        "discovery_errors": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "error_id",
+              "error_code",
+              "summary",
+              "evidence_refs"
+            ],
+            "properties": {
+              "error_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "error_code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "summary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 64,
+                "items": {
+                  "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+                }
+              }
+            }
+          }
+        },
+        "completeness_claim": {
+          "const": "TOTAL_ACCOUNTED_PROFILE_RELATIVE"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type",
+                "producer_context"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.inventory-discovery-result/1.0.0"
+                },
+                "producer_context": {
+                  "allOf": [
+                    {
+                      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "role"
+                      ],
+                      "properties": {
+                        "role": {
+                          "const": "DISCOVERY_PRODUCER"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

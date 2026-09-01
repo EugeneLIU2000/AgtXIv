@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/contract/contract-bundle-release/1.0.0",
+  "title": "agtxiv.contract-bundle-release/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.contract-bundle-release/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle_id",
+        "bundle_version",
+        "bundle_status",
+        "canonicalization_profile_ref",
+        "schema_assets",
+        "contract_assets",
+        "validator_assets",
+        "specification_assets",
+        "bundle_manifest_hash"
+      ],
+      "properties": {
+        "bundle_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512
+        },
+        "bundle_version": {
+          "const": "1.0.0-candidate.1"
+        },
+        "bundle_status": {
+          "const": "NON_PRODUCTION_CANDIDATE"
+        },
+        "canonicalization_profile_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "schema_assets": {
+          "type": "array",
+          "minItems": 27,
+          "maxItems": 27,
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+          }
+        },
+        "contract_assets": {
+          "type": "array",
+          "minItems": 15,
+          "maxItems": 15,
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+          }
+        },
+        "validator_assets": {
+          "type": "array",
+          "minItems": 11,
+          "maxItems": 11,
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+          }
+        },
+        "specification_assets": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+          }
+        },
+        "bundle_manifest_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/baseEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.contract-bundle-release/1.0.0"
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/inventory/frozen-inventory-scope/1.0.0",
+  "title": "agtxiv.frozen-inventory-scope/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.frozen-inventory-scope/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_id",
+        "scope_revision",
+        "plan_ref",
+        "discovery_ref",
+        "accept_decision_ref",
+        "source_snapshot_ref",
+        "source_tree_root",
+        "revision_delta",
+        "scope_entries"
+      ],
+      "properties": {
+        "scope_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512
+        },
+        "scope_revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "plan_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "discovery_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "accept_decision_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_snapshot_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_tree_root": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        },
+        "predecessor_scope_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "revision_delta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "added_entry_ids",
+            "removed_entry_ids",
+            "classification_changed_entry_ids",
+            "source_binding_changed_entry_ids"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "GENESIS",
+                "SUCCESSOR"
+              ]
+            },
+            "added_entry_ids": {
+              "type": "array",
+              "minItems": 0,
+              "maxItems": 16384,
+              "items": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              }
+            },
+            "removed_entry_ids": {
+              "type": "array",
+              "minItems": 0,
+              "maxItems": 16384,
+              "items": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              }
+            },
+            "classification_changed_entry_ids": {
+              "type": "array",
+              "minItems": 0,
+              "maxItems": 16384,
+              "items": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              }
+            },
+            "source_binding_changed_entry_ids": {
+              "type": "array",
+              "minItems": 0,
+              "maxItems": 16384,
+              "items": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              }
+            }
+          }
+        },
+        "scope_entries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16384,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scope_entry_id",
+              "component_id",
+              "source_row_id",
+              "source_unit_id",
+              "normalized_path",
+              "byte_start",
+              "byte_end",
+              "component_kind",
+              "scope_state",
+              "source_anchor_hash"
+            ],
+            "properties": {
+              "scope_entry_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "component_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "byte_start": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "byte_end": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "component_kind": {
+                "enum": [
+                  "DOCUMENT_TEXT",
+                  "APPENDIX_TEXT",
+                  "BIBLIOGRAPHY_TEXT",
+                  "FIGURE_BINARY",
+                  "ARCHIVE_BINARY",
+                  "UNRESOLVED_SOURCE_REGION"
+                ]
+              },
+              "scope_state": {
+                "enum": [
+                  "CLASSIFIED",
+                  "AMBIGUOUS",
+                  "UNCLASSIFIED"
+                ]
+              },
+              "source_anchor_hash": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              }
+            }
+          }
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type",
+                "producer_context"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.frozen-inventory-scope/1.0.0"
+                },
+                "producer_context": {
+                  "allOf": [
+                    {
+                      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "role"
+                      ],
+                      "properties": {
+                        "role": {
+                          "const": "SCOPE_FREEZE_ISSUER"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

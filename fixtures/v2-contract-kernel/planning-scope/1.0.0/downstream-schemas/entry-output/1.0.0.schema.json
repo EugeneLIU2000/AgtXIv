@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/fixture/planning-scope/entry-output/1.0.0",
+  "title": "agtxiv.checkpoint-e-entry-output/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.checkpoint-e-entry-output/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_ref",
+        "coverage_mode",
+        "input_entry_ids",
+        "output_entry_ids"
+      ],
+      "properties": {
+        "scope_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "coverage_mode": {
+          "const": "ENTRY_SET"
+        },
+        "input_entry_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16384,
+          "items": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 512
+          }
+        },
+        "output_entry_ids": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 16384,
+          "items": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 512
+          }
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.checkpoint-e-entry-output/1.0.0"
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

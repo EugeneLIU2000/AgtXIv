@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/planning/agentization-plan/1.0.0",
+  "title": "agtxiv.agentization-plan/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.agentization-plan/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "plan_revision",
+        "source_snapshot_ref",
+        "source_tree_root",
+        "contract_bundle_ref",
+        "artifact_family_catalog_ref",
+        "agentization_profile_ref",
+        "stable_code_catalog_ref",
+        "kernel_validation_policy_ref",
+        "discovery_policy_ref",
+        "resource_policy_ref",
+        "expected_source_units",
+        "profile_obligations",
+        "planning_context"
+      ],
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512
+        },
+        "plan_revision": {
+          "const": 1
+        },
+        "source_snapshot_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "source_tree_root": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        },
+        "contract_bundle_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-record-ref/1.0.0"
+        },
+        "artifact_family_catalog_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "agentization_profile_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "stable_code_catalog_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "kernel_validation_policy_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "discovery_policy_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "resource_policy_ref": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+        },
+        "expected_source_units": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "normalized_path",
+              "source_row_id",
+              "source_unit_id",
+              "sha256",
+              "byte_size",
+              "media_type",
+              "content_kind"
+            ],
+            "properties": {
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "sha256": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              },
+              "byte_size": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 33554432
+              },
+              "media_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "content_kind": {
+                "enum": [
+                  "TEXT",
+                  "BINARY"
+                ]
+              }
+            }
+          }
+        },
+        "profile_obligations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "obligation_id",
+              "family_id",
+              "stage_id",
+              "region_selector",
+              "minimum_cardinality",
+              "required_component_kinds",
+              "applicability_result",
+              "matched_source_row_ids"
+            ],
+            "properties": {
+              "obligation_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "family_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "stage_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "region_selector": {
+                "enum": [
+                  "WHOLE_SOURCE_TREE",
+                  "EVERY_SOURCE_ROW",
+                  "TEX_DOCUMENT_BODY",
+                  "TEX_APPENDIX",
+                  "BIBLIOGRAPHY",
+                  "OPAQUE_BINARY"
+                ]
+              },
+              "minimum_cardinality": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8192
+              },
+              "required_component_kinds": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 6,
+                "items": {
+                  "enum": [
+                    "DOCUMENT_TEXT",
+                    "APPENDIX_TEXT",
+                    "BIBLIOGRAPHY_TEXT",
+                    "FIGURE_BINARY",
+                    "ARCHIVE_BINARY",
+                    "UNRESOLVED_SOURCE_REGION"
+                  ]
+                }
+              },
+              "applicability_result": {
+                "const": "APPLICABLE"
+              },
+              "matched_source_row_ids": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 4096,
+                "items": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 512
+                }
+              }
+            }
+          }
+        },
+        "planning_context": {
+          "const": "QUERY_INDEPENDENT"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type",
+                "producer_context"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.agentization-plan/1.0.0"
+                },
+                "producer_context": {
+                  "allOf": [
+                    {
+                      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "role"
+                      ],
+                      "properties": {
+                        "role": {
+                          "const": "PLANNING_PRODUCER"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

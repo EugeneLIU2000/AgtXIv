@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/source/paper-source-snapshot/1.0.0",
+  "title": "agtxiv.paper-source-snapshot/1.0.0",
+  "$defs": {
+    "recordType": {
+      "const": "agtxiv.paper-source-snapshot/1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_id",
+        "snapshot_version",
+        "source_origin_kind",
+        "source_label",
+        "source_tree_algorithm",
+        "source_tree_root",
+        "source_file_count",
+        "source_total_bytes",
+        "source_files"
+      ],
+      "properties": {
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512
+        },
+        "snapshot_version": {
+          "const": 1
+        },
+        "source_origin_kind": {
+          "const": "CALLER_SUPPLIED_LOCAL_FIXTURE"
+        },
+        "source_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "source_tree_algorithm": {
+          "const": "AGTXIV_SOURCE_TREE_V1"
+        },
+        "source_tree_root": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        },
+        "source_file_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "source_total_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 67108864
+        },
+        "source_files": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "normalized_path",
+              "source_row_id",
+              "source_unit_id",
+              "sha256",
+              "byte_size",
+              "media_type",
+              "content_kind"
+            ],
+            "properties": {
+              "normalized_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "source_row_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "source_unit_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 512
+              },
+              "sha256": {
+                "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+              },
+              "byte_size": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 33554432
+              },
+              "media_type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "content_kind": {
+                "enum": [
+                  "TEXT",
+                  "BINARY"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope",
+        "payload",
+        "content_hash"
+      ],
+      "properties": {
+        "envelope": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/immutable-record-envelope/1.0.0#/$defs/contractBoundEnvelope"
+            },
+            {
+              "type": "object",
+              "required": [
+                "record_type",
+                "producer_context"
+              ],
+              "properties": {
+                "record_type": {
+                  "const": "agtxiv.paper-source-snapshot/1.0.0"
+                },
+                "producer_context": {
+                  "allOf": [
+                    {
+                      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/producer-context/1.0.0"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "role"
+                      ],
+                      "properties": {
+                        "role": {
+                          "const": "SOURCE_SNAPSHOT_BUILDER"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/payload"
+        },
+        "content_hash": {
+          "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/digest/1.0.0"
+        }
+      }
+    }
+  },
+  "$ref": "#/$defs/record"
+}

@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v2/contract-kernel/contract/stable-code-catalog/1.1.0",
+  "title": "AgtXIv stable code catalog successor",
+  "$defs": {
+    "schemaRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "media_type",
+        "byte_size",
+        "sha256",
+        "schema_uri"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 256,
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])"
+        },
+        "media_type": {
+          "const": "application/schema+json"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "schema_uri": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 512
+        }
+      }
+    },
+    "code": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "code_kind",
+        "kind_ordinal",
+        "meaning",
+        "introduced_in_catalog_version",
+        "status"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^AGTXIV\\.[A-Z][A-Z0-9_]*(?:\\.[A-Z][A-Z0-9_]*)+(?![\\s\\S])"
+        },
+        "code_kind": {
+          "enum": [
+            "VALIDATION_DIAGNOSTIC",
+            "TERMINAL_REASON"
+          ]
+        },
+        "kind_ordinal": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "meaning": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "introduced_in_catalog_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ]
+        },
+        "status": {
+          "const": "ACTIVE"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_type",
+    "document_schema_ref",
+    "catalog_id",
+    "catalog_version",
+    "catalog_kind",
+    "revision_kind",
+    "predecessor_ref",
+    "predecessor_version",
+    "compatibility_rules",
+    "resource_limits",
+    "codes"
+  ],
+  "properties": {
+    "document_type": {
+      "const": "AGTXIV_STABLE_CODE_CATALOG"
+    },
+    "document_schema_ref": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/schemaRef"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_uri": {
+              "const": "https://agtxiv.org/schema/v2/contract-kernel/contract/stable-code-catalog/1.1.0"
+            }
+          }
+        }
+      ]
+    },
+    "catalog_id": {
+      "const": "code-catalog:agtxiv-contract-kernel"
+    },
+    "catalog_version": {
+      "const": "1.1.0"
+    },
+    "catalog_kind": {
+      "const": "CONTRACT_KERNEL_MACHINE_CODES"
+    },
+    "revision_kind": {
+      "const": "SUCCESSOR"
+    },
+    "compatibility_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code_identity_rule",
+        "kind_rule",
+        "meaning_rule",
+        "kind_order_rule",
+        "message_rule",
+        "python_projection_rule"
+      ],
+      "properties": {
+        "code_identity_rule": {
+          "const": "NEVER_REUSE_EXISTING_CODE"
+        },
+        "kind_rule": {
+          "const": "NEVER_CHANGE_EXISTING_KIND"
+        },
+        "meaning_rule": {
+          "const": "NEVER_CHANGE_MEANING_CREATE_NEW_CODE"
+        },
+        "kind_order_rule": {
+          "const": "VALIDATION_DIAGNOSTIC_THEN_TERMINAL_REASON"
+        },
+        "message_rule": {
+          "const": "NON_NORMATIVE_NOT_CATALOGED"
+        },
+        "python_projection_rule": {
+          "const": "VALIDATION_DIAGNOSTIC_BIJECTION_IN_ENUM_ORDER"
+        }
+      }
+    },
+    "resource_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact_code_entries",
+        "maximum_code_utf8_bytes",
+        "maximum_meaning_utf8_bytes",
+        "maximum_code_entry_bytes",
+        "maximum_root_metadata_bytes",
+        "maximum_catalog_root_bytes"
+      ],
+      "properties": {
+        "exact_code_entries": {
+          "const": 80
+        },
+        "maximum_code_utf8_bytes": {
+          "const": 256
+        },
+        "maximum_meaning_utf8_bytes": {
+          "const": 4096
+        },
+        "maximum_code_entry_bytes": {
+          "const": 4880
+        },
+        "maximum_root_metadata_bytes": {
+          "const": 18432
+        },
+        "maximum_catalog_root_bytes": {
+          "const": 408832
+        }
+      }
+    },
+    "codes": {
+      "type": "array",
+      "minItems": 80,
+      "maxItems": 80,
+      "items": {
+        "$ref": "#/$defs/code"
+      }
+    },
+    "predecessor_ref": {
+      "$ref": "https://agtxiv.org/schema/v2/contract-kernel/common/exact-asset-ref/1.0.0"
+    },
+    "predecessor_version": {
+      "const": "1.0.0"
+    }
+  }
+}
