@@ -171,6 +171,7 @@ policy, and tests:
 | maximum canonical component entry bytes | 4,096 |
 | maximum review findings | 4,096 |
 | maximum frozen scope entries | 16,384 |
+| maximum predecessor scope-chain declarations | 256 |
 | maximum raw bytes per E record | 41,943,040 |
 | maximum aggregate supplied E input bytes per call | 134,217,728 |
 | maximum canonical exact-ref bytes | 2,048 |
@@ -575,11 +576,21 @@ finding_or_error_refs
 Every listed component exists. `SATISFIED` has at least the plan minimum number of
 classified components of an allowed kind. `AMBIGUOUS` names at least one
 ambiguous component; `UNCLASSIFIED` names at least one unclassified component;
-`BLOCKED` names nonempty exact evidence and cannot claim satisfaction. Every
-component whose kind or unresolved state is relevant to an obligation appears in
-that disposition, and every profile obligation appears once. Discovery errors
-must be exact-referenced by at least one component or disposition; dangling
-errors are rejected.
+`BLOCKED` cannot be empty: it names nonempty exact evidence and at least one
+affected coverage row whose status is `BLOCKED_WITH_EVIDENCE`. Every such row
+names at least one component in the ambiguous or unclassified partition with
+`component_kind = UNRESOLVED_SOURCE_REGION`; that fallback component matches the
+blocked obligation's source-row/region applicability and appears in the
+BLOCKED disposition's `component_ids`. Conversely, every fallback component
+listed by the disposition occurs in one of its affected coverage rows. The row,
+fallback component, disposition, and exact `discovery_errors`/evidence form a
+bidirectional closed set: the row/component names the exact error/evidence, the
+disposition names the same error/evidence and component, and each named error is
+referenced back by at least one affected row/component and that disposition.
+Empty affected-row, component, relevant-error, or evidence sets cannot satisfy
+BLOCKED. `BLOCKED` cannot claim satisfaction. Every component whose kind or
+unresolved state is relevant to an obligation appears in that disposition, and
+every profile obligation appears once. Dangling discovery errors are rejected.
 
 “Total accounted” means mechanical closure against the supplied snapshot and
 Profile. It is not proof that no semantic component exists beyond the discovery
@@ -775,10 +786,14 @@ claim that the unobserved resources stayed within budget. Every exact ref above
 has the closed five-field asset or record/component projection required by B and
 resolves from explicitly supplied candidate bytes.
 
-`validate_planning_terminal_constraints` calls C's existing public
-`validate_typed_terminal_result_catalog_constraints` exactly once. That C call
-intrinsically calls B exactly once. E never calls B separately. Only after C
-returns no diagnostics does E apply the 1.1 reason and exact planning bindings.
+`validate_planning_terminal_constraints` receives a builder-created sealed
+`KernelValidationPolicyV11Constraints` whose refs were checked against the exact
+bundle-bound 1.0/1.1 roots/supports. It calls C's existing public
+`validate_typed_terminal_result_catalog_constraints` exactly once; C intrinsically
+calls B exactly once and E never calls B separately. Only after C succeeds does E
+call the 1.1 gate once to enforce the actual sealed registration row, then exact
+planning bindings. Hard-coded reason/target constants are test or bootstrap
+expectations, never a substitute for the supplied policy constraint.
 The terminal cannot target the absent scope record or use Discovery as basis; it
 targets the Plan obligation through the exact Plan component basis required by
 B. ACCEPT forbids a BLOCK terminal, and
@@ -861,20 +876,94 @@ rejected rather than accepted as a delta. Old plan, snapshot, discovery,
 decision, source, component, entry, and downstream bindings remain immutable and
 addressable.
 
+### 9.1 Explicit predecessor-chain declaration
+
+No successor validator accepts only `predecessor_scope_raw`. E adds the sealed,
+detached `PlanningScopeChainDeclaration`, constructed only by the pure public
+`build_planning_scope_chain_declaration` seam from exactly:
+
+```text
+snapshot_raw: bytes
+source_bytes_by_path: dict[str, bytes]
+plan_raw: bytes
+discovery_raw: bytes
+decision_raw: bytes
+scope_raw: bytes
+supplied_contract_assets: tuple[SuppliedAsset, ...]
+bundle_raw: bytes
+```
+
+The declaration snapshots exact built-in values behind a private construction
+token and tamper seal; it carries no prevalidated/accepted flag and grants no
+authority. Constraints are not caller-fabricated fields: validation rebuilds C,
+D 1.0, and E 1.1 sealed constraints from each declaration's exact bundle-bound
+roots/supports and the supplied registry. Every declaration must describe an
+ACCEPT chain with zero terminals and exactly one scope.
+
+All successor-facing public calls require
+`predecessor_history: tuple[PlanningScopeChainDeclaration, ...]`. The tuple is
+oldest-to-newest, has at most 256 declarations, uses exact tuple/declaration
+classes with no subclasses, and has no duplicate scope record identity. Genesis
+requires exactly `()`, revision 1, no predecessor/supersedes ref, and a GENESIS
+delta. Successor revision $r>1$ requires exactly $r-1$ declarations; declaration
+1 is a genesis chain, each later declaration is validated as the next successor,
+and the last declaration's scope exact-record ref equals the current
+`predecessor_scope_ref` and envelope `supersedes_ref`. Plan, snapshot, discovery,
+ACCEPT decision, scope, bundle, assets, and rebuilt constraints are therefore
+validated for every predecessor, not inferred from the predecessor scope's
+`plan_ref` or accepted from intrinsic shape.
+
+`validate_frozen_inventory_scope` is frozen as:
+
+```text
+validate_frozen_inventory_scope(
+  scope_raw: bytes,
+  decision_raw: bytes,
+  discovery_raw: bytes,
+  plan_raw: bytes,
+  snapshot_raw: bytes,
+  source_bytes_by_path: dict[str, bytes],
+  supplied_contract_assets: tuple[SuppliedAsset, ...],
+  registry: ContractSchemaRegistry,
+  bundle_raw: bytes,
+  predecessor_history: tuple[PlanningScopeChainDeclaration, ...],
+) -> FrozenInventoryScopeView | tuple[Diagnostic, ...]
+```
+
+It validates history iteratively through the same semantic implementation behind
+`validate_planning_scope_chain`; there is no weaker intrinsic predecessor path.
+Every raw record remains subject to 41,943,040 bytes, each source map to the
+Section 3 file/single/total limits, history to 256 entries, and the sum of current
+plus every declaration's records, sources, bundle, and supplied assets to the
+unchanged 134,217,728-byte E aggregate limit. Preflight counts every argument
+occurrence before parsing or copying. All values are caller-supplied bytes; no
+filesystem, bundle registry, Git, network, cache, or other ambient lookup fills a
+missing predecessor.
+
 ## 10. Transitive revision impact
 
 The exact public seam is:
 
 ```text
 compute_scope_revision_impact(
-  predecessor_scope_raw: bytes,
-  successor_scope_raw: bytes,
+  predecessor_history: tuple[PlanningScopeChainDeclaration, ...],
+  successor_declaration: PlanningScopeChainDeclaration,
   downstream_records: tuple[bytes, ...],
   lineage_projection: ScopeRevisionLineageProjection,
   registry: ContractSchemaRegistry,
-  bundle_raw: bytes,
 ) -> ScopeRevisionImpact | tuple[Diagnostic, ...]
 ```
+
+`predecessor_history` is the complete oldest-to-immediate-predecessor ACCEPT
+history from Section 9.1; it is nonempty for impact. `successor_declaration` is
+the complete new ACCEPT chain and is not already a member of that tuple. Impact
+first validates every old declaration through the public chain semantics, then
+validates the successor with exactly that history, and only then compares the
+validated old/new scopes and computes delta/closure. A forged old Plan ref,
+intrinsically valid but semantically invalid predecessor, stale predecessor
+bundle/policy, BLOCK predecessor, missing ancestor, or invalid new chain hard-
+stops before graph work. Thus both full old and new semantic chains are checked;
+raw scope shape alone is never an impact input.
 
 `ScopeRevisionLineageProjection` is a sealed, detached programmatic shape with a
 private token/tamper seal, not an additional persistent family. Its public builder
@@ -1243,11 +1332,23 @@ The vector asset identity is exactly:
 
 ```text
 asset_id           vectors:checkpoint-e-planning-families/1.0.0
-vector_set_id      vectors:checkpoint-e-planning-families
+vector_set_id      vectors:checkpoint-e-planning-families/1.0.0
 vector_set_version 1.0.0
 fixture_purpose    STRUCTURAL_CONFORMANCE_ONLY
 media_type         application/json
 ```
+
+C requires `vector_set_id` to equal the supplied vector asset's `asset_id` byte
+for byte; both are the exact versioned value above. They are not distinct logical
+and asset namespaces.
+
+The committed E requirement/Catalog/Profile/vector assets are authoritative input
+bytes to C. Tests construct ordinary `RawContractAssetBinding` values for those
+exact bytes and call `build_catalog_profile_constraints` directly with the exact
+support tuple and registry. Success must be the builder-produced sealed
+`CatalogProfileConstraints`. Rewriting vector metadata, substituting a surrogate
+Catalog/Profile/vector, bypassing the public builder, constructing a private-token
+object, or fabricating sealed constraints is forbidden.
 
 It uses C's closed vector-set/row shapes. For every table row below it contains a
 nonempty positive ID
@@ -1365,6 +1466,7 @@ validate_agentization_plan
 validate_inventory_discovery_result
 validate_scope_freeze_decision
 validate_frozen_inventory_scope
+build_planning_scope_chain_declaration
 validate_planning_scope_chain
 compute_scope_revision_impact
 validate_planning_terminal_constraints
@@ -1381,6 +1483,7 @@ validate_planning_scope_chain(
   decision_raw: bytes,
   terminal_records_raw: tuple[bytes, ...],
   scope_records_raw: tuple[bytes, ...],
+  predecessor_history: tuple[PlanningScopeChainDeclaration, ...],
   supplied_contract_assets: tuple[SuppliedAsset, ...],
   registry: ContractSchemaRegistry,
   bundle_raw: bytes,
@@ -1392,13 +1495,45 @@ plan/discovery/decision, not optional lookup pools. After validating each member
 and rejecting duplicate record IDs or duplicate exact refs, BLOCK requires
 exactly one matching terminal and zero scopes; ACCEPT requires zero terminals and
 exactly one matching scope. Extra, stale, cross-plan, duplicate-byte/different-ID,
-or duplicate-ID scope/terminal members fail. Only this aggregate seam proves
-issuance cardinality and branch consistency; individual validators never claim
-absence from an unsupplied universe.
+or duplicate-ID scope/terminal members fail. Genesis or BLOCK requires empty
+`predecessor_history`; an ACCEPT successor requires the exact complete history
+from Section 9.1 and validates it before the current chain. Only this aggregate
+seam proves issuance cardinality, predecessor semantics, and branch consistency;
+individual validators never claim absence from an unsupplied universe.
 
 Each successful validator returns a detached sealed view; each failure returns a
 nonempty deterministically sorted tuple of existing `Diagnostic` values. It never
 returns a partially authoritative object.
+
+The exact terminal seam is:
+
+```text
+validate_planning_terminal_constraints(
+  record: ParsedCanonicalValue,
+  registry: ContractSchemaRegistry,
+  catalog_profile_constraints: CatalogProfileConstraints,
+  kernel_policy_v1_1_constraints: KernelValidationPolicyV11Constraints,
+  plan_raw: bytes,
+  discovery_raw: bytes,
+  decision_raw: bytes,
+  supplied_contract_assets: tuple[SuppliedAsset, ...],
+  bundle_raw: bytes,
+) -> tuple[Diagnostic, ...]
+```
+
+A standalone caller obtains both sealed constraints only through
+`build_catalog_profile_constraints`, the unchanged D 1.0 builder, and
+`build_kernel_validation_policy_v1_1_constraints` over exact roots/supports from
+`supplied_contract_assets`. The terminal seam checks exact class/token/seal and
+requires each constraint's frozen refs to equal the supplied bundle manifest and
+Plan Catalog/Profile/Kernel refs. It never constructs or accepts a private-token
+surrogate.
+
+`validate_planning_scope_chain` resolves the authoritative requirement,
+C Catalog/Profile/vector/support, D 1.0 roots/support, and E 1.1 roots/support
+from the exact bundle-bound tuple; calls the public C builder, D builder, and E
+1.1 builder once each; and passes the resulting sealed objects through all
+current/predecessor/terminal gates. It does not rewrite authoritative bytes.
 
 The fail-closed order is:
 
@@ -1409,22 +1544,30 @@ The fail-closed order is:
 3. canonical-byte equality and closed schema/meta/registry validation;
 4. immutable envelope, content hash, schema ref, and bundle ref;
 5. exact-ref resolution against explicitly supplied bundle assets;
-6. predecessor/catalog/profile/policy compatibility;
+6. direct public C constraints from authoritative roots, then sealed D 1.0/E 1.1
+   constraints from exact bundle-bound roots/supports;
 7. record-local lexical, order, count, and resource checks;
 8. source-byte digest/path/tree reconciliation;
 9. plan exact binding and no-query/no-narrowing gate;
 10. discovery source/component/obligation closure;
 11. decision actor/declaration/finding and ACCEPT/BLOCK consistency;
-12. scope issuance, identity, predecessor, and mechanical delta;
+12. complete predecessor-history semantic chains, then current scope issuance,
+    identity, predecessor, and mechanical delta;
 13. aggregate complete-set ACCEPT/BLOCK issuance consistency;
-14. optional lineage closure and revision impact; and
-15. C public terminal validation once (including its intrinsic B call), then E
-    1.1 reason policy and exact planning bindings.
+14. optional full old/new chain validation, lineage closure, and revision impact;
+    and
+15. C public terminal validation once (including its intrinsic B call), then the
+    sealed 1.1 registration gate once, then exact planning bindings.
 
-A failed earlier gate hard-stops dependent gates. `validate_planning_terminal_constraints`
-calls the existing C public structural validator exactly once; C intrinsically
-calls B exactly once; E never calls B directly; then E applies 1.1 policy once. It accepts only a fully valid PLAN_BOUND BLOCK terminal and does
-not reinterpret or duplicate earlier diagnostics.
+A failed earlier gate hard-stops dependent gates. After sealed-constraint and
+bundle-ref checks, `validate_planning_terminal_constraints` calls the existing C
+public terminal validator exactly once; C intrinsically calls B exactly once and
+E never calls B directly. On C success it calls the 1.1 reason-policy gate exactly
+once. That gate reads the actual registration row, allowed outcome/retry/context,
+target, and reason from the sealed `KernelValidationPolicyV11Constraints`; it does
+not compare only hard-coded `SCOPE_REASON`/target literals. Exact Plan/Discovery/
+Decision bindings run last. Neither aggregate nor terminal code repeats C/B, the
+1.1 builder, or the 1.1 reason gate for the same terminal.
 
 ## 15. Comprehensive test and adversarial matrix
 
@@ -1432,8 +1575,11 @@ not reinterpret or duplicate earlier diagnostics.
 
 - bundle validates as a `baseEnvelope` immutable record with normal content hash,
   manifest-only manifest hash, no self-ref, and a full resolvable exact-record ref;
-- all 12 exact E family vector IDs resolve and execute with correct polarity,
-  family/stage target, template, mutation, and expected code;
+- authoritative committed E Catalog/Profile/vector bytes, with versioned
+  `vector_set_id == asset_id`, pass `build_catalog_profile_constraints` directly
+  and return its genuine sealed constraints; all 12 vector IDs resolve and
+  execute with correct polarity, family/stage target, template, mutation, and
+  expected code;
 - synthetic ACCEPT chain resolves every envelope, schema, bundle, Catalog,
   Profile, obligation policy, aliased resource policy, Plan, discovery, decision,
   and source ref;
@@ -1483,8 +1629,12 @@ component ID, wrong tagged state, stale path/unit/digest/offset/slice/anchor,
 out-of-range or boolean offset, duplicate anchor/kind, forbidden overlap,
 dangling error/evidence, missing/extra/reordered obligation, insufficient
 SATISFIED cardinality, wrong component kind, empty AMBIGUOUS/UNCLASSIFIED/BLOCKED,
-and completeness claim without bidirectional closure. Confirm ambiguous and
-unclassified components cannot be omitted or converted to ignored.
+and completeness claim without bidirectional closure. Specifically reject a
+BLOCKED disposition with zero affected rows, zero relevant components, no
+`BLOCKED_WITH_EVIDENCE` coverage row, a classified/non-UNRESOLVED fallback,
+unmatched source row/region, one-way row/component/disposition/error links, or an
+empty relevant error/evidence set. Confirm ambiguous and unclassified components
+cannot be omitted or converted to ignored.
 
 ### 15.5 Decision and issuance consistency
 
@@ -1516,12 +1666,20 @@ without adding observations, and mutate every fixed budget value. Only
 `observed={network_requests:0}` plus the five ordered unobserved metrics and
 `relation=INDETERMINATE` passes. Lexical tests enforce the actual B namespaced-ID,
 uppercase-role, dotted-reason, nonblank 1–2,048 text, and UTC/no-deadline branch
-constraints for every frozen literal. Passing structural checks does not prove
+constraints for every frozen literal. Mutate the bundled 1.1 policy registration,
+reason, target, outcome, retry/context set, predecessor ref, or support hash while
+leaving hard-coded terminal literals unchanged; constraint building or the actual
+1.1 gate must reject it. Forged/tampered `KernelValidationPolicyV11Constraints`
+and constraints built from assets outside the exact bundle also fail before C.
+Passing structural checks does not prove
 identity, COI, signature, resource truth, or competence truth.
 
 ### 15.6 1.1 compatibility and bootstrap
 
-Reject each immutable 1.0 predecessor-row mutation independently: code, meaning,
+Set E `vector_set_id` to the old unversioned value while keeping asset ID
+versioned: direct `build_catalog_profile_constraints` must fail. Reject any
+rewritten/surrogate vector or fabricated C constraint object. Reject each
+immutable 1.0 predecessor-row mutation independently: code, meaning,
 kind, ordinal, status, introduced version, deletion, insertion, or reorder; reject
 wrong successor schema/version/revision/predecessor, code count/root maxima,
 compatibility semantics, active/inherited exact refs, validator entry points,
@@ -1553,7 +1711,13 @@ whole-scope output; missing/extra direct or transitive descendant; dangling or
 cyclic lineage; record with stale scope ref; and order-dependent closure. Cover
 no-op successor rejection, classification-only preservation, source mutation new
 ID, added-entry whole-scope impact, removed-entry direct impact, branched and
-multi-parent transitive closure, and unaffected siblings.
+multi-parent transitive closure, and unaffected siblings. Reject a predecessor
+scope whose intrinsic shape/hash is valid but whose embedded `plan_ref` is forged,
+a predecessor declaration with mismatched snapshot/discovery/ACCEPT decision or
+bundle, missing/reordered ancestry, genesis with nonempty history, successor with
+empty/truncated history, history over 256, aggregate bytes over 134,217,728, and
+impact attempted before both complete old and new chains pass the public semantic
+gates.
 
 ### 15.8 Every limit and parser/host hostility
 
@@ -1721,6 +1885,23 @@ API, archive, release, and knowledge code.
    `docs/audits/v2-m1-contract-kernel-checkpoint-e-2026-09-01.md` after independent
    adversarial and reader review has zero open Priority 0 or Priority 1 findings.
 
+Implementation review occurred after the exact 19-path commit
+`f75ba6f01f682b043e9d0dde6484ced0a8498a5a`. The corrective order is therefore
+frozen without rewriting history:
+
+1. a new plan-correction commit changes only this roadmap with message
+   `docs(roadmap): correct planning scope composition`;
+2. the immediately following implementation-fix commit changes only the minimal
+   subset of paths already listed in Sections 16.1–16.4 needed for the four
+   corrections; it adds no path and changes none of the 19/6/1/27 allowlist
+   cardinalities; and
+3. candidate-root, bundle, candidate-record, baseline, independent review, and
+   audit completion proceeds only after that fix passes the corrected tests.
+
+This correction commit precedes the final implementation-fix commit. It is not an
+implementation or audit commit and does not retroactively amend the earlier plan
+or implementation commits.
+
 Before every commit, compare `git diff --cached --name-only` to that commit's
 exact allowlist. Never use broad staging. No commit stages, rewrites, moves,
 deletes, stashes, resets, or cleans unrelated user work.
@@ -1763,13 +1944,19 @@ Checkpoint E is complete only when all are true:
    path/unit-only `source_row_id`, media-sensitive descendant IDs, and
    `AGTXIV_SOURCE_TREE_V1` vectors pass mutation, unrelated-addition stability,
    and limit tests without ambient lookup;
-7. the unchanged C Profile plus exact DiscoveryObligationPolicy deterministically
-   project all obligations; the Plan exact-binds snapshot, Catalog/Profile,
+7. authoritative E requirement/Catalog/Profile/vector bytes—including exact
+   versioned vector-set/asset-ID equality—pass
+   `build_catalog_profile_constraints` directly with genuine builder-sealed
+   constraints; the unchanged C Profile plus exact DiscoveryObligationPolicy
+   deterministically project all obligations; the Plan exact-binds snapshot, Catalog/Profile,
    policy/resources with resource policy exactly aliasing final Kernel policy,
    expected source rows, and that projection; Plan environment/tools remain
    absent and deferred, and every query/narrowing case fails;
 8. discovery source coverage, component partition, and obligation dispositions
-   are bidirectionally total, with ambiguous/unclassified entries retained;
+   are bidirectionally total, with ambiguous/unclassified entries retained; every
+   BLOCKED obligation has a nonempty affected `BLOCKED_WITH_EVIDENCE` row set,
+   matched unresolved fallback components, and bidirectional exact error/evidence
+   closure;
 9. ACCEPT/BLOCK actor, conflict, terminal, and aggregate complete-set issuance
    rules pass—including ACCEPT exactly one scope, BLOCK zero scopes/one terminal,
    and duplicate rejection—while audit language explicitly disclaims
@@ -1778,7 +1965,9 @@ Checkpoint E is complete only when all are true:
     `FROZEN_INVENTORY_SCOPE/SCOPE_FREEZE/BLOCKED/PLAN_BOUND`, is intrinsically B/C
     valid with issuer attempt, Plan COMPONENT basis, exact Discovery/Decision
     evidence, `ESCALATE`, complete six-dimension B ResourceBudget,
-    observed/unobserved partition and `INDETERMINATE`, and issues no scope;
+    observed/unobserved partition and `INDETERMINATE`, is checked against a
+    genuine bundle-bound sealed 1.1 registration rather than hard-coded constants,
+    and issues no scope;
 11. D 1.0, B, D validator, C public validator, and `DiagnosticCode` bytes are
     unchanged; C is called once and intrinsically calls B once; the field-by-field
     1.1 successor projection, 80-entry/root-limit constants, registration, and all
@@ -1786,16 +1975,19 @@ Checkpoint E is complete only when all are true:
     tuple is exactly three enumerated assets totaling 44,056,576 bytes, and roots
     follow the one-pass Stable -> Catalog -> Profile -> obligation -> Kernel order;
 12. path-sensitive source-row/component/anchor/entry IDs, stable scope lineage,
-    predecessor/delta, immutable old bindings, sealed lineage extraction,
-    all-cycle rejection, isolated nodes, whole-scope impact, and least-fixed-point
-    transitive affected sets match exact vectors;
+    predecessor/delta, and immutable old bindings match exact vectors; genesis
+    takes empty history, successors take a complete sealed history of at most 256
+    full ACCEPT declarations, and impact validates both old and new semantic
+    chains before sealed lineage extraction, all-cycle rejection, whole-scope and
+    least-fixed-point affected sets;
 13. every Section 3 limit and limit+1 case, exact-hostile type, duplicate JSON,
     BOM/UTF-8, sealed-forgery, ambient-I/O, and repeated-determinism test passes;
 14. the synthetic ACCEPT, blocked-appendix BLOCK, revision-2 impact, and exactly
     nine-file tracked real-paper fixtures validate and all candidate envelope refs
     resolve;
-15. focused, contract, full, and fast repository validation pass from the exact
-    commits, or the audit faithfully identifies a pre-existing unrelated failure
+15. this plan-correction commit precedes a final implementation-fix commit whose
+    path set is a subset of the unchanged allowlists, and focused, contract, full,
+    and fast repository validation pass from the exact commits, or the audit faithfully identifies a pre-existing unrelated failure
     without treating E as complete;
 16. pytest identity additions come only from the four newly added E test modules;
     the compatibility-edited legacy D test module has exactly its pre-E node set,
