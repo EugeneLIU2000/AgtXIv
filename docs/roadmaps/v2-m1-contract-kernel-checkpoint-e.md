@@ -130,10 +130,12 @@ role, attempt, implementation, and environment are exact-bound by Plan/bundle
 policy. Snapshot, Plan, Discovery, and Decision revision 1 forbid supersession.
 Frozen scope genesis forbids it; a scope successor requires
 `envelope.supersedes_ref` equal `payload.predecessor_scope_ref`. Bundle revision 1
-forbids it; future bundle succession is outside E. Logical `payload.scope_id` is
-intentionally distinct from scope record ID: record IDs name immutable revisions,
-while `scope_id` names their lineage. The record ID is exactly
-`inventory-scope-record:sha256:<64-lower-hex>/revision/<canonical-decimal>`.
+forbids it; future bundle succession is outside E. Logical `payload.scope_id`
+remains a separate logical scope ID. A FrozenInventoryScope lineage uses one
+stable envelope `record_id` across every revision; immutable revisions are
+separated by `record_revision`, `content_hash`, and their full exact-record refs.
+The stable record ID is derived once from the immutable genesis lineage seed in
+Section 9 and never contains `/revision/<n>` or any other revision suffix.
 
 The sealed E registry/catalog/bundle and every E validator explicitly reject the
 legacy flat family and URI:
@@ -816,10 +818,17 @@ revision_delta
 scope_entries
 ```
 
-Genesis has `scope_revision = 1`, no predecessor, and
+Genesis has `scope_revision = 1`, no predecessor or supersedes ref, and
 `revision_delta.kind = GENESIS`. A successor has revision exactly predecessor + 1,
 one exact predecessor ref, the same logical `scope_id`, and
-`revision_delta.kind = SUCCESSOR`.
+`revision_delta.kind = SUCCESSOR`. Every revision in that logical lineage has the
+same envelope `record_id`. Revision $n>1$ carries exact
+`payload.predecessor_scope_ref == envelope.supersedes_ref`; that ref names the
+same stable `record_id` as the current envelope, revision $n-1$ (exactly the
+current `record_revision - 1`), the predecessor schema ref, and the predecessor
+content hash, exactly satisfying the shared immutable-envelope rule. The old and
+new exact refs must therefore differ in
+`record_revision` and `content_hash` even though their `record_id` is identical.
 
 Every discovery component—including ambiguous and unclassified components—maps
 to exactly one scope entry. The entry contains exactly:
@@ -845,6 +854,18 @@ scope_id = "inventory-scope:sha256:" + H(
   b"AGTXIV_SCOPE_ID_V1\x00" || logical_plan_lineage_seed
 ).hex()
 
+framed(x) = u64(len(x)) || x
+
+scope_record_lineage_seed =
+  framed(source_origin_kind_utf8) ||
+  framed(source_label_utf8) ||
+  framed(canonical_bytes(genesis_agentization_profile_ref)) ||
+  framed(scope_id_utf8)
+
+scope_record_id = "inventory-scope-record:sha256:" + H(
+  b"AGTXIV_SCOPE_RECORD_ID_V1\x00" || scope_record_lineage_seed
+).hex()
+
 scope_entry_id = "scope-entry:sha256:" + H(
   b"AGTXIV_SCOPE_ENTRY_V1\x00" ||
   u64(len(scope_id_utf8)) || scope_id_utf8 ||
@@ -855,10 +876,16 @@ scope_entry_id = "scope-entry:sha256:" + H(
 ```
 
 For genesis, `logical_plan_lineage_seed` is the exact first plan ID and source
-snapshot ID with length prefixes. A successor carries that same seed through the
-predecessor; it is never recomputed from the new plan. Unchanged component IDs
-therefore preserve entry IDs. Changed anchors/kinds create new component and
-entry IDs. Classification-only changes preserve IDs.
+snapshot ID with length prefixes. `scope_record_lineage_seed` freezes the paper
+logical identity (`source_origin_kind` and `source_label`), exact genesis Profile
+ref, and already-derived `scope_id`, each with the framing shown above. Genesis
+derives `envelope.record_id = scope_record_id` once. Every successor must preserve
+that paper identity, Profile ref, and `scope_id`, must copy the same
+`envelope.record_id`, and must not derive a revision-specific ID from its new Plan
+or snapshot. A successor carries the same logical seed through the validated
+predecessor history. Unchanged component IDs therefore preserve entry IDs.
+Changed anchors/kinds create new component and entry IDs. Classification-only
+changes preserve IDs.
 
 The successor delta contains strictly ordered, disjoint sets:
 
@@ -902,13 +929,17 @@ ACCEPT chain with zero terminals and exactly one scope.
 
 All successor-facing public calls require
 `predecessor_history: tuple[PlanningScopeChainDeclaration, ...]`. The tuple is
-oldest-to-newest, has at most 256 declarations, uses exact tuple/declaration
-classes with no subclasses, and has no duplicate scope record identity. Genesis
-requires exactly `()`, revision 1, no predecessor/supersedes ref, and a GENESIS
-delta. Successor revision $r>1$ requires exactly $r-1$ declarations; declaration
-1 is a genesis chain, each later declaration is validated as the next successor,
-and the last declaration's scope exact-record ref equals the current
-`predecessor_scope_ref` and envelope `supersedes_ref`. Plan, snapshot, discovery,
+oldest-to-newest, has at most 256 declarations, and uses exact tuple/declaration
+classes with no subclasses. Its scope records must all have the one stable lineage
+`record_id`, strictly increasing revisions, and pairwise-distinct exact refs; a
+duplicate `(record_id, record_revision, content_hash)` exact identity is rejected.
+Genesis requires exactly `()`, revision 1, no predecessor/supersedes ref, and a
+GENESIS delta. Successor revision $r>1$ requires exactly $r-1$ declarations;
+declaration 1 is a genesis chain, each later declaration is validated as the next
+successor, and the last declaration's scope exact-record ref equals the current
+`predecessor_scope_ref` and envelope `supersedes_ref`. That exact predecessor ref
+has the stable lineage record ID, revision $r-1$, predecessor schema ref, and
+predecessor content hash. Plan, snapshot, discovery,
 ACCEPT decision, scope, bundle, assets, and rebuilt constraints are therefore
 validated for every predecessor, not inferred from the predecessor scope's
 `plan_ref` or accepted from intrinsic shape.
@@ -932,6 +963,10 @@ validate_frozen_inventory_scope(
 
 It validates history iteratively through the same semantic implementation behind
 `validate_planning_scope_chain`; there is no weaker intrinsic predecessor path.
+For the current scope and every historical scope, the unchanged generic
+`validate_immutable_record_payload` result must be empty before any E identity,
+history, or delta check runs. The API must not remove, special-case, or reinterpret
+`AGTXIV.RECORD.SUPERSESSION_MISMATCH` (or any other generic diagnostic).
 Every raw record remains subject to 41,943,040 bytes, each source map to the
 Section 3 file/single/total limits, history to 256 entries, and the sum of current
 plus every declaration's records, sources, bundle, and supplied assets to the
@@ -999,7 +1034,9 @@ are classified affected/unaffected by their own coverage only and have no
 transitive descendants.
 
 `ScopeRevisionImpact` is a detached immutable non-record result containing old and
-new exact scope refs, direct changed entry IDs, directly affected record IDs,
+new exact scope refs. Those refs have the same stable scope `record_id` but must
+differ in revision and content hash; equality of the full exact refs is rejected.
+The result also contains direct changed entry IDs, directly affected record IDs,
 transitively affected record IDs, affected whole-scope output IDs, unaffected
 record IDs, and deterministic topological order. Direct effect is computed by
 the rules above; transitive effect is the least fixed point following
@@ -1428,8 +1465,15 @@ The candidate fixture records include:
    blocked obligation disposition, followed by BLOCK decision and typed terminal
    with no scope; and
 5. revision-2 snapshot/plan/discovery/ACCEPT/scope plus supplied lineage and
-   expected impact, exercising added, removed, classification-changed,
-   whole-scope, direct, and transitive effects while preserving old bindings.
+   expected impact, exercising the stable scope envelope record ID, distinct
+   revision/hash exact refs, exact same-ID supersession, added, removed,
+   classification-changed, whole-scope, direct, and transitive effects while
+   preserving old bindings.
+
+Every committed fixture record, including `synthetic/scope-v2.json`, must return
+an empty diagnostic tuple from generic immutable-record validation. Fixture tests
+must assert that directly and may not filter or allowlist a scope-v2 supersession
+diagnostic.
 
 ### 13.3 Tracked real-paper fixture
 
@@ -1542,7 +1586,9 @@ The fail-closed order is:
 2. strict UTF-8/I-JSON parse: BOM, duplicate key, Unicode normalization collision,
    unsupported number, and nesting gates;
 3. canonical-byte equality and closed schema/meta/registry validation;
-4. immutable envelope, content hash, schema ref, and bundle ref;
+4. unmodified generic immutable-record envelope validation, including content
+   hash, schema ref, bundle ref, and the shared supersession rule; no diagnostic is
+   filtered, suppressed, rewritten, or accepted by an E-specific exception;
 5. exact-ref resolution against explicitly supplied bundle assets;
 6. direct public C constraints from authoritative roots, then sealed D 1.0/E 1.1
    constraints from exact bundle-bound roots/supports;
@@ -1585,8 +1631,10 @@ Decision bindings run last. Neither aggregate nor terminal code repeats C/B, the
   and source ref;
 - synthetic blocked-appendix BLOCK produces the exact registered terminal and no
   scope;
-- revision 2 computes exact direct/transitive/whole-scope effects and leaves old
-  bindings byte-identical;
+- revision 2 uses the genesis scope envelope `record_id` unchanged, has revision
+  2 and a new content hash, exact-supersedes the revision-1 schema/hash/ref, and
+  computes exact direct/transitive/whole-scope effects while leaving old bindings
+  byte-identical; the old/new exact refs are unequal despite their equal record ID;
 - the nine-file tracked fixture validates twice with identical diagnostics,
   records, IDs, tree root, and scope;
 - same bytes at two distinct valid paths share source-unit ID but have distinct
@@ -1653,9 +1701,11 @@ aggregate seam reject BLOCK without exactly one terminal, BLOCK with any scope,
 ACCEPT with a terminal, ACCEPT without exactly one scope, duplicate IDs/refs,
 cross-plan members, scope issued from BLOCK, and two scopes from one decision.
 A standalone B fixture test runs the complete Section 8 vector through B
-intrinsic. Separately, the E composition calls only C exactly once (therefore B
-indirectly once),
-with `SCOPE_FREEZE_ISSUER`, Plan COMPONENT basis, exact reason summary, three
+intrinsic. Separately, a terminal call-count test instruments B at the symbol C
+actually invokes, calls the E composition, and proves the exact ordered trace
+`C entry -> B intrinsic -> C return -> E 1.1 gate`; C and B each occur exactly
+once, E never calls B directly, and the 1.1 gate cannot run before C returns. The
+vector uses `SCOPE_FREEZE_ISSUER`, Plan COMPONENT basis, exact reason summary, three
 ordered evidence rows/roles, `NO_RETRY_IN_CURRENT_CONTEXT`, `ESCALATE`, exact
 description/responsible actor/role, `NO_DEADLINE` reason, and acyclic refs.
 Resource tests independently delete/mutate each of the six `max_*` dimensions,
@@ -1691,8 +1741,14 @@ maximum/sum mismatch, preliminary obligation-policy bytes, Kernel policy bound t
 a stale Catalog/Profile/policy hash, wrong root construction order, and
 bundle/reference cycles. Accept only the exact append-only reason and the
 single-pass vector -> Stable catalog -> Catalog -> Profile -> obligation policy ->
-Kernel policy -> bundle order. Reject bundle manifest count 55/57, manifest byte size 131,073, omission or role swap of any downstream schema, omission/substitution of
-pre-existing `schema_validation.py`, and mismatch between manifest-only hash and
+Kernel policy -> bundle order. The legacy-family rejection mutation must replace
+one existing manifest asset in place, preserve exactly 56 unique assets and every
+array cardinality, recompute the manifest and record hashes, pass count/shape
+checks, and reach the legacy-family-specific semantic rejection gate; a 55/57
+count failure is not evidence for this case. Separately reject bundle manifest
+count 55/57, manifest byte size 131,073, omission or role swap of any downstream
+schema, omission/substitution of pre-existing `schema_validation.py`, and mismatch
+between manifest-only hash and
 normal record content hash. Reject canonicalization-profile alias mismatch,
 duplicate asset IDs across role arrays, same ID/different bytes, and counting a
 multi-edge inherited asset more than once. The full pre-existing D test module must pass with
@@ -1704,8 +1760,14 @@ or admitting a non-1.0 schema fails the compatibility review.
 
 Reject missing/duplicate/reordered scope entry; omitted ambiguous/unclassified
 entry; changed source binding under old entry ID; unstable unchanged entry ID;
-wrong scope lineage seed; successor without predecessor; wrong revision number;
-changed logical scope ID; stale predecessor; incorrect added/removed/classification
+wrong scope lineage seed or stable scope-record lineage seed; genesis record ID
+with a `/revision/1` suffix; successor without predecessor; wrong revision number;
+changed logical scope ID; changed successor envelope record ID; revision-specific
+successor record ID; supersedes/predecessor ref with a different record ID, wrong
+revision, stale schema ref, or stale content hash; equal old/new full exact refs;
+and any attempt to filter the generic supersession diagnostic. Require unmodified
+generic immutable-record validation to pass before E scope semantics. Also reject
+incorrect added/removed/classification
 sets; overlapping delta sets; mutation of old plan/scope/entry bindings; omitted
 whole-scope output; missing/extra direct or transitive descendant; dangling or
 cyclic lineage; record with stale scope ref; and order-dependent closure. Cover
@@ -1750,7 +1812,8 @@ input mutation.
 ## 16. Exact implementation allowlists
 
 Only the paths below are authorized after this plan. Existing dirty/untracked
-paths outside these lists are never staged.
+paths outside these lists are never staged. This correction changes no allowlist
+path and no 19/6/1/27 allowlist cardinality.
 
 ### 16.1 Schemas and pure source implementation
 
@@ -1889,18 +1952,20 @@ Implementation review occurred after the exact 19-path commit
 `f75ba6f01f682b043e9d0dde6484ced0a8498a5a`. The corrective order is therefore
 frozen without rewriting history:
 
-1. a new plan-correction commit changes only this roadmap with message
-   `docs(roadmap): correct planning scope composition`;
-2. the immediately following implementation-fix commit changes only the minimal
-   subset of paths already listed in Sections 16.1–16.4 needed for the four
-   corrections; it adds no path and changes none of the 19/6/1/27 allowlist
-   cardinalities; and
-3. candidate-root, bundle, candidate-record, baseline, independent review, and
-   audit completion proceeds only after that fix passes the corrected tests.
+1. after implementation and fixture commit `31151ab50021bc12f03c69bd492a867a7f7e09b2`,
+   a new plan-correction commit changes only this roadmap with message
+   `docs(roadmap): align scope revisions with immutable records`;
+2. the immediately following implementation-fix commits change only the minimal
+   subsets of paths already listed in Sections 16.1–16.4; they add no path and
+   change none of the 19/6/1/27 allowlist cardinalities; the existing fixture
+   commit is regenerated after the roadmap source-ref, candidate-root, and bundle
+   hash cascade so all record and exact-ref bytes bind the corrected roots; and
+3. baseline, independent review, and audit completion proceeds only after the
+   regenerated candidate chain passes the corrected tests.
 
-This correction commit precedes the final implementation-fix commit. It is not an
-implementation or audit commit and does not retroactively amend the earlier plan
-or implementation commits.
+This correction commit precedes the implementation regeneration chain. It is not
+an implementation or audit commit and does not retroactively amend the earlier
+plan or implementation commits.
 
 Before every commit, compare `git diff --cached --name-only` to that commit's
 exact allowlist. Never use broad staging. No commit stages, rewrites, moves,
@@ -1933,13 +1998,16 @@ Checkpoint E is complete only when all are true:
    and legacy flat `inventory-scope/2.0.0` is rejected without byte changes;
 4. the bundle is a normal immutable record using existing `baseEnvelope`, normal
    record content hash, manifest-only `bundle_manifest_hash`, and no self-ref;
-   every later record uses existing `contractBoundEnvelope` and resolves the
-   bundle exact-record identity;
+   every later record uses existing `contractBoundEnvelope`, resolves the bundle
+   exact-record identity, and passes unmodified generic immutable-record validation
+   before any E semantic gate, with no diagnostic filtering;
 5. the non-production bundle candidate has exactly 56 unique refs, actual
    canonical manifest size no greater than the distinct 131,072-byte ceiling, and
    exact-binds the complete Section 12 inherited/E closure—including inherited
    roadmap, C fixture schema/vector/roots, D vector/roots, all validators, all
-   three downstream schemas, and no candidate fixture record;
+   three downstream schemas, and no candidate fixture record; the legacy-family
+   rejection mutation preserves all 56 assets and reaches the legacy semantic
+   gate rather than passing only through a cardinality failure;
 6. source rows, path profile, supplied-byte SHA-256 IDs,
    path/unit-only `source_row_id`, media-sensitive descendant IDs, and
    `AGTXIV_SOURCE_TREE_V1` vectors pass mutation, unrelated-addition stability,
@@ -1969,14 +2037,19 @@ Checkpoint E is complete only when all are true:
     genuine bundle-bound sealed 1.1 registration rather than hard-coded constants,
     and issues no scope;
 11. D 1.0, B, D validator, C public validator, and `DiagnosticCode` bytes are
-    unchanged; C is called once and intrinsically calls B once; the field-by-field
+    unchanged; instrumentation at C's actual B symbol proves the exact
+    `C entry -> B intrinsic -> C return -> E 1.1 gate` order with one C and one B
+    call and no direct E-to-B call; the field-by-field
     1.1 successor projection, 80-entry/root-limit constants, registration, and all
     predecessor/successor mutation cases pass through the new module; the support
     tuple is exactly three enumerated assets totaling 44,056,576 bytes, and roots
     follow the one-pass Stable -> Catalog -> Profile -> obligation -> Kernel order;
-12. path-sensitive source-row/component/anchor/entry IDs, stable scope lineage,
-    predecessor/delta, and immutable old bindings match exact vectors; genesis
-    takes empty history, successors take a complete sealed history of at most 256
+12. path-sensitive source-row/component/anchor/entry IDs and stable scope lineage
+    match exact vectors; every scope revision shares one lineage-derived envelope
+    record ID, while revisions/content hashes/full exact refs differ, and each
+    successor exact-supersedes revision $n-1$ with that same ID and predecessor
+    schema/hash; predecessor/delta and immutable old bindings match exact vectors;
+    genesis takes empty history, successors take a complete sealed history of at most 256
     full ACCEPT declarations, and impact validates both old and new semantic
     chains before sealed lineage extraction, all-cycle rejection, whole-scope and
     least-fixed-point affected sets;
@@ -1985,9 +2058,10 @@ Checkpoint E is complete only when all are true:
 14. the synthetic ACCEPT, blocked-appendix BLOCK, revision-2 impact, and exactly
     nine-file tracked real-paper fixtures validate and all candidate envelope refs
     resolve;
-15. this plan-correction commit precedes a final implementation-fix commit whose
-    path set is a subset of the unchanged allowlists, and focused, contract, full,
-    and fast repository validation pass from the exact commits, or the audit faithfully identifies a pre-existing unrelated failure
+15. this plan-correction commit precedes the source/root/bundle/fixture
+    regeneration chain, each fix commit's path set is a subset of the unchanged
+    allowlists, and focused, contract, full, and fast repository validation pass
+    from the exact commits, or the audit faithfully identifies a pre-existing unrelated failure
     without treating E as complete;
 16. pytest identity additions come only from the four newly added E test modules;
     the compatibility-edited legacy D test module has exactly its pre-E node set,
