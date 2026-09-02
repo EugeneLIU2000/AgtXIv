@@ -159,8 +159,6 @@ def _parse_record(raw: bytes, registry: ContractSchemaRegistry, expected_type: s
     if canonical_bytes(parsed) != raw:
         return None, _failure("record bytes are not canonical JSON", phase, code=DiagnosticCode.RECORD_PAYLOAD_INVALID)
     diagnostics = validate_immutable_record_payload(parsed, registry)
-    if expected_type == "agtxiv.frozen-inventory-scope/1.0.0":
-        diagnostics = tuple(item for item in diagnostics if not (item.code is DiagnosticCode.RECORD_SUPERSESSION_MISMATCH and item.phase == "RECORD_ENVELOPE" and item.json_pointer == "/envelope/supersedes_ref"))
     if diagnostics:
         return None, diagnostics
     document = parsed.to_python()
@@ -706,6 +704,11 @@ def _scope_delta(old: list[dict[str, Any]], new: list[dict[str, Any]]) -> dict[s
     return {"added_entry_ids": sorted(after.keys() - before.keys(), key=str.encode), "removed_entry_ids": sorted(before.keys() - after.keys(), key=str.encode), "classification_changed_entry_ids": sorted((x for x in common if before[x]["scope_state"] != after[x]["scope_state"]), key=str.encode), "source_binding_changed_entry_ids": sorted((x for x in common if any(before[x][k] != after[x][k] for k in binding)), key=str.encode)}
 
 
+def _scope_record_id(scope_id: str, plan_payload: dict[str, Any], snapshot_payload: dict[str, Any]) -> str:
+    seed = _framed(snapshot_payload["source_origin_kind"].encode()) + _framed(snapshot_payload["source_label"].encode()) + _framed(_canonical(plan_payload["agentization_profile_ref"])) + _framed(scope_id.encode())
+    return "inventory-scope-record:sha256:" + _hash(b"AGTXIV_SCOPE_RECORD_ID_V1\x00", seed)
+
+
 def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: bytes, discovery_raw: bytes, plan_raw: bytes, snapshot_raw: bytes, source_bytes_by_path: dict[str, bytes], supplied_contract_assets: tuple[SuppliedAsset, ...], registry: ContractSchemaRegistry, bundle_raw: bytes, predecessor_scope_raw: bytes | None = None, predecessor_plan_raw: bytes | None = None, predecessor_snapshot_raw: bytes | None = None) -> _SealedView | tuple[Diagnostic, ...]:
     try:
         predecessor_raws=(predecessor_scope_raw,predecessor_plan_raw,predecessor_snapshot_raw)
@@ -740,12 +743,12 @@ def _validate_frozen_inventory_scope_current(scope_raw: bytes, decision_raw: byt
             assert predecessor_bound is not None
             predecessor = predecessor_bound[1];previous_plan_parsed=parse_canonical_json(predecessor_plan_raw);previous_snapshot_parsed=parse_canonical_json(predecessor_snapshot_raw)
             if type(previous_plan_parsed) is not ParsedCanonicalValue or type(previous_snapshot_parsed) is not ParsedCanonicalValue:return _failure("validated predecessor Plan or snapshot cannot be recovered","SCOPE_HISTORY",code=DiagnosticCode.REF_HASH_MISMATCH)
-            previous_plan=previous_plan_parsed.to_python();previous_snapshot=previous_snapshot_parsed.to_python();expected_delta = {"kind":"SUCCESSOR", **_scope_delta(predecessor["payload"]["scope_entries"], expected)}
+            previous_plan=previous_plan_parsed.to_python();previous_snapshot=previous_snapshot_parsed.to_python();expected_delta = {"kind":"SUCCESSOR", **_scope_delta(predecessor["payload"]["scope_entries"], expected)};predecessor_ref=_record_ref(predecessor);current_ref=_record_ref(document)
             stable_profile=pd["payload"]["agentization_profile_ref"]==previous_plan["payload"]["agentization_profile_ref"]
             stable_paper=sd["payload"]["source_origin_kind"]==previous_snapshot["payload"]["source_origin_kind"] and sd["payload"]["source_label"]==previous_snapshot["payload"]["source_label"]
-            if payload["scope_id"] != predecessor["payload"]["scope_id"] or payload["scope_revision"] != predecessor["payload"]["scope_revision"] + 1 or not stable_profile or not stable_paper or envelope["contract_bundle_ref"]!=predecessor["envelope"]["contract_bundle_ref"] or not _ref_equal(payload.get("predecessor_scope_ref"), _record_ref(predecessor)) or not _ref_equal(envelope.get("supersedes_ref"), _record_ref(predecessor)) or payload["revision_delta"] != expected_delta or not any(expected_delta[key] for key in expected_delta if key != "kind") or expected_delta["source_binding_changed_entry_ids"]:
+            if payload["scope_id"] != predecessor["payload"]["scope_id"] or payload["scope_revision"] != predecessor["payload"]["scope_revision"] + 1 or not stable_profile or not stable_paper or envelope["record_id"]!=predecessor["envelope"]["record_id"] or envelope["contract_bundle_ref"]!=predecessor["envelope"]["contract_bundle_ref"] or not _ref_equal(payload.get("predecessor_scope_ref"), predecessor_ref) or not _ref_equal(envelope.get("supersedes_ref"), predecessor_ref) or current_ref==predecessor_ref or current_ref["record_revision"]==predecessor_ref["record_revision"] or current_ref["content_hash"]==predecessor_ref["content_hash"] or payload["revision_delta"] != expected_delta or not any(expected_delta[key] for key in expected_delta if key != "kind") or expected_delta["source_binding_changed_entry_ids"]:
                 return _failure("successor lineage or mechanical revision delta is invalid", "SCOPE_REVISION", code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
-        expected_record_id = f"inventory-scope-record:sha256:{payload['scope_id'].rsplit(':',1)[-1]}/revision/{payload['scope_revision']}"
+        expected_record_id = _scope_record_id(payload["scope_id"],pd["payload"],sd["payload"])
         if envelope["record_id"] != expected_record_id or envelope["record_revision"] != payload["scope_revision"]: return _failure("scope record ID/revision projection is invalid", "SCOPE_REVISION", code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
         return _SealedView("FrozenInventoryScope", document, _token=_TOKEN)
     except Exception:
@@ -843,7 +846,8 @@ def compute_scope_revision_impact(predecessor_history: tuple[PlanningScopeChainD
         assert bundle is not None
         bundle_ref=_record_ref(bundle)
         mechanical={"kind":"SUCCESSOR",**_scope_delta(old["payload"]["scope_entries"],new["payload"]["scope_entries"])}
-        if new["payload"].get("predecessor_scope_ref")!=_record_ref(old) or new["envelope"].get("supersedes_ref")!=_record_ref(old) or delta!=mechanical:return _failure("scope revisions fail exact validated successor semantics","LINEAGE_SCOPE",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
+        old_ref=_record_ref(old);new_ref=_record_ref(new)
+        if new["payload"].get("predecessor_scope_ref")!=old_ref or new["envelope"].get("supersedes_ref")!=old_ref or old_ref["record_id"]!=new_ref["record_id"] or old_ref==new_ref or old_ref["record_revision"]==new_ref["record_revision"] or old_ref["content_hash"]==new_ref["content_hash"] or delta!=mechanical:return _failure("scope revisions fail exact validated successor semantics","LINEAGE_SCOPE",code=DiagnosticCode.RECORD_SUPERSESSION_MISMATCH)
         allowed={"agtxiv.checkpoint-e-entry-output/1.0.0","agtxiv.checkpoint-e-whole-scope-output/1.0.0","agtxiv.checkpoint-e-derived-output/1.0.0"}; docs=[]
         for raw in downstream_records:
             parsed=parse_canonical_json(raw)
@@ -853,7 +857,7 @@ def compute_scope_revision_impact(predecessor_history: tuple[PlanningScopeChainD
             docs.append(doc)
         nodes,edges=parts
         if len(nodes)!=len(docs) or len({n.record_id for n in nodes})!=len(nodes):return _failure("lineage node set is incomplete or duplicated","LINEAGE_GRAPH",code=DiagnosticCode.REF_UNRESOLVED)
-        doc_by_id={d["envelope"]["record_id"]:d for d in docs};old_ref=_record_ref(old);old_ids={e["scope_entry_id"] for e in old["payload"]["scope_entries"]}
+        doc_by_id={d["envelope"]["record_id"]:d for d in docs};old_ids={e["scope_entry_id"] for e in old["payload"]["scope_entries"]}
         for node in nodes:
             doc=doc_by_id.get(node.record_id)
             if doc is None:return _failure("lineage contains an invented node","LINEAGE_GRAPH",code=DiagnosticCode.REF_UNRESOLVED)
