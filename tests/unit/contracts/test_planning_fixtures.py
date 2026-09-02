@@ -8,6 +8,7 @@ import socket
 import subprocess
 import sys
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -26,7 +27,9 @@ from agtxiv_v2.contracts import (  # noqa: E402
     record_content_hash,
     validate_immutable_record_payload,
 )
+import agtxiv_v2.contracts.catalog_validation as catalog_validation  # noqa: E402
 import agtxiv_v2.contracts.planning_validation as planning  # noqa: E402
+import agtxiv_v2.contracts.registry as registry_validation  # noqa: E402
 
 BASE = ROOT / "fixtures/v2-contract-kernel/planning-scope/1.0.0"
 BUNDLE_PATH = ROOT / "contracts/v2/contract-kernel/bundles/checkpoint-e/1.0.0-candidate.1.json"
@@ -124,7 +127,7 @@ def _build_chain(index, bundle, tag, label, sources, media, specs, branch="ACCEP
     if old_scope is not None: delta = {"kind": "SUCCESSOR", **planning._scope_delta(old_scope["payload"]["scope_entries"], entries)}
     scp = {"scope_id": scope_id, "scope_revision": revision, "plan_ref": planning._record_ref(plan), "discovery_ref": planning._record_ref(discovery), "accept_decision_ref": planning._record_ref(decision), "source_snapshot_ref": planning._record_ref(snapshot), "source_tree_root": sp["source_tree_root"], "revision_delta": delta, "scope_entries": entries}
     if old_scope is not None: scp["predecessor_scope_ref"] = planning._record_ref(old_scope)
-    rid = f"inventory-scope-record:sha256:{scope_id.rsplit(':', 1)[-1]}/revision/{revision}"; scr, scope = _record(index, bundle, "agtxiv.frozen-inventory-scope/1.0.0", "schema:frozen-inventory-scope:1.0.0", rid, revision, scp, _context(index, bundle, "SCOPE_FREEZE_ISSUER", f"actor:checkpoint-e/issuer/{tag}", f"attempt:checkpoint-e/scope/{tag}"), old_scope)
+    rid = planning._scope_record_id(scope_id, pp, sp); scr, scope = _record(index, bundle, "agtxiv.frozen-inventory-scope/1.0.0", "schema:frozen-inventory-scope:1.0.0", rid, revision, scp, _context(index, bundle, "SCOPE_FREEZE_ISSUER", f"actor:checkpoint-e/issuer/{tag}", f"attempt:checkpoint-e/scope/{tag}"), old_scope)
     return sr, snapshot, pr, plan, dr, discovery, der, decision, scr, scope
 
 
@@ -190,7 +193,7 @@ def test_all_records_are_canonical_hash_valid_schema_valid_and_bundle_bound(cont
     assets, registry, bundle_raw = contract_context; bundle = json.loads(bundle_raw); bundle_ref = planning._record_ref(bundle)
     for path in sorted(BASE.rglob("*.json")):
         if "downstream-schemas" in path.parts or path.name in {"e-family-conformance-vectors.json", "revision-lineage.json", "revision-impact.expected.json"}: continue
-        raw = path.read_bytes(); parsed = planning.parse_canonical_json(raw); assert type(parsed) is ParsedCanonicalValue and canonical_bytes(parsed) == raw; assert record_content_hash(parsed) == parsed.to_python()["content_hash"]; schema_findings = validate_immutable_record_payload(parsed, registry); assert schema_findings == () or (path.name == "scope-v2.json" and len(schema_findings) == 1 and schema_findings[0].code.value == "AGTXIV.RECORD.SUPERSESSION_MISMATCH"); document = parsed.to_python(); assert document["envelope"].get("contract_bundle_ref") == bundle_ref; assert document["envelope"]["producer_context"]["environment_ref"]["asset_id"] == "canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance"
+        raw = path.read_bytes(); parsed = planning.parse_canonical_json(raw); assert type(parsed) is ParsedCanonicalValue and canonical_bytes(parsed) == raw; assert record_content_hash(parsed) == parsed.to_python()["content_hash"]; schema_findings = validate_immutable_record_payload(parsed, registry); assert schema_findings == (); document = parsed.to_python(); assert document["envelope"].get("contract_bundle_ref") == bundle_ref; assert document["envelope"]["producer_context"]["environment_ref"]["asset_id"] == "canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance"
 
 
 def test_synthetic_accept_block_and_successor_aggregate_branches(contract_context):
@@ -204,14 +207,18 @@ def test_synthetic_accept_block_and_successor_aggregate_branches(contract_contex
 def test_blocked_appendix_has_bidirectional_fallback_and_terminal_c_to_b_to_v11_composition(contract_context, monkeypatch):
     assets, registry, bundle = contract_context; discovery = _json("synthetic", "discovery-blocked-appendix.json"); appendix = next(row for row in discovery["payload"]["source_unit_coverage"] if row["normalized_path"] == "appendix.tex"); fallback = discovery["payload"]["unclassified_components"][0]; assert appendix["coverage_status"] == "BLOCKED_WITH_EVIDENCE" and fallback["component_id"] in appendix["component_ids"] and fallback["component_kind"] == "UNRESOLVED_SOURCE_REGION"; assert discovery["payload"]["discovery_errors"][0]["evidence_refs"] == fallback["evidence_refs"]
     plan_raw = _raw("synthetic", "plan-v1.json"); parsed_plan = planning.parse_canonical_json(plan_raw); constraints = planning._planning_constraints(assets, registry, parsed_plan.to_python()["payload"]); parsed_terminal = planning.parse_canonical_json(_raw("synthetic", "terminal-block-appendix.json")); calls = []
-    original_c = planning.validate_typed_terminal_result_catalog_constraints; original_e = planning.validate_planning_terminal_registration_v1_1
-    monkeypatch.setattr(planning, "validate_typed_terminal_result_catalog_constraints", lambda *args: (calls.append("C") or original_c(*args)))
-    monkeypatch.setattr(planning, "validate_planning_terminal_registration_v1_1", lambda *args: (calls.append("1.1") or original_e(*args)))
-    assert planning.validate_planning_terminal_constraints(parsed_terminal, registry, constraints[0], constraints[1], plan_raw, _raw("synthetic", "discovery-blocked-appendix.json"), _raw("synthetic", "decision-block-appendix.json"), assets, bundle) == (); assert calls == ["C", "1.1"]
+    original_c = planning.validate_typed_terminal_result_catalog_constraints; original_b = catalog_validation.validate_typed_terminal_result_intrinsic; original_e = planning.validate_planning_terminal_registration_v1_1
+    def counted_c(*args):
+        calls.append("C entry"); result = original_c(*args); calls.append("C return"); return result
+    def counted_b(*args): calls.append("B intrinsic"); return original_b(*args)
+    monkeypatch.setattr(planning, "validate_typed_terminal_result_catalog_constraints", counted_c)
+    monkeypatch.setattr(catalog_validation, "validate_typed_terminal_result_intrinsic", counted_b)
+    monkeypatch.setattr(planning, "validate_planning_terminal_registration_v1_1", lambda *args: (calls.append("1.1 gate") or original_e(*args)))
+    assert planning.validate_planning_terminal_constraints(parsed_terminal, registry, constraints[0], constraints[1], plan_raw, _raw("synthetic", "discovery-blocked-appendix.json"), _raw("synthetic", "decision-block-appendix.json"), assets, bundle) == (); assert calls == ["C entry", "B intrinsic", "C return", "1.1 gate"]
 
 
 def test_revision_preserves_unchanged_identities_and_exact_delta_and_impact(contract_context):
-    assets, registry, bundle = contract_context; old = _json("synthetic", "scope-v1.json"); new = _json("synthetic", "scope-v2.json"); old_by_component = {row["component_id"]: row for row in old["payload"]["scope_entries"]}; new_by_component = {row["component_id"]: row for row in new["payload"]["scope_entries"]}; common = old_by_component.keys() & new_by_component.keys(); assert common and all(old_by_component[cid]["scope_entry_id"] == new_by_component[cid]["scope_entry_id"] for cid in common)
+    assets, registry, bundle = contract_context; old = _json("synthetic", "scope-v1.json"); new = _json("synthetic", "scope-v2.json"); assert old["envelope"]["record_id"] == new["envelope"]["record_id"] and new["envelope"]["record_revision"] == 2 and new["envelope"]["supersedes_ref"] == planning._record_ref(old); old_by_component = {row["component_id"]: row for row in old["payload"]["scope_entries"]}; new_by_component = {row["component_id"]: row for row in new["payload"]["scope_entries"]}; common = old_by_component.keys() & new_by_component.keys(); assert common and all(old_by_component[cid]["scope_entry_id"] == new_by_component[cid]["scope_entry_id"] for cid in common)
     delta = new["payload"]["revision_delta"]; assert len(delta["added_entry_ids"]) == len(delta["removed_entry_ids"]) == len(delta["classification_changed_entry_ids"]) == 1 and delta["source_binding_changed_entry_ids"] == []
     sources2 = {**SYNTHETIC_SOURCE, "notes.txt": b"Unrelated revision-two source row.\n"}; pred = planning.build_planning_scope_chain_declaration(_raw("synthetic", "snapshot-v1.json"), SYNTHETIC_SOURCE, _raw("synthetic", "plan-v1.json"), _raw("synthetic", "discovery-v1.json"), _raw("synthetic", "decision-accept-v1.json"), _raw("synthetic", "scope-v1.json"), assets, bundle); succ = planning.build_planning_scope_chain_declaration(_raw("synthetic", "snapshot-v2.json"), sources2, _raw("synthetic", "plan-v2.json"), _raw("synthetic", "discovery-v2.json"), _raw("synthetic", "decision-accept-v2.json"), _raw("synthetic", "scope-v2.json"), assets, bundle); lineage = _json("synthetic", "revision-lineage.json"); records = tuple(_raw("synthetic", f"downstream-{name}-output.json") for name in ("entry", "whole-scope", "derived")); impact = planning.compute_scope_revision_impact((pred,), succ, records, _projection(lineage), registry); assert not isinstance(impact, tuple); assert impact.to_python() == _json("synthetic", "revision-impact.expected.json"); assert impact.to_python()["directly_affected_record_ids"] == ["downstream:checkpoint-e/entry-output", "downstream:checkpoint-e/whole-scope-output"] and impact.to_python()["transitively_affected_record_ids"] == ["downstream:checkpoint-e/derived-output"]
 
@@ -230,7 +237,12 @@ def test_plan_rejects_every_frozen_query_or_narrowing_key(contract_context, fiel
 def test_fixture_derived_adversarial_cases_fail_closed(contract_context, mutation):
     assets, registry, bundle = contract_context
     if mutation == "legacy":
-        forged = planning.SuppliedAsset(planning.LEGACY_RECORD_TYPE, "application/json", b"{}") if hasattr(planning, "SuppliedAsset") else None; result = planning.validate_agentization_plan(_raw("synthetic", "plan-v1.json"), _raw("synthetic", "snapshot-v1.json"), SYNTHETIC_SOURCE, assets + (forged,), registry, bundle)
+        assert len(assets) == 56
+        entries = planning._registry_entries(registry); assert entries is not None and len(entries) == 27
+        legacy_entries = (replace(entries[0], asset_id=planning.LEGACY_RECORD_TYPE), *entries[1:])
+        legacy_registry = type(registry)(legacy_entries, _token=registry_validation._REGISTRY_CONSTRUCTION_TOKEN)
+        result = planning.validate_agentization_plan(_raw("synthetic", "plan-v1.json"), _raw("synthetic", "snapshot-v1.json"), SYNTHETIC_SOURCE, assets, legacy_registry, bundle)
+        assert "legacy flat InventoryScope" in result[0].message
     elif mutation == "same-id-substitution": result = planning.validate_paper_source_snapshot(_raw("synthetic", "snapshot-v1.json"), {**SYNTHETIC_SOURCE, "main.tex": b"changed"}, assets, registry, bundle)
     elif mutation == "omitted-source": result = planning.validate_paper_source_snapshot(_raw("synthetic", "snapshot-v1.json"), {k: v for k, v in SYNTHETIC_SOURCE.items() if k != "appendix.tex"}, assets, registry, bundle)
     elif mutation == "reordered-obligation":
