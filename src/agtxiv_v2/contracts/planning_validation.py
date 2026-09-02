@@ -213,11 +213,11 @@ def _producer_matches(envelope: dict[str, Any], bundle: dict[str, Any], role: st
         for name in ("schema_assets", "contract_assets", "validator_assets", "specification_assets")
         for ref in bundle["payload"][name]
     ]
+    provenance_ref = next((ref for ref in bundle["payload"]["contract_assets"] if ref.get("asset_id") == "canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance"), None)
     return (
         context.get("implementation_ref") in manifest_refs
-        and context.get("environment_ref") in manifest_refs
+        and context.get("environment_ref") == provenance_ref
         and context["implementation_ref"].get("media_type") == "text/x-python"
-        and context["environment_ref"] == bundle["payload"]["canonicalization_profile_ref"]
     )
 
 
@@ -921,7 +921,7 @@ def validate_planning_terminal_constraints(record: ParsedCanonicalValue, registr
         expected_budget={"max_wall_time_ms":60000,"max_cpu_time_ms":60000,"max_peak_memory_bytes":134217728,"max_input_bytes":134217728,"max_output_bytes":41943040,"max_network_requests":0}
         expected_unobserved=["wall_time_ms","cpu_time_ms","peak_memory_bytes","input_bytes","output_bytes"]
         reviewer=decision["payload"]["reviewer"]
-        if decision["payload"]["decision"]!="BLOCK" or envelope["producer_context"]["role"]!="SCOPE_FREEZE_ISSUER" or payload["attempt_id"]!=envelope["producer_context"]["attempt_id"] or payload["binding_context"]!=expected_context or target!={"obligation_key":"obligation:checkpoint-e/frozen-inventory-scope","stage_id":"SCOPE_FREEZE","family_id":"FROZEN_INVENTORY_SCOPE","basis":{"basis_kind":"COMPONENT","component_ref":expected_basis}} or payload["outcome"]!="BLOCKED" or payload["declared_reason"]!={"declared_reason_code":"AGTXIV.SCOPE.FREEZE_NOT_ACCEPTED","summary":expected_summary}:
+        if decision["payload"]["decision"]!="BLOCK" or not _producer_matches(envelope,bundle,"SCOPE_FREEZE_ISSUER") or payload["attempt_id"]!=envelope["producer_context"]["attempt_id"] or payload["binding_context"]!=expected_context or target!={"obligation_key":"obligation:checkpoint-e/frozen-inventory-scope","stage_id":"SCOPE_FREEZE","family_id":"FROZEN_INVENTORY_SCOPE","basis":{"basis_kind":"COMPONENT","component_ref":expected_basis}} or payload["outcome"]!="BLOCKED" or payload["declared_reason"]!={"declared_reason_code":"AGTXIV.SCOPE.FREEZE_NOT_ACCEPTED","summary":expected_summary}:
             return _failure("terminal identity, context, target, reason, or issuer attempt differs from the frozen E vector","TERMINAL_E_BINDING",code=DiagnosticCode.REASON_CONSTRAINT_MISMATCH)
         retry={"retry_disposition":"NO_RETRY_IN_CURRENT_CONTEXT","context_change_required":"A new independently reviewed scope-freeze attempt is required before scope issuance."}
         action=payload["next_action"]

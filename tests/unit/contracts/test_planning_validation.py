@@ -46,6 +46,10 @@ def _record(envelope: dict[str, object], payload: dict[str, object]) -> tuple[by
     return _canonical(document),document
 
 
+def _provenance_ref(bundle: dict[str, object]) -> dict[str, object]:
+    return next(ref for ref in bundle["payload"]["contract_assets"] if ref["asset_id"]=="canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance")
+
+
 def _e_vector_document():
     rows=[]
     for family,stage,lower in successor_vector_targets():
@@ -117,7 +121,7 @@ def _fixture(path: str="main.tex", raw: bytes=b"abc"):
     bundle_raw,bundle=_record(bundle_envelope,bundle_payload)
     digest=hashlib.sha256(raw).hexdigest();unit="source-unit:sha256:"+digest;row={"normalized_path":path,"source_row_id":_source_row_id(path,unit),"source_unit_id":unit,"sha256":"sha256:"+digest,"byte_size":len(raw),"media_type":"text/x-tex","content_kind":"TEXT"}
     sources={path:raw};snapshot_payload={"snapshot_id":"snapshot:test/1","snapshot_version":1,"source_origin_kind":"CALLER_SUPPLIED_LOCAL_FIXTURE","source_label":"synthetic","source_tree_algorithm":"AGTXIV_SOURCE_TREE_V1","source_tree_root":_source_root([row],sources),"source_file_count":1,"source_total_bytes":len(raw),"source_files":[row]}
-    producer_context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:snapshot-builder"},"role":"SOURCE_SNAPSHOT_BUILDER","attempt_id":"attempt:snapshot/1","implementation_ref":implementation,"environment_ref":profile}
+    producer_context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:snapshot-builder"},"role":"SOURCE_SNAPSHOT_BUILDER","attempt_id":"attempt:snapshot/1","implementation_ref":implementation,"environment_ref":_provenance_ref(bundle)}
     snapshot_uri="https://agtxiv.org/schema/v2/contract-kernel/source/paper-source-snapshot/1.0.0";snapshot_envelope={"record_type":"agtxiv.paper-source-snapshot/1.0.0","schema_ref":refs[snapshot_uri],"record_id":snapshot_payload["snapshot_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":producer_context}
     snapshot_raw,snapshot=_record(snapshot_envelope,snapshot_payload)
     return snapshot_raw,sources,assets,registry,bundle_raw,snapshot
@@ -127,7 +131,7 @@ def _plan_fixture():
     snapshot_raw,sources,assets,registry,bundle_raw,snapshot=_fixture();index={asset.asset_id:asset for asset in assets};bundle=json.loads(bundle_raw)
     discovery_policy=json.loads(index["discovery-policy:checkpoint-e/1.0.0-candidate.1"].raw_bytes);rows=snapshot["payload"]["source_files"]
     payload={"plan_id":"plan:test/1","plan_revision":1,"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"contract_bundle_ref":planning._record_ref(bundle),"artifact_family_catalog_ref":planning._asset_ref(index["catalog:checkpoint-e-planning-families/1.0.0-candidate.1"]),"agentization_profile_ref":planning._asset_ref(index["profile:checkpoint-e-planning-families/1.0.0-candidate.1"]),"stable_code_catalog_ref":planning._asset_ref(index["code-catalog:agtxiv-contract-kernel/1.1.0"]),"kernel_validation_policy_ref":planning._asset_ref(index["validation-policy:checkpoint-e-kernel-candidate/1.1.0"]),"discovery_policy_ref":planning._asset_ref(index["discovery-policy:checkpoint-e/1.0.0-candidate.1"]),"resource_policy_ref":planning._asset_ref(index["validation-policy:checkpoint-e-kernel-candidate/1.1.0"]),"expected_source_units":rows,"profile_obligations":planning._project_obligations(discovery_policy,rows),"planning_context":"QUERY_INDEPENDENT"}
-    context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:planner"},"role":"PLANNING_PRODUCER","attempt_id":"attempt:plan/1","implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":bundle["payload"]["canonicalization_profile_ref"]}
+    context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:planner"},"role":"PLANNING_PRODUCER","attempt_id":"attempt:plan/1","implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":_provenance_ref(bundle)}
     schema_ref=planning._asset_ref(index["schema:agentization-plan:1.0.0"]);raw,document=_record({"record_type":"agtxiv.agentization-plan/1.0.0","schema_ref":schema_ref,"record_id":payload["plan_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context},payload)
     return raw,snapshot_raw,sources,assets,registry,bundle_raw,document
 
@@ -135,7 +139,7 @@ def _plan_fixture():
 def _full_chain_fixture(branch: str):
     plan_raw,snapshot_raw,sources,assets,registry,bundle_raw,plan=_plan_fixture();index={asset.asset_id:asset for asset in assets};bundle=json.loads(bundle_raw);snapshot=json.loads(snapshot_raw);row=snapshot["payload"]["source_files"][0]
     component={"component_id":"pending","source_row_id":row["source_row_id"],"source_unit_id":row["source_unit_id"],"normalized_path":row["normalized_path"],"byte_start":0,"byte_end":row["byte_size"],"component_kind":"DOCUMENT_TEXT","source_anchor_hash":"pending","classification_state":"CLASSIFIED","classification_or_issue_code":"AGTXIV.TEST.CLASSIFIED","evidence_refs":[]};component["component_id"],component["source_anchor_hash"]=planning._component_identity(component,row,sources[row["normalized_path"]])
-    context=lambda role,actor,attempt:{"producer":{"actor_kind":"MECHANICAL_SERVICE" if role!="SCOPE_FREEZE_REVIEWER" else "HUMAN","actor_id":actor},"role":role,"attempt_id":attempt,"implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":bundle["payload"]["canonicalization_profile_ref"]}
+    context=lambda role,actor,attempt:{"producer":{"actor_kind":"MECHANICAL_SERVICE" if role!="SCOPE_FREEZE_REVIEWER" else "HUMAN","actor_id":actor},"role":role,"attempt_id":attempt,"implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":_provenance_ref(bundle)}
     coverage={key:row[key] for key in ("source_row_id","normalized_path","source_unit_id","sha256","byte_size","media_type","content_kind")};coverage.update({"component_ids":[component["component_id"]],"coverage_status":"COMPONENTS_RECORDED"})
     dispositions=[{"obligation_id":obligation["obligation_id"],"status":"SATISFIED","component_ids":[component["component_id"]],"finding_or_error_refs":[]} for obligation in plan["payload"]["profile_obligations"]]
     discovery_context=context("DISCOVERY_PRODUCER","actor:discoverer","attempt:discovery/1");discovery_payload={"discovery_id":"discovery:test/1","discovery_revision":1,"plan_ref":planning._record_ref(plan),"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"producer_context":discovery_context,"observed_resource_limits":{"maximum_discovery_components":8192,"maximum_discovery_obligations":256},"source_unit_coverage":[coverage],"classified_components":[component],"ambiguous_components":[],"unclassified_components":[],"obligation_dispositions":dispositions,"discovery_errors":[],"completeness_claim":"TOTAL_ACCOUNTED_PROFILE_RELATIVE"}
@@ -170,10 +174,22 @@ def _successor_chain_fixture(*, source_label: str="synthetic"):
     return chain_args,predecessor,successor,old_scope,new_scope
 
 
-def test_in_memory_snapshot_validates_without_future_fixture_roots() -> None:
-    snapshot_raw,sources,assets,registry,bundle_raw,_=_fixture()
+def test_in_memory_snapshot_validates_with_exact_provenance_environment() -> None:
+    snapshot_raw,sources,assets,registry,bundle_raw,snapshot=_fixture();bundle=json.loads(bundle_raw)
+    assert snapshot["envelope"]["producer_context"]["environment_ref"]==_provenance_ref(bundle)
+    assert snapshot["envelope"]["producer_context"]["environment_ref"]!=bundle["payload"]["canonicalization_profile_ref"]
     result=validate_paper_source_snapshot(snapshot_raw,sources,assets,registry,bundle_raw)
     assert not isinstance(result,tuple),result
+
+
+@pytest.mark.parametrize("mutation",["golden-vectors","same-id-substitution"])
+def test_snapshot_rejects_non_provenance_environment(mutation: str) -> None:
+    snapshot_raw,sources,assets,registry,bundle_raw,_=_fixture();snapshot=json.loads(snapshot_raw);bundle=json.loads(bundle_raw)
+    if mutation=="golden-vectors":environment=bundle["payload"]["canonicalization_profile_ref"]
+    else:environment=deepcopy(_provenance_ref(bundle));environment["sha256"]="sha256:"+"0"*64
+    snapshot["envelope"]["producer_context"]["environment_ref"]=environment;changed_raw,_=_record(snapshot["envelope"],snapshot["payload"])
+    result=validate_paper_source_snapshot(changed_raw,sources,assets,registry,bundle_raw)
+    assert isinstance(result,tuple) and result and result[0].phase=="SOURCE_SNAPSHOT_BINDING"
 
 
 def test_complete_exact_root_suite_validates_unpatched_positive_plan() -> None:
@@ -193,9 +209,21 @@ def test_authoritative_e_roots_pass_c_directly_and_unversioned_vector_set_fails(
 
 @pytest.mark.parametrize("branch",["ACCEPT","BLOCK"])
 def test_public_full_chain_validates_without_upstream_monkeypatches(branch: str) -> None:
-    result=planning.validate_planning_scope_chain(*_full_chain_fixture(branch))
+    args=_full_chain_fixture(branch);bundle=json.loads(args[10]);provenance=_provenance_ref(bundle)
+    for raw in (args[0],args[2],args[3],args[4],*args[5],*args[6]):assert json.loads(raw)["envelope"]["producer_context"]["environment_ref"]==provenance
+    result=planning.validate_planning_scope_chain(*args)
     assert not isinstance(result,tuple),result
     assert result.to_python()["decision"]==branch
+
+
+@pytest.mark.parametrize("mutation",["golden-vectors","same-id-substitution"])
+def test_full_block_chain_rejects_non_provenance_terminal_environment(mutation: str) -> None:
+    args=list(_full_chain_fixture("BLOCK"));bundle=json.loads(args[10]);terminal=json.loads(args[5][0])
+    if mutation=="golden-vectors":environment=bundle["payload"]["canonicalization_profile_ref"]
+    else:environment=deepcopy(_provenance_ref(bundle));environment["sha256"]="sha256:"+"0"*64
+    terminal["envelope"]["producer_context"]["environment_ref"]=environment;changed_raw,_=_record(terminal["envelope"],terminal["payload"]);args[5]=(changed_raw,)
+    result=planning.validate_planning_scope_chain(*args)
+    assert isinstance(result,tuple) and result and result[0].phase=="TERMINAL_E_BINDING"
 
 
 def test_public_successor_chain_validates_complete_oldest_to_immediate_history() -> None:
@@ -340,7 +368,7 @@ def _local_discovery_fixture(monkeypatch: pytest.MonkeyPatch):
     plan={"envelope":{"record_type":"agtxiv.agentization-plan/1.0.0","schema_ref":{"asset_id":"schema:plan","media_type":"application/schema+json","byte_size":0,"sha256":"sha256:"+"0"*64,"schema_uri":"https://agtxiv.org/schema/v2/contract-kernel/planning/agentization-plan/1.0.0"},"record_id":"plan:test/1","record_revision":1},"payload":{"expected_source_units":[row],"profile_obligations":[{"obligation_id":"obligation:test","family_id":"INVENTORY_DISCOVERY_RESULT","stage_id":"INVENTORY_DISCOVERY","region_selector":"WHOLE_SOURCE_TREE","minimum_cardinality":1,"required_component_kinds":["DOCUMENT_TEXT"],"applicability_result":"APPLICABLE","matched_source_row_ids":[row["source_row_id"]]}]},"content_hash":"sha256:"+"1"*64}
     component={"component_id":"pending","source_row_id":row["source_row_id"],"source_unit_id":row["source_unit_id"],"normalized_path":row["normalized_path"],"byte_start":0,"byte_end":row["byte_size"],"component_kind":"DOCUMENT_TEXT","source_anchor_hash":"pending","classification_state":"CLASSIFIED","classification_or_issue_code":"AGTXIV.TEST.CLASSIFIED","evidence_refs":[]}
     component["component_id"],component["source_anchor_hash"]=planning._component_identity(component,row,sources[row["normalized_path"]])
-    producer={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:discovery"},"role":"DISCOVERY_PRODUCER","attempt_id":"attempt:discovery/1","implementation_ref":bundle["payload"]["validator_assets"][0],"environment_ref":bundle["payload"]["canonicalization_profile_ref"]}
+    producer={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:discovery"},"role":"DISCOVERY_PRODUCER","attempt_id":"attempt:discovery/1","implementation_ref":bundle["payload"]["validator_assets"][0],"environment_ref":_provenance_ref(bundle)}
     payload={"discovery_id":"discovery:test/1","discovery_revision":1,"plan_ref":planning._record_ref(plan),"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"producer_context":producer,"observed_resource_limits":{"maximum_discovery_components":8192,"maximum_discovery_obligations":256},"source_unit_coverage":[{**row,"component_ids":[component["component_id"]],"coverage_status":"COMPONENTS_RECORDED"}],"classified_components":[component],"ambiguous_components":[],"unclassified_components":[],"obligation_dispositions":[{"obligation_id":"obligation:test","status":"SATISFIED","component_ids":[component["component_id"]],"finding_or_error_refs":[]}],"discovery_errors":[],"completeness_claim":"TOTAL_ACCOUNTED_PROFILE_RELATIVE"}
     envelope={"record_type":"agtxiv.inventory-discovery-result/1.0.0","schema_ref":refs[DISCOVERY_SCHEMA],"record_id":payload["discovery_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":producer}
     raw,document=_record(envelope,payload)
@@ -352,7 +380,7 @@ def _local_discovery_fixture(monkeypatch: pytest.MonkeyPatch):
 
 def _blocked_discovery_fixture():
     plan_raw,snapshot_raw,sources,assets,registry,bundle_raw,plan=_plan_fixture();snapshot=json.loads(snapshot_raw);bundle=json.loads(bundle_raw);index={asset.asset_id:asset for asset in assets};row=snapshot["payload"]["source_files"][0];evidence=[planning._asset_ref(index["canonicalization:agtxiv-record-canonical-json/2.0.0-candidate.1/provenance"])]
-    component={"component_id":"pending","source_row_id":row["source_row_id"],"source_unit_id":row["source_unit_id"],"normalized_path":row["normalized_path"],"byte_start":0,"byte_end":row["byte_size"],"component_kind":"UNRESOLVED_SOURCE_REGION","source_anchor_hash":"pending","classification_state":"UNCLASSIFIED","classification_or_issue_code":"AGTXIV.TEST.DISCOVERY_BLOCKED","evidence_refs":evidence};component["component_id"],component["source_anchor_hash"]=planning._component_identity(component,row,sources[row["normalized_path"]]);error={"error_id":"error:discovery/blocked","error_code":component["classification_or_issue_code"],"summary":"Discovery could not classify the supplied source region.","evidence_refs":evidence};context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:discoverer"},"role":"DISCOVERY_PRODUCER","attempt_id":"attempt:discovery/blocked","implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":bundle["payload"]["canonicalization_profile_ref"]};coverage={key:row[key] for key in ("source_row_id","normalized_path","source_unit_id","sha256","byte_size","media_type","content_kind")};coverage.update({"component_ids":[component["component_id"]],"coverage_status":"BLOCKED_WITH_EVIDENCE"});dispositions=[{"obligation_id":obligation["obligation_id"],"status":"BLOCKED","component_ids":[component["component_id"]],"finding_or_error_refs":[error["error_id"]]} for obligation in plan["payload"]["profile_obligations"]];payload={"discovery_id":"discovery:test/blocked","discovery_revision":1,"plan_ref":planning._record_ref(plan),"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"producer_context":context,"observed_resource_limits":{"maximum_discovery_components":8192,"maximum_discovery_obligations":256},"source_unit_coverage":[coverage],"classified_components":[],"ambiguous_components":[],"unclassified_components":[component],"obligation_dispositions":dispositions,"discovery_errors":[error],"completeness_claim":"TOTAL_ACCOUNTED_PROFILE_RELATIVE"};envelope={"record_type":"agtxiv.inventory-discovery-result/1.0.0","schema_ref":planning._asset_ref(index["schema:inventory-discovery-result:1.0.0"]),"record_id":payload["discovery_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context};raw,document=_record(envelope,payload)
+    component={"component_id":"pending","source_row_id":row["source_row_id"],"source_unit_id":row["source_unit_id"],"normalized_path":row["normalized_path"],"byte_start":0,"byte_end":row["byte_size"],"component_kind":"UNRESOLVED_SOURCE_REGION","source_anchor_hash":"pending","classification_state":"UNCLASSIFIED","classification_or_issue_code":"AGTXIV.TEST.DISCOVERY_BLOCKED","evidence_refs":evidence};component["component_id"],component["source_anchor_hash"]=planning._component_identity(component,row,sources[row["normalized_path"]]);error={"error_id":"error:discovery/blocked","error_code":component["classification_or_issue_code"],"summary":"Discovery could not classify the supplied source region.","evidence_refs":evidence};context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:discoverer"},"role":"DISCOVERY_PRODUCER","attempt_id":"attempt:discovery/blocked","implementation_ref":planning._asset_ref(index["validator:checkpoint-e-planning-scope:1.0.0"]),"environment_ref":_provenance_ref(bundle)};coverage={key:row[key] for key in ("source_row_id","normalized_path","source_unit_id","sha256","byte_size","media_type","content_kind")};coverage.update({"component_ids":[component["component_id"]],"coverage_status":"BLOCKED_WITH_EVIDENCE"});dispositions=[{"obligation_id":obligation["obligation_id"],"status":"BLOCKED","component_ids":[component["component_id"]],"finding_or_error_refs":[error["error_id"]]} for obligation in plan["payload"]["profile_obligations"]];payload={"discovery_id":"discovery:test/blocked","discovery_revision":1,"plan_ref":planning._record_ref(plan),"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"producer_context":context,"observed_resource_limits":{"maximum_discovery_components":8192,"maximum_discovery_obligations":256},"source_unit_coverage":[coverage],"classified_components":[],"ambiguous_components":[],"unclassified_components":[component],"obligation_dispositions":dispositions,"discovery_errors":[error],"completeness_claim":"TOTAL_ACCOUNTED_PROFILE_RELATIVE"};envelope={"record_type":"agtxiv.inventory-discovery-result/1.0.0","schema_ref":planning._asset_ref(index["schema:inventory-discovery-result:1.0.0"]),"record_id":payload["discovery_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context};raw,document=_record(envelope,payload)
     return (raw,plan_raw,snapshot_raw,sources,assets,registry,bundle_raw),document
 
 
@@ -417,7 +445,7 @@ def _local_decision_fixture(monkeypatch: pytest.MonkeyPatch):
     bundle_ref=planning._record_ref(bundle)
     for document_value in (plan,discovery):document_value["envelope"]["contract_bundle_ref"]=bundle_ref
     reviewer={"actor_kind":"HUMAN","actor_id":"actor:reviewer"};producer=discovery["payload"]["producer_context"]["producer"]
-    context={"producer":reviewer,"role":"SCOPE_FREEZE_REVIEWER","attempt_id":"attempt:review/1","implementation_ref":bundle["payload"]["validator_assets"][0],"environment_ref":bundle["payload"]["canonicalization_profile_ref"]}
+    context={"producer":reviewer,"role":"SCOPE_FREEZE_REVIEWER","attempt_id":"attempt:review/1","implementation_ref":bundle["payload"]["validator_assets"][0],"environment_ref":_provenance_ref(bundle)}
     declarations=[{"producer_actor_id":producer["actor_id"],"reviewer_actor_id":reviewer["actor_id"],"category":category,"disposition":"NO_CONFLICT_DECLARED"} for category in ("IDENTITY","ORGANIZATIONAL_CONTROL","BENEFICIAL_OWNERSHIP","OTHER")]
     payload={"decision_id":"decision:test/1","decision_revision":1,"plan_ref":plan_ref,"discovery_ref":planning._record_ref(discovery),"source_snapshot_ref":snapshot_ref,"source_tree_root":discovery["payload"]["source_tree_root"],"reviewer":reviewer,"reviewer_role":"SCOPE_FREEZE_REVIEWER","producer_actor_ref":producer,"independence_declaration":"STRUCTURALLY_DISTINCT_ACTOR_IDS_DECLARED","conflict_declarations":declarations,"review_policy_ref":plan["payload"]["kernel_validation_policy_ref"],"findings":[],"decision":"ACCEPT"}
     envelope={"record_type":"agtxiv.scope-freeze-decision/1.0.0","schema_ref":refs[DECISION_SCHEMA],"record_id":payload["decision_id"],"record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context}
@@ -456,7 +484,7 @@ def _local_scope_fixture(monkeypatch: pytest.MonkeyPatch):
     components=sum((discovery["payload"][name] for name in ("classified_components","ambiguous_components","unclassified_components")),[])
     entries=[planning._scope_entry(scope_id,component) for component in components]
     payload={"scope_id":scope_id,"scope_revision":1,"plan_ref":planning._record_ref(plan),"discovery_ref":planning._record_ref(discovery),"accept_decision_ref":planning._record_ref(decision),"source_snapshot_ref":planning._record_ref(snapshot),"source_tree_root":snapshot["payload"]["source_tree_root"],"revision_delta":{"kind":"GENESIS","added_entry_ids":[],"removed_entry_ids":[],"classification_changed_entry_ids":[],"source_binding_changed_entry_ids":[]},"scope_entries":entries}
-    context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:issuer"},"role":"SCOPE_FREEZE_ISSUER","attempt_id":"attempt:issuer/1","implementation_ref":bundle["payload"]["validator_assets"][0],"environment_ref":bundle["payload"]["canonicalization_profile_ref"]}
+    context={"producer":{"actor_kind":"MECHANICAL_SERVICE","actor_id":"actor:issuer"},"role":"SCOPE_FREEZE_ISSUER","attempt_id":"attempt:issuer/1","implementation_ref":bundle["payload"]["validator_assets"][0],"environment_ref":_provenance_ref(bundle)}
     envelope={"record_type":"agtxiv.frozen-inventory-scope/1.0.0","schema_ref":refs[scope_schema],"record_id":f"inventory-scope-record:sha256:{scope_id.rsplit(':',1)[-1]}/revision/1","record_revision":1,"contract_bundle_ref":planning._record_ref(bundle),"created_at":"2026-09-01T00:00:00Z","producer_context":context}
     raw,document=_record(envelope,payload)
     monkeypatch.setattr(planning,"validate_scope_freeze_decision",lambda *args:planning._SealedView("ScopeFreezeDecision",decision,_token=planning._TOKEN))
