@@ -2,9 +2,12 @@
 
 **Status:** normative architecture and contract specification; implemented coverage and targets are stated in Section 17.
 **Version:** 2.0.0
-**Authority:** authoritative for V2 paper-agent construction, Root Agent verification, release, knowledge ingestion, downstream queries, and migration. V1 remains authoritative for its frozen bounded, query-relative `ClaimMathBridge` / `BridgeAssessment` / legacy Root Agent compatibility surface.
+**Charter:** [`AgtXIv-Charter/1.0`](../../CHARTER.md) is pending ratification and becomes the highest-level normative authority only upon the qualifying canonical-`main` commit defined by ADR 0007.
+**Authority:** authoritative for V2 paper-agent construction, Root Agent verification, release, knowledge ingestion, downstream queries, and migration; subordinate to the Charter after ratification. V1 remains authoritative for its frozen bounded, query-relative `ClaimMathBridge` / `BridgeAssessment` / legacy Root Agent compatibility surface.
 
 ## 1. Objective and authority boundary
+
+After Charter ratification, the governing hierarchy is Charter > version specifications and governance > ADRs, contracts, schemas, and plans > implementation. A V2 artifact that conflicts with the adopted Charter is non-conforming and gains no authority from this specification. Immutable records created before the qualifying ratification commit remain interpreted under the exact contracts they bound and are not silently upgraded by Charter adoption.
 
 V2 standardizes one exact theoretical-paper release as a query-independent Paper Agent. Its primary result is not a conversational answer and not a claim that the system “understood” the paper. It is an immutable, profile-relative package whose paper structure, claims, mathematical IR, dependencies, formalization dispositions, verification evidence, alignments, residual semantics, assessments, and unresolved frontier can be audited step by step.
 

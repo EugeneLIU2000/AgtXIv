@@ -3,8 +3,13 @@
 ## Purpose
 
 This document governs repository decisions and the separation of authority in
-AgtXIv V2. It does not grant a copyright license and does not replace the
-normative scientific and machine-contract specifications.
+AgtXIv V2. [`AgtXIv-Charter/1.0`](CHARTER.md) is a pending ratification proposal;
+it becomes the highest-level normative authority only when the qualifying
+ratification commit defined by ADR 0007 is integrated on canonical authoritative
+`main`. From that point, version specifications and governance are subordinate
+to it, followed by ADRs, contracts, schemas, and plans, and then implementation.
+This document does not grant a copyright license and does not replace the
+applicable normative scientific and machine-contract specifications.
 
 The remote repository is administered by `@EugeneLIU2000`, who is therefore the
 default code-review route in `CODEOWNERS`. Repository administration does not by
@@ -152,7 +157,10 @@ the decision does not unblock anything.
 ## Amendments and disputes
 
 Governance changes use a pull request, public rationale, code-owner review, and
-the relevant specialist review. Security-sensitive discussion may begin in a
+the relevant specialist review. Initial Charter adoption uses those existing
+authority-boundary rules. After adoption, governance cannot amend the Charter
+implicitly; Charter changes must follow the constitutional amendment procedure
+in [`CHARTER.md`](CHARTER.md). Security-sensitive discussion may begin in a
 private advisory, with a public decision recorded when disclosure is safe.
 
 Disputed code decisions may be reconsidered by the repository owner with the
