@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/review-agent/1.0/admission-draft.schema.json",
+  "title": "Review admission draft — not a business RecordSet, execution Result or approval",
+  "description": "Internal model-to-host draft for review.admission. Payload shapes come only from the pinned v0.0 business schemas. The host owns record envelopes, real producer identity and validation. A shape-valid draft is not evidence, and it is not an independent review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_version",
+    "records",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "draft_version": {
+      "const": "1.0"
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_type",
+          "payload"
+        ],
+        "properties": {
+          "record_type": {
+            "const": "agtxiv.v3.admission-decision/0.0.0"
+          },
+          "payload": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/admission-decision.schema.json#/properties/payload"
+          }
+        }
+      }
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

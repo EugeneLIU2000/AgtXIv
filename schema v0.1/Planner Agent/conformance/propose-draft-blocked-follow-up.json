@@ -1,0 +1,58 @@
+{
+  "draft_version": "1.0",
+  "proposals": [
+    {
+      "agent": "utility",
+      "operation": "utility.register-plan",
+      "input_refs": [
+        {
+          "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+          "record_id": "source-snapshot:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "record_type": "agtxiv.v3.processing-profile/0.0.0",
+          "record_id": "processing-profile:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "reason": "target=source-snapshot:one; need=fixed agentization-plan bound to this snapshot and profile; purpose=give later extraction and scope work an exact plan reference",
+      "blocked_on": []
+    },
+    {
+      "agent": "dependency",
+      "operation": "dependency.search",
+      "input_refs": [
+        {
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "record_id": "scientific-claim:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "reason": "target=scientific-claim:one; need=existing prerequisites for the stated bound; purpose=decide whether the argument can reuse a registered result",
+      "blocked_on": [
+        "target=scientific-claim:one; missing=frozen baseline for the comparison; checked=the records supplied by this task; next=a baseline-snapshot registered by the host"
+      ]
+    }
+  ],
+  "records": [],
+  "open_items": [],
+  "follow_up_requests": [
+    {
+      "agent": "dependency",
+      "operation": "dependency.search",
+      "input_refs": [
+        {
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "record_id": "scientific-claim:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "reason": "target=scientific-claim:one; need=existing prerequisites for the stated bound; purpose=decide whether the argument can reuse a registered result"
+    }
+  ]
+}

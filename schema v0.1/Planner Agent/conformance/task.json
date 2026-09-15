@@ -1,0 +1,50 @@
+{
+  "contract_version": "0.1.0",
+  "task_id": "planner-synthetic-1",
+  "agent": "planner",
+  "operation": "planner.propose",
+  "brief": "Propose bounded next steps for the supplied snapshot and claim; state gaps instead of guessing.",
+  "target_refs": [
+    {
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "record_id": "scientific-claim:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "input_refs": [
+    {
+      "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+      "record_id": "source-snapshot:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.processing-profile/0.0.0",
+      "record_id": "processing-profile:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "record_id": "scientific-claim:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "input_artifacts": [],
+  "depends_on": [],
+  "expected_record_types": [],
+  "limits": {
+    "max_attempts": 2,
+    "max_seconds": 600,
+    "max_cost_units": 0,
+    "no_progress_limit": 1
+  },
+  "acceptance": "DELIVERY",
+  "exclusions": [],
+  "capabilities": [
+    "records.read",
+    "planner.propose"
+  ]
+}

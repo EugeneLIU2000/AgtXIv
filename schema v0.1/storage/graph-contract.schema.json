@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/graph-service/1.0/graph-contract.schema.json",
+  "title": "Host graph-service messages, not scientific records or authorization",
+  "description": "Unintegrated interface design. Requires pinned offline schema resolution and host semantic checks specified in GRAPH-INTERFACE.md. No executable Cypher, credentials, admission status or record payloads are accepted here.",
+  "oneOf": [
+    {"$ref": "#/$defs/ProjectionRequest"},
+    {"$ref": "#/$defs/QueryRequest"},
+    {"$ref": "#/$defs/QueryResult"}
+  ],
+  "$defs": {
+    "Id": {"$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Id"},
+    "Hash": {"$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Hash"},
+    "Ref": {"$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/RecordRef"},
+    "ArtifactRef": {"$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/ArtifactRef"},
+    "ProofPlanRef": {
+      "allOf": [
+        {"$ref": "#/$defs/Ref"},
+        {"properties": {"record_type": {"const": "agtxiv.v3.proof-plan/0.0.0"}}}
+      ]
+    },
+    "NullableProofPlanRef": {"oneOf": [{"$ref": "#/$defs/ProofPlanRef"}, {"type": "null"}]},
+    "ArgumentNodeRef": {
+      "allOf": [
+        {"$ref": "#/$defs/Ref"},
+        {"properties": {"record_type": {"const": "agtxiv.v3.argument-node/0.0.0"}}}
+      ]
+    },
+    "ContextRef": {
+      "allOf": [
+        {"$ref": "#/$defs/Ref"},
+        {"properties": {"record_type": {"const": "agtxiv.v3.assumption-context/0.0.0"}}}
+      ]
+    },
+    "BindingKind": {"$ref": "https://agtxiv.org/schema/v3/0.0.0/dependency-binding.schema.json#/properties/payload/properties/kind"},
+    "ProjectionRef": {
+      "type": "object", "additionalProperties": false,
+      "required": ["projection_batch_id", "archive_batch_id", "manifest_sha256", "projection_version", "view"],
+      "properties": {
+        "projection_batch_id": {"$ref": "#/$defs/Hash"},
+        "archive_batch_id": {"$ref": "#/$defs/Id"},
+        "manifest_sha256": {"$ref": "#/$defs/Hash"},
+        "projection_version": {"const": "claim-graph-v1"},
+        "view": {"const": "CANDIDATE"}
+      }
+    },
+    "SourceBoundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_store_id", "source_event_seq", "knowledge_snapshot_ref", "base_bundle_hash"],
+      "properties": {
+        "source_store_id": {"$ref": "#/$defs/Id"},
+        "source_event_seq": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "knowledge_snapshot_ref": {
+          "oneOf": [
+            {
+              "allOf": [
+                {"$ref": "#/$defs/Ref"},
+                {"properties": {"record_type": {"const": "agtxiv.v3.knowledge-snapshot/0.0.0"}}}
+              ]
+            },
+            {"type": "null"}
+          ]
+        },
+        "base_bundle_hash": {"$ref": "#/$defs/Hash"}
+      }
+    },
+    "ProjectionRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["graph_contract_version", "kind", "task_id", "projection_ref", "source", "manifest_artifact_ref"],
+      "properties": {
+        "graph_contract_version": {"const": "1.0"},
+        "kind": {"const": "PROJECTION_REQUEST"},
+        "task_id": {"$ref": "#/$defs/Id"},
+        "projection_ref": {"$ref": "#/$defs/ProjectionRef"},
+        "source": {"$ref": "#/$defs/SourceBoundary"},
+        "manifest_artifact_ref": {"$ref": "#/$defs/ArtifactRef"}
+      }
+    },
+    "SeedRefs": {
+      "type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/Ref"}
+    },
+    "DependencyQuery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "seed_refs", "direction", "binding_kinds", "proof_plan_ref"],
+      "properties": {
+        "kind": {"const": "DEPENDENCY_NEIGHBORS"},
+        "seed_refs": {"$ref": "#/$defs/SeedRefs"},
+        "direction": {"enum": ["UPSTREAM", "DOWNSTREAM"]},
+        "binding_kinds": {
+          "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/BindingKind"}
+        },
+        "proof_plan_ref": {"$ref": "#/$defs/NullableProofPlanRef"}
+      }
+    },
+    "InferenceQuery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "seed_refs", "direction", "proof_plan_ref"],
+      "properties": {
+        "kind": {"const": "INFERENCE_STEPS"},
+        "seed_refs": {
+          "type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/ArgumentNodeRef"}
+        },
+        "direction": {"enum": ["UPSTREAM", "DOWNSTREAM"]},
+        "proof_plan_ref": {"$ref": "#/$defs/ProofPlanRef"}
+      }
+    },
+    "ContextQuery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "seed_refs", "direction"],
+      "properties": {
+        "kind": {"const": "RECORD_CONTEXT"},
+        "seed_refs": {"$ref": "#/$defs/SeedRefs"},
+        "direction": {"enum": ["OUTGOING", "INCOMING"]}
+      }
+    },
+    "Limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_depth", "max_records", "max_relations", "max_expansions", "timeout_ms", "max_response_bytes"],
+      "properties": {
+        "max_depth": {"type": "integer", "minimum": 1, "maximum": 8},
+        "max_records": {"type": "integer", "minimum": 1, "maximum": 256},
+        "max_relations": {"type": "integer", "minimum": 1, "maximum": 512},
+        "max_expansions": {"type": "integer", "minimum": 1, "maximum": 5000},
+        "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 30000},
+        "max_response_bytes": {"type": "integer", "minimum": 4096, "maximum": 1048576}
+      }
+    },
+    "QueryRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["graph_contract_version", "kind", "query_id", "projection_ref", "query", "limits"],
+      "properties": {
+        "graph_contract_version": {"const": "1.0"},
+        "kind": {"const": "QUERY_REQUEST"},
+        "query_id": {"$ref": "#/$defs/Id"},
+        "projection_ref": {"$ref": "#/$defs/ProjectionRef"},
+        "query": {
+          "oneOf": [
+            {"$ref": "#/$defs/DependencyQuery"},
+            {"$ref": "#/$defs/InferenceQuery"},
+            {"$ref": "#/$defs/ContextQuery"}
+          ]
+        },
+        "limits": {"$ref": "#/$defs/Limits"}
+      }
+    },
+    "DependencyRelation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "owner_ref", "prerequisite_ref", "dependent_ref", "binding_kind", "proof_plan_ref", "reuse_decision_ref"],
+      "properties": {
+        "kind": {"const": "DEPENDENCY_BINDING"},
+        "owner_ref": {
+          "allOf": [
+            {"$ref": "#/$defs/Ref"},
+            {"properties": {"record_type": {"const": "agtxiv.v3.dependency-binding/0.0.0"}}}
+          ]
+        },
+        "prerequisite_ref": {"$ref": "#/$defs/Ref"},
+        "dependent_ref": {"$ref": "#/$defs/Ref"},
+        "binding_kind": {"$ref": "#/$defs/BindingKind"},
+        "proof_plan_ref": {"$ref": "#/$defs/NullableProofPlanRef"},
+        "reuse_decision_ref": {
+          "oneOf": [
+            {
+              "allOf": [
+                {"$ref": "#/$defs/Ref"},
+                {"properties": {"record_type": {"const": "agtxiv.v3.reuse-decision/0.0.0"}}}
+              ]
+            },
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "InferenceRelation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "owner_ref", "proof_plan_ref", "premise_refs", "conclusion_ref", "context_ref", "discharged_context_refs", "rule_evidence_refs"],
+      "properties": {
+        "kind": {"const": "INFERENCE_STEP"},
+        "owner_ref": {
+          "allOf": [
+            {"$ref": "#/$defs/Ref"},
+            {"properties": {"record_type": {"const": "agtxiv.v3.inference-step/0.0.0"}}}
+          ]
+        },
+        "proof_plan_ref": {"$ref": "#/$defs/ProofPlanRef"},
+        "premise_refs": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/ArgumentNodeRef"}},
+        "conclusion_ref": {"$ref": "#/$defs/ArgumentNodeRef"},
+        "context_ref": {"oneOf": [{"$ref": "#/$defs/ContextRef"}, {"type": "null"}]},
+        "discharged_context_refs": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/ContextRef"}},
+        "rule_evidence_refs": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/Ref"}}
+      }
+    },
+    "ReferenceRelation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "owner_ref", "field_path", "target_ref"],
+      "properties": {
+        "kind": {"const": "RECORD_REFERENCE"},
+        "owner_ref": {"$ref": "#/$defs/Ref"},
+        "field_path": {
+          "type": "string", "minLength": 1, "maxLength": 2048,
+          "pattern": "^(?:/(?:[^~/]|~[01])*)+$",
+          "description": "JSON Pointer to a schema-declared RecordRef in the owner record, never an executable expression."
+        },
+        "target_ref": {"$ref": "#/$defs/Ref"}
+      }
+    },
+    "Provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "backend", "checkpoint_artifact_ref", "query_service_hash", "authorization_scope_hash"],
+      "properties": {
+        "source": {"$ref": "#/$defs/SourceBoundary"},
+        "backend": {"enum": ["SEALED_EXPORT_REFERENCE", "NEO4J"]},
+        "checkpoint_artifact_ref": {"$ref": "#/$defs/ArtifactRef"},
+        "query_service_hash": {"$ref": "#/$defs/Hash"},
+        "authorization_scope_hash": {"$ref": "#/$defs/Hash"}
+      }
+    },
+    "QueryResult": {
+      "type": "object", "additionalProperties": false,
+      "required": ["graph_contract_version", "kind", "query_id", "request_hash", "outcome", "projection_ref", "provenance", "record_refs", "relations", "coverage", "open_items"],
+      "properties": {
+        "graph_contract_version": {"const": "1.0"},
+        "kind": {"const": "QUERY_RESULT"},
+        "query_id": {"$ref": "#/$defs/Id"},
+        "request_hash": {"$ref": "#/$defs/Hash"},
+        "outcome": {"enum": ["READY", "LIMIT_REACHED", "NOT_READY", "NOT_FOUND", "UNAVAILABLE", "DENIED", "FAILED"]},
+        "projection_ref": {"$ref": "#/$defs/ProjectionRef"},
+        "provenance": {"oneOf": [{"$ref": "#/$defs/Provenance"}, {"type": "null"}]},
+        "record_refs": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/Ref"}},
+        "relations": {
+          "type": "array", "maxItems": 512, "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              {"$ref": "#/$defs/DependencyRelation"},
+              {"$ref": "#/$defs/InferenceRelation"},
+              {"$ref": "#/$defs/ReferenceRelation"}
+            ]
+          }
+        },
+        "coverage": {"enum": ["COMPLETE_WITHIN_REQUEST", "TRUNCATED", "NOT_EVALUATED"]},
+        "open_items": {
+          "type": "array", "maxItems": 32, "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1, "maxLength": 2048}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"outcome": {"const": "READY"}}, "required": ["outcome"]},
+          "then": {
+            "properties": {
+              "coverage": {"const": "COMPLETE_WITHIN_REQUEST"},
+              "provenance": {"$ref": "#/$defs/Provenance"},
+              "record_refs": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"outcome": {"const": "LIMIT_REACHED"}}, "required": ["outcome"]},
+          "then": {
+            "properties": {
+              "coverage": {"const": "TRUNCATED"},
+              "provenance": {"$ref": "#/$defs/Provenance"},
+              "open_items": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"outcome": {"enum": ["NOT_READY", "NOT_FOUND", "UNAVAILABLE", "DENIED", "FAILED"]}}, "required": ["outcome"]},
+          "then": {
+            "properties": {
+              "coverage": {"const": "NOT_EVALUATED"},
+              "provenance": {"type": "null"},
+              "record_refs": {"maxItems": 0},
+              "relations": {"maxItems": 0},
+              "open_items": {"minItems": 1}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

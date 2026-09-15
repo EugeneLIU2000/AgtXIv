@@ -167,6 +167,13 @@ def test_catalog_has_three_profiles_and_all_python_commands_use_current_interpre
         ("executable", "uv"),
     ]
     assert by_id["test-suite"].profiles == ("fast", "full", "nightly")
+    schema_v01 = by_id["schema-v0.1-agent-tests"]
+    assert schema_v01.profiles == ("fast", "full", "nightly")
+    assert schema_v01.command == ("{python}", "schema v0.1/tests/run_agent_tests.py")
+    assert schema_v01.timeout_seconds == 600
+    assert schema_v01.required_repository_paths == (
+        "schema v0.1/tests/run_agent_tests.py",
+    )
     assert by_id["lean-stabilizerness-dynamic"].profiles == ("full", "nightly")
     assert by_id["lean-stabilizerness-dynamic"].expected_blocker is None
     assert by_id["lean-stabilizerness-dynamic"].command == (
@@ -197,6 +204,7 @@ def test_profile_selection_and_only_are_stable() -> None:
     assert "shellworld-v1-run" in fast_ids
     assert "pytest-test-identity" in fast_ids
     assert "test-suite" in fast_ids
+    assert "schema-v0.1-agent-tests" in fast_ids
 
     selected = validator.select_checks(
         catalog, "fast", ["lean-root-math,v2-paper-agentization", "lean-root-math"]

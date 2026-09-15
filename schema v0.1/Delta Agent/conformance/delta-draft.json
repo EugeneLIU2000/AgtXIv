@@ -1,0 +1,131 @@
+{
+  "draft_version": "1.0",
+  "baseline_ref": {
+    "record_type": "agtxiv.v3.baseline-snapshot/0.0.0",
+    "record_id": "baseline-snapshot:one",
+    "revision": 1,
+    "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "records": [
+    {
+      "record_type": "agtxiv.v3.contribution-delta/0.0.0",
+      "payload": {
+        "baseline_ref": {
+          "record_type": "agtxiv.v3.baseline-snapshot/0.0.0",
+          "record_id": "baseline-snapshot:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "current_refs": [
+          {
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "record_id": "math-claim:current",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "prior_refs": [
+          {
+            "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+            "record_id": "scientific-claim:prior",
+            "revision": 1,
+            "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        ],
+        "operation": "GENERALIZES",
+        "relation_refs": [
+          {
+            "record_type": "agtxiv.v3.relation-assessment/0.0.0",
+            "record_id": "relation-assessment:one",
+            "revision": 1,
+            "content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          }
+        ],
+        "author_declaration": "The paper states that its bound is the first to drop the commuting assumption.",
+        "review": {
+          "reviewed_refs": [
+            {
+              "record_type": "agtxiv.v3.math-claim/0.0.0",
+              "record_id": "math-claim:current",
+              "revision": 1,
+              "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+              "record_id": "scientific-claim:prior",
+              "revision": 1,
+              "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            }
+          ],
+          "producer_principal_ids": [
+            "agent:synthetic-claim-producer"
+          ],
+          "independence": "UNESTABLISHED",
+          "conflicts": [
+            "Draft produced by a model whose separation from the claim producer is not established."
+          ],
+          "method": "Compared the exact current claim against the exact prior claim listed in the pinned baseline, using the supplied relation-assessment as the only witness.",
+          "evidence_refs": [
+            {
+              "record_type": "agtxiv.v3.relation-assessment/0.0.0",
+              "record_id": "relation-assessment:one",
+              "revision": 1,
+              "content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            }
+          ]
+        },
+        "outcome": "PROPOSED",
+        "qualifications": [
+          "The pinned baseline covers only the retrieval sources recorded in baseline-snapshot:one; work outside that coverage was not compared.",
+          "No independent identity separation is established for this draft, so the assessment is a proposal."
+        ]
+      }
+    },
+    {
+      "record_type": "agtxiv.v3.frontier-item/0.0.0",
+      "payload": {
+        "target_refs": [
+          {
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "record_id": "math-claim:current",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "kind": "SCOPE_AMBIGUITY",
+        "axes": [
+          "mathematical_correctness"
+        ],
+        "statement": "The pinned baseline records no entry for the non-commuting regime, so the comparison is bounded rather than exhaustive.",
+        "next_evidence": "A dependency.search pass over the non-commuting regime extending the baseline, followed by a new comparison record.",
+        "attempt_refs": [],
+        "state": "OPEN",
+        "resolution_refs": []
+      }
+    }
+  ],
+  "open_items": [
+    "target=contribution-delta for math-claim:current; missing=prior work in the non-commuting regime; checked=the sources recorded in baseline-snapshot:one; next=an extended baseline before any stronger outcome"
+  ],
+  "follow_up_requests": [
+    {
+      "agent": "review",
+      "operation": "review.reuse",
+      "input_refs": [
+        {
+          "record_type": "agtxiv.v3.math-claim/0.0.0",
+          "record_id": "math-claim:current",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "record_id": "scientific-claim:prior",
+          "revision": 1,
+          "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      ],
+      "reason": "target=math-claim:current vs scientific-claim:prior; need=an independently produced relation-assessment; purpose=to decide whether the delta outcome can move beyond PROPOSED"
+    }
+  ]
+}

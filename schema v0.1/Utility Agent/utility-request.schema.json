@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/utility-agent/1.0/utility-request.schema.json",
+  "title": "Fixed host-to-program request for one utility operation — not a Task, an authorization or a capability grant",
+  "description": "The one request shape every utility program accepts. It is a projection of an already fixed Task: exact input references, exact input artifacts, deterministic parameters and the command allow-list. Naming a command here does not grant permission to run it; the host's execution boundary does.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_version",
+    "operation",
+    "task_id",
+    "input_refs",
+    "input_artifacts",
+    "expected_record_types",
+    "parameters",
+    "allowed_commands"
+  ],
+  "properties": {
+    "request_version": { "const": "1.0" },
+    "operation": {
+      "enum": [
+        "utility.capture",
+        "utility.register-plan",
+        "utility.assemble-packet",
+        "utility.formal-check",
+        "utility.persist",
+        "utility.export",
+        "utility.project",
+        "utility.certify"
+      ]
+    },
+    "task_id": { "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Id" },
+    "input_refs": { "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Refs" },
+    "input_artifacts": { "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/ArtifactRefs" },
+    "expected_record_types": { "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/RecordTypes" },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic", "network_access", "timeout_seconds", "environment_ref"],
+      "properties": {
+        "deterministic": { "type": "boolean" },
+        "network_access": { "type": "boolean" },
+        "timeout_seconds": { "type": "integer", "minimum": 1, "maximum": 604800 },
+        "environment_ref": {
+          "anyOf": [
+            {
+              "allOf": [
+                { "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef" },
+                { "properties": { "record_type": { "const": "agtxiv.v3.formal-environment/0.0.0" } } }
+              ]
+            },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "allowed_commands": {
+      "type": "array",
+      "maxItems": 1000,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 4096 }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/planner-agent/1.0/propose-draft.schema.json",
+  "title": "Planner model draft — bounded task proposals, not Tasks, capabilities, budgets, a stored RecordSet or an approval",
+  "description": "Internal model-to-host draft for planner.propose. planner has an empty output_record_types, so this draft carries no business payload: records is closed at zero items. Proposals reuse the orchestration FollowUp field convention (agent, operation, input_refs, reason) verbatim and add blocked_on for gaps and stop conditions. There is deliberately no key for capabilities, exclusions, limits, acceptance or expected_record_types: those belong to the host and the scheduler. A shape-valid draft is a suggestion, not accepted work.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["draft_version", "proposals", "records", "open_items", "follow_up_requests"],
+  "properties": {
+    "draft_version": { "const": "1.0" },
+    "proposals": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["agent", "operation", "input_refs", "reason", "blocked_on"],
+        "properties": {
+          "agent": {
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Agent"
+          },
+          "operation": {
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Id"
+          },
+          "input_refs": {
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Refs"
+          },
+          "reason": {
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Text"
+          },
+          "blocked_on": {
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+          }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

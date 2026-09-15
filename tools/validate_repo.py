@@ -490,6 +490,15 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
             timeout_seconds=600,
         ),
         CheckSpec(
+            "schema-v0.1-agent-tests",
+            "Run the schema v0.1 orchestration and agent contract test suites.",
+            every,
+            _python("schema v0.1/tests/run_agent_tests.py"),
+            requirements=(module("pytest"),),
+            timeout_seconds=600,
+            required_repository_paths=("schema v0.1/tests/run_agent_tests.py",),
+        ),
+        CheckSpec(
             "pages-site",
             "Assemble and validate the Pages site in an ignored temporary directory.",
             full,

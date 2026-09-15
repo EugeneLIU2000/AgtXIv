@@ -1,0 +1,42 @@
+{
+  "draft_version": "1.0",
+  "search_requests": [],
+  "records": [
+    {
+      "record_type": "agtxiv.v3.dependency-binding/0.0.0",
+      "payload": {
+        "dependent_ref": {
+          "record_type": "agtxiv.v3.math-claim/0.0.0",
+          "record_id": "math-claim:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "prerequisite_ref": {
+          "record_type": "agtxiv.v3.math-claim/0.0.0",
+          "record_id": "math-claim:one",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "kind": "MATHEMATICAL",
+        "affected_axes": [
+          "mathematical_correctness"
+        ],
+        "proof_plan_ref": null,
+        "comparison": [
+          {
+            "dimension": "ASSUMPTION",
+            "source_value": "same record used as its own prerequisite",
+            "target_value": "same record used as its own prerequisite",
+            "relation": "EQUIVALENT",
+            "witness_refs": []
+          }
+        ],
+        "reuse_decision_ref": null
+      }
+    }
+  ],
+  "open_items": [
+    "target=math-claim:one; missing=a distinct prerequisite record; checked=the supplied inputs; next=a bounded search that names a different exact record"
+  ],
+  "follow_up_requests": []
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/reader-agent/1.0/explanation-draft.schema.json",
+  "title": "Reader explanation draft — not a business record, RecordSet, execution Result or scientific approval",
+  "description": "Internal model-to-host draft for reader.explain. This operation has an empty output_record_types whitelist, so the draft has no place to put a business payload: it carries human-facing explanation attachments, declared gaps and follow-up requests only. The host owns record envelopes, real execution attribution and validation. A shape-valid draft is not evidence, not a readability approval and not support for any claim.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_version",
+    "attribution",
+    "explanations",
+    "records",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "draft_version": {
+      "const": "1.0"
+    },
+    "attribution": {
+      "description": "What this draft may say about its own producer. There is no value for independence: only the host can establish that the explaining principal differs from the producer of the explained material.",
+      "enum": [
+        "UNESTABLISHED",
+        "SELF_CHECK"
+      ]
+    },
+    "explanations": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target_ref",
+          "audience",
+          "text",
+          "basis_refs",
+          "gaps"
+        ],
+        "properties": {
+          "target_ref": {
+            "description": "The exact business object being explained, or null when the brief has no business target yet.",
+            "anyOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "audience": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "basis_refs": {
+            "description": "The exact records this explanation was read from. An explanation is traceable or it is declared ungrounded in gaps; it is never citable as support.",
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Refs"
+          },
+          "gaps": {
+            "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+          }
+        }
+      }
+    },
+    "records": {
+      "description": "Structurally empty. reader.explain has no output_record_types; this array exists only so that a business record has a place to fail.",
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

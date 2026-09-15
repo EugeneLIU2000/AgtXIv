@@ -1,0 +1,26 @@
+{
+  "request_version": "1.0",
+  "operation": "utility.capture",
+  "task_id": "synthetic-capture-rejected",
+  "input_refs": [
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "input_artifacts": [],
+  "expected_record_types": [
+    "source-acquisition"
+  ],
+  "parameters": {
+    "deterministic": true,
+    "network_access": false,
+    "timeout_seconds": 60,
+    "environment_ref": null
+  },
+  "allowed_commands": [
+    "fetch-source"
+  ]
+}

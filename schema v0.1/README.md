@@ -6,6 +6,8 @@
 
 最简单的理解：**论文和 claim 是长期保存的档案；agent 是临时接工作单的研究助理；调度器负责派单；存储程序负责记账。** 换模型、结束一个 agent 或重启进程，都不应丢失研究进度。
 
+当前开发约定（2026-09-15）：先完善 Agent 框架，**不自动执行测试**。所有新增/受影响的待测试项及接口前置缺口统一放在 [PENDING_TESTS.md](PENDING_TESTS.md)，供用户检查；后续明确要求时才执行指定范围。历史报告不代表本次修改已验证。
+
 ## 先读什么
 
 | 你关心的问题 | 入口 |
@@ -13,10 +15,33 @@
 | 需要哪些 agent？分别做什么、不能做什么？ | [AGENT-CONTRACTS.md](AGENT-CONTRACTS.md) |
 | 谁先工作？什么时候并行、等待、重试和停止？ | [SCHEDULING.md](SCHEDULING.md) |
 | SQL、Neo4j、GitHub 各保存什么？怎样封存和恢复？ | [STORAGE.md](STORAGE.md) |
+| 底层架构现在最该补什么，为什么保留 Neo4j？ | [SYSTEM-REVIEW.md](SYSTEM-REVIEW.md)（先读结论） |
+| 图查询具体接收/返回什么，怎样交给下一 Agent？ | [GRAPH-INTERFACE.md](GRAPH-INTERFACE.md) |
 | 已有 64 类 schema 是否要重做？ | [COMPATIBILITY.md](COMPATIBILITY.md) |
 | 现在交付了什么，下一步具体实现什么？ | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| 哪些检查真的运行过，哪些尚未执行？ | [VALIDATION.md](VALIDATION.md) |
+| 以前运行过哪些检查？ | [VALIDATION.md](VALIDATION.md)（历史范围） |
+| 当前还有什么需要我检查、以后再测试？ | [PENDING_TESTS.md](PENDING_TESTS.md)（唯一待测入口） |
 | 数学目标怎样拆成 Lamport 证明，再交给 Lean 4？ | [Autoformalization Agent/AGENT.md](<Autoformalization Agent/AGENT.md>) |
+| 一条真实 claim 能否实际交接、保存并重启接续？ | [Paper → Dependency 本地交接](handoff/README.md) |
+
+2026-09-15 增补：`handoff/` 已实现一条从已有 Paper 候选到 Dependency 本地引用扫描的有界执行路径。它不调用新模型、不远程检索、不建立已认可的数学依赖；本包其余调度/存储规划不能因此视为已经实现。
+
+2026-09-15 底层审阅修订：图服务被定位为 host 的可替换查询模块，不新增 Agent。新增 [graph-contract.schema.json](storage/graph-contract.schema.json)，规范投影请求、三类有界查询和带来源的结果；本地验证批次可分别进入图投影和 Git 归档，不再把 Git push 当成本地研究前置。**新图 schema 尚未接入检查器，旧 SQL/Cypher 仍是归档优先参考；没有新运行器、迁移或本轮测试。**
+
+## 其他六个 Agent：从哪里开始读
+
+先前规范轮补齐以下六个 `AGENT.md`，按职责、输入、输出、工作顺序、停止与交接组织。本次底层审阅继续沿用它们的业务草稿格式，仅补充图读取与交接边界，另新增独立图服务 schema；不修改运行代码，不执行测试。其他轮次的历史执行记录见中央清单。
+
+| 入口 | 只负责什么 |
+|---|---|
+| [Dependency Agent](<Dependency Agent/AGENT.md>) | 找真实上游候选及证据，不批准复用 |
+| [Review Agent](<Review Agent/AGENT.md>) | 分角色独立审阅范围、推理、用途与对齐，不改被审对象 |
+| [Utility Agent](<Utility Agent/AGENT.md>) | 执行固定程序并保存真实回执，不作科学选择 |
+| [Planner Agent](<Planner Agent/AGENT.md>) | 提议有前置条件的下一步，不直接派单 |
+| [Delta Agent](<Delta Agent/AGENT.md>) | 相对固定基准比较改变，不宣称全球首次 |
+| [Reader Agent](<Reader Agent/AGENT.md>) | 解释当前结果、依据与缺口，不授予科学认可 |
+
+建议先读 Dependency → Review → Utility，理解主链；再读 Planner 如何提议顺序，以及 Delta / Reader 如何消费已有结果。共同草稿约束在 [AGENT-CONTRACTS §2.2](AGENT-CONTRACTS.md)，具体交接条件在 [SCHEDULING §3.1](SCHEDULING.md)。
 
 ## 本包的三个边界
 
@@ -30,7 +55,7 @@
 - `schemas/`：五个 JSON Schema 文件，分别定义共享类型、模板目录、任务、结果和候选导出清单。
 - `compatibility.lock.json`：固定当前 v0.0 契约包身份；不能静默读取另一套“最新版”。
 - `examples/`：明确标记为人工教学样例的工作单、回执和文件导出；不是论文验证证据。
-- `storage/`：SQL 运行表和 Neo4j/Docker 参考材料。是待接入的参考，不自动修改当前数据库。
+- `storage/`：SQL 运行表和 Neo4j/Docker 参考材料，以及独立的 graph-service/1.0 消息 schema；图 schema 尚未注册到根检查器，不自动修改当前数据库。旧 SQL/Cypher 不直接支持新本地封存 profile。
 - `validate.py`、`tests/`：离线格式与跨对象约束检查及反例测试。
 
 ## 最小调用接口
@@ -41,7 +66,7 @@
 
 业务产物通过原 v0.0 格式装配、校验和保存。工作单与执行回执属于新的运行层，**不能直接塞入 v0.0 的 `RecordSet` 或 `LocalStore.records`**。存储适配见 STORAGE。
 
-## 在仓库根目录检查
+## 按需检查（仅在用户明确要求执行时）
 
 ```bash
 .venv/bin/python 'schema v0.1/validate.py' --check
@@ -62,4 +87,4 @@ URI 只作 schema 身份，所有引用在本地解析，缺失即失败，绝�
 
 ## 本轮完成边界
 
-交付标准是：工作分工和调度规则可供实现；存储权责、格式、失败恢复有明确决定；接口有可执行的正反例检查；读者能够看出哪些还未实现。生产队列、真正的多模型调用、远程获取、独立 Lean 检查和正式准入不属于本轮已经实现的能力，后续工作列在 IMPLEMENTATION 中。
+交付标准是：工作分工和调度规则可供实现；存储权责、格式、失败恢复有明确决定；读者能够区分接口、实现与实际运行证据。原有根契约具备离线检查入口；新增图接口只有规范与机器 schema，尚无语义检查器或运行适配。生产队列、真正的多模型调用、通用远程获取、独立 Lean 检查和正式准入不能由这些文件推定完成，后续工作列在 IMPLEMENTATION 中。

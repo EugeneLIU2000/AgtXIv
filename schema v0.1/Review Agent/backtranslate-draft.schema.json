@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/review-agent/1.0/backtranslate-draft.schema.json",
+  "title": "Review blind backtranslation draft — not a business RecordSet, execution Result or approval",
+  "description": "Internal model-to-host draft for review.backtranslate. Payload shapes come only from the pinned v0.0 business schemas. The host owns record envelopes, real producer identity and validation. A shape-valid draft is not evidence, and it is not an independent review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_version",
+    "interpretation",
+    "conditions",
+    "records",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "draft_version": {
+      "const": "1.0"
+    },
+    "interpretation": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/backtranslation.schema.json#/properties/payload/properties/interpretation"
+    },
+    "conditions": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/backtranslation.schema.json#/properties/payload/properties/conditions"
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 0,
+      "items": false
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

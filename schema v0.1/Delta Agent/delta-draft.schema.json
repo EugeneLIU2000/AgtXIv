@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/delta-agent/1.0/delta-draft.schema.json",
+  "title": "Delta model draft — not a stored RecordSet, execution Result, priority claim or approval",
+  "description": "Internal model-to-host draft for one delta.compare call. Payload shapes come only from the pinned v0.0 business schemas. The host owns record envelopes, real execution attribution and validation. A shape-valid draft is a bounded assessment against one exactly pinned baseline, not evidence that the change is first, important or scientifically accepted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["draft_version", "baseline_ref", "records", "open_items", "follow_up_requests"],
+  "properties": {
+    "draft_version": { "const": "1.0" },
+    "baseline_ref": {
+      "allOf": [
+        { "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef" },
+        {
+          "properties": {
+            "record_type": { "const": "agtxiv.v3.baseline-snapshot/0.0.0" }
+          }
+        }
+      ]
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["record_type", "payload"],
+            "properties": {
+              "record_type": { "const": "agtxiv.v3.contribution-delta/0.0.0" },
+              "payload": { "$ref": "https://agtxiv.org/schema/v3/0.0.0/contribution-delta.schema.json#/properties/payload" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["record_type", "payload"],
+            "properties": {
+              "record_type": { "const": "agtxiv.v3.frontier-item/0.0.0" },
+              "payload": { "$ref": "https://agtxiv.org/schema/v3/0.0.0/frontier-item.schema.json#/properties/payload" }
+            }
+          }
+        ]
+      }
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": { "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp" }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "contract_version": "0.1.0",
+  "task_id": "review-synthetic-blind-1",
+  "agent": "review",
+  "operation": "review.backtranslate",
+  "brief": "Explain the meaning of the supplied declarations, their quantifiers and assumptions. Do not compare against any expected answer.",
+  "target_refs": [],
+  "input_refs": [
+    {
+      "record_type": "agtxiv.v3.formal-environment/0.0.0",
+      "record_id": "formal-environment:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "input_artifacts": [
+    {
+      "artifact_id": "artifact:and-swap-formal-bytes",
+      "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "byte_size": 128,
+      "media_type": "text/x-lean"
+    }
+  ],
+  "depends_on": [],
+  "expected_record_types": [],
+  "limits": {
+    "max_attempts": 1,
+    "max_seconds": 60,
+    "max_cost_units": 0,
+    "no_progress_limit": 1
+  },
+  "acceptance": "DELIVERY",
+  "exclusions": [
+    "agent:synthetic-formal-producer"
+  ],
+  "capabilities": [
+    "records.read",
+    "review.backtranslate"
+  ]
+}

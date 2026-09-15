@@ -1,0 +1,85 @@
+{
+  "contract_version": "0.1.0",
+  "task_id": "delta-synthetic-multi-target",
+  "agent": "delta",
+  "operation": "delta.compare",
+  "brief": "Compare the assigned current results against the pinned baseline; declare every uncovered target as a frontier item.",
+  "target_refs": [
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:current",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:current-2",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:current-3",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "input_refs": [
+    {
+      "record_type": "agtxiv.v3.baseline-snapshot/0.0.0",
+      "record_id": "baseline-snapshot:one",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:current",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:current-2",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:current-3",
+      "revision": 1,
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "record_id": "scientific-claim:prior",
+      "revision": 1,
+      "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "record_type": "agtxiv.v3.relation-assessment/0.0.0",
+      "record_id": "relation-assessment:one",
+      "revision": 1,
+      "content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  ],
+  "input_artifacts": [],
+  "depends_on": [],
+  "expected_record_types": [
+    "contribution-delta",
+    "frontier-item"
+  ],
+  "limits": {
+    "max_attempts": 1,
+    "max_seconds": 60,
+    "max_cost_units": 0,
+    "no_progress_limit": 1
+  },
+  "acceptance": "DELIVERY",
+  "exclusions": [
+    "agent:synthetic-claim-producer"
+  ],
+  "capabilities": [
+    "records.read",
+    "delta.compare"
+  ]
+}

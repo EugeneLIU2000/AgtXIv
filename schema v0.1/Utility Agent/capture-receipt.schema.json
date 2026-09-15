@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/utility-agent/1.0/capture-receipt.schema.json",
+  "title": "utility.capture program receipt — not a stored RecordSet, approval or scientific evidence",
+  "description": "Execution facts a conforming program returns for one fixed request. Payload shapes come only from the pinned v0.0 business schemas. The host owns record envelopes, real producer identity and validation. A shape-valid receipt is not evidence that any command ran.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "receipt_version",
+    "request_hash",
+    "execution",
+    "outputs",
+    "artifacts",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "receipt_version": {
+      "const": "1.0"
+    },
+    "request_hash": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Hash"
+    },
+    "execution": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Execution"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "outputs": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.source-acquisition/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/source-acquisition.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.source-snapshot/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/source-snapshot.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.source-transformation/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/source-transformation.schema.json#/properties/payload"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/Artifact"
+      }
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  },
+  "$defs": {
+    "Execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command",
+        "exit_code",
+        "started_at",
+        "finished_at",
+        "tool_versions",
+        "host_mode"
+      ],
+      "properties": {
+        "command": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "started_at": {
+          "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Time"
+        },
+        "finished_at": {
+          "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Time"
+        },
+        "tool_versions": {
+          "type": "object",
+          "maxProperties": 1000,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "host_mode": {
+          "enum": [
+            "EXECUTED",
+            "OFFLINE_DIAGNOSTIC"
+          ]
+        }
+      }
+    },
+    "Artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "byte_size",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sha256": {
+          "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Hash"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        }
+      }
+    }
+  }
+}
