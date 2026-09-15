@@ -1,5 +1,5 @@
 {
-  "registry_version": "0.1.0",
+  "registry_version": "0.2.0",
   "updated": "2026-09-15",
   "purpose": "External Lean library import allowlist. Release-candidate deliverables may import only packages listed here with status ACTIVE or PROBATIONARY; this registry is not a mathematical-correctness certification.",
   "policy": {
@@ -38,17 +38,42 @@
       "kind": "GIT",
       "trust_tier": "PHYSICS",
       "status": "PROBATIONARY",
-      "rationale": "Community physics library (formed by merging PhysLean/HepLean with Lean-QuantumInfo), with Physlib, PhyslibAlpha and QuantumInfo build targets. First registry version admits the reviewed Physlib core target only.",
+      "rationale": "Community physics library (formed by merging PhysLean/HepLean with Lean-QuantumInfo in March 2026, now under leanprover-community). First registry version admits the reviewed Physlib core target only. Status stays PROBATIONARY: admitted in policy, blocked in practice until the toolchain conflict in known_risks is resolved and an import smoke test with `#print axioms` is recorded in pinned_rev_examples.",
       "pinned_rev_examples": [],
       "import_restrictions": [
-        "Only the Physlib core target is admitted by default; PhyslibAlpha accepts large-scale AI contributions under a lighter review process and requires a separate decision.",
-        "The QuantumInfo target has its own conventions and review norms and is not auto-admitted."
+        "Only the reviewed Physlib core target is admitted by default. PhyslibAlpha accepts large-scale AI contributions under a lighter review process and requires a separate decision; the QuantumInfo target has its own conventions and is not auto-admitted.",
+        "ENFORCEMENT CAVEAT: defaultTargets in physlib's lakefile only controls what a bare `lake build` builds INSIDE physlib. It places no restriction on downstream imports -- PhyslibAlpha is a declared lean_lib, so `import PhyslibAlpha.X` from this repository would simply work. This restriction must be enforced by our own import scanner and is currently a declared open item, not a guarantee."
       ],
       "known_risks": [
-        "Compatibility unverified: its mathlib rev may not match leanprover/lean4:v4.30.0-rc2 with mathlib c1e30e172c8fda21e6776bf1f10351e882ee31b9; run an import smoke test and write the actual toolchain and mathlib rev back into this entry before first use.",
+        "SORRY WARNINGS ARE DISABLED UPSTREAM: all three lean_libs (Physlib, PhyslibAlpha, QuantumInfo) set -Dwarn.sorry=false, so physlib deliberately contains sorry and suppresses the warning. A theorem of ours importing a physlib lemma can therefore report sorryAx under `#print axioms`, which is a hard failure against our allow-list {propext, Classical.choice, Quot.sound}. Run `#print axioms` on every target after any physlib import; this is the CONFORMANCE E06 scenario and it is expected, not hypothetical.",
+        "VERIFIED INCOMPATIBLE with the current environment, not merely unverified: physlib pins leanprover/lean4:v4.33.0 and mathlib v4.33.0, while formal/ is pinned to leanprover/lean4:v4.30.0-rc2 with mathlib c1e30e172c8fda21e6776bf1f10351e882ee31b9. A lake project has exactly one toolchain and one mathlib, so physlib cannot be added without upgrading the whole chain and re-running every affected check per REVIEW section 6 (all three formal/ projects lose their current pass).",
+        "Importing physlib drags doc-gen4 (a documentation generator) into the dependency closure; trust is transitive and this widens the surface beyond mathematics.",
         "Actively evolving; upgrades may break downstream. Handle per REVIEW section 6 environment-change rules."
       ],
-      "approved_at": "2026-09-15"
+      "approved_at": "2026-09-15",
+      "upstream_observed": {
+        "observed_at": "2026-09-15",
+        "source": "https://github.com/leanprover-community/physlib master lakefile.toml and lean-toolchain, read directly",
+        "lean_toolchain": "leanprover/lean4:v4.33.0",
+        "mathlib_rev_in_lakefile": "v4.33.0",
+        "mathlib_pin_style": "TAG, not a full commit. This conflicts with this registry's pin_rule; the real pin must be read from physlib's own lake-manifest.json, never from its lakefile.",
+        "lean_libs": [
+          "Physlib",
+          "PhyslibAlpha",
+          "QuantumInfo"
+        ],
+        "default_targets": [
+          "Physlib",
+          "QuantumInfo"
+        ],
+        "other_requires": [
+          "doc-gen4 @ v4.33.0"
+        ],
+        "more_lean_args_all_libs": [
+          "-Dwarn.sorry=false",
+          "-Dweak.says.verify=true"
+        ]
+      }
     }
   ],
   "not_registered": [

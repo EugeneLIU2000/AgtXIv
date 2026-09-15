@@ -31,7 +31,8 @@ status: 接口规范、离线契约检查与教学案例；不是已上线的自
 | R1 论证 | `proof.expand` → `review.argument`；必要时 `review.alignment` | proof-draft、argument-review | 推理与原文忠实 | [LAMPORT.md](LAMPORT.md)、REVIEW |
 | 组包 | `utility.assemble-packet` | formalization-packet | 固定目标、所选路线、论证快照、环境 | INTERFACE |
 | R2 声明与生成 | `formalization.generate` | 完整定理声明 + lean-draft | 陈述与原文一致，且过**可复用性关** | [LEAN4.md](LEAN4.md)、REVIEW |
-| R3 形式检查 | `utility.formal-check` | formal-check + 最终代码 | 目标声明、公理依赖、构建产物；含**精简迭代**（收敛即停，上限 2 轮） | [ENVIRONMENT.md](ENVIRONMENT.md)、REVIEW |
+| R3 形式检查 | `utility.formal-check` | formal-check + 构建产物 | 目标声明、公理依赖、构建产物 | [ENVIRONMENT.md](ENVIRONMENT.md)、REVIEW |
+| R3b 精简迭代 | 生成者修订 → 重跑 `utility.formal-check` | 最终代码字节 | 只改证明体；收敛即停、上限 2 轮；动到陈述即按新定理回 R2 | ENVIRONMENT、REVIEW |
 | R4 盲反译 | `review.backtranslate` | backtranslation | 输入隔离：不给原文与预期答案 | REVIEW |
 | R5 独立对齐 | `review.alignment` | MATH_TO_FORMAL 等对齐结论 | 形式代码含义与源目标一致 | REVIEW |
 | 完成 | 宿主 | Result + 分层状态记录 | `DELIVERED` 只表示产物交齐 | REVIEW |

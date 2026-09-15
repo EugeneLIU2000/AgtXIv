@@ -126,7 +126,7 @@ class InterfaceChecker:
                 resolver.lookup(node["$ref"])
         return Draft202012Validator(schema, registry=registry, format_checker=FormatChecker())
 
-    def check(self, kind, value, task=None, require_task=False, statement_baseline=None):
+    def check(self, kind, value, task=None, require_task=False, target_name_baseline=None):
         report = report_for(kind)
         def require(ok, code, path, message):
             if not ok:
@@ -161,12 +161,16 @@ class InterfaceChecker:
         if kind == "lean":
             self.check_lean(value, require)
             self.check_lean_sources(value, report)
-            report["declaration_digests"] = [
+            report["declaration_name_digests"] = [
                 {"declaration": entry["declaration"], "role": entry["role"],
                  "sha256": "sha256:" + hashlib.sha256(entry["declaration"].encode("utf-8")).hexdigest()}
                 for entry in value["declaration_map"]]
-            if statement_baseline is not None:
-                self.check_statement_baseline(value, statement_baseline, require)
+            report["unchecked"]["statement_text"] = (
+                "Digests cover the declaration NAME only. The theorem statement, its elaborated type, and any change"
+                " to objects, hypotheses, quantifiers or conclusion are NOT checked here: a target keeping its name"
+                " while changing what it says passes this check.")
+            if target_name_baseline is not None:
+                self.check_target_name_baseline(value, target_name_baseline, require)
         report["checked"].extend(["follow_up_agent_operation_pairs", "follow_up_input_refs_and_families"])
         for i, request in enumerate(value.get("follow_up_requests", [])):
             try:
@@ -225,24 +229,36 @@ class InterfaceChecker:
                         "message": f"Lean source contains {name!r}; acceptance requires an explicit recorded reason."})
 
     @staticmethod
-    def check_statement_baseline(value, baseline, require):
-        statements = baseline.get("statements", baseline) if isinstance(baseline, dict) else baseline
-        if not isinstance(statements, dict):
-            require(False, "STATEMENT_BASELINE", "/statement_baseline",
-                    "Baseline must be a JSON object mapping declaration names to sha256 digests.")
+    def check_target_name_baseline(value, baseline, require):
+        """Compare the TARGET declaration NAME set against a frozen baseline.
+
+        Scope, stated plainly because the name of this check is easy to over-read: the digest is
+        sha256 of the draft's `declaration` field, which holds a fully qualified NAME (for example
+        'AutoformalizationExample.and_swap'), NOT the theorem statement. This detects renamed, added
+        and removed targets. It does NOT detect a changed statement under an unchanged name -- that
+        needs the elaborated type from a real Lean run, which this read-only checker never performs
+        (declared open item in validation-report.json). During R3b simplification the statement red
+        line is therefore human plus R3, not this function.
+        """
+        names = baseline.get("target_names", baseline) if isinstance(baseline, dict) else baseline
+        if not isinstance(names, dict):
+            require(False, "TARGET_NAME_BASELINE", "/target_name_baseline",
+                    "Baseline must be a JSON object mapping TARGET declaration names to sha256 name digests.")
             return
         current = {entry["declaration"]: "sha256:" + hashlib.sha256(entry["declaration"].encode("utf-8")).hexdigest()
                    for entry in value["declaration_map"] if entry["role"] == "TARGET"}
         for name, digest in current.items():
-            if name not in statements:
-                require(False, "STATEMENT_BASELINE", "/declaration_map",
-                        f"TARGET {name!r} is absent from the frozen baseline; a new target is a new statement, not a simplification.")
-            elif statements[name] != digest:
-                require(False, "STATEMENT_DRIFT", "/declaration_map",
-                        f"TARGET {name!r} differs from the frozen baseline digest.")
-        for name in statements:
+            if name not in names:
+                require(False, "TARGET_NAME_BASELINE", "/declaration_map",
+                        f"TARGET {name!r} is absent from the frozen baseline: a renamed or added target is a new "
+                        f"declaration, not a simplification.")
+            elif names[name] != digest:
+                require(False, "TARGET_NAME_DRIFT", "/declaration_map",
+                        f"Baseline digest for TARGET {name!r} is not the sha256 of that name. The baseline was frozen "
+                        f"under a different digest scheme; this checker only compares name digests.")
+        for name in names:
             if name not in current:
-                require(False, "STATEMENT_BASELINE", "/declaration_map",
+                require(False, "TARGET_NAME_BASELINE", "/declaration_map",
                         f"Baseline TARGET {name!r} is missing from this draft.")
 
     @staticmethod
@@ -298,7 +314,7 @@ def main(argv=None):
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--task", type=Path)
     parser.add_argument("--require-task", action="store_true")
-    parser.add_argument("--expect-statements", type=Path)
+    parser.add_argument("--expect-target-names", type=Path)
     parser.add_argument("--allowed-axioms")
     parser.add_argument("--fail-on-warning", action="store_true")
     args = parser.parse_args(argv)
@@ -311,9 +327,9 @@ def main(argv=None):
             value = contracts.read_json(args.input)
             task = contracts.read_json(args.task) if args.task else None
             contracts.require(not args.task or task is not None, "--task must contain a Task object, not JSON null")
-            baseline = contracts.read_json(args.expect_statements) if args.expect_statements else None
+            baseline = contracts.read_json(args.expect_target_names) if args.expect_target_names else None
             report = InterfaceChecker().check(args.kind, value, task, require_task=args.require_task,
-                                              statement_baseline=baseline)
+                                              target_name_baseline=baseline)
         status = 0 if report["checks_passed"] else 1
         if status == 0 and args.fail_on_warning and report.get("warnings"):
             status = 1

@@ -443,21 +443,48 @@ def test_lean_forbidden_constructs_are_warnings(checker):
     assert "native_decide" in report["warnings"][0]["message"]
 
 
-def test_lean_declaration_digests_are_emitted(checker):
+def test_lean_declaration_name_digests_are_emitted(checker):
     report = checker.check("lean", lean())
-    digest = report["declaration_digests"][0]
+    digest = report["declaration_name_digests"][0]
     assert digest["declaration"] == "target" and digest["role"] == "TARGET"
     assert digest["sha256"] == "sha256:" + hashlib.sha256(b"target").hexdigest()
+    assert "statement_text" in report["unchecked"]
 
 
-def test_statement_baseline_freeze(checker):
+def test_target_name_baseline_freeze(checker):
     value = lean()
     digest = "sha256:" + hashlib.sha256(b"target").hexdigest()
-    assert checker.check("lean", value, statement_baseline={"statements": {"target": digest}})["checks_passed"]
-    drift = checker.check("lean", value, statement_baseline={"statements": {"target": "sha256:" + "b" * 64}})
-    assert {error["code"] for error in drift["errors"]} == {"STATEMENT_DRIFT"}
-    missing = checker.check("lean", value, statement_baseline={"statements": {"other": digest}})
-    assert {error["code"] for error in missing["errors"]} == {"STATEMENT_BASELINE"}
+    assert checker.check("lean", value, target_name_baseline={"target_names": {"target": digest}})["checks_passed"]
+    drift = checker.check("lean", value, target_name_baseline={"target_names": {"target": "sha256:" + "b" * 64}})
+    assert {error["code"] for error in drift["errors"]} == {"TARGET_NAME_DRIFT"}
+    missing = checker.check("lean", value, target_name_baseline={"target_names": {"other": digest}})
+    assert {error["code"] for error in missing["errors"]} == {"TARGET_NAME_BASELINE"}
+
+
+def test_target_name_baseline_detects_rename(checker):
+    value = lean()
+    digest = "sha256:" + hashlib.sha256(b"target").hexdigest()
+    value["declaration_map"][0]["declaration"] = "renamed_target"
+    report = checker.check("lean", value, target_name_baseline={"target_names": {"target": digest}})
+    assert not report["checks_passed"]
+    assert {error["code"] for error in report["errors"]} == {"TARGET_NAME_BASELINE"}
+
+
+def test_target_name_baseline_cannot_see_statement_change(checker):
+    """Characterization: a changed statement under an unchanged name PASSES.
+
+    This pins a known, declared gap rather than a desired behaviour. The digest covers the
+    declaration NAME, so rewriting what the theorem says is invisible here; catching it needs the
+    elaborated type from a real Lean run (see validation-report.json open items). If this test ever
+    starts failing, the checker gained real statement coverage -- update ENVIRONMENT.md section 5,
+    CONFORMANCE.md E10 and REVIEW.md section 3 in the same change.
+    """
+    value = lean()
+    digest = "sha256:" + hashlib.sha256(b"target").hexdigest()
+    value["files"][0]["content"] = "theorem target : False := by sorry\n"
+    report = checker.check("lean", value, target_name_baseline={"target_names": {"target": digest}})
+    assert report["checks_passed"], "name-only baseline cannot detect a statement change"
+    assert report["warnings"], "the forbidden-construct scan is the only signal left here"
 
 
 def test_require_task_flag(checker):

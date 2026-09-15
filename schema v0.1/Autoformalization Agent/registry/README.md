@@ -21,7 +21,9 @@
 
 ## 3. 条目字段
 
-`name`、`url`、`kind`（`GIT` / `LOCAL_PATH`）、`trust_tier`、`status`（`ACTIVE` / `PROBATIONARY` / `REVOKED`）、`rationale`、`pinned_rev_examples`（已实际使用并审计过的 toolchain + rev 记录）、`import_restrictions`、`known_risks`、`approved_at`。
+`name`、`url`、`kind`（`GIT` / `LOCAL_PATH`）、`trust_tier`、`status`（`ACTIVE` / `PROBATIONARY` / `REVOKED`）、`rationale`、`pinned_rev_examples`（已实际使用并审计过的 toolchain + rev 记录）、`upstream_observed`（直接读上游构建文件得到的事实：其 toolchain、mathlib pin 及 pin 方式、全部 lean_lib、defaultTargets、额外依赖、编译参数，附观测日期与来源）、`import_restrictions`、`known_risks`、`approved_at`。
+
+`pinned_rev_examples` 记的是**我们用过什么**，`upstream_observed` 记的是**上游当时是什么**。两者分开，是因为前者能审计、后者会变；上游变了就重新观测并改写日期，不要把旧观测当现状。
 
 单人维护下这些字段不是给别人看的，是给未来的自己看的：没有第二个人兜底，机器可读的登记与理由就是唯一能拦住"顺手加一个 import"的东西。
 
@@ -33,7 +35,11 @@
 
 ## 5. 第一版说明与待决事项
 
-- 第一版按用户决定只收录 `mathlib` 与 `physlib`。`physlib` 状态为 `PROBATIONARY`：允许使用，但首次使用前必须实测与 `leanprover/lean4:v4.30.0-rc2`、mathlib `c1e30e17…` 的兼容性并回写。
-- `physlib` 由 PhysLean（原 HepLean）与 Lean-QuantumInfo 合并而来，仓库内 `PhyslibAlpha`（评审较松、接受 AI 大规模贡献）与 `QuantumInfo`（独立规范）均未自动准入。
+- 第一版按用户决定只收录 `mathlib` 与 `physlib`。`physlib` 状态为 `PROBATIONARY`：政策上准入，**实际上当前被阻断**（见下条）。
+- 2026-09-15 直接读上游构建文件得到三项事实，已写入条目：
+  1. **三个 lean_lib 全部设 `-Dwarn.sorry=false`**——physlib 刻意保留 `sorry` 并关闭警告。我们 import 它之后，目标的 `#print axioms` 可能报 `sorryAx`，对允许集 `{propext, Classical.choice, Quot.sound}` 是硬失败。这是 [CONFORMANCE E06](../CONFORMANCE.md) 的情形，属于预期会发生，不是理论风险。
+  2. **版本冲突已确证**，不再是“待验证”：physlib 用 Lean `v4.33.0` + mathlib `v4.33.0`，本仓库锁 `v4.30.0-rc2` + mathlib `c1e30e17…`。一个 lake 项目只有一个 toolchain 和一个 mathlib，所以不升级整条链就装不进来；升级则三个 `formal/` 项目的既有通过全部作废重跑（[REVIEW](../REVIEW.md) §6）。
+  3. physlib 的 lakefile 用 **tag** `v4.33.0` 作 mathlib 的 `rev`，与本注册表 `pin_rule` 的“完整 commit”要求不一致；真实 pin 必须从它自己的 `lake-manifest.json` 读，不能信 lakefile。另外它还 require `doc-gen4`，一个文档生成器会进入依赖闭包。
+- `PhyslibAlpha`（评审较松、接受 AI 大规模贡献）与 `QuantumInfo`（独立规范）均未自动准入。注意 `defaultTargets` 只管 physlib 仓库内 `lake build` 构建什么，**对下游 import 没有任何约束**：`PhyslibAlpha` 是已声明的 `lean_lib`，`import PhyslibAlpha.X` 照样能用。这条限制只能由我们自己的 import 扫描执行，目前属待实现项。
 - `LeanQuantum` 暂未登记，但既有 `formal/AgtXIvRootMath` 已在用。新形式化在登记为 `LOCAL_FROZEN` 条目（含 `Quantumlib.Data.Error.Operator` 禁用项）之前，不得新导入。
 - 注册表尚未接入自动检查：当前 `check_interfaces.py` 不读取本文件，import 与注册表的一致性检查属于待实现项（见 [../validation-report.json](../validation-report.json)）。

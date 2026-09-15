@@ -68,7 +68,53 @@
 
 验收：能说明节省了哪段实际工作、仍承担哪些假设、拒绝复用的具体原因。未测量成本节约时不宣称低价模型一定足够；低成本模型先用于已有评测覆盖的操作。
 
-## 4. 以后演进契约的规则
+## 4. 运行层框架选型：Pydantic AI（建议，未决策）
+
+记录日期 2026-09-15。这是一条**建议**，不是已采纳的决定，也不改变本包任何现有契约。
+
+### 4.1 结论
+
+[Pydantic AI](https://pydantic.dev/docs/ai/overview/) 是一个 Python 运行时 SDK：带类型的 agent 循环、`@agent.tool` 工具注册、用 Pydantic 模型做结构化输出（校验失败自动重试）、依赖注入、durable execution（Temporal／DBOS／Prefect／Restate）、OpenTelemetry 可观测性。
+
+判断要按三层分开，三层答案不同：
+
+| 层 | 是什么 | 用 Pydantic AI |
+|---|---|---|
+| 业务记录（`schema v0.0/` 的 64 类） | 科学**档案格式** | **否** |
+| 规范文档（各 agent 目录的 AGENT／INTERFACE／CONFORMANCE 等） | 认识论约束 | **否** |
+| 宿主运行时（§3 五步里尚未实现的部分） | 执行、校验、调度、归属 | **值得，等真正动手写宿主时** |
+
+### 4.2 档案层与规范层为什么不用
+
+业务记录有 `$id` URI、`schema_bundle_hash` 绑定整包、封闭 union、全字段 `required`，设计目标是活得比任何框架久——十年后用任何语言都能验证。改写成 Pydantic 模型会把档案格式绑死在一个 Python 库的生命周期上，而且 `schema_bundle_hash` 会随该库 JSON Schema 生成器的版本变化而变，整包哈希纪律就散了。
+
+规范层写的是"生产者不得审阅或批准自己的产物"这类认识论约束。没有任何 agent 框架有独立审阅、证据门、盲反译隔离的概念，这部分仍然要自己写。
+
+### 4.3 运行层为什么值得
+
+它恰好对着本包目前最弱的一环：字段声明了但没有任何代码检查。`formal-environment` 的 `allowed_axioms` 是唯一被真正交叉检查的字段；`allowed_trust_mechanisms`、`package_manifest`、`command`、`network_access` 都是写入即遗忘。框架能把其中几条从"事后审计"变成"架构保证"：
+
+| 现状 | 框架对应 | 差别 |
+|---|---|---|
+| 草稿写完后离线校验，不合格整轮失败 | 结构化输出 + 校验失败自动重试 | 从"事后判死"变成"生成期收敛" |
+| `capabilities` 是 `agents.json` 里没人检查的字符串 | `@agent.tool` 注册：未注册的工具不可调用 | 从"声明"变成"物理不可能" |
+| `INVISIBLE_REF` 事后查引用是否属于 `Task.input_refs` | 依赖注入：上下文里只放允许的记录 | 从"事后抓"变成"事前不可及" |
+| "达到预算或无进展就保存并暂停"是散文 | durable execution，跨重启恢复 | 从规则变成运行时 |
+| "宿主拥有执行事实"无实现 | OpenTelemetry trace 即真实执行归属 | 从原则变成数据 |
+
+第三行尤其关键：它正是 `review.backtranslate` 输入隔离的执行机制。现在靠检查器里硬编码的白名单事后拦截，用依赖注入则是反译者的上下文里根本没有原文与预期答案。
+
+### 4.4 采纳时必须守住的三条边界
+
+1. **规范保持框架中立。** 规范该说"模型返回一个符合 `proof-draft.schema.json` 的 JSON 对象"；用什么实现是宿主的事。一旦规范开始用框架概念（Agent／Tool／RunContext）表述，就把一份要长期存续的契约绑在了一个快速演进的库上。
+2. **生成方向不能反。** JSON Schema 是真源，Pydantic 模型是生成物（`datamodel-code-generator` 一类工具）。草稿 schema 用 `oneOf` 做记录类型分支，对应 Pydantic 的 discriminated union，生成没有障碍；但真源必须留在 JSON Schema 一侧，否则 `schema_bundle_hash` 失去意义。
+3. **时机：等有宿主再引入。** 目前尚无运行时，`validation-report.json` 里未实现项全是运行层的东西。单人维护下，多一个活跃演进的依赖就是多一份负担；在没有宿主的阶段引入，只有成本没有收益。
+
+### 4.5 复核时点
+
+开始 §3 第一步（单个可恢复工作单）时复核本节：确认 Pydantic AI 当时的 durable execution 后端与结构化输出行为，再决定采纳或另选。若采纳，先只在第一步的 handler 上试，不一次性铺开。
+
+## 5. 以后演进契约的规则
 
 当前包是实验版。运行宿主必须把模板目录、JSON schemas、提示配置、处理规则、代码与模型设置的实际字节身份纳入每次 attempt 的输入清单，不能只记录目录名或 `0.1.0` 字符串；`runtime_attempts.input_manifest_sha256` 为这份受控清单预留绑定位置。
 

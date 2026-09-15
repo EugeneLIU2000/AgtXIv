@@ -1,6 +1,6 @@
 # 多轮审阅：检查哪一层，错误退回哪一层
 
-本文件是 AGENT.md 的规范性附件，也是轮次编号 R0–R5 的唯一来源。审阅针对精确目标及版本，不是让几个模型轮流说“看起来没问题”；读者意见也不是正式科学证据。Review 不修改被审对象，生产者修订后再送审。
+本文件是 AGENT.md 的规范性附件，也是轮次编号 R0–R5（含 R3 之后的 R3b）的唯一来源。审阅针对精确目标及版本，不是让几个模型轮流说“看起来没问题”；读者意见也不是正式科学证据。Review 不修改被审对象，生产者修订后再送审。
 
 ## 1. 轮次与接口
 
@@ -9,7 +9,8 @@
 | R0 草稿结构 | 当前草稿、Task、实际来源与记录；格式、引用、共同前提、作用范围与闭包 | 宿主机械校验；错误是诊断，不生成科学认可 | 同一目标下修草稿；缺输入则等待 |
 | R1 原文到 Lamport | MathClaim、来源、完整 snapshot、所选 plan；目标忠实、推理理由、前提适用、范围解除 | `review.argument` → argument-review；需要时 `review.alignment` → SOURCE_TO_ARGUMENT／SOURCE_TO_MATH | Proof 修订；来源提取错误退 Paper；历史依赖退 Dependency／review.reuse |
 | R2 声明与生成 | 固定 packet 与形式环境；**先固定完整 Lean 声明并通过可复用性关**，再生成证明代码与对应表 | `formalization.generate` → 实际生成尝试 | 记号／实现问题修 Lean；陈述不忠实或不可复用则回 R2 重定声明；需新前提、目标或路线退上游并重新组包 |
-| R3 形式检查 | 固定 packet、真实 attempt、环境、实际代码与构建产物；**含精简迭代** | `utility.formal-check` → formal-check，包含实际声明与审计日志 | 编译／tactic 错误回生成器；数学缺步回 Proof；环境缺失回 Utility；精简越线则回 R2 |
+| R3 形式检查 | 固定 packet、真实 attempt、环境、实际代码与构建产物 | `utility.formal-check` → formal-check，包含实际声明与审计日志 | 编译／tactic 错误回生成器；数学缺步回 Proof；环境缺失回 Utility |
+| R3b 精简迭代 | R3 已通过的字节；仅证明体，收敛即停、上限 2 轮 | 生成者修订 → 对最终字节重跑 `utility.formal-check` | 无可测量改进即停；动到陈述则不是精简，按新定理回 R2 |
 | R4 盲反译 | 只给形式环境及必要的代码／定义字节，不给原文或预期答案 | `review.backtranslate` → backtranslation，解释实际量词、假设、类型与结论 | 不明确则保留疑问，不从原文补答案 |
 | R5 独立对齐 | 已冻结的反译、原数学／源目标、实际 formalization-attempt／formal-check | `review.alignment` → MATH_TO_FORMAL／必要的 SOURCE_TO_FORMAL | 目标不匹配则退对应生产层；保留 MISALIGNED／PARTIAL 等结论 |
 
@@ -28,10 +29,14 @@
 
 发现声明不可复用时，修改声明属于新定理：回 R2 重开工，不在证明写完后再“顺手泛化”。简单的未使用假设警告与 `#lint` 由机器给出，泛化判断仍需人工或独立审阅，不能被格式检查替代。
 
-## 3. R3 精简迭代（收敛即停，上限 2 轮）
+## 3. R3b 精简迭代（收敛即停，上限 2 轮）
 
-- 位置：形式检查通过后、R4 盲反译之前，使昂贵的独立审阅只对最终字节运行一次。
-- 只允许修改证明体。每轮红线：`#print axioms` 输出一致；声明摘要一致（draft 中 `declaration` 字段的哈希；elaborated 类型比对属于 R3）。任何陈述、定义或类型实例的改变都不是精简，按新定理回 R2。
+- 位置：R3 形式检查通过之后、R4 盲反译之前；它是 R3 与 R4 之间的独立轮次，不是 R3 的一部分，使昂贵的独立审阅只对最终字节运行一次。
+- 只允许修改证明体。任何陈述、定义或类型实例的改变都不是精简，按新定理回 R2。
+- 每轮红线，以及各自实际能拦住什么：
+  1. `#print axioms` 输出一致——拦得住新引入的 `sorryAx` 与新公理；**拦不住**陈述改动（改弱一个仍可证的定理，公理依赖不变）。
+  2. TARGET 声明名集合一致（`check_interfaces.py --expect-target-names`，错误码 `TARGET_NAME_BASELINE`／`TARGET_NAME_DRIFT`）——拦得住改名、增删目标；**拦不住**同名之下陈述被改写，因为摘要取的是 draft 中 `declaration` 字段（一个全限定名），不是陈述本身。
+  3. 因此**同名改写陈述目前没有机器拦截**：R3b 的陈述红线靠人工复核加 R3 的可信目标比较，最终由 R4／R5 兜底。elaborated 类型摘要属于未实现项（见 validation-report.json）。
 - 每轮记录至少一项可测量改进：未使用假设警告／`#lint`、import 足迹、构建时间、mathlib 定义复用、禁用构造清单。没有可测量改进即停；简单引理允许一轮就停，最多 2 轮。
 - 最终字节必须重跑 formal-check；字节变化后 R4／R5 不能沿用旧结论。
 - 环境与工具细节见 [ENVIRONMENT.md](ENVIRONMENT.md) 第 5 节。

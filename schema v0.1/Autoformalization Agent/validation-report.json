@@ -19,13 +19,13 @@
     "baseline_commit": "927bd2f",
     "registry_v1": {
       "base": ["mathlib"],
-      "physics": ["physlib (PROBATIONARY; compatibility smoke test not yet run)"],
+      "physics": ["physlib (PROBATIONARY in policy, blocked in practice: upstream pins Lean v4.33.0 + mathlib v4.33.0 against our v4.30.0-rc2 + mathlib c1e30e17; all three lean_libs set -Dwarn.sorry=false)"],
       "local_frozen": [],
       "not_registered": ["LeanQuantum"],
       "enforced_by_checker": false
     },
     "r2_statement_reusability_gate": "Added: complete declaration fixed before proof generation; reuse simulated via reuse-decision fields.",
-    "r3_simplification_loop": "Added: proof-body-only iteration between formal-check and blind backtranslation; convergence stops, cap 2; red lines are #print axioms and declaration digest equality."
+    "r3b_simplification_loop": "Added: proof-body-only iteration numbered R3b, between R3 formal-check and R4 blind backtranslation; convergence stops, cap 2. Red lines are #print axioms equality and TARGET declaration NAME-set equality. Neither red line detects a statement rewritten under an unchanged name; that gap is human plus R3/R4/R5, recorded in not_implemented_or_not_established."
   },
   "implementation": {
     "entry": "AGENT.md",
@@ -64,7 +64,7 @@
     "checker_additions": [
       "--require-task with TASK_REQUIRED",
       "FORBIDDEN_CONSTRUCT warnings on Lean draft sources, promoted by --fail-on-warning",
-      "declaration digests emitted for Lean drafts; --expect-statements with STATEMENT_DRIFT and STATEMENT_BASELINE",
+      "declaration NAME digests emitted for Lean drafts; --expect-target-names with TARGET_NAME_DRIFT and TARGET_NAME_BASELINE",
       "audit kind parsing '#print axioms' output with SORRY_AXIOM, UNEXPECTED_AXIOM and EMPTY_AUDIT, allow-list via --allowed-axioms"
     ],
     "changed_shared_documents": [
@@ -86,9 +86,9 @@
     {
       "command": ".venv/bin/python -B -m pytest 'schema v0.1/Autoformalization Agent/tests' 'schema v0.1/Paper Agent/tests' -q -p no:cacheprovider",
       "exit_code": 0,
-      "passed_tests": 87,
+      "passed_tests": 89,
       "breakdown": {
-        "autoformalization": 62,
+        "autoformalization": 64,
         "paper": 25
       }
     },
@@ -106,7 +106,7 @@
       "result": "0 broken relative links."
     }
   ],
-  "total_test_cases_passed": 115,
+  "total_test_cases_passed": 117,
   "synthetic_example": {
     "path": "example/and-swap/",
     "purpose": "Illustrate exact joint premises, local assumption discharge and Lamport-to-Lean correspondence.",
@@ -215,12 +215,31 @@
         "Fixed the documented contradictions: unified round numbering; per-round file list now includes lamport.md, manifest.json and diagnostics/.",
         "Added registry/trusted-packages.json and registry/README.md with mathlib (BASE) and physlib (PROBATIONARY); LeanQuantum documented as not registered.",
         "Added CONFORMANCE.md with numbered counterexamples E01-E11, each marked with the layer that can catch it.",
-        "check_interfaces.py: added --require-task, forbidden-construct warnings, declaration digests with --expect-statements, and the audit kind.",
+        "check_interfaces.py: added --require-task, forbidden-construct warnings, declaration name digests with --expect-target-names, and the audit kind.",
         "Added six regression tests covering the new checker behavior."
       ],
       "result": "validate.py --check exit 0; 28 repository tests and 87 agent tests pass; relative links 0 broken; Lean sample unchanged and still not independently checked.",
       "independent_review": false,
       "pending": "Reader and interface-compatibility review of the restructured package has not been repeated; physlib compatibility smoke test not yet run; LeanQuantum registration decision open."
+    },
+    {
+      "round": 5,
+      "roles": [
+        "external review",
+        "implementation"
+      ],
+      "focus": "Act on three findings from the review of the restructured package: verify the physlib registry entry against upstream build files, correct a misleading check name, and give the simplification loop its own round number.",
+      "changes": [
+        "registry: read physlib master lakefile.toml and lean-toolchain directly and recorded the facts in a new upstream_observed field. Three verified findings: all three lean_libs set -Dwarn.sorry=false so physlib deliberately carries sorry (expected CONFORMANCE E06 hit); the toolchain conflict is confirmed rather than merely unverified (v4.33.0 versus our v4.30.0-rc2); physlib pins mathlib by TAG not commit, and drags doc-gen4 into the closure. Registry bumped to 0.2.0.",
+        "registry: recorded that lake defaultTargets places no restriction on downstream imports, so the PhyslibAlpha exclusion needs our own import scanner and is not a guarantee today.",
+        "check_interfaces.py: renamed STATEMENT_DRIFT/STATEMENT_BASELINE to TARGET_NAME_DRIFT/TARGET_NAME_BASELINE, --expect-statements to --expect-target-names, declaration_digests to declaration_name_digests, and check_statement_baseline to check_target_name_baseline. The check only ever compared declaration NAMES; the old names read as statement coverage it does not have.",
+        "check_interfaces.py: added an unchecked entry statement_text stating plainly that a target keeping its name while changing what it says passes this check.",
+        "REVIEW/ENVIRONMENT/CONFORMANCE/AGENT: numbered the simplification loop R3b, defined it in REVIEW as its own round between R3 and R4, and rewrote the red-line text in all four documents to say what each red line can and cannot catch.",
+        "Added two regression tests: one asserting rename detection, one characterizing the statement-blindness gap so it fails loudly if coverage is ever added."
+      ],
+      "result": "64 autoformalization tests and 89 agent tests pass; example check exit 0; relative links 0 broken. No Lean was run and no independent review was performed.",
+      "independent_review": false,
+      "pending": "physlib import smoke test still not run and now known to require a full toolchain upgrade first; elaborated-type digests still unimplemented; registry still not read by any checker."
     }
   ],
   "not_implemented_or_not_established": [
@@ -233,23 +252,25 @@
     "Independent scientific argument review, source-blind backtranslation, semantic alignment or release acceptance of a paper.",
     "A guarantee that different models produce identical proofs or mathematical content.",
     "Registry enforcement: check_interfaces.py does not read registry/trusted-packages.json and does not check imports against it.",
-    "Statement-baseline persistence: --expect-statements accepts a caller-supplied digest map; no host-side freeze store exists, and the digest covers the draft declaration field rather than the elaborated Lean type.",
+    "Target-name baseline persistence: --expect-target-names accepts a caller-supplied digest map; no host-side freeze store exists.",
+    "NO MACHINE INTERCEPTION for a statement rewritten under an unchanged declaration name (CONFORMANCE E10). The name digest hashes the draft declaration field, a fully qualified name, not the statement; and #print axioms is unchanged when a theorem is weakened to a still-provable one. Catching this needs the elaborated type from a real Lean run. Until then the R3b statement red line is human plus R3 trusted-target comparison, with R4/R5 as backstop.",
+    "Import-versus-registry enforcement of the physlib PhyslibAlpha restriction: lake defaultTargets constrains only builds inside physlib, not downstream imports, so PhyslibAlpha remains importable until our own import scanner exists.",
     "Forbidden-construct scanning is textual: comments and docstrings can trigger warnings and macros or notation can evade it; it is a warning, not a proof of absence.",
     "Audit parsing checks only '#print axioms' text; it does not run Lean, verify toolchain identity or log authenticity, or check declaration coverage.",
     "No CI integration of this module's checks; no tracked bootstrap or single environment lock for the Lean toolchain."
   ],
   "checked_file_sha256": {
-    "check_interfaces.py": "37c21ffdbcabb5a3c794fd9be33f80c1d2e320a8ee580b36ce7ad4993df57fe1",
-    "AGENT.md": "103904458873c32516891b73af54ae6f6f5934600e42b5fe0d036b48de494cc9",
+    "check_interfaces.py": "f935f2513954c2834fa2c7de82c4eeea7b9b3f973469f5e51a16cf3b5423eaa6",
+    "AGENT.md": "f87865e8d67b4cb5ae2460e8e2170acc15dea4aae952c59cb697fd889b513e10",
     "INTERFACE.md": "d264b553f25cb8e8ab6ba9bbb6a7d6213984a81e9cf44bee4e72ee0ba1be7907",
     "LAMPORT.md": "7ce47bca82d5bdfa3c02dd26d8acbce8c42353c2ab867cc64f85e43015e1ba83",
     "LEAN4.md": "bf9a8f10f14cd72aaad5cb6a2b951c8bd5bd1de1251f3dcfbffc8ccd6cbece42",
-    "REVIEW.md": "2afbb712c13de478872d3e9f7d8652ff0a7dfe4074585f22ee4e43bfdcf77f29",
-    "ENVIRONMENT.md": "d85bff792d12898966c68db8ff237a57414fef0073efdb7096a9b47bdf46bf1c",
-    "CONFORMANCE.md": "9ce418e7e3f83ff49d884a44fafcb8a54b16892dda88a08f4d8aa100a539f857",
-    "registry/trusted-packages.json": "c3c106dc8d938433700ae17d50711f046ebaede7011dea44f6d0973f2da15a4d",
-    "registry/README.md": "a57f7770dfb27e3ed75ff13ec74464f81aec065b8cb0c71ef14aeab21d6ed5ce",
-    "tests/test_interfaces.py": "040d1625ec358383bbe922557caec12bb17dfdd907718ae855dcf0f53f4372ea",
+    "REVIEW.md": "f30bf841858493f80b9b165f27b60731dc9541cdcd68c3014058801b2c036fee",
+    "ENVIRONMENT.md": "60fb043ebee1760dd8667b6912f706c3132af9e5b5c881772a844c2fb47f55ff",
+    "CONFORMANCE.md": "f8da442e8e58a68fc4893bf9d320a915cfd4e0506ab254bfa810fe93c2ba0313",
+    "registry/trusted-packages.json": "4d49ae1bb2ac42424934544b62eedf971667a9d874249a95498e40080d075688",
+    "registry/README.md": "dea0a7916e2ddfab8e5d0c87a4386beb5b1301b2a9ad93b5004a92f65f4866d1",
+    "tests/test_interfaces.py": "0547d8b5ed856984953b92b18e46bb3a2d618130602594b76b646020760c5a8f",
     "proof-draft.schema.json": "84caaf3a03198c3cf288a396c0a5d1bd47ce1d28dd4966ea2b3e3c595b32458b",
     "lamport-view.schema.json": "25a76e8b17ec2be8905a169dec4f097d7dd15ae41477026315af860b86655525",
     "lean-draft.schema.json": "54c4d060ce78139de7baa8cb8ef1aa58dd5ba6bf78681dfb39a103c02e0f5f8e"
