@@ -2,6 +2,8 @@
 
 本文件是规范性附件。“Lamport”指可读的命名、层级化证明风格，不表示本项目实现了 TLA+ 或 TLAPS 解析器。数学事实仍保存在原业务记录中，阅读层只提供定位。
 
+运行接口、草稿形状与每轮文件约定见 [INTERFACE.md](INTERFACE.md)；轮次与退回见 [REVIEW.md](REVIEW.md)；Lean 环境与公理政策见 [ENVIRONMENT.md](ENVIRONMENT.md)。
+
 ## 1. 输入和输出
 
 操作保持 `proof.expand`。最低输入是 MathClaim 和 frozen-scope；原文证明、实际使用的 Definition、SourceSpan、依赖与旧异议必须可解析并属于本轮输入。

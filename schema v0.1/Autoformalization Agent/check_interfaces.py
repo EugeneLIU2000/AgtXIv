@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Read-only interface checks. Exit 0: checked layers pass; 1: fail; 2: input error.
 
-Only JSON is read; Lean source is neither written, scanned for proof claims, nor run.
+Draft kinds read JSON only; Lean source is not written or run, but it is scanned for
+forbidden constructs (warnings, not proof claims). The audit kind parses '#print axioms'
+text and does not run Lean.
 """
 import argparse
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -32,10 +35,59 @@ UNCHECKED = {
     "meaning": "Mathematical correctness, source meaning and formal alignment are not checked.",
     "result": "No Result, delivery outcome, formal-check or approval is produced.",
 }
+FORBIDDEN_CONSTRUCTS = {
+    "sorry": re.compile(r"\bsorry\b"),
+    "native_decide": re.compile(r"\bnative_decide\b"),
+    "implemented_by": re.compile(r"@\[\s*implemented_by\b"),
+    "extern": re.compile(r"@\[\s*extern\b"),
+    "csimp": re.compile(r"@\[\s*csimp\b"),
+    "skip_kernel": re.compile(r"debug\.skipKernelTC"),
+    "add_decl_without_checking": re.compile(r"addDeclWithoutChecking"),
+    "unsafe_declaration": re.compile(r"\bunsafe\s+(?:def|theorem|lemma|instance|abbrev)\b"),
+    "partial_declaration": re.compile(r"\bpartial\s+(?:def|theorem|lemma)\b"),
+}
+STANDARD_AXIOMS = ("propext", "Classical.choice", "Quot.sound")
+AXIOM_LINE = re.compile(r"^'?(?P<name>.+?)'? depends on axioms: \[(?P<axioms>[^\]]*)\]", re.M)
+NO_AXIOM_LINE = re.compile(r"^'?(?P<name>.+?)'? does not depend on any axioms", re.M)
+AUDIT_UNCHECKED = {
+    "raw_output": "Audit text is read as given; commands, exit codes, toolchain identity and log authenticity are not checked.",
+    "coverage": "Only declarations present in the audit output are covered; expected-declaration coverage must be supplied separately.",
+    "meaning": "Axiom allowance is not mathematical correctness or statement alignment.",
+}
 
 
 def report_for(kind):
-    return {"kind": kind, "checks_passed": False, "checked": [], "unchecked": dict(UNCHECKED), "errors": []}
+    return {"kind": kind, "checks_passed": False, "checked": [], "unchecked": dict(UNCHECKED),
+            "warnings": [], "errors": []}
+
+
+def check_axioms(text, allowed=None):
+    """Parse '#print axioms' output; fail on sorryAx or axioms outside the allow-list."""
+    allowed = set(allowed if allowed is not None else STANDARD_AXIOMS)
+    report = {"kind": "axioms", "checks_passed": False, "checked": ["axiom_lines_parsed"],
+              "unchecked": dict(AUDIT_UNCHECKED), "warnings": [], "errors": [], "declarations": []}
+    parsed = 0
+    for match in AXIOM_LINE.finditer(text):
+        parsed += 1
+        name = match.group("name").strip()
+        axioms = [axiom.strip() for axiom in match.group("axioms").split(",") if axiom.strip()]
+        report["declarations"].append({"declaration": name, "depends_on_axioms": axioms})
+        if "sorryAx" in axioms:
+            report["errors"].append({"code": "SORRY_AXIOM", "path": name, "message": "Declaration depends on sorryAx."})
+        unexpected = sorted(set(axioms) - allowed - {"sorryAx"})
+        if unexpected:
+            report["errors"].append({"code": "UNEXPECTED_AXIOM", "path": name,
+                                     "message": f"Axioms outside the allow-list: {', '.join(unexpected)}."})
+    for match in NO_AXIOM_LINE.finditer(text):
+        parsed += 1
+        report["declarations"].append({"declaration": match.group("name").strip(), "depends_on_axioms": []})
+    if parsed == 0:
+        report["errors"].append({"code": "EMPTY_AUDIT", "path": "",
+                                 "message": "No '#print axioms' result lines were parsed; an empty audit is not a pass."})
+    if "sorryAx" in text and not any(error["code"] == "SORRY_AXIOM" for error in report["errors"]):
+        report["errors"].append({"code": "SORRY_AXIOM", "path": "", "message": "Audit output mentions sorryAx."})
+    report["checks_passed"] = not report["errors"]
+    return report
 
 
 def walk(value, path=""):
@@ -74,7 +126,7 @@ class InterfaceChecker:
                 resolver.lookup(node["$ref"])
         return Draft202012Validator(schema, registry=registry, format_checker=FormatChecker())
 
-    def check(self, kind, value, task=None):
+    def check(self, kind, value, task=None, require_task=False, statement_baseline=None):
         report = report_for(kind)
         def require(ok, code, path, message):
             if not ok:
@@ -108,6 +160,13 @@ class InterfaceChecker:
             self.check_view(value, require)
         if kind == "lean":
             self.check_lean(value, require)
+            self.check_lean_sources(value, report)
+            report["declaration_digests"] = [
+                {"declaration": entry["declaration"], "role": entry["role"],
+                 "sha256": "sha256:" + hashlib.sha256(entry["declaration"].encode("utf-8")).hexdigest()}
+                for entry in value["declaration_map"]]
+            if statement_baseline is not None:
+                self.check_statement_baseline(value, statement_baseline, require)
         report["checked"].extend(["follow_up_agent_operation_pairs", "follow_up_input_refs_and_families"])
         for i, request in enumerate(value.get("follow_up_requests", [])):
             try:
@@ -125,6 +184,9 @@ class InterfaceChecker:
             except contracts.InterfaceError as error:
                 require(False, "FOLLOW_UP_INPUT", f"/follow_up_requests/{i}/input_refs", str(error))
         if task is None:
+            if require_task:
+                require(False, "TASK_REQUIRED", "/task",
+                        "A Task is required for this check; a draft without a fixed Task is not acceptable in this mode.")
             report["unchecked"]["task"] = "No Task supplied: operation, target packet, draft output types and exact input visibility are not checked."
         else:
             report["checked"].append("task_contract")
@@ -152,6 +214,36 @@ class InterfaceChecker:
                             "packet_ref must exactly match the unique formalization-packet in Task.target_refs.")
         report["checks_passed"] = not report["errors"]
         return report
+
+    @staticmethod
+    def check_lean_sources(value, report):
+        for i, file in enumerate(value["files"]):
+            for name, pattern in FORBIDDEN_CONSTRUCTS.items():
+                if pattern.search(file["content"]):
+                    report["warnings"].append({
+                        "code": "FORBIDDEN_CONSTRUCT", "path": f"/files/{i}/content",
+                        "message": f"Lean source contains {name!r}; acceptance requires an explicit recorded reason."})
+
+    @staticmethod
+    def check_statement_baseline(value, baseline, require):
+        statements = baseline.get("statements", baseline) if isinstance(baseline, dict) else baseline
+        if not isinstance(statements, dict):
+            require(False, "STATEMENT_BASELINE", "/statement_baseline",
+                    "Baseline must be a JSON object mapping declaration names to sha256 digests.")
+            return
+        current = {entry["declaration"]: "sha256:" + hashlib.sha256(entry["declaration"].encode("utf-8")).hexdigest()
+                   for entry in value["declaration_map"] if entry["role"] == "TARGET"}
+        for name, digest in current.items():
+            if name not in statements:
+                require(False, "STATEMENT_BASELINE", "/declaration_map",
+                        f"TARGET {name!r} is absent from the frozen baseline; a new target is a new statement, not a simplification.")
+            elif statements[name] != digest:
+                require(False, "STATEMENT_DRIFT", "/declaration_map",
+                        f"TARGET {name!r} differs from the frozen baseline digest.")
+        for name in statements:
+            if name not in current:
+                require(False, "STATEMENT_BASELINE", "/declaration_map",
+                        f"Baseline TARGET {name!r} is missing from this draft.")
 
     @staticmethod
     def check_view(value, require):
@@ -202,16 +294,29 @@ class InterfaceChecker:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--kind", required=True, choices=SCHEMAS)
+    parser.add_argument("--kind", required=True, choices=sorted(set(SCHEMAS) | {"audit"}))
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--task", type=Path)
+    parser.add_argument("--require-task", action="store_true")
+    parser.add_argument("--expect-statements", type=Path)
+    parser.add_argument("--allowed-axioms")
+    parser.add_argument("--fail-on-warning", action="store_true")
     args = parser.parse_args(argv)
     try:
-        value = contracts.read_json(args.input)
-        task = contracts.read_json(args.task) if args.task else None
-        contracts.require(not args.task or task is not None, "--task must contain a Task object, not JSON null")
-        report = InterfaceChecker().check(args.kind, value, task)
+        if args.kind == "audit":
+            allowed = ([axiom.strip() for axiom in args.allowed_axioms.split(",") if axiom.strip()]
+                       if args.allowed_axioms else None)
+            report = check_axioms(contracts.read_bytes(args.input).decode("utf-8"), allowed)
+        else:
+            value = contracts.read_json(args.input)
+            task = contracts.read_json(args.task) if args.task else None
+            contracts.require(not args.task or task is not None, "--task must contain a Task object, not JSON null")
+            baseline = contracts.read_json(args.expect_statements) if args.expect_statements else None
+            report = InterfaceChecker().check(args.kind, value, task, require_task=args.require_task,
+                                              statement_baseline=baseline)
         status = 0 if report["checks_passed"] else 1
+        if status == 0 and args.fail_on_warning and report.get("warnings"):
+            status = 1
     except (OSError, ValueError, KeyError, TypeError, RecursionError, ContractError, SchemaError, Unresolvable) as error:
         report = report_for(args.kind)
         report["unchecked"]["interface"] = "Input or checker setup failed; checks were not completed."

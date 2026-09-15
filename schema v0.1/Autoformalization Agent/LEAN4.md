@@ -2,6 +2,8 @@
 
 本文件是规范性附件。Lean 接口消费的不是任意一段证明文字，而是已固定的数学目标、证明路线、论证快照与环境。Lamport 阅读视图辅助理解，不能替代这些记录。
 
+运行接口与文件约定见 [INTERFACE.md](INTERFACE.md)；环境、公理政策与形式检查操作见 [ENVIRONMENT.md](ENVIRONMENT.md)；轮次与退回见 [REVIEW.md](REVIEW.md)。
+
 ## 1. 输入：由已有组包操作固定
 
 `utility.assemble-packet` 生成 formalization-packet，`formalization.generate` 只消费它。包里的字段继续使用原 schema：
@@ -71,19 +73,10 @@ formalization-attempt.outcome 只有 GENERATED／PARTIAL／FAILED，表示文件
 
 ## 5. Lean 检查的最低要求
 
-独立检查服务在固定环境执行获准命令，禁用未授权网络与凭据。Lean 的 tactic／元程序可能执行操作，模型代码应视为不可信输入，不在高权限宿主直接构建。隔离、资源限制和真实日志由运行服务实现，本目录未实现该沙箱。
-
-至少核对：
-
-1. 固定 Lean 工具链与依赖锁，实际构建包含 expected_declarations 的目标文件；不是只检查了另一个空模块。
-2. 每个完整目标声明的实际 elaborated type，与可信目标比较对象、量词、假设和结论；检查名称遮蔽、局部实例、记号或新增定义是否改变含义。
-3. 目标及其依赖中的占位符、额外公理与额外可信机制；按环境白名单检查传递依赖。不能只搜索文本中是否有 `sorry`。
-4. 保存真实命令、工具版本、代码／包锁哈希、构建日志、声明与公理审计结果。机械结果不替代反译与对齐。
-
-`#print axioms` 可用于查看声明的传递公理依赖；普通编译成功不排除依赖中的 sorry。正式成功不允许 sorryAx 或把原目标直接声明成公理；标准公理是否允许取决于固定环境，不一律要求“零公理”。高风险或所选政策要求时，还需独立的构建产物重检／可信目标比较工具，不能把其未运行记为通过。依据见 [Lean 官方验证指南](https://lean-lang.org/doc/reference/latest/ValidatingProofs/) 与 [公理说明](https://lean-lang.org/doc/reference/latest/Axioms/)。
+检查政策（公理允许集、禁用构造、传递依赖审计）与操作清单见 [ENVIRONMENT.md](ENVIRONMENT.md) 第 3–5 节。此处只保留接口约束：正式成功不允许 `sorryAx` 或把原目标直接声明成公理；普通编译成功不排除依赖中的 sorry；机械结果不替代反译与对齐；高风险或政策要求的独立检查未运行就记未运行，不能记为通过。
 
 ## 6. 接口交付与实现边界
 
-每轮保留 task.json、原始 draft.json、已装配 records.json、真实 result.json、生成代码、对应表和分层 validation.json；没有真实运行回执时不制造 result。Lamport 视图和声明对应表属于附件，不混入业务 records。
+每轮保留的文件与命名见 [INTERFACE.md](INTERFACE.md) 第 5 节（含 `lamport.md`、`manifest.json` 与 `diagnostics/`）；没有真实运行回执时不制造 result。Lamport 视图和声明对应表属于附件，不混入业务 records。
 
 当前提供草稿 schema、只读基础检查和教学案例。完整共享装配器、目标声明解析／比较、自动代码生成服务、隔离构建与独立检查回执仍待接入。用一个教学例子运行本地 Lean，不等于这些服务已实现。

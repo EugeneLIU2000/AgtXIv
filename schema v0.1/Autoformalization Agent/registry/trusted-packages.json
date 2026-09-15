@@ -1,0 +1,63 @@
+{
+  "registry_version": "0.1.0",
+  "updated": "2026-09-15",
+  "purpose": "External Lean library import allowlist. Release-candidate deliverables may import only packages listed here with status ACTIVE or PROBATIONARY; this registry is not a mathematical-correctness certification.",
+  "policy": {
+    "pin_rule": "Each project pins full commits in lake-manifest.json. This registry records policy and rationale; it never floats a version at build time.",
+    "toolchain_rule": "Record the actual toolchain and mathlib rev before first use, after an import smoke test.",
+    "revocation_rule": "Revoking an entry blocks new builds using it; historical records keep their original environment attribution.",
+    "approval_rule": "Single maintainer: every entry must carry rationale and approved_at. No second reviewer exists, so entries must stay machine-checkable and honest.",
+    "enforcement": "Not yet enforced by check_interfaces.py; import-versus-registry consistency is a declared open item."
+  },
+  "packages": [
+    {
+      "name": "mathlib",
+      "url": "https://github.com/leanprover-community/mathlib4",
+      "kind": "GIT",
+      "trust_tier": "BASE",
+      "status": "ACTIVE",
+      "rationale": "Community-mainline mathematics library with maintainer review and CI. Already used at full-commit pins by the formal/ Lean projects and audited under Audit.lean.",
+      "pinned_rev_examples": [
+        {
+          "project": "formal/AgtXIvRootMath",
+          "rev": "c1e30e172c8fda21e6776bf1f10351e882ee31b9",
+          "toolchain": "leanprover/lean4:v4.30.0-rc2",
+          "recorded_at": "2026-08-16"
+        }
+      ],
+      "import_restrictions": [],
+      "known_risks": [
+        "Trust is transitive: the manifest pulls in aesop, batteries, Qq, plausible, proofwidgets, importGraph, LeanSearchClient and Cli at pinned revs.",
+        "Reproduction must consume manifest resolved revs, never re-resolve inputRev values such as main."
+      ],
+      "approved_at": "2026-09-15"
+    },
+    {
+      "name": "physlib",
+      "url": "https://github.com/leanprover-community/physlib",
+      "kind": "GIT",
+      "trust_tier": "PHYSICS",
+      "status": "PROBATIONARY",
+      "rationale": "Community physics library (formed by merging PhysLean/HepLean with Lean-QuantumInfo), with Physlib, PhyslibAlpha and QuantumInfo build targets. First registry version admits the reviewed Physlib core target only.",
+      "pinned_rev_examples": [],
+      "import_restrictions": [
+        "Only the Physlib core target is admitted by default; PhyslibAlpha accepts large-scale AI contributions under a lighter review process and requires a separate decision.",
+        "The QuantumInfo target has its own conventions and review norms and is not auto-admitted."
+      ],
+      "known_risks": [
+        "Compatibility unverified: its mathlib rev may not match leanprover/lean4:v4.30.0-rc2 with mathlib c1e30e172c8fda21e6776bf1f10351e882ee31b9; run an import smoke test and write the actual toolchain and mathlib rev back into this entry before first use.",
+        "Actively evolving; upgrades may break downstream. Handle per REVIEW section 6 environment-change rules."
+      ],
+      "approved_at": "2026-09-15"
+    }
+  ],
+  "not_registered": [
+    {
+      "name": "LeanQuantum",
+      "kind": "LOCAL_PATH",
+      "reason": "First registry version deliberately contains only mathlib and physlib.",
+      "current_use": "formal/AgtXIvRootMath references inQWIRE/LeanQuantum at 44fc4eb1f4ba512e659deacd3468fda0a764d162 as a local path dependency and audits through Audit.lean.",
+      "before_first_new_import": "Register as a LOCAL_FROZEN entry recording the git identity, the actually resolved mathlib rev, and the deliberate non-import of Quantumlib.Data.Error.Operator (placeholder in an unrelated Shor-code example)."
+    }
+  ]
+}

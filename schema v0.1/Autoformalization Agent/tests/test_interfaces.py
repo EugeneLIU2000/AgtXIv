@@ -1,5 +1,6 @@
 """Synthetic interface fixtures only: no historical cases, writes or Lean execution."""
 from copy import deepcopy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -429,3 +430,72 @@ def test_cli_exit_codes_and_json_without_file_writes(checker, monkeypatch, capsy
         monkeypatch.setattr(m.contracts, "read_bytes", lambda path: sources[path] if path in sources else read(path))
         assert m.main(["--kind", "proof", "--input", "synthetic.json", "--task", "task.json"]) == status
         assert json.loads(capsys.readouterr().out)["checks_passed"] == (status == 0)
+
+
+def test_lean_forbidden_constructs_are_warnings(checker):
+    value = lean()
+    report = checker.check("lean", value, task(value, "formalization.generate"))
+    assert report["checks_passed"]  # An incomplete draft is still only a proposal.
+    assert {warning["code"] for warning in report["warnings"]} == {"FORBIDDEN_CONSTRUCT"}
+    value["files"][0]["content"] = "theorem target : True := by native_decide\n"
+    report = checker.check("lean", value, task(value, "formalization.generate"))
+    assert report["checks_passed"]
+    assert "native_decide" in report["warnings"][0]["message"]
+
+
+def test_lean_declaration_digests_are_emitted(checker):
+    report = checker.check("lean", lean())
+    digest = report["declaration_digests"][0]
+    assert digest["declaration"] == "target" and digest["role"] == "TARGET"
+    assert digest["sha256"] == "sha256:" + hashlib.sha256(b"target").hexdigest()
+
+
+def test_statement_baseline_freeze(checker):
+    value = lean()
+    digest = "sha256:" + hashlib.sha256(b"target").hexdigest()
+    assert checker.check("lean", value, statement_baseline={"statements": {"target": digest}})["checks_passed"]
+    drift = checker.check("lean", value, statement_baseline={"statements": {"target": "sha256:" + "b" * 64}})
+    assert {error["code"] for error in drift["errors"]} == {"STATEMENT_DRIFT"}
+    missing = checker.check("lean", value, statement_baseline={"statements": {"other": digest}})
+    assert {error["code"] for error in missing["errors"]} == {"STATEMENT_BASELINE"}
+
+
+def test_require_task_flag(checker):
+    value = proof()
+    report = checker.check("proof", value, require_task=True)
+    assert not report["checks_passed"]
+    assert "TASK_REQUIRED" in {error["code"] for error in report["errors"]}
+    assert checker.check("proof", value, task(value), require_task=True)["checks_passed"]
+
+
+def test_axioms_audit_accepts_standard_and_rejects_sorry():
+    text = ("'A' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+            "'B' does not depend on any axioms\n")
+    report = m.check_axioms(text)
+    assert report["checks_passed"]
+    assert [entry["declaration"] for entry in report["declarations"]] == ["A", "B"]
+    bad = m.check_axioms("'C' depends on axioms: [sorryAx]\n")
+    assert not bad["checks_passed"] and {error["code"] for error in bad["errors"]} == {"SORRY_AXIOM"}
+    custom = m.check_axioms("'D' depends on axioms: [propext, MyAxiom]\n")
+    assert not custom["checks_passed"] and {error["code"] for error in custom["errors"]} == {"UNEXPECTED_AXIOM"}
+    empty = m.check_axioms("no audit output here")
+    assert not empty["checks_passed"] and {error["code"] for error in empty["errors"]} == {"EMPTY_AUDIT"}
+    allowed = m.check_axioms("'E' depends on axioms: [MyAxiom]\n", allowed=["MyAxiom"])
+    assert allowed["checks_passed"]
+
+
+def test_cli_audit_and_fail_on_warning(monkeypatch, capsys):
+    read = m.contracts.read_bytes
+    sources = {
+        Path("audit.txt"): b"'A' does not depend on any axioms\n",
+        Path("bad-audit.txt"): b"'A' depends on axioms: [sorryAx]\n",
+        Path("draft.json"): json.dumps(lean()).encode(),
+    }
+    monkeypatch.setattr(m.contracts, "read_bytes", lambda path: sources[path] if path in sources else read(path))
+    assert m.main(["--kind", "audit", "--input", "audit.txt"]) == 0
+    assert json.loads(capsys.readouterr().out)["checks_passed"]
+    assert m.main(["--kind", "audit", "--input", "bad-audit.txt", "--allowed-axioms", "propext"]) == 1
+    assert json.loads(capsys.readouterr().out)["checks_passed"] is False
+    assert m.main(["--kind", "lean", "--input", "draft.json", "--fail-on-warning"]) == 1
+    assert json.loads(capsys.readouterr().out)["warnings"]
+    assert m.main(["--kind", "lean", "--input", "draft.json"]) == 0
