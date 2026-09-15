@@ -1,0 +1,123 @@
+{
+ "content_hash": "sha256:91481e961d8030324fdfc76f4d26ad6792facf11048a6356d456d54957dff14b",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:6a1c92924412a0a2593712d27a90ddad296ad7ccb89b6ad3d5584677f3b1708b",
+   "record_id": "claim:opus5-2608.14798v1/c19",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [],
+    "statement": "Levy concentration for Lipschitz functions on the unit sphere of $\\mathbb{C}^{2^n}$"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$L_n(\\beta)=e^{-\\beta}d_n\\beta\\sinh\\beta$ from Theorem (Lipschitz property)"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:6a1c92924412a0a2593712d27a90ddad296ad7ccb89b6ad3d5584677f3b1708b",
+   "record_id": "claim:opus5-2608.14798v1/c19",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:levy"
+  ],
+  "conclusion": "${\\rm Prob}_{\\psi\\sim{\\rm Haar}_n}\\left(|\\mathcal{Z}_{\\beta}(\\psi)-\\mathcal{Z}_{\\beta}({\\rm Haar}_{n})|/L_{n}(\\beta)\\geq\\epsilon\\right)\\leq4\\exp\\left(-\\tfrac{2}{9\\pi^{3}}2^{n}\\epsilon^{2}\\right)$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "the deviation is measured in units of $L_n(\\beta)$, which itself grows like $2^n$; an $\\epsilon$-level statement in these units is NOT an $\\epsilon$-level statement on $\\mathcal{Z}_\\beta$ or on $d_n^{-1}\\mathcal{Z}_\\beta$",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$[0,\\infty)$",
+    "kind": "FORALL",
+    "variable": "\\epsilon"
+   },
+   {
+    "domain": "positive integers",
+    "kind": "FORALL",
+    "variable": "n"
+   },
+   {
+    "domain": "range not stated; $L_n(\\beta)$ is the Lipschitz constant of Theorem (Lipschitz property)",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:6a1c92924412a0a2593712d27a90ddad296ad7ccb89b6ad3d5584677f3b1708b",
+    "record_id": "claim:opus5-2608.14798v1/c19",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m19",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

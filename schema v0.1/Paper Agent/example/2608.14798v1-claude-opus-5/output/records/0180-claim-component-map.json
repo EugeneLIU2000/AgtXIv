@@ -1,0 +1,123 @@
+{
+ "content_hash": "sha256:572c41cd25fbb69d48301e958065b53da1d190ac6c50fec811ba60bec120a237",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+   "record_id": "claim:opus5-2608.14798v1/c16",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:5c77e6328b1242a88348b43470a4b23bcaed15bcab6bc768d1470faf2e11fd35",
+   "record_id": "math:opus5-2608.14798v1/m16",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+   "record_id": "claim:opus5-2608.14798v1/c16",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:nonmult",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "No quantitative statement of how far multiplicativity fails is given here; the quantitative version appears later as cSPF supermultiplicativity.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:decomp",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The exponents $2^{|B|-\\nu_B}$ and $2^{|A|-\\nu_A}$ require $|A|,|B|$ to be QUBIT COUNTS, which contradicts the Sec. II convention $d_A=|A|=2^{n}$; under the Sec. II reading the theorem is dimensionally wrong. Under the qubit-count reading the supplemental proof identifies $2^{|A|-\\nu_A}=|{\\rm Spec}_S(\\psi_A)|$ and the decomposition does reduce to Lemma (SPF for Stabilizer + Pure).",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:residual",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "${\\rm Spec}_R$ is used in the main-text theorem but defined only in the supplemental material, so the theorem has no evaluable right-hand side at the point where it is stated.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:stabpure",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:5c77e6328b1242a88348b43470a4b23bcaed15bcab6bc768d1470faf2e11fd35",
+      "record_id": "math:opus5-2608.14798v1/m16",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+     "record_id": "claim:opus5-2608.14798v1/c16",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+    "record_id": "claim:opus5-2608.14798v1/c16",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:5c77e6328b1242a88348b43470a4b23bcaed15bcab6bc768d1470faf2e11fd35",
+    "record_id": "math:opus5-2608.14798v1/m16",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c16",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:2e0d2971f62ef7c90d063efc2bca282044ea1c7772d795d9c1bc324fafa08bc0",
+      "record_id": "example:2608.14798v1-db635458e365-claim-haar-mean",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:1231569111a2c0df841326cdf25101a07b0940f94a9cf8d32e3b8a1ab7e24bfe",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-haar-mean",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:2e0d2971f62ef7c90d063efc2bca282044ea1c7772d795d9c1bc324fafa08bc0",
+      "record_id": "example:2608.14798v1-db635458e365-claim-haar-mean",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:haar-mean",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:c69e4bdb1fa56bc58ff3fb3883c9e24efe02756b0776785244c5946c8970d729",
+            "record_id": "example:2608.14798v1-db635458e365-span-293-296",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6781c3090c4658f175c5df1e57f6f2b8f3f79f3a81e6ad3d299694a64da24410",
+            "record_id": "example:2608.14798v1-db635458e365-span-889-904",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "At beta=0 the displayed formula contains a singular factor; line 904 discusses the limit separately.; The supplementary proof and the cited Pauli-spectrum paper were not read or verified; body-versus-appendix consistency is unassessed.; The formula is for an ensemble mean and is not asserted here as the value of every Haar sample.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:1231569111a2c0df841326cdf25101a07b0940f94a9cf8d32e3b8a1ab7e24bfe",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-haar-mean",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:c69e4bdb1fa56bc58ff3fb3883c9e24efe02756b0776785244c5946c8970d729",
+          "record_id": "example:2608.14798v1-db635458e365-span-293-296",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:6781c3090c4658f175c5df1e57f6f2b8f3f79f3a81e6ad3d299694a64da24410",
+          "record_id": "example:2608.14798v1-db635458e365-span-889-904",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:2e0d2971f62ef7c90d063efc2bca282044ea1c7772d795d9c1bc324fafa08bc0",
+          "record_id": "example:2608.14798v1-db635458e365-claim-haar-mean",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:2e0d2971f62ef7c90d063efc2bca282044ea1c7772d795d9c1bc324fafa08bc0",
+        "record_id": "example:2608.14798v1-db635458e365-claim-haar-mean",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:1231569111a2c0df841326cdf25101a07b0940f94a9cf8d32e3b8a1ab7e24bfe",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-haar-mean",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:c69e4bdb1fa56bc58ff3fb3883c9e24efe02756b0776785244c5946c8970d729",
+        "record_id": "example:2608.14798v1-db635458e365-span-293-296",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:6781c3090c4658f175c5df1e57f6f2b8f3f79f3a81e6ad3d299694a64da24410",
+        "record_id": "example:2608.14798v1-db635458e365-span-889-904",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-haar-mean",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:33512ddaca6561cf422e3e04fd8aeb9761c82cab82a35e37b01aef14f2ef2c89"
+}

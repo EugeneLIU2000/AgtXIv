@@ -1,0 +1,102 @@
+{
+ "contract_version": "0.1.0",
+ "task_id": "task.opus5-2608.14798v1.dependency-search",
+ "agent": "dependency",
+ "operation": "dependency.search",
+ "brief": "Retrieve and bind the citation leads recorded for this paper: the imported stabilizer Renyi entropy and nullity definitions, the nu-compressible equivalence, the Haar Pauli-spectrum density, the Bell-sampling moment primitive, and the stabilizer-fidelity lower bound whose printed form this run recorded as inconsistent. Citation or topical similarity is not mathematical dependence; bind only what the exact conditions support.",
+ "target_refs": [
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-2608.14798v1/c01",
+   "revision": 1,
+   "content_hash": "sha256:5a08b9643803c0f6d9713e2801356d5fb4ae18804635a03111b64e5a9fe66b8d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-2608.14798v1/c02",
+   "revision": 1,
+   "content_hash": "sha256:4e4e2ab9ca8bf6b61fbdcc18458ca7b8a9e97ae2136fbb06174b50f9915927e2"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-2608.14798v1/c03",
+   "revision": 1,
+   "content_hash": "sha256:fc62a9a6f4ec171e768b9dc72f9a80574327e3a075abc0e1b0d0ec78b17a5059"
+  }
+ ],
+ "input_refs": [
+  {
+   "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+   "record_id": "source:opus5-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:1bc2d9e399975ef50b1012b6640dcbbd960838bc6da85c2099a4fdb31ad1a68e"
+  },
+  {
+   "record_type": "agtxiv.v3.processing-profile/0.0.0",
+   "record_id": "profile:opus5-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:d724465e1c761c149e3b75a948ed4c43246a2907658911da41a3ea6e5d440f7d"
+  },
+  {
+   "record_type": "agtxiv.v3.authority-policy/0.0.0",
+   "record_id": "policy:opus5-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-2608.14798v1/c01",
+   "revision": 1,
+   "content_hash": "sha256:5a08b9643803c0f6d9713e2801356d5fb4ae18804635a03111b64e5a9fe66b8d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-2608.14798v1/c02",
+   "revision": 1,
+   "content_hash": "sha256:4e4e2ab9ca8bf6b61fbdcc18458ca7b8a9e97ae2136fbb06174b50f9915927e2"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-2608.14798v1/c03",
+   "revision": 1,
+   "content_hash": "sha256:fc62a9a6f4ec171e768b9dc72f9a80574327e3a075abc0e1b0d0ec78b17a5059"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-2608.14798v1/m01",
+   "revision": 1,
+   "content_hash": "sha256:2ec522844ea9ccf30e186e695a077c7263370b8cb36fedc7b80efbe1625f137e"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-2608.14798v1/m02",
+   "revision": 1,
+   "content_hash": "sha256:d867241f88c839db661961e073db7adfea968d8ded98297ba7dfbca531ead9a9"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-2608.14798v1/m03",
+   "revision": 1,
+   "content_hash": "sha256:b3ca20192cdaa6a19ce62bf4c970ce7e413cb984dffffca4b09a3628d855c22b"
+  }
+ ],
+ "input_artifacts": [],
+ "depends_on": [],
+ "expected_record_types": [
+  "dependency-binding",
+  "frontier-item"
+ ],
+ "limits": {
+  "max_attempts": 4,
+  "max_seconds": 3600,
+  "max_cost_units": 0,
+  "no_progress_limit": 2
+ },
+ "acceptance": "DELIVERY",
+ "exclusions": [],
+ "capabilities": [
+  "records.read",
+  "dependency.search",
+  "candidates.propose"
+ ]
+}

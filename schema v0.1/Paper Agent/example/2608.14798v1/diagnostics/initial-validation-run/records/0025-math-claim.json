@@ -1,0 +1,210 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:1fa5104ca184cc5d2007e2e5562e0c0fa477f0e89952c7cfb80ee100a7cb2df6",
+      "record_id": "example:2608.14798v1-claim-kernel-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:49cd2f43d7cc6aa24d1bdb60312f2dd6b6669779a36762ea3d91519dbe5d3a55",
+      "record_id": "example:2608.14798v1-semantics-kernel-bounds",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:8ecdcdbe8ffa9fbcf090501201238dea5b60e9f0efc8d607785a05026365f26b",
+      "record_id": "example:2608.14798v1-span-289-335",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:17382974b6d77af5030f2e7ccf17f05f0cc1b5e063184efdbbe30cecf3ec10d0",
+      "record_id": "example:2608.14798v1-span-374-432",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:cf6703f7a0a6fdeb9b9d4a688cd1471cf3a2e472414247457c0eaa20db05ce5c",
+      "record_id": "example:2608.14798v1-def-pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:94452956383838354715cc6d935b9b36efca1b316dad671d57da6a97acb3790d",
+      "record_id": "example:2608.14798v1-def-nullity",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d45a4cd406f6f48903bc5570869616793b793f462e3a150c92ebd061fff286fb",
+      "record_id": "example:2608.14798v1-def-renyi",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:2d634037a9848ee86edffc7b18750683610196db3611794c6c2e653fcd50416d",
+      "record_id": "example:2608.14798v1-def-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:452e042bdced055a33f4f20744ca7442560e68e49ec4b1e994a8a6a0a1b0f8d1",
+      "record_id": "example:2608.14798v1-def-core-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_error": "Not applicable: exact asserted bounds.",
+    "assumptions": [
+      {
+        "condition_id": "condition:kernel-bounds-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:8ecdcdbe8ffa9fbcf090501201238dea5b60e9f0efc8d607785a05026365f26b",
+            "record_id": "example:2608.14798v1-span-289-335",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:17382974b6d77af5030f2e7ccf17f05f0cc1b5e063184efdbbe30cecf3ec10d0",
+            "record_id": "example:2608.14798v1-span-374-432",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi is a normalized pure n-qubit state."
+      },
+      {
+        "condition_id": "condition:kernel-bounds-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:8ecdcdbe8ffa9fbcf090501201238dea5b60e9f0efc8d607785a05026365f26b",
+            "record_id": "example:2608.14798v1-span-289-335",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:17382974b6d77af5030f2e7ccf17f05f0cc1b5e063184efdbbe30cecf3ec10d0",
+            "record_id": "example:2608.14798v1-span-374-432",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "nu(psi)=n-log_2|Stab(psi)|; Ker_P(psi) contains phase-free Paulis with zero expectation."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:1fa5104ca184cc5d2007e2e5562e0c0fa477f0e89952c7cfb80ee100a7cb2df6",
+      "record_id": "example:2608.14798v1-claim-kernel-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "component_ids": [
+      "component:kernel-bounds"
+    ],
+    "conclusion": "2^n(2^n-2^{nu(psi)}) <= |Ker_P(psi)| <= 4^n-2^n.",
+    "definition_refs": [
+      {
+        "content_hash": "sha256:cf6703f7a0a6fdeb9b9d4a688cd1471cf3a2e472414247457c0eaa20db05ce5c",
+        "record_id": "example:2608.14798v1-def-pauli-spectrum",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:94452956383838354715cc6d935b9b36efca1b316dad671d57da6a97acb3790d",
+        "record_id": "example:2608.14798v1-def-nullity",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d45a4cd406f6f48903bc5570869616793b793f462e3a150c92ebd061fff286fb",
+        "record_id": "example:2608.14798v1-def-renyi",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:2d634037a9848ee86edffc7b18750683610196db3611794c6c2e653fcd50416d",
+        "record_id": "example:2608.14798v1-def-spf",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:452e042bdced055a33f4f20744ca7442560e68e49ec4b1e994a8a6a0a1b0f8d1",
+        "record_id": "example:2608.14798v1-def-core-spf",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      }
+    ],
+    "exactness": "EXACT",
+    "normalization": "d=2^n (or d_A=2^{n_A}, d_B=2^{n_B}); psi/phi denote rank-one projectors where used in traces or matrix norms. Logarithms are base two. Sum and limit indices are bound within the conclusion. No strengthening of source claim or formal type elaboration.",
+    "objects": [
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "psi: pure n-qubit state",
+        "symbol": "psi",
+        "unit": ""
+      },
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "nu(psi): stabilizer nullity",
+        "symbol": "nu(psi)",
+        "unit": ""
+      },
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "Ker_P(psi): zero-expectation Pauli labels",
+        "symbol": "Ker_P(psi)",
+        "unit": ""
+      }
+    ],
+    "quantifiers": [
+      {
+        "domain": "positive integers",
+        "kind": "FORALL",
+        "variable": "n"
+      },
+      {
+        "domain": "normalized pure n-qubit states",
+        "kind": "FORALL",
+        "variable": "psi"
+      }
+    ],
+    "semantic_refs": [
+      {
+        "content_hash": "sha256:49cd2f43d7cc6aa24d1bdb60312f2dd6b6669779a36762ea3d91519dbe5d3a55",
+        "record_id": "example:2608.14798v1-semantics-kernel-bounds",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-math-kernel-bounds",
+  "record_type": "agtxiv.v3.math-claim/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:1d60a6f9d0b863680669e12e71ab24cdae3d920ed73adef8ef28ab35c207e11c"
+}

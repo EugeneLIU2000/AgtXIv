@@ -1,0 +1,116 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:55c443db7440eba50afa7aece61eb62dd95279bc685145a4dd5f0b6c69430d52",
+      "record_id": "example:2608.14798v1-db635458e365-claim-pseudomagic-mean",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:b1e01251a76f39a84578885b383cd5b4869863fc4a7ff1a114fda5b652a63bd9",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-pseudomagic-mean",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:55c443db7440eba50afa7aece61eb62dd95279bc685145a4dd5f0b6c69430d52",
+      "record_id": "example:2608.14798v1-db635458e365-claim-pseudomagic-mean",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:pseudomagic-mean",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:b47b0727da2d208666aad06cfa46584bbea640d6e6c2c8efd9bac44c4ad8f585",
+            "record_id": "example:2608.14798v1-db635458e365-span-1131-1172",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The averaging law over pseudorandom functions is unspecified; uniform random Boolean functions and a pseudorandom function family are not explicitly distinguished in the theorem.; The exact formula applies only to full support; no expression is given here for general |S|=2^k.; The introductory computational-indistinguishability wording is accompanied by a trace-norm moment condition, without an explicit relation between the two notions or a quantified copy parameter t.; The stated gap omega(k) versus n and the claimed low/high ordering are retained as source wording, without reconstruction of the cited result.; The supplemental moment proof was not read; any body-versus-appendix difference in the averaging law or formula remains unassessed.; The formula is a mathematical expression, but the unresolved sampling measure prevents a complete MathClaim for its ensemble average; the discrimination commentary also lacks a quantitative statement.; The cited pseudomagic and pseudoentanglement papers were not read or verified.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:b1e01251a76f39a84578885b383cd5b4869863fc4a7ff1a114fda5b652a63bd9",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-pseudomagic-mean",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:b47b0727da2d208666aad06cfa46584bbea640d6e6c2c8efd9bac44c4ad8f585",
+          "record_id": "example:2608.14798v1-db635458e365-span-1131-1172",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:55c443db7440eba50afa7aece61eb62dd95279bc685145a4dd5f0b6c69430d52",
+          "record_id": "example:2608.14798v1-db635458e365-claim-pseudomagic-mean",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:55c443db7440eba50afa7aece61eb62dd95279bc685145a4dd5f0b6c69430d52",
+        "record_id": "example:2608.14798v1-db635458e365-claim-pseudomagic-mean",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:b1e01251a76f39a84578885b383cd5b4869863fc4a7ff1a114fda5b652a63bd9",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-pseudomagic-mean",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:b47b0727da2d208666aad06cfa46584bbea640d6e6c2c8efd9bac44c4ad8f585",
+        "record_id": "example:2608.14798v1-db635458e365-span-1131-1172",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-pseudomagic-mean",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:783da38c0c8a866dd5653ec50a782358de7d3f0c7653b322d3dc71f5b2555988"
+}

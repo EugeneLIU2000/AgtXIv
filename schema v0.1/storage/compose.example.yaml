@@ -1,0 +1,25 @@
+# Planning example only. Do not launch without deployment review/preflight.
+# AGTXIV_NEO4J_IMAGE must be a verified Community version AND sha256 digest:
+# neo4j:<verified-exact-version>@sha256:<verified-64-hex-digest>
+# Nonempty interpolation alone does not validate that format. No default/latest.
+services:
+  neo4j:
+    image: "${AGTXIV_NEO4J_IMAGE:?Provide verified exact Community image and digest}"
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    environment:
+      NEO4J_AUTH_FILE: /run/secrets/neo4j_auth
+    secrets:
+      - neo4j_auth
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    restart: "no"
+secrets:
+  neo4j_auth:
+    # Absolute file path OUTSIDE repository. Deployment owner supplies contents.
+    file: "${AGTXIV_NEO4J_AUTH_FILE:?Provide external restricted credential file path}"
+volumes:
+  neo4j_data:
+  neo4j_logs:

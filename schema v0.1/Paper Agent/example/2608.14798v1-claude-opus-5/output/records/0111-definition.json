@@ -1,0 +1,62 @@
+{
+ "content_hash": "sha256:d095d05bf8b5ef057a06a2a67dda6e979fb0a0aaebcd37ed80110a4e6ba5bd47",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:82a108e695e7ce4e8cf7a931e7a9ff3b9465268df3d9a394a9270dcd86322d62",
+   "record_id": "span:opus5-2608.14798v1/fidelity-def",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "name": "Stabilizer fidelity F_Stab",
+  "objects": [
+   {
+    "convention": "maximization over all n-qubit pure stabilizer states; imported from Bravyi et al. (2019)",
+    "definition_refs": [],
+    "object_type": "real number in (0,1]",
+    "symbol": "F_{\\rm Stab}(\\psi)",
+    "unit": ""
+   }
+  ],
+  "origin": "IMPORTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:82a108e695e7ce4e8cf7a931e7a9ff3b9465268df3d9a394a9270dcd86322d62",
+    "record_id": "span:opus5-2608.14798v1/fidelity-def",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "$F_{\\rm Stab}(\\psi):=\\max_{\\ket{\\phi}\\in{\\rm STAB}}|\\braket{\\phi|\\psi}|^2$."
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:82a108e695e7ce4e8cf7a931e7a9ff3b9465268df3d9a394a9270dcd86322d62",
+    "record_id": "span:opus5-2608.14798v1/fidelity-def",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "definition:opus5-2608.14798v1/stabilizer-fidelity",
+ "record_type": "agtxiv.v3.definition/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

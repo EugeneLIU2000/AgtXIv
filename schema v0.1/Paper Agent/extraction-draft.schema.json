@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/paper-agent/1.1/extraction-draft.schema.json",
+  "title": "Paper model draft — not a business RecordSet or execution Result",
+  "description": "Internal model-to-host draft. Payload shapes come only from the pinned business schemas. The host owns record envelopes, real execution attribution and validation. A shape-valid draft is not scientific evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_version",
+    "records",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "draft_version": {
+      "const": "1.1"
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.source-span/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/source-span.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.paper-structure/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/paper-structure.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.inventory-discovery/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/inventory-discovery.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.scientific-claim/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/scientific-claim.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.definition/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/definition.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.math-claim/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/math-claim.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.claim-component-map/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/claim-component-map.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.semantic-context/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/semantic-context.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.frontier-item/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/frontier-item.schema.json#/properties/payload"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

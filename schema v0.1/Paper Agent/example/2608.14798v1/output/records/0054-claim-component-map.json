@@ -1,0 +1,153 @@
+{
+  "created_at": "2026-09-13T16:58:13.901035Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:2c467ced992d43798e2c8f5522c52e5ab8f8ff6bb6f84839cbce4d21a302499c",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-renyi-expansion",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:ff10108b02f0ff4382ff73fc52ef5c090443ed8d5e80e2c331ebb65edbd198a8",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-renyi-expansion",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d1a2f443c97d623c67c669ee91b55737bf194f3d61cc4841ef1afb9f27594e53",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-math-renyi-expansion",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:2c467ced992d43798e2c8f5522c52e5ab8f8ff6bb6f84839cbce4d21a302499c",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-renyi-expansion",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:renyi-expansion",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:77247157242c81de918f6b52ba6849253bd663599f4c4de49f32c884104d8d45",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-440-459",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:1a5c67d4008d70cfc90f575179517ba069bef95e982cb9cb743a2809239bf883",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-635-648",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [
+          {
+            "content_hash": "sha256:d1a2f443c97d623c67c669ee91b55737bf194f3d61cc4841ef1afb9f27594e53",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-math-renyi-expansion",
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "revision": 1
+          }
+        ],
+        "residual": "This even-moment object does not recover the labelled signed Pauli spectrum; claims about full spectrum must respect the qualification at lines 570-573.; Complete component atomization and independent source alignment remain open; no scientific review.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:ff10108b02f0ff4382ff73fc52ef5c090443ed8d5e80e2c331ebb65edbd198a8",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-renyi-expansion",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:77247157242c81de918f6b52ba6849253bd663599f4c4de49f32c884104d8d45",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-440-459",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:1a5c67d4008d70cfc90f575179517ba069bef95e982cb9cb743a2809239bf883",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-635-648",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:2c467ced992d43798e2c8f5522c52e5ab8f8ff6bb6f84839cbce4d21a302499c",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-claim-renyi-expansion",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:b5581dd792f84f09bcb4dd065c3815bac913ba987e5c207c9af27e9ca9c60037",
+    "record_id": "example:2608.14798v1-dcd840ebd74b-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:2c467ced992d43798e2c8f5522c52e5ab8f8ff6bb6f84839cbce4d21a302499c",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-claim-renyi-expansion",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:ff10108b02f0ff4382ff73fc52ef5c090443ed8d5e80e2c331ebb65edbd198a8",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-renyi-expansion",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d1a2f443c97d623c67c669ee91b55737bf194f3d61cc4841ef1afb9f27594e53",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-math-renyi-expansion",
+        "record_type": "agtxiv.v3.math-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:77247157242c81de918f6b52ba6849253bd663599f4c4de49f32c884104d8d45",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-440-459",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:1a5c67d4008d70cfc90f575179517ba069bef95e982cb9cb743a2809239bf883",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-635-648",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-dcd840ebd74b-map-renyi-expansion",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:df31c5a0458ea5e9adddf7bd5d8e2d6518ea68e2bd1f3371199ee77e017f1383"
+}

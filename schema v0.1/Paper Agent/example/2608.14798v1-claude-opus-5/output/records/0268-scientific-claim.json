@@ -1,0 +1,142 @@
+{
+ "content_hash": "sha256:b0f8f5612e16f3594f8a19e47ee1d19b4bff054462ce1ae6a316aa40e29ae5d6",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+   "record_id": "span:opus5-2608.14798v1/variational-lb",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:f2af2b5cad860e4765ae272888e0384a188797e7ada7301a229fdb65a779af11",
+   "record_id": "span:opus5-2608.14798v1/haar-avg-hamiltonian",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the non-variational state-dependent lower bound of Theorem (SPF state-dependent bounds)",
+  "components": [
+   {
+    "component_id": "comp:bound",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+      "record_id": "span:opus5-2608.14798v1/variational-lb",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Family of lower bounds indexed by $\\epsilon$, obtained by splitting the Pauli-spectrum density at $|x|=\\epsilon$ and applying Markov's inequality."
+   },
+   {
+    "component_id": "comp:nojensen",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f2af2b5cad860e4765ae272888e0384a188797e7ada7301a229fdb65a779af11",
+      "record_id": "span:opus5-2608.14798v1/haar-avg-hamiltonian",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The ensemble-averaged SPF is not the partition function of the ensemble-averaged Hamiltonian; the supplement states this explicitly and says the latter gives only coarse-grained features."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:beta",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+      "record_id": "span:opus5-2608.14798v1/variational-lb",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\beta\\geq0$"
+   },
+   {
+    "condition_id": "cond:eps",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+      "record_id": "span:opus5-2608.14798v1/variational-lb",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\epsilon\\in[0,1)$"
+   },
+   {
+    "condition_id": "cond:moment",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+      "record_id": "span:opus5-2608.14798v1/variational-lb",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the proof uses $\\mathbb{E}_{x\\sim d\\mu_\\psi}[x^4]=2^{-M_2(\\psi)-n}$"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+    "record_id": "span:opus5-2608.14798v1/variational-lb",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:f2af2b5cad860e4765ae272888e0384a188797e7ada7301a229fdb65a779af11",
+    "record_id": "span:opus5-2608.14798v1/haar-avg-hamiltonian",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Lemma (variational SPF lower bound): for $\\beta\\geq0$ and a control parameter $\\epsilon\\in[0,1)$, $\\mathcal{Z}_\\beta(\\psi)\\geq e^{-\\beta}d_n^2[\\cosh(|\\beta|\\epsilon)(1-f_\\epsilon(\\psi))+f_\\epsilon(\\psi)]$ with $f_\\epsilon(\\psi)=\\frac{1-2^{-M_2(\\psi)-n}}{1-\\epsilon^4}$, the tightest bound following by optimizing over $\\epsilon$. The supplement also records that the ensemble-averaged stabilizer Hamiltonian for any 1-design is $\\mathbb{I}^{\\otimes2}-s\\ket{\\Phi^+}\\bra{\\Phi^+}$ and warns explicitly that $\\mathcal{Z}_\\beta({\\rm Haar}_n)\\neq\\tr\\,e^{-\\beta\\mathbb{E}[\\hat H]}$.",
+  "system": "$n$-qubit pure states, $\\mathcal{H}_n\\cong(\\mathbb{C}^2)^{\\otimes n}$, $d_n=2^n$, finite $n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:183f31c9daca51d06d80738bf49bf6db5765aa607eea22224cd9d7abf48ae623",
+    "record_id": "span:opus5-2608.14798v1/variational-lb",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:f2af2b5cad860e4765ae272888e0384a188797e7ada7301a229fdb65a779af11",
+    "record_id": "span:opus5-2608.14798v1/haar-avg-hamiltonian",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c36",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

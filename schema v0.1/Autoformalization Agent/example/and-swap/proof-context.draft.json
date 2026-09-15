@@ -1,0 +1,23 @@
+{
+  "draft_version": "1.0",
+  "records": [
+    {
+      "record_type": "agtxiv.v3.assumption-context/0.0.0",
+      "payload": {
+        "parent_ref": null,
+        "assumptions": [
+          {
+            "condition_id": "condition:local-h",
+            "statement": "h : P ∧ Q, introduced temporarily to prove the implication.",
+            "origin": "AGENT_ADDED",
+            "source_span_refs": []
+          }
+        ],
+        "introduction_reason": "Assume the antecedent for implication introduction; this does not change the target.",
+        "allowed_use": "Only inside the subproof for Q ∧ P; discharge before returning P ∧ Q → Q ∧ P."
+      }
+    }
+  ],
+  "open_items": [],
+  "follow_up_requests": []
+}

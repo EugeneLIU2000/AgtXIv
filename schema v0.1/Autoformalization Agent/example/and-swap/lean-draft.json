@@ -1,0 +1,105 @@
+{
+  "draft_version": "1.0",
+  "packet_ref": {
+    "record_type": "agtxiv.v3.formalization-packet/0.0.0",
+    "record_id": "fixture:and-swap-packet",
+    "revision": 1,
+    "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "files": [
+    {
+      "path": "AndSwap.lean",
+      "content": "namespace AutoformalizationExample\n\ntheorem and_swap (P Q : Prop) : P ∧ Q → Q ∧ P := by\n  intro h\n  have hq : Q := h.right\n  have hp : P := h.left\n  have hqp : Q ∧ P := And.intro hq hp\n  exact hqp\n\nend AutoformalizationExample\n\n#print AutoformalizationExample.and_swap\n#print axioms AutoformalizationExample.and_swap\n"
+    }
+  ],
+  "declaration_map": [
+    {
+      "declaration": "AutoformalizationExample.and_swap",
+      "role": "TARGET",
+      "code_path": "AndSwap.lean",
+      "local_name": null,
+      "node_ref": {
+        "record_type": "agtxiv.v3.argument-node/0.0.0",
+        "record_id": "fixture:and-swap-target",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "inference_ref": {
+        "record_type": "agtxiv.v3.inference-step/0.0.0",
+        "record_id": "fixture:and-swap-discharge",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "declaration": "AutoformalizationExample.and_swap",
+      "role": "STEP",
+      "code_path": "AndSwap.lean",
+      "local_name": "h",
+      "node_ref": {
+        "record_type": "agtxiv.v3.argument-node/0.0.0",
+        "record_id": "fixture:and-swap-h",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "inference_ref": null
+    },
+    {
+      "declaration": "AutoformalizationExample.and_swap",
+      "role": "STEP",
+      "code_path": "AndSwap.lean",
+      "local_name": "hq",
+      "node_ref": {
+        "record_type": "agtxiv.v3.argument-node/0.0.0",
+        "record_id": "fixture:and-swap-q",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "inference_ref": {
+        "record_type": "agtxiv.v3.inference-step/0.0.0",
+        "record_id": "fixture:and-swap-right",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "declaration": "AutoformalizationExample.and_swap",
+      "role": "STEP",
+      "code_path": "AndSwap.lean",
+      "local_name": "hp",
+      "node_ref": {
+        "record_type": "agtxiv.v3.argument-node/0.0.0",
+        "record_id": "fixture:and-swap-p",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "inference_ref": {
+        "record_type": "agtxiv.v3.inference-step/0.0.0",
+        "record_id": "fixture:and-swap-left",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "declaration": "AutoformalizationExample.and_swap",
+      "role": "STEP",
+      "code_path": "AndSwap.lean",
+      "local_name": "hqp",
+      "node_ref": {
+        "record_type": "agtxiv.v3.argument-node/0.0.0",
+        "record_id": "fixture:and-swap-qp",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "inference_ref": {
+        "record_type": "agtxiv.v3.inference-step/0.0.0",
+        "record_id": "fixture:and-swap-and-intro",
+        "revision": 1,
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  ],
+  "records": [],
+  "open_items": [],
+  "follow_up_requests": []
+}

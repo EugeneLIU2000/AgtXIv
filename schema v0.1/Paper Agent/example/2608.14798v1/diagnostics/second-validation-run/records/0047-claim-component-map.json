@@ -1,0 +1,153 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:e291658857ccadda8fe908bd41912a2a1d62590bf862e7099d034c21556ad052",
+      "record_id": "example:2608.14798v1-db635458e365-claim-stabilizer-reference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d5873550aeeabf6c84d864306cbf9f0095facc29502779aabf512d25512a0e90",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-stabilizer-reference",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d0f47ed2d81a89dbaaa558d4d2371aa150b48060e5ab12e89e819d403bd56965",
+      "record_id": "example:2608.14798v1-db635458e365-math-stabilizer-reference",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:e291658857ccadda8fe908bd41912a2a1d62590bf862e7099d034c21556ad052",
+      "record_id": "example:2608.14798v1-db635458e365-claim-stabilizer-reference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:stabilizer-reference",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:22354390113068347e8eabff0a73eccec3155cb931e2f389710a83f22720148d",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-567",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:253aa2de350d88240a02ed7e62da78db1c9ff0dbb667f018b9c3d0ea68fad607",
+            "record_id": "example:2608.14798v1-db635458e365-span-591-605",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [
+          {
+            "content_hash": "sha256:d0f47ed2d81a89dbaaa558d4d2371aa150b48060e5ab12e89e819d403bd56965",
+            "record_id": "example:2608.14798v1-db635458e365-math-stabilizer-reference",
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "revision": 1
+          }
+        ],
+        "residual": "A common value on stabilizer states is not by itself an iff characterization at every beta; at beta=0 SPF is state-independent.; Complete component atomization and independent source alignment remain open; no scientific review.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:d5873550aeeabf6c84d864306cbf9f0095facc29502779aabf512d25512a0e90",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-stabilizer-reference",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:22354390113068347e8eabff0a73eccec3155cb931e2f389710a83f22720148d",
+          "record_id": "example:2608.14798v1-db635458e365-span-533-567",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:253aa2de350d88240a02ed7e62da78db1c9ff0dbb667f018b9c3d0ea68fad607",
+          "record_id": "example:2608.14798v1-db635458e365-span-591-605",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:e291658857ccadda8fe908bd41912a2a1d62590bf862e7099d034c21556ad052",
+          "record_id": "example:2608.14798v1-db635458e365-claim-stabilizer-reference",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:e291658857ccadda8fe908bd41912a2a1d62590bf862e7099d034c21556ad052",
+        "record_id": "example:2608.14798v1-db635458e365-claim-stabilizer-reference",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d5873550aeeabf6c84d864306cbf9f0095facc29502779aabf512d25512a0e90",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-stabilizer-reference",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d0f47ed2d81a89dbaaa558d4d2371aa150b48060e5ab12e89e819d403bd56965",
+        "record_id": "example:2608.14798v1-db635458e365-math-stabilizer-reference",
+        "record_type": "agtxiv.v3.math-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:22354390113068347e8eabff0a73eccec3155cb931e2f389710a83f22720148d",
+        "record_id": "example:2608.14798v1-db635458e365-span-533-567",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:253aa2de350d88240a02ed7e62da78db1c9ff0dbb667f018b9c3d0ea68fad607",
+        "record_id": "example:2608.14798v1-db635458e365-span-591-605",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-stabilizer-reference",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:432e647f45d87574d8a484451e6a78dda5b0723423f42fd270d9de597961caa5"
+}

@@ -1,0 +1,122 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:668e565e7a52cbeefd594079e0936a8683bc40bc1b71c0a37a8f5dc53fa9c025",
+      "record_id": "example:2608.14798v1-claim-renyi-expansion",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:ed3c3e1b3997cf665f8bc423557c11a1ee36e062f8a38712b77031c3bbc74a38",
+      "record_id": "example:2608.14798v1-span-440-459",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:ec669c894cd083c22858ed3ee348a52fa1b8040b6dc69453619687d9784c4981",
+      "record_id": "example:2608.14798v1-span-635-648",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "EXACT; Infinite-series identity; no truncation guarantee follows without a separate bound.",
+    "assumptions": [
+      {
+        "condition_id": "condition:renyi-expansion-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:ed3c3e1b3997cf665f8bc423557c11a1ee36e062f8a38712b77031c3bbc74a38",
+            "record_id": "example:2608.14798v1-span-440-459",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:ec669c894cd083c22858ed3ee348a52fa1b8040b6dc69453619687d9784c4981",
+            "record_id": "example:2608.14798v1-span-635-648",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi is a normalized pure n-qubit state; d=2^n; beta is real."
+      },
+      {
+        "condition_id": "condition:renyi-expansion-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:ed3c3e1b3997cf665f8bc423557c11a1ee36e062f8a38712b77031c3bbc74a38",
+            "record_id": "example:2608.14798v1-span-440-459",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:ec669c894cd083c22858ed3ee348a52fa1b8040b6dc69453619687d9784c4981",
+            "record_id": "example:2608.14798v1-span-635-648",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "M_k is the source's base-two stabilizer Renyi entropy; k is an integer at least two in the sum."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:668e565e7a52cbeefd594079e0936a8683bc40bc1b71c0a37a8f5dc53fa9c025",
+      "record_id": "example:2608.14798v1-claim-renyi-expansion",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "Infinite-series identity; no truncation guarantee follows without a separate bound.",
+    "limitations": [
+      "This even-moment object does not recover the labelled signed Pauli spectrum; claims about full spectrum must respect the qualification at lines 570-573.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The authors express SPF through the hierarchy of integer-index stabilizer Renyi entropies, retaining the universal zeroth and second-moment terms.",
+        "target_value": "Z_beta(psi)=exp(-beta)[d^2+d beta^2/2+sum_{k>=2} beta^{2k}/(2k)! * 2^{n-(k-1)M_k(psi)}].",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:ed3c3e1b3997cf665f8bc423557c11a1ee36e062f8a38712b77031c3bbc74a38",
+            "record_id": "example:2608.14798v1-span-440-459",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:ec669c894cd083c22858ed3ee348a52fa1b8040b6dc69453619687d9784c4981",
+            "record_id": "example:2608.14798v1-span-635-648",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "psi: pure n-qubit state; beta: real parameter; M_k(psi): stabilizer Renyi entropy"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-semantics-renyi-expansion",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:e4ca3ae4b5a9ba3e3cf6e1b5cb9ab7f15a529b80093444efcf55dd0a33c1b324"
+}

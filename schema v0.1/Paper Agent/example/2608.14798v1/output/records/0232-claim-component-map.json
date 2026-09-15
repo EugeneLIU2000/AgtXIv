@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:58:13.901035Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:0274f9ef58c4bde4ecd288405d6b73941ad13f2ae8ffffc86cf65c697bfdca41",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-ising-moment-scan",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:56d69574b5aadf9ef1f1b5b0db70fd14e8cd92d023fd226f87e99ee6ca2adcb6",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-ising-moment-scan",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:0274f9ef58c4bde4ecd288405d6b73941ad13f2ae8ffffc86cf65c697bfdca41",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-ising-moment-scan",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:ising-moment-scan",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:215c035b39036c58b7126d0908dbdd1fd93b008f97e87b26b9db079666b15e26",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-1534-1593",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:a73ad371d6018451802bf47048a267bf5a0fff43295f118552df33710f4a58fa",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-2681-2701",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The main text calls the ridge robust at large beta; the supplement reports a qualitative change to a broad plateau at beta=100. Both descriptions are retained without forcing them into a single peak claim.; Size ordering is called evidence for extensivity, but no thermodynamic-limit scaling estimate is supplied in these passages.; Lines 1574-1576 associate a saturation of order L-1 with a sentence about pure stabilizer states, while other read passages assign stabilizer states zero work; the intended comparison is ambiguous.; The endpoint GHZ identification does not specify boundary conditions or a ground-state selection convention at degeneracy.; The Hamiltonian uses g while its explanatory sentence names J; the discrepancy is not silently resolved.; Figure files, ground-state computations and quantitative scaling were not inspected or verified; these qualitative observations are not a standalone MathClaim.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:56d69574b5aadf9ef1f1b5b0db70fd14e8cd92d023fd226f87e99ee6ca2adcb6",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-ising-moment-scan",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:215c035b39036c58b7126d0908dbdd1fd93b008f97e87b26b9db079666b15e26",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-1534-1593",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:a73ad371d6018451802bf47048a267bf5a0fff43295f118552df33710f4a58fa",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-2681-2701",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:0274f9ef58c4bde4ecd288405d6b73941ad13f2ae8ffffc86cf65c697bfdca41",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-claim-ising-moment-scan",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:b5581dd792f84f09bcb4dd065c3815bac913ba987e5c207c9af27e9ca9c60037",
+    "record_id": "example:2608.14798v1-dcd840ebd74b-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:0274f9ef58c4bde4ecd288405d6b73941ad13f2ae8ffffc86cf65c697bfdca41",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-claim-ising-moment-scan",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:56d69574b5aadf9ef1f1b5b0db70fd14e8cd92d023fd226f87e99ee6ca2adcb6",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-ising-moment-scan",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:215c035b39036c58b7126d0908dbdd1fd93b008f97e87b26b9db079666b15e26",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-1534-1593",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:a73ad371d6018451802bf47048a267bf5a0fff43295f118552df33710f4a58fa",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-2681-2701",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-dcd840ebd74b-map-ising-moment-scan",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:88d8c586f0daf55de119686ebf4411bd967317026209f58e08c47486866951b0"
+}

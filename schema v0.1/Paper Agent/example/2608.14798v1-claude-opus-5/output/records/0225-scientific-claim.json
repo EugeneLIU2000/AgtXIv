@@ -1,0 +1,191 @@
+{
+ "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:39e08f8385676b75033fc57550a6f207b190c3d17d9d5ed56bb4e2b714cca354",
+   "record_id": "span:opus5-2608.14798v1/jensen",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:8ff021cea3503552482ff925eed9403410044c7f6d2a91fc295a6b3d9cbe4a5e",
+   "record_id": "span:opus5-2608.14798v1/small-gap",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:4ba231fe56f2da43d252cd69977b948445532f4d3cabb14633206d53e547fdbd",
+   "record_id": "span:opus5-2608.14798v1/sps-vs-comp",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:dcf43746ab63bec6c67a502d7d4256a8f5fdb09dec221bd606724610018f9b90",
+   "record_id": "span:opus5-2608.14798v1/small-gap-proof",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the ensemble-averaged SPF, for which exact closed forms are available",
+  "components": [
+   {
+    "component_id": "comp:jensen",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:39e08f8385676b75033fc57550a6f207b190c3d17d9d5ed56bb4e2b714cca354",
+      "record_id": "span:opus5-2608.14798v1/jensen",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathbb{E}_\\psi[\\mathcal{W}_\\beta(\\psi)]\\neq\\log\\mathbb{E}_\\psi[\\mathcal{Z}^c_\\beta(\\psi)]$; ensemble means of work need independent analysis."
+   },
+   {
+    "component_id": "comp:gap",
+    "role": "APPROXIMATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:8ff021cea3503552482ff925eed9403410044c7f6d2a91fc295a6b3d9cbe4a5e",
+      "record_id": "span:opus5-2608.14798v1/small-gap",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Two-sided confidence interval with asymmetric width, the upper side carrying an $n$-independent $\\mathcal{O}(\\beta^4)$ term."
+   },
+   {
+    "component_id": "comp:sps",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:4ba231fe56f2da43d252cd69977b948445532f4d3cabb14633206d53e547fdbd",
+      "record_id": "span:opus5-2608.14798v1/sps-vs-comp",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Disjoint confidence intervals give a threshold classifier separating SPS from $\\nu$-compressible ensembles."
+   },
+   {
+    "component_id": "comp:proof",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:dcf43746ab63bec6c67a502d7d4256a8f5fdb09dec221bd606724610018f9b90",
+      "record_id": "span:opus5-2608.14798v1/small-gap-proof",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The supplemental proof uses Markov's inequality on $e^{\\mp\\mathcal{W}_\\beta}$ plus the Kantorovich inequality to bound the reciprocal average, and derives the explicit constant ${\\rm Small}_\\beta=2\\log({\\rm AM/GM})\\leq\\beta^4/576$ from the state-independent SPF bounds; the two events are then combined by a union bound."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:negl",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:39e08f8385676b75033fc57550a6f207b190c3d17d9d5ed56bb4e2b714cca354",
+      "record_id": "span:opus5-2608.14798v1/jensen",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "'with negligible failure probability' is not quantified"
+   },
+   {
+    "condition_id": "cond:markov",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:39e08f8385676b75033fc57550a6f207b190c3d17d9d5ed56bb4e2b714cca354",
+      "record_id": "span:opus5-2608.14798v1/jensen",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the proof is stated to control tails with Markov's inequality, details deferred to the supplement"
+   }
+  ],
+  "modality": "APPROXIMATE",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:39e08f8385676b75033fc57550a6f207b190c3d17d9d5ed56bb4e2b714cca354",
+    "record_id": "span:opus5-2608.14798v1/jensen",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:8ff021cea3503552482ff925eed9403410044c7f6d2a91fc295a6b3d9cbe4a5e",
+    "record_id": "span:opus5-2608.14798v1/small-gap",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:4ba231fe56f2da43d252cd69977b948445532f4d3cabb14633206d53e547fdbd",
+    "record_id": "span:opus5-2608.14798v1/sps-vs-comp",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:dcf43746ab63bec6c67a502d7d4256a8f5fdb09dec221bd606724610018f9b90",
+    "record_id": "span:opus5-2608.14798v1/small-gap-proof",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Because $-\\log$ is convex, the ensemble average of the stabilizer work is not the stabilizer work of the ensemble-averaged cSPF, so ensemble averages require separate analysis. Lemma (Small gap): for an ensemble $\\mathcal{E}$, with negligible failure probability every $\\psi\\in\\mathcal{E}$ satisfies $\\mathcal{W}_\\beta(\\psi)-\\mathcal{W}_\\beta(\\mathcal{E})\\in[-{\\rm logPoly}(n),\\mathcal{O}(\\beta^4)+{\\rm LogPoly}(n)]$. Applied to SPS versus $\\nu$-compressible states, the two ensembles are separated whenever $|\\mathcal{W}_\\beta({\\rm SPS})-\\mathcal{W}_\\beta({\\rm Comp}_\\nu)|>{\\rm LogPoly}(n)$.",
+  "system": "ensembles of $n$-qubit pure states"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:39e08f8385676b75033fc57550a6f207b190c3d17d9d5ed56bb4e2b714cca354",
+    "record_id": "span:opus5-2608.14798v1/jensen",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:8ff021cea3503552482ff925eed9403410044c7f6d2a91fc295a6b3d9cbe4a5e",
+    "record_id": "span:opus5-2608.14798v1/small-gap",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:4ba231fe56f2da43d252cd69977b948445532f4d3cabb14633206d53e547fdbd",
+    "record_id": "span:opus5-2608.14798v1/sps-vs-comp",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:dcf43746ab63bec6c67a502d7d4256a8f5fdb09dec221bd606724610018f9b90",
+    "record_id": "span:opus5-2608.14798v1/small-gap-proof",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c26",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

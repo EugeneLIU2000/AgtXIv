@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:58:13.901035Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:da717bec9f974510bd7dfc8f5ea7431466e21e3405308ed8d2c7ed8ad9502625",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-bell-estimation",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:882efb2bbaf5ac1ebaef8e552eec03e9aa9e58804eccfb5570847782b560afa4",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-bell-estimation",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:da717bec9f974510bd7dfc8f5ea7431466e21e3405308ed8d2c7ed8ad9502625",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-bell-estimation",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:bell-estimation",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:c34665846e0b21614e32501d5566efd127e68a626ca2d7d1a954a930778754f6",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-673-683",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6a19d7ea5300fa1450177b1ec388e9f814d113bd7e8ed325499394dab8a4170a",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-2164-2223",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "This deliberately remains a residual scientific claim rather than an underspecified MathClaim.; No sampling experiment or empirical runtime measurement was performed.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:882efb2bbaf5ac1ebaef8e552eec03e9aa9e58804eccfb5570847782b560afa4",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-bell-estimation",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:c34665846e0b21614e32501d5566efd127e68a626ca2d7d1a954a930778754f6",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-673-683",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:6a19d7ea5300fa1450177b1ec388e9f814d113bd7e8ed325499394dab8a4170a",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-2164-2223",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:da717bec9f974510bd7dfc8f5ea7431466e21e3405308ed8d2c7ed8ad9502625",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-claim-bell-estimation",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:b5581dd792f84f09bcb4dd065c3815bac913ba987e5c207c9af27e9ca9c60037",
+    "record_id": "example:2608.14798v1-dcd840ebd74b-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:da717bec9f974510bd7dfc8f5ea7431466e21e3405308ed8d2c7ed8ad9502625",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-claim-bell-estimation",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:882efb2bbaf5ac1ebaef8e552eec03e9aa9e58804eccfb5570847782b560afa4",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-bell-estimation",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:c34665846e0b21614e32501d5566efd127e68a626ca2d7d1a954a930778754f6",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-673-683",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:6a19d7ea5300fa1450177b1ec388e9f814d113bd7e8ed325499394dab8a4170a",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-2164-2223",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-dcd840ebd74b-map-bell-estimation",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:cfa986b15089bef7761144aeb57469fa5930bad3f2df0dc7e2e4eebd0fee4622"
+}

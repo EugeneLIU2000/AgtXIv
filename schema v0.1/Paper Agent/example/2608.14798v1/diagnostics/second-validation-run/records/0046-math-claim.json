@@ -1,0 +1,215 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:e291658857ccadda8fe908bd41912a2a1d62590bf862e7099d034c21556ad052",
+      "record_id": "example:2608.14798v1-db635458e365-claim-stabilizer-reference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d5873550aeeabf6c84d864306cbf9f0095facc29502779aabf512d25512a0e90",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-stabilizer-reference",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:22354390113068347e8eabff0a73eccec3155cb931e2f389710a83f22720148d",
+      "record_id": "example:2608.14798v1-db635458e365-span-533-567",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:253aa2de350d88240a02ed7e62da78db1c9ff0dbb667f018b9c3d0ea68fad607",
+      "record_id": "example:2608.14798v1-db635458e365-span-591-605",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:e09a1af94f4562b0003b8b018b871af7c0758456f9a974bbd79e6958b7fd2fea",
+      "record_id": "example:2608.14798v1-db635458e365-def-pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:5a858db89a1bc55b38927d25d79c3eb0a9c8119573fbaf047af4ac4dab735dbd",
+      "record_id": "example:2608.14798v1-db635458e365-def-nullity",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d699b958ab0d73d181d827b8c2d69c20e19385e3bc9f67aac8cb694583f25cd1",
+      "record_id": "example:2608.14798v1-db635458e365-def-renyi",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:758e8d65e3fe267dcd8e5b60fe60ddae6869662f687d507f6927fb468e77e800",
+      "record_id": "example:2608.14798v1-db635458e365-def-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:e20b41420218f9ba2675a7307ffad72c8525c7afe0adeb9844e2cbe665b778b4",
+      "record_id": "example:2608.14798v1-db635458e365-def-core-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_error": "Not applicable: exact asserted identities.",
+    "assumptions": [
+      {
+        "condition_id": "condition:stabilizer-reference-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:22354390113068347e8eabff0a73eccec3155cb931e2f389710a83f22720148d",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-567",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:253aa2de350d88240a02ed7e62da78db1c9ff0dbb667f018b9c3d0ea68fad607",
+            "record_id": "example:2608.14798v1-db635458e365-span-591-605",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "phi is a normalized pure n-qubit stabilizer state; d=2^n; beta is real."
+      },
+      {
+        "condition_id": "condition:stabilizer-reference-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:22354390113068347e8eabff0a73eccec3155cb931e2f389710a83f22720148d",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-567",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:253aa2de350d88240a02ed7e62da78db1c9ff0dbb667f018b9c3d0ea68fad607",
+            "record_id": "example:2608.14798v1-db635458e365-span-591-605",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Z_beta^c=Z_beta-d^2 exp(-beta)."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:e291658857ccadda8fe908bd41912a2a1d62590bf862e7099d034c21556ad052",
+      "record_id": "example:2608.14798v1-db635458e365-claim-stabilizer-reference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "component_ids": [
+      "component:stabilizer-reference"
+    ],
+    "conclusion": "Z_beta(phi)=exp(-beta)[d^2-d+d cosh(beta)]; Z_beta^c(phi)=exp(-beta)d(cosh(beta)-1).",
+    "definition_refs": [
+      {
+        "content_hash": "sha256:e09a1af94f4562b0003b8b018b871af7c0758456f9a974bbd79e6958b7fd2fea",
+        "record_id": "example:2608.14798v1-db635458e365-def-pauli-spectrum",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:5a858db89a1bc55b38927d25d79c3eb0a9c8119573fbaf047af4ac4dab735dbd",
+        "record_id": "example:2608.14798v1-db635458e365-def-nullity",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d699b958ab0d73d181d827b8c2d69c20e19385e3bc9f67aac8cb694583f25cd1",
+        "record_id": "example:2608.14798v1-db635458e365-def-renyi",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:758e8d65e3fe267dcd8e5b60fe60ddae6869662f687d507f6927fb468e77e800",
+        "record_id": "example:2608.14798v1-db635458e365-def-spf",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:e20b41420218f9ba2675a7307ffad72c8525c7afe0adeb9844e2cbe665b778b4",
+        "record_id": "example:2608.14798v1-db635458e365-def-core-spf",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      }
+    ],
+    "exactness": "EXACT",
+    "normalization": "d=2^n (or d_A=2^{n_A}, d_B=2^{n_B}); psi/phi denote rank-one projectors where used in traces or matrix norms. Logarithms are base two. Sum and limit indices are bound within the conclusion. No strengthening of source claim or formal type elaboration.",
+    "objects": [
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "phi: pure stabilizer state",
+        "symbol": "phi",
+        "unit": ""
+      },
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "d: 2^n",
+        "symbol": "d",
+        "unit": ""
+      },
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "beta: real parameter",
+        "symbol": "beta",
+        "unit": ""
+      }
+    ],
+    "quantifiers": [
+      {
+        "domain": "positive integers",
+        "kind": "FORALL",
+        "variable": "n"
+      },
+      {
+        "domain": "normalized pure n-qubit stabilizer states",
+        "kind": "FORALL",
+        "variable": "phi"
+      },
+      {
+        "domain": "real numbers",
+        "kind": "FORALL",
+        "variable": "beta"
+      }
+    ],
+    "semantic_refs": [
+      {
+        "content_hash": "sha256:d5873550aeeabf6c84d864306cbf9f0095facc29502779aabf512d25512a0e90",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-stabilizer-reference",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-math-stabilizer-reference",
+  "record_type": "agtxiv.v3.math-claim/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:d0f47ed2d81a89dbaaa558d4d2371aa150b48060e5ab12e89e819d403bd56965"
+}

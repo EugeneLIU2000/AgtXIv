@@ -1,0 +1,187 @@
+{
+ "content_hash": "sha256:5c77e6328b1242a88348b43470a4b23bcaed15bcab6bc768d1470faf2e11fd35",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+   "record_id": "claim:opus5-2608.14798v1/c16",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+   "record_id": "definition:opus5-2608.14798v1/cspf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "the Pauli spectrum of a stabilizer state on $B$ is $d_B$ ones and $d_B^2-d_B$ zeros"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "multiplicativity of the Pauli spectrum under tensor products"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+   "record_id": "claim:opus5-2608.14798v1/c16",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:stabpure"
+  ],
+  "conclusion": "$\\mathcal{Z}_{\\beta}(\\psi_{A}\\otimes{\\rm Stab}_{B})=d_{B}\\mathcal{Z}_{\\beta}(\\psi_{A})+e^{-\\beta}(d_{B}^{2}-d_{B})d_{A}^{2}$, and $\\mathcal{Z}^{c}_{\\beta}(\\psi_{A}\\otimes{\\rm Stab}_{B})=d_{B}\\mathcal{Z}^{c}_{\\beta}(\\psi_{A})$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "$d_A,d_B$ are Hilbert-space dimensions $2^{n_A},2^{n_B}$",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$d$ written without subscript in the source equation; read as $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+      "record_id": "definition:opus5-2608.14798v1/cspf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}^c_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$\\nu=0$ for stabilizer states; imported from Beverland et al. (2020)",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "non-negative integer",
+    "symbol": "\\nu(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathbb{R}$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   },
+   {
+    "domain": "pure states of subsystem $A$",
+    "kind": "FORALL",
+    "variable": "\\psi_A"
+   },
+   {
+    "domain": "pure stabilizer states of subsystem $B$",
+    "kind": "FORALL",
+    "variable": "{\\rm Stab}_B"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:6b0a18db2461e384660317833a16f81ecda53435ab37957327ddd14500837168",
+    "record_id": "claim:opus5-2608.14798v1/c16",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m16",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

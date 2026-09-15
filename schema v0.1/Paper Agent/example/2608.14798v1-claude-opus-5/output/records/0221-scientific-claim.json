@@ -1,0 +1,142 @@
+{
+ "content_hash": "sha256:4d110c5112fabc598e8ad51a4b243a5b3200b323bd8e099b09eb778463ea398c",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+   "record_id": "span:opus5-2608.14798v1/sw-cont",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:fc077b37a84ca243834842beae1dcb36afb862eef10db86be24c3c5e660f54c0",
+   "record_id": "span:opus5-2608.14798v1/sw-lipschitz-note",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the SPF Lipschitz constant $L_n(\\beta)=e^{-\\beta}d_n\\beta\\sinh\\beta$",
+  "components": [
+   {
+    "component_id": "comp:bound",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+      "record_id": "span:opus5-2608.14798v1/sw-cont",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$|\\mathcal{W}_\\beta(\\psi)-\\mathcal{W}_\\beta(\\phi)|\\leq2\\beta^{-1}\\sinh\\beta\\,\\|\\psi-\\phi\\|_1$."
+   },
+   {
+    "component_id": "comp:tighter",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+      "record_id": "span:opus5-2608.14798v1/sw-cont",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "A tighter intermediate bound $d_ne^{-\\beta}\\beta\\sinh\\beta/\\min\\{\\mathcal{Z}^c_\\beta(\\psi),\\mathcal{Z}^c_\\beta(\\phi)\\}$ is displayed and reused later for the fidelity bound."
+   },
+   {
+    "component_id": "comp:dimfree",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:fc077b37a84ca243834842beae1dcb36afb862eef10db86be24c3c5e660f54c0",
+      "record_id": "span:opus5-2608.14798v1/sw-lipschitz-note",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$K_n(\\beta)$ carries no $d_n$, which the paper attributes to the logarithmic ratio structure."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:pure2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+      "record_id": "span:opus5-2608.14798v1/sw-cont",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\psi,\\phi$ pure $n$-qubit states"
+   },
+   {
+    "condition_id": "cond:proofsteps",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+      "record_id": "span:opus5-2608.14798v1/sw-cont",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the proof uses $|\\log a-\\log b|\\leq|a-b|/\\min\\{a,b\\}$, the SPF Lipschitz property, and $\\cosh x-1\\geq x^2/2$ in the state-independent lower bound"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+    "record_id": "span:opus5-2608.14798v1/sw-cont",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fc077b37a84ca243834842beae1dcb36afb862eef10db86be24c3c5e660f54c0",
+    "record_id": "span:opus5-2608.14798v1/sw-lipschitz-note",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Lemma (Continuity of the Stabilizer Work): $|\\mathcal{W}_\\beta(\\psi)-\\mathcal{W}_\\beta(\\phi)|\\leq K_n(\\beta)\\|\\psi-\\phi\\|_1$ with $K_n(\\beta)=2\\beta^{-1}\\sinh\\beta$. The paper stresses that, unlike $L_n(\\beta)$, this constant does not grow exponentially with the qubit number, so concentration statements for the stabilizer work are stronger than those for the SPF.",
+  "system": "$n$-qubit pure states, $\\mathcal{H}_n\\cong(\\mathbb{C}^2)^{\\otimes n}$, $d_n=2^n$, finite $n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:f5431c6cbc6344fb3c775cd99f2ba1525190c0eff49d015a146dc62d49c27929",
+    "record_id": "span:opus5-2608.14798v1/sw-cont",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fc077b37a84ca243834842beae1dcb36afb862eef10db86be24c3c5e660f54c0",
+    "record_id": "span:opus5-2608.14798v1/sw-lipschitz-note",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c25",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

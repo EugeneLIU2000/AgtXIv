@@ -1,0 +1,76 @@
+{
+  "draft_version": "1.1",
+  "records": [
+    {
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "payload": {
+        "statement": "Proposition 1. For positive integers n and k and a_i in [0,1], let A_k = sum_{i=1}^n a_i^{2k}. Then A_{k+1} <= A_k and A_k >= 0.",
+        "source_span_refs": [
+          {
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "record_id": "span:synthetic-conformance-proposition-1",
+            "revision": 1,
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          {
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "record_id": "span:synthetic-conformance-section-context",
+            "revision": 1,
+            "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        ],
+        "components": [
+          {
+            "component_id": "component:conclusion-1",
+            "text": "A_{k+1} <= A_k.",
+            "role": "CONCLUSION",
+            "source_span_refs": [
+              {
+                "record_type": "agtxiv.v3.source-span/0.0.0",
+                "record_id": "span:synthetic-conformance-proposition-1",
+                "revision": 1,
+                "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ]
+          },
+          {
+            "component_id": "component:conclusion-2",
+            "text": "A_k >= 0.",
+            "role": "CONCLUSION",
+            "source_span_refs": [
+              {
+                "record_type": "agtxiv.v3.source-span/0.0.0",
+                "record_id": "span:synthetic-conformance-proposition-1",
+                "revision": 1,
+                "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ]
+          }
+        ],
+        "conditions": [
+          {
+            "condition_id": "condition:source-1",
+            "statement": "n and k are positive integers and (a_i)_{i=1}^n is a sequence in [0,1].",
+            "origin": "SOURCE_RECONSTRUCTED",
+            "source_span_refs": [
+              {
+                "record_type": "agtxiv.v3.source-span/0.0.0",
+                "record_id": "span:synthetic-conformance-section-context",
+                "revision": 1,
+                "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+              }
+            ]
+          }
+        ],
+        "modality": "ASSERTED",
+        "attribution": "Synthetic teaching fixture only; not a real paper or execution.",
+        "system": "Finite real sequences with entries in [0,1].",
+        "comparison_baseline": ""
+      }
+    }
+  ],
+  "open_items": [
+    "target=synthetic proposition 1; missing=registered claim and definition references for the next math extraction; checked=synthetic statement only; next=host registration followed by a new Task"
+  ],
+  "follow_up_requests": []
+}

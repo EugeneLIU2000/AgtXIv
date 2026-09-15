@@ -1,0 +1,168 @@
+{
+ "content_hash": "sha256:cfe7d508289d51983027772c688479fe011faf258101053602362ec31d2c811a",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+   "record_id": "span:opus5-2608.14798v1/hamiltonian",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+   "record_id": "span:opus5-2608.14798v1/pauli-gas",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "a pure stabilizer state, for which the gas has only the integer levels $\\{0,1,2\\}$",
+  "components": [
+   {
+    "component_id": "comp:ham",
+    "role": "MODEL",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+      "record_id": "span:opus5-2608.14798v1/hamiltonian",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\hat H(\\psi)=\\sum_{P,s}(1-s\\tr(\\psi P))|P,s)(P,s|$ with $|{\\rm Stab}(\\psi)|$-degenerate ground level."
+   },
+   {
+    "component_id": "comp:gas",
+    "role": "MODEL",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+      "record_id": "span:opus5-2608.14798v1/pauli-gas",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$d^2$ two-level particles with energies $E_{P,\\pm}=1\\pm\\tr[\\psi_AP]$ in the band $[0,2]$."
+   },
+   {
+    "component_id": "comp:physical",
+    "role": "MODEL",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+      "record_id": "span:opus5-2608.14798v1/pauli-gas",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "For every non-identity Pauli, $E_{P,\\pm}$ is claimed to be 'the energy of a genuine physical state $(I\\pm P)/d$'."
+   },
+   {
+    "component_id": "comp:dictionary",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+      "record_id": "span:opus5-2608.14798v1/pauli-gas",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Rigid integer levels for stabilizer states; magic populates fractional levels and depletes ground degeneracy."
+   },
+   {
+    "component_id": "comp:thermo",
+    "role": "MODEL",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+      "record_id": "span:opus5-2608.14798v1/pauli-gas",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Nonstabilizerness is recast as a macroscopic spectral property of a thermodynamically large ensemble, and the zero-temperature limit is presented as a third-law statement."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:pure",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+      "record_id": "span:opus5-2608.14798v1/hamiltonian",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\psi_A$ pure"
+   },
+   {
+    "condition_id": "cond:povm",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+      "record_id": "span:opus5-2608.14798v1/hamiltonian",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "Perspective 1 is set up from the POVM $\\{\\Pi_P^\\pm=\\frac{1}{2d_n^2}(\\mathbb{I}\\pm P)\\}$ and the large-shot empirical distribution"
+   }
+  ],
+  "modality": "INTERPRETIVE",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+    "record_id": "span:opus5-2608.14798v1/hamiltonian",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+    "record_id": "span:opus5-2608.14798v1/pauli-gas",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "The Pauli spectrum is reinterpreted as the energy spectrum of a fictitious many-body system. In Perspective 1 the stabilizer Hamiltonian $\\hat H(\\psi)$ on $\\mathcal{H}_n^{\\otimes2}\\otimes\\mathbb{C}^2$ has a $|{\\rm Stab}(\\psi)|$-fold degenerate ground level and is block diagonal in the parity sectors; in Perspective 2 each Pauli labels a two-level particle with energies $1\\pm\\tr[\\psi_A P]$, giving $d^2$ particles in the band $[0,2]$, with the identity Pauli pinning the band edges. The dictionary asserted is: stabilizer states give a maximally rigid gas with only integer levels $\\{0,1,2\\}$ and ground-level degeneracy $d$; magic populates fractional interior levels and depletes the degenerate ground level.",
+  "system": "fictitious many-body ensemble of $d^2=4^n$ two-level particles derived from an $n$-qubit pure state"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+    "record_id": "span:opus5-2608.14798v1/hamiltonian",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+    "record_id": "span:opus5-2608.14798v1/pauli-gas",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c06",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

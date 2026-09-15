@@ -1,0 +1,150 @@
+{
+ "content_hash": "sha256:cd615db893986c781e94cc1c5c19719d8c2fd2b763f7652d894f75cee0a0fb09",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+   "record_id": "claim:opus5-2608.14798v1/c26",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+   "record_id": "definition:opus5-2608.14798v1/cspf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "${\\rm logPoly}(n)$ on the lower side and $\\mathcal{O}(\\beta^{4})+{\\rm LogPoly}(n)$ on the upper side, with unspecified constants; 'negligible failure probability' is not quantified",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$\\mathcal{W}_\\beta(\\mathcal{E}):=-\\log\\mathcal{Z}^c_\\beta(\\mathcal{E})+\\log\\mathcal{Z}^c_\\beta({\\rm Stab}_n)$ with $\\mathcal{Z}_\\beta(\\mathcal{E})$ the ensemble-averaged SPF"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "Markov-type tail control, deferred to the supplement"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+   "record_id": "claim:opus5-2608.14798v1/c26",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:gap"
+  ],
+  "conclusion": "$\\mathcal{W}_{\\beta}(\\psi)-\\mathcal{W}_{\\beta}(\\mathcal{E})\\in[-{\\rm logPoly}(n),\\ \\mathcal{O}(\\beta^{4})+{\\rm LogPoly}(n)]$ for every $\\psi\\in\\mathcal{E}$ outside a negligible-probability set.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "ASYMPTOTIC",
+  "normalization": "the statement mixes ${\\rm logPoly}(n)$ and ${\\rm LogPoly}(n)$ notations without defining either; neither the polynomial degree nor the implied constants are given",
+  "objects": [
+   {
+    "convention": "free-energy difference of the Pauli gas referenced to the unique stabilizer value; $\\log$ base 2",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real-valued functional of a pure state for each real beta",
+    "symbol": "\\mathcal{W}_\\beta(\\psi)",
+    "unit": "bits"
+   },
+   {
+    "convention": "$d$ written without subscript in the source equation; read as $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+      "record_id": "definition:opus5-2608.14798v1/cspf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}^c_\\beta(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "ensembles of $n$-qubit pure states; no structural restriction is imposed",
+    "kind": "FORALL",
+    "variable": "\\mathcal{E}"
+   },
+   {
+    "domain": "$\\mathcal{E}$, outside a set of negligible probability",
+    "kind": "FORALL",
+    "variable": "\\psi"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+    "record_id": "claim:opus5-2608.14798v1/c26",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m26",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

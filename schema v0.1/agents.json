@@ -1,0 +1,1217 @@
+{
+  "contract_version": "0.1.0",
+  "agents": [
+    {
+      "agent_id": "paper",
+      "title": "Paper：原文理解与数学提取",
+      "execution_kind": "MODEL",
+      "operations": [
+        {
+          "operation": "paper.extract",
+          "input_record_types": [
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "inventory-discovery",
+            "frozen-scope",
+            "scientific-claim",
+            "derived-claim",
+            "definition",
+            "math-claim",
+            "claim-component-map",
+            "semantic-context",
+            "challenge",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "source-span",
+            "paper-structure",
+            "inventory-discovery",
+            "scientific-claim",
+            "definition",
+            "math-claim",
+            "claim-component-map",
+            "semantic-context",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "source.read",
+            "candidates.propose"
+          ],
+          "principles": [
+            "必需精确 source-snapshot、agentization-plan、processing-profile 及可取得的原文字节；输入目录不是每项必填清单。",
+            "保留原文条件、未分类来源和提取缺口；数学抽取不授予来源忠实性或数学正确性。",
+            "不得冻结自己的发现或批准自身产物；范围由独立 review.scope 审阅。",
+            "业务输出必须在本任务 expected_record_types 中事先声明；无法完成时保留真实诊断。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "proof",
+      "title": "Proof：逐步论证与证明路线",
+      "execution_kind": "MODEL",
+      "operations": [
+        {
+          "operation": "proof.expand",
+          "input_record_types": [
+            "math-claim",
+            "frozen-scope",
+            "scientific-claim",
+            "derived-claim",
+            "source-snapshot",
+            "source-span",
+            "definition",
+            "semantic-context",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "reuse-decision",
+            "argument-snapshot",
+            "argument-review",
+            "challenge",
+            "challenge-disposition",
+            "upstream-import",
+            "counterexample",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "argument-node",
+            "assumption-context",
+            "inference-step",
+            "proof-plan",
+            "argument-snapshot",
+            "derived-claim",
+            "math-claim",
+            "counterexample",
+            "challenge",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "argument.expand",
+            "candidates.propose"
+          ],
+          "principles": [
+            "必需 math-claim 与 frozen-scope；证明可与依赖检索按具体目标并行，未证前提必须明列。",
+            "Lamport 风格层级只用于阅读；共同前提和替代证明路线分别保留，不能把目录树当推理图。",
+            "新增条件形成不同命题，修复归属不冒充原作者；生产者不能关闭独立异议。",
+            "交付公开论证与缺口不等于科学成功；review.argument 独立审查，形式包交 utility.assemble-packet 组装。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "dependency",
+      "title": "Dependency：基准、依赖与复用候选",
+      "execution_kind": "HYBRID",
+      "operations": [
+        {
+          "operation": "dependency.search",
+          "input_record_types": [
+            "source-snapshot",
+            "source-span",
+            "paper-structure",
+            "inventory-discovery",
+            "scientific-claim",
+            "derived-claim",
+            "math-claim",
+            "definition",
+            "semantic-context",
+            "frozen-scope",
+            "proof-plan",
+            "argument-node",
+            "argument-snapshot",
+            "dependency-binding",
+            "knowledge-snapshot",
+            "baseline-snapshot",
+            "relation-assessment",
+            "reuse-decision",
+            "environment-check",
+            "formal-environment",
+            "formal-check",
+            "axis-assessment",
+            "challenge",
+            "frontier-item",
+            "impact-analysis"
+          ],
+          "output_record_types": [
+            "baseline-snapshot",
+            "dependency-binding",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "dependency.search",
+            "candidates.propose"
+          ],
+          "principles": [
+            "检索绑定实际目标和有限来源范围；读取知识时使用精确快照，未知覆盖明确保留。",
+            "只输出真实已有端点的候选绑定和固定基准，不维护数据库，不批准自身复用候选。",
+            "条件相似、缓存命中或未找到旧结果都不是可复用或全球首次的证据。",
+            "与 Proof 迭代；具体用途由独立 review.reuse 判断，预算耗尽后记录前沿而不无限递归。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "formalization",
+      "title": "Formalization：固定目标的形式代码生成",
+      "execution_kind": "HYBRID",
+      "operations": [
+        {
+          "operation": "formalization.generate",
+          "input_record_types": [
+            "formalization-packet",
+            "formal-environment",
+            "math-claim",
+            "frozen-scope",
+            "scientific-claim",
+            "derived-claim",
+            "semantic-context",
+            "definition",
+            "assumption-context",
+            "proof-plan",
+            "argument-snapshot",
+            "argument-node",
+            "inference-step",
+            "dependency-binding",
+            "reuse-decision",
+            "environment-check",
+            "argument-review",
+            "work-attempt",
+            "challenge",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "formalization-attempt",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "formal.generate",
+            "candidates.propose"
+          ],
+          "principles": [
+            "必需精确 formalization-packet；包由先前 utility.assemble-packet 组装，本操作不创建或改写包。",
+            "代码和诊断保留原目标、假设、声明与环境；变化请求必须产生新包和新尝试。",
+            "formalization-attempt 的 work-attempt 由 host 根据真实运行装配，不伪造历史或执行归属。",
+            "生成者不输出独立 formal-check、对齐或认证；DELIVERED 不表示 Lean 成功或科学成立。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "review",
+      "title": "Review：按职责和身份隔离的审阅",
+      "execution_kind": "MODEL",
+      "operations": [
+        {
+          "operation": "review.scope",
+          "input_record_types": [
+            "inventory-discovery",
+            "source-snapshot",
+            "source-span",
+            "paper-structure",
+            "frozen-scope",
+            "scope-decision",
+            "scientific-claim",
+            "math-claim",
+            "obligation-disposition",
+            "challenge",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "scope-decision",
+            "frozen-scope",
+            "challenge",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.scope"
+          ],
+          "principles": [
+            "独立于发现生产者，检查全文来源结构、发现清单、标准和未分类项。",
+            "只有接受精确 inventory-discovery 后才能输出 frozen-scope；冻结分母不确认论文正确。",
+            "修订保留旧范围和旧义务处置，不删除失败项来满足标准。",
+            "资料不足时阻塞该冻结决定，候选生产可在其授权范围内继续。"
+          ]
+        },
+        {
+          "operation": "review.argument",
+          "input_record_types": [
+            "argument-snapshot",
+            "frozen-scope",
+            "proof-plan",
+            "argument-node",
+            "inference-step",
+            "assumption-context",
+            "dependency-binding",
+            "reuse-decision",
+            "definition",
+            "math-claim",
+            "scientific-claim",
+            "derived-claim",
+            "source-span",
+            "source-snapshot",
+            "argument-review",
+            "challenge",
+            "challenge-disposition",
+            "counterexample",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "argument-review",
+            "challenge",
+            "challenge-disposition",
+            "axis-assessment",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.argument"
+          ],
+          "principles": [
+            "必需固定 argument-snapshot 和 frozen-scope；检查实际路线、共同前提、局部范围及相关异议历史。",
+            "实际主体独立于节点作者及全部证明贡献者，不能边生产证据边审查该证据。",
+            "有条件、反例和未决结果可以完整交付，不因此获得无条件数学支持。",
+            "不替代 Lean 声明检查或科学适用性判断；改动被审对象须生成新版本再审。"
+          ]
+        },
+        {
+          "operation": "review.reuse",
+          "input_record_types": [
+            "scientific-claim",
+            "derived-claim",
+            "math-claim",
+            "definition",
+            "semantic-context",
+            "argument-node",
+            "argument-snapshot",
+            "argument-review",
+            "proof-plan",
+            "dependency-binding",
+            "baseline-snapshot",
+            "knowledge-snapshot",
+            "relation-assessment",
+            "reuse-decision",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "formal-environment",
+            "environment-check",
+            "alignment-assessment",
+            "axis-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "evidence-protocol",
+            "frozen-scope",
+            "challenge",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "relation-assessment",
+            "reuse-decision",
+            "challenge",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.reuse"
+          ],
+          "principles": [
+            "关系审阅必需两个精确端点及对应证据；复用决定另需具体目标用途和 processing-profile。",
+            "独立于被审对象与候选对应的生产者，分别核对对象、条件、科学范围和证据方法。",
+            "CONDITIONAL 的剩余条件必须保留到目标；不能将候选关系、弱证据或不兼容环境升级为 ALLOW。",
+            "复用决定不等于新的定理证明；运行时目标级 EVIDENCE 门控仍须另行执行。"
+          ]
+        },
+        {
+          "operation": "review.backtranslate",
+          "input_record_types": [
+            "formal-environment"
+          ],
+          "output_record_types": [
+            "backtranslation"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.backtranslate"
+          ],
+          "principles": [
+            "首轮业务输入只允许 formal-environment，且 Task.input_artifacts 必须非空；必要定义只以固定形式代码字节进入，不单独提供 definition 或 work-attempt。",
+            "不豁免 authority-policy、processing-profile、agentization-plan：本操作不适用通用上下文许可；政策及 packet 归属由 host 私有保管，不向首轮显示。",
+            "Task.acceptance 固定为 DELIVERY；后续独立 alignment 或其他任务评估 EVIDENCE，不能从反译交付推导证据通过。",
+            "独立于形式生产者；brief 只写解释实际代码的中性指令，不含预期结论，不通过引用展开或诊断日志泄露答案。",
+            "execution.visible_artifact_refs 与 input_artifacts 按 artifact_id、sha256、byte_size、media_type 比较必须完全相同；path_hint 只是显示定位提示，不参与身份比较或授权。",
+            "解释冻结后由 host 按已记录的工作依赖和上游产物装配逻辑 packet_ref；不得据自报 execution 或 source_blind 伪造独立性。"
+          ]
+        },
+        {
+          "operation": "review.alignment",
+          "input_record_types": [
+            "source-snapshot",
+            "source-span",
+            "paper-structure",
+            "scientific-claim",
+            "derived-claim",
+            "math-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "frozen-scope",
+            "argument-snapshot",
+            "proof-plan",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "formal-environment",
+            "backtranslation",
+            "alignment-assessment",
+            "argument-review",
+            "axis-assessment",
+            "challenge",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "alignment-assessment",
+            "axis-assessment",
+            "challenge",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.alignment"
+          ],
+          "principles": [
+            "每次比较绑定精确两端及固定范围；涉及形式含义时必须取得已冻结 backtranslation 和实际形式附件。",
+            "独立于全部被审产物生产者及反向解释者，不因使用相同模板而免除主体回避。",
+            "源到数学或论证、数学到形式、源到形式分别检查；不得复制前两项冒充第三项。",
+            "对齐只说明对应范围，不证明定理正确或物理模型成立；歧义及误对齐如实交付。"
+          ]
+        },
+        {
+          "operation": "review.scientific",
+          "input_record_types": [
+            "source-snapshot",
+            "source-span",
+            "paper-structure",
+            "inventory-discovery",
+            "scientific-claim",
+            "derived-claim",
+            "math-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "frozen-scope",
+            "argument-snapshot",
+            "argument-review",
+            "formalization-packet",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "evidence-protocol",
+            "axis-assessment",
+            "relation-assessment",
+            "reuse-decision",
+            "counterexample",
+            "challenge",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "axis-assessment",
+            "challenge",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.scientific"
+          ],
+          "principles": [
+            "绑定精确科学目标和对应证据；来源忠实性、数学、对齐、适用性、经验和计算六轴分别交代。",
+            "独立于正在评估的证据生产者，不自行制造实验或复现结果再批准。",
+            "形式通过不推出模型、单位、近似或经验结论成立；缺失资料和不适用不能混用。",
+            "领域资格不足只能提供有标记的候选意见；不得将意见当正式科学准入。"
+          ]
+        },
+        {
+          "operation": "review.audit",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [
+            "release-audit",
+            "challenge",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.audit"
+          ],
+          "principles": [
+            "必需固定 release-manifest 及完整范围、标准、处置、六轴评估、贡献和未解前沿。",
+            "实际主体独立于该候选生产者、Coordinator、Certifier 和 Admission Reviewer。",
+            "按依赖审计原标准的满足情况，不能生产或修改自己正在审计的证据。",
+            "完整交付 DO_NOT_RELEASE 审计也不表示应当发布；DELIVERED 不解除 EVIDENCE 门槛。"
+          ]
+        },
+        {
+          "operation": "review.admission",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [
+            "admission-decision"
+          ],
+          "capabilities": [
+            "records.read",
+            "review.admission"
+          ],
+          "principles": [
+            "必需 paper-release、精确 before knowledge-snapshot、候选及用途、authority-policy、processing-profile 与相关证据。",
+            "正式决定须有实际政策授权、资格和独立身份，缺失时停止该决定，不伪造任命。",
+            "独立于候选生产者、论文审计者和机械认证者，逐项保留接受、拒绝、阻塞与冲突。",
+            "只输出决定，不执行数据库事务，不创建 knowledge-snapshot 或 ingestion-receipt。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "delta",
+      "title": "Delta：固定基准下的贡献变化",
+      "execution_kind": "MODEL",
+      "operations": [
+        {
+          "operation": "delta.compare",
+          "input_record_types": [
+            "baseline-snapshot",
+            "knowledge-snapshot",
+            "scientific-claim",
+            "derived-claim",
+            "math-claim",
+            "definition",
+            "semantic-context",
+            "argument-snapshot",
+            "argument-review",
+            "proof-plan",
+            "formal-check",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "relation-assessment",
+            "contribution-delta",
+            "counterexample",
+            "frozen-scope",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "contribution-delta",
+            "frontier-item"
+          ],
+          "capabilities": [
+            "records.read",
+            "delta.compare"
+          ],
+          "principles": [
+            "必需 baseline-snapshot 和精确当前对象；基准与贡献待判断记录从开工时保留。",
+            "v0.0 contribution-delta 具有独立 ReviewContext，本次比较主体不得是被评估产物的生产者。",
+            "SUPPORTED 需要独立接受且有见证的关系；作者自述、检索未发现及新增节点数不代替贡献评估。",
+            "专门工作进程可选，贡献记录不可省略；未知不写零贡献，不事后修改旧基准。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "reader",
+      "title": "Reader：可读性、直觉与边界解释",
+      "execution_kind": "MODEL",
+      "operations": [
+        {
+          "operation": "reader.explain",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [],
+          "capabilities": [
+            "records.read",
+            "reader.explain"
+          ],
+          "principles": [
+            "brief 必须非空并记录真实用户意图；尚无业务记录时 input_refs/target_refs 可为空，已有说明固定在 input_artifacts，不依赖未记录上下文。",
+            "解释业务对象时 target_refs 必须是 input_refs 子集；按用户知识水平检查缩写、直觉、物理图像、适用条件和缺口。",
+            "业务 output_record_types 为空，只交解释或意见附件；不创建或改写科学业务记录。",
+            "独立 Reader 须不同于原说明生产者；同主体只能明确标为自查。",
+            "可读性通过不授予科学认可，也不解除任务的证据依赖。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "planner",
+      "title": "Planner：有界任务建议",
+      "execution_kind": "MODEL",
+      "operations": [
+        {
+          "operation": "planner.propose",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [],
+          "capabilities": [
+            "records.read",
+            "planner.propose"
+          ],
+          "principles": [
+            "brief 必须非空并记录真实用户意图；启动时 input_refs/target_refs 可为空，已有材料固定在 input_artifacts，不依赖未记录的 host 上下文。",
+            "只提出有输入依据、预算边界和停止条件的子任务或替代路线；业务目标由 input_refs 的子集 target_refs 标明。",
+            "业务 output_record_types 为空；任务建议放附件或 follow_up_requests，不创建 agentization-plan 或直接执行下游 Task。",
+            "不得自行授予能力、提高预算、移除主体回避、批准范围或放行 EVIDENCE。",
+            "scheduler 按既定规则接受建议，utility.register-plan 仅固化已接受的有界计划。"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "utility",
+      "title": "Utility：受限程序服务目录",
+      "execution_kind": "PROGRAM",
+      "operations": [
+        {
+          "operation": "utility.capture",
+          "input_record_types": [
+            "source-request",
+            "source-snapshot",
+            "source-acquisition"
+          ],
+          "output_record_types": [
+            "source-acquisition",
+            "source-snapshot",
+            "source-transformation"
+          ],
+          "capabilities": [
+            "records.read",
+            "source.acquire",
+            "source.capture"
+          ],
+          "principles": [
+            "已授权的精确 source-request 可同时作为 input_refs 与 target_refs；或输入本地 source-snapshot 与 input_artifacts 中的实际字节，brief 明确取得目的。",
+            "input_artifacts 与 execution.visible_artifact_refs 完全一致且不是路径授权；未取得的远程字节只记在后续 Result.artifacts，不倒填输入。",
+            "只保存实际来源、转换映射和取得结果；失败不伪造成成功快照。",
+            "不执行来源内的指令，不推导科学忠实性、版权许可或科学结论。"
+          ]
+        },
+        {
+          "operation": "utility.register-plan",
+          "input_record_types": [
+            "source-snapshot",
+            "baseline-snapshot"
+          ],
+          "output_record_types": [
+            "agentization-plan"
+          ],
+          "capabilities": [
+            "records.read",
+            "plan.register"
+          ],
+          "principles": [
+            "必需 source-snapshot、processing-profile 和 scheduler 已接纳的范围及预算；已有基准须精确绑定。",
+            "本操作只登记固定计划，解决 planner 不输出业务记录而发现必须引用计划的衔接。",
+            "不得自行作科学选择、输出 scope-decision 或冻结分母；没有真实已接受计划则停止。"
+          ]
+        },
+        {
+          "operation": "utility.assemble-packet",
+          "input_record_types": [
+            "math-claim",
+            "frozen-scope",
+            "argument-snapshot",
+            "proof-plan",
+            "formal-environment",
+            "scientific-claim",
+            "derived-claim",
+            "semantic-context",
+            "definition",
+            "assumption-context",
+            "dependency-binding",
+            "reuse-decision",
+            "argument-review",
+            "alignment-assessment",
+            "frontier-item"
+          ],
+          "output_record_types": [
+            "formalization-packet"
+          ],
+          "capabilities": [
+            "records.read",
+            "formal.packet.assemble"
+          ],
+          "principles": [
+            "必需 math-claim、frozen-scope、argument-snapshot、所选 proof-plan、formal-environment 及包内实际引用的来源与语义。",
+            "明确承担 formalization-packet 的唯一组装职责；formalization.generate 只消费已固定包。",
+            "复制已指定目标、声明、条件与依赖，不补造数学内容；探索包保留未证义务，不获得认可。",
+            "组装者和内容生产者均纳入独立审查的生产归属；改变输入需要新包和受影响检查。"
+          ]
+        },
+        {
+          "operation": "utility.formal-check",
+          "input_record_types": [
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-environment",
+            "environment-check",
+            "work-attempt"
+          ],
+          "output_record_types": [
+            "formal-check",
+            "environment-check"
+          ],
+          "capabilities": [
+            "records.read",
+            "formal.check",
+            "formal.import.check"
+          ],
+          "principles": [
+            "声明检查必需固定 packet、attempt、environment 和实际代码；导入检查必需两个精确环境及实际声明。",
+            "与形式代码和交接包生产者独立，检查实际目标参与构建、传递公理、占位符及固定环境。",
+            "只报告真实运行和日志；无执行时不能编造 exit code、KERNEL_CHECKED 或身份回执。",
+            "检查成功不证明原文含义、科学适用性、发布或准入。"
+          ]
+        },
+        {
+          "operation": "utility.persist",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [],
+          "capabilities": [
+            "records.read",
+            "candidates.persist"
+          ],
+          "principles": [
+            "只保存已提供的规范业务记录和真实原始附件；完整验证后进行候选事务，同字节重试可幂等。",
+            "业务 output_record_types 为空，仅交真实本地事务回执附件，不把保存的输入重新声明为本操作新产出的业务记录。",
+            "冲突不得覆盖历史；保存不生成审阅、认证、准入、正式知识快照或 ingestion-receipt。",
+            "SQL 候选及运行状态到 Git 封存的适配尚需实现，本目录不声称已有生产存储服务。"
+          ]
+        },
+        {
+          "operation": "utility.export",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [
+            "release-manifest",
+            "paper-release",
+            "archive-receipt"
+          ],
+          "capabilities": [
+            "records.read",
+            "archive.export"
+          ],
+          "principles": [
+            "普通候选文件或 Git 封存仅交附件；release-manifest 必需精确来源、范围、标准、完整处置、贡献及清单内容。",
+            "paper-release 须已有该清单的独立 audit 与 certificate，archive-receipt 还须实际持久化的 release。",
+            "清单、审计、认证、发布、归档按既有依赖顺序生成；不能循环绑定未来记录。",
+            "导出成功不授予科学准入；无独立检查点或真实身份材料不得制造签名和独立锚定。"
+          ]
+        },
+        {
+          "operation": "utility.project",
+          "input_record_types": [
+            "processing-profile",
+            "authority-policy",
+            "source-snapshot",
+            "source-span",
+            "source-transformation",
+            "paper-structure",
+            "agentization-plan",
+            "inventory-discovery",
+            "scope-decision",
+            "frozen-scope",
+            "obligation-disposition",
+            "scientific-claim",
+            "derived-claim",
+            "claim-component-map",
+            "semantic-context",
+            "definition",
+            "math-claim",
+            "assumption-context",
+            "argument-node",
+            "inference-step",
+            "proof-plan",
+            "dependency-binding",
+            "challenge",
+            "challenge-disposition",
+            "argument-snapshot",
+            "argument-review",
+            "upstream-import",
+            "work-attempt",
+            "formal-environment",
+            "formalization-packet",
+            "formalization-attempt",
+            "formal-check",
+            "backtranslation",
+            "alignment-assessment",
+            "empirical-evidence",
+            "reproduction-record",
+            "axis-assessment",
+            "status-view",
+            "baseline-snapshot",
+            "relation-assessment",
+            "contribution-delta",
+            "reuse-decision",
+            "environment-check",
+            "frontier-item",
+            "release-manifest",
+            "release-audit",
+            "release-certificate",
+            "paper-release",
+            "archive-receipt",
+            "admission-decision",
+            "knowledge-snapshot",
+            "ingestion-receipt",
+            "event",
+            "event-checkpoint",
+            "impact-analysis",
+            "revision-record",
+            "legacy-binding",
+            "query-receipt",
+            "evaluation-report",
+            "source-request",
+            "source-acquisition",
+            "evidence-protocol",
+            "work-completion",
+            "counterexample"
+          ],
+          "output_record_types": [
+            "status-view"
+          ],
+          "capabilities": [
+            "records.read",
+            "projection.build"
+          ],
+          "principles": [
+            "只按指定精确快照或明确记录集合及固定规则建立可重建投影，保留六轴、条件、冲突和缺口。",
+            "Neo4j 不是主库，不向规范记录回写科学状态或批准复用。",
+            "当前潜在依赖影响只交附件，不能把可达性报告当作科学失效或独立证明判断。",
+            "无已实现目标级证据门控时，不得从投影或 Result.DELIVERED 推导 EVIDENCE 成功。"
+          ]
+        },
+        {
+          "operation": "utility.certify",
+          "input_record_types": [
+            "release-manifest",
+            "release-audit",
+            "authority-policy",
+            "processing-profile",
+            "frozen-scope",
+            "scope-decision",
+            "obligation-disposition",
+            "work-attempt",
+            "event",
+            "event-checkpoint"
+          ],
+          "output_record_types": [
+            "release-certificate"
+          ],
+          "capabilities": [
+            "records.read",
+            "release.certify"
+          ],
+          "principles": [
+            "必需精确 release-manifest、release-audit、authority-policy、processing-profile 及实际独立身份和授权依据。",
+            "实际主体与生产者、Coordinator、论文审计者和知识准入者分离；不凭模板名或自报 execution 证明独立。",
+            "只检查机械门槛和精确绑定，不改科学评估；缺少资格、政策或身份依据时不得认证。",
+            "不得制造身份认证、签名或独立回执；JSON 校验通过不是 CERTIFIED 的充分条件。"
+          ]
+        }
+      ]
+    }
+  ]
+}

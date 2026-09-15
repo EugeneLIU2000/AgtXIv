@@ -1,0 +1,250 @@
+[
+ {
+  "created_at": "2026-09-14T00:00:00Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+   {
+    "content_hash": "sha256:33fe49088aa38caac2f01ace9e1c31bb620ae7fc3f01f9551794ce57fd278105",
+    "record_id": "claim:opus5-v11-2608.14798v1/A59",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:0c0319c011420462f46b9a4e3287905c9272721c6aca199a8f9ee4f70b404787",
+    "record_id": "span:opus5-v11-2608.14798v1/h2-setup",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "payload": {
+   "approximation_regime": "finite one-particle basis (STO-3G in the main text, 6-31G in the supplement); the paper states neither approaches the complete-basis-set limit",
+   "assumptions": [
+    {
+     "condition_id": "condition:assumption-1",
+     "origin": "SOURCE_EXPLICIT",
+     "source_span_refs": [
+      {
+       "content_hash": "sha256:0c0319c011420462f46b9a4e3287905c9272721c6aca199a8f9ee4f70b404787",
+       "record_id": "span:opus5-v11-2608.14798v1/h2-setup",
+       "record_type": "agtxiv.v3.source-span/0.0.0",
+       "revision": 1
+      }
+     ],
+     "statement": "the Jordan-Wigner encoding is fixed; no other fermion-to-qubit encoding is tested"
+    },
+    {
+     "condition_id": "condition:assumption-2",
+     "origin": "SOURCE_EXPLICIT",
+     "source_span_refs": [
+      {
+       "content_hash": "sha256:0c0319c011420462f46b9a4e3287905c9272721c6aca199a8f9ee4f70b404787",
+       "record_id": "span:opus5-v11-2608.14798v1/h2-setup",
+       "record_type": "agtxiv.v3.source-span/0.0.0",
+       "revision": 1
+      }
+     ],
+     "statement": "exact diagonalization within the basis, so no method error beyond basis truncation"
+    }
+   ],
+   "claim_ref": {
+    "content_hash": "sha256:33fe49088aa38caac2f01ace9e1c31bb620ae7fc3f01f9551794ce57fd278105",
+    "record_id": "claim:opus5-v11-2608.14798v1/A59",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   "error_bound": "none reported: no error bars, convergence study or basis extrapolation",
+   "limitations": [
+    "Nonstabilizerness here is a property of an encoding, which the authors state explicitly while still using it as the section's framing.",
+    "No geometries, integrals, statevectors, code or numerical tolerances are provided, so no curve is reproducible from the paper alone.",
+    "The paper declines to draw physical conclusions, so the section supports the framework's flexibility, not any statement about $\\mathrm{H}_2$."
+   ],
+   "object_mapping": [
+    {
+     "dimension": "OBJECT",
+     "relation": "UNKNOWN",
+     "source_value": "$\\mathcal{W}_\\beta(\\psi(R))$, stabilizer work of the qubit-encoded ground state",
+     "target_value": "nonstabilizerness of the molecular electronic ground state at bond length $R$",
+     "witness_refs": []
+    },
+    {
+     "dimension": "CONVENTION",
+     "relation": "SOURCE_STRONGER",
+     "source_value": "Pauli spectrum of the Jordan-Wigner-encoded statevector",
+     "target_value": "a basis- and encoding-dependent representation of the molecular state, not an intrinsic molecular property",
+     "witness_refs": []
+    },
+    {
+     "dimension": "REGIME",
+     "relation": "TARGET_STRONGER",
+     "source_value": "finite minimal basis with full CI within that basis",
+     "target_value": "the physical molecule at the complete-basis-set limit",
+     "witness_refs": []
+    }
+   ],
+   "observables": [
+    "ground-state energy $E(R)$ from full diagonalization",
+    "$\\mathcal{W}_\\beta(\\psi(R))$ evaluated from the full Pauli spectrum of the statevector",
+    "$M_{\\alpha=2}(\\psi(R))$"
+   ],
+   "physical_system": "molecular hydrogen along the H-H dissociation coordinate, mapped to four qubits (STO-3G) by the Jordan-Wigner transformation"
+  },
+  "policy_ref": {
+   "content_hash": "sha256:7e87e0303539776a304b68e3c1b34ae6e4ca6a0a84e9ba49d2c0f0d35730ff0c",
+   "record_id": "policy:opus5-v11-2608.14798v1",
+   "record_type": "agtxiv.v3.authority-policy/0.0.0",
+   "revision": 1
+  },
+  "producer": {
+   "actor_kind": "AGENT",
+   "execution_id": "exec:opus5-v11-2608.14798v1/round-3",
+   "identity_assurance": "DECLARED",
+   "identity_evidence": [],
+   "model": "claude-opus-5 (single interactive execution; one principal in all roles, no independent reviewer)",
+   "principal_id": "session:opus5-v11-2608.14798v1",
+   "role": "CLAIM_PRODUCER",
+   "visible_input_refs": [
+    {
+     "content_hash": "sha256:33fe49088aa38caac2f01ace9e1c31bb620ae7fc3f01f9551794ce57fd278105",
+     "record_id": "claim:opus5-v11-2608.14798v1/A59",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    },
+    {
+     "content_hash": "sha256:0c0319c011420462f46b9a4e3287905c9272721c6aca199a8f9ee4f70b404787",
+     "record_id": "span:opus5-v11-2608.14798v1/h2-setup",
+     "record_type": "agtxiv.v3.source-span/0.0.0",
+     "revision": 1
+    }
+   ]
+  },
+  "record_id": "semantics:opus5-v11-2608.14798v1/A59",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:cb29024a2a97ec877e0e73ff8505cbab81c3baa70601ddb6c5d9b475f534d513"
+ },
+ {
+  "created_at": "2026-09-14T00:00:00Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+   {
+    "content_hash": "sha256:25ed3e1667e576fbb67a6186db651c0e6287f913f90874a2cc3dd539c2d39195",
+    "record_id": "claim:opus5-v11-2608.14798v1/A62",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:e5432f5db89e9c4507b6e3b300be193be6b8b827ed8066dbf05b42037c8367a3",
+    "record_id": "span:opus5-v11-2608.14798v1/ising-panelA",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "payload": {
+   "approximation_regime": "finite-size chains at selected $\\beta$; no finite-size scaling analysis is performed",
+   "assumptions": [
+    {
+     "condition_id": "condition:assumption-1",
+     "origin": "SOURCE_RECONSTRUCTED",
+     "source_span_refs": [
+      {
+       "content_hash": "sha256:e5432f5db89e9c4507b6e3b300be193be6b8b827ed8066dbf05b42037c8367a3",
+       "record_id": "span:opus5-v11-2608.14798v1/ising-panelA",
+       "record_type": "agtxiv.v3.source-span/0.0.0",
+       "revision": 1
+      }
+     ],
+     "statement": "boundary conditions of the chain are not stated"
+    },
+    {
+     "condition_id": "condition:assumption-2",
+     "origin": "SOURCE_RECONSTRUCTED",
+     "source_span_refs": [
+      {
+       "content_hash": "sha256:e5432f5db89e9c4507b6e3b300be193be6b8b827ed8066dbf05b42037c8367a3",
+       "record_id": "span:opus5-v11-2608.14798v1/ising-panelA",
+       "record_type": "agtxiv.v3.source-span/0.0.0",
+       "revision": 1
+      }
+     ],
+     "statement": "the numerical method used to obtain the ground states is not stated in the text"
+    }
+   ],
+   "claim_ref": {
+    "content_hash": "sha256:25ed3e1667e576fbb67a6186db651c0e6287f913f90874a2cc3dd539c2d39195",
+    "record_id": "claim:opus5-v11-2608.14798v1/A62",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   "error_bound": "none reported",
+   "limitations": [
+    "Extensivity at increment $1$ per site is read off plots at small $L$ with no scaling collapse or fit, and is hedged as 'suggestive' in the source.",
+    "No solver, boundary conditions, chain lengths beyond the figures, or numerical tolerances are given, so nothing is reproducible from the paper alone.",
+    "$\\beta$ must not be read as a physical temperature, which the source states explicitly."
+   ],
+   "object_mapping": [
+    {
+     "dimension": "OBJECT",
+     "relation": "UNKNOWN",
+     "source_value": "$\\mathcal{W}_\\beta$ of the finite-chain ground state",
+     "target_value": "nonstabilizerness generated by the competition between the Ising and field terms",
+     "witness_refs": []
+    },
+    {
+     "dimension": "REGIME",
+     "relation": "TARGET_STRONGER",
+     "source_value": "finite $L$ at selected $\\beta\\in\\{0.5,2,10,100\\}$",
+     "target_value": "thermodynamic-limit critical behaviour",
+     "witness_refs": []
+    },
+    {
+     "dimension": "CONVENTION",
+     "relation": "INCOMPARABLE",
+     "source_value": "$\\beta$ as a moment-resolving parameter",
+     "target_value": "a physical inverse temperature",
+     "witness_refs": []
+    }
+   ],
+   "observables": [
+    "$\\mathcal{W}_\\beta$ versus $\\beta$ at fixed $h/g$",
+    "$\\mathcal{W}_\\beta$ versus $h/g$ at fixed $\\beta$",
+    "$M_\\alpha$ versus $h/g$ for $\\alpha=2,5,10$"
+   ],
+   "physical_system": "one-dimensional transverse-field Ising chain, $H=-g\\sum_i\\sigma^z_i\\sigma^z_{i+1}-h\\sum_i\\sigma^x_i$, finite $L$, ground state"
+  },
+  "policy_ref": {
+   "content_hash": "sha256:7e87e0303539776a304b68e3c1b34ae6e4ca6a0a84e9ba49d2c0f0d35730ff0c",
+   "record_id": "policy:opus5-v11-2608.14798v1",
+   "record_type": "agtxiv.v3.authority-policy/0.0.0",
+   "revision": 1
+  },
+  "producer": {
+   "actor_kind": "AGENT",
+   "execution_id": "exec:opus5-v11-2608.14798v1/round-3",
+   "identity_assurance": "DECLARED",
+   "identity_evidence": [],
+   "model": "claude-opus-5 (single interactive execution; one principal in all roles, no independent reviewer)",
+   "principal_id": "session:opus5-v11-2608.14798v1",
+   "role": "CLAIM_PRODUCER",
+   "visible_input_refs": [
+    {
+     "content_hash": "sha256:25ed3e1667e576fbb67a6186db651c0e6287f913f90874a2cc3dd539c2d39195",
+     "record_id": "claim:opus5-v11-2608.14798v1/A62",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    },
+    {
+     "content_hash": "sha256:e5432f5db89e9c4507b6e3b300be193be6b8b827ed8066dbf05b42037c8367a3",
+     "record_id": "span:opus5-v11-2608.14798v1/ising-panelA",
+     "record_type": "agtxiv.v3.source-span/0.0.0",
+     "revision": 1
+    }
+   ]
+  },
+  "record_id": "semantics:opus5-v11-2608.14798v1/A62",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:d483e15bbc3cfb1b0197a2532dcba780161ed1bf236086a1e0774f01607b21da"
+ }
+]

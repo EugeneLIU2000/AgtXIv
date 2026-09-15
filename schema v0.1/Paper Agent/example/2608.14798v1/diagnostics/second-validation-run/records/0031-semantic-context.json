@@ -1,0 +1,142 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:8c918f49f4a70dda4b778b5568ce06c1929bbc1c7eec51e94bf0ceff548f3fc1",
+      "record_id": "example:2608.14798v1-db635458e365-claim-spf-limits",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+      "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+      "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "EXACT; Limit identities; no finite-beta convergence rate extracted.",
+    "assumptions": [
+      {
+        "condition_id": "condition:spf-limits-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi is a fixed normalized pure n-qubit state; d=2^n."
+      },
+      {
+        "condition_id": "condition:spf-limits-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Z_beta(psi)=exp(-beta) sum_{x in Spec(psi)} cosh(beta x)."
+      },
+      {
+        "condition_id": "condition:spf-limits-2",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "beta is a mathematical parameter, not a physical inverse temperature."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:8c918f49f4a70dda4b778b5568ce06c1929bbc1c7eec51e94bf0ceff548f3fc1",
+      "record_id": "example:2608.14798v1-db635458e365-claim-spf-limits",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "Limit identities; no finite-beta convergence rate extracted.",
+    "limitations": [
+      "Limits and finite-beta estimates must not be conflated.",
+      "The subsequent support/kernel rewrite at lines 553-555 appears to omit beta inside cosh; not silently used to redefine Z.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The stabilizer partition function tends to the number of Pauli labels as beta tends to zero and to half the stabilizer-group cardinality as beta tends to positive infinity.",
+        "target_value": "lim_{beta->0} Z_beta(psi)=d^2; lim_{beta->+infinity} Z_beta(psi)=|Stab(psi)|/2.",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "psi: fixed pure n-qubit state; beta: real parameter; Z_beta: stabilizer partition function"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-semantics-spf-limits",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:6727473f5e97a4ff30e22ca3f0aebe93e04edd18f6cea63c7bc8dd99163b3f91"
+}

@@ -1,0 +1,170 @@
+{
+  "report_version": "1.0",
+  "date": "2026-09-14",
+  "scope": "DEVELOPMENT_INTERFACE_VALIDATION",
+  "note": "Development checks and reviewer feedback, not an authenticated business formal-check or scientific acceptance record.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "proof.expand",
+      "formalization.generate"
+    ],
+    "draft_schemas": [
+      "proof-draft.schema.json",
+      "lamport-view.schema.json",
+      "lean-draft.schema.json"
+    ],
+    "paper_agent_changed": false,
+    "registry_change": {
+      "operation": "formalization.generate",
+      "added_input_record_types": [
+        "argument-node",
+        "inference-step"
+      ],
+      "added_output_record_types": [],
+      "added_capabilities": [],
+      "source_span_direct_input_added": false
+    },
+    "changed_shared_documents": [
+      "../AGENT-CONTRACTS.md",
+      "../README.md"
+    ]
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/validate.py' --check",
+      "exit_code": 0,
+      "result": "Existing offline contract package accepted; 64 base record families, 9 agent templates, 23 operations. Does not execute the new proof pipeline."
+    },
+    {
+      "command": ".venv/bin/python -B -m unittest discover -s 'schema v0.1/tests' -v",
+      "exit_code": 0,
+      "passed_tests": 28
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1/Autoformalization Agent/tests' 'schema v0.1/Paper Agent/tests' -q -p no:cacheprovider",
+      "exit_code": 0,
+      "passed_tests": 81,
+      "breakdown": {
+        "autoformalization": 56,
+        "paper": 25
+      }
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Autoformalization Agent/check_interfaces.py' --kind lean --input 'schema v0.1/Autoformalization Agent/example/and-swap/lean-draft.json'",
+      "exit_code": 0,
+      "checks_passed": true,
+      "task_supplied": false
+    }
+  ],
+  "total_test_cases_passed": 109,
+  "synthetic_example": {
+    "path": "example/and-swap/",
+    "purpose": "Illustrate exact joint premises, local assumption discharge and Lamport-to-Lean correspondence.",
+    "fixture_references_are_real_records": false,
+    "fixture_hashes_are_real": false,
+    "task_and_result_constructed": false,
+    "record_set_closure_checked": false,
+    "interface_fixtures_checked": [
+      "proof-context.draft.json",
+      "proof-nodes.draft.json",
+      "proof-draft.json",
+      "lamport-view.json",
+      "lean-draft.json"
+    ],
+    "interface_fixtures_passed": 5,
+    "draft_source_equals_lean_file": true,
+    "lean_smoke_test": {
+      "command": "lean +leanprover/lean4:v4.30.0-rc2 'schema v0.1/Autoformalization Agent/example/and-swap/AndSwap.lean'",
+      "exit_code": 0,
+      "version": "4.30.0-rc2",
+      "compiler_commit": "3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc",
+      "platform": "arm64-apple-darwin24.6.0",
+      "source_sha256": "aa1b8850a6920832674a7734937124751e925b16ac665f7320899f9e3bc9afee",
+      "printed_type": "∀ (P Q : Prop), P ∧ Q → Q ∧ P",
+      "printed_axioms": [],
+      "log": "example/and-swap/lean-smoke-test.txt",
+      "execution_mode": "Local developer smoke test of directly inspected synthetic code",
+      "independent_formal_check_record_created": false,
+      "isolated_build_service_implemented": false,
+      "lean4checker_or_comparator_executed": false
+    }
+  },
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "interface compatibility reviewer",
+        "reader reviewer"
+      ],
+      "focus": "Reuse existing business records and operations; preserve input visibility, packet ownership and independent review boundaries.",
+      "changes": [
+        "Added only argument-node/inference-step read inputs.",
+        "Separated human Lamport display from canonical proof facts.",
+        "Specified staged registration before exact references.",
+        "Specified actual attempt ownership and blind-backtranslation isolation."
+      ]
+    },
+    {
+      "round": 2,
+      "roles": [
+        "interface compatibility reviewer",
+        "reader reviewer",
+        "checker implementer"
+      ],
+      "focus": "Review written specifications and executable interfaces; repair concrete positive/negative cases.",
+      "changes": [
+        "FollowUp validates target operation input families; blind backtranslation rejects math/source inputs.",
+        "Lean draft packet must exactly match the unique target packet, not merely a visible packet.",
+        "Explicitly incomplete helper-only source may be retained without a fabricated TARGET.",
+        "Reading views display numeric label order, independent of array storage order.",
+        "Enforced TARGET.local_name=null and permitted discharge rules.",
+        "Clarified Chinese terminology, common versus actually used premises, and implemented versus planned checks."
+      ]
+    },
+    {
+      "round": 3,
+      "roles": [
+        "reader reviewer",
+        "main agent",
+        "interface compatibility reviewer"
+      ],
+      "focus": "Synthetic example, regression checks, compilation and final clarity.",
+      "result": "Reader found no substantive misleading statement; main agent reran 109 tests and compiled the directly inspected synthetic Lean source. Reader did not independently run Lean.",
+      "changes": [
+        "Marked table references explicitly as fixture placeholders."
+      ],
+      "targeted_regression_recheck": {
+        "cases_passed": 21,
+        "counts_are_subset_of_existing_tests": true,
+        "original_reproducers_replayed": true,
+        "issues_closed": [
+          "FollowUp forbidden inputs",
+          "Visible-but-not-target packet selection",
+          "Helper-only partial source rejected",
+          "Array order versus numeric Lamport label order"
+        ],
+        "unresolved_in_review_scope": []
+      }
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "Automatic paper ingestion, agent scheduling, source/dependency search and production model runners.",
+    "Shared draft assembler, real record/envelope persistence and identity authentication for this example.",
+    "Complete RecordSet closure and actual source-byte provenance for this example.",
+    "Resolution of view/plan/snapshot membership, assumption contexts and mathematical rule correctness by the new checker.",
+    "Parsing generated Lean declarations and verifying expected-declaration coverage or node-to-code semantic correspondence.",
+    "Isolated Lean build service and independently authenticated formal-check receipts.",
+    "Independent scientific argument review, source-blind backtranslation, semantic alignment or release acceptance of a paper.",
+    "A guarantee that different models produce identical proofs or mathematical content."
+  ],
+  "checked_file_sha256": {
+    "check_interfaces.py": "1c17510190e0cdeb15680cc81d8c16869f0a7e44a507ee10b9df8d8cb4c6140a",
+    "proof-draft.schema.json": "84caaf3a03198c3cf288a396c0a5d1bd47ce1d28dd4966ea2b3e3c595b32458b",
+    "lamport-view.schema.json": "25a76e8b17ec2be8905a169dec4f097d7dd15ae41477026315af860b86655525",
+    "lean-draft.schema.json": "54c4d060ce78139de7baa8cb8ef1aa58dd5ba6bf78681dfb39a103c02e0f5f8e"
+  }
+}

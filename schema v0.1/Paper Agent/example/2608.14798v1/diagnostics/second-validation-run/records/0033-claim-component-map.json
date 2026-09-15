@@ -1,0 +1,153 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:8c918f49f4a70dda4b778b5568ce06c1929bbc1c7eec51e94bf0ceff548f3fc1",
+      "record_id": "example:2608.14798v1-db635458e365-claim-spf-limits",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:6727473f5e97a4ff30e22ca3f0aebe93e04edd18f6cea63c7bc8dd99163b3f91",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-spf-limits",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:a3173a099c89f4ac2e31531634622f846da4d886d44ecde1f6ce20daa370ea69",
+      "record_id": "example:2608.14798v1-db635458e365-math-spf-limits",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:8c918f49f4a70dda4b778b5568ce06c1929bbc1c7eec51e94bf0ceff548f3fc1",
+      "record_id": "example:2608.14798v1-db635458e365-claim-spf-limits",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:spf-limits",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+            "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [
+          {
+            "content_hash": "sha256:a3173a099c89f4ac2e31531634622f846da4d886d44ecde1f6ce20daa370ea69",
+            "record_id": "example:2608.14798v1-db635458e365-math-spf-limits",
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "revision": 1
+          }
+        ],
+        "residual": "Limits and finite-beta estimates must not be conflated.; The subsequent support/kernel rewrite at lines 553-555 appears to omit beta inside cosh; not silently used to redefine Z.; Complete component atomization and independent source alignment remain open; no scientific review.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:6727473f5e97a4ff30e22ca3f0aebe93e04edd18f6cea63c7bc8dd99163b3f91",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-spf-limits",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+          "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+          "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:8c918f49f4a70dda4b778b5568ce06c1929bbc1c7eec51e94bf0ceff548f3fc1",
+          "record_id": "example:2608.14798v1-db635458e365-claim-spf-limits",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:8c918f49f4a70dda4b778b5568ce06c1929bbc1c7eec51e94bf0ceff548f3fc1",
+        "record_id": "example:2608.14798v1-db635458e365-claim-spf-limits",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:6727473f5e97a4ff30e22ca3f0aebe93e04edd18f6cea63c7bc8dd99163b3f91",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-spf-limits",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:a3173a099c89f4ac2e31531634622f846da4d886d44ecde1f6ce20daa370ea69",
+        "record_id": "example:2608.14798v1-db635458e365-math-spf-limits",
+        "record_type": "agtxiv.v3.math-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+        "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:6ee963ddd44f303be914c4f299646aada59105a5120ae9ee040baed9972df3f6",
+        "record_id": "example:2608.14798v1-db635458e365-span-533-554",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-spf-limits",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:8a22f1f9f840a03f1ced8d8148d1fce9986cf0d4ac633bb44d1094370d6b98eb"
+}

@@ -1,0 +1,123 @@
+{
+ "content_hash": "sha256:74b4d625c526c4a50e69520c009ab954f99c199ccb46a5aa1131c98ac340c275",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+   "record_id": "claim:opus5-2608.14798v1/c27",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:5bbe83187f6458fdd928f0fc8c88146478fb639d3d3a50bbb23da2b71bbf91eb",
+   "record_id": "math:opus5-2608.14798v1/m27",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+   "record_id": "claim:opus5-2608.14798v1/c27",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:ub",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:5bbe83187f6458fdd928f0fc8c88146478fb639d3d3a50bbb23da2b71bbf91eb",
+      "record_id": "math:opus5-2608.14798v1/m27",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:chain",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The chain to $\\chi_\\delta$ is quoted from prior work; no new bound on the stabilizer rank is derived here.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:lb",
+    "disposition": "UNRESOLVED",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "As printed, $\\frac{\\alpha-1}{2\\alpha}M_\\alpha(\\psi)\\leq F_{\\rm Stab}(\\psi)$ is inconsistent with $F_{\\rm Stab}\\leq1$: for a 4-qubit state with $M_2=2$ it would force $F_{\\rm Stab}\\geq1/2$, which contradicts the paper's own upper bound for magic states. The intended form is presumably a bound on $\\log(1/F_{\\rm Stab})$. Recorded as printed; not repaired.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:example",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The number $2.27\\times10^{-3}$ comes from 'straightforward numerical maximization' with no code, grid, or optimizing $\\beta$ reported, so it is not reproducible from the paper.",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+     "record_id": "claim:opus5-2608.14798v1/c27",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+    "record_id": "claim:opus5-2608.14798v1/c27",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:5bbe83187f6458fdd928f0fc8c88146478fb639d3d3a50bbb23da2b71bbf91eb",
+    "record_id": "math:opus5-2608.14798v1/m27",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c27",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

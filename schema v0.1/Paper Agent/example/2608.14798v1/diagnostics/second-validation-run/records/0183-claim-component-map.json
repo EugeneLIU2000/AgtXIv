@@ -1,0 +1,170 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:61f1f2ce09735a37270d3d677de86c54e83f497074ce6b87b37966eee57f9c9d",
+      "record_id": "example:2608.14798v1-db635458e365-claim-work-continuity",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:a94c9a521adc1c6503054e8f5ead2d4a5e3550c4cff4f36b7b466f6436cbd4b8",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-work-continuity",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:61f1f2ce09735a37270d3d677de86c54e83f497074ce6b87b37966eee57f9c9d",
+      "record_id": "example:2608.14798v1-db635458e365-claim-work-continuity",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:work-continuity",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:0002893a5470ffd74d5035d7fa7cfc18a05dec63248cd7d58e8a1a3c7e91c7c7",
+            "record_id": "example:2608.14798v1-db635458e365-span-1205-1210",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:d5e16d5774ba50a6a9ef4da44477f7d4da1e8cbcca344572012f98dad9465d6a",
+            "record_id": "example:2608.14798v1-db635458e365-span-1284-1317",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:9585413ed86913e288b59dd3c8fa99a8be156153a52c4d63dc13e39dfc36c926",
+            "record_id": "example:2608.14798v1-db635458e365-span-1986-2005",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0a253daf861a217dc312a33042444ea20de894c2c271c3ed9345370f098555b5",
+            "record_id": "example:2608.14798v1-db635458e365-span-2007-2076",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The proof uses |log(a)-log(b)| <= |a-b|/min(a,b) without addressing the base-2 logarithm convention or a log-base conversion factor; constants are retained as printed.; The lemma says every n-qubit state, but its proof explicitly uses two pure states; no mixed-state extension is inferred.; The supplement first gives a partition-function coefficient (4^n-1)e^(-beta) beta sinh(beta) and later refines it to d_n e^(-beta) beta sinh(beta). The earlier sentence calling the coarser result the main-text result is not used to replace the refined expression.; The broad assertion of stronger concentration is not supplied here with an ensemble-specific failure probability or parameter regime.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:a94c9a521adc1c6503054e8f5ead2d4a5e3550c4cff4f36b7b466f6436cbd4b8",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-work-continuity",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:0002893a5470ffd74d5035d7fa7cfc18a05dec63248cd7d58e8a1a3c7e91c7c7",
+          "record_id": "example:2608.14798v1-db635458e365-span-1205-1210",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:d5e16d5774ba50a6a9ef4da44477f7d4da1e8cbcca344572012f98dad9465d6a",
+          "record_id": "example:2608.14798v1-db635458e365-span-1284-1317",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:9585413ed86913e288b59dd3c8fa99a8be156153a52c4d63dc13e39dfc36c926",
+          "record_id": "example:2608.14798v1-db635458e365-span-1986-2005",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:0a253daf861a217dc312a33042444ea20de894c2c271c3ed9345370f098555b5",
+          "record_id": "example:2608.14798v1-db635458e365-span-2007-2076",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:61f1f2ce09735a37270d3d677de86c54e83f497074ce6b87b37966eee57f9c9d",
+          "record_id": "example:2608.14798v1-db635458e365-claim-work-continuity",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:61f1f2ce09735a37270d3d677de86c54e83f497074ce6b87b37966eee57f9c9d",
+        "record_id": "example:2608.14798v1-db635458e365-claim-work-continuity",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:a94c9a521adc1c6503054e8f5ead2d4a5e3550c4cff4f36b7b466f6436cbd4b8",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-work-continuity",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:0002893a5470ffd74d5035d7fa7cfc18a05dec63248cd7d58e8a1a3c7e91c7c7",
+        "record_id": "example:2608.14798v1-db635458e365-span-1205-1210",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d5e16d5774ba50a6a9ef4da44477f7d4da1e8cbcca344572012f98dad9465d6a",
+        "record_id": "example:2608.14798v1-db635458e365-span-1284-1317",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:9585413ed86913e288b59dd3c8fa99a8be156153a52c4d63dc13e39dfc36c926",
+        "record_id": "example:2608.14798v1-db635458e365-span-1986-2005",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:0a253daf861a217dc312a33042444ea20de894c2c271c3ed9345370f098555b5",
+        "record_id": "example:2608.14798v1-db635458e365-span-2007-2076",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-work-continuity",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:f20ac4e671792b4954f5780bd9980e295c6d91b4eae6119a3423f99f68c49d93"
+}

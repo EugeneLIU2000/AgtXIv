@@ -1,0 +1,144 @@
+{
+  "draft_version": "1.0",
+  "records": [
+    {
+      "record_type": "agtxiv.v3.inference-step/0.0.0",
+      "payload": {
+        "premise_refs": [
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-h",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "conclusion_ref": {
+          "record_type": "agtxiv.v3.argument-node/0.0.0",
+          "record_id": "fixture:and-swap-q",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "rule": "DIRECT",
+        "justification": "Conjunction elimination, right projection: h.right.",
+        "context_ref": {
+          "record_type": "agtxiv.v3.assumption-context/0.0.0",
+          "record_id": "fixture:and-swap-local-h",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "discharged_context_refs": [],
+        "rule_evidence_refs": []
+      }
+    },
+    {
+      "record_type": "agtxiv.v3.inference-step/0.0.0",
+      "payload": {
+        "premise_refs": [
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-h",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "conclusion_ref": {
+          "record_type": "agtxiv.v3.argument-node/0.0.0",
+          "record_id": "fixture:and-swap-p",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "rule": "DIRECT",
+        "justification": "Conjunction elimination, left projection: h.left.",
+        "context_ref": {
+          "record_type": "agtxiv.v3.assumption-context/0.0.0",
+          "record_id": "fixture:and-swap-local-h",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "discharged_context_refs": [],
+        "rule_evidence_refs": []
+      }
+    },
+    {
+      "record_type": "agtxiv.v3.inference-step/0.0.0",
+      "payload": {
+        "premise_refs": [
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-q",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-p",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "conclusion_ref": {
+          "record_type": "agtxiv.v3.argument-node/0.0.0",
+          "record_id": "fixture:and-swap-qp",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "rule": "DIRECT",
+        "justification": "Conjunction introduction requires both Q and P, in that order.",
+        "context_ref": {
+          "record_type": "agtxiv.v3.assumption-context/0.0.0",
+          "record_id": "fixture:and-swap-local-h",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "discharged_context_refs": [],
+        "rule_evidence_refs": []
+      }
+    },
+    {
+      "record_type": "agtxiv.v3.inference-step/0.0.0",
+      "payload": {
+        "premise_refs": [
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-qp",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "conclusion_ref": {
+          "record_type": "agtxiv.v3.argument-node/0.0.0",
+          "record_id": "fixture:and-swap-target",
+          "revision": 1,
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "rule": "ASSUMPTION_DISCHARGE",
+        "justification": "The subproof under temporary h : P ∧ Q establishes Q ∧ P. Discharge h by implication introduction; P and Q remain arbitrary parameters, with no additional hypotheses.",
+        "context_ref": null,
+        "discharged_context_refs": [
+          {
+            "record_type": "agtxiv.v3.assumption-context/0.0.0",
+            "record_id": "fixture:and-swap-local-h",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "rule_evidence_refs": [
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-h",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "record_type": "agtxiv.v3.argument-node/0.0.0",
+            "record_id": "fixture:and-swap-qp",
+            "revision": 1,
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      }
+    }
+  ],
+  "open_items": [],
+  "follow_up_requests": []
+}

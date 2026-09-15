@@ -1,0 +1,146 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:f1b6a6acb38627dc031f4ed828a232d3d2dae6f958b7def068fe34bb7399bf86",
+      "record_id": "example:2608.14798v1-claim-stabilizer-ancilla",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:415e706cd87b2244e4a011b26ee0f403e97f3b41e9526353fb7a5ba03ede0c83",
+      "record_id": "example:2608.14798v1-semantics-stabilizer-ancilla",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:7a6964108a4ac4b950dff6af1543b4d68b9b4ef9a8bcd439b8cc1b4be0136757",
+      "record_id": "example:2608.14798v1-math-stabilizer-ancilla",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:f1b6a6acb38627dc031f4ed828a232d3d2dae6f958b7def068fe34bb7399bf86",
+      "record_id": "example:2608.14798v1-claim-stabilizer-ancilla",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:stabilizer-ancilla",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:90b226328ea45ec9d1e2b92bf2569251ae037b2fa341e1bb36b6a40c11b4727c",
+            "record_id": "example:2608.14798v1-span-298-299",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:5524ff09d2572965e7ab4230677ef951b88a063fce734dfe2a5af0f182f4527d",
+            "record_id": "example:2608.14798v1-span-342-363",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:f236d0fe7cbd55a3c396fcfc6341ad605aff1ee65b5191e9b1364761189239b1",
+            "record_id": "example:2608.14798v1-span-558-565",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:df8cb3095700ea50aedcb62ca473558fe00f197c5bd816e947ea62839db71e3d",
+            "record_id": "example:2608.14798v1-span-840-858",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [
+          {
+            "content_hash": "sha256:7a6964108a4ac4b950dff6af1543b4d68b9b4ef9a8bcd439b8cc1b4be0136757",
+            "record_id": "example:2608.14798v1-math-stabilizer-ancilla",
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "revision": 1
+          }
+        ],
+        "residual": "The proof at line 854 describes d_B ones, whereas the signed spectrum convention at lines 351-363 permits plus/minus ones; both source descriptions are retained without rewriting the proof.; No independent mathematical verification was performed.; Complete component atomization and independent source alignment remain open; no scientific review.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:415e706cd87b2244e4a011b26ee0f403e97f3b41e9526353fb7a5ba03ede0c83",
+            "record_id": "example:2608.14798v1-semantics-stabilizer-ancilla",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:90b226328ea45ec9d1e2b92bf2569251ae037b2fa341e1bb36b6a40c11b4727c",
+          "record_id": "example:2608.14798v1-span-298-299",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:5524ff09d2572965e7ab4230677ef951b88a063fce734dfe2a5af0f182f4527d",
+          "record_id": "example:2608.14798v1-span-342-363",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:f236d0fe7cbd55a3c396fcfc6341ad605aff1ee65b5191e9b1364761189239b1",
+          "record_id": "example:2608.14798v1-span-558-565",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:df8cb3095700ea50aedcb62ca473558fe00f197c5bd816e947ea62839db71e3d",
+          "record_id": "example:2608.14798v1-span-840-858",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:f1b6a6acb38627dc031f4ed828a232d3d2dae6f958b7def068fe34bb7399bf86",
+          "record_id": "example:2608.14798v1-claim-stabilizer-ancilla",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-map-stabilizer-ancilla",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:47428d3b767984dea7ac11afc88eebbae1f6e25fa96f16afaa1f4bc370781a8a"
+}

@@ -1,0 +1,192 @@
+{
+ "content_hash": "sha256:39ee28745eb0f2dccaf87d3dd088cc327d36fe2c89a0b4c684b26cae7d142b54",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+   "record_id": "span:opus5-2608.14798v1/h2-setup",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ecc50eb7a5c18b6a97fa89acbfaab67405bb09312f6666678f2d7f852999469a",
+   "record_id": "span:opus5-2608.14798v1/h2-findings",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:faebabe7376215ad023dfc646ff0b85f4e44cce810f4230b8458e80054d98c0e",
+   "record_id": "span:opus5-2608.14798v1/h2-631g",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "$M_{\\alpha=2}$ along the same curve, and the STO-3G versus 6-31G comparison",
+  "components": [
+   {
+    "component_id": "comp:peak",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:ecc50eb7a5c18b6a97fa89acbfaab67405bb09312f6666678f2d7f852999469a",
+      "record_id": "span:opus5-2608.14798v1/h2-findings",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Pronounced magic peak in the strongly correlated region in both bases."
+   },
+   {
+    "component_id": "comp:beta",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:ecc50eb7a5c18b6a97fa89acbfaab67405bb09312f6666678f2d7f852999469a",
+      "record_id": "span:opus5-2608.14798v1/h2-findings",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\beta$ acts as a resolution knob: small $\\beta$ coarse and smooth, large $\\beta$ sharp and tracking $M_2$."
+   },
+   {
+    "component_id": "comp:caveat",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+      "record_id": "span:opus5-2608.14798v1/h2-setup",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     },
+     {
+      "content_hash": "sha256:ecc50eb7a5c18b6a97fa89acbfaab67405bb09312f6666678f2d7f852999469a",
+      "record_id": "span:opus5-2608.14798v1/h2-findings",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Explicit refusal to draw physical conclusions; dissociation-limit decay is a minimal-basis artifact."
+   },
+   {
+    "component_id": "comp:reversal",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:faebabe7376215ad023dfc646ff0b85f4e44cce810f4230b8458e80054d98c0e",
+      "record_id": "span:opus5-2608.14798v1/h2-631g",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "In 6-31G the geometry ordering between $R=0.5$ and $R=6$ bohr reverses relative to STO-3G."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:basis",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+      "record_id": "span:opus5-2608.14798v1/h2-setup",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "results are basis-set and fermion-to-qubit-encoding dependent; neither basis approaches the complete-basis-set limit"
+   },
+   {
+    "condition_id": "cond:method",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+      "record_id": "span:opus5-2608.14798v1/h2-setup",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "ground states obtained by exact diagonalization (full CI within basis) of the Jordan-Wigner Hamiltonian"
+   },
+   {
+    "condition_id": "cond:betavals",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+      "record_id": "span:opus5-2608.14798v1/h2-setup",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\beta\\in\\{0.5,2,10,50,100\\}$ are shown"
+   }
+  ],
+  "modality": "OBSERVED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+    "record_id": "span:opus5-2608.14798v1/h2-setup",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ecc50eb7a5c18b6a97fa89acbfaab67405bb09312f6666678f2d7f852999469a",
+    "record_id": "span:opus5-2608.14798v1/h2-findings",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:faebabe7376215ad023dfc646ff0b85f4e44cce810f4230b8458e80054d98c0e",
+    "record_id": "span:opus5-2608.14798v1/h2-631g",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "For $\\mathrm{H}_2$ in the minimal STO-3G basis (four spin-orbitals, four qubits, Jordan-Wigner, exact diagonalization) the stabilizer work and $M_2$ are small near equilibrium, peak in the strongly correlated intermediate region and decrease toward dissociation; increasing $\\beta$ sharpens the features and at large $\\beta$ tracks the shape of $M_2$. The paper states explicitly that nonstabilizerness of a molecular ground state is not basis-independent, and the 6-31G repetition (eight qubits) shows the peak displaced, appreciable magic retained at large $R$, and the ordering between $R=0.5$ and $R=6$ bohr reversed.",
+  "system": "electronic ground state of $\\mathrm{H}_2$ along the dissociation coordinate, Jordan-Wigner qubit Hamiltonian, full CI within the chosen basis"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:f66f78e19e5c1f4da3eb8e0e682631429cef358f0d8f2540e9e19c50edeeb86e",
+    "record_id": "span:opus5-2608.14798v1/h2-setup",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ecc50eb7a5c18b6a97fa89acbfaab67405bb09312f6666678f2d7f852999469a",
+    "record_id": "span:opus5-2608.14798v1/h2-findings",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:faebabe7376215ad023dfc646ff0b85f4e44cce810f4230b8458e80054d98c0e",
+    "record_id": "span:opus5-2608.14798v1/h2-631g",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c29",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

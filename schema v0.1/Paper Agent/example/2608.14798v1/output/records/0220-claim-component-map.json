@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:58:13.901035Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:66280ee40deb921672d41242224b58003ea17038a1559f833723665785bf5450",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-free-channel-pauli",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:a900c7f983cb4f8142b0221963c7c75eafd5117e40062b527d176b9490b52962",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-free-channel-pauli",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:66280ee40deb921672d41242224b58003ea17038a1559f833723665785bf5450",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-free-channel-pauli",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:free-channel-pauli",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:1fcec2ef643c6fd9642a96965d0fadb7afa7e8b0b1249f37ae139f35e503a012",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-1189-1198",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:c98f0b9ff4cfdfe54dcb76285ff5e88969ed9639a415f9c913a642475d662978",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-1636-1658",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The work section separates the maximal stabilizer-preserving channel class from deterministic pure-state stabilizer protocols; this discussion passes from output constraints to an exact protocol characterization without establishing the equivalence in the read text.; The three matrix forms do not specify closure under composition, ancilla preparation, measurement or conditional corrections, although the earlier protocol description includes preparations and measurements.; The discarding-matrix assertion says exactly one 1 per column without specifying subsystem indexing or the treatment of all other entries; it is retained as printed.; The explicit output constraints can be isolated as mathematical expressions, but the claimed complete channel classification needs further semantic specification; math_extractable=false applies to this combined classification candidate.; No PTM characterization or approximate-hardware assertion has been scientifically verified.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:a900c7f983cb4f8142b0221963c7c75eafd5117e40062b527d176b9490b52962",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-free-channel-pauli",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:1fcec2ef643c6fd9642a96965d0fadb7afa7e8b0b1249f37ae139f35e503a012",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-1189-1198",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:c98f0b9ff4cfdfe54dcb76285ff5e88969ed9639a415f9c913a642475d662978",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-1636-1658",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:66280ee40deb921672d41242224b58003ea17038a1559f833723665785bf5450",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-claim-free-channel-pauli",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:b5581dd792f84f09bcb4dd065c3815bac913ba987e5c207c9af27e9ca9c60037",
+    "record_id": "example:2608.14798v1-dcd840ebd74b-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:66280ee40deb921672d41242224b58003ea17038a1559f833723665785bf5450",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-claim-free-channel-pauli",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:a900c7f983cb4f8142b0221963c7c75eafd5117e40062b527d176b9490b52962",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-free-channel-pauli",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:1fcec2ef643c6fd9642a96965d0fadb7afa7e8b0b1249f37ae139f35e503a012",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-1189-1198",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:c98f0b9ff4cfdfe54dcb76285ff5e88969ed9639a415f9c913a642475d662978",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-1636-1658",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-dcd840ebd74b-map-free-channel-pauli",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:36615ad007b6e7328cfd7b57a24b19529dcd2d529163f983e68521780eb28e24"
+}

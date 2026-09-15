@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:2975ea3a8f4f1f7c3d3f6d4f62bc5803f0a7ef0002c68280d49fa2a25eb5a174",
+      "record_id": "example:2608.14798v1-db635458e365-claim-bipartite-decomposition",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:da1088329bcf349509dc80d97717e38dcdae8209bace72c073ad2a5a2bebf665",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-bipartite-decomposition",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:2975ea3a8f4f1f7c3d3f6d4f62bc5803f0a7ef0002c68280d49fa2a25eb5a174",
+      "record_id": "example:2608.14798v1-db635458e365-claim-bipartite-decomposition",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:bipartite-decomposition",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:f5918a31bbc1a59ed73e4e1a05509daac7a61e53f820479ab3746ae8db325729",
+            "record_id": "example:2608.14798v1-db635458e365-span-298-299",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0543b8783fe8795dbe3495fe14d093d32ad15568d5bce0609ae0d4eca1c62917",
+            "record_id": "example:2608.14798v1-db635458e365-span-811-838",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "Line 299 defines |A| as Hilbert-space dimension, whereas the exponents in line 826 leave a qubit-count versus dimension ambiguity; the formula is retained literally.; The read text does not supply a precise definition of Spec_R, including whether zero entries are retained.; The sum treats an element of a Cartesian product as a scalar x; the intended multiplication and multiplicities are not explicitly specified there.; Line 814 writes a bare inequality without conditions for possible equality.; The statement concerns pure product states; it does not supply a formula for general separable mixed states.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:da1088329bcf349509dc80d97717e38dcdae8209bace72c073ad2a5a2bebf665",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-bipartite-decomposition",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:f5918a31bbc1a59ed73e4e1a05509daac7a61e53f820479ab3746ae8db325729",
+          "record_id": "example:2608.14798v1-db635458e365-span-298-299",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:0543b8783fe8795dbe3495fe14d093d32ad15568d5bce0609ae0d4eca1c62917",
+          "record_id": "example:2608.14798v1-db635458e365-span-811-838",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:2975ea3a8f4f1f7c3d3f6d4f62bc5803f0a7ef0002c68280d49fa2a25eb5a174",
+          "record_id": "example:2608.14798v1-db635458e365-claim-bipartite-decomposition",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:2975ea3a8f4f1f7c3d3f6d4f62bc5803f0a7ef0002c68280d49fa2a25eb5a174",
+        "record_id": "example:2608.14798v1-db635458e365-claim-bipartite-decomposition",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:da1088329bcf349509dc80d97717e38dcdae8209bace72c073ad2a5a2bebf665",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-bipartite-decomposition",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:f5918a31bbc1a59ed73e4e1a05509daac7a61e53f820479ab3746ae8db325729",
+        "record_id": "example:2608.14798v1-db635458e365-span-298-299",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:0543b8783fe8795dbe3495fe14d093d32ad15568d5bce0609ae0d4eca1c62917",
+        "record_id": "example:2608.14798v1-db635458e365-span-811-838",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-bipartite-decomposition",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:7e505677941759ee2ea762530eeee0d4762ede7a627a33bfa204852c8c4dbb3f"
+}

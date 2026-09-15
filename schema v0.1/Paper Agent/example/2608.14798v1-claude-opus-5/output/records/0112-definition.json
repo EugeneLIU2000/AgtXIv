@@ -1,0 +1,62 @@
+{
+ "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+   "record_id": "span:opus5-2608.14798v1/free-ops",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "name": "Free operations F and F_all",
+  "objects": [
+   {
+    "convention": "purity-preserving restriction; the broader SPO class F_all is defined but not the class used for the pure-state monotone statements",
+    "definition_refs": [],
+    "object_type": "set of deterministic pure-state stabilizer protocols",
+    "symbol": "\\mathcal{F}",
+    "unit": ""
+   }
+  ],
+  "origin": "SOURCE",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+    "record_id": "span:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "$\\mathcal{F}_{\\rm all}(A\\to B)$ is the set of channels $\\mathcal{O}$ with $\\mathcal{Z}_\\beta(\\mathcal{O}(\\phi_A))=\\mathcal{Z}_\\beta({\\rm STAB}_B)$ for all $\\phi_A\\in{\\rm STAB}_A$; the paper states this coincides with the stabilizer-preserving operations (SPO). Throughout the pure-state development, the operative class is $\\mathcal{F}$: deterministic pure-state stabilizer protocols, namely Clifford unitaries, stabilizer-state preparation, computational-basis measurement, and partial trace, provided the resulting state stays pure."
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+    "record_id": "span:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "definition:opus5-2608.14798v1/free-ops",
+ "record_type": "agtxiv.v3.definition/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

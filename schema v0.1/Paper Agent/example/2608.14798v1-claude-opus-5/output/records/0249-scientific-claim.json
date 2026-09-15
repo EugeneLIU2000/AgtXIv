@@ -1,0 +1,192 @@
+{
+ "content_hash": "sha256:7cd993a32f591f185597f52ce99eb77940e3c45694af264a43f1467d6b147280",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+   "record_id": "span:opus5-2608.14798v1/mixed-spf",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:e000d59fa08773849c6b1558575e838f6d59fcea75f1f4f5e96b742b1f614604",
+   "record_id": "span:opus5-2608.14798v1/channel-spf",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:57e05523c1f9c33014aa3e2f826a525d28f5cbbbe9dffa4c8f10cca97483b2cf",
+   "record_id": "span:opus5-2608.14798v1/open-problems",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the pure-state framework of Secs. III-VI",
+  "components": [
+   {
+    "component_id": "comp:mixed",
+    "role": "DEFINITION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+      "record_id": "span:opus5-2608.14798v1/mixed-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{Z}_\\beta(\\rho)=\\sup\\sum_ip_i\\mathcal{Z}_\\beta(\\phi_i)$."
+   },
+   {
+    "component_id": "comp:faithful",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+      "record_id": "span:opus5-2608.14798v1/mixed-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The roof extension attains the stabilizer value iff $\\rho$ decomposes into pure stabilizer states, i.e. iff $\\rho$ is free."
+   },
+   {
+    "component_id": "comp:channel",
+    "role": "DEFINITION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:e000d59fa08773849c6b1558575e838f6d59fcea75f1f4f5e96b742b1f614604",
+      "record_id": "span:opus5-2608.14798v1/channel-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{Z}_\\beta(\\mathcal{N})=\\mathcal{Z}_\\beta(\\tilde J^{\\mathcal{N}}_{AB})$."
+   },
+   {
+    "component_id": "comp:open",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:e000d59fa08773849c6b1558575e838f6d59fcea75f1f4f5e96b742b1f614604",
+      "record_id": "span:opus5-2608.14798v1/channel-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     },
+     {
+      "content_hash": "sha256:57e05523c1f9c33014aa3e2f826a525d28f5cbbbe9dffa4c8f10cca97483b2cf",
+      "record_id": "span:opus5-2608.14798v1/open-problems",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Monotonicity of the extended stabilizer work is left for future work."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:sup",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+      "record_id": "span:opus5-2608.14798v1/mixed-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the extension uses a SUPREMUM, justified by the SPF being maximized by stabilizer states"
+   },
+   {
+    "condition_id": "cond:choi",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+      "record_id": "span:opus5-2608.14798v1/mixed-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the channel definition uses the NORMALIZED Choi matrix with $|A|=|A'|$"
+   },
+   {
+    "condition_id": "cond:open",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+      "record_id": "span:opus5-2608.14798v1/mixed-spf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "monotonicity for both extensions is explicitly left open"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+    "record_id": "span:opus5-2608.14798v1/mixed-spf",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:e000d59fa08773849c6b1558575e838f6d59fcea75f1f4f5e96b742b1f614604",
+    "record_id": "span:opus5-2608.14798v1/channel-spf",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:57e05523c1f9c33014aa3e2f826a525d28f5cbbbe9dffa4c8f10cca97483b2cf",
+    "record_id": "span:opus5-2608.14798v1/open-problems",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "The SPF is extended to mixed states by a convex-roof supremum over pure-state decompositions, argued to preserve faithfulness because the SPF is maximized on stabilizer states, and to channels through the normalized Choi matrix. The paper states explicitly that establishing monotonicity of the corresponding stabilizer work for these extensions is left for future work, and lists it as the first of three open problems.",
+  "system": "mixed states $\\rho\\in\\mathcal{D}(\\mathcal{H}_A)$ and CPTP maps $\\mathcal{N}\\in{\\rm CPTP}(A\\to B)$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:666522d835eda394b90616f336fac2efa7601532e082e9e2e965e83af4399607",
+    "record_id": "span:opus5-2608.14798v1/mixed-spf",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:e000d59fa08773849c6b1558575e838f6d59fcea75f1f4f5e96b742b1f614604",
+    "record_id": "span:opus5-2608.14798v1/channel-spf",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:57e05523c1f9c33014aa3e2f826a525d28f5cbbbe9dffa4c8f10cca97483b2cf",
+    "record_id": "span:opus5-2608.14798v1/open-problems",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c31",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

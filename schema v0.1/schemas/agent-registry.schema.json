@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/orchestration/0.1.0/agent-registry.schema.json",
+  "title": "Allowed work templates and operation capabilities",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "agents"],
+  "properties": {
+    "contract_version": {"const": "0.1.0"},
+    "agents": {
+      "type": "array", "minItems": 9, "maxItems": 9,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["agent_id", "title", "execution_kind", "operations"],
+        "properties": {
+          "agent_id": {"$ref": "common.schema.json#/$defs/Agent"},
+          "title": {"$ref": "common.schema.json#/$defs/Text"},
+          "execution_kind": {"enum": ["MODEL", "PROGRAM", "HYBRID"]},
+          "operations": {
+            "type": "array", "minItems": 1, "maxItems": 32,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["operation", "input_record_types", "output_record_types", "capabilities", "principles"],
+              "properties": {
+                "operation": {"$ref": "common.schema.json#/$defs/Id"},
+                "input_record_types": {"$ref": "common.schema.json#/$defs/RecordTypes"},
+                "output_record_types": {"$ref": "common.schema.json#/$defs/RecordTypes"},
+                "capabilities": {"$ref": "common.schema.json#/$defs/Strings"},
+                "principles": {"$ref": "common.schema.json#/$defs/Strings", "minItems": 1}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

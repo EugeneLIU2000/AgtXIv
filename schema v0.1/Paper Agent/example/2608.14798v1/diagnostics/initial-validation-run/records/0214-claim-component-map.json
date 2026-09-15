@@ -1,0 +1,121 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:8912b79defcca487946c308747891a898e7787b391c3a424eed4ab664db19b75",
+      "record_id": "example:2608.14798v1-claim-mixed-channel-extension",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:93139861e49c5785c355fdbdf11cbae27cd2ad9784b711b1078052b7bf061469",
+      "record_id": "example:2608.14798v1-semantics-mixed-channel-extension",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:8912b79defcca487946c308747891a898e7787b391c3a424eed4ab664db19b75",
+      "record_id": "example:2608.14798v1-claim-mixed-channel-extension",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:mixed-channel-extension",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:1315022044c477625514458297f967f5b46a5754992247981f53eecaba952cce",
+            "record_id": "example:2608.14798v1-span-1187-1192",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:881396a153eba0763da9fcb8e5a105091b5d77c9cc2ca631d1bb55291daacc55",
+            "record_id": "example:2608.14798v1-span-1614-1634",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:8cc7a0f40f20d92f1495e51f3b755f5b6bfb33ebaf5be3c9558504e88891431b",
+            "record_id": "example:2608.14798v1-span-1669-1669",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The authors call the supremum construction a convex-roof extension; that terminology is retained without replacing the supremum by an infimum.; The all-real-beta faithfulness statement is not qualified at beta=0, while the read small-beta partition-function expression has a state-independent constant term.; An explicit mixed-state or channel core-work formula and its reference-system convention are not provided in these extension definitions.; The equivalence with stabilizer-preserving operations invokes an earlier uniqueness result that was not read; the cited operation classes were not externally checked.; These definitions do not establish monotonicity under mixed-state free operations or channel superoperations, which the authors expressly defer.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:93139861e49c5785c355fdbdf11cbae27cd2ad9784b711b1078052b7bf061469",
+            "record_id": "example:2608.14798v1-semantics-mixed-channel-extension",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:1315022044c477625514458297f967f5b46a5754992247981f53eecaba952cce",
+          "record_id": "example:2608.14798v1-span-1187-1192",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:881396a153eba0763da9fcb8e5a105091b5d77c9cc2ca631d1bb55291daacc55",
+          "record_id": "example:2608.14798v1-span-1614-1634",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:8cc7a0f40f20d92f1495e51f3b755f5b6bfb33ebaf5be3c9558504e88891431b",
+          "record_id": "example:2608.14798v1-span-1669-1669",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:8912b79defcca487946c308747891a898e7787b391c3a424eed4ab664db19b75",
+          "record_id": "example:2608.14798v1-claim-mixed-channel-extension",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-map-mixed-channel-extension",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:62201a0b51bcbafaa0675b308293ffd2161a802444d5007882c1083f4231d075"
+}

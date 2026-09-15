@@ -1,0 +1,69 @@
+{
+ "content_hash": "sha256:02305e7d9e63f24d19bd2946de694aa90cfe2c9e35460401dab3fdb1b958949a",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:2788ba66621fee77f01194dc7da56936f9fab0f510ec5f9b428999d7298a0016",
+   "record_id": "span:opus5-2608.14798v1/estimator-conc",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "name": "Truncated SPF Z^(k)_beta",
+  "objects": [
+   {
+    "convention": "$\\mathbf{m}_k=(d_n^{-1}\\sum x^2,\\dots,d_n^{-1}\\sum x^{2k})$",
+    "definition_refs": [],
+    "object_type": "vector of even normalized Pauli-spectrum moments",
+    "symbol": "\\mathbf{m}_k(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$\\Delta(\\beta,k)=d_n e^{-\\beta}(\\cosh\\beta-\\sum_{l=0}^{k}\\beta^{2l}/(2l)!)$; carries an explicit factor $d_n=2^n$",
+    "definition_refs": [],
+    "object_type": "non-negative real truncation floor",
+    "symbol": "\\Delta(\\beta,k)",
+    "unit": ""
+   }
+  ],
+  "origin": "SOURCE",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:2788ba66621fee77f01194dc7da56936f9fab0f510ec5f9b428999d7298a0016",
+    "record_id": "span:opus5-2608.14798v1/estimator-conc",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "$\\mathcal{Z}^{(k)}_\\beta(\\psi)=e^{-\\beta}\\sum_{x\\in{\\rm Spec}(\\psi)}\\sum_{l=0}^{k}\\frac{(\\beta x)^{2l}}{(2l)!}$, the $2k$-th polynomial truncation of the SPF in the Pauli moments, reconstructed as $e^{-\\beta}(d_n^2+d_n\\,\\mathbf{c}^{(k)}(\\beta)\\cdot\\mathbf{m}_k(\\psi))$."
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:2788ba66621fee77f01194dc7da56936f9fab0f510ec5f9b428999d7298a0016",
+    "record_id": "span:opus5-2608.14798v1/estimator-conc",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "definition:opus5-2608.14798v1/truncated-spf",
+ "record_type": "agtxiv.v3.definition/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

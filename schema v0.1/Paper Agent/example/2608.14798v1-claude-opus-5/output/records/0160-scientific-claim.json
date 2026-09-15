@@ -1,0 +1,124 @@
+{
+ "content_hash": "sha256:a673f5c9f4117b0a350278da87a8bbbedc78e070b4fad991940a5373db48b0ff",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+   "record_id": "span:opus5-2608.14798v1/bounds-indep",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the stabilizer value $\\mathcal{Z}_\\beta({\\rm STAB}_n)$",
+  "components": [
+   {
+    "component_id": "comp:upper",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+      "record_id": "span:opus5-2608.14798v1/bounds-indep",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Upper bound is the stabilizer SPF, so stabilizer states maximize the SPF."
+   },
+   {
+    "component_id": "comp:lower",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+      "record_id": "span:opus5-2608.14798v1/bounds-indep",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Lower bound $e^{-\\beta}[\\cosh\\beta+(d_n^2-1)\\cosh(\\beta/\\sqrt{d+1})]$."
+   },
+   {
+    "component_id": "comp:extremal",
+    "role": "MODEL",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+      "record_id": "span:opus5-2608.14798v1/bounds-indep",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The lower bound is attained by a hypothetical spectrum uniform over all non-identity Paulis."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:beta",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+      "record_id": "span:opus5-2608.14798v1/bounds-indep",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\beta\\in\\mathbb{R}$"
+   },
+   {
+    "condition_id": "cond:pure",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+      "record_id": "span:opus5-2608.14798v1/bounds-indep",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\ket{\\psi}$ pure"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+    "record_id": "span:opus5-2608.14798v1/bounds-indep",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Theorem (SPF state-independent bounds): for $\\beta\\in\\mathbb{R}$ and any $n$-qubit pure state, $e^{-\\beta}[(d_n^2-d_n)+d_n\\cosh\\beta]\\geq\\mathcal{Z}_\\beta(\\psi)\\geq e^{-\\beta}[\\cosh\\beta+(d_n^2-1)\\cosh(\\beta/\\sqrt{d+1})]$, the upper bound being the stabilizer value and the lower bound obtained from a spectrum uniform over all non-trivial Paulis.",
+  "system": "$n$-qubit pure states, $\\mathcal{H}_n\\cong(\\mathbb{C}^2)^{\\otimes n}$, $d_n=2^n$, finite $n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:782ca8e93ca457dd4d8f0fb145b2f9d4848e6d380092128028cee28b76268146",
+    "record_id": "span:opus5-2608.14798v1/bounds-indep",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c12",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

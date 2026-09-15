@@ -1,0 +1,113 @@
+{
+ "run": "opus5-2608.14798v1",
+ "scope": "CONTRACT_AND_INTERFACE_CHECKS_ONLY",
+ "full_record_set": {
+  "records": 273,
+  "valid": false,
+  "issue_codes": [
+   "SELF_REVIEW"
+  ],
+  "issue_count": 36
+ },
+ "diagnostic_subset_without_correspondence_maps": {
+  "records": 237,
+  "valid": true,
+  "issue_codes": [],
+  "meaning": "Everything except the producer-authored correspondence maps closes: every exact reference resolves, every source span re-hashes against the real paper bytes, and every record shape is accepted. This subset is a diagnostic, not a Paper Agent deliverable, because AGENT.md S3 requires a correspondence map per obligation."
+ },
+ "plan_compatibility": {
+  "question": "Does a plan carrying exactly the 12 fields AGENT.md section 3 finalizes validate against the pinned v0.0 agentization-plan schema?",
+  "answer": "No.",
+  "validator": "agtxiv_v3.contracts.SchemaBundle.validate_record over schema v0.0",
+  "issues": [
+   "SCHEMA /payload: 'max_seconds' is a required property",
+   "SCHEMA /payload: 'max_cost_units' is a required property",
+   "SCHEMA /: 'created_at' is a required property",
+   "SCHEMA /: 'data_class' is a required property",
+   "SCHEMA /: 'content_hash' is a required property",
+   "RECORD_HASH_MISMATCH /content_hash: Record bytes do not match the exact content hash"
+  ],
+  "note": "AGENT.md defers created_at to an event log, data_class to a producer tag, and drops max_seconds/max_cost_units as redundant with max_steps. The v0.0 schema requires all four. The plan actually used in this run therefore carries declared placeholders in the two budget fields, stated as such in its trigger_note."
+ },
+ "review_gate_probes": [
+  {
+   "probe": "claim-component-map review boundary",
+   "agent_md_requirement": "S3: at least one scientific-claim per obligation, each with a claim-component-map.",
+   "schema_fact": "claim-component-map.payload.review is required and ReviewContext requires at least one reviewed_ref and one producer_principal_id.",
+   "same_principal_as_claim": {
+    "issue_codes": [
+     "SELF_REVIEW"
+    ],
+    "issues": [
+     "SELF_REVIEW/payload: A producer cannot independently review its own content"
+    ]
+   },
+   "distinct_principal": {
+    "issue_codes": [],
+    "issues": []
+   },
+   "conclusion": "A correspondence map is rejected as SELF_REVIEW whenever its producer is the principal that produced the claim, and accepted as soon as the principal differs. There is no third option: the review block cannot be omitted or nulled. A Paper Agent run carried out by a single principal therefore cannot deliver a valid record set, and this run did not manufacture a second principal to avoid that."
+  },
+  {
+   "probe": "scope-decision and the reachability of frozen-scope",
+   "agent_md_requirement": "S2: the discoverer proposes the obligation count; an independent reviewer signs it; the count is locked as frozen-scope.",
+   "schema_fact": "frozen-scope requires an accepting scope-decision; a scope-decision carries a required review block; a positive outcome with independence UNESTABLISHED is rejected.",
+   "variants": {
+    "same-principal-accept-unestablished": {
+     "issue_codes": [
+      "INDEPENDENCE_UNESTABLISHED",
+      "SELF_REVIEW"
+     ],
+     "issues": [
+      "SELF_REVIEW/payload: A producer cannot independently review its own content",
+      "INDEPENDENCE_UNESTABLISHED/payload: Positive assessed authority needs an established review boundary"
+     ]
+    },
+    "same-principal-block-unestablished": {
+     "issue_codes": [
+      "SELF_REVIEW"
+     ],
+     "issues": [
+      "SELF_REVIEW/payload: A producer cannot independently review its own content"
+     ]
+    },
+    "distinct-principal-accept-unestablished": {
+     "issue_codes": [
+      "INDEPENDENCE_UNESTABLISHED"
+     ],
+     "issues": [
+      "INDEPENDENCE_UNESTABLISHED/payload: Positive assessed authority needs an established review boundary"
+     ]
+    },
+    "distinct-principal-accept-role-separated": {
+     "issue_codes": [],
+     "issues": []
+    }
+   },
+   "conclusion": "An ACCEPT is reachable only from a principal other than the discoverer AND with an independence stronger than UNESTABLISHED. This run had neither, so it produced no scope-decision and no frozen-scope, and the obligation denominator stays proposed."
+  }
+ ],
+ "handoff": {
+  "validator": "schema v0.1/validate.py Contracts.task()",
+  "results": {
+   "dependency-search": {
+    "accepted": true,
+    "error": null
+   },
+   "proof-expand": {
+    "accepted": false,
+    "error": "Missing required operation input: frozen-scope"
+   }
+  },
+  "same_hash_rule": "AGENT.md section 6 requires the to-proof and to-dependency Tasks to reference the identical claim revision, math-target revision and frozen-scope hash. There is no frozen-scope hash in this run, so the pair cannot be formed even though one half of it validates on its own.",
+  "dispatched": false,
+  "note": "Both Task documents are drafts. Neither was scheduled, and no Result receipt exists."
+ },
+ "not_established": [
+  "No claim of the paper was checked for truth.",
+  "No mathematical target was proved, disproved or formalized.",
+  "No numerical result of the paper was reproduced; nothing was executed against the physics.",
+  "No cited work was retrieved, so every attribution is to the citing text only.",
+  "No identity was authenticated; identity_assurance is DECLARED on every record."
+ ]
+}

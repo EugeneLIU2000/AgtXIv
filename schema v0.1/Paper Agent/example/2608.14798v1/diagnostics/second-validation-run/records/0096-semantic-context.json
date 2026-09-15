@@ -1,0 +1,124 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:d0694c6df49e71d706fcba3187a2c97ebf891de3710c7a4b18037e32da3dcf3c",
+      "record_id": "example:2608.14798v1-db635458e365-claim-core-supermultiplicativity",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:fdb777f1f50b9a50208e511a6091d84f48911c6b60b276113bc7fe090d4c12ed",
+      "record_id": "example:2608.14798v1-db635458e365-span-558-565",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:54e88680e3e181607ee93898c2d47f80aec19da325c15fb74b037ee2a5947c40",
+      "record_id": "example:2608.14798v1-db635458e365-span-860-880",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "EXACT; The source asserts an exact inequality without an error term.",
+    "assumptions": [
+      {
+        "condition_id": "condition:core-supermultiplicativity-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:fdb777f1f50b9a50208e511a6091d84f48911c6b60b276113bc7fe090d4c12ed",
+            "record_id": "example:2608.14798v1-db635458e365-span-558-565",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:54e88680e3e181607ee93898c2d47f80aec19da325c15fb74b037ee2a5947c40",
+            "record_id": "example:2608.14798v1-db635458e365-span-860-880",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi_AB = psi_A tensor phi_B is a bipartite n-qubit pure product state."
+      },
+      {
+        "condition_id": "condition:core-supermultiplicativity-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:fdb777f1f50b9a50208e511a6091d84f48911c6b60b276113bc7fe090d4c12ed",
+            "record_id": "example:2608.14798v1-db635458e365-span-558-565",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:54e88680e3e181607ee93898c2d47f80aec19da325c15fb74b037ee2a5947c40",
+            "record_id": "example:2608.14798v1-db635458e365-span-860-880",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Beta is real under the preceding definition; the lemma states no exclusion of beta=0."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:d0694c6df49e71d706fcba3187a2c97ebf891de3710c7a4b18037e32da3dcf3c",
+      "record_id": "example:2608.14798v1-db635458e365-claim-core-supermultiplicativity",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "The source asserts an exact inequality without an error term.",
+    "limitations": [
+      "The displayed denominator vanishes at beta=0, and the source supplies neither an exclusion nor a limiting convention; no repaired domain is imposed here.",
+      "The supplementary Chebyshev lemma referenced at line 875 was not read; body-versus-appendix consistency is unassessed.",
+      "The expression is identifiable as a mathematical target, but its domain and proof remain unresolved.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The authors assert a normalized supermultiplicativity inequality for the core stabilizer partition function of any bipartite pure product state. This is an unverified author-claim candidate.",
+        "target_value": "The authors state \\(\\mathcal Z_\\beta^c(\\psi_A\\otimes\\phi_B)\\geq\\frac{\\mathcal Z_\\beta^c(\\psi_A)\\mathcal Z_\\beta^c(\\phi_B)}{e^{-\\beta}(\\cosh\\beta-1)}\\).",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:fdb777f1f50b9a50208e511a6091d84f48911c6b60b276113bc7fe090d4c12ed",
+            "record_id": "example:2608.14798v1-db635458e365-span-558-565",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:54e88680e3e181607ee93898c2d47f80aec19da325c15fb74b037ee2a5947c40",
+            "record_id": "example:2608.14798v1-db635458e365-span-860-880",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "Core stabilizer partition functions of the joint state and subsystems; Normalization e^(-beta)(cosh(beta)-1); Even Pauli-spectrum moments"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-semantics-core-supermultiplicativity",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:37d338f2ae64f5f6f014cf7400796354fb01c6812e4ee1c3d644b42576245e81"
+}

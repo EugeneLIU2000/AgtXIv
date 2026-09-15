@@ -1,0 +1,102 @@
+{
+  "data_class": "SYNTHETIC",
+  "description": "Teaching-only formalization fragment. Business references are unresolved placeholders, not a real paper run or scientific evidence.",
+  "tasks": [
+    {
+      "contract_version": "0.1.0",
+      "task_id": "fixture:generate",
+      "agent": "formalization",
+      "operation": "formalization.generate",
+      "brief": "Produce a formalization attempt for the exact packet; do not claim it was independently checked.",
+      "target_refs": [{"record_type": "agtxiv.v3.formalization-packet/0.0.0", "record_id": "fixture:packet", "revision": 1, "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"}],
+      "input_artifacts": [],
+      "input_refs": [
+        {"record_type": "agtxiv.v3.formalization-packet/0.0.0", "record_id": "fixture:packet", "revision": 1, "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"}
+      ],
+      "depends_on": [],
+      "expected_record_types": ["formalization-attempt"],
+      "limits": {"max_attempts": 2, "max_seconds": 600, "max_cost_units": 100, "no_progress_limit": 2},
+      "acceptance": "DELIVERY",
+      "exclusions": [],
+      "capabilities": []
+    },
+    {
+      "contract_version": "0.1.0",
+      "task_id": "fixture:check",
+      "agent": "utility",
+      "operation": "utility.formal-check",
+      "brief": "Independently check the exact attempt under the declared packet and environment; report missing execution honestly.",
+      "target_refs": [{"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"}],
+      "input_artifacts": [],
+      "input_refs": [
+        {"record_type": "agtxiv.v3.formalization-packet/0.0.0", "record_id": "fixture:packet", "revision": 1, "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"},
+        {"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"},
+        {"record_type": "agtxiv.v3.formal-environment/0.0.0", "record_id": "fixture:environment", "revision": 1, "content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"},
+        {"record_type": "agtxiv.v3.authority-policy/0.0.0", "record_id": "fixture:policy", "revision": 1, "content_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444"},
+        {"record_type": "agtxiv.v3.processing-profile/0.0.0", "record_id": "fixture:profile", "revision": 1, "content_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555"}
+      ],
+      "depends_on": [{"task_id": "fixture:generate", "gate": "DELIVERY"}],
+      "expected_record_types": ["formal-check"],
+      "limits": {"max_attempts": 2, "max_seconds": 600, "max_cost_units": 10, "no_progress_limit": 1},
+      "acceptance": "EVIDENCE",
+      "exclusions": ["fixture:formalizer"],
+      "capabilities": []
+    },
+    {
+      "contract_version": "0.1.0",
+      "task_id": "fixture:explain",
+      "agent": "reader",
+      "operation": "reader.explain",
+      "brief": "Explain what generation establishes and which checks remain; the checker environment is unavailable in this synthetic scenario.",
+      "target_refs": [{"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"}],
+      "input_artifacts": [],
+      "input_refs": [
+        {"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"}
+      ],
+      "depends_on": [{"task_id": "fixture:generate", "gate": "DELIVERY"}],
+      "expected_record_types": [],
+      "limits": {"max_attempts": 1, "max_seconds": 60, "max_cost_units": 5, "no_progress_limit": 1},
+      "acceptance": "DELIVERY",
+      "exclusions": ["fixture:formalizer"],
+      "capabilities": []
+    }
+  ],
+  "results": [
+    {
+      "contract_version": "0.1.0", "task_id": "fixture:generate", "attempt_id": "fixture:generate-1", "outcome": "DELIVERED",
+      "output_refs": [{"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"}],
+      "artifacts": [], "open_items": ["Independent execution and source alignment have not been performed."], "follow_up_requests": [],
+      "execution": {
+        "principal_id": "fixture:formalizer", "execution_id": "fixture:run-1", "visible_artifact_refs": [],
+        "visible_input_refs": [{"record_type": "agtxiv.v3.formalization-packet/0.0.0", "record_id": "fixture:packet", "revision": 1, "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"}],
+        "started_at": "2026-09-12T09:00:00Z", "finished_at": "2026-09-12T09:01:00Z", "cost_units": 4
+      }
+    },
+    {
+      "contract_version": "0.1.0", "task_id": "fixture:check", "attempt_id": "fixture:check-1", "outcome": "BLOCKED",
+      "output_refs": [], "artifacts": [], "open_items": ["The independent checking environment is unavailable; no kernel result exists."], "follow_up_requests": [],
+      "execution": {
+        "principal_id": "fixture:checker", "execution_id": "fixture:run-2", "visible_artifact_refs": [],
+        "visible_input_refs": [
+          {"record_type": "agtxiv.v3.formalization-packet/0.0.0", "record_id": "fixture:packet", "revision": 1, "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"},
+          {"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"},
+          {"record_type": "agtxiv.v3.formal-environment/0.0.0", "record_id": "fixture:environment", "revision": 1, "content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"},
+          {"record_type": "agtxiv.v3.authority-policy/0.0.0", "record_id": "fixture:policy", "revision": 1, "content_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444"},
+          {"record_type": "agtxiv.v3.processing-profile/0.0.0", "record_id": "fixture:profile", "revision": 1, "content_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555"}
+        ],
+        "started_at": "2026-09-12T09:01:00Z", "finished_at": "2026-09-12T09:01:01Z", "cost_units": 0
+      }
+    },
+    {
+      "contract_version": "0.1.0", "task_id": "fixture:explain", "attempt_id": "fixture:explain-1", "outcome": "DELIVERED",
+      "output_refs": [],
+      "artifacts": [{"artifact_id": "fixture:reader-note", "sha256": "sha256:11a5938c2e8addecae1fa97ec938db008a11c6e1fa12e1d908731bc3a3f46538", "byte_size": 195, "media_type": "text/markdown"}],
+      "open_items": [], "follow_up_requests": [],
+      "execution": {
+        "principal_id": "fixture:reader", "execution_id": "fixture:run-3", "visible_artifact_refs": [],
+        "visible_input_refs": [{"record_type": "agtxiv.v3.formalization-attempt/0.0.0", "record_id": "fixture:formal-attempt", "revision": 1, "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"}],
+        "started_at": "2026-09-12T09:02:00Z", "finished_at": "2026-09-12T09:02:10Z", "cost_units": 1
+      }
+    }
+  ]
+}

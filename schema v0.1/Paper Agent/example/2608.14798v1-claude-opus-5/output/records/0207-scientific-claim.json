@@ -1,0 +1,155 @@
+{
+ "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+   "record_id": "span:opus5-2608.14798v1/free-ops",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:74dfb8444cd1b70f4b57b573eb05fdad3e46cda7602d39699ef4ff53ab7a65a9",
+   "record_id": "span:opus5-2608.14798v1/ptm",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "stabilizer operations and completely stabilizer-preserving operations (CSPO)",
+  "components": [
+   {
+    "component_id": "comp:fall",
+    "role": "DEFINITION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+      "record_id": "span:opus5-2608.14798v1/free-ops",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{F}_{\\rm all}$ = channels with $\\mathcal{Z}_\\beta(\\mathcal{O}(\\phi_A))=\\mathcal{Z}_\\beta({\\rm STAB}_B)$ for all stabilizer inputs, identified with SPO."
+   },
+   {
+    "component_id": "comp:f",
+    "role": "DEFINITION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+      "record_id": "span:opus5-2608.14798v1/free-ops",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{F}$ = deterministic pure-state stabilizer protocols."
+   },
+   {
+    "component_id": "comp:ptm",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:74dfb8444cd1b70f4b57b573eb05fdad3e46cda7602d39699ef4ff53ab7a65a9",
+      "record_id": "span:opus5-2608.14798v1/ptm",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "PTM characterization: signed permutation (Clifford), discard-and-prepare, or one 1 per column (subsystem discard)."
+   },
+   {
+    "component_id": "comp:relax",
+    "role": "MODEL",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:74dfb8444cd1b70f4b57b573eb05fdad3e46cda7602d39699ef4ff53ab7a65a9",
+      "record_id": "span:opus5-2608.14798v1/ptm",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Approximate ($\\epsilon$-close) PTM conditions are proposed as a route to bounding magic injected by imperfect Clifford hardware, tied to gate-set tomography."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:pure",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+      "record_id": "span:opus5-2608.14798v1/free-ops",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the monotone statements of Sec. V are restricted to pure-state transformations"
+   },
+   {
+    "condition_id": "cond:det",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+      "record_id": "span:opus5-2608.14798v1/free-ops",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\mathcal{F}$ consists of DETERMINISTIC protocols whose output remains pure"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+    "record_id": "span:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:74dfb8444cd1b70f4b57b573eb05fdad3e46cda7602d39699ef4ff53ab7a65a9",
+    "record_id": "span:opus5-2608.14798v1/ptm",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Free states are pure stabilizer states (convex hull for the mixed case). $\\mathcal{F}_{\\rm all}(A\\to B)$ is defined as the channels preserving the stabilizer SPF value, which the paper equates with stabilizer-preserving operations (SPO) and notes contains stabilizer operations and CSPO. The pure-state development uses the smaller class $\\mathcal{F}$ of deterministic pure-state stabilizer protocols: Clifford unitaries, stabilizer-state preparation, computational-basis measurement and partial trace, provided the output stays pure. Sec. VII characterizes $\\mathcal{F}$ by Pauli-transfer-matrix conditions and states that the PTM of such a protocol is a signed permutation matrix, a discard-and-prepare matrix, or a matrix with exactly one 1 per column.",
+  "system": "quantum channels between multi-qubit systems"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:5b288c08676b48ad5e937b9098767ac81d2e0271a8c8ebaf7d67cf9d63d793b2",
+    "record_id": "span:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:74dfb8444cd1b70f4b57b573eb05fdad3e46cda7602d39699ef4ff53ab7a65a9",
+    "record_id": "span:opus5-2608.14798v1/ptm",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c22",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

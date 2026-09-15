@@ -1,0 +1,20 @@
+Development smoke test; not an independently authenticated formal-check.
+Working directory: /Users/Yingjian/Documents/GitHub/AgtXIv
+Command: lean +leanprover/lean4:v4.30.0-rc2 --version
+Exit code: 0
+Lean (version 4.30.0-rc2, arm64-apple-darwin24.6.0, commit 3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc, Release)
+
+Command: lean +leanprover/lean4:v4.30.0-rc2 'schema v0.1/Autoformalization Agent/example/and-swap/AndSwap.lean'
+Exit code: 0
+theorem AutoformalizationExample.and_swap : ∀ (P Q : Prop), P ∧ Q → Q ∧ P :=
+fun P Q h =>
+  have hq := h.right;
+  have hp := h.left;
+  have hqp := ⟨hq, hp⟩;
+  hqp
+'AutoformalizationExample.and_swap' does not depend on any axioms
+
+Source SHA-256: aa1b8850a6920832674a7734937124751e925b16ac665f7320899f9e3bc9afee
+This source was directly inspected before this local run. No generated-paper pipeline,
+isolated build service, RecordSet closure, authenticated identity or independent
+backtranslation/alignment workflow is claimed by this log.

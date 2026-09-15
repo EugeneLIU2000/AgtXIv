@@ -1,0 +1,156 @@
+{
+ "content_hash": "sha256:5bbe83187f6458fdd928f0fc8c88146478fb639d3d3a50bbb23da2b71bbf91eb",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+   "record_id": "claim:opus5-2608.14798v1/c27",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:d095d05bf8b5ef057a06a2a67dda6e979fb0a0aaebcd37ed80110a4e6ba5bd47",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-fidelity",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "faithfulness of $\\mathcal{W}_\\beta$ plus the tighter continuity estimate of Lemma (Continuity of the Stabilizer Work)"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "the right-hand side is independent of which stabilizer state is used, so maximizing over ${\\rm STAB}$ is legitimate"
+   },
+   {
+    "condition_id": "assumption:a3",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [],
+    "statement": "$\\|\\psi-\\phi\\|_1=2\\sqrt{1-|\\braket{\\phi|\\psi}|^2}$ for pure states"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+   "record_id": "claim:opus5-2608.14798v1/c27",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:ub"
+  ],
+  "conclusion": "$F_{\\rm Stab}(\\psi)\\leq1-\\tfrac12\\left(\\dfrac{\\cosh\\beta-1}{\\beta\\sinh\\beta}\\,2^{-\\mathcal{W}_{\\beta}(\\psi)}\\mathcal{W}_{\\beta}(\\psi)\\right)^{2}$ for every $\\beta\\geq0$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d095d05bf8b5ef057a06a2a67dda6e979fb0a0aaebcd37ed80110a4e6ba5bd47",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-fidelity",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "$\\log$ base 2 in $\\mathcal{W}$ and the factor $2^{-\\mathcal{W}_\\beta}$; the same base-of-logarithm question flagged for the continuity constant propagates here",
+  "objects": [
+   {
+    "convention": "free-energy difference of the Pauli gas referenced to the unique stabilizer value; $\\log$ base 2",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real-valued functional of a pure state for each real beta",
+    "symbol": "\\mathcal{W}_\\beta(\\psi)",
+    "unit": "bits"
+   },
+   {
+    "convention": "maximization over all n-qubit pure stabilizer states; imported from Bravyi et al. (2019)",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:d095d05bf8b5ef057a06a2a67dda6e979fb0a0aaebcd37ed80110a4e6ba5bd47",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-fidelity",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real number in (0,1]",
+    "symbol": "F_{\\rm Stab}(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$[0,\\infty)$ as stated; the expression is $0/0$ at $\\beta=0$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   },
+   {
+    "domain": "pure states in $\\mathcal{H}_n$",
+    "kind": "FORALL",
+    "variable": "\\psi"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+    "record_id": "claim:opus5-2608.14798v1/c27",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d095d05bf8b5ef057a06a2a67dda6e979fb0a0aaebcd37ed80110a4e6ba5bd47",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-fidelity",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m27",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

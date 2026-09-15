@@ -1,0 +1,235 @@
+{
+ "content_hash": "sha256:11ca0a509ab8747696aa02197deba3486040354ea77b35c07c07d0c59f4fe182",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:c67b7fd77ac0492da16489f10643e132e3fecac68a905eea3473c38473c0696e",
+   "record_id": "span:opus5-2608.14798v1/sps-def",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:73fe4d3bf997a05acabe354567984a7e007d4568e39aa2bbc0ced47140c9253e",
+   "record_id": "span:opus5-2608.14798v1/sps-thm",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:38b1b34d7c8c0569a53f46c711a837d9566a023ff4f96f5c62535b3488d4408a",
+   "record_id": "span:opus5-2608.14798v1/sps-nullity",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:62aaf6dafe3043b7b461e25b2507e70e64ac88d70cf9d43d265939d08a6a8e6e",
+   "record_id": "span:opus5-2608.14798v1/sps-random-f",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:d01b2baed2e65d02799b780b5effd7ee89a052352d8950d593296b03b9fb4c08",
+   "record_id": "span:opus5-2608.14798v1/sps-numerics",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "Haar-random states and $\nu$-compressible states",
+  "components": [
+   {
+    "component_id": "comp:thm",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:73fe4d3bf997a05acabe354567984a7e007d4568e39aa2bbc0ced47140c9253e",
+      "record_id": "span:opus5-2608.14798v1/sps-thm",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Closed-form ensemble SPF for SPS at $|S|=2^n$."
+   },
+   {
+    "component_id": "comp:nullity",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:38b1b34d7c8c0569a53f46c711a837d9566a023ff4f96f5c62535b3488d4408a",
+      "record_id": "span:opus5-2608.14798v1/sps-nullity",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Nullity does not separate SPS from Haar states; both have $\\nu=\\mathcal{O}(n)$."
+   },
+   {
+    "component_id": "comp:crypto",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:38b1b34d7c8c0569a53f46c711a837d9566a023ff4f96f5c62535b3488d4408a",
+      "record_id": "span:opus5-2608.14798v1/sps-nullity",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Efficient $\\nu$-extraction must not translate into efficiently distinguishing SPS from Haar, else the pseudomagic definition would be contradicted."
+   },
+   {
+    "component_id": "comp:tunable",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:73fe4d3bf997a05acabe354567984a7e007d4568e39aa2bbc0ced47140c9253e",
+      "record_id": "span:opus5-2608.14798v1/sps-thm",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Applying Cliffords tunes the entanglement of SPS while keeping magic content unchanged."
+   },
+   {
+    "component_id": "comp:randomf",
+    "role": "ASSUMPTION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:62aaf6dafe3043b7b461e25b2507e70e64ac88d70cf9d43d265939d08a6a8e6e",
+      "record_id": "span:opus5-2608.14798v1/sps-random-f",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The supplemental derivation averages over a UNIFORMLY RANDOM Boolean function $f$ (the cumulant lemma says so explicitly), not over a pseudorandom one."
+   },
+   {
+    "component_id": "comp:density",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:d01b2baed2e65d02799b780b5effd7ee89a052352d8950d593296b03b9fb4c08",
+      "record_id": "span:opus5-2608.14798v1/sps-numerics",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "A corollary gives the exact average SPS Pauli-spectrum density, a sum of delta peaks that does not smooth out under ensemble averaging, unlike the Haar case; it is checked numerically against exact Pauli expectations for $n\\in\\{2,4,6,8\\}$, exhaustively over Boolean functions for $n=2,4$ and over 4096 and 2048 random functions for $n=6,8$."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:size",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:c67b7fd77ac0492da16489f10643e132e3fecac68a905eea3473c38473c0696e",
+      "record_id": "span:opus5-2608.14798v1/sps-def",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the theorem is restricted to $|S|=2^n$, the single-subset case, where only the average over pseudorandom $f$ remains"
+   },
+   {
+    "condition_id": "cond:avg",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:c67b7fd77ac0492da16489f10643e132e3fecac68a905eea3473c38473c0696e",
+      "record_id": "span:opus5-2608.14798v1/sps-def",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the result is an ensemble average over the SPS family"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:c67b7fd77ac0492da16489f10643e132e3fecac68a905eea3473c38473c0696e",
+    "record_id": "span:opus5-2608.14798v1/sps-def",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:73fe4d3bf997a05acabe354567984a7e007d4568e39aa2bbc0ced47140c9253e",
+    "record_id": "span:opus5-2608.14798v1/sps-thm",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:38b1b34d7c8c0569a53f46c711a837d9566a023ff4f96f5c62535b3488d4408a",
+    "record_id": "span:opus5-2608.14798v1/sps-nullity",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:62aaf6dafe3043b7b461e25b2507e70e64ac88d70cf9d43d265939d08a6a8e6e",
+    "record_id": "span:opus5-2608.14798v1/sps-random-f",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d01b2baed2e65d02799b780b5effd7ee89a052352d8950d593296b03b9fb4c08",
+    "record_id": "span:opus5-2608.14798v1/sps-numerics",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Theorem (SPF for pseudomagic states): for an $n$-qubit SPS sampled uniformly with $|S|=2^n$, $\\mathcal{Z}_\\beta({\\rm SPS})=e^{-\\beta}[\\frac{(d_n-1)(d_n+2)}{2}+\\cosh\\beta+\\frac{d_n(d_n-1)}{2}(\\cosh(2\\beta/d_n))^{d_n/2}]$. The paper adds that stabilizer nullity cannot quantify pseudomagic, since SPS and Haar states both have $\\nu=\\mathcal{O}(n)$, and that the SPF curves of the two families become exponentially close so that distinguishing them is challenging, as it must be for a cryptographic construction.",
+  "system": "subset phase states $\\ket{\\psi_{f,S}}$ with pseudorandom $f$ and $S=\\{0,1\\}^n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:c67b7fd77ac0492da16489f10643e132e3fecac68a905eea3473c38473c0696e",
+    "record_id": "span:opus5-2608.14798v1/sps-def",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:73fe4d3bf997a05acabe354567984a7e007d4568e39aa2bbc0ced47140c9253e",
+    "record_id": "span:opus5-2608.14798v1/sps-thm",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:38b1b34d7c8c0569a53f46c711a837d9566a023ff4f96f5c62535b3488d4408a",
+    "record_id": "span:opus5-2608.14798v1/sps-nullity",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:62aaf6dafe3043b7b461e25b2507e70e64ac88d70cf9d43d265939d08a6a8e6e",
+    "record_id": "span:opus5-2608.14798v1/sps-random-f",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d01b2baed2e65d02799b780b5effd7ee89a052352d8950d593296b03b9fb4c08",
+    "record_id": "span:opus5-2608.14798v1/sps-numerics",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c21",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

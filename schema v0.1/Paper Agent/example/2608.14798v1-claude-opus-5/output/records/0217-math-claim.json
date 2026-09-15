@@ -1,0 +1,144 @@
+{
+ "content_hash": "sha256:113f0df563f278401a0f2a79e90815ce14791749e7ff16c5aecf0c31694aa5bd",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:c5c2f32f732863220d424e6872e7c8ff8e000ab069a3053ba891b583b2590370",
+   "record_id": "claim:opus5-2608.14798v1/c24",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+   "record_id": "definition:opus5-2608.14798v1/cspf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "Theorem (SPF state-independent bounds) applied to $\\mathcal{Z}^c_\\beta=\\mathcal{Z}_\\beta-d_A^2e^{-\\beta}$"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:c5c2f32f732863220d424e6872e7c8ff8e000ab069a3053ba891b583b2590370",
+   "record_id": "claim:opus5-2608.14798v1/c24",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:bounds"
+  ],
+  "conclusion": "$0\\leq\\mathcal{W}_{\\beta}(\\psi)\\leq\\log\\!\\left(\\dfrac{d_{A}\\cosh\\beta-d_{A}}{\\cosh\\beta+(d_{A}^{2}-1)\\cosh\\!\\left(\\beta/\\sqrt{d_{A}+1}\\right)-d_{A}^{2}}\\right)$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "$\\log$ base 2; numerator and denominator are $e^{\\beta}\\mathcal{Z}^c_\\beta$ of the stabilizer reference and of the extremal lower configuration respectively",
+  "objects": [
+   {
+    "convention": "free-energy difference of the Pauli gas referenced to the unique stabilizer value; $\\log$ base 2",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real-valued functional of a pure state for each real beta",
+    "symbol": "\\mathcal{W}_\\beta(\\psi)",
+    "unit": "bits"
+   },
+   {
+    "convention": "$d$ written without subscript in the source equation; read as $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+      "record_id": "definition:opus5-2608.14798v1/cspf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}^c_\\beta(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathbb{R}$ as stated; the expression is singular at $\\beta=0$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   },
+   {
+    "domain": "pure states of an $n$-qubit system $A$, $d_A=2^n$",
+    "kind": "FORALL",
+    "variable": "\\psi"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:c5c2f32f732863220d424e6872e7c8ff8e000ab069a3053ba891b583b2590370",
+    "record_id": "claim:opus5-2608.14798v1/c24",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m24",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

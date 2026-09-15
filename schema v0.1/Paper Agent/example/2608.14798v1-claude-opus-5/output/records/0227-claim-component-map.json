@@ -1,0 +1,123 @@
+{
+ "content_hash": "sha256:4558d04d7f95b8f057fb1fa221548b9dfd11d7f5fdb92ee7eed143986bf79a3d",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+   "record_id": "claim:opus5-2608.14798v1/c26",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:cd615db893986c781e94cc1c5c19719d8c2fd2b763f7652d894f75cee0a0fb09",
+   "record_id": "math:opus5-2608.14798v1/m26",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+   "record_id": "claim:opus5-2608.14798v1/c26",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:jensen",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "Stated as an inequality of expectations; the direction implied by convexity is not used explicitly.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:gap",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:cd615db893986c781e94cc1c5c19719d8c2fd2b763f7652d894f75cee0a0fb09",
+      "record_id": "math:opus5-2608.14798v1/m26",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "${\\rm logPoly}(n)$ and ${\\rm LogPoly}(n)$ appear with different capitalization in the same displayed formula and are never defined; the supplemental proof fixes the failure probability as $1/{\\rm Poly}(n)$ with ${\\rm Poly}$ still free, chosen by the reader through the Markov threshold.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:sps",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The separation criterion is stated in terms of an unquantified ${\\rm LogPoly}(n)$, so it cannot be evaluated for any concrete $n$, $\\nu$ or $\\beta$ from the paper alone.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:proof",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The $\\mathcal{O}(\\beta^4)$ half of the interval is genuinely derived, with the explicit constant $1/576$. The $n$-dependent half is not: it is whatever polynomial the reader picks in the Markov step, so the lemma cannot be instantiated at a fixed $n$ without that choice.",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+     "record_id": "claim:opus5-2608.14798v1/c26",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:e06db57355381b0672ba80cc9026952ffd138e1d1dff3432323f2a56cde8d559",
+    "record_id": "claim:opus5-2608.14798v1/c26",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:cd615db893986c781e94cc1c5c19719d8c2fd2b763f7652d894f75cee0a0fb09",
+    "record_id": "math:opus5-2608.14798v1/m26",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c26",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

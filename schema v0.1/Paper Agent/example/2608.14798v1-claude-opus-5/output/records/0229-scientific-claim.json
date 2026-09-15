@@ -1,0 +1,173 @@
+{
+ "content_hash": "sha256:8096d57883116ee1e372a5fcc43b9d698e8973bdb9a6bed0ca7fbf2c0bede9f2",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+   "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:a1d086f92ed0a1d3394810879294190a6c57a4a611ceed2571c61af1c12aae45",
+   "record_id": "span:opus5-2608.14798v1/fidelity-lb",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:9d95205d85408c0517836cc6752e0b89dd2556ab0260a94e7ff60d5ce8f0a999",
+   "record_id": "span:opus5-2608.14798v1/tstate-eps",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "stabilizer extent $\\xi$ and approximate stabilizer rank $\\chi_\\delta$, via $\\xi\\geq F_{\\rm Stab}^{-1}$ and $\\chi_\\delta\\leq1+\\delta^{-2}\\xi$",
+  "components": [
+   {
+    "component_id": "comp:ub",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+      "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Family of stabilizer-fidelity upper bounds parameterized by $\\beta$."
+   },
+   {
+    "component_id": "comp:chain",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+      "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Upper bound on $F_{\\rm Stab}$ lower-bounds $\\xi$ and hence constrains $\\chi_\\delta$."
+   },
+   {
+    "component_id": "comp:lb",
+    "role": "ATTRIBUTION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:a1d086f92ed0a1d3394810879294190a6c57a4a611ceed2571c61af1c12aae45",
+      "record_id": "span:opus5-2608.14798v1/fidelity-lb",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Quoted complementary bound $\\frac{\\alpha-1}{2\\alpha}M_\\alpha(\\psi)\\leq F_{\\rm Stab}(\\psi)$, attributed to prior work."
+   },
+   {
+    "component_id": "comp:example",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:9d95205d85408c0517836cc6752e0b89dd2556ab0260a94e7ff60d5ce8f0a999",
+      "record_id": "span:opus5-2608.14798v1/tstate-eps",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Numerical consequence: no stabilizer state is $\\epsilon$-close to $\\ket{T}^{\\otimes n}$ for $\\epsilon\\lesssim2.27\\times10^{-3}$, uniformly in $n$."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:beta",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+      "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\beta\\geq0$"
+   },
+   {
+    "condition_id": "cond:tensor",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+      "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the $\\ket{T}^{\\otimes n}$ consequence uses $\\mathcal{W}_\\beta(\\ket{T}^{\\otimes n})\\geq\\mathcal{W}_\\beta(\\ket{T})$, i.e. the discarding property"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+    "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a1d086f92ed0a1d3394810879294190a6c57a4a611ceed2571c61af1c12aae45",
+    "record_id": "span:opus5-2608.14798v1/fidelity-lb",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:9d95205d85408c0517836cc6752e0b89dd2556ab0260a94e7ff60d5ce8f0a999",
+    "record_id": "span:opus5-2608.14798v1/tstate-eps",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Proposition (Stabilizer fidelity upper bounds): $F_{\\rm Stab}(\\psi)\\leq1-\\frac12\\left(\\frac{\\cosh\\beta-1}{\\beta\\sinh\\beta}2^{-\\mathcal{W}_\\beta(\\psi)}\\mathcal{W}_\\beta(\\psi)\\right)^2$ for all $\\beta\\geq0$, tightest after optimizing over $\\beta$. This upper-bounds the stabilizer fidelity and thereby lower-bounds the stabilizer extent and the approximate stabilizer rank. The paper also quotes a complementary lower bound $\\frac{\\alpha-1}{2\\alpha}M_\\alpha(\\psi)\\leq F_{\\rm Stab}(\\psi)$, and gives the worked consequence that no pure stabilizer state is $\\epsilon$-close in fidelity to $\\ket{T}^{\\otimes n}$ for $\\epsilon\\lesssim2.27\\times10^{-3}$, independently of the number of copies.",
+  "system": "$n$-qubit pure states, $\\mathcal{H}_n\\cong(\\mathbb{C}^2)^{\\otimes n}$, $d_n=2^n$, finite $n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:1fed85f96fb84f9e7eb5ac7fb791cd3306b6ac3a742bd0b3c24ac7ec9583c29b",
+    "record_id": "span:opus5-2608.14798v1/fidelity-ub",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a1d086f92ed0a1d3394810879294190a6c57a4a611ceed2571c61af1c12aae45",
+    "record_id": "span:opus5-2608.14798v1/fidelity-lb",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:9d95205d85408c0517836cc6752e0b89dd2556ab0260a94e7ff60d5ce8f0a999",
+    "record_id": "span:opus5-2608.14798v1/tstate-eps",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c27",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

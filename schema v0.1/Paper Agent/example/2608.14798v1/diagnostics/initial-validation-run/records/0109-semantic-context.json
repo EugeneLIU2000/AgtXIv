@@ -1,0 +1,148 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:f5d2b587ea492d7fcaeb1030fb85f16cf3c51c9293160cdb87ddb1a2eb2d7b7d",
+      "record_id": "example:2608.14798v1-claim-haar-asymptotics",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:81cc0a2412ac04f8adce0a3bd9ce7083c8015b3c4b6e98da85140a1319d27e92",
+      "record_id": "example:2608.14798v1-span-373-391",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:72514ba153149d48bb0bbc2d0b77c2d5ebc8400e807f7e0f819ad8409eb2bc94",
+      "record_id": "example:2608.14798v1-span-415-429",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:3f8dc587bfd2bd0adb09e18c914b6fdbd13bf084069ed4b87e9e25d713da9c9d",
+      "record_id": "example:2608.14798v1-span-906-920",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "ASYMPTOTIC; The nonidentity factor has a stated o(1) correction. Line 917 gives O(beta^4/alpha^2) after the explicit beta^2/[4(alpha+1)] term; no numerical constant or finite-dimension interval is given.",
+    "assumptions": [
+      {
+        "condition_id": "condition:haar-asymptotics-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:81cc0a2412ac04f8adce0a3bd9ce7083c8015b3c4b6e98da85140a1319d27e92",
+            "record_id": "example:2608.14798v1-span-373-391",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:72514ba153149d48bb0bbc2d0b77c2d5ebc8400e807f7e0f819ad8409eb2bc94",
+            "record_id": "example:2608.14798v1-span-415-429",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:3f8dc587bfd2bd0adb09e18c914b6fdbd13bf084069ed4b87e9e25d713da9c9d",
+            "record_id": "example:2608.14798v1-span-906-920",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "The quantity is the Haar ensemble average defined in the preceding theorem."
+      },
+      {
+        "condition_id": "condition:haar-asymptotics-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:81cc0a2412ac04f8adce0a3bd9ce7083c8015b3c4b6e98da85140a1319d27e92",
+            "record_id": "example:2608.14798v1-span-373-391",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:72514ba153149d48bb0bbc2d0b77c2d5ebc8400e807f7e0f819ad8409eb2bc94",
+            "record_id": "example:2608.14798v1-span-415-429",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:3f8dc587bfd2bd0adb09e18c914b6fdbd13bf084069ed4b87e9e25d713da9c9d",
+            "record_id": "example:2608.14798v1-span-906-920",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "d_n tends to infinity, with fixed beta or more generally beta^2=o(d_n)."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:f5d2b587ea492d7fcaeb1030fb85f16cf3c51c9293160cdb87ddb1a2eb2d7b7d",
+      "record_id": "example:2608.14798v1-claim-haar-asymptotics",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "The nonidentity factor has a stated o(1) correction. Line 917 gives O(beta^4/alpha^2) after the explicit beta^2/[4(alpha+1)] term; no numerical constant or finite-dimension interval is given.",
+    "limitations": [
+      "Line 920 moves from asymptotically small Pauli expectations to exact-looking assertions |Ker_P(Haar_n)|=d_n^2-1 and |Supp(Haar_n)|=1 almost surely. The exact-zero definitions at lines 373-391 and the kernel upper bound at lines 415-429 leave a textual tension; it is not repaired here.",
+      "The finite-dimensional Haar moment distribution and supplementary Bessel calculation were not inspected; body-versus-appendix consistency is unassessed.",
+      "The source provides no explicit uniform remainder constant for beta varying with dimension.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The authors claim that, when beta squared is little-o of the Hilbert-space dimension, the nonidentity contribution to the Haar ensemble-average partition function is asymptotically flat. This is an unverified author-claim candidate.",
+        "target_value": "The authors state \\(\\mathcal Z_\\beta(\\mathrm{Haar}_n)=e^{-\\beta}[\\cosh\\beta+(d_n^2-1)(1+o(1))]\\). Their expansion is \\(\\Gamma(\\alpha+1)(2/\\beta)^\\alpha I_\\alpha(\\beta)=1+\\beta^2/[4(\\alpha+1)]+O(\\beta^4/\\alpha^2)\\).",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:81cc0a2412ac04f8adce0a3bd9ce7083c8015b3c4b6e98da85140a1319d27e92",
+            "record_id": "example:2608.14798v1-span-373-391",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:72514ba153149d48bb0bbc2d0b77c2d5ebc8400e807f7e0f819ad8409eb2bc94",
+            "record_id": "example:2608.14798v1-span-415-429",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:3f8dc587bfd2bd0adb09e18c914b6fdbd13bf084069ed4b87e9e25d713da9c9d",
+            "record_id": "example:2608.14798v1-span-906-920",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "Haar ensemble-average partition function; Large-order Bessel expansion; Nonidentity Pauli contribution; Exact support and kernel definitions"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-semantics-haar-asymptotics",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:4c08b83cefdc1957a6dca5342a7df70cd8c1dd06c9f0e87f5d11401cc99a4807"
+}

@@ -1,0 +1,182 @@
+{
+ "content_hash": "sha256:6c268974ee3a77b9ecd52cd50069212a81d5d117517acc92916737d3a83329ee",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:c2ef72b2080f74d34820b84e8696b19625ebffbe2cee47cc75d3d910207c3738",
+   "record_id": "claim:opus5-2608.14798v1/c20",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+   "record_id": "definition:opus5-2608.14798v1/cspf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:6bbcae1d8936647f550edd96f4d2dc8bef4a4e896b4079c3cfa4a96f43941643",
+   "record_id": "definition:opus5-2608.14798v1/nu-compressible",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "Clifford invariance of the SPF brings every $\\nu$-compressible state to the product form $U\\ket{0}^{\\otimes\\nu}\\otimes\\ket{0}^{\\otimes(n-\\nu)}$"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "Lemma (SPF for Stabilizer + Pure) and Theorem (SPF for Haar-random states) are applied to that product form"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:c2ef72b2080f74d34820b84e8696b19625ebffbe2cee47cc75d3d910207c3738",
+   "record_id": "claim:opus5-2608.14798v1/c20",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:thm"
+  ],
+  "conclusion": "$\\mathcal{Z}_{\\beta}({\\rm Comp}_{\\nu})=2^{n-\\nu}\\mathcal{Z}_{\\beta}({\\rm Haar}_{\\nu})+e^{-\\beta}4^{\\nu}(4^{n-\\nu}-2^{n-\\nu})$, equivalently $\\mathcal{Z}^{c}_{\\beta}({\\rm Comp}_{\\nu})=2^{n-\\nu}\\mathcal{Z}^{c}_{\\beta}({\\rm Haar}_{\\nu})$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:6bbcae1d8936647f550edd96f4d2dc8bef4a4e896b4079c3cfa4a96f43941643",
+    "record_id": "definition:opus5-2608.14798v1/nu-compressible",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "${\\rm Haar}_\\nu$ is the $\\nu$-qubit Haar ensemble, $d_\\nu=2^\\nu$; the ensemble average is over $\\mu_{n,\\nu}$",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$d$ written without subscript in the source equation; read as $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+      "record_id": "definition:opus5-2608.14798v1/cspf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}^c_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$\\mu_{n,\\nu}=\\mu_{\\mathcal{C}l_n}\\ast\\mu_{{\\rm Haar}_\\nu}$, convolution of the n-qubit Clifford uniform measure with the nu-qubit Haar measure",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:6bbcae1d8936647f550edd96f4d2dc8bef4a4e896b4079c3cfa4a96f43941643",
+      "record_id": "definition:opus5-2608.14798v1/nu-compressible",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "probability measure on the set of nu-compressible states",
+    "symbol": "\\mu_{n,\\nu}",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "integers with $0\\leq\\nu\\leq n$",
+    "kind": "FORALL",
+    "variable": "n,\\nu"
+   },
+   {
+    "domain": "$[0,\\infty)$, inherited from the Haar theorem",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:c2ef72b2080f74d34820b84e8696b19625ebffbe2cee47cc75d3d910207c3738",
+    "record_id": "claim:opus5-2608.14798v1/c20",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:6bbcae1d8936647f550edd96f4d2dc8bef4a4e896b4079c3cfa4a96f43941643",
+    "record_id": "definition:opus5-2608.14798v1/nu-compressible",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m20",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

@@ -1,0 +1,123 @@
+{
+ "content_hash": "sha256:8f637d446dc1330bac481435fcb70a109cbb151bef67c84215a4df3ae9796dca",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+   "record_id": "claim:opus5-2608.14798v1/c22",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:a148401deb0c332f69de6e8c4b7106c169a7509e275efe38a7cdeca355627990",
+   "record_id": "math:opus5-2608.14798v1/m22",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+   "record_id": "claim:opus5-2608.14798v1/c22",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:fall",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "$\\mathcal{F}_{\\rm all}$ is defined for all $\\beta$ simultaneously; whether a single $\\beta$ suffices is not discussed.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:f",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "Not mathematized in this round. The component meaning is retained verbatim in the claim record; no MathClaim was produced for it.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:ptm",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:a148401deb0c332f69de6e8c4b7106c169a7509e275efe38a7cdeca355627990",
+      "record_id": "math:opus5-2608.14798v1/m22",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "The claim that the PTM 'takes one of three forms' is stated as a classification without proof; it is asserted to follow from the two displayed conditions.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:relax",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "Proposed direction, not a result; no $\\epsilon$-robustness bound is derived.",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+     "record_id": "claim:opus5-2608.14798v1/c22",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+    "record_id": "claim:opus5-2608.14798v1/c22",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a148401deb0c332f69de6e8c4b7106c169a7509e275efe38a7cdeca355627990",
+    "record_id": "math:opus5-2608.14798v1/m22",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c22",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

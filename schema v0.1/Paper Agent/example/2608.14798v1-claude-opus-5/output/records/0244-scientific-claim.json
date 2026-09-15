@@ -1,0 +1,186 @@
+{
+ "content_hash": "sha256:710217caf87a4074bdd75e9c8d28b2759efa06535b54e8eb8fbc012eb8e8f390",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+   "record_id": "span:opus5-2608.14798v1/ising-model",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:48b073f24d8af59e173d33e65b8f0089f099bb902129d303396aaeb4ae12f7d0",
+   "record_id": "span:opus5-2608.14798v1/ising-panelA",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:dd46e9aeefb8a819026993932a8edf7f29f0b6837e8aea15c03be99e7d42093f",
+   "record_id": "span:opus5-2608.14798v1/ising-panelB",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "$M_\\alpha$ for $\\alpha=2,5,10$ across the same transition",
+  "components": [
+   {
+    "component_id": "comp:expansion",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:48b073f24d8af59e173d33e65b8f0089f099bb902129d303396aaeb4ae12f7d0",
+      "record_id": "span:opus5-2608.14798v1/ising-panelA",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Small-$\\beta$ expansion: the $O(\\beta^2)$ term is purity-fixed ($\\sum_P\\langle P\\rangle^2=2^L$) and carries no magic; the first nonstabilizer information enters at $O(\\beta^4)$ via $\\sum_P\\langle P\\rangle^4$, the participation behind $M_2$."
+   },
+   {
+    "component_id": "comp:extensive",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:48b073f24d8af59e173d33e65b8f0089f099bb902129d303396aaeb4ae12f7d0",
+      "record_id": "span:opus5-2608.14798v1/ising-panelA",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Clean size ordering in the paramagnetic phase, increment close to 1 per site, saturation of order $L-1$."
+   },
+   {
+    "component_id": "comp:ridge",
+    "role": "EVIDENCE",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:dd46e9aeefb8a819026993932a8edf7f29f0b6837e8aea15c03be99e7d42093f",
+      "record_id": "span:opus5-2608.14798v1/ising-panelB",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Stabilizer floors at both field extremes and an interior ridge near $h/g=1$; the pattern persists along $\\beta$."
+   },
+   {
+    "component_id": "comp:notation",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+      "record_id": "span:opus5-2608.14798v1/ising-model",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The text introduces the coupling as $J$ while the Hamiltonian and all plots use $g$."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:1d",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+      "record_id": "span:opus5-2608.14798v1/ising-model",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "one-dimensional chain; critical point at $h=g$"
+   },
+   {
+    "condition_id": "cond:sizes",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+      "record_id": "span:opus5-2608.14798v1/ising-model",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "finite $L$; panel (b) uses $L=8$"
+   },
+   {
+    "condition_id": "cond:para",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+      "record_id": "span:opus5-2608.14798v1/ising-model",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the extensivity observation is made in the paramagnetic phase at $h/g\\approx1.5$"
+   }
+  ],
+  "modality": "OBSERVED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+    "record_id": "span:opus5-2608.14798v1/ising-model",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:48b073f24d8af59e173d33e65b8f0089f099bb902129d303396aaeb4ae12f7d0",
+    "record_id": "span:opus5-2608.14798v1/ising-panelA",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:dd46e9aeefb8a819026993932a8edf7f29f0b6837e8aea15c03be99e7d42093f",
+    "record_id": "span:opus5-2608.14798v1/ising-panelB",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "For the 1D transverse-field Ising model $H=-g\\sum_i\\sigma^z_i\\sigma^z_{i+1}-h\\sum_i\\sigma^x_i$, the stabilizer work in the paramagnetic phase rises monotonically in $\\beta$ and saturates, with a clean ordering in system size indicating extensivity; the apparent increment is close to 1 per site, which the paper links to a stabilizer state having $2^L$ unit-weight Paulis and hence a saturation of order $L-1$. Over the full $(h/g,\\beta)$ landscape the two field extremes are exactly solvable stabilizer points (GHZ at $h/g\\to0$, $\\ket{+}^{\\otimes L}$ at $h/g\\to\\infty$) so the surface approaches its stabilizer floor there, and the ridge of nonstabilizerness lies in the interior near the critical point $h/g=1$.",
+  "system": "ground states of the 1D transverse-field quantum Ising chain of $L$ spins"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:1e761da34ad5a43a6943a3595aa3cc70cf0af2641c768b63ba037610df1a702c",
+    "record_id": "span:opus5-2608.14798v1/ising-model",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:48b073f24d8af59e173d33e65b8f0089f099bb902129d303396aaeb4ae12f7d0",
+    "record_id": "span:opus5-2608.14798v1/ising-panelA",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:dd46e9aeefb8a819026993932a8edf7f29f0b6837e8aea15c03be99e7d42093f",
+    "record_id": "span:opus5-2608.14798v1/ising-panelB",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c30",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

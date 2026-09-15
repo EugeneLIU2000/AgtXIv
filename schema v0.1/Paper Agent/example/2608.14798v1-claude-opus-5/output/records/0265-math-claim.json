@@ -1,0 +1,182 @@
+{
+ "content_hash": "sha256:e57cf4b7d9d3fbc457603a63fc397cef43d17ca1e0a40de55ff59be922a9a4df",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:7e838b1e35a2073064730ecd6da7fd4cecac9d467d47d394d10c56b8345e0600",
+   "record_id": "claim:opus5-2608.14798v1/c35",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+   "record_id": "definition:opus5-2608.14798v1/cspf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "the monotone reweighting lemma, applied with the comparison vectors $a'=(d_A^2,d_A,d_A,\\dots)$ and $b'=(d_B^2,d_B,d_B,\\dots)$"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$a_k/a'_k$ is non-increasing in $k$, asserted without reason in the source"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:7e838b1e35a2073064730ecd6da7fd4cecac9d467d47d394d10c56b8345e0600",
+   "record_id": "claim:opus5-2608.14798v1/c35",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:theorem"
+  ],
+  "conclusion": "Under the stated hypotheses, $\\dfrac{\\sum_k w_k a_k b_k}{(\\sum_k w_k a_k)(\\sum_k w_k b_k)}\\ \\geq\\ \\dfrac{d_Ad_B+c-1}{(d_A+c-1)(d_B+c-1)}$ with $c=\\cosh x$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "the right-hand side is the same ratio evaluated on the stabilizer vectors $a',b'$, i.e. the free-state reference",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$d$ written without subscript in the source equation; read as $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+      "record_id": "definition:opus5-2608.14798v1/cspf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}^c_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "free-energy difference of the Pauli gas referenced to the unique stabilizer value; $\\log$ base 2",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real-valued functional of a pure state for each real beta",
+    "symbol": "\\mathcal{W}_\\beta(\\psi)",
+    "unit": "bits"
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathbb{R}$",
+    "kind": "FORALL",
+    "variable": "x"
+   },
+   {
+    "domain": "non-increasing non-negative sequences with $a_0=d_A^2$, $a_1=d_A$, $a_{k>1}\\leq a_1$ and the analogous conditions on $b$",
+    "kind": "FORALL",
+    "variable": "a,b"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:7e838b1e35a2073064730ecd6da7fd4cecac9d467d47d394d10c56b8345e0600",
+    "record_id": "claim:opus5-2608.14798v1/c35",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m35",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

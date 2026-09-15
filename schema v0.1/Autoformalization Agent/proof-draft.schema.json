@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/autoformalization/1.0/proof-draft.schema.json",
+  "title": "Proof model draft; not an independent review or stored RecordSet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_version",
+    "records",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "draft_version": {
+      "const": "1.0"
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.argument-node/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/argument-node.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.assumption-context/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/assumption-context.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.inference-step/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/inference-step.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.proof-plan/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/proof-plan.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.argument-snapshot/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/argument-snapshot.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.derived-claim/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/derived-claim.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.math-claim/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/math-claim.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.counterexample/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/counterexample.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.challenge/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/challenge.schema.json#/properties/payload"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "record_type",
+              "payload"
+            ],
+            "properties": {
+              "record_type": {
+                "const": "agtxiv.v3.frontier-item/0.0.0"
+              },
+              "payload": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/frontier-item.schema.json#/properties/payload"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

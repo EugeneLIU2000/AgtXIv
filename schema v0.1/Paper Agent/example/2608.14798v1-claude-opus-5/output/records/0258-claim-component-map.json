@@ -1,0 +1,107 @@
+{
+ "content_hash": "sha256:69f557a8f78ce7d452474aa28c79e6f435dc5d7f0f2822887a53af0aca9d593f",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:3c42acfad57e11c0ab2e7e44cf516216b544afea82101dda7dcad3547fd07139",
+   "record_id": "claim:opus5-2608.14798v1/c33",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:2f28d51510bc372f7d416c0114169871e289e5f877e8da2cd64cd6ad8137c573",
+   "record_id": "math:opus5-2608.14798v1/m33",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:3c42acfad57e11c0ab2e7e44cf516216b544afea82101dda7dcad3547fd07139",
+   "record_id": "claim:opus5-2608.14798v1/c33",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:lossy",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:2f28d51510bc372f7d416c0114169871e289e5f877e8da2cd64cd6ad8137c573",
+      "record_id": "math:opus5-2608.14798v1/m33",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:sufficient",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "'Stabilizer-relevant information' is not defined, and no statement identifies what magic-relevant content, if any, is lost with the discarded labels and signs. This matters for the abstract's 'strictly more information' claim, which compares the SPF profile with its two endpoint measures rather than with the spectrum itself.",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:3c42acfad57e11c0ab2e7e44cf516216b544afea82101dda7dcad3547fd07139",
+     "record_id": "claim:opus5-2608.14798v1/c33",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:3c42acfad57e11c0ab2e7e44cf516216b544afea82101dda7dcad3547fd07139",
+    "record_id": "claim:opus5-2608.14798v1/c33",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:2f28d51510bc372f7d416c0114169871e289e5f877e8da2cd64cd6ad8137c573",
+    "record_id": "math:opus5-2608.14798v1/m33",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c33",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

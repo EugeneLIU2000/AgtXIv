@@ -1,0 +1,699 @@
+{
+ "validation_version": "paper-agent/1.1",
+ "scope": "OFFLINE_DIAGNOSTIC: record shape, reference closure, source bytes and payload preservation. No independent review, no runtime identity, no scientific check.",
+ "rounds": [
+  {
+   "round": 1,
+   "slug": "source",
+   "task_id": "task.opus5-v11-2608.14798v1.r1-source",
+   "draft_records": 98,
+   "assembled_records": 98,
+   "expected_record_types": [
+    "source-span",
+    "paper-structure"
+   ],
+   "open_items": 3,
+   "follow_up_requests": 0,
+   "result_written": false,
+   "note": "No Result receipt: this run has no scheduler, no runtime identity and no execution facts to report."
+  },
+  {
+   "round": 2,
+   "slug": "claims",
+   "task_id": "task.opus5-v11-2608.14798v1.r2-claims",
+   "draft_records": 98,
+   "assembled_records": 98,
+   "expected_record_types": [
+    "definition",
+    "scientific-claim"
+   ],
+   "open_items": 3,
+   "follow_up_requests": 1,
+   "result_written": false,
+   "note": "No Result receipt: this run has no scheduler, no runtime identity and no execution facts to report."
+  },
+  {
+   "round": 3,
+   "slug": "semantics",
+   "task_id": "task.opus5-v11-2608.14798v1.r3-semantics",
+   "draft_records": 2,
+   "assembled_records": 2,
+   "expected_record_types": [
+    "semantic-context"
+   ],
+   "open_items": 2,
+   "follow_up_requests": 0,
+   "result_written": false,
+   "note": "No Result receipt: this run has no scheduler, no runtime identity and no execution facts to report."
+  },
+  {
+   "round": 4,
+   "slug": "math",
+   "task_id": "task.opus5-v11-2608.14798v1.r4-math",
+   "draft_records": 84,
+   "assembled_records": 84,
+   "expected_record_types": [
+    "math-claim"
+   ],
+   "open_items": 2,
+   "follow_up_requests": 1,
+   "result_written": false,
+   "note": "No Result receipt: this run has no scheduler, no runtime identity and no execution facts to report."
+  },
+  {
+   "round": 5,
+   "slug": "maps",
+   "task_id": "task.opus5-v11-2608.14798v1.r5-maps",
+   "draft_records": 147,
+   "assembled_records": 147,
+   "expected_record_types": [
+    "claim-component-map",
+    "inventory-discovery",
+    "frontier-item"
+   ],
+   "open_items": 3,
+   "follow_up_requests": 1,
+   "result_written": false,
+   "note": "No Result receipt: this run has no scheduler, no runtime identity and no execution facts to report."
+  }
+ ],
+ "payload_preserved_before_and_after_assembly": {
+  "records_checked": 433,
+  "all_equal": true,
+  "method": "canonical JSON of payload compared before and after envelope filling"
+ },
+ "single_record_shapes_and_hashes": {
+  "checked": 433,
+  "valid": true
+ },
+ "full_record_set": {
+  "records": 433,
+  "valid": false,
+  "issue_codes": [
+   "SELF_REVIEW"
+  ],
+  "issue_count": 82,
+  "issues": [
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A01",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A02",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A03",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A04",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A05",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A06",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A07",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A08",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A09",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A10",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A11",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A12",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A13",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A14",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A15",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A16",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A17",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A18",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A19",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A20",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A21",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A22",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A23",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A24",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A25",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A26",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A27",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A28",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A29",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A30",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A31",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A32",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A33",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A34",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A35",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A36",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A37",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A38",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A39",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A40",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A41",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A42",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A43",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A44",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A45",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A46",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A47",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A48",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A49",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A50",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A51",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A52",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A53",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A54",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A55",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A56",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A57",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A58",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A59",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A60",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A61",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A62",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A63",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A64",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A65",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A66",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A67",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A68",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A69",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A70",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A71",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A72",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A73",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A74",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A75",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A76",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A77",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A78",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A79",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A80",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A81",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   },
+   {
+    "code": "SELF_REVIEW",
+    "record_id": "map:opus5-v11-2608.14798v1/A82",
+    "path": "/payload",
+    "message": "A producer cannot independently review its own content"
+   }
+  ]
+ },
+ "diagnostic_subset_without_correspondence_maps": {
+  "records": 351,
+  "valid": true,
+  "issue_codes": [],
+  "meaning": "Everything except the producer-authored correspondence maps closes: every exact reference resolves, every source span re-hashes against the real paper bytes, and every record shape is accepted. This subset is a diagnostic, not a deliverable, because R8 requires a correspondence row for every component."
+ },
+ "source_bytes": {
+  "files_rehashed": 16,
+  "spans_rehashed": 97,
+  "method": "every unit re-read from the repository and digested; every span digest recomputed from the selected byte range"
+ },
+ "not_established": [
+  "No claim of the paper was checked for truth.",
+  "No mathematical target was proved, disproved or formalized.",
+  "No numerical result of the paper was reproduced; nothing was executed against the physics.",
+  "No cited work was retrieved, so every attribution is to the citing text only.",
+  "No identity was authenticated; identity_assurance is DECLARED on every record.",
+  "No scope was frozen and no Result receipt was produced."
+ ],
+ "byte_artifacts_checked": true,
+ "authority_checked": false,
+ "limitations": [
+  "Contract checks do not establish mathematical or scientific correctness.",
+  "Input completeness outside the supplied scope is not established.",
+  "Identity is checked only against caller-supplied trusted attestations when present."
+ ],
+ "specification_checker": {
+  "checker": "schema v0.1/Paper Agent/check_output.py",
+  "rounds": [
+   {
+    "round": 1,
+    "error_count": 0,
+    "missing_expected_record_types": [],
+    "failed_layers": [],
+    "unchecked_layers": [
+     "delivery",
+     "execution_identity",
+     "record_set",
+     "record_shape_and_hash",
+     "scientific_correctness",
+     "source_bytes"
+    ]
+   },
+   {
+    "round": 2,
+    "error_count": 0,
+    "missing_expected_record_types": [],
+    "failed_layers": [],
+    "unchecked_layers": [
+     "delivery",
+     "execution_identity",
+     "record_set",
+     "record_shape_and_hash",
+     "scientific_correctness",
+     "source_bytes"
+    ]
+   },
+   {
+    "round": 3,
+    "error_count": 0,
+    "missing_expected_record_types": [],
+    "failed_layers": [],
+    "unchecked_layers": [
+     "delivery",
+     "execution_identity",
+     "record_set",
+     "record_shape_and_hash",
+     "scientific_correctness",
+     "source_bytes"
+    ]
+   },
+   {
+    "round": 4,
+    "error_count": 0,
+    "missing_expected_record_types": [],
+    "failed_layers": [],
+    "unchecked_layers": [
+     "delivery",
+     "execution_identity",
+     "record_set",
+     "record_shape_and_hash",
+     "scientific_correctness",
+     "source_bytes"
+    ]
+   },
+   {
+    "round": 5,
+    "error_count": 0,
+    "missing_expected_record_types": [],
+    "failed_layers": [],
+    "unchecked_layers": [
+     "delivery",
+     "execution_identity",
+     "record_set",
+     "record_shape_and_hash",
+     "scientific_correctness",
+     "source_bytes"
+    ]
+   }
+  ],
+  "records": {
+   "record_count": 433,
+   "paper_record_count": 429,
+   "error_count": 0,
+   "failed_layers": []
+  }
+ },
+ "input_refs_convention": "Each record's input_refs and producer.visible_input_refs are the exact references appearing in that record's own payload, i.e. what it was actually built from. The complete catalog visible in each round is that round's Task.input_refs, stored in rounds/*/task.json; it is not repeated on every record."
+}

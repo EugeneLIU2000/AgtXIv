@@ -1,0 +1,215 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:97c7d9c45b3d27bfc10d74d0fca519cbf947f930a9266d8dcd3d749b3217ad5f",
+      "record_id": "example:2608.14798v1-claim-state-independent-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:1b847c2d906b5e84f7c6100aaad5f9ead1756dfb5c74e6a529bea72b20362395",
+      "record_id": "example:2608.14798v1-semantics-state-independent-bounds",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+      "record_id": "example:2608.14798v1-span-289-303",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:650282c79a80efbd201403ae43955e2e97ac5677b7a1333eb4abc921c41b5e08",
+      "record_id": "example:2608.14798v1-span-688-705",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:cf6703f7a0a6fdeb9b9d4a688cd1471cf3a2e472414247457c0eaa20db05ce5c",
+      "record_id": "example:2608.14798v1-def-pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:94452956383838354715cc6d935b9b36efca1b316dad671d57da6a97acb3790d",
+      "record_id": "example:2608.14798v1-def-nullity",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:d45a4cd406f6f48903bc5570869616793b793f462e3a150c92ebd061fff286fb",
+      "record_id": "example:2608.14798v1-def-renyi",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:2d634037a9848ee86edffc7b18750683610196db3611794c6c2e653fcd50416d",
+      "record_id": "example:2608.14798v1-def-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:452e042bdced055a33f4f20744ca7442560e68e49ec4b1e994a8a6a0a1b0f8d1",
+      "record_id": "example:2608.14798v1-def-core-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_error": "Not applicable: asserted inequalities; achievability of a uniform spectrum is not established by this extraction.",
+    "assumptions": [
+      {
+        "condition_id": "condition:state-independent-bounds-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+            "record_id": "example:2608.14798v1-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:650282c79a80efbd201403ae43955e2e97ac5677b7a1333eb4abc921c41b5e08",
+            "record_id": "example:2608.14798v1-span-688-705",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi is a normalized pure n-qubit state, beta is real, d=d_n=2^n."
+      },
+      {
+        "condition_id": "condition:state-independent-bounds-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+            "record_id": "example:2608.14798v1-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:650282c79a80efbd201403ae43955e2e97ac5677b7a1333eb4abc921c41b5e08",
+            "record_id": "example:2608.14798v1-span-688-705",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Identifying the unindexed d in the source denominator with d_n is an explicit extraction convention awaiting review."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:97c7d9c45b3d27bfc10d74d0fca519cbf947f930a9266d8dcd3d749b3217ad5f",
+      "record_id": "example:2608.14798v1-claim-state-independent-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "component_ids": [
+      "component:state-independent-bounds"
+    ],
+    "conclusion": "exp(-beta)[cosh(beta)+(d^2-1)cosh(beta/sqrt(d+1))] <= Z_beta(psi) <= exp(-beta)[d^2-d+d cosh(beta)].",
+    "definition_refs": [
+      {
+        "content_hash": "sha256:cf6703f7a0a6fdeb9b9d4a688cd1471cf3a2e472414247457c0eaa20db05ce5c",
+        "record_id": "example:2608.14798v1-def-pauli-spectrum",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:94452956383838354715cc6d935b9b36efca1b316dad671d57da6a97acb3790d",
+        "record_id": "example:2608.14798v1-def-nullity",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d45a4cd406f6f48903bc5570869616793b793f462e3a150c92ebd061fff286fb",
+        "record_id": "example:2608.14798v1-def-renyi",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:2d634037a9848ee86edffc7b18750683610196db3611794c6c2e653fcd50416d",
+        "record_id": "example:2608.14798v1-def-spf",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:452e042bdced055a33f4f20744ca7442560e68e49ec4b1e994a8a6a0a1b0f8d1",
+        "record_id": "example:2608.14798v1-def-core-spf",
+        "record_type": "agtxiv.v3.definition/0.0.0",
+        "revision": 1
+      }
+    ],
+    "exactness": "EXACT",
+    "normalization": "d=2^n (or d_A=2^{n_A}, d_B=2^{n_B}); psi/phi denote rank-one projectors where used in traces or matrix norms. Logarithms are base two. Sum and limit indices are bound within the conclusion. No strengthening of source claim or formal type elaboration.",
+    "objects": [
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "psi: pure n-qubit state",
+        "symbol": "psi",
+        "unit": ""
+      },
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "beta: real parameter",
+        "symbol": "beta",
+        "unit": ""
+      },
+      {
+        "convention": "Source-scoped carrier; no formal type elaboration performed.",
+        "definition_refs": [],
+        "object_type": "d=d_n: Hilbert-space dimension",
+        "symbol": "d=d_n",
+        "unit": ""
+      }
+    ],
+    "quantifiers": [
+      {
+        "domain": "positive integers",
+        "kind": "FORALL",
+        "variable": "n"
+      },
+      {
+        "domain": "normalized pure n-qubit states",
+        "kind": "FORALL",
+        "variable": "psi"
+      },
+      {
+        "domain": "real numbers",
+        "kind": "FORALL",
+        "variable": "beta"
+      }
+    ],
+    "semantic_refs": [
+      {
+        "content_hash": "sha256:1b847c2d906b5e84f7c6100aaad5f9ead1756dfb5c74e6a529bea72b20362395",
+        "record_id": "example:2608.14798v1-semantics-state-independent-bounds",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-math-state-independent-bounds",
+  "record_type": "agtxiv.v3.math-claim/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:04784ce1ffcc4c3c1db77ffcbd65f65136ef024f6f203170c23eb742671f8c2d"
+}

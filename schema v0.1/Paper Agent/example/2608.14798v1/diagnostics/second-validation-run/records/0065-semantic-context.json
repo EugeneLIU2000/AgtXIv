@@ -1,0 +1,123 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:8c225a05a75df8d22f61368831052e9fe0b00379ab9bd405379c773faaa58efb",
+      "record_id": "example:2608.14798v1-db635458e365-claim-bell-estimation",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:1643203857344e56ba44ed10a6876d3fd80b9635cf9ef2d69acb9562be429890",
+      "record_id": "example:2608.14798v1-db635458e365-span-673-683",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:b81df992542d190e63db41eaf504d0453d1935a4c037144393abe1398516566c",
+      "record_id": "example:2608.14798v1-db635458e365-span-2164-2223",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "APPROXIMATE; Residual: reconcile the informal main theorem with supplementary estimator concentration and normalized/full SPF conventions.",
+    "assumptions": [
+      {
+        "condition_id": "condition:bell-estimation-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:1643203857344e56ba44ed10a6876d3fd80b9635cf9ef2d69acb9562be429890",
+            "record_id": "example:2608.14798v1-db635458e365-span-673-683",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:b81df992542d190e63db41eaf504d0453d1935a4c037144393abe1398516566c",
+            "record_id": "example:2608.14798v1-db635458e365-span-2164-2223",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Fixed truncation order k and parameter beta; repeated state copies and the cited Bell-sampling primitive are available."
+      },
+      {
+        "condition_id": "condition:bell-estimation-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:1643203857344e56ba44ed10a6876d3fd80b9635cf9ef2d69acb9562be429890",
+            "record_id": "example:2608.14798v1-db635458e365-span-673-683",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:b81df992542d190e63db41eaf504d0453d1935a4c037144393abe1398516566c",
+            "record_id": "example:2608.14798v1-db635458e365-span-2164-2223",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Accuracy epsilon, failure probability delta, normalization and truncation error must be tracked separately."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:8c225a05a75df8d22f61368831052e9fe0b00379ab9bd405379c773faaa58efb",
+      "record_id": "example:2608.14798v1-db635458e365-claim-bell-estimation",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "Residual: reconcile the informal main theorem with supplementary estimator concentration and normalized/full SPF conventions.",
+    "limitations": [
+      "This deliberately remains a residual scientific claim rather than an underspecified MathClaim.",
+      "No sampling experiment or empirical runtime measurement was performed.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The authors describe Bell-sampling access to a finite-order truncated SPF for fixed order and beta, with additive accuracy and failure probability; full normalized SPF additionally needs a truncation bound.",
+        "target_value": "A fixed-order moment estimator is postprocessed into a truncated SPF estimate; no uniform cost bound for arbitrary beta or the unnormalized full SPF is extracted here.",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:1643203857344e56ba44ed10a6876d3fd80b9635cf9ef2d69acb9562be429890",
+            "record_id": "example:2608.14798v1-db635458e365-span-673-683",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:b81df992542d190e63db41eaf504d0453d1935a4c037144393abe1398516566c",
+            "record_id": "example:2608.14798v1-db635458e365-span-2164-2223",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "psi: sampled quantum state; k,beta: truncation order and parameter; epsilon,delta: accuracy and failure probability"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-semantics-bell-estimation",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:2447a40d5d43faf49800d86dafb2601aa72c489ec6b3b776dc7008110b14ca7a"
+}

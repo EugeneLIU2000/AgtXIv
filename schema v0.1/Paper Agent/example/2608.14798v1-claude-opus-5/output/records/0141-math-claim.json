@@ -1,0 +1,205 @@
+{
+ "content_hash": "sha256:274e5902564475bc770555141843ae554a7499819fb3660757755459ff2007a2",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+   "record_id": "claim:opus5-2608.14798v1/c07",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:fbe241d630ac38e9c449734a499f7f993bf9a611d9c72f2cd561c98db3a04c09",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-hamiltonian",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+   "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [],
+    "statement": "the sum runs over the full multiset ${\\rm Spec}(\\psi)$ of $4^n$ entries, identity included"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+   "record_id": "claim:opus5-2608.14798v1/c07",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:def",
+   "comp:hi-t"
+  ],
+  "conclusion": "$\\mathcal{Z}_\\beta(\\psi)=e^{-\\beta}\\sum_{x\\in{\\rm Spec}(\\psi)}\\cosh(\\beta x)$ and $\\mathcal{Z}_0(\\psi)=d_n^2$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fbe241d630ac38e9c449734a499f7f993bf9a611d9c72f2cd561c98db3a04c09",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-hamiltonian",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+    "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "$\\mathcal{Z}_0=d_n^2$ fixes the normalization; the SPF is not normalized to 1",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "band $[0,2]$; identity Pauli contributes the pinned edges $E=0,2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:fbe241d630ac38e9c449734a499f7f993bf9a611d9c72f2cd561c98db3a04c09",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-hamiltonian",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "Hermitian operator on $\\mathcal{H}_n^{\\otimes2}\\otimes\\mathbb{C}^2$",
+    "symbol": "\\hat H(\\psi)",
+    "unit": "dimensionless energy"
+   },
+   {
+    "convention": "inverse-temperature-like; the paper states it has no connection to a physical temperature",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:fbe241d630ac38e9c449734a499f7f993bf9a611d9c72f2cd561c98db3a04c09",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-hamiltonian",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real parameter",
+    "symbol": "\\beta",
+    "unit": ""
+   },
+   {
+    "convention": "signed convention $\\tr(\\psi P)$, phase-free Pauli labels, global phases irrelevant",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+      "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "multiset of $4^n$ reals in $[-1,1]$ indexed by $\\mathcal{P}_n$",
+    "symbol": "{\\rm Spec}(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "Pauli operators taken modulo phase when used as labels",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+      "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "phase-free $n$-qubit Pauli strings $\\mathcal{P}_1^{\\otimes n}$, $|\\mathcal{P}_n|=4^n$",
+    "symbol": "\\mathcal{P}_n",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathbb{R}$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   },
+   {
+    "domain": "pure states in $\\mathcal{H}_n$",
+    "kind": "FORALL",
+    "variable": "\\psi"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+    "record_id": "claim:opus5-2608.14798v1/c07",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fbe241d630ac38e9c449734a499f7f993bf9a611d9c72f2cd561c98db3a04c09",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-hamiltonian",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+    "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m07",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

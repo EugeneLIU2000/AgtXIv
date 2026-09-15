@@ -1,0 +1,96 @@
+{
+ "contract_version": "0.1.0",
+ "task_id": "task.opus5-v11-2608.14798v1.r1-source",
+ "agent": "paper",
+ "operation": "paper.extract",
+ "brief": "Locate every assertion-bearing range of the supplied TeX and record the document structure. Read the file end to end in a fixed order. Give byte positions for the host to verify against the actual bytes; do not compute hashes by hand. Record what was not read rather than omitting it.",
+ "target_refs": [
+  {
+   "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+   "record_id": "source:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:8f32940791b2b1c158a5d43fb6c9eb4680c6c396b4f7f1e97a8c8ce4dc64b388"
+  }
+ ],
+ "input_refs": [
+  {
+   "record_type": "agtxiv.v3.authority-policy/0.0.0",
+   "record_id": "policy:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:7e87e0303539776a304b68e3c1b34ae6e4ca6a0a84e9ba49d2c0f0d35730ff0c"
+  },
+  {
+   "record_type": "agtxiv.v3.processing-profile/0.0.0",
+   "record_id": "profile:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:b8afc7e43ac4ce792dc85eaf4a2c58c1c48a7309efe739a68e5ccf20deaafd43"
+  },
+  {
+   "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+   "record_id": "source:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:8f32940791b2b1c158a5d43fb6c9eb4680c6c396b4f7f1e97a8c8ce4dc64b388"
+  },
+  {
+   "record_type": "agtxiv.v3.agentization-plan/0.0.0",
+   "record_id": "plan:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:a0b8298f22a8b5926aa4dc3122c4c447092ee438eeea0a6db0296d7c0eb5b2ea"
+  }
+ ],
+ "input_artifacts": [
+  {
+   "artifact_id": "artifact:pauli-spectrum-tex",
+   "sha256": "sha256:0c9a572b67f0c2d3ad511d3cbbfeb612879e39dba18e3e7ffcdaac8dd8408b6c",
+   "byte_size": 207034,
+   "media_type": "text/x-tex",
+   "path_hint": "Pauli_Spectrum.tex"
+  },
+  {
+   "artifact_id": "artifact:spec-agent-md",
+   "sha256": "sha256:ef74821572028d428a4894143ba893ae74d081f8ca94a868f647ade2f7f36c57",
+   "byte_size": 10613,
+   "media_type": "text/markdown",
+   "path_hint": "schema v0.1/Paper Agent/AGENT.md"
+  },
+  {
+   "artifact_id": "artifact:spec-interface-md",
+   "sha256": "sha256:8045d3b6c54d737466bbc4377d6aa93d2cd17dbe61abd72388faa82cd473a7df",
+   "byte_size": 10652,
+   "media_type": "text/markdown",
+   "path_hint": "schema v0.1/Paper Agent/INTERFACE.md"
+  },
+  {
+   "artifact_id": "artifact:spec-conformance-md",
+   "sha256": "sha256:1d85a4c31d91a7fc459bdf47e81ed4cc73ed91eacd66aadd6593c615c4cfc6b2",
+   "byte_size": 10257,
+   "media_type": "text/markdown",
+   "path_hint": "schema v0.1/Paper Agent/CONFORMANCE.md"
+  },
+  {
+   "artifact_id": "artifact:spec-extraction-draft-schema-json",
+   "sha256": "sha256:a98edb7b9836db7eabc3886dfffa0b36cb8b45eb8b7f1097a5f2626e2457c497",
+   "byte_size": 5565,
+   "media_type": "application/json",
+   "path_hint": "schema v0.1/Paper Agent/extraction-draft.schema.json"
+  }
+ ],
+ "depends_on": [],
+ "expected_record_types": [
+  "source-span",
+  "paper-structure"
+ ],
+ "limits": {
+  "max_attempts": 3,
+  "max_seconds": 86400,
+  "max_cost_units": 0,
+  "no_progress_limit": 2
+ },
+ "acceptance": "DELIVERY",
+ "exclusions": [],
+ "capabilities": [
+  "records.read",
+  "source.read",
+  "candidates.propose"
+ ]
+}

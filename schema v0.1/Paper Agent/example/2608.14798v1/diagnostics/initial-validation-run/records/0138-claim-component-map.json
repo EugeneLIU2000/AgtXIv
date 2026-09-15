@@ -1,0 +1,121 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:c8a54574e18ff63a5f440e6057a5fd8bd8c3c67baa6d3513b488853ea51fd2b6",
+      "record_id": "example:2608.14798v1-claim-compressible-concentration",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:79bbd90c68860308a4eb0d88c734d7e1f0be7cb2530562424c7286db9004654b",
+      "record_id": "example:2608.14798v1-semantics-compressible-concentration",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:c8a54574e18ff63a5f440e6057a5fd8bd8c3c67baa6d3513b488853ea51fd2b6",
+      "record_id": "example:2608.14798v1-claim-compressible-concentration",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:compressible-concentration",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:91c2cedc3bc20b388dd4be7cd53f3a936a3bbd16e2b5473afca27f4cb3400c0d",
+            "record_id": "example:2608.14798v1-span-653-660",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:25a308ffd3cdfee38ecfb5cc4aa7381b6ddd9dfc0f4c4f613213ed40ec561bbc",
+            "record_id": "example:2608.14798v1-span-993-997",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:697b13ae683bda2c613dd7ea0b1c4be7908dd98ce0a3baaa10acfa3e1f107d66",
+            "record_id": "example:2608.14798v1-span-1012-1022",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The proof uses nu-qubit inputs while retaining the subscript n on L_n; it is not replaced by L_nu here.; The probability measure, metric, tail exponent, and deviation normalization are not fully specified within the lemma.; The surrounding exponentially-close and self-averaging descriptions have no explicit absolute or relative error scale here.; Insufficient detail is supplied for extracting the full concentration statement as a complete MathClaim.; Supplementary material was not read; body-versus-appendix consistency is unassessed.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:79bbd90c68860308a4eb0d88c734d7e1f0be7cb2530562424c7286db9004654b",
+            "record_id": "example:2608.14798v1-semantics-compressible-concentration",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:91c2cedc3bc20b388dd4be7cd53f3a936a3bbd16e2b5473afca27f4cb3400c0d",
+          "record_id": "example:2608.14798v1-span-653-660",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:25a308ffd3cdfee38ecfb5cc4aa7381b6ddd9dfc0f4c4f613213ed40ec561bbc",
+          "record_id": "example:2608.14798v1-span-993-997",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:697b13ae683bda2c613dd7ea0b1c4be7908dd98ce0a3baaa10acfa3e1f107d66",
+          "record_id": "example:2608.14798v1-span-1012-1022",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:c8a54574e18ff63a5f440e6057a5fd8bd8c3c67baa6d3513b488853ea51fd2b6",
+          "record_id": "example:2608.14798v1-claim-compressible-concentration",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-map-compressible-concentration",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:e60f10d9e59c4a8d9251b483cc529e5fa4df1be6f3115ed3870dd74cbb4f8abf"
+}

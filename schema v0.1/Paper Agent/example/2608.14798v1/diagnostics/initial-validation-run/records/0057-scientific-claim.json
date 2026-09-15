@@ -1,0 +1,126 @@
+{
+  "created_at": "2026-09-13T16:53:37.570414Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:bed0448ba1f9782903c9b3845c9fb8e93c172144a699557e04d0a9b0f967d018",
+      "record_id": "example:2608.14798v1-source",
+      "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+      "record_id": "example:2608.14798v1-span-289-303",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:58f456c5f62808ed7e77ffe840d2805b4be5c25f0521b90cd792bd25630bce37",
+      "record_id": "example:2608.14798v1-span-653-671",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "attribution": "William E. Salazar, Gaurav Saxena, Jack S. Baker, Leong Chuan Kwek, Thi Ha Kyaw; arXiv:2608.14798v1. Author assertion, not independent endorsement.",
+    "comparison_baseline": "See source-specific comparison in the statement and conditions; no independent prior-knowledge baseline was searched.",
+    "components": [
+      {
+        "component_id": "component:lipschitz",
+        "role": "CONCLUSION",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+            "record_id": "example:2608.14798v1-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:58f456c5f62808ed7e77ffe840d2805b4be5c25f0521b90cd792bd25630bce37",
+            "record_id": "example:2608.14798v1-span-653-671",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "text": "The SPF difference for two pure n-qubit states is bounded by an explicit coefficient times the trace norm of the projector difference."
+      }
+    ],
+    "conditions": [
+      {
+        "condition_id": "condition:lipschitz-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+            "record_id": "example:2608.14798v1-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:58f456c5f62808ed7e77ffe840d2805b4be5c25f0521b90cd792bd25630bce37",
+            "record_id": "example:2608.14798v1-span-653-671",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi and phi denote normalized pure-state projectors on the same n-qubit space."
+      },
+      {
+        "condition_id": "condition:lipschitz-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+            "record_id": "example:2608.14798v1-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:58f456c5f62808ed7e77ffe840d2805b4be5c25f0521b90cd792bd25630bce37",
+            "record_id": "example:2608.14798v1-span-653-671",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "beta is real; d=2^n; ||.||_1 is the trace norm, not an independently renormalized trace distance."
+      }
+    ],
+    "modality": "ASSERTED",
+    "source_span_refs": [
+      {
+        "content_hash": "sha256:7e985584ad2d42379bdcfada087a01e59f06c8ec912ddc9250f64860c4352be9",
+        "record_id": "example:2608.14798v1-span-289-303",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:58f456c5f62808ed7e77ffe840d2805b4be5c25f0521b90cd792bd25630bce37",
+        "record_id": "example:2608.14798v1-span-653-671",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ],
+    "statement": "The SPF difference for two pure n-qubit states is bounded by an explicit coefficient times the trace norm of the projector difference.",
+    "system": "See claim-specific conditions and objects; pure-state default does not override explicit ensemble, mixed-state or channel scope."
+  },
+  "policy_ref": {
+    "content_hash": "sha256:207da1ff2af96bd6130a40842d6528403a4b91ee0845619358cf443522848360",
+    "record_id": "example:2608.14798v1-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-claim-lipschitz",
+  "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:0a672a64bd3af1bd4a5666d63d16f65bdb48d59889f2e0e47ec6aae71eb78462"
+}

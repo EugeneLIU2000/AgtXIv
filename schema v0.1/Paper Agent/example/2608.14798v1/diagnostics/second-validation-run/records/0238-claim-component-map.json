@@ -1,0 +1,152 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:11f294347d5ded5907c7aeae8a117fb718a6d963bb575115db1188227d6f6ce9",
+      "record_id": "example:2608.14798v1-db635458e365-claim-sampling-qualifications",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:509a9f465c21078f54b88fe709b3a2a14ecce70833209a241d5355060c3887a1",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-sampling-qualifications",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:11f294347d5ded5907c7aeae8a117fb718a6d963bb575115db1188227d6f6ce9",
+      "record_id": "example:2608.14798v1-db635458e365-claim-sampling-qualifications",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:sampling-qualifications",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:d86960ecac9be6cefa6c3b51556e4dbaaea857f309b4d1800acc4a3113bf8ffb",
+            "record_id": "example:2608.14798v1-db635458e365-span-1603-1603",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:606ae10f868eb77d1b255bad943e6b287f8aabbfa1a9d4ab73b2f085ac2aee8a",
+            "record_id": "example:2608.14798v1-db635458e365-span-2089-2188",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:59155318187f414289795af5457503389da2b5e5ea13f99284410e27f9f0af31",
+            "record_id": "example:2608.14798v1-db635458e365-span-2192-2231",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The discussion describes uniform-cost additive estimation of the partition function; the supplement explicitly estimates Z_beta/d_n and retains dimension dependence in Delta. No blanket unnormalized full-function accuracy guarantee is inferred.; The algorithm's preparation of psi* is an additional access assumption; its implementation cost is not accounted for in the stated classical runtime.; The defined moment vector starts with normalized sum x^2, whereas the Bell-sampled algorithm stores products after two and more additional Pauli measurements. The correspondence between this indexing and the claimed unbiased vector is not explained in the read text; it is not repaired.; The O(kn) statement describes a single run; total repeated-run time, state copies and choosing k to meet epsilon>Delta are separate resources.; The full-function display lacks the absolute value present in the truncated-estimator bound; it is not silently upgraded to a two-sided statement.; The earlier main-text sampling theorem and the cited Bell-sampling paper were not read or verified; no sampling experiment or TeX execution was performed.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:509a9f465c21078f54b88fe709b3a2a14ecce70833209a241d5355060c3887a1",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-sampling-qualifications",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:d86960ecac9be6cefa6c3b51556e4dbaaea857f309b4d1800acc4a3113bf8ffb",
+          "record_id": "example:2608.14798v1-db635458e365-span-1603-1603",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:606ae10f868eb77d1b255bad943e6b287f8aabbfa1a9d4ab73b2f085ac2aee8a",
+          "record_id": "example:2608.14798v1-db635458e365-span-2089-2188",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:59155318187f414289795af5457503389da2b5e5ea13f99284410e27f9f0af31",
+          "record_id": "example:2608.14798v1-db635458e365-span-2192-2231",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:11f294347d5ded5907c7aeae8a117fb718a6d963bb575115db1188227d6f6ce9",
+          "record_id": "example:2608.14798v1-db635458e365-claim-sampling-qualifications",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:11f294347d5ded5907c7aeae8a117fb718a6d963bb575115db1188227d6f6ce9",
+        "record_id": "example:2608.14798v1-db635458e365-claim-sampling-qualifications",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:509a9f465c21078f54b88fe709b3a2a14ecce70833209a241d5355060c3887a1",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-sampling-qualifications",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:d86960ecac9be6cefa6c3b51556e4dbaaea857f309b4d1800acc4a3113bf8ffb",
+        "record_id": "example:2608.14798v1-db635458e365-span-1603-1603",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:606ae10f868eb77d1b255bad943e6b287f8aabbfa1a9d4ab73b2f085ac2aee8a",
+        "record_id": "example:2608.14798v1-db635458e365-span-2089-2188",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:59155318187f414289795af5457503389da2b5e5ea13f99284410e27f9f0af31",
+        "record_id": "example:2608.14798v1-db635458e365-span-2192-2231",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-sampling-qualifications",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:0535b345184126e8a3c048d5c257b268e86a2984624e8fd5efe2eb24d4cad93f"
+}

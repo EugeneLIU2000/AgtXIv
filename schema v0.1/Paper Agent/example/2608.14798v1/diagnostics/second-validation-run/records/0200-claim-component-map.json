@@ -1,0 +1,170 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:c4d87995fade6cbf65a348a94a861ae419cee2631d2e4c934fef3cbe4576b888",
+      "record_id": "example:2608.14798v1-db635458e365-claim-fidelity-witness",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:a0093490df5acd729a1d97c59300010afc3fdf67f193ae4ccc0110add0596ff1",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-fidelity-witness",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:c4d87995fade6cbf65a348a94a861ae419cee2631d2e4c934fef3cbe4576b888",
+      "record_id": "example:2608.14798v1-db635458e365-claim-fidelity-witness",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:fidelity-witness",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:e4a41506dc292492b8f669307fb8dfc1f76cfca9b91c028ddd4eea5f76222a20",
+            "record_id": "example:2608.14798v1-db635458e365-span-1353-1387",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:f26ecb205d02afc5df76f16f3f6fc03a51eaec260d3faffae4b4021cb90a4a73",
+            "record_id": "example:2608.14798v1-db635458e365-span-1390-1429",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:024cb9480332927f172f3258bf2b8a29d0753345b204226b6517c246058b1481",
+            "record_id": "example:2608.14798v1-db635458e365-span-1610-1612",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:9596f1a5d9eec18434bfc2f35b53b75bdafc136c59b79697ee8851ebd6186ec4",
+            "record_id": "example:2608.14798v1-db635458e365-span-2665-2678",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The beta=0 expression is singular as printed; no endpoint convention is supplied.; At epsilon_star=epsilon, the upper-bound equality is not explicitly excluded, although the task allows fidelity equal to 1-epsilon and the algorithm prints exclusion. The source comparison is retained.; An upper-bound witness does not supply a positive existence decision when exclusion fails; the prose describing an answer to the task is stronger than the displayed one-sided algorithm.; The single-copy substitution in the tensor-power example is justified only by work being nondecreasing under adding factors; no monotonicity analysis of the composite function W*2^(-W) is supplied there.; The source defines extent using the minimum coefficient l1 norm and invokes extent/fidelity and approximate-rank relations without reconciling normalization conventions; no replacement definition is inserted.; The discussion claims a lower bound on simulation cost, but the displayed approximate-rank relation is an upper bound in terms of extent. A direct simulation-cost lower-bound statement is not supplied.; The underlying logarithm constants, cited external results, numerical maximization and supplementary plots were not verified.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:a0093490df5acd729a1d97c59300010afc3fdf67f193ae4ccc0110add0596ff1",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-fidelity-witness",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:e4a41506dc292492b8f669307fb8dfc1f76cfca9b91c028ddd4eea5f76222a20",
+          "record_id": "example:2608.14798v1-db635458e365-span-1353-1387",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:f26ecb205d02afc5df76f16f3f6fc03a51eaec260d3faffae4b4021cb90a4a73",
+          "record_id": "example:2608.14798v1-db635458e365-span-1390-1429",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:024cb9480332927f172f3258bf2b8a29d0753345b204226b6517c246058b1481",
+          "record_id": "example:2608.14798v1-db635458e365-span-1610-1612",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:9596f1a5d9eec18434bfc2f35b53b75bdafc136c59b79697ee8851ebd6186ec4",
+          "record_id": "example:2608.14798v1-db635458e365-span-2665-2678",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:c4d87995fade6cbf65a348a94a861ae419cee2631d2e4c934fef3cbe4576b888",
+          "record_id": "example:2608.14798v1-db635458e365-claim-fidelity-witness",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:c4d87995fade6cbf65a348a94a861ae419cee2631d2e4c934fef3cbe4576b888",
+        "record_id": "example:2608.14798v1-db635458e365-claim-fidelity-witness",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:a0093490df5acd729a1d97c59300010afc3fdf67f193ae4ccc0110add0596ff1",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-fidelity-witness",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:e4a41506dc292492b8f669307fb8dfc1f76cfca9b91c028ddd4eea5f76222a20",
+        "record_id": "example:2608.14798v1-db635458e365-span-1353-1387",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:f26ecb205d02afc5df76f16f3f6fc03a51eaec260d3faffae4b4021cb90a4a73",
+        "record_id": "example:2608.14798v1-db635458e365-span-1390-1429",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:024cb9480332927f172f3258bf2b8a29d0753345b204226b6517c246058b1481",
+        "record_id": "example:2608.14798v1-db635458e365-span-1610-1612",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:9596f1a5d9eec18434bfc2f35b53b75bdafc136c59b79697ee8851ebd6186ec4",
+        "record_id": "example:2608.14798v1-db635458e365-span-2665-2678",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-fidelity-witness",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:e70c1c62be316879b69c7904f1da377bc1601627930d7caa0864003319287138"
+}

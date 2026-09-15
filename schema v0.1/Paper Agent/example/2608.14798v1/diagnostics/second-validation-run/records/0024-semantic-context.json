@@ -1,0 +1,122 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:bd36ed7e859ae1cd459df30baee154fb5aa7e1f88af8ad6236065b0b25eacb4d",
+      "record_id": "example:2608.14798v1-db635458e365-claim-kernel-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:6e9e6003e7aac66b1dbae92d019bfa2719ff8f0feb10a79b152dbe20e634c8ec",
+      "record_id": "example:2608.14798v1-db635458e365-span-289-335",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:6671523f55a0819f50d0f6bc656732d70df76272b26559b0347a4e72faa7c6d4",
+      "record_id": "example:2608.14798v1-db635458e365-span-374-432",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "EXACT; Not applicable: exact asserted bounds.",
+    "assumptions": [
+      {
+        "condition_id": "condition:kernel-bounds-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6e9e6003e7aac66b1dbae92d019bfa2719ff8f0feb10a79b152dbe20e634c8ec",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-335",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6671523f55a0819f50d0f6bc656732d70df76272b26559b0347a4e72faa7c6d4",
+            "record_id": "example:2608.14798v1-db635458e365-span-374-432",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi is a normalized pure n-qubit state."
+      },
+      {
+        "condition_id": "condition:kernel-bounds-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6e9e6003e7aac66b1dbae92d019bfa2719ff8f0feb10a79b152dbe20e634c8ec",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-335",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6671523f55a0819f50d0f6bc656732d70df76272b26559b0347a4e72faa7c6d4",
+            "record_id": "example:2608.14798v1-db635458e365-span-374-432",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "nu(psi)=n-log_2|Stab(psi)|; Ker_P(psi) contains phase-free Paulis with zero expectation."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:bd36ed7e859ae1cd459df30baee154fb5aa7e1f88af8ad6236065b0b25eacb4d",
+      "record_id": "example:2608.14798v1-db635458e365-claim-kernel-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "Not applicable: exact asserted bounds.",
+    "limitations": [
+      "The cited support/nullity comparison has not been retrieved or independently checked.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The authors bound the number of vanishing Pauli expectations of a pure state using its stabilizer nullity.",
+        "target_value": "2^n(2^n-2^{nu(psi)}) <= |Ker_P(psi)| <= 4^n-2^n.",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:6e9e6003e7aac66b1dbae92d019bfa2719ff8f0feb10a79b152dbe20e634c8ec",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-335",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:6671523f55a0819f50d0f6bc656732d70df76272b26559b0347a4e72faa7c6d4",
+            "record_id": "example:2608.14798v1-db635458e365-span-374-432",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "psi: pure n-qubit state; nu(psi): stabilizer nullity; Ker_P(psi): zero-expectation Pauli labels"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-semantics-kernel-bounds",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:64a846c7805d1c948216ab33f7a839aea79dd45207f3c037af65d76ddf8d0b47"
+}

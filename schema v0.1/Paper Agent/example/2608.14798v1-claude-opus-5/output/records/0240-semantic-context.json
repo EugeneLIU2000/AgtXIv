@@ -1,0 +1,98 @@
+{
+ "content_hash": "sha256:914acea71f0d4768b3d3f6e239b665ee8b64ceec46baf97cc344aa02c2b8e6f8",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:39ee28745eb0f2dccaf87d3dd088cc327d36fe2c89a0b4c684b26cae7d142b54",
+   "record_id": "claim:opus5-2608.14798v1/c29",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_regime": "finite one-particle basis (STO-3G, 6-31G); the paper states neither approaches the complete-basis-set limit",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "Jordan-Wigner encoding fixed; results not shown to be invariant under other fermion-to-qubit encodings"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "exact diagonalization within the chosen basis, so no method error beyond basis truncation"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:39ee28745eb0f2dccaf87d3dd088cc327d36fe2c89a0b4c684b26cae7d142b54",
+   "record_id": "claim:opus5-2608.14798v1/c29",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "error_bound": "none reported; no error bars, convergence study, or basis extrapolation",
+  "limitations": [
+   "Nonstabilizerness here is a property of an encoding, not of the molecule; the paper says so explicitly and declines physical conclusions.",
+   "Peak position, dissociation-limit magic and the ordering between two fixed geometries are all shown to be basis-set sensitive.",
+   "No data, code, geometries, or numerical tolerances are provided, so none of the curves is reproducible from the paper alone."
+  ],
+  "object_mapping": [
+   {
+    "dimension": "OBJECT",
+    "relation": "UNKNOWN",
+    "source_value": "$\\mathcal{W}_\\beta(\\psi(R))$, stabilizer work of the qubit-encoded ground state",
+    "target_value": "nonstabilizerness of the molecular electronic ground state at bond length $R$",
+    "witness_refs": []
+   },
+   {
+    "dimension": "CONVENTION",
+    "relation": "SOURCE_STRONGER",
+    "source_value": "Pauli spectrum of the Jordan-Wigner-encoded statevector",
+    "target_value": "a basis- and encoding-dependent representation of the molecular state, not an intrinsic molecular property",
+    "witness_refs": []
+   },
+   {
+    "dimension": "REGIME",
+    "relation": "TARGET_STRONGER",
+    "source_value": "finite minimal or split-valence basis, full CI within that basis",
+    "target_value": "the physical molecule at the complete-basis-set limit",
+    "witness_refs": []
+   }
+  ],
+  "observables": [
+   "ground-state energy $E(R)$ from full diagonalization",
+   "$\\mathcal{W}_\\beta(\\psi(R))$ evaluated from the full Pauli spectrum of the statevector",
+   "$M_{\\alpha=2}(\\psi(R))$"
+  ],
+  "physical_system": "molecular hydrogen along the H-H dissociation coordinate, mapped to 4 qubits (STO-3G) or 8 qubits (6-31G) by Jordan-Wigner"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:39ee28745eb0f2dccaf87d3dd088cc327d36fe2c89a0b4c684b26cae7d142b54",
+    "record_id": "claim:opus5-2608.14798v1/c29",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "semantics:opus5-2608.14798v1/sc29",
+ "record_type": "agtxiv.v3.semantic-context/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

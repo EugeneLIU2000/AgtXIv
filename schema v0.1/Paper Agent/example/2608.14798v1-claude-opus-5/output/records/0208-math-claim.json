@@ -1,0 +1,123 @@
+{
+ "content_hash": "sha256:a148401deb0c332f69de6e8c4b7106c169a7509e275efe38a7cdeca355627990",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+   "record_id": "claim:opus5-2608.14798v1/c22",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+   "record_id": "definition:opus5-2608.14798v1/free-ops",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$\\mathcal{O}\\in{\\rm CPTP}(A\\to B)$"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [],
+    "statement": "the output of $\\mathcal{O}$ on a stabilizer input is again a pure stabilizer state"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+   "record_id": "claim:opus5-2608.14798v1/c22",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:ptm"
+  ],
+  "conclusion": "For $\\mathcal{O}\\in\\mathcal{F}$ and all $\\phi\\in{\\rm STAB}_A$ with $p^{\\phi}_j=\\tr[\\phi P_j]$: $\\sum_j(R^{\\mathcal{O}}_{AB})_{i,j}p^{\\phi}_j\\in\\{0,\\pm1\\}$ and $\\sum_i|\\sum_j(R^{\\mathcal{O}}_{AB})_{i,j}p^{\\phi}_j|=d_B$, where $(R^{\\mathcal{O}}_{AB})_{i,j}=\\frac{1}{d_A}\\tr[P^B_i\\mathcal{O}(P^A_j)]$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+    "record_id": "definition:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "PTM normalized by $1/d_A$; the conditions are stated on stabilizer inputs only",
+  "objects": [
+   {
+    "convention": "purity-preserving restriction; the broader SPO class F_all is defined but not the class used for the pure-state monotone statements",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+      "record_id": "definition:opus5-2608.14798v1/free-ops",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "set of deterministic pure-state stabilizer protocols",
+    "symbol": "\\mathcal{F}",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathcal{F}$",
+    "kind": "FORALL",
+    "variable": "\\mathcal{O}"
+   },
+   {
+    "domain": "${\\rm STAB}_A$",
+    "kind": "FORALL",
+    "variable": "\\phi"
+   },
+   {
+    "domain": "Pauli indices of $\\mathcal{P}_B$ and $\\mathcal{P}_A$",
+    "kind": "FORALL",
+    "variable": "i,j"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:7bebc43630b56fa1f179faea084ae12f7955929d87415f9247f143c3d1b11e54",
+    "record_id": "claim:opus5-2608.14798v1/c22",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+    "record_id": "definition:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m22",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

@@ -1,0 +1,156 @@
+{
+ "content_hash": "sha256:91d37022d73a2f6560543ef9a35784fd09b6bf9ff1d6fecab0c041f49ebe2269",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:f5349678424a3da79337e45b5d345c6b11227c172414349bb21be76f7038a984",
+   "record_id": "claim:opus5-2608.14798v1/c28",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+   "record_id": "definition:opus5-2608.14798v1/free-ops",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [],
+    "statement": "$\\mathcal{W}_\\beta$ is monotone under $\\mathcal{F}$ (asserted in Sec. V; no proof in the paper)"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "subadditivity of $\\mathcal{W}_\\beta$ (Theorem, resting on Lemma (cSPF supermultiplicativity))"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:f5349678424a3da79337e45b5d345c6b11227c172414349bb21be76f7038a984",
+   "record_id": "claim:opus5-2608.14798v1/c28",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:bound",
+   "comp:tcost"
+  ],
+  "conclusion": "If $\\psi^{\\otimes n}\\to\\phi^{\\otimes m}$ under $\\mathcal{F}$ then $\\forall\\beta\\neq0$: $\\mathcal{W}_{\\beta}(\\phi^{\\otimes m})\\leq\\mathcal{W}_{\\beta}(\\psi^{\\otimes n})\\leq n\\,\\mathcal{W}_{\\beta}(\\psi)$; consequently $t\\geq\\sup_{\\beta\\neq0}\\min\\{t':\\mathcal{W}_{\\beta}(T^{\\otimes t'})\\geq\\mathcal{W}_{\\beta}(\\phi)\\}$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+    "record_id": "definition:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "conversion is exact and deterministic; no error tolerance, catalysis or asymptotic rate is involved",
+  "objects": [
+   {
+    "convention": "free-energy difference of the Pauli gas referenced to the unique stabilizer value; $\\log$ base 2",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real-valued functional of a pure state for each real beta",
+    "symbol": "\\mathcal{W}_\\beta(\\psi)",
+    "unit": "bits"
+   },
+   {
+    "convention": "purity-preserving restriction; the broader SPO class F_all is defined but not the class used for the pure-state monotone statements",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+      "record_id": "definition:opus5-2608.14798v1/free-ops",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "set of deterministic pure-state stabilizer protocols",
+    "symbol": "\\mathcal{F}",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathbb{R}\\setminus\\{0\\}$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   },
+   {
+    "domain": "an operation in $\\mathcal{F}$ with $\\Lambda(\\psi^{\\otimes n})=\\phi^{\\otimes m}$ (the hypothesis of the theorem)",
+    "kind": "EXISTS",
+    "variable": "\\Lambda"
+   },
+   {
+    "domain": "positive integers",
+    "kind": "FORALL",
+    "variable": "n,m"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:f5349678424a3da79337e45b5d345c6b11227c172414349bb21be76f7038a984",
+    "record_id": "claim:opus5-2608.14798v1/c28",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ca78393034989fbb3506e02bf1963e93e318615f72c1e7bdf55d4e7e9061a385",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-work",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:92784c68239980beeb667514fca0851206bdb4abaf87974a34b9d54f8b5d0b9c",
+    "record_id": "definition:opus5-2608.14798v1/free-ops",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m28",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

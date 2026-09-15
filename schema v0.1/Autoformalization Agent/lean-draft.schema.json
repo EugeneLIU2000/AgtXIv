@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/autoformalization/1.0/lean-draft.schema.json",
+  "title": "Lean source proposal and correspondence, not a formalization-attempt or check receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_version",
+    "packet_ref",
+    "files",
+    "declaration_map",
+    "records",
+    "open_items",
+    "follow_up_requests"
+  ],
+  "properties": {
+    "draft_version": {
+      "const": "1.0"
+    },
+    "packet_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "agtxiv.v3.formalization-packet/0.0.0"
+            }
+          }
+        }
+      ]
+    },
+    "files": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "content"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1048576
+          }
+        }
+      }
+    },
+    "declaration_map": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "declaration",
+          "role",
+          "code_path",
+          "local_name",
+          "node_ref",
+          "inference_ref"
+        ],
+        "properties": {
+          "declaration": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "role": {
+            "enum": [
+              "TARGET",
+              "STEP",
+              "HELPER"
+            ]
+          },
+          "code_path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "local_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "node_ref": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "const": "agtxiv.v3.argument-node/0.0.0"
+                  }
+                }
+              }
+            ]
+          },
+          "inference_ref": {
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+                  },
+                  {
+                    "properties": {
+                      "record_type": {
+                        "const": "agtxiv.v3.inference-step/0.0.0"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_type",
+          "payload"
+        ],
+        "properties": {
+          "record_type": {
+            "const": "agtxiv.v3.frontier-item/0.0.0"
+          },
+          "payload": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/frontier-item.schema.json#/properties/payload"
+          }
+        }
+      }
+    },
+    "open_items": {
+      "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/Strings"
+    },
+    "follow_up_requests": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json#/$defs/FollowUp"
+      }
+    }
+  }
+}

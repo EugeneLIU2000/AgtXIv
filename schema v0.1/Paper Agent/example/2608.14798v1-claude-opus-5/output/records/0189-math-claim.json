@@ -1,0 +1,150 @@
+{
+ "content_hash": "sha256:eaa2cfbc61f6be0df75f37fdd055d46742529a638e437c1004da7c2b6af16825",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:b7bc68ceda25fc49e37e5acfeac22bba1b3cc65c1f68c7ef022199b10b8fa42d",
+   "record_id": "claim:opus5-2608.14798v1/c18",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:5f73a4eab43c4aa44fb0c8af771c46142c21a7cd2b1029cb4c484f5962a1e6c2",
+   "record_id": "definition:opus5-2608.14798v1/pauli-density",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$U$ is Haar-distributed on $U(2^n)$ and $\\ket{\\psi}=U\\ket{0}^{\\otimes n}$"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "the averaged Pauli-spectrum density of Haar states is the imported Proposition attributed to Turkeshi et al. (2025)"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:b7bc68ceda25fc49e37e5acfeac22bba1b3cc65c1f68c7ef022199b10b8fa42d",
+   "record_id": "claim:opus5-2608.14798v1/c18",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:exact"
+  ],
+  "conclusion": "$\\mathcal{Z}_{\\beta}({\\rm Haar}_{n})=e^{-\\beta}\\left[\\cosh\\beta+(d_{n}^{2}-1)\\Gamma\\!\\left(\\tfrac{d_{n}+1}{2}\\right)\\left(\\tfrac{2}{\\beta}\\right)^{\\frac{d_{n}-1}{2}}I_{\\frac{d_{n}-1}{2}}(\\beta)\\right]$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:5f73a4eab43c4aa44fb0c8af771c46142c21a7cd2b1029cb4c484f5962a1e6c2",
+    "record_id": "definition:opus5-2608.14798v1/pauli-density",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "$I_\\nu$ is the modified Bessel function of the first kind; the expression is the ensemble mean of $\\mathcal{Z}_\\beta$, and by Jensen's inequality it is NOT the exponential of the mean free energy",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "uniform weight 1/d_n^2 per spectrum entry, distinct from the purity-weighted distribution Xi",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:5f73a4eab43c4aa44fb0c8af771c46142c21a7cd2b1029cb4c484f5962a1e6c2",
+      "record_id": "definition:opus5-2608.14798v1/pauli-density",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "point (atomic) measure on [-1,1]",
+    "symbol": "d\\mu_{\\ket{\\psi}}(x)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "positive integers, $d_n=2^n$",
+    "kind": "FORALL",
+    "variable": "n"
+   },
+   {
+    "domain": "$[0,\\infty)$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:b7bc68ceda25fc49e37e5acfeac22bba1b3cc65c1f68c7ef022199b10b8fa42d",
+    "record_id": "claim:opus5-2608.14798v1/c18",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:5f73a4eab43c4aa44fb0c8af771c46142c21a7cd2b1029cb4c484f5962a1e6c2",
+    "record_id": "definition:opus5-2608.14798v1/pauli-density",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m18",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

@@ -1,0 +1,182 @@
+{
+ "content_hash": "sha256:f1ddb0833766393d1ec2ce5cdf553020b7d329cd52628cb8f22585e1a239184c",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:7cd993a32f591f185597f52ce99eb77940e3c45694af264a43f1467d6b147280",
+   "record_id": "claim:opus5-2608.14798v1/c31",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:c9350748ccb74eff7a66acb50975108a9da662db562927fd0db7fd9902b9371a",
+   "record_id": "definition:opus5-2608.14798v1/mixed-spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:fa1a1e525b89fb2a1ab20be4fba427b8365625d015f0323cd0cc98297a2943f8",
+   "record_id": "definition:opus5-2608.14798v1/channel-spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$\\mathcal{Z}_\\beta$ on pure states is maximized exactly on ${\\rm STAB}$ (Theorem, state-independent bounds)"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:7cd993a32f591f185597f52ce99eb77940e3c45694af264a43f1467d6b147280",
+   "record_id": "claim:opus5-2608.14798v1/c31",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:mixed",
+   "comp:faithful"
+  ],
+  "conclusion": "$\\mathcal{Z}_{\\beta}(\\rho):=\\sup_{\\{p_i,\\phi_i\\}}\\sum_{i\\in[m]}p_i\\,\\mathcal{Z}_{\\beta}(\\phi_i)$, and $\\mathcal{Z}_{\\beta}(\\rho)=\\mathcal{Z}_{\\beta}({\\rm STAB})$ iff $\\rho$ admits a decomposition into pure stabilizer states.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:c9350748ccb74eff7a66acb50975108a9da662db562927fd0db7fd9902b9371a",
+    "record_id": "definition:opus5-2608.14798v1/mixed-spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fa1a1e525b89fb2a1ab20be4fba427b8365625d015f0323cd0cc98297a2943f8",
+    "record_id": "definition:opus5-2608.14798v1/channel-spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "the Choi matrix is normalized, i.e. $\\tilde J=({\\rm id}\\otimes\\mathcal{N})(\\Phi^+)$ with $\\Phi^+$ normalized",
+  "objects": [
+   {
+    "convention": "supremum (not infimum) because the SPF is maximized by stabilizer states",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:c9350748ccb74eff7a66acb50975108a9da662db562927fd0db7fd9902b9371a",
+      "record_id": "definition:opus5-2608.14798v1/mixed-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{D}_A\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\rho)",
+    "unit": ""
+   },
+   {
+    "convention": "normalized Choi-Jamiolkowski representation; monotonicity of the induced work is explicitly left open",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:fa1a1e525b89fb2a1ab20be4fba427b8365625d015f0323cd0cc98297a2943f8",
+      "record_id": "definition:opus5-2608.14798v1/channel-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function on CPTP maps",
+    "symbol": "\\mathcal{Z}_\\beta(\\mathcal{N})",
+    "unit": ""
+   },
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathcal{D}(\\mathcal{H}_A)$",
+    "kind": "FORALL",
+    "variable": "\\rho"
+   },
+   {
+    "domain": "range not stated",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   },
+   {
+    "domain": "pure-state decompositions of $\\rho$ attaining the supremum (attainment is not discussed)",
+    "kind": "EXISTS",
+    "variable": "\\{p_i,\\phi_i\\}"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:7cd993a32f591f185597f52ce99eb77940e3c45694af264a43f1467d6b147280",
+    "record_id": "claim:opus5-2608.14798v1/c31",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:c9350748ccb74eff7a66acb50975108a9da662db562927fd0db7fd9902b9371a",
+    "record_id": "definition:opus5-2608.14798v1/mixed-spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fa1a1e525b89fb2a1ab20be4fba427b8365625d015f0323cd0cc98297a2943f8",
+    "record_id": "definition:opus5-2608.14798v1/channel-spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m31",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

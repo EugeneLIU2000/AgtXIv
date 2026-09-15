@@ -1,0 +1,78 @@
+{
+ "mode": "draft",
+ "record_count": 98,
+ "paper_record_count": 98,
+ "paper_lint_record_count": 98,
+ "layers": {
+  "draft_schema": {
+   "checked": true,
+   "passed": true,
+   "reason": "Draft wrapper and referenced payload schemas only; full-record root constraints are not checked."
+  },
+  "follow_up_operations": {
+   "checked": true,
+   "passed": true,
+   "reason": "Registered agent/operation pairing only; required operation inputs remain scheduler work."
+  },
+  "task_contract": {
+   "checked": true,
+   "passed": true,
+   "reason": "Existing Contracts.task checks, restricted to paper.extract."
+  },
+  "task_output_types": {
+   "checked": true,
+   "passed": true,
+   "reason": "Every output family must be declared. Missing families are reported, not treated as a Result outcome."
+  },
+  "task_record_refs": {
+   "checked": true,
+   "passed": true,
+   "reason": "All nested references, including follow-up requests; artifact path_hint is not identity. Actual visibility is not checked."
+  },
+  "task_artifact_refs": {
+   "checked": true,
+   "passed": true,
+   "reason": "All nested references, including follow-up requests; artifact path_hint is not identity. Actual visibility is not checked."
+  },
+  "record_shape_and_hash": {
+   "checked": false,
+   "passed": null,
+   "reason": "Drafts have no business envelope or record hash."
+  },
+  "paper_lint": {
+   "checked": true,
+   "passed": true,
+   "reason": "Only the listed Paper filling rules; structurally invalid records are skipped. No semantic judgment."
+  },
+  "record_set": {
+   "checked": false,
+   "passed": null,
+   "reason": "No RecordSet validation, reference closure or cross-record checks."
+  },
+  "source_bytes": {
+   "checked": false,
+   "passed": null,
+   "reason": "No source bytes are opened or verified; catalog membership is not provenance proof."
+  },
+  "execution_identity": {
+   "checked": false,
+   "passed": null,
+   "reason": "Actual visibility, producer identity and independent review require the host."
+  },
+  "delivery": {
+   "checked": false,
+   "passed": null,
+   "reason": "A draft is not a Result; missing output families and open items do not determine outcome."
+  },
+  "scientific_correctness": {
+   "checked": false,
+   "passed": null,
+   "reason": "No semantic inference, claim merging or scientific assessment."
+  }
+ },
+ "missing_expected_record_types": [],
+ "error_count": 0,
+ "errors": [],
+ "errors_truncated": false,
+ "warnings": []
+}

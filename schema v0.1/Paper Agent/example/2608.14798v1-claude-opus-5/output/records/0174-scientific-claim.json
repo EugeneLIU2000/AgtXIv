@@ -1,0 +1,142 @@
+{
+ "content_hash": "sha256:e3bb08702f033d7e43c6f7a10fa2590208e462581544ec08898b3cb7d0af4270",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+   "record_id": "span:opus5-2608.14798v1/tstate",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:3b252be88dfa26e18b84a301d7ea5e4a3b1022f107cbccb534ecf98501462a1a",
+   "record_id": "span:opus5-2608.14798v1/ncopy",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "$\\mathcal{Z}_\\beta({\\rm STAB}_n)$",
+  "components": [
+   {
+    "component_id": "comp:t",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+      "record_id": "span:opus5-2608.14798v1/tstate",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Closed form for $\\mathcal{Z}_\\beta(\\ket{T}^{\\otimes n})$."
+   },
+   {
+    "component_id": "comp:general",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:3b252be88dfa26e18b84a301d7ea5e4a3b1022f107cbccb534ecf98501462a1a",
+      "record_id": "span:opus5-2608.14798v1/ncopy",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Closed form for $\\mathcal{Z}_\\beta(\\ket{\\psi}^{\\otimes n})$, arbitrary single-qubit $\\ket{\\psi}$."
+   },
+   {
+    "component_id": "comp:sep",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+      "record_id": "span:opus5-2608.14798v1/tstate",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{Z}_\\beta(\\ket{T}^{\\otimes n})<\\mathcal{Z}_\\beta({\\rm STAB}_n)$ for every $\\beta\\neq0$; equality only at $\\beta=0$."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:product",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+      "record_id": "span:opus5-2608.14798v1/tstate",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the state is a tensor power of a single-qubit pure state"
+   },
+   {
+    "condition_id": "cond:tvals",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+      "record_id": "span:opus5-2608.14798v1/tstate",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\braket{T|X|T}=\\braket{T|Y|T}=1/\\sqrt2$ and $\\braket{T|Z|T}=0$"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+    "record_id": "span:opus5-2608.14798v1/tstate",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:3b252be88dfa26e18b84a301d7ea5e4a3b1022f107cbccb534ecf98501462a1a",
+    "record_id": "span:opus5-2608.14798v1/ncopy",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Proposition: $\\mathcal{Z}_\\beta(\\ket{T}^{\\otimes n})=e^{-\\beta}[(4^n-3^n)+\\sum_{k=0}^{n}\\binom{n}{k}2^k\\cosh(\\beta2^{-k/2})]$. Theorem ($n$-copy SPF) generalizes this to $n$ copies of an arbitrary single-qubit pure state via $V_\\psi[\\vec n]=\\prod_{\\sigma}\\braket{\\sigma}^{n_\\sigma}$. At $\\beta=0$ the SPF is insensitive to magic ($\\mathcal{Z}_0=4^n$), while for every $\\beta\\neq0$ it separates $\\ket{T}^{\\otimes n}$ from stabilizer states.",
+  "system": "product states $\\bigotimes_{l=1}^{n}\\ket{\\psi_l}$ of single-qubit pure states; magic without entanglement across any cut"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:0234dbcc4f7c789473eb674b3ffd3fd980b165f11e74a43d70803d0a8df84ad9",
+    "record_id": "span:opus5-2608.14798v1/tstate",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:3b252be88dfa26e18b84a301d7ea5e4a3b1022f107cbccb534ecf98501462a1a",
+    "record_id": "span:opus5-2608.14798v1/ncopy",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c15",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

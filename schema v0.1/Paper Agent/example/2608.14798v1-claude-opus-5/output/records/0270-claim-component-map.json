@@ -1,0 +1,107 @@
+{
+ "content_hash": "sha256:ef1c70c6a973ad9cd36edbfdd1a0fdb5188bb6e54fdcd02e89c1f059a0e639e1",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:b0f8f5612e16f3594f8a19e47ee1d19b4bff054462ce1ae6a316aa40e29ae5d6",
+   "record_id": "claim:opus5-2608.14798v1/c36",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:facff71a87cdb6fe58a8e73c40b820a43d8485953bbb6369bc02e832606f41a0",
+   "record_id": "math:opus5-2608.14798v1/m36",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:b0f8f5612e16f3594f8a19e47ee1d19b4bff054462ce1ae6a316aa40e29ae5d6",
+   "record_id": "claim:opus5-2608.14798v1/c36",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:bound",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:facff71a87cdb6fe58a8e73c40b820a43d8485953bbb6369bc02e832606f41a0",
+      "record_id": "math:opus5-2608.14798v1/m36",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "No range of $\\epsilon$ is excluded even though $f_\\epsilon\\to\\infty$ as $\\epsilon\\to1$, and the bound is stated with $\\cosh(|\\beta|\\epsilon)$ while the theorem is restricted to $\\beta\\geq0$.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:nojensen",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The warning is recorded but never reconnected to the main-text use of ensemble-averaged SPFs as if they characterized individual states.",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:b0f8f5612e16f3594f8a19e47ee1d19b4bff054462ce1ae6a316aa40e29ae5d6",
+     "record_id": "claim:opus5-2608.14798v1/c36",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:b0f8f5612e16f3594f8a19e47ee1d19b4bff054462ce1ae6a316aa40e29ae5d6",
+    "record_id": "claim:opus5-2608.14798v1/c36",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:facff71a87cdb6fe58a8e73c40b820a43d8485953bbb6369bc02e832606f41a0",
+    "record_id": "math:opus5-2608.14798v1/m36",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c36",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/orchestration/0.1.0/common.schema.json",
+  "title": "Shared orchestration values, not scientific records",
+  "$defs": {
+    "Id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"},
+    "Text": {"type": "string", "minLength": 1, "maxLength": 8192},
+    "Hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$", "minLength": 71, "maxLength": 71},
+    "Time": {"type": "string", "format": "date-time", "pattern": "Z$", "maxLength": 40},
+    "RecordType": {"type": "string", "pattern": "^[a-z]+(-[a-z]+)*(?![\\s\\S])", "maxLength": 80},
+    "RecordRef": {"$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"},
+    "PrincipalId": {"$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer/properties/principal_id"},
+    "ArtifactRef": {"$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"},
+    "ArtifactRefs": {"type": "array", "maxItems": 10000, "uniqueItems": true, "items": {"$ref": "#/$defs/ArtifactRef"}},
+    "Refs": {"type": "array", "maxItems": 10000, "uniqueItems": true, "items": {"$ref": "#/$defs/RecordRef"}},
+    "RecordTypes": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/RecordType"}},
+    "Strings": {"type": "array", "maxItems": 1000, "uniqueItems": true, "items": {"$ref": "#/$defs/Text"}},
+    "Agent": {"enum": ["paper", "proof", "dependency", "formalization", "review", "delta", "reader", "planner", "utility"]},
+    "Gate": {"enum": ["DELIVERY", "EVIDENCE"]},
+    "Limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_attempts", "max_seconds", "max_cost_units", "no_progress_limit"],
+      "properties": {
+        "max_attempts": {"type": "integer", "minimum": 1, "maximum": 100},
+        "max_seconds": {"type": "integer", "minimum": 1, "maximum": 604800},
+        "max_cost_units": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "no_progress_limit": {"type": "integer", "minimum": 1, "maximum": 100}
+      }
+    },
+    "Dependency": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task_id", "gate"],
+      "properties": {"task_id": {"$ref": "#/$defs/Id"}, "gate": {"$ref": "#/$defs/Gate"}}
+    },
+    "FollowUp": {
+      "type": "object", "additionalProperties": false,
+      "required": ["agent", "operation", "input_refs", "reason"],
+      "properties": {
+        "agent": {"$ref": "#/$defs/Agent"}, "operation": {"$ref": "#/$defs/Id"},
+        "input_refs": {"$ref": "#/$defs/Refs"}, "reason": {"$ref": "#/$defs/Text"}
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/autoformalization/1.0/lamport-view.schema.json",
+  "title": "Lamport reading view of registered argument records; hierarchy is not inference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "view_version",
+    "argument_ref",
+    "proof_plan_ref",
+    "entries"
+  ],
+  "properties": {
+    "view_version": {
+      "const": "1.0"
+    },
+    "argument_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "agtxiv.v3.argument-snapshot/0.0.0"
+            }
+          }
+        }
+      ]
+    },
+    "proof_plan_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "agtxiv.v3.proof-plan/0.0.0"
+            }
+          }
+        }
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "parent_label",
+          "role",
+          "node_ref",
+          "inference_ref"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*(\\.[1-9][0-9]*)*$",
+            "maxLength": 512
+          },
+          "parent_label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[1-9][0-9]*(\\.[1-9][0-9]*)*$",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "role": {
+            "enum": [
+              "GOAL",
+              "STEP",
+              "QED"
+            ]
+          },
+          "node_ref": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "const": "agtxiv.v3.argument-node/0.0.0"
+                  }
+                }
+              }
+            ]
+          },
+          "inference_ref": {
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+                  },
+                  {
+                    "properties": {
+                      "record_type": {
+                        "const": "agtxiv.v3.inference-step/0.0.0"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

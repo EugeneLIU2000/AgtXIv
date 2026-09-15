@@ -1,0 +1,146 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:d493a37a4ad0c5f0a8c5d950adf9046fef89c3fb024b1d59945ed542da197937",
+      "record_id": "example:2608.14798v1-db635458e365-claim-doped-state-inference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+      "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+      "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "EXACT; No confidence level or failure-probability bound is given for tExtract; the individual-state formula is asserted without an approximation term.",
+    "assumptions": [
+      {
+        "condition_id": "condition:doped-state-inference-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+            "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+            "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "The preparation starts from an n-qubit stabilizer state and uses at most t non-Clifford gates, each acting on l=O(1) qubits."
+      },
+      {
+        "condition_id": "condition:doped-state-inference-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+            "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+            "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "The inference algorithm assumes access to the partition function and calls nuCertify."
+      },
+      {
+        "condition_id": "condition:doped-state-inference-2",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+            "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+            "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "The loop uses an upper limit t_max whose origin is not specified."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:d493a37a4ad0c5f0a8c5d950adf9046fef89c3fb024b1d59945ed542da197937",
+      "record_id": "example:2608.14798v1-db635458e365-claim-doped-state-inference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "No confidence level or failure-probability bound is given for tExtract; the individual-state formula is asserted without an approximation term.",
+    "limitations": [
+      "The corollary concerns an individual t-doped state, whereas the invoked theorem concerns a particular ensemble mean; no matching distribution on t-doped states is specified.",
+      "Line 1092 describes t as known while asking to find t.",
+      "The preceding nuCertify prints an answer and returns Void, but tExtract expects a Boolean result.",
+      "The loops omit nu=0 and t=0 and do not explicitly enforce nu<=n.",
+      "No derivation of t_max or statistical confidence level accompanies the interval wording.",
+      "The cited design and decoding results were not read, and no scientific or algorithmic verification was performed.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "The authors claim that a state formed using at most t bounded-size non-Clifford gates is nu-compressible for some nu<=2lt, assign it the compressible-ensemble partition-function formula, and propose extracting a lower bound on t. This is an unverified author-claim candidate.",
+        "target_value": "The authors state \\(\\nu\\leq2lt\\) and assign the SPF of a t-doped state to their \\(\\mathcal Z_\\beta(\\mathrm{Comp}_\\nu)\\) formula for some such nu. They describe a confidence interval \\(t\\in[t_{\\min},t_{\\max}]\\), while tExtract explicitly ensures only \\(t_{\\min}\\leq t\\) and returns the first candidate t whose inner nu loop is accepted.",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+            "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+            "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "t-doped states; Gate support size l; Stabilizer nullity nu; Compressible ensemble-average formula; tExtract and nuCertify algorithms"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-semantics-doped-state-inference",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:a1f540226a901beb5f78a6922d0b0425d3660dfb2d4ca86377c9c325613e68d9"
+}

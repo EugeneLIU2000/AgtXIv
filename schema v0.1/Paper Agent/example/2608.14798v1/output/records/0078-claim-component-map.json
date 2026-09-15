@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:58:13.901035Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:0695035b35d70172d345b8ef17f8adeeb744a48c7d9117a787a81f4cdbfc2e4a",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-product-powers",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:ef31745250428ef3bee84f04e528199affa3d7c87551ee5be9462d83baee6758",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-product-powers",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:0695035b35d70172d345b8ef17f8adeeb744a48c7d9117a787a81f4cdbfc2e4a",
+      "record_id": "example:2608.14798v1-dcd840ebd74b-claim-product-powers",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:product-powers",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:767865b3cfe806685aee256ac901d5d42c4187a25f3d345820e6aa1c8c27ca85",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-748-771",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:267dc75280640ce4235e7e594ce0a8ce40821f4f1a1cc508b27bbe6367dc221b",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-span-788-805",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The displayed multinomial sum does not explicitly give the range or the constraint n_x+n_y+n_z=w; its counting explanation suggests this constraint, but it has not been inserted into the formula.; Line 765 says all weight-k strings after line 761 excludes strings containing Z; the qualification is implicit.; The strict inequality does not explicitly exclude n=0.; No independent mathematical verification was performed.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:ef31745250428ef3bee84f04e528199affa3d7c87551ee5be9462d83baee6758",
+            "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-product-powers",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:767865b3cfe806685aee256ac901d5d42c4187a25f3d345820e6aa1c8c27ca85",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-748-771",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:267dc75280640ce4235e7e594ce0a8ce40821f4f1a1cc508b27bbe6367dc221b",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-span-788-805",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:0695035b35d70172d345b8ef17f8adeeb744a48c7d9117a787a81f4cdbfc2e4a",
+          "record_id": "example:2608.14798v1-dcd840ebd74b-claim-product-powers",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:b5581dd792f84f09bcb4dd065c3815bac913ba987e5c207c9af27e9ca9c60037",
+    "record_id": "example:2608.14798v1-dcd840ebd74b-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:0695035b35d70172d345b8ef17f8adeeb744a48c7d9117a787a81f4cdbfc2e4a",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-claim-product-powers",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:ef31745250428ef3bee84f04e528199affa3d7c87551ee5be9462d83baee6758",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-semantics-product-powers",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:767865b3cfe806685aee256ac901d5d42c4187a25f3d345820e6aa1c8c27ca85",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-748-771",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:267dc75280640ce4235e7e594ce0a8ce40821f4f1a1cc508b27bbe6367dc221b",
+        "record_id": "example:2608.14798v1-dcd840ebd74b-span-788-805",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-dcd840ebd74b-map-product-powers",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:ab47330d98c1f2babafc028997e32a69cede2fc7eebb8f5a23a8c38df1dcb56b"
+}

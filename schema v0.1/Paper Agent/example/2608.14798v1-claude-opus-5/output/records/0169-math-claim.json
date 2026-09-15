@@ -1,0 +1,181 @@
+{
+ "content_hash": "sha256:161bacd6793377edbbf864221fd6993aa3b591eb72877ff7a24611d7a31339b1",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:e70b99120bba246abaa260cfe325c8635d14cd17075530d2063901259f2c842a",
+   "record_id": "claim:opus5-2608.14798v1/c14",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+   "record_id": "definition:opus5-2608.14798v1/spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:02305e7d9e63f24d19bd2946de694aa90cfe2c9e35460401dab3fdb1b958949a",
+   "record_id": "definition:opus5-2608.14798v1/truncated-spf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "truncation floor $\\Delta(\\beta,k)=d_ne^{-\\beta}(\\cosh\\beta-\\sum_{l=0}^{k}\\beta^{2l}/(2l)!)$, which scales with $d_n=2^n$; the stated guarantee is vacuous unless $k$ is chosen large enough that $\\Delta(\\beta,k)<\\epsilon$, and the source does not give the resulting $k(n,\\beta,\\epsilon)$",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "each entry of the accumulated sign vector $\\mathbf{B}_k$ is $\\pm1$, giving $|X_\\alpha|\\leq\\cosh\\beta$ for Hoeffding"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "Bell sampling draws $P$ with probability $|\\langle P|\\eta\\rangle|^2$ and repeated eigenbasis measurements of that $P$ give unbiased even moments"
+   },
+   {
+    "condition_id": "assumption:a3",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "the error is additive on $d_n^{-1}\\mathcal{Z}$, and $\\Delta(\\beta,k)$ itself carries a factor $d_n=2^n$"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:e70b99120bba246abaa260cfe325c8635d14cd17075530d2063901259f2c842a",
+   "record_id": "claim:opus5-2608.14798v1/c14",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:samples",
+   "comp:full"
+  ],
+  "conclusion": "${\\rm Pr}\\left(\\left|\\hat{\\mathcal{Z}}^{(k)}_{\\beta}(\\psi)-\\mathcal{Z}^{(k)}_{\\beta}(\\psi)\\right|/d_{n}\\geq\\epsilon\\right)\\leq2\\exp\\left(-\\mathcal{N}\\epsilon^{2}e^{2\\beta}/(2\\cosh^{2}\\beta)\\right)$, and for $\\epsilon>\\Delta(\\beta,k)$ the same bound with $\\epsilon\\mapsto\\epsilon-\\Delta(\\beta,k)$ controls $(\\mathcal{Z}_{\\beta}(\\psi)-\\hat{\\mathcal{Z}}^{(k)}_{\\beta}(\\psi))/d_{n}$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:02305e7d9e63f24d19bd2946de694aa90cfe2c9e35460401dab3fdb1b958949a",
+    "record_id": "definition:opus5-2608.14798v1/truncated-spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "APPROXIMATE",
+  "normalization": "all guarantees are for $d_n^{-1}\\mathcal{Z}$; since $\\mathcal{Z}_\\beta\\sim d_n^2$, a constant additive error on $d_n^{-1}\\mathcal{Z}$ is a relative error of order $2^{-n}$ on $\\mathcal{Z}$ but does NOT bound $\\mathcal{W}_\\beta$ without further argument",
+  "objects": [
+   {
+    "convention": "sum over the full multiset ${\\rm Spec}(\\psi)$ including the identity Pauli; $\\mathcal{Z}_0=d_n^2$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+      "record_id": "definition:opus5-2608.14798v1/spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}_\\beta(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$\\mathbf{m}_k=(d_n^{-1}\\sum x^2,\\dots,d_n^{-1}\\sum x^{2k})$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:02305e7d9e63f24d19bd2946de694aa90cfe2c9e35460401dab3fdb1b958949a",
+      "record_id": "definition:opus5-2608.14798v1/truncated-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "vector of even normalized Pauli-spectrum moments",
+    "symbol": "\\mathbf{m}_k(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "$\\Delta(\\beta,k)=d_n e^{-\\beta}(\\cosh\\beta-\\sum_{l=0}^{k}\\beta^{2l}/(2l)!)$; carries an explicit factor $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:02305e7d9e63f24d19bd2946de694aa90cfe2c9e35460401dab3fdb1b958949a",
+      "record_id": "definition:opus5-2608.14798v1/truncated-spf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "non-negative real truncation floor",
+    "symbol": "\\Delta(\\beta,k)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "reals with $\\epsilon>\\Delta(\\beta,k)$ for the full-SPF statement, $\\epsilon>0$ for the truncation statement",
+    "kind": "FORALL",
+    "variable": "\\epsilon"
+   },
+   {
+    "domain": "$(0,1)$",
+    "kind": "FORALL",
+    "variable": "\\delta"
+   },
+   {
+    "domain": "positive integers, held fixed",
+    "kind": "FORALL",
+    "variable": "k"
+   },
+   {
+    "domain": "$\\mathbb{R}$, held fixed",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:e70b99120bba246abaa260cfe325c8635d14cd17075530d2063901259f2c842a",
+    "record_id": "claim:opus5-2608.14798v1/c14",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:25570ca9d76dba9ce2ede37ad0830435a435d4f94bf0861893df91243ce438e8",
+    "record_id": "definition:opus5-2608.14798v1/spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:02305e7d9e63f24d19bd2946de694aa90cfe2c9e35460401dab3fdb1b958949a",
+    "record_id": "definition:opus5-2608.14798v1/truncated-spf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m14",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

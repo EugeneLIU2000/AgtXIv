@@ -1,0 +1,129 @@
+{
+ "content_hash": "sha256:7e1727190dd5999654fc3a707ceafeb4aeb723e48d4850a8f436e5fb5b61aff1",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:dc09fcb572558b951c2bc8c947007285625c0d15e37754f704ca1a06449dfa98",
+   "record_id": "span:opus5-2608.14798v1/cspf-def",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:2a438e1f5fcaacb5a52aa1fb40173eb318096ea5e6b59c58125552387ca2a431",
+   "record_id": "span:opus5-2608.14798v1/why-cspf",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the unfiltered SPF $\\mathcal{Z}_\\beta$",
+  "components": [
+   {
+    "component_id": "comp:def",
+    "role": "DEFINITION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:dc09fcb572558b951c2bc8c947007285625c0d15e37754f704ca1a06449dfa98",
+      "record_id": "span:opus5-2608.14798v1/cspf-def",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{Z}^c_\\beta(\\psi)=\\mathcal{Z}_\\beta(\\psi)-d^2e^{-\\beta}$."
+   },
+   {
+    "component_id": "comp:stab",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:dc09fcb572558b951c2bc8c947007285625c0d15e37754f704ca1a06449dfa98",
+      "record_id": "span:opus5-2608.14798v1/cspf-def",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{Z}^c_\\beta({\\rm STAB}_n)=e^{-\\beta}d_n(\\cosh\\beta-1)$."
+   },
+   {
+    "component_id": "comp:why",
+    "role": "ASSUMPTION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:2a438e1f5fcaacb5a52aa1fb40173eb318096ea5e6b59c58125552387ca2a431",
+      "record_id": "span:opus5-2608.14798v1/why-cspf",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Motivation: the removed term is the Pauli count and spoils multiplicative composition."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:beta",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:dc09fcb572558b951c2bc8c947007285625c0d15e37754f704ca1a06449dfa98",
+      "record_id": "span:opus5-2608.14798v1/cspf-def",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\beta\\in\\mathbb{R}$"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:dc09fcb572558b951c2bc8c947007285625c0d15e37754f704ca1a06449dfa98",
+    "record_id": "span:opus5-2608.14798v1/cspf-def",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:2a438e1f5fcaacb5a52aa1fb40173eb318096ea5e6b59c58125552387ca2a431",
+    "record_id": "span:opus5-2608.14798v1/why-cspf",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "The core SPF is defined by dropping the leading-order constant of the SPF, $\\mathcal{Z}^c_\\beta(\\psi)=e^{-\\beta}\\sum_x(\\cosh(\\beta x)-1)=\\mathcal{Z}_\\beta(\\psi)-d^2e^{-\\beta}$; for stabilizer states it takes the simpler form $\\mathcal{Z}^c_\\beta({\\rm STAB}_n)=e^{-\\beta}d_n(\\cosh\\beta-1)$. The stated reason for using the cSPF to build the monotone is that the SPF's leading term scales with the number of Pauli operators and does not combine multiplicatively under tensor products in a manner consistent with the higher-moment structure.",
+  "system": "$n$-qubit pure states, $\\mathcal{H}_n\\cong(\\mathbb{C}^2)^{\\otimes n}$, $d_n=2^n$, finite $n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:dc09fcb572558b951c2bc8c947007285625c0d15e37754f704ca1a06449dfa98",
+    "record_id": "span:opus5-2608.14798v1/cspf-def",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:2a438e1f5fcaacb5a52aa1fb40173eb318096ea5e6b59c58125552387ca2a431",
+    "record_id": "span:opus5-2608.14798v1/why-cspf",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c08",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

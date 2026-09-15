@@ -1,0 +1,230 @@
+{
+ "content_hash": "sha256:f5349678424a3da79337e45b5d345c6b11227c172414349bb21be76f7038a984",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+   "record_id": "span:opus5-2608.14798v1/interconv",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:ebf8db683b318ce5d1a44470238077d155dd4ae2527a189c96a876cee185610f",
+   "record_id": "span:opus5-2608.14798v1/incomparability",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:d47b0cc5e4c0f2748b4475c9308f704be6bb304769320903a53a07cb8eab6bcc",
+   "record_id": "span:opus5-2608.14798v1/tcost",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:16bc3fae9fcc94ff4b6b2c882820da5b19ffcd00e9c2db1303b191f0b007ee04",
+   "record_id": "span:opus5-2608.14798v1/distill",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "single-monotone obstructions and single-copy ratio bounds",
+  "components": [
+   {
+    "component_id": "comp:bound",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+      "record_id": "span:opus5-2608.14798v1/interconv",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\mathcal{W}_\\beta(\\phi^{\\otimes m})\\leq\\mathcal{W}_\\beta(\\psi^{\\otimes n})\\leq n\\mathcal{W}_\\beta(\\psi)$."
+   },
+   {
+    "component_id": "comp:strictness",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+      "record_id": "span:opus5-2608.14798v1/interconv",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The tensor-power form is strictly stronger than single-copy bounds whenever subadditivity is strict, i.e. whenever neither state is a stabilizer state."
+   },
+   {
+    "component_id": "comp:incomp",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:ebf8db683b318ce5d1a44470238077d155dd4ae2527a189c96a876cee185610f",
+      "record_id": "span:opus5-2608.14798v1/incomparability",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Crossing $\\beta$-curves certify incomparability in both directions."
+   },
+   {
+    "component_id": "comp:notsuff",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:ebf8db683b318ce5d1a44470238077d155dd4ae2527a189c96a876cee185610f",
+      "record_id": "span:opus5-2608.14798v1/incomparability",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$\\ket{H}$ dominates $\\ket{T}$ at every $\\beta$ yet no deterministic stabilizer protocol converts $\\ket{H}\\to\\ket{T}$; the condition is necessary, not sufficient."
+   },
+   {
+    "component_id": "comp:tcost",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:d47b0cc5e4c0f2748b4475c9308f704be6bb304769320903a53a07cb8eab6bcc",
+      "record_id": "span:opus5-2608.14798v1/tcost",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "$T$-cost lower bound $t\\geq\\sup_{\\beta\\neq0}\\min\\{t':\\mathcal{W}_\\beta(T^{\\otimes t'})\\geq\\mathcal{W}_\\beta(\\phi)\\}$, weakening to $t\\geq\\sup_\\beta\\mathcal{W}_\\beta(\\phi)/\\mathcal{W}_\\beta(T)$."
+   },
+   {
+    "component_id": "comp:distill",
+    "role": "CONCLUSION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:16bc3fae9fcc94ff4b6b2c882820da5b19ffcd00e9c2db1303b191f0b007ee04",
+      "record_id": "span:opus5-2608.14798v1/distill",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "Distillation converse $\\mathcal{W}_\\beta(T^{\\otimes m})\\leq n\\mathcal{W}_\\beta(\\psi)$."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:free",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+      "record_id": "span:opus5-2608.14798v1/interconv",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "conversion is by operations in $\\mathcal{F}$, the class under which $\\mathcal{W}_\\beta$ is claimed to be a monotone"
+   },
+   {
+    "condition_id": "cond:beta",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+      "record_id": "span:opus5-2608.14798v1/interconv",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "$\\beta\\neq0$"
+   },
+   {
+    "condition_id": "cond:mono",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+      "record_id": "span:opus5-2608.14798v1/interconv",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "the first inequality IS monotonicity of $\\mathcal{W}_\\beta$ under $\\mathcal{F}$, which is asserted but not proved in the paper"
+   }
+  ],
+  "modality": "CONDITIONAL",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+    "record_id": "span:opus5-2608.14798v1/interconv",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ebf8db683b318ce5d1a44470238077d155dd4ae2527a189c96a876cee185610f",
+    "record_id": "span:opus5-2608.14798v1/incomparability",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d47b0cc5e4c0f2748b4475c9308f704be6bb304769320903a53a07cb8eab6bcc",
+    "record_id": "span:opus5-2608.14798v1/tcost",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:16bc3fae9fcc94ff4b6b2c882820da5b19ffcd00e9c2db1303b191f0b007ee04",
+    "record_id": "span:opus5-2608.14798v1/distill",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Theorem (One-shot interconversion bound): if $n$ copies of $\\psi$ convert to $m$ copies of $\\phi$ by free operations, then for every $\\beta\\neq0$, $\\mathcal{W}_\\beta(\\phi^{\\otimes m})\\leq\\mathcal{W}_\\beta(\\psi^{\\otimes n})\\leq n\\mathcal{W}_\\beta(\\psi)$. Corollaries give a $T$-cost lower bound and a distillation converse. Because each $\\beta$ is an independent witness, crossing curves certify two-directional incomparability; the paper notes the conditions are necessary but not sufficient, exhibiting $\\ket{H}\\to\\ket{T}$ as a case where the bound does not obstruct a conversion that no deterministic stabilizer protocol realizes.",
+  "system": "pure-state resource interconversion under the class $\\mathcal{F}$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:76d54b03746a6f01704586587107960879fb973391e088ffb9dc30263ed12f09",
+    "record_id": "span:opus5-2608.14798v1/interconv",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:ebf8db683b318ce5d1a44470238077d155dd4ae2527a189c96a876cee185610f",
+    "record_id": "span:opus5-2608.14798v1/incomparability",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d47b0cc5e4c0f2748b4475c9308f704be6bb304769320903a53a07cb8eab6bcc",
+    "record_id": "span:opus5-2608.14798v1/tcost",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:16bc3fae9fcc94ff4b6b2c882820da5b19ffcd00e9c2db1303b191f0b007ee04",
+    "record_id": "span:opus5-2608.14798v1/distill",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c28",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

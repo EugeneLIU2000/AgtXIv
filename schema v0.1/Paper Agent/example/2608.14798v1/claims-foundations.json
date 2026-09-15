@@ -1,0 +1,101 @@
+[
+  {
+    "id": "stabilizer-spectrum", "title": "稳定子态的 Pauli 谱计数",
+    "anchors": [[289,335],[338,365]],
+    "statement": "For a pure n-qubit stabilizer state the signed Pauli spectrum has d^2-d zero entries and d entries equal to plus or minus one.",
+    "assumptions": ["The state is a normalized pure n-qubit stabilizer state.","d=2^n; phase-free Pauli labels are used, retaining the sign and multiplicity of each expectation."],
+    "objects": ["psi: rank-one density operator on (C^2)^{tensor n}","Spec(psi): multiset of tr(psi P) for phase-free Pauli strings P","d: 2^n"],
+    "conclusion": "#{x in Spec(psi):x=0}=d^2-d; #{x in Spec(psi):|x|=1}=d.",
+    "exactness": "EXACT", "error_bound": "Not applicable: exact asserted counting identities.",
+    "gaps": ["No independent proof or source-to-formal alignment performed; signed-group versus phase-free-label identification must remain explicit."],
+    "citations": [], "math_extractable": true
+  },
+  {
+    "id": "kernel-bounds", "title": "Pauli 零谱条目与 nullity 的界",
+    "anchors": [[289,335],[374,432]],
+    "statement": "The authors bound the number of vanishing Pauli expectations of a pure state using its stabilizer nullity.",
+    "assumptions": ["psi is a normalized pure n-qubit state.","nu(psi)=n-log_2|Stab(psi)|; Ker_P(psi) contains phase-free Paulis with zero expectation."],
+    "objects": ["psi: pure n-qubit state","nu(psi): stabilizer nullity","Ker_P(psi): zero-expectation Pauli labels"],
+    "conclusion": "2^n(2^n-2^{nu(psi)}) <= |Ker_P(psi)| <= 4^n-2^n.",
+    "exactness": "EXACT", "error_bound": "Not applicable: exact asserted bounds.",
+    "gaps": ["The cited support/nullity comparison has not been retrieved or independently checked."],
+    "citations": ["Beverland/Pauli_Spectrum/2020","Leone/Stab_Renyi_monotone/2024"], "math_extractable": true
+  },
+  {
+    "id": "spf-limits", "title": "配分函数的高温与零温极限",
+    "anchors": [[289,303],[533,554]],
+    "statement": "The stabilizer partition function tends to the number of Pauli labels as beta tends to zero and to half the stabilizer-group cardinality as beta tends to positive infinity.",
+    "assumptions": ["psi is a fixed normalized pure n-qubit state; d=2^n.","Z_beta(psi)=exp(-beta) sum_{x in Spec(psi)} cosh(beta x).","beta is a mathematical parameter, not a physical inverse temperature."],
+    "objects": ["psi: fixed pure n-qubit state","beta: real parameter","Z_beta: stabilizer partition function"],
+    "conclusion": "lim_{beta->0} Z_beta(psi)=d^2; lim_{beta->+infinity} Z_beta(psi)=|Stab(psi)|/2.",
+    "exactness": "EXACT", "error_bound": "Limit identities; no finite-beta convergence rate extracted.",
+    "gaps": ["Limits and finite-beta estimates must not be conflated.","The subsequent support/kernel rewrite at lines 553-555 appears to omit beta inside cosh; not silently used to redefine Z."],
+    "citations": [], "math_extractable": true
+  },
+  {
+    "id": "clifford-invariance", "title": "配分函数的 Clifford 不变性",
+    "anchors": [[305,335],[533,543],[570,588]],
+    "statement": "The stabilizer partition function is invariant under Clifford conjugation of a pure state.",
+    "assumptions": ["psi is a normalized pure n-qubit state; beta is real.","C is an n-qubit Clifford unitary; C(psi)=C psi C^dagger.","SPF uses cosh of signed expectations, not a labelled-spectrum identity."],
+    "objects": ["psi: pure n-qubit state","C: Clifford unitary","beta: real parameter"],
+    "conclusion": "Z_beta(C psi C^dagger)=Z_beta(psi).",
+    "exactness": "EXACT", "error_bound": "Not applicable: exact asserted invariance.",
+    "gaps": ["The proof's assertion about sorting signed spectra needs review because Clifford conjugation can flip signs; no proof repair is made here."],
+    "citations": [], "math_extractable": true
+  },
+  {
+    "id": "stabilizer-reference", "title": "稳定子参考配分函数",
+    "anchors": [[533,567],[591,605]],
+    "statement": "All pure n-qubit stabilizer states have the same SPF, with the stated closed-form core SPF.",
+    "assumptions": ["phi is a normalized pure n-qubit stabilizer state; d=2^n; beta is real.","Z_beta^c=Z_beta-d^2 exp(-beta)."],
+    "objects": ["phi: pure stabilizer state","d: 2^n","beta: real parameter"],
+    "conclusion": "Z_beta(phi)=exp(-beta)[d^2-d+d cosh(beta)]; Z_beta^c(phi)=exp(-beta)d(cosh(beta)-1).",
+    "exactness": "EXACT", "error_bound": "Not applicable: exact asserted identities.",
+    "gaps": ["A common value on stabilizer states is not by itself an iff characterization at every beta; at beta=0 SPF is state-independent."],
+    "citations": [], "math_extractable": true
+  },
+  {
+    "id": "renyi-expansion", "title": "配分函数与整数阶稳定子熵的展开",
+    "anchors": [[440,459],[635,648]],
+    "statement": "The authors express SPF through the hierarchy of integer-index stabilizer Renyi entropies, retaining the universal zeroth and second-moment terms.",
+    "assumptions": ["psi is a normalized pure n-qubit state; d=2^n; beta is real.","M_k is the source's base-two stabilizer Renyi entropy; k is an integer at least two in the sum."],
+    "objects": ["psi: pure n-qubit state","beta: real parameter","M_k(psi): stabilizer Renyi entropy"],
+    "conclusion": "Z_beta(psi)=exp(-beta)[d^2+d beta^2/2+sum_{k>=2} beta^{2k}/(2k)! * 2^{n-(k-1)M_k(psi)}].",
+    "exactness": "EXACT", "error_bound": "Infinite-series identity; no truncation guarantee follows without a separate bound.",
+    "gaps": ["This even-moment object does not recover the labelled signed Pauli spectrum; claims about full spectrum must respect the qualification at lines 570-573."],
+    "citations": ["Leone/Stab_Renyi/2022"], "math_extractable": true
+  },
+  {
+    "id": "lipschitz", "title": "配分函数的连续性界",
+    "anchors": [[289,303],[653,671]],
+    "statement": "The SPF difference for two pure n-qubit states is bounded by an explicit coefficient times the trace norm of the projector difference.",
+    "assumptions": ["psi and phi denote normalized pure-state projectors on the same n-qubit space.","beta is real; d=2^n; ||.||_1 is the trace norm, not an independently renormalized trace distance."],
+    "objects": ["psi,phi: rank-one density operators","beta: real parameter","L_n(beta): exp(-beta)d beta sinh(beta)"],
+    "conclusion": "|Z_beta(psi)-Z_beta(phi)| <= exp(-beta)d beta sinh(beta) ||psi-phi||_1.",
+    "exactness": "EXACT", "error_bound": "The displayed coefficient is the author's asserted bound, not independently checked.",
+    "gaps": ["Supplementary proof has not been reconstructed or validated in this Paper pass."],
+    "citations": [], "math_extractable": true
+  },
+  {
+    "id": "bell-estimation", "title": "Bell 采样估计：固定截断不等于全参数高效",
+    "anchors": [[673,683],[2164,2223]],
+    "statement": "The authors describe Bell-sampling access to a finite-order truncated SPF for fixed order and beta, with additive accuracy and failure probability; full normalized SPF additionally needs a truncation bound.",
+    "assumptions": ["Fixed truncation order k and parameter beta; repeated state copies and the cited Bell-sampling primitive are available.","Accuracy epsilon, failure probability delta, normalization and truncation error must be tracked separately."],
+    "objects": ["psi: sampled quantum state","k,beta: truncation order and parameter","epsilon,delta: accuracy and failure probability"],
+    "conclusion": "A fixed-order moment estimator is postprocessed into a truncated SPF estimate; no uniform cost bound for arbitrary beta or the unnormalized full SPF is extracted here.",
+    "exactness": "APPROXIMATE", "error_bound": "Residual: reconcile the informal main theorem with supplementary estimator concentration and normalized/full SPF conventions.",
+    "gaps": ["This deliberately remains a residual scientific claim rather than an underspecified MathClaim.","No sampling experiment or empirical runtime measurement was performed."],
+    "citations": ["Tobias/Pauli_sampling/2024"], "math_extractable": false
+  },
+  {
+    "id": "state-independent-bounds", "title": "纯态配分函数的状态无关上下界",
+    "anchors": [[289,303],[688,705]],
+    "statement": "For pure n-qubit states the authors give stabilizer-valued upper and uniform-nonidentity-spectrum lower bounds on SPF.",
+    "assumptions": ["psi is a normalized pure n-qubit state, beta is real, d=d_n=2^n.","Identifying the unindexed d in the source denominator with d_n is an explicit extraction convention awaiting review."],
+    "objects": ["psi: pure n-qubit state","beta: real parameter","d=d_n: Hilbert-space dimension"],
+    "conclusion": "exp(-beta)[cosh(beta)+(d^2-1)cosh(beta/sqrt(d+1))] <= Z_beta(psi) <= exp(-beta)[d^2-d+d cosh(beta)].",
+    "exactness": "EXACT", "error_bound": "Not applicable: asserted inequalities; achievability of a uniform spectrum is not established by this extraction.",
+    "gaps": ["The proof expansion appears to omit the exp(-beta) factor; statement is preserved, not repaired.","Source notation d versus d_n requires alignment review."],
+    "citations": [], "math_extractable": true
+  }
+]

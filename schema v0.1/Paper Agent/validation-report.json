@@ -1,0 +1,58 @@
+{
+  "report_version": "paper-agent/1.1",
+  "date": "2026-09-13",
+  "scope": "Offline specification and interface regression checks; no model execution.",
+  "tests": [
+    {
+      "command": ".venv/bin/python -B -m unittest discover -s 'schema v0.1/Paper Agent/tests' -v",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "command": ".venv/bin/python -B -m unittest discover -s 'schema v0.1/tests' -v",
+      "passed": 28,
+      "failed": 0
+    }
+  ],
+  "orchestration_package_check_passed": true,
+  "synthetic_claim_draft_shape_check_passed": true,
+  "archived_v1_0_spec_sha256": "sha256:5eb9c81366c58b7139497a431396d81a60d155002535048bb9e7d998c84e721a",
+  "legacy_record_checks": [
+    {
+      "run": "2608.14798v1",
+      "command": ".venv/bin/python -B 'schema v0.1/Paper Agent/check_output.py' --records 'schema v0.1/Paper Agent/example/2608.14798v1/output/records.json'",
+      "exit_code": 0,
+      "record_count": 241,
+      "single_record_shapes_and_hashes_valid": true,
+      "limited_filling_checks_valid": true,
+      "error_count": 0,
+      "error_codes": {},
+      "record_set_checked": false,
+      "source_bytes_checked": false,
+      "scientific_correctness_checked": false
+    },
+    {
+      "run": "2608.14798v1-claude-opus-5",
+      "command": ".venv/bin/python -B 'schema v0.1/Paper Agent/check_output.py' --records 'schema v0.1/Paper Agent/example/2608.14798v1-claude-opus-5/output/records.json'",
+      "exit_code": 1,
+      "record_count": 273,
+      "single_record_shapes_and_hashes_valid": true,
+      "limited_filling_checks_valid": false,
+      "error_count": 70,
+      "error_codes": {
+        "CONDITION_SOURCE_REQUIRED": 67,
+        "CONCLUSION_REQUIRED": 3
+      },
+      "record_set_checked": false,
+      "source_bytes_checked": false,
+      "scientific_correctness_checked": false
+    }
+  ],
+  "limitations": [
+    "No cross-model rerun: content agreement has not been measured.",
+    "A zero-error limited filling check does not establish compliance with semantic splitting, coverage, modality or definition-use rules.",
+    "No complete RecordSet, independent review, source-byte, runtime identity or scientific verification performed by the new checker.",
+    "Shared business assembly, manifest writer and runtime scheduling are still pending.",
+    "Historical examples and their scripts were not modified; their pinned-spec checks against current AGENT.md intentionally detect the version change."
+  ]
+}

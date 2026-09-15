@@ -1,0 +1,87 @@
+{
+ "content_hash": "sha256:fbe241d630ac38e9c449734a499f7f993bf9a611d9c72f2cd561c98db3a04c09",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+   "record_id": "span:opus5-2608.14798v1/hamiltonian",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+   "record_id": "span:opus5-2608.14798v1/pauli-gas",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "name": "Stabilizer Hamiltonian and Pauli gas",
+  "objects": [
+   {
+    "convention": "band $[0,2]$; identity Pauli contributes the pinned edges $E=0,2$",
+    "definition_refs": [],
+    "object_type": "Hermitian operator on $\\mathcal{H}_n^{\\otimes2}\\otimes\\mathbb{C}^2$",
+    "symbol": "\\hat H(\\psi)",
+    "unit": "dimensionless energy"
+   },
+   {
+    "convention": "inverse-temperature-like; the paper states it has no connection to a physical temperature",
+    "definition_refs": [],
+    "object_type": "real parameter",
+    "symbol": "\\beta",
+    "unit": ""
+   }
+  ],
+  "origin": "SOURCE",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+    "record_id": "span:opus5-2608.14798v1/hamiltonian",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+    "record_id": "span:opus5-2608.14798v1/pauli-gas",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "Two constructions are given. Perspective 1: $\\hat H(\\psi):=\\sum_{P\\in\\mathcal{P}_n,s\\in\\{-1,1\\}}(1-s\\,\\tr(\\psi P))\\,|P,s)(P,s|$ acting on $\\mathcal{H}_n^{\\otimes2}\\otimes\\mathbb{C}^2$, with $|{\\rm Stab}(\\psi)|$-fold degenerate ground level. Perspective 2: each Pauli $P$ labels a two-level particle with energies $E_{P,\\pm}=1\\pm\\tr[\\psi_A P]$, giving $d^2$ two-level particles confined to the band $[0,2]$; this collection is called the Pauli gas."
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:0023456601fcd40aaca58f774f5d7ece006cc7e2ad87e57513457707a0e10885",
+    "record_id": "span:opus5-2608.14798v1/hamiltonian",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:fff938657e9b6c350f3968b811365c1e1fe78deba515799d98a05f005328a2ff",
+    "record_id": "span:opus5-2608.14798v1/pauli-gas",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "definition:opus5-2608.14798v1/stabilizer-hamiltonian",
+ "record_type": "agtxiv.v3.definition/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

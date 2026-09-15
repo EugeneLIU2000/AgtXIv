@@ -1,0 +1,127 @@
+{
+ "content_hash": "sha256:b3ca20192cdaa6a19ce62bf4c970ce7e413cb984dffffca4b09a3628d855c22b",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:fc62a9a6f4ec171e768b9dc72f9a80574327e3a075abc0e1b0d0ec78b17a5059",
+   "record_id": "claim:opus5-2608.14798v1/c03",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+   "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$\\mathcal{C}l_n=\\{U\\in U(2^n):U\\mathcal{P}_nU^\\dagger=\\mathcal{P}_n\\}$, i.e. Cliffords map Paulis to Paulis up to phase"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:fc62a9a6f4ec171e768b9dc72f9a80574327e3a075abc0e1b0d0ec78b17a5059",
+   "record_id": "claim:opus5-2608.14798v1/c03",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:action",
+   "comp:readoff"
+  ],
+  "conclusion": "For every $\\mathcal{C}\\in\\mathcal{C}l_n$ there is a permutation $\\pi$ of $\\mathcal{P}_n$ and signs $s_P\\in\\{\\pm1\\}$ with $\\tr(\\mathcal{C}(\\psi)P)=s_P\\tr(\\psi\\,\\pi(P))$; consequently $|\\{x\\in{\\rm Spec}(\\psi):|x|=1\\}|$ is Clifford invariant.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+    "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "phase-free Pauli labels; the sign is carried by the spectrum entry, not by the label",
+  "objects": [
+   {
+    "convention": "signed convention $\\tr(\\psi P)$, phase-free Pauli labels, global phases irrelevant",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+      "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "multiset of $4^n$ reals in $[-1,1]$ indexed by $\\mathcal{P}_n$",
+    "symbol": "{\\rm Spec}(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "Pauli operators taken modulo phase when used as labels",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+      "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "phase-free $n$-qubit Pauli strings $\\mathcal{P}_1^{\\otimes n}$, $|\\mathcal{P}_n|=4^n$",
+    "symbol": "\\mathcal{P}_n",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "$\\mathcal{C}l_n$",
+    "kind": "FORALL",
+    "variable": "\\mathcal{C}"
+   },
+   {
+    "domain": "pure states in $\\mathcal{H}_n$",
+    "kind": "FORALL",
+    "variable": "\\psi"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:fc62a9a6f4ec171e768b9dc72f9a80574327e3a075abc0e1b0d0ec78b17a5059",
+    "record_id": "claim:opus5-2608.14798v1/c03",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+    "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m03",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

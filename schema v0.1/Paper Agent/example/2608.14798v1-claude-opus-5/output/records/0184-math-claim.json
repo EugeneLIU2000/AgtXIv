@@ -1,0 +1,124 @@
+{
+ "content_hash": "sha256:3b9c976a2effcb68183b5f3ec2ba34f1db9b8fc83e259094b16888f1ad8928e8",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:c70612fcad12fac4c9fd3b83c60c8f158dff5e8f75ca01d6e981cf352b4d1968",
+   "record_id": "claim:opus5-2608.14798v1/c17",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+   "record_id": "definition:opus5-2608.14798v1/cspf",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$w_k=\\beta^{2k}/(2k)!$, $a_k=\\sum_i\\tr[\\psi_AP_i^A]^{2k}$, $b_k=\\sum_j\\tr[\\phi_BP_j^B]^{2k}$"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$p_k=w_ka_k/\\sum_k w_ka_k$ is a probability distribution and $p_k/p^\\star_k$ is non-increasing in $k$"
+   },
+   {
+    "condition_id": "assumption:a3",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$\\sum_{k\\geq1}w_k=\\cosh\\beta-1$"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:c70612fcad12fac4c9fd3b83c60c8f158dff5e8f75ca01d6e981cf352b4d1968",
+   "record_id": "claim:opus5-2608.14798v1/c17",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:ineq"
+  ],
+  "conclusion": "$\\mathcal{Z}_{\\beta}^{c}(\\psi_A\\otimes\\phi_B)\\ \\geq\\ \\dfrac{\\mathcal{Z}_{\\beta}^{c}(\\psi_A)\\,\\mathcal{Z}_{\\beta}^{c}(\\phi_B)}{e^{-\\beta}(\\cosh\\beta-1)}$, i.e. division by $\\mathcal{Z}^c_\\beta$ of a single-qubit-normalized stabilizer reference.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "the denominator equals $\\mathcal{Z}^c_\\beta$ of a one-qubit stabilizer state ($d=1$ in $e^{-\\beta}d(\\cosh\\beta-1)$); the source does not label it as such",
+  "objects": [
+   {
+    "convention": "$d$ written without subscript in the source equation; read as $d_n=2^n$",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+      "record_id": "definition:opus5-2608.14798v1/cspf",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "real function $\\mathbb{R}\\times\\mathcal{H}\\to\\mathbb{R}$",
+    "symbol": "\\mathcal{Z}^c_\\beta(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "pure states of the two subsystems",
+    "kind": "FORALL",
+    "variable": "\\psi_A,\\phi_B"
+   },
+   {
+    "domain": "$\\beta\\neq0$; at $\\beta=0$ both sides degenerate and the quotient is $0/0$",
+    "kind": "FORALL",
+    "variable": "\\beta"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:c70612fcad12fac4c9fd3b83c60c8f158dff5e8f75ca01d6e981cf352b4d1968",
+    "record_id": "claim:opus5-2608.14798v1/c17",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:eb81b4d38e944a4183aae9f391f1c6cd7f3924aa1633e574f217e4f2b11359ef",
+    "record_id": "definition:opus5-2608.14798v1/cspf",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m17",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

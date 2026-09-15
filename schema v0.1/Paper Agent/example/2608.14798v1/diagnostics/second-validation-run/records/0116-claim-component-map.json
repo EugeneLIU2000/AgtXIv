@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:9a484236eae0e80d4a5273538a6a7f2072f90914dbb3bbd8fd288eb73d6057cc",
+      "record_id": "example:2608.14798v1-db635458e365-claim-haar-concentration",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:87af31251691157361fc6b8b39e02ce7ccb120d1ae781271fac8ae80fc66ecfb",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-haar-concentration",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:9a484236eae0e80d4a5273538a6a7f2072f90914dbb3bbd8fd288eb73d6057cc",
+      "record_id": "example:2608.14798v1-db635458e365-claim-haar-concentration",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:haar-concentration",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:67fdfd3c0e2681916707ebe406a29042f94509d1c5e47062650d17ad9197e27e",
+            "record_id": "example:2608.14798v1-db635458e365-span-653-668",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:686e2384880d17db998658c8854329152991d9f0d9643f1a9084bcb90941166d",
+            "record_id": "example:2608.14798v1-db635458e365-span-922-940",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "L_n(0)=0 makes the displayed normalized event undefined, and no beta=0 convention is stated.; The preceding theorem uses trace norm on pure-state projectors; the metric conversion mentioned at line 668 is not quantified in the read text.; The double-exponential description concerns fixed normalized deviation epsilon; no unnormalized deviation scaling is independently established here.; The supplementary Lipschitz proof was not read; body-versus-appendix consistency is unassessed.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:87af31251691157361fc6b8b39e02ce7ccb120d1ae781271fac8ae80fc66ecfb",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-haar-concentration",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:67fdfd3c0e2681916707ebe406a29042f94509d1c5e47062650d17ad9197e27e",
+          "record_id": "example:2608.14798v1-db635458e365-span-653-668",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:686e2384880d17db998658c8854329152991d9f0d9643f1a9084bcb90941166d",
+          "record_id": "example:2608.14798v1-db635458e365-span-922-940",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:9a484236eae0e80d4a5273538a6a7f2072f90914dbb3bbd8fd288eb73d6057cc",
+          "record_id": "example:2608.14798v1-db635458e365-claim-haar-concentration",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:9a484236eae0e80d4a5273538a6a7f2072f90914dbb3bbd8fd288eb73d6057cc",
+        "record_id": "example:2608.14798v1-db635458e365-claim-haar-concentration",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:87af31251691157361fc6b8b39e02ce7ccb120d1ae781271fac8ae80fc66ecfb",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-haar-concentration",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:67fdfd3c0e2681916707ebe406a29042f94509d1c5e47062650d17ad9197e27e",
+        "record_id": "example:2608.14798v1-db635458e365-span-653-668",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:686e2384880d17db998658c8854329152991d9f0d9643f1a9084bcb90941166d",
+        "record_id": "example:2608.14798v1-db635458e365-span-922-940",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-haar-concentration",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:76fb824250fd0888398b676e261cbf1257212205f0dbc2561dcedabbcefbe3e7"
+}

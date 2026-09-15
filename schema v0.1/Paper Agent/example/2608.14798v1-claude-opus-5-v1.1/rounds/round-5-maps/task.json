@@ -1,0 +1,1794 @@
+{
+ "contract_version": "0.1.0",
+ "task_id": "task.opus5-v11-2608.14798v1.r5-maps",
+ "agent": "paper",
+ "operation": "paper.extract",
+ "brief": "Account for every component: mapped, residual with its meaning preserved, unresolved, or non-claim (R8). Declare independence UNESTABLISHED; do not claim independent review. Propose the obligation denominator without freezing it, and record the gaps and follow-up requests.",
+ "target_refs": [
+  {
+   "record_type": "agtxiv.v3.paper-structure/0.0.0",
+   "record_id": "structure:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:e7133e861fd326d01cf1d88a00bc5e9bbfad1c78eaa35fa2015f850a94ab679c"
+  }
+ ],
+ "input_refs": [
+  {
+   "record_type": "agtxiv.v3.authority-policy/0.0.0",
+   "record_id": "policy:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:7e87e0303539776a304b68e3c1b34ae6e4ca6a0a84e9ba49d2c0f0d35730ff0c"
+  },
+  {
+   "record_type": "agtxiv.v3.processing-profile/0.0.0",
+   "record_id": "profile:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:b8afc7e43ac4ce792dc85eaf4a2c58c1c48a7309efe739a68e5ccf20deaafd43"
+  },
+  {
+   "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+   "record_id": "source:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:8f32940791b2b1c158a5d43fb6c9eb4680c6c396b4f7f1e97a8c8ce4dc64b388"
+  },
+  {
+   "record_type": "agtxiv.v3.agentization-plan/0.0.0",
+   "record_id": "plan:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:a0b8298f22a8b5926aa4dc3122c4c447092ee438eeea0a6db0296d7c0eb5b2ea"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/abstract",
+   "revision": 1,
+   "content_hash": "sha256:b052f21db0bc1af2ad3c0659bc51c7ff125a94cf440692df4db1ce74071860f9"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/ai-ack",
+   "revision": 1,
+   "content_hash": "sha256:e5fea67cf21ab8c0108ed2988334f53d301573dad3a0960b86264a95910c50d9"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/bounds-dep",
+   "revision": 1,
+   "content_hash": "sha256:a31ff012d3a5d18bdd170bdb8de622243e917fece9d083515e9ee03308877492"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/bounds-indep",
+   "revision": 1,
+   "content_hash": "sha256:4b3bae523f43da4a73d6c8cc3ca9ed1450af7b0d4e3b90013d6950d3de1481bc"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/canonical-splitting",
+   "revision": 1,
+   "content_hash": "sha256:b3acfcdb2e17254d30ff6fa8588f2540e53be24558fcd28d18e8d7a5eb89e89b"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/channel-spf",
+   "revision": 1,
+   "content_hash": "sha256:01091c3a151a2a7c38032bb7fceeef7605666351dfd3310d1d243976cf0c93c6"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/chebyshev",
+   "revision": 1,
+   "content_hash": "sha256:c6b5e58e615654767f6b9f12db691aa0a4eb765b4af83847eac87875ccfa960c"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/clifford-inv",
+   "revision": 1,
+   "content_hash": "sha256:9023c5bca4ba55d4b9f490732873a1a3fc2f6fe28298151bc7edd44a732bbe88"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/clifford-noninvariance",
+   "revision": 1,
+   "content_hash": "sha256:d4ece4cd36de4deb2c4460781f37c35750fc735f3b02ec9c3d09e9688edbca3a"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/comp-asym",
+   "revision": 1,
+   "content_hash": "sha256:aef40f1a77f3d4809f91b7d8a1d0e71fd9fd2d9751cf8505b8fabc0aaa489315"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/comp-checks",
+   "revision": 1,
+   "content_hash": "sha256:69e8c91e01986788bdab21327d654d102dc6e9725752db9423cb016683473de5"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/comp-conc",
+   "revision": 1,
+   "content_hash": "sha256:8d806fd3868ba76f13bf6e9db797f195555d49f77115962010b7fe58e0515372"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/comp-def",
+   "revision": 1,
+   "content_hash": "sha256:dd80bf182cde2df45683d9568e09b6f8247c5243e1beea5ec04c8ffe86a1c1a4"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/comp-only-stab",
+   "revision": 1,
+   "content_hash": "sha256:1086dc7040774e7219a08f07800035353963c8b6d6e8bd7fe7d184ce1a89996d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/comp-thm",
+   "revision": 1,
+   "content_hash": "sha256:de1258c177991044c599d67a5ea361b5cd14a417ca785e5ca4dce2046b4652e7"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/computability",
+   "revision": 1,
+   "content_hash": "sha256:791a74f77f8dd5eeff20670391c2a9cda10c41d284962b3cf48b077d5ada09e2"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/cspf-def",
+   "revision": 1,
+   "content_hash": "sha256:d21d1c12d41620d6d0d442783457530eb2468e582563647d6b255d10ec8f5682"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/density",
+   "revision": 1,
+   "content_hash": "sha256:007ad151e65b9668547054e109e623bd7494f90aa0671723423110cd1cf603e3"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/distill",
+   "revision": 1,
+   "content_hash": "sha256:30f1832ceef21517fb96dcb0d19e50ab4207e675b22c34e1c6171953ffda32e7"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/estimator-bounds",
+   "revision": 1,
+   "content_hash": "sha256:0e1d079fa5553681613e7e2393d46241c580c8ea814ade200615c03c4a8a331a"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/estimator-conc",
+   "revision": 1,
+   "content_hash": "sha256:97ee0da15252d78f92ca1bcfc876f7f4f89469558a977b1f9393ca4ff0173a48"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/fidelity-def",
+   "revision": 1,
+   "content_hash": "sha256:575777edec72992bb52611e32d34b6143eb043d4f8896fe55d5ba5c4f6488b17"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/fidelity-lb",
+   "revision": 1,
+   "content_hash": "sha256:9d36965e62036e13f26ba631c96ce684388af98a39d518538ed641f769d5cc33"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/fidelity-ub",
+   "revision": 1,
+   "content_hash": "sha256:3e427009e7b9f4ec24efd1199dbd319b05c41233ddcb3e7d86169989445e098a"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/free-ops",
+   "revision": 1,
+   "content_hash": "sha256:7c349aaa7d95deaf5f6a088d775f5ecb96275b59f40bbb8ab779f5fcd63d8069"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/h2-631g",
+   "revision": 1,
+   "content_hash": "sha256:2043cb2f4e669db3115e5be8e47d31f7513f18cf7c5c569a3ff1ae8d1dfaf149"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/h2-findings",
+   "revision": 1,
+   "content_hash": "sha256:008d64169d7d4bedbad09838a46b13f2b784a57ebdc584162cc138533f0e627d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/h2-setup",
+   "revision": 1,
+   "content_hash": "sha256:0c0319c011420462f46b9a4e3287905c9272721c6aca199a8f9ee4f70b404787"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/haar",
+   "revision": 1,
+   "content_hash": "sha256:1c5112e9c7694d87efaad67554b121bab6a2179b5501f6d807be00e0fbfe4853"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/haar-asym",
+   "revision": 1,
+   "content_hash": "sha256:904c8c349d12164600b5a36b476c4708c27d207cfc2de712f38d9afcea7c6b28"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/haar-avg-hamiltonian",
+   "revision": 1,
+   "content_hash": "sha256:089c63ba5601e91b109cdeefd5341986799548cf2e8a650d5bb1b58dbfdd7832"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/haar-cert",
+   "revision": 1,
+   "content_hash": "sha256:a85c1af7a2e789e6aa76eb60af6e9d0d3eb03d6c1abe42fdf4b49b886aaf3963"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/haar-conc",
+   "revision": 1,
+   "content_hash": "sha256:24d0f4852cc00bb923a02641d7452dbe8522cef473f060ad8a308f4b407aa07d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/haar-vs-design",
+   "revision": 1,
+   "content_hash": "sha256:e778e288e49fe1008ae9347706f7969cbccc5c58a87543be7f4312111846c4a0"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/hamiltonian",
+   "revision": 1,
+   "content_hash": "sha256:c4e3e5730e4282ed73a7f87e4894d4f9831c37980edff1665aa1ebd6cbb0359a"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/incomparability",
+   "revision": 1,
+   "content_hash": "sha256:61b22e74c4fdcba257fa6b80f4e965a74a990245614616faf76240a0fd14b9b9"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/interconv",
+   "revision": 1,
+   "content_hash": "sha256:e8edcf5b1d582a2927dbfe61cc9d053797757924a47a46791458a92bb0b436c3"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/intro-tradeoff",
+   "revision": 1,
+   "content_hash": "sha256:4bd646cbe9a654cfc725a4b5203d9f642362f80c70442783f5d10d9f1930fa9e"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/ising-model",
+   "revision": 1,
+   "content_hash": "sha256:1439da0e368feb53bb87d74484ae397d254cf15caad215be4644e649d923a21f"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/ising-panelA",
+   "revision": 1,
+   "content_hash": "sha256:e5432f5db89e9c4507b6e3b300be193be6b8b827ed8066dbf05b42037c8367a3"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/ising-panelB",
+   "revision": 1,
+   "content_hash": "sha256:59cfcd187d95b569f4a46d6e440f984941dc3e26b86a7df4d5d26459b12c8839"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/jensen",
+   "revision": 1,
+   "content_hash": "sha256:e3dc3c168a7cb7cb7dce5507f19dfd4b35febbf8919de2f440c9018a2a3a56fa"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/kernel-bound",
+   "revision": 1,
+   "content_hash": "sha256:ce4909d79c11513360e2d6ee3979a271a87dd8391bf16fb76308e3b2025aaf0d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/lipschitz",
+   "revision": 1,
+   "content_hash": "sha256:70e4e433a46dee7a4d1ee10c4fdc1ab39871effc54925395e85d653231c62a0b"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/mixed-spf",
+   "revision": 1,
+   "content_hash": "sha256:e6c8e5ff4f705f37d8b01163fe9b4f1b6927f56259e35b8e9bfe3b7879dced42"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/moment-gf",
+   "revision": 1,
+   "content_hash": "sha256:5f2463caa5b6cefa7c19e06a63f9dfcb095e039e7433966161cb418df83ec626"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/ncopy",
+   "revision": 1,
+   "content_hash": "sha256:8bb068c86c54ba6246f78ee2321bbf0a22dd45349c23578ebdee3d58e5f97e9f"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/nonmultiplicativity",
+   "revision": 1,
+   "content_hash": "sha256:5ecabda0f34679776bfa1905a911b428f7b65e9a73103486077dbd63b01e99fa"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/nu-cert",
+   "revision": 1,
+   "content_hash": "sha256:3d3c896e1bb44158f0f45b293ba18d13b57e348b9faeecc1ccbfd4dc7aa04b6e"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/nullity-def",
+   "revision": 1,
+   "content_hash": "sha256:c87e9e486ea296770b66e66b1c50666de3ca64c19bb46cb76a483918131454c1"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/open-problems",
+   "revision": 1,
+   "content_hash": "sha256:9a9a26031e37f92bbdc7f77c454f3acf5e6f80fdb064aebe7c88ee3dec4ba721"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/oracle-note",
+   "revision": 1,
+   "content_hash": "sha256:3cc9c4710b48646e4ea5d7733c0d37e4374c3b08fad23bb0d69ea83e5e16e9b9"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/orbit-rep",
+   "revision": 1,
+   "content_hash": "sha256:878522e11acd3d5b0cf8f521b27a64e469812ceccfa7922cab18bc6b95601853"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/pauli-gas",
+   "revision": 1,
+   "content_hash": "sha256:1fe55fc96bbcf4e8e05eebbf741a9c06ccd30d73333f454770d2dbc1cfabc073"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/pauli-spec-def",
+   "revision": 1,
+   "content_hash": "sha256:d43e28a161d089fd206bc5cb4b55588834a66af3e5738216b89d937b07ab1332"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/prop-stab-spectrum",
+   "revision": 1,
+   "content_hash": "sha256:f412a6a686e013332683c1a17619afc2b9d4adbca0093912cbf08cb7f228d62f"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/ptm",
+   "revision": 1,
+   "content_hash": "sha256:606440de70d751271f782bdf3c590703758a35dc58262762cbfbb2ad3016ff41"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/renyi-hierarchy",
+   "revision": 1,
+   "content_hash": "sha256:1553195ad7456b1de1af4692d1e2f27c509337d362e87e177d897a1979cfa60c"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/renyi-rep",
+   "revision": 1,
+   "content_hash": "sha256:56f45a2c954670d9edd94c071617467e7bb62f902c407a0bb51e9f1ea3b644f3"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sampling-alg",
+   "revision": 1,
+   "content_hash": "sha256:f647796a17a7d77d96e4f36dc5e9c9300cadc881ba616116d5ff6fb7ffee21c4"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/separable",
+   "revision": 1,
+   "content_hash": "sha256:daf9140083ce39966e6df6cd74c03c1eb58ca9b025cbbcb887081f666494440d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/separable-proof",
+   "revision": 1,
+   "content_hash": "sha256:f70196657120b6ff1dd81dbf34a92a86b788cc614108bc1aaaadae80eb0c26c0"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/signed-convention",
+   "revision": 1,
+   "content_hash": "sha256:9182337c490a6d4369dbe79a82d26acec55a4f3d2d70e8cbe88eef74b2cba59c"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/small-gap",
+   "revision": 1,
+   "content_hash": "sha256:f5db0e129829c3793321711396b836614c0b2c093709536b6dba102c6bac4bdb"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/small-gap-proof",
+   "revision": 1,
+   "content_hash": "sha256:6952ceac7c2e4af1ed7b329c00e1e117596e3175fad96dd90ac0c4793a54c289"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/spec-split",
+   "revision": 1,
+   "content_hash": "sha256:1a10c4dca72a2e388506e01a50a6f4ffc1266a651b7ef192be7fa5e75ed054a4"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/spf-def",
+   "revision": 1,
+   "content_hash": "sha256:b12b95a5eca3c7c17ae71dc2b5aa23d8927b4ac2e45676b99d9b95ce430a7c29"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/spf-limits",
+   "revision": 1,
+   "content_hash": "sha256:28504356abdf4323ef88c0a4e8eff5b19b56ba7760e339f2c5c8044432684418"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/spf-lowT-supp",
+   "revision": 1,
+   "content_hash": "sha256:91953970a6b40b835aed52afbc3e22213c9c3a9565106fe785e6bc52cd7d82f3"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/spf-not-full-spectrum",
+   "revision": 1,
+   "content_hash": "sha256:766bf3aad3fee5e66232523eea2d426f3581dfd6b544cf9dcf51ebbf412ea8ad"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sps-def",
+   "revision": 1,
+   "content_hash": "sha256:7f4702041f98f35c0b2eb2fcc6ee296c2233b66394b424d80e5e086cbe02a925"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sps-nullity",
+   "revision": 1,
+   "content_hash": "sha256:b170ffa6f315880cdd6f31043243ac1b0ca37dbcf8f19f9abc7c88e5b0fb8a3c"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sps-numerics",
+   "revision": 1,
+   "content_hash": "sha256:82387729648e10dfbd84a2fc070f579027cab53175e81d027a204cb476c436eb"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sps-random-f",
+   "revision": 1,
+   "content_hash": "sha256:2fd080083eb40c6ba507097d62fba6d1c5308b922aaebba07891a7a2a2898521"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sps-thm",
+   "revision": 1,
+   "content_hash": "sha256:8a64c4f437897f7f78b48740bf5e2e1724402cca6ac82c1102bf16728950559d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sps-vs-comp",
+   "revision": 1,
+   "content_hash": "sha256:dc5b9be304ce7129c76ea20231443b5613121b4b741732d7465ec7b16ce25ce0"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sre-def",
+   "revision": 1,
+   "content_hash": "sha256:5e010392416f7f01584e25f5f793ef904720106760333e9f1404a76e52d1358d"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sre-props",
+   "revision": 1,
+   "content_hash": "sha256:cc7c6ca1039acec24e5d9f73710f165ea3baf0457d5ee2415f61b868715171ca"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/stab-pure",
+   "revision": 1,
+   "content_hash": "sha256:f4f408b31590d9cc7cc34715a366f93b930f1a2ec87b6f4b0a6a96492a88a22e"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/subadd-supporting",
+   "revision": 1,
+   "content_hash": "sha256:c43572b135035bc8d753c92a936345c8d837a0b19df18aac98cec940a04145d9"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/supermult",
+   "revision": 1,
+   "content_hash": "sha256:716e6ae99e11b1a3146f019fb2a64ffde525075f34a5fe92b391bcb931534e0e"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/supp-ker",
+   "revision": 1,
+   "content_hash": "sha256:f3d1825e5c4ee147f9f7e80b4b419fc934d9d67b35419f48de28c92077d78767"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-bounds",
+   "revision": 1,
+   "content_hash": "sha256:7e5266170047aeb38cf33d93d47fc56a07a3621a958a66bc28636281acbb4246"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-cont",
+   "revision": 1,
+   "content_hash": "sha256:0faad29d170cc41025f482683a85cfebaa4acc7f87f67a1cbc0df0332b30e29c"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-def",
+   "revision": 1,
+   "content_hash": "sha256:736f72a16c6e6c9d78209767814b71b0da6f75ef957e1d9f263dbddec41e74e2"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-limits",
+   "revision": 1,
+   "content_hash": "sha256:3eec668a06b64a52ccf8e0d9a0cae2f6f8ce43752e71d7b4a4a9de12ecffee5a"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-lipschitz-note",
+   "revision": 1,
+   "content_hash": "sha256:9d2b935d9284e0f521e7ee35c16a31dfd7bedabb2aa9891bfe7833fd90c5eee3"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-props",
+   "revision": 1,
+   "content_hash": "sha256:4bb5e2f668a3071d764f3b1535e98468d90c3063c25831d4bfad99bca774558b"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/sw-subadd",
+   "revision": 1,
+   "content_hash": "sha256:b5dd7d43f7da91dcf08802c4589438a10c49344fc04cb7fdd12d420da55bf21c"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/tcost",
+   "revision": 1,
+   "content_hash": "sha256:459aaef22e9b99cc02a7a6becfd2032a6beb2ba4cb73fc534873ab1ca05f1c5e"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/tdoped",
+   "revision": 1,
+   "content_hash": "sha256:6db50c81656ff305df0115aa07d8fb69cb188806889f81ba08de382bc773ec27"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/tstate",
+   "revision": 1,
+   "content_hash": "sha256:c88e3a977d7c4ada3a99ceb30dcda1d88dae16e6c1b6bd6242e55c6583089c92"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/tstate-eps",
+   "revision": 1,
+   "content_hash": "sha256:ac154c32dfa682e7ea25af608831a8aed3d0bac552fd6d55d74fd7afe5789b5a"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/unfiltered-work",
+   "revision": 1,
+   "content_hash": "sha256:714078991e3758b9ec96cc36ce46cb1618635a971b4ef6a85bc2e68d4e880ada"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/uniqueness",
+   "revision": 1,
+   "content_hash": "sha256:c59812508741488bb8f11dace8d086ea57d14f27b969f48b2b10b84dcfe34843"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/variational-lb",
+   "revision": 1,
+   "content_hash": "sha256:021940565c870297afcd631abb06fe5de7eca77ea0880917712121ba564f54ab"
+  },
+  {
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "record_id": "span:opus5-v11-2608.14798v1/why-cspf",
+   "revision": 1,
+   "content_hash": "sha256:d897e8d4a14a31b9c2a6fe75210833cb02b6bcd9db69deb6b7fb56cf84511b74"
+  },
+  {
+   "record_type": "agtxiv.v3.paper-structure/0.0.0",
+   "record_id": "structure:opus5-v11-2608.14798v1",
+   "revision": 1,
+   "content_hash": "sha256:e7133e861fd326d01cf1d88a00bc5e9bbfad1c78eaa35fa2015f850a94ab679c"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/pauli-spectrum",
+   "revision": 1,
+   "content_hash": "sha256:a4608c52742ea4bbe1ae0f7feb53e514f086334505645a26d96bb89aeb7517f0"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/spectrum-splitting",
+   "revision": 1,
+   "content_hash": "sha256:b37cc7e829c3ad8a4a207eee74e277adf5693d26e3e74ef31a9096c95c496324"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/stabilizer-nullity",
+   "revision": 1,
+   "content_hash": "sha256:577c566c995ea01ab26e0f88f9492637bf9f5de17af2ec86e750fb3695f4b1a2"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/sre",
+   "revision": 1,
+   "content_hash": "sha256:22bbf0386d5e4154c3d472d0b43e78702e0e2dab70eb84006b8ff0b48868e3de"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/stabilizer-hamiltonian",
+   "revision": 1,
+   "content_hash": "sha256:c9beaa53dbab727f2973a0e2b77591b951787e91912bc68ede57252039da0ce1"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/spf",
+   "revision": 1,
+   "content_hash": "sha256:7eabb8ae6b1589244b197424d956abe2c6ed9a60a2463474f3ecf8d7b718487b"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/cspf",
+   "revision": 1,
+   "content_hash": "sha256:89d2846f7468ccc2b19658f69ca6b803e0f63b8a9f9e205dc9d7a63817006d06"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/stabilizer-work",
+   "revision": 1,
+   "content_hash": "sha256:0ecd8b7ff862ed1a993d73baf2631587b0e00bfc69e8bd3d6a8f9c74301523bc"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/nu-compressible",
+   "revision": 1,
+   "content_hash": "sha256:84d93463fd1cdd9019845aa26f88a1c3042d450413cc5a6e5337e383a42109bd"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/sps",
+   "revision": 1,
+   "content_hash": "sha256:c4b8e9b8d337b8acac1791709c445d141af91b9114fecfacc6ff191f6162622a"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/stabilizer-fidelity",
+   "revision": 1,
+   "content_hash": "sha256:53a7e62777dfb8f26faecf407f6641f6fa01a8f13fbe0561f3ffc769b4af820d"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/free-ops",
+   "revision": 1,
+   "content_hash": "sha256:1e82c2e78ee39c61e3c8fc0e5d37a611600fb51ec390f91098c91484b8f56d39"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/mixed-spf",
+   "revision": 1,
+   "content_hash": "sha256:0248d6e48689ea81e59a69a3c7be28f32e14f628fe6f33bb49fb33bdb21f4be7"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/channel-spf",
+   "revision": 1,
+   "content_hash": "sha256:550925b8658bb39bddc3efe857acb28003c2c569fffefc647dbf210062728059"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/pauli-density",
+   "revision": 1,
+   "content_hash": "sha256:e7098207df0039b303d4ab776e673534e07cb7f4f311aa6933b3899d30d4c989"
+  },
+  {
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "record_id": "definition:opus5-v11-2608.14798v1/truncated-spf",
+   "revision": 1,
+   "content_hash": "sha256:ccd77058696c2ecca231a484743a6348bdaacc64fdf46eeba57b34eeecafc8d8"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A01",
+   "revision": 1,
+   "content_hash": "sha256:9b1d9116f2e10fbb6c9938f5f14ea986eec3ef3e2e3109619c7da007350387bb"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A02",
+   "revision": 1,
+   "content_hash": "sha256:014858397d3815711f9e2c8a29742e3b1dd1155119892ba8e8047421650642ad"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A03",
+   "revision": 1,
+   "content_hash": "sha256:c05e0a405e65c238a9db2d596334dc95d971e9a245f8458986a3df906cbad632"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A04",
+   "revision": 1,
+   "content_hash": "sha256:cad84798658f923742f52f962e1d2c4035ea4d67f80055df38a98068f4d33922"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A05",
+   "revision": 1,
+   "content_hash": "sha256:45f4028b1401436079616db7254295da02752fca173746a94cabe75e292b7637"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A06",
+   "revision": 1,
+   "content_hash": "sha256:1feaa516dfca81ef1aae3ba5ca18121580574c21542ab3d7b5af0bdc36edb6ba"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A07",
+   "revision": 1,
+   "content_hash": "sha256:08ec8f7b9d44d541ac15f96c87dc2736f2c5314acc86c7b8de935abdacd2904d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A08",
+   "revision": 1,
+   "content_hash": "sha256:1fe3bf94301135242f2ac045bfd5cba661ca6d455cf8cd42c5bde763fb597e0a"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A09",
+   "revision": 1,
+   "content_hash": "sha256:a1eecb86a347b4b2236676c84fff8e633f57bffc0e3cb0c4d7452eb120797d28"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A10",
+   "revision": 1,
+   "content_hash": "sha256:89f88378db71938daf0232a8b9a3c3136df55611515af33f0d261b5a82595f95"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A11",
+   "revision": 1,
+   "content_hash": "sha256:6304b810f2c00da2e701d23b61372b2e76dde0899c30b7ad1cdc1fc2396aec3a"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A12",
+   "revision": 1,
+   "content_hash": "sha256:5008e75fe8e410bfe1f27cdca91fbe4acd5f1840bb5716294c39abaa4461e975"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A13",
+   "revision": 1,
+   "content_hash": "sha256:9de5112415b9f54072728c5a4a6566131776714bdc67787e77bb0ea4b32b7095"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A14",
+   "revision": 1,
+   "content_hash": "sha256:add6339a3432d9a06f9835db3784bf98999af0d2f03848ae1cc195d76a7359a3"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A15",
+   "revision": 1,
+   "content_hash": "sha256:4316226c064f9b865a3b7d450a4ad71a663456358b077b52e27d2fba826ab7df"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A16",
+   "revision": 1,
+   "content_hash": "sha256:e3ada1c50af900ddcaae8192873a9ac6310a733cda67479b581ee02c22ac40d1"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A17",
+   "revision": 1,
+   "content_hash": "sha256:887e902abe927549680c3c6f9d49f49b8d305cc21e386423f57842aacb1f0b17"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A18",
+   "revision": 1,
+   "content_hash": "sha256:a165184042938f1d4639cb2e2060cea16737cfb7d2ee8af180fac591a8d35743"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A19",
+   "revision": 1,
+   "content_hash": "sha256:26795e9d41c036f3292d4fefc1e7df85ddc5bdb750e69609ca15517670e68f3d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A20",
+   "revision": 1,
+   "content_hash": "sha256:6017a456ea912e69ab8d280b29fec52fbcb611df9d75a163b7fc06ed2e3ac7b4"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A21",
+   "revision": 1,
+   "content_hash": "sha256:12a8ed6411cf47e844c571359bc0fe587ad8c438757f06070ed74fdfabe7a1a4"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A22",
+   "revision": 1,
+   "content_hash": "sha256:0235cac69ebce050ef0822c8caa1641438e0eef5b5b22b48deb8da1df9df908d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A23",
+   "revision": 1,
+   "content_hash": "sha256:5d8bdbd13dc437fe0bf8d0940db6f1a56f3ca761dfa16cb67e27e4ce9cf0b564"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A24",
+   "revision": 1,
+   "content_hash": "sha256:39d9d49910ace4230199cf09618f525c12c1dd42455a9f9a53458ac6ff2b77de"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A25",
+   "revision": 1,
+   "content_hash": "sha256:9aed129da51a22f2888412e0310634bedd0fb74ce7b0eb7853a0e50e51ed526e"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A26",
+   "revision": 1,
+   "content_hash": "sha256:d327ad7add9fd3555f7f4e01fad360cbbc31d4514fa5a6be04415a5c35baf8f9"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A27",
+   "revision": 1,
+   "content_hash": "sha256:367339a3ab39bc2ecfe92a77e8cec6a2df5b5f42b4723ab59a88f518e92b002a"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A28",
+   "revision": 1,
+   "content_hash": "sha256:90724b4df5eafb74dc985f7057ebe1ce74978e762922584fed9c6bef3e7cacb4"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A29",
+   "revision": 1,
+   "content_hash": "sha256:a576d6a0e4f84bea96ee68690ea77cad1dbeb68342608bca89e1235b9a336560"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A30",
+   "revision": 1,
+   "content_hash": "sha256:be02f6bd8df5c57f278d67caf4f2e984c44fbb2f303de1e4a29b41e4232e244d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A31",
+   "revision": 1,
+   "content_hash": "sha256:9fe8344bc0d43e2ce699aa59aa44656de0ff03729c0575c6a8a974be84cac4e5"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A32",
+   "revision": 1,
+   "content_hash": "sha256:9628bc7d27408f61258d32fe0be0e9f46e039f7a61bd78454cf4773ab9767d0c"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A33",
+   "revision": 1,
+   "content_hash": "sha256:e97eb74512a1c8d92fce5819005f6af923beabdfe52de4ee367bdcfe2386a86d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A34",
+   "revision": 1,
+   "content_hash": "sha256:61fb987361b9ac1f38c1b2f04bf5597e5cc3f5a4e5b85413a6d96f32283abc4c"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A35",
+   "revision": 1,
+   "content_hash": "sha256:58f396fc197369128421220f7641d910ebb034364b18495990e29f475a40c0a7"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A36",
+   "revision": 1,
+   "content_hash": "sha256:9782dadf783410f648af97a3d6e13a1cb1be02b7038d3443a7b0a6fb0a3cc340"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A37",
+   "revision": 1,
+   "content_hash": "sha256:ad0b58883b9c988d9e43046cc4b0f63ae2df48c603841295e82deb750e0feb13"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A38",
+   "revision": 1,
+   "content_hash": "sha256:81786f055c34d951745d8bced0fe5dd1c138a82729ea70da174c027bc10f315e"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A39",
+   "revision": 1,
+   "content_hash": "sha256:73816bf1dce3eba6d5a22e74a8a6942b22b19dd3be5911013716e8982e1710e2"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A40",
+   "revision": 1,
+   "content_hash": "sha256:424d86775c43839214de093a5b454690c392be3cde2f349088498410019b7b01"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A41",
+   "revision": 1,
+   "content_hash": "sha256:ff82762c4fb11f2733bb1aa439e37aaa7a7f79ba628afab41c18dd51001506b3"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A42",
+   "revision": 1,
+   "content_hash": "sha256:35bcb3684f25c9424607228351b14960a90cc891c9afba695fdc523e2f559600"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A43",
+   "revision": 1,
+   "content_hash": "sha256:2616c61ec83a3dbe0665f57dae6b690e1e5f0170f84c19a448b30caa7a6aacc7"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A44",
+   "revision": 1,
+   "content_hash": "sha256:16c650cdbc874481a5f8b7b0e2951a8e54fd5a8e424ad6a159c1aa6ee615a879"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A45",
+   "revision": 1,
+   "content_hash": "sha256:4e38d1d4007ad81ff98037fcd6dc40cd27d43cd85191a238d63938ad77e4d373"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A46",
+   "revision": 1,
+   "content_hash": "sha256:4a6c192295faf51067e8227d86e3c8ef7ceab1ce56d256de9eb35b239ddff98d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A47",
+   "revision": 1,
+   "content_hash": "sha256:5bdd853dd30b840068fa2897b346ed9c193faf98e2ba9f1b7bba46683a9ae83c"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A48",
+   "revision": 1,
+   "content_hash": "sha256:198dd51b5e88a9307fd4f1cfad1653e78ec36dddd9560706ef64a83db32454a9"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A49",
+   "revision": 1,
+   "content_hash": "sha256:aa34ad1f56248c74f1d51b386fe8edc4fd8d88f51f0927178f8526097ddd02a0"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A50",
+   "revision": 1,
+   "content_hash": "sha256:24b452f7790780570f4a6ae6ed75b5a7f1fd44c5f95c0c540f9563c044a04381"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A51",
+   "revision": 1,
+   "content_hash": "sha256:8eb7ebafecb6a62baa4b0b3b9be1467189f3e71ab8974758ad00f061a8cc75ed"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A52",
+   "revision": 1,
+   "content_hash": "sha256:995d499f67d08d9c8c2ef0565a7887a2466487ed315557c98d8893833174e3f9"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A53",
+   "revision": 1,
+   "content_hash": "sha256:4f5861674033b8e8426068e95c9b813b064de38e4aadc1595a81c81039e246e3"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A54",
+   "revision": 1,
+   "content_hash": "sha256:ba44f8e6bf4b59bec951280710ca1ed7397eeed6e70597f43f9f85e237a1c3f7"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A55",
+   "revision": 1,
+   "content_hash": "sha256:64383aa74bfdd7bd9c4d7624be913c3dc540f827f4a1e1fc8b46a3cecaaa30bf"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A56",
+   "revision": 1,
+   "content_hash": "sha256:81c5729b0ddd6e86152af65dd50fe38386b87ddbf169803c92d1d364adcc5d7d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A57",
+   "revision": 1,
+   "content_hash": "sha256:f3fc05f67cce33b20bfef3e76285787e7be8e39d4180b6cadafafab736aad971"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A58",
+   "revision": 1,
+   "content_hash": "sha256:e15a0dded085044da776a2778f62b5651b8c419864d97ac9904f27940afa9893"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A59",
+   "revision": 1,
+   "content_hash": "sha256:33fe49088aa38caac2f01ace9e1c31bb620ae7fc3f01f9551794ce57fd278105"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A60",
+   "revision": 1,
+   "content_hash": "sha256:269f20cfe26defbb8fcb2620bccbb1d73241e516f05071d3bc878e63b44c0481"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A61",
+   "revision": 1,
+   "content_hash": "sha256:29f9a4924d426ab943e5de38990d34b24120a7722cfb4de7925c6c99aa918f34"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A62",
+   "revision": 1,
+   "content_hash": "sha256:25ed3e1667e576fbb67a6186db651c0e6287f913f90874a2cc3dd539c2d39195"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A63",
+   "revision": 1,
+   "content_hash": "sha256:53c3e05f4fd5115b44d0e59f1cede61f49db9eea198e0283bfdcd4a50c193263"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A64",
+   "revision": 1,
+   "content_hash": "sha256:4e522ccd5a95f92c6191c1e958709ed922e121c2c45ac4f0209adf5fc2355198"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A65",
+   "revision": 1,
+   "content_hash": "sha256:0b33162302636b8891baa16460aadfd88f33befb55c2f7017721a1a1b9a58b56"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A66",
+   "revision": 1,
+   "content_hash": "sha256:01935bb5041a2f0b6e99b23ec1da3a66da81f280bf4e7a5639fcd45a8229eec3"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A67",
+   "revision": 1,
+   "content_hash": "sha256:ba107dca0dd81250244d4fda235c8d912938d232cd5a11ce06606c2fafabe1b5"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A68",
+   "revision": 1,
+   "content_hash": "sha256:428060dc17da01b4e0480d9d6129cd753e38c7de080d8fcafa4c3fb69c150db7"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A69",
+   "revision": 1,
+   "content_hash": "sha256:be5532430176fc355585af6120864b882c7c716860985739191f2f3e60d229a9"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A70",
+   "revision": 1,
+   "content_hash": "sha256:ba1ddff3c98be1140f52bea341e73c26e55f8a3e1e53dd36d95ac20f8ba8783c"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A71",
+   "revision": 1,
+   "content_hash": "sha256:cfabf5a8b0017e225a5292e0b9e378a900ccb76f06c5440342177b7b748571a4"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A72",
+   "revision": 1,
+   "content_hash": "sha256:b8de2ed10502cc7b773c7d5423a9c9471d833fcd7d5a7eaf97ba4758ecf47f2a"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A73",
+   "revision": 1,
+   "content_hash": "sha256:ee4d45d140ed5655bd3056ddc64d6ab33960a964da6b9c0a3f81b7bd49877f3d"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A74",
+   "revision": 1,
+   "content_hash": "sha256:b159b35858326c3e55324dcda9c2a725e8d76ef7ea529f575935657678fce1d2"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A75",
+   "revision": 1,
+   "content_hash": "sha256:fe02a6e18461a8b83f7fc7ec28f530e0423d9f8e853dac8c3d8e56f4ee7aa3e8"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A76",
+   "revision": 1,
+   "content_hash": "sha256:f606077528cfda4a43823e56cea92aae9f18becbe34dffa736c909618a1d3985"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A77",
+   "revision": 1,
+   "content_hash": "sha256:c4c0b2bd3058c6c623e0c6750821e9e7b8a37120b01cd4f47291e1734406966a"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A78",
+   "revision": 1,
+   "content_hash": "sha256:cb1b8a6a404b0842bf3bb3380972eb377c41cfe403c16ccc0c4da9d5b2533b15"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A79",
+   "revision": 1,
+   "content_hash": "sha256:1a7fbe00927819e1729d0d91f06b56e2af2370ecbb48ab604e4cea2b03939b30"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A80",
+   "revision": 1,
+   "content_hash": "sha256:227a9e030eb9f53906f1aaf86b049e7c887b9f84487840cc1a2461c698986263"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A81",
+   "revision": 1,
+   "content_hash": "sha256:aaecbf3a25d02db5859c8024d3b2d98cb5aae4c33a5860c721b0502dcca0b71b"
+  },
+  {
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "record_id": "claim:opus5-v11-2608.14798v1/A82",
+   "revision": 1,
+   "content_hash": "sha256:5a1da3a09fcd4940a637949b4ed78e00faa6f264b18ad6e96f24bc82739350a5"
+  },
+  {
+   "record_type": "agtxiv.v3.semantic-context/0.0.0",
+   "record_id": "semantics:opus5-v11-2608.14798v1/A59",
+   "revision": 1,
+   "content_hash": "sha256:cb29024a2a97ec877e0e73ff8505cbab81c3baa70601ddb6c5d9b475f534d513"
+  },
+  {
+   "record_type": "agtxiv.v3.semantic-context/0.0.0",
+   "record_id": "semantics:opus5-v11-2608.14798v1/A62",
+   "revision": 1,
+   "content_hash": "sha256:d483e15bbc3cfb1b0197a2532dcba780161ed1bf236086a1e0774f01607b21da"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A02-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:f53855dae2e522a687a5b5a4ed6212f7f7ce22d4c76cb6dd4e1aa0793e9f8a19"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A03-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:0af52a4b3c36ce8e251f358147e200c2d5e0b10de550d4fe6df0d5274a7316a2"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A04-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:47da1bcc9ff2884a722cb36761e7fb4ee7716c64753e779a6cb70d10667aed11"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A04-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:e2dc92a312ab3857287693a793fa4ed6c81f97158e409daa882e42e71d905ab7"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A05-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:6d5668e314fb2ffb6928ac442b8731002f3051508516261178e3777e8699a650"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A05-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:986771ea9d0ea9b12623caf62a29591af86332d012ee59004247e12d0a788ac3"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A06-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:7944901e982993e5d4bc652b8554605695fe45bdeedeb9a04d526cae8b413b56"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A07-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:a6b36b3690a729d60af7462c6fd1de31ab772550daf0395deb1a8a027f03da68"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A07-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:60d55191ae1ce8f741abf8bc3ea443263fe7468c1ac190d63135f2bc560950ac"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A07-conclusion-3",
+   "revision": 1,
+   "content_hash": "sha256:ed4f400198ba8436419d7f5c05fdffd266612539f64589cdd97b6a5891f24f6c"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A08-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:0d98f6c26c694b60875b008767ee4022772e927e45f21dce4c7f5a4829a1c1f2"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A09-model-1",
+   "revision": 1,
+   "content_hash": "sha256:93c67a582c740ed492be8db9853b51153f0e7b8bb0e19104c0ccc3d5b077e04c"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A10-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:3296e705ae54b4416ab60a3a17239dac176514890a5f2b8391655b87926cd8be"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A10-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:d1d4472c4896c9db4ad756d91c0fc9efe77a6e24a525bcbf91dbf825a9411f42"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A11-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:12e58e5b142fdfd4d53897423cfe894738e890f20197d2f43ebbab79330e8dd6"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A12-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:4401e8f4e2e5ead0dc36e9b5068dbbd4dd162cf99799e1a370ce01ab38908339"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A13-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:d999ae06914f071e5ce8a742b1f4a9b0931243754931a0dc69361733b6087166"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A13-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:5565f5f1ae2d675383340ea61ef25c7a7f0b746d5bb1d3b27b3d3e2475fc35fc"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A14-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:33314a21352ecd789db532c9abd380273b60973ffa6c865c773e03170100d397"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A14-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:6cede1fce4c8611a7b57aa75ef3f7d13282da238a44ab2f91361c4ebc18eefca"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A15-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:af3d5a1b5346f48322f83acd88c1333f7a086ca14edab53a96e8a470bd4aa9ad"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A16-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:d054be3d9d20cff0c0cfb928fd901576ee70d996532b82d54c4f3700ba0b4b92"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A17-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:4dab00038a0e09e17c659ee3b4487d1956d76e0e5ee0f3ceb297e1d9e1266e38"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A17-conclusion-3",
+   "revision": 1,
+   "content_hash": "sha256:8c9f03b0be1464d9a62121f08708a0139d071cf962ae250c074d252c9cbfdf01"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A18-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:2924e07e0844399a478dfcbe7f72c3b374920d7d2f87eac6bd2ae9f5b371f684"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A18-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:fee75df5dafe7c4bf843dc77e214f86796150c24f80ac43e5786409c7e6f7cdc"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A19-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:a10f11858da416753f0faa4863d60fa6c168a142ba0abfe322fcc31f6aab16c3"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A20-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:5ea36d305176321f38c9f2704b104be46bf7ea4a07683354bf51343f28a4dffd"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A20-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:b6611beccd2d7c62d19d3dcf7b0fd5e92dc60eed8ea0e0ba82beb527d03a50af"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A21-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:d1c708f923d423139fe1024272a720ae499395a9a0f1f21e751554f808311dba"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A22-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:c679cffce41a2f2aabd2eed931ae941dc9763696d6eacaa9d385807324ea83c9"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A23-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:d543d2b57ed81aae55c42e46863027b26abba3f9ea2b6eb8fd469722f2b9fcf1"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A24-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:34194f45d92ccd4e1f3aa50e3e83d4b1b26f4f5f83b2d9a25a327771c2e397f5"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A24-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:6e19c7caa9661cc397f3a5cda6cb335a22929df63fb8a4480170491f624e0eac"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A25-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:c977687ab82fbac68591f670518b8d1e9f1e3b5c4b8f2ae27a665367d70145e8"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A26-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:89f05783b19328a7a614b993db54917f7c94ea10b6d1c96c3448b954aa405732"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A27-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:3e0947fc555d43f911f7cad71881b35bf36196a2c3bd6a549f76477a7ddf15a2"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A28-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:b806728cd6869ee414f0ddfa967e0c3f789fa16250fd9125620f44bc1beee5c4"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A31-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:e16ce5b52007976bc0a1c37625d1a2bf2b0cdada1e6c04031600f218d698d067"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A32-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:2bc3082f2211077d868be04a176d3f2adb9553c33080e723b6ed67179df03817"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A33-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:69ea5afb9d53c48352506b0de6e5d4bb80c1f9b1a7fd62ca91f90fc622ad9b99"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A34-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:88de886c5252c013349b5841fb408aeaccb5d5b3b3c68b733312f3836a584f13"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A35-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:48e1ae81d41514de97a1e376954802d99c916b877784145b3c72c729de1640ec"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A37-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:ef2d388f457238288c2709b47edb9d34b518dc73def74b8f8499b0bec50a854d"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A39-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:179a89671b7dc4dc1c6ec4796873ec4fa91ee1dabe46a5d1f5a04f0ac9e11836"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A40-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:32bc3311579cfee9a19abe533b18a0c639ad6787ac1d98f4469c5694c7190937"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A40-conclusion-3",
+   "revision": 1,
+   "content_hash": "sha256:d78e5b531cbc7489721d4dde07c070cc0b4470c67ba763e96ff31234d2b16211"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A41-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:39196a596f72fce1318bdab33181a52740206de767f2a22929a660f3a7145afb"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A43-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:1510aa53820279a7f4714bc71b3d305663b2f66d6ca48be53b728ccadee659e3"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A43-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:a3df415e4ea6b0b2e9207ef2ac4e99e24816a379e8ddc8abf2d79ba4a192f5cf"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A43-conclusion-3",
+   "revision": 1,
+   "content_hash": "sha256:637b9c9f41a79bd6e614b92082a34added1a4bcf7aaf28eddadffbc2a3dc64c4"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A44-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:a7236f8e36df42c5925884606b5d92093b1e34de157478ab220a8a28ea2e2843"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A44-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:ccabf232f9108a6b834b56034d8fd06e61f8422d3b1ef0bc60e18fdf3446a42f"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A45-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:18a76f221984ccf6096712e54a141bd55ceb95b731ce354881915383bac2eaef"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A47-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:a1ab38e3825b6bfe1d224f050046e0be33bfef0497ff592ea8b82c1e72cc8ee9"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A48-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:c16dd279796b7b4baa5d913e3cdf1781e2d5688084748e1dc43fe40a507b50c7"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A49-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:6a7499ae48729ef6895e74df3dbf2618976567c0af79ef028285fcab417cd8fa"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A50-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:15cf725fc3b99aaad71e82cfb32df107cad21d9da023e4c80cf342e6e42832e4"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A52-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:93d057db6e92c4a7118c0af85484d9c653945aecaa900e8314df5d5d94383a0c"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A54-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:4895b0a6af21fed3f598442b4d54efc9382ad425fa4049de8cec96376ca047c8"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A55-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:4166bcf3cf0a3033cc09bb2950daed70ff6be2b1aa5041253e0da6d60fbb57b8"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A56-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:78d00106b37b850e09d2f88a2c08fa2a1332de1816dac7e46e96811d963da85b"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A57-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:eeb7f974236f84b812a2ed412dedb0254028bce80fdbe1fb268432bf1113a4e6"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A58-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:8962574dce00840f6b38f29262167fb47171d5107afcdb784dd11b300e760377"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A62-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:aaa47ebd1b481742c57365590bcf688a0990d97cba57fd8203071e1bdd3e1237"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A63-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:8735792d288085430c85f0e2715f869b50c050172cf5d3364087c5dc77d11a7f"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A64-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:0130c588a88f75d71bcb3b14d400cd787a264386281de34683eec50a6a10fd37"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A65-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:01feb9c24529ed094061c73239948b52fa8d1d4d76a4eb23e8b61918e91c4f44"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A66-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:581bc3c465ee14972fdb06810a09cf5212e327feb2fac58aa121c2408d2dd9fa"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A70-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:db60e6998d8d19d2beccc443340d1631d16544cd5d5745cb5d5b7c5f234510bb"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A71-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:13c6503b6eb65dfbfd02ac43ad84f13230ca4fd481456e4f1a3bbdb0b9bc90b9"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A72-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:cedb369d502d3c1175773d937faf28a7510d5814bcc5f94ee81b9d787d257eba"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A73-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:5c749e52efc53c78249430ba00c0ea1316edb253952ac3345881e872320bf1c7"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A74-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:eebe86ac4745639701a57210b2e5ee2128d9d9dfdd5904d776c82b7665bd1e2e"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A75-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:099e29843a0555c7338082644735760a6ca2fa442cf8ec034827c60d7872a28d"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A76-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:1a27b935cfa18a85c16220a6eec92a701af9d0b4010cee1b7e7da94811beb171"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A77-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:f7e7544e37c11d49e4effca75a81dfd7d727466fe3ede3a0c1c3af3f5a5c5cf6"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A78-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:d31dfa7865c5f702ff2d4147e5105bc2fbf921f28fa839e31776de8ad9a59c83"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A79-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:c5989a91805c7ee71e6e802e7b34018e13a9022a418c1d8421cd626337815293"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A80-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:e02b74f92fc21129ed2e29bdacc44622dc48788ba903c333ec5486384c6fe278"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A80-conclusion-2",
+   "revision": 1,
+   "content_hash": "sha256:291a6073f094a719f3944469da0bdd278acbf67deba8747346c0854fa89f297d"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A81-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:7eda577e5f75eeb9d352695bb2dd49bdd1cec7461410a165b91293b9fe91d70f"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A81-limitation-1",
+   "revision": 1,
+   "content_hash": "sha256:ca5a2bb316475e863d6ca6355b19c9054efaec284124ac1420501230aba3240d"
+  },
+  {
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "record_id": "math:opus5-v11-2608.14798v1/A82-conclusion-1",
+   "revision": 1,
+   "content_hash": "sha256:aed0b707dcd547ff6516adf8bcab930aaff9579e68591947cb5f5d898c1d4417"
+  }
+ ],
+ "input_artifacts": [
+  {
+   "artifact_id": "artifact:pauli-spectrum-tex",
+   "sha256": "sha256:0c9a572b67f0c2d3ad511d3cbbfeb612879e39dba18e3e7ffcdaac8dd8408b6c",
+   "byte_size": 207034,
+   "media_type": "text/x-tex",
+   "path_hint": "Pauli_Spectrum.tex"
+  },
+  {
+   "artifact_id": "artifact:spec-agent-md",
+   "sha256": "sha256:ef74821572028d428a4894143ba893ae74d081f8ca94a868f647ade2f7f36c57",
+   "byte_size": 10613,
+   "media_type": "text/markdown",
+   "path_hint": "schema v0.1/Paper Agent/AGENT.md"
+  },
+  {
+   "artifact_id": "artifact:spec-interface-md",
+   "sha256": "sha256:8045d3b6c54d737466bbc4377d6aa93d2cd17dbe61abd72388faa82cd473a7df",
+   "byte_size": 10652,
+   "media_type": "text/markdown",
+   "path_hint": "schema v0.1/Paper Agent/INTERFACE.md"
+  },
+  {
+   "artifact_id": "artifact:spec-conformance-md",
+   "sha256": "sha256:1d85a4c31d91a7fc459bdf47e81ed4cc73ed91eacd66aadd6593c615c4cfc6b2",
+   "byte_size": 10257,
+   "media_type": "text/markdown",
+   "path_hint": "schema v0.1/Paper Agent/CONFORMANCE.md"
+  },
+  {
+   "artifact_id": "artifact:spec-extraction-draft-schema-json",
+   "sha256": "sha256:a98edb7b9836db7eabc3886dfffa0b36cb8b45eb8b7f1097a5f2626e2457c497",
+   "byte_size": 5565,
+   "media_type": "application/json",
+   "path_hint": "schema v0.1/Paper Agent/extraction-draft.schema.json"
+  }
+ ],
+ "depends_on": [
+  {
+   "task_id": "task.opus5-v11-2608.14798v1.r4-4-math",
+   "gate": "DELIVERY"
+  }
+ ],
+ "expected_record_types": [
+  "claim-component-map",
+  "inventory-discovery",
+  "frontier-item"
+ ],
+ "limits": {
+  "max_attempts": 3,
+  "max_seconds": 86400,
+  "max_cost_units": 0,
+  "no_progress_limit": 2
+ },
+ "acceptance": "DELIVERY",
+ "exclusions": [],
+ "capabilities": [
+  "records.read",
+  "source.read",
+  "candidates.propose"
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "content_hash": "sha256:3c42acfad57e11c0ab2e7e44cf516216b544afea82101dda7dcad3547fd07139",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:c92ef37f105471ccf73c20580ac9a3a2501fec1f3a54d306a067e8ae9745dce0",
+   "record_id": "span:opus5-2608.14798v1/spf-not-full-spectrum",
+   "record_type": "agtxiv.v3.source-span/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "attribution": "Salazar, Saxena, Baker, Kwek, Kyaw, arXiv:2608.14798v1; asserted by the authors in the paper text",
+  "comparison_baseline": "the full signed, labelled Pauli spectrum ${\\rm Spec}(\\psi)$ of Definition (Pauli Spectrum)",
+  "components": [
+   {
+    "component_id": "comp:lossy",
+    "role": "LIMITATION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:c92ef37f105471ccf73c20580ac9a3a2501fec1f3a54d306a067e8ae9745dce0",
+      "record_id": "span:opus5-2608.14798v1/spf-not-full-spectrum",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "The map $\\psi\\mapsto\\mathcal{Z}_\\bullet(\\psi)$ is explicitly lossy: labels, signs and odd statistics are not recoverable."
+   },
+   {
+    "component_id": "comp:sufficient",
+    "role": "ASSUMPTION",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:c92ef37f105471ccf73c20580ac9a3a2501fec1f3a54d306a067e8ae9745dce0",
+      "record_id": "span:opus5-2608.14798v1/spf-not-full-spectrum",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "text": "What survives is asserted to be 'the stabilizer-relevant information accessible through Pauli moments'."
+   }
+  ],
+  "conditions": [
+   {
+    "condition_id": "cond:even",
+    "origin": "SOURCE_RECONSTRUCTED",
+    "source_span_refs": [
+     {
+      "content_hash": "sha256:c92ef37f105471ccf73c20580ac9a3a2501fec1f3a54d306a067e8ae9745dce0",
+      "record_id": "span:opus5-2608.14798v1/spf-not-full-spectrum",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+     }
+    ],
+    "statement": "only even moments enter, since $\\cosh$ is an even function of $\\beta x$"
+   }
+  ],
+  "modality": "ASSERTED",
+  "source_span_refs": [
+   {
+    "content_hash": "sha256:c92ef37f105471ccf73c20580ac9a3a2501fec1f3a54d306a067e8ae9745dce0",
+    "record_id": "span:opus5-2608.14798v1/spf-not-full-spectrum",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ],
+  "statement": "The SPF does not retain the full labelled Pauli spectrum; instead it packages the spectrum's Clifford-invariant EVEN statistics into an analytic object, thereby capturing the stabilizer-relevant information accessible through Pauli moments.",
+  "system": "$n$-qubit pure states, $\\mathcal{H}_n\\cong(\\mathbb{C}^2)^{\\otimes n}$, $d_n=2^n$, finite $n$"
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:c92ef37f105471ccf73c20580ac9a3a2501fec1f3a54d306a067e8ae9745dce0",
+    "record_id": "span:opus5-2608.14798v1/spf-not-full-spectrum",
+    "record_type": "agtxiv.v3.source-span/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "claim:opus5-2608.14798v1/c33",
+ "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

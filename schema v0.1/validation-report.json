@@ -1,0 +1,188 @@
+{
+  "contract_version": "0.1.0",
+  "recorded_at_utc": "2026-09-12 08:14:40 UTC",
+  "scope": "LOCAL_CONTRACT_AND_SYSTEM_DESIGN_DELIVERY",
+  "package_check": {
+    "command": ".venv/bin/python 'schema v0.1/validate.py' --check",
+    "exit_code": 0,
+    "output": {
+      "valid": true,
+      "scope": "OFFLINE_CONTRACT_CHECK",
+      "authority_checked": false,
+      "scientific_acceptance_checked": false,
+      "package": {
+        "contract_version": "0.1.0",
+        "schemas": 5,
+        "base_record_families": 64,
+        "agent_templates": 9,
+        "operations": 23,
+        "synthetic_tasks": 3,
+        "synthetic_results": 3,
+        "structural_task_order": [
+          "fixture:generate",
+          "fixture:check",
+          "fixture:explain"
+        ],
+        "example_archive": {
+          "batch_id": "fixture:reader-batch-1",
+          "members": 1,
+          "records": 0,
+          "artifacts": 1,
+          "raw_bytes": 195,
+          "record_closure_checked": true,
+          "authority_checked": false,
+          "scientific_acceptance_checked": false,
+          "parent_batch_history_checked": false
+        },
+        "sql_reference_tables": [
+          "runtime_attempts",
+          "runtime_delivery",
+          "runtime_events",
+          "runtime_leases",
+          "runtime_outbox",
+          "runtime_projection_checkpoints",
+          "runtime_projection_heads",
+          "runtime_tasks",
+          "sqlite_sequence"
+        ],
+        "task_record_references_resolved": false,
+        "runtime_identity_authenticated": false,
+        "scientific_acceptance_checked": false,
+        "neo4j_executed": false,
+        "model_or_lean_executed": false,
+        "git_published": false
+      }
+    }
+  },
+  "unit_check": {
+    "command": ".venv/bin/python -B -m unittest discover -s 'schema v0.1/tests' -v",
+    "exit_code": 0,
+    "output": "test_all_local_object_types_are_closed (test_reference.ContractTests.test_all_local_object_types_are_closed) ... ok\ntest_backtranslation_accepts_environment_and_artifacts_without_attempt (test_reference.ContractTests.test_backtranslation_accepts_environment_and_artifacts_without_attempt) ... ok\ntest_blind_follow_up_rejects_forbidden_visible_inputs (test_reference.ContractTests.test_blind_follow_up_rejects_forbidden_visible_inputs) ... ok\ntest_blind_task_rejects_context_and_diagnostic_leaks (test_reference.ContractTests.test_blind_task_rejects_context_and_diagnostic_leaks) ... ok\ntest_certification_requires_manifest_audit_policy_and_profile (test_reference.ContractTests.test_certification_requires_manifest_audit_policy_and_profile) ... ok\ntest_explicit_artifacts_and_frozen_visibility (test_reference.ContractTests.test_explicit_artifacts_and_frozen_visibility) ... ok\ntest_follow_up_operation_and_input_family (test_reference.ContractTests.test_follow_up_operation_and_input_family) ... ok\ntest_identifiers_types_and_hash_reject_trailing_newline (test_reference.ContractTests.test_identifiers_types_and_hash_reject_trailing_newline) ... ok\ntest_no_fake_scientific_outcome_or_empty_delivery (test_reference.ContractTests.test_no_fake_scientific_outcome_or_empty_delivery) ... ok\ntest_package_and_example_graph (test_reference.ContractTests.test_package_and_example_graph) ... ok\ntest_packet_assembly_requires_declared_business_inputs (test_reference.ContractTests.test_packet_assembly_requires_declared_business_inputs) ... ok\ntest_paper_requires_declared_plan_and_profile (test_reference.ContractTests.test_paper_requires_declared_plan_and_profile) ... ok\ntest_reader_can_start_from_brief_only (test_reference.ContractTests.test_reader_can_start_from_brief_only) ... ok\ntest_required_inputs_cannot_be_removed (test_reference.ContractTests.test_required_inputs_cannot_be_removed) ... ok\ntest_required_task_and_execution_fields (test_reference.ContractTests.test_required_task_and_execution_fields) ... ok\ntest_result_bindings_time_and_required_output (test_reference.ContractTests.test_result_bindings_time_and_required_output) ... ok\ntest_task_graph_rejects_missing_duplicate_cycle_and_wrong_gate (test_reference.ContractTests.test_task_graph_rejects_missing_duplicate_cycle_and_wrong_gate) ... ok\ntest_task_operation_targets_capabilities_and_output (test_reference.ContractTests.test_task_operation_targets_capabilities_and_output) ... ok\ntest_unknown_fields_rejected_at_actual_boundaries (test_reference.ContractTests.test_unknown_fields_rejected_at_actual_boundaries) ... ok\ntest_business_reference_closure (test_reference.ArchiveTests.test_business_reference_closure) ... ok\ntest_business_same_identity_different_hash (test_reference.ArchiveTests.test_business_same_identity_different_hash) ... ok\ntest_bytes_and_lengths (test_reference.ArchiveTests.test_bytes_and_lengths) ... ok\ntest_case_collision_and_artifact_identity_conflict (test_reference.ArchiveTests.test_case_collision_and_artifact_identity_conflict) ... ok\ntest_paths_and_symlinks (test_reference.ArchiveTests.test_paths_and_symlinks) ... ok\ntest_append_only_rows (test_reference.SQLTests.test_append_only_rows) ... ok\ntest_foreign_keys_and_event_task_binding (test_reference.SQLTests.test_foreign_keys_and_event_task_binding) ... ok\ntest_head_insert_and_update_require_ready_same_view (test_reference.SQLTests.test_head_insert_and_update_require_ready_same_view) ... ok\ntest_outbox_idempotency_key_is_per_destination (test_reference.SQLTests.test_outbox_idempotency_key_is_per_destination) ... ok\n\n----------------------------------------------------------------------\nRan 28 tests in 0.990s\n\nOK\n"
+  },
+  "legacy_checks": [
+    {
+      "command": ".venv/bin/python tools/generate_v3_schema_v00.py --check",
+      "exit_code": 0,
+      "observed_result": "64 record schemas; 19 shared structures; 70 generated files verified"
+    },
+    {
+      "command": ".venv/bin/python tools/validate_v3.py --bundle-only",
+      "exit_code": 0,
+      "base_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/v3 -q",
+      "exit_code": 0,
+      "observed_result": "731 passed in 219.17s (0:03:39)",
+      "scope": "V3 targeted regression, not entire repository or scientific validation"
+    }
+  ],
+  "files": [
+    {
+      "path": "AGENT-CONTRACTS.md",
+      "sha256": "sha256:b7adb6765010d92d804f08cdc380ce662fec79a9554929a747c8157997cfe23f"
+    },
+    {
+      "path": "agents.json",
+      "sha256": "sha256:3aaa6094b0442c42db0cb8b9ad9b02e694c454fbe79caa5dd5e99d5259e2fd1c"
+    },
+    {
+      "path": "compatibility.lock.json",
+      "sha256": "sha256:970a0554009263b9b75cfb6b6e7d5f38143b8ef3ba4cc7de784d2c368f09bc54"
+    },
+    {
+      "path": "COMPATIBILITY.md",
+      "sha256": "sha256:1712f2941780219401a8f3ece72306c5aa985d7cf924e6df7d2a5e56e98d1052"
+    },
+    {
+      "path": "examples/batch/batch.json",
+      "sha256": "sha256:eedd9b50cf8020dbceb14662f79cf983f57be288df976e8b369b13311a97b08f"
+    },
+    {
+      "path": "examples/batch/reader-note.md",
+      "sha256": "sha256:11a5938c2e8addecae1fa97ec938db008a11c6e1fa12e1d908731bc3a3f46538"
+    },
+    {
+      "path": "examples/README.md",
+      "sha256": "sha256:47699ec091cd30129a729b84ccb2b2d8fe499f9e2b05028d747664cee2d23579"
+    },
+    {
+      "path": "examples/workflow.json",
+      "sha256": "sha256:d1891490ba7af2cebbb43e1a0e5906dad20c18d230c446ae2a9efd6045d8f90c"
+    },
+    {
+      "path": "IMPLEMENTATION.md",
+      "sha256": "sha256:2b462d2e6a391b766f5ad6c75b3df96e41b41fb244460e0093bf320cd5c6cab1"
+    },
+    {
+      "path": "README.md",
+      "sha256": "sha256:6cfe9dc34e81994c55de972cc2b3533236a1b8dc39b21e79d314435b57ec709d"
+    },
+    {
+      "path": "SCHEDULING.md",
+      "sha256": "sha256:884f83723fc3a9963f097360357b7e6f46c862543c5cd05323515c8b1c2a8d4a"
+    },
+    {
+      "path": "schemas/agent-registry.schema.json",
+      "sha256": "sha256:ed714c792048c1660d9ae71e4a91ce4d1e8bfcac9dd1b898202b4d9b7a13e91d"
+    },
+    {
+      "path": "schemas/archive-batch.schema.json",
+      "sha256": "sha256:18a169891cd7bd9fcdb6042c80805498abc6f5f718ddadf35abacb8ffe2470be"
+    },
+    {
+      "path": "schemas/common.schema.json",
+      "sha256": "sha256:ad8d6f26db903e7095115e68f294077b40e7f4f3a078b0426bd7b3e880e753da"
+    },
+    {
+      "path": "schemas/result.schema.json",
+      "sha256": "sha256:2a6b73a1b92d1f528ea69567bd822e4033d385043d322e5bad7e2626b4c9688f"
+    },
+    {
+      "path": "schemas/task.schema.json",
+      "sha256": "sha256:54920f200e754d2c8541168a8633f7d9ff65cae529070e664858db43c8e7764f"
+    },
+    {
+      "path": "STORAGE.md",
+      "sha256": "sha256:a1631184776ce123d85bb4bf72d99545eea4ea27a40e1237f9542a5b772926c3"
+    },
+    {
+      "path": "storage/compose.example.yaml",
+      "sha256": "sha256:69da1a8e267e607582982108f981530a8b6399681561567f26cbaaee671ada04"
+    },
+    {
+      "path": "storage/neo4j-import.example.cypher",
+      "sha256": "sha256:63edffaeb95b0021a5d7afea5fef574caf375fd036a0da898358c8fe6e8b6714"
+    },
+    {
+      "path": "storage/neo4j.cypher",
+      "sha256": "sha256:0c02f577d33621cbb2c08b010973b39d0696c94b6e27194204ffd3d53483180a"
+    },
+    {
+      "path": "storage/runtime.sql",
+      "sha256": "sha256:074718918786c080fd7d01da4b5c5d07f4ad3d8f47892244903813002d3ef5b1"
+    },
+    {
+      "path": "tests/test_reference.py",
+      "sha256": "sha256:d8833dde51afeb6ea23ffaa5e8e52a5346b68c71fa4dd2e770ddd4c6a18c24a6"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "sha256:4bb6353aa48a1738e7290adaa069455943f22ede435b343c433bdc127144087c"
+    },
+    {
+      "path": "VALIDATION.md",
+      "sha256": "sha256:05b81f04b4f601a8459c4af328018cec92c343d43082758d055567c71583c519"
+    }
+  ],
+  "hash_scope": "Raw bytes of the listed delivered files. The report itself is excluded to avoid a self-reference. This is a local observation, not a signed attestation.",
+  "boundaries": {
+    "runtime_identity_authenticated": false,
+    "scientific_acceptance_checked": false,
+    "real_paper_workflow_executed": false,
+    "neo4j_or_docker_executed": false,
+    "compose_parser_executed": false,
+    "lean_executed": false,
+    "git_archive_published": false
+  }
+}

@@ -1,0 +1,138 @@
+{
+ "content_hash": "sha256:1e2a21c368889404225b49f2e04fe02088f21527ebbf02eac5ad8630438b2b4e",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+   "record_id": "claim:opus5-2608.14798v1/c07",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:274e5902564475bc770555141843ae554a7499819fb3660757755459ff2007a2",
+   "record_id": "math:opus5-2608.14798v1/m07",
+   "record_type": "agtxiv.v3.math-claim/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "claim_ref": {
+   "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+   "record_id": "claim:opus5-2608.14798v1/c07",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "coverage": "PARTIAL",
+  "mappings": [
+   {
+    "component_id": "comp:def",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:274e5902564475bc770555141843ae554a7499819fb3660757755459ff2007a2",
+      "record_id": "math:opus5-2608.14798v1/m07",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:mgf",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "'Moment-generating function' is used for $\\sum_x\\cosh(\\beta x)$, which generates even moments only; odd moments are not accessible. The source does not state this restriction here.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:hi-t",
+    "disposition": "MAPPED",
+    "evidence_refs": [],
+    "math_refs": [
+     {
+      "content_hash": "sha256:274e5902564475bc770555141843ae554a7499819fb3660757755459ff2007a2",
+      "record_id": "math:opus5-2608.14798v1/m07",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+     }
+    ],
+    "residual": "",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:lo-t",
+    "disposition": "RESIDUAL",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "The supplemental material derives this limit from the block decomposition $\\hat H=\\hat H_+\\oplus\\hat H_-$ and obtains $\\tfrac12|{\\rm STAB}(\\psi)|$, so the Sec. III B value is the supported one. Sec. VI C states the same limit without the factor $1/2$; the two cannot both be right.",
+    "semantic_refs": []
+   },
+   {
+    "component_id": "comp:rewrite",
+    "disposition": "UNRESOLVED",
+    "evidence_refs": [],
+    "math_refs": [],
+    "residual": "As printed, the rewrite has $\\cosh(\\tr{P\\psi})$ without the factor $\\beta$ inside the hyperbolic cosine, which is inconsistent with the definition and with the $e^{-\\beta}|{\\rm Ker}|$ term. Read as a typographical omission; not repaired here.",
+    "semantic_refs": []
+   }
+  ],
+  "review": {
+   "conflicts": [
+    "The claim and this correspondence map were produced by the same principal in the same execution.",
+    "No second model, process or person inspected either record.",
+    "The AGENT.md working stages require an independent reviewer; none existed in this run."
+   ],
+   "evidence_refs": [],
+   "independence": "UNESTABLISHED",
+   "method": "Component-by-component accounting against the exact source spans: every component is MAPPED to a mathematical or semantic target, kept as RESIDUAL with its meaning stated, marked UNRESOLVED where the printed source cannot be read consistently, or NON_CLAIM. This is a producer self-accounting, not a review.",
+   "producer_principal_ids": [
+    "session:opus5-2608.14798v1"
+   ],
+   "reviewed_refs": [
+    {
+     "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+     "record_id": "claim:opus5-2608.14798v1/c07",
+     "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+     "revision": 1
+    }
+   ]
+  }
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:345405000430202c9de1f8092a8cb431ed778326211b55d6776c73d37ae7f6d4",
+    "record_id": "claim:opus5-2608.14798v1/c07",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:274e5902564475bc770555141843ae554a7499819fb3660757755459ff2007a2",
+    "record_id": "math:opus5-2608.14798v1/m07",
+    "record_type": "agtxiv.v3.math-claim/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "map:opus5-2608.14798v1/c07",
+ "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

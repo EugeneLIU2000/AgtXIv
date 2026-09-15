@@ -1,0 +1,123 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:940694cc90afd58cdbb8568846d94a6e73f8612cb9ca5615f071c8210a934c74",
+      "record_id": "example:2608.14798v1-db635458e365-claim-state-independent-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+      "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+      "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+      "record_type": "agtxiv.v3.source-span/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "approximation_regime": "EXACT; Not applicable: asserted inequalities; achievability of a uniform spectrum is not established by this extraction.",
+    "assumptions": [
+      {
+        "condition_id": "condition:state-independent-bounds-0",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+            "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "psi is a normalized pure n-qubit state, beta is real, d=d_n=2^n."
+      },
+      {
+        "condition_id": "condition:state-independent-bounds-1",
+        "origin": "SOURCE_RECONSTRUCTED",
+        "source_span_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+            "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "statement": "Identifying the unindexed d in the source denominator with d_n is an explicit extraction convention awaiting review."
+      }
+    ],
+    "claim_ref": {
+      "content_hash": "sha256:940694cc90afd58cdbb8568846d94a6e73f8612cb9ca5615f071c8210a934c74",
+      "record_id": "example:2608.14798v1-db635458e365-claim-state-independent-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "error_bound": "Not applicable: asserted inequalities; achievability of a uniform spectrum is not established by this extraction.",
+    "limitations": [
+      "The proof expansion appears to omit the exp(-beta) factor; statement is preserved, not repaired.",
+      "Source notation d versus d_n requires alignment review.",
+      "No independent source-to-math or physical interpretation review."
+    ],
+    "object_mapping": [
+      {
+        "dimension": "OBJECT",
+        "relation": "UNKNOWN",
+        "source_value": "For pure n-qubit states the authors give stabilizer-valued upper and uniform-nonidentity-spectrum lower bounds on SPF.",
+        "target_value": "exp(-beta)[cosh(beta)+(d^2-1)cosh(beta/sqrt(d+1))] <= Z_beta(psi) <= exp(-beta)[d^2-d+d cosh(beta)].",
+        "witness_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+            "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "observables": [],
+    "physical_system": "psi: pure n-qubit state; beta: real parameter; d=d_n: Hilbert-space dimension"
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": []
+  },
+  "record_id": "example:2608.14798v1-db635458e365-semantics-state-independent-bounds",
+  "record_type": "agtxiv.v3.semantic-context/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:47d2d92ec6b4c7cc67fa3ca1a4430693230be4a44678baf73de54c7ef04a0e5d"
+}

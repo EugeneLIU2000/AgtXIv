@@ -1,0 +1,164 @@
+{
+ "content_hash": "sha256:4cd3355313dbde45ad4d165c87c5435377a2dff3ca81540f225bc9f0eba72a5e",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:77d47810873fcaeb687b548e1513b5838a1431492650e43b8ba1ab194a323ceb",
+   "record_id": "claim:opus5-2608.14798v1/c04",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+   "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+   "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+   "record_type": "agtxiv.v3.definition/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "approximation_error": "",
+  "assumptions": [
+   {
+    "condition_id": "assumption:a1",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$|{\\rm Supp}(\\psi)|=d_n 2^{M_0(\\psi)}$ and $M_0(\\psi)\\leq\\nu(\\psi)$ (imported)"
+   },
+   {
+    "condition_id": "assumption:a2",
+    "origin": "SOURCE_EXPLICIT",
+    "source_span_refs": [],
+    "statement": "$|{\\rm Supp}(\\psi)|+|{\\rm Ker}_{\\mathcal{P}}(\\psi)|=d_n^2$"
+   }
+  ],
+  "claim_ref": {
+   "content_hash": "sha256:77d47810873fcaeb687b548e1513b5838a1431492650e43b8ba1ab194a323ceb",
+   "record_id": "claim:opus5-2608.14798v1/c04",
+   "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+   "revision": 1
+  },
+  "component_ids": [
+   "comp:bounds"
+  ],
+  "conclusion": "$2^{n}(2^{n}-2^{\\nu(\\psi)})\\ \\leq\\ |{\\rm Ker}_{\\mathcal{P}}(\\psi)|\\ \\leq\\ 4^{n}-2^{n}$.",
+  "definition_refs": [
+   {
+    "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+    "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ],
+  "exactness": "EXACT",
+  "normalization": "$d_n=2^n$; counts are over phase-free Pauli labels",
+  "objects": [
+   {
+    "convention": "signed convention $\\tr(\\psi P)$, phase-free Pauli labels, global phases irrelevant",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+      "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "multiset of $4^n$ reals in $[-1,1]$ indexed by $\\mathcal{P}_n$",
+    "symbol": "{\\rm Spec}(\\psi)",
+    "unit": ""
+   },
+   {
+    "convention": "Pauli operators taken modulo phase when used as labels",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+      "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "phase-free $n$-qubit Pauli strings $\\mathcal{P}_1^{\\otimes n}$, $|\\mathcal{P}_n|=4^n$",
+    "symbol": "\\mathcal{P}_n",
+    "unit": ""
+   },
+   {
+    "convention": "$\\nu=0$ for stabilizer states; imported from Beverland et al. (2020)",
+    "definition_refs": [
+     {
+      "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+      "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "revision": 1
+     }
+    ],
+    "object_type": "non-negative integer",
+    "symbol": "\\nu(\\psi)",
+    "unit": ""
+   }
+  ],
+  "quantifiers": [
+   {
+    "domain": "positive integers",
+    "kind": "FORALL",
+    "variable": "n"
+   },
+   {
+    "domain": "pure states in $\\mathcal{H}_n$ with stabilizer nullity $\\nu(\\psi)$",
+    "kind": "FORALL",
+    "variable": "\\psi"
+   }
+  ],
+  "semantic_refs": []
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s3-claims",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "CLAIM_PRODUCER",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:77d47810873fcaeb687b548e1513b5838a1431492650e43b8ba1ab194a323ceb",
+    "record_id": "claim:opus5-2608.14798v1/c04",
+    "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:a0abe20aecbd0a545cb8c94808bbe7c6f209645b09edc521b3d6526b1508c66d",
+    "record_id": "definition:opus5-2608.14798v1/pauli-spectrum",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:94ac963dc47a5a8041805643f456f9a324f15475fc08e4de5045addd248c571d",
+    "record_id": "definition:opus5-2608.14798v1/stabilizer-nullity",
+    "record_type": "agtxiv.v3.definition/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "math:opus5-2608.14798v1/m04",
+ "record_type": "agtxiv.v3.math-claim/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}

@@ -1,0 +1,153 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:940694cc90afd58cdbb8568846d94a6e73f8612cb9ca5615f071c8210a934c74",
+      "record_id": "example:2608.14798v1-db635458e365-claim-state-independent-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:47d2d92ec6b4c7cc67fa3ca1a4430693230be4a44678baf73de54c7ef04a0e5d",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-state-independent-bounds",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:deab6ddf509480171f1e493fd19724acf922b32e2579c1cc56dd63f3a9a558b7",
+      "record_id": "example:2608.14798v1-db635458e365-math-state-independent-bounds",
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:940694cc90afd58cdbb8568846d94a6e73f8612cb9ca5615f071c8210a934c74",
+      "record_id": "example:2608.14798v1-db635458e365-claim-state-independent-bounds",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:state-independent-bounds",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+            "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+            "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [
+          {
+            "content_hash": "sha256:deab6ddf509480171f1e493fd19724acf922b32e2579c1cc56dd63f3a9a558b7",
+            "record_id": "example:2608.14798v1-db635458e365-math-state-independent-bounds",
+            "record_type": "agtxiv.v3.math-claim/0.0.0",
+            "revision": 1
+          }
+        ],
+        "residual": "The proof expansion appears to omit the exp(-beta) factor; statement is preserved, not repaired.; Source notation d versus d_n requires alignment review.; Complete component atomization and independent source alignment remain open; no scientific review.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:47d2d92ec6b4c7cc67fa3ca1a4430693230be4a44678baf73de54c7ef04a0e5d",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-state-independent-bounds",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+          "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+          "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:940694cc90afd58cdbb8568846d94a6e73f8612cb9ca5615f071c8210a934c74",
+          "record_id": "example:2608.14798v1-db635458e365-claim-state-independent-bounds",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:940694cc90afd58cdbb8568846d94a6e73f8612cb9ca5615f071c8210a934c74",
+        "record_id": "example:2608.14798v1-db635458e365-claim-state-independent-bounds",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:47d2d92ec6b4c7cc67fa3ca1a4430693230be4a44678baf73de54c7ef04a0e5d",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-state-independent-bounds",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:deab6ddf509480171f1e493fd19724acf922b32e2579c1cc56dd63f3a9a558b7",
+        "record_id": "example:2608.14798v1-db635458e365-math-state-independent-bounds",
+        "record_type": "agtxiv.v3.math-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:6c7304a465e4ee9ec8f4bd21fc0017261fb9a67668dccf53e1b60f9de3a0a208",
+        "record_id": "example:2608.14798v1-db635458e365-span-289-303",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:35aa8a4e74a446f1db1c2ff297cb3ca62760ff61e2f349a671a62afc3b3f8b24",
+        "record_id": "example:2608.14798v1-db635458e365-span-688-705",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-state-independent-bounds",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:561d4e6db014b761bf9844127847e9a977a01ac346b68517780e5a9b44372e0d"
+}

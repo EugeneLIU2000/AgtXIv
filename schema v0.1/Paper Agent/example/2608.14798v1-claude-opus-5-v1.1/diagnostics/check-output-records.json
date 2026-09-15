@@ -1,0 +1,78 @@
+{
+ "mode": "records",
+ "record_count": 433,
+ "paper_record_count": 429,
+ "paper_lint_record_count": 429,
+ "layers": {
+  "draft_schema": {
+   "checked": false,
+   "passed": null,
+   "reason": "Not checked in this mode or input shape is unavailable."
+  },
+  "follow_up_operations": {
+   "checked": false,
+   "passed": null,
+   "reason": "Requires a structurally valid draft."
+  },
+  "task_contract": {
+   "checked": false,
+   "passed": null,
+   "reason": "No Task supplied; task scope is not checked."
+  },
+  "task_output_types": {
+   "checked": false,
+   "passed": null,
+   "reason": "No valid Task and draft; output scope is not checked."
+  },
+  "task_record_refs": {
+   "checked": false,
+   "passed": null,
+   "reason": "No valid Task and draft; reference membership is not checked."
+  },
+  "task_artifact_refs": {
+   "checked": false,
+   "passed": null,
+   "reason": "No valid Task and draft; artifact membership is not checked."
+  },
+  "record_shape_and_hash": {
+   "checked": true,
+   "passed": true,
+   "reason": "SchemaBundle.validate_record on each record, including host context; no RecordSet validation."
+  },
+  "paper_lint": {
+   "checked": true,
+   "passed": true,
+   "reason": "Only the listed Paper filling rules; structurally invalid records are skipped. No semantic judgment."
+  },
+  "record_set": {
+   "checked": false,
+   "passed": null,
+   "reason": "No RecordSet validation, reference closure or cross-record checks."
+  },
+  "source_bytes": {
+   "checked": false,
+   "passed": null,
+   "reason": "No source bytes are opened or verified; catalog membership is not provenance proof."
+  },
+  "execution_identity": {
+   "checked": false,
+   "passed": null,
+   "reason": "Actual visibility, producer identity and independent review require the host."
+  },
+  "delivery": {
+   "checked": false,
+   "passed": null,
+   "reason": "A draft is not a Result; missing output families and open items do not determine outcome."
+  },
+  "scientific_correctness": {
+   "checked": false,
+   "passed": null,
+   "reason": "No semantic inference, claim merging or scientific assessment."
+  }
+ },
+ "missing_expected_record_types": null,
+ "error_count": 0,
+ "errors": [],
+ "errors_truncated": false,
+ "warnings": []
+}

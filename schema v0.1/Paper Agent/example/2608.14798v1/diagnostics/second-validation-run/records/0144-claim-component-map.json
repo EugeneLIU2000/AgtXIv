@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-13T16:54:58.236091Z",
+  "data_class": "RESEARCH",
+  "input_refs": [
+    {
+      "content_hash": "sha256:d493a37a4ad0c5f0a8c5d950adf9046fef89c3fb024b1d59945ed542da197937",
+      "record_id": "example:2608.14798v1-db635458e365-claim-doped-state-inference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    {
+      "content_hash": "sha256:a1f540226a901beb5f78a6922d0b0425d3660dfb2d4ca86377c9c325613e68d9",
+      "record_id": "example:2608.14798v1-db635458e365-semantics-doped-state-inference",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0",
+      "revision": 1
+    }
+  ],
+  "payload": {
+    "claim_ref": {
+      "content_hash": "sha256:d493a37a4ad0c5f0a8c5d950adf9046fef89c3fb024b1d59945ed542da197937",
+      "record_id": "example:2608.14798v1-db635458e365-claim-doped-state-inference",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+      "revision": 1
+    },
+    "coverage": "PARTIAL",
+    "mappings": [
+      {
+        "component_id": "component:doped-state-inference",
+        "disposition": "RESIDUAL",
+        "evidence_refs": [
+          {
+            "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+            "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          },
+          {
+            "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+            "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+            "record_type": "agtxiv.v3.source-span/0.0.0",
+            "revision": 1
+          }
+        ],
+        "math_refs": [],
+        "residual": "The corollary concerns an individual t-doped state, whereas the invoked theorem concerns a particular ensemble mean; no matching distribution on t-doped states is specified.; Line 1092 describes t as known while asking to find t.; The preceding nuCertify prints an answer and returns Void, but tExtract expects a Boolean result.; The loops omit nu=0 and t=0 and do not explicitly enforce nu<=n.; No derivation of t_max or statistical confidence level accompanies the interval wording.; The cited design and decoding results were not read, and no scientific or algorithmic verification was performed.; Complete component atomization and independent source alignment remain open; no scientific review.; No MathClaim emitted: complete structured binders/conditions were not finalized in this pass. Formula remains in the source-linked semantic context and seed file.",
+        "semantic_refs": [
+          {
+            "content_hash": "sha256:a1f540226a901beb5f78a6922d0b0425d3660dfb2d4ca86377c9c325613e68d9",
+            "record_id": "example:2608.14798v1-db635458e365-semantics-doped-state-inference",
+            "record_type": "agtxiv.v3.semantic-context/0.0.0",
+            "revision": 1
+          }
+        ]
+      }
+    ],
+    "review": {
+      "conflicts": [
+        "Producer-authored correspondence, not an independent review."
+      ],
+      "evidence_refs": [
+        {
+          "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+          "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        },
+        {
+          "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+          "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+          "record_type": "agtxiv.v3.source-span/0.0.0",
+          "revision": 1
+        }
+      ],
+      "independence": "UNESTABLISHED",
+      "method": "Source-grounded partial mapping from this session; review pending.",
+      "producer_principal_ids": [
+        "session:paper-example-2608.14798v1"
+      ],
+      "reviewed_refs": [
+        {
+          "content_hash": "sha256:d493a37a4ad0c5f0a8c5d950adf9046fef89c3fb024b1d59945ed542da197937",
+          "record_id": "example:2608.14798v1-db635458e365-claim-doped-state-inference",
+          "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+          "revision": 1
+        }
+      ]
+    }
+  },
+  "policy_ref": {
+    "content_hash": "sha256:356eece08aa19dbc976984bddda6352334589175f0dbdc7931427ba550a59fcc",
+    "record_id": "example:2608.14798v1-db635458e365-unadopted-policy",
+    "record_type": "agtxiv.v3.authority-policy/0.0.0",
+    "revision": 1
+  },
+  "producer": {
+    "actor_kind": "AGENT",
+    "execution_id": "session:paper-extraction-2608.14798v1",
+    "identity_assurance": "DECLARED",
+    "identity_evidence": [],
+    "principal_id": "session:paper-example-2608.14798v1",
+    "role": "CLAIM_PRODUCER",
+    "visible_input_refs": [
+      {
+        "content_hash": "sha256:d493a37a4ad0c5f0a8c5d950adf9046fef89c3fb024b1d59945ed542da197937",
+        "record_id": "example:2608.14798v1-db635458e365-claim-doped-state-inference",
+        "record_type": "agtxiv.v3.scientific-claim/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:a1f540226a901beb5f78a6922d0b0425d3660dfb2d4ca86377c9c325613e68d9",
+        "record_id": "example:2608.14798v1-db635458e365-semantics-doped-state-inference",
+        "record_type": "agtxiv.v3.semantic-context/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:2b8b00ede53dfe6115b50fa84ec8961c8eea6d1f334225c1dfafe86b24b5e481",
+        "record_id": "example:2608.14798v1-db635458e365-span-993-1003",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      },
+      {
+        "content_hash": "sha256:0d7e5713bdf9cb25fd307873acfea77265559c394356cc14b0b843ac48ab256a",
+        "record_id": "example:2608.14798v1-db635458e365-span-1075-1126",
+        "record_type": "agtxiv.v3.source-span/0.0.0",
+        "revision": 1
+      }
+    ]
+  },
+  "record_id": "example:2608.14798v1-db635458e365-map-doped-state-inference",
+  "record_type": "agtxiv.v3.claim-component-map/0.0.0",
+  "revision": 1,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "content_hash": "sha256:9917140dcbf1c355823220a8ff6bffc8888d407185d69e02f616dcc565f96a41"
+}

@@ -1,0 +1,90 @@
+{
+ "content_hash": "sha256:271b5665bed8097c55c7cc0236731d3100d76bbd2edff179a8dd9bdc01ed21b7",
+ "created_at": "2026-09-13T00:00:00Z",
+ "data_class": "RESEARCH",
+ "input_refs": [
+  {
+   "content_hash": "sha256:1bc2d9e399975ef50b1012b6640dcbbd960838bc6da85c2099a4fdb31ad1a68e",
+   "record_id": "source:opus5-2608.14798v1",
+   "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+   "revision": 1
+  },
+  {
+   "content_hash": "sha256:d724465e1c761c149e3b75a948ed4c43246a2907658911da41a3ea6e5d440f7d",
+   "record_id": "profile:opus5-2608.14798v1",
+   "record_type": "agtxiv.v3.processing-profile/0.0.0",
+   "revision": 1
+  }
+ ],
+ "payload": {
+  "baseline_ref": null,
+  "max_cost_units": 0,
+  "max_seconds": 86400,
+  "max_steps": 400,
+  "no_progress_limit": 8,
+  "profile_ref": {
+   "content_hash": "sha256:d724465e1c761c149e3b75a948ed4c43246a2907658911da41a3ea6e5d440f7d",
+   "record_id": "profile:opus5-2608.14798v1",
+   "record_type": "agtxiv.v3.processing-profile/0.0.0",
+   "revision": 1
+  },
+  "source_ref": {
+   "content_hash": "sha256:1bc2d9e399975ef50b1012b6640dcbbd960838bc6da85c2099a4fdb31ad1a68e",
+   "record_id": "source:opus5-2608.14798v1",
+   "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+   "revision": 1
+  },
+  "source_unit_ids": [
+   "unit:00readme-json",
+   "unit:figures-hilbert-space-zoo-png",
+   "unit:figures-ising-spf2-png",
+   "unit:figures-ising-spf-new-pdf",
+   "unit:figures-spf-cspf-pdf",
+   "unit:figures-spf-main-figure-new-pdf",
+   "unit:figures-sre-scan-png",
+   "unit:figures-sw-pdf",
+   "unit:figures-fidelity-upper-bound-pdf",
+   "unit:figures-h2-magic-supp-6-31g-png",
+   "unit:figures-h-2-magic-png",
+   "unit:figures-sps-pauli-spectrum-density-vs-corollary-pdf",
+   "unit:figures-sps-spf-from-sampled-density-vs-theorem-pdf",
+   "unit:pauli-spectrum-tex",
+   "unit:pauli-spectrumnotes-bib",
+   "unit:draft-ref-bib"
+  ],
+  "trigger_note": "User asked for a Paper Agent run over arXiv:2608.14798 following schema v0.1/Paper Agent/AGENT.md. The request is the trigger only; the scope denominator is the full supplied source inventory. NOTE ON TWO FIELDS: AGENT.md section 3 drops max_seconds and max_cost_units from the finalized 12-field plan, but the pinned v0.0 agentization-plan schema requires both as integers, so this record carries declared placeholders. No wall-clock budget and no cost metering existed in this run; 86400 was never enforced and 0 must not be read as a measured zero cost. The AGENT.md-shaped plan is kept beside this run as output/plan-as-agent-md-specifies.INVALID.json together with the validator error it produces."
+ },
+ "policy_ref": {
+  "content_hash": "sha256:7c4f5e24d12903501fe99489089706f210ba7a43a2f4636b9709dd513b934b91",
+  "record_id": "policy:opus5-2608.14798v1",
+  "record_type": "agtxiv.v3.authority-policy/0.0.0",
+  "revision": 1
+ },
+ "producer": {
+  "actor_kind": "AGENT",
+  "execution_id": "exec:opus5-2608.14798v1/s0-plan",
+  "identity_assurance": "DECLARED",
+  "identity_evidence": [],
+  "model": "claude-opus-5 (single interactive execution; no separate reviewer process)",
+  "principal_id": "session:opus5-2608.14798v1",
+  "role": "COORDINATOR",
+  "visible_input_refs": [
+   {
+    "content_hash": "sha256:1bc2d9e399975ef50b1012b6640dcbbd960838bc6da85c2099a4fdb31ad1a68e",
+    "record_id": "source:opus5-2608.14798v1",
+    "record_type": "agtxiv.v3.source-snapshot/0.0.0",
+    "revision": 1
+   },
+   {
+    "content_hash": "sha256:d724465e1c761c149e3b75a948ed4c43246a2907658911da41a3ea6e5d440f7d",
+    "record_id": "profile:opus5-2608.14798v1",
+    "record_type": "agtxiv.v3.processing-profile/0.0.0",
+    "revision": 1
+   }
+  ]
+ },
+ "record_id": "plan:opus5-2608.14798v1",
+ "record_type": "agtxiv.v3.agentization-plan/0.0.0",
+ "revision": 1,
+ "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b"
+}
