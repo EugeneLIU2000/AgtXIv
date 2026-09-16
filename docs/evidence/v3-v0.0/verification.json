@@ -1,0 +1,153 @@
+{
+  "report_type": "agtxiv.v3.local-implementation-verification/0.0.0",
+  "observed_at": "2026-09-06T23:07:34.160624+00:00",
+  "scope": "LOCAL_CONTRACT_AND_SOURCE_MECHANISMS",
+  "data_class": "OBSERVED",
+  "test_inputs_include_synthetic_records": true,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "record_families": 64,
+  "shared_types": 19,
+  "generated_files_checked": 70,
+  "commands": [
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/generate_v3_schema_v00.py",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "tools/validate_v3.py",
+        "--bundle-only"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/v3",
+        "-q",
+        "--junitxml=docs/evidence/v3-v0.0/contracts.junit.xml"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "pytest": {
+    "tests": 425,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 425
+  },
+  "roadmap": {
+    "task_count": 58,
+    "local_mechanism_completed": [
+      "P1.1",
+      "P1.2"
+    ],
+    "overall_v3_completed": false
+  },
+  "documentation": {
+    "local_link_check": "PASSED",
+    "checked_document_count": 11,
+    "task_accounting_check": "PASSED"
+  },
+  "bound_files": [
+    {
+      "path": "src/agtxiv_v3/__init__.py",
+      "byte_size": 171,
+      "sha256": "sha256:d97a09dbe576ce1e36f2174655fe046c8cbec78dc8ad5524771a070ce9185e99"
+    },
+    {
+      "path": "src/agtxiv_v3/contracts.py",
+      "byte_size": 65494,
+      "sha256": "sha256:9b8efd2bc8caa3e6b8c1ebd7b8e310763b1887e9cfc3773aad6b1eddb7d01c10"
+    },
+    {
+      "path": "src/agtxiv_v3/intake.py",
+      "byte_size": 16624,
+      "sha256": "sha256:0ce52d77afff16cf4664c2a4985c9e0bcb1bb1373924f4d6fe2a369bdce95f3b"
+    },
+    {
+      "path": "src/agtxiv_v3/projections.py",
+      "byte_size": 6091,
+      "sha256": "sha256:1939c9c55fb14c12b135df299322b6a38611504fb98316a2480ff40b3f2108ba"
+    },
+    {
+      "path": "src/agtxiv_v3/source.py",
+      "byte_size": 27084,
+      "sha256": "sha256:fb2314a0d45fa89248636481543a6dfcf40580b6583f89ed8d45dad257d24aa1"
+    },
+    {
+      "path": "tests/v3/test_cli_projection.py",
+      "byte_size": 5148,
+      "sha256": "sha256:95ef1d93e4fc08711f9ffb6c8f0beed509ade98980976c9b23250251803a1070"
+    },
+    {
+      "path": "tests/v3/test_contract_regressions.py",
+      "byte_size": 22282,
+      "sha256": "sha256:9856ce200efc2bfbef17f8022ebfea6dbd457665722b7c907658d97a54f33d8a"
+    },
+    {
+      "path": "tests/v3/test_contracts.py",
+      "byte_size": 24985,
+      "sha256": "sha256:6ad76b2437804a45064a2ddc75be6a2ae05d4fb8aa7504b062712dc1b5ca1d96"
+    },
+    {
+      "path": "tests/v3/test_intake.py",
+      "byte_size": 13156,
+      "sha256": "sha256:7c26f4ea89eeacea01fced0d606bf6943eaacedc59f2f653b33b8fcc97b672d9"
+    },
+    {
+      "path": "tests/v3/test_schema_catalog.py",
+      "byte_size": 20660,
+      "sha256": "sha256:26fe615b288556b2cc75ae79c331d4ecfe2e6f4e203eafb6ab700e44672c4f56"
+    },
+    {
+      "path": "tests/v3/test_source.py",
+      "byte_size": 12953,
+      "sha256": "sha256:0c09937a726ec644d090a38b3523b9a8a6f0b8faceb2bffe6372d9ef5d545d22"
+    },
+    {
+      "path": "tools/generate_v3_schema_v00.py",
+      "byte_size": 103769,
+      "sha256": "sha256:42ffa671580c9e7cb21beabdd00d64b703b3d68739c4fc63c726319469b0ba37"
+    },
+    {
+      "path": "tools/validate_v3.py",
+      "byte_size": 4963,
+      "sha256": "sha256:af7cb84bb37452eb008c333911024735bebc87cfcd3a26d17e473ae81a10f597"
+    },
+    {
+      "path": "tools/inspect_v3_source.py",
+      "byte_size": 3319,
+      "sha256": "sha256:3db8f92abd191318ba7bb72513796dddb65853f387bb8b29c27919a2e7cb1549"
+    },
+    {
+      "path": "schema v0.0/manifest.json",
+      "byte_size": 19227,
+      "sha256": "sha256:9f48cc2c992b28f72a6592a50a0240203bd75b97eee036660a7bc0c80f597854"
+    },
+    {
+      "path": "schema v0.0/evaluation-corpus.json",
+      "byte_size": 90411,
+      "sha256": "sha256:e80b69a3102d5cb689dce29a13fb3897b260124519f09734c34c9512d41a2489"
+    },
+    {
+      "path": "docs/evidence/v3-v0.0/contracts.junit.xml",
+      "byte_size": 107521,
+      "sha256": "sha256:3abf14f6b2e1bd8ab1f75b91a2be43e6d35e38f3afec2e4108d7d9e9124d5d85"
+    }
+  ],
+  "non_implications": [
+    "No demo, vibefeld, Lean or scientific experiment execution.",
+    "No source-fidelity, mathematics, scientific, release or admission approval.",
+    "Not a repository-wide make check result.",
+    "Local unsigned evidence, not independently anchored archival integrity."
+  ]
+}

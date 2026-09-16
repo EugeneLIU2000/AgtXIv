@@ -1,0 +1,1272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json",
+  "title": "AgtXIv shared value types",
+  "description": "Closed shared structures; no common value independently grants authority.",
+  "$defs": {
+    "RecordRef": {
+      "title": "RecordRef",
+      "description": "An exact immutable record reference, never a latest-version selector.",
+      "type": "object",
+      "properties": {
+        "record_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact registered record discriminator.",
+          "enum": [
+            "agtxiv.v3.processing-profile/0.0.0",
+            "agtxiv.v3.authority-policy/0.0.0",
+            "agtxiv.v3.source-snapshot/0.0.0",
+            "agtxiv.v3.source-span/0.0.0",
+            "agtxiv.v3.source-transformation/0.0.0",
+            "agtxiv.v3.paper-structure/0.0.0",
+            "agtxiv.v3.agentization-plan/0.0.0",
+            "agtxiv.v3.inventory-discovery/0.0.0",
+            "agtxiv.v3.scope-decision/0.0.0",
+            "agtxiv.v3.frozen-scope/0.0.0",
+            "agtxiv.v3.obligation-disposition/0.0.0",
+            "agtxiv.v3.scientific-claim/0.0.0",
+            "agtxiv.v3.derived-claim/0.0.0",
+            "agtxiv.v3.claim-component-map/0.0.0",
+            "agtxiv.v3.semantic-context/0.0.0",
+            "agtxiv.v3.definition/0.0.0",
+            "agtxiv.v3.math-claim/0.0.0",
+            "agtxiv.v3.assumption-context/0.0.0",
+            "agtxiv.v3.argument-node/0.0.0",
+            "agtxiv.v3.inference-step/0.0.0",
+            "agtxiv.v3.proof-plan/0.0.0",
+            "agtxiv.v3.dependency-binding/0.0.0",
+            "agtxiv.v3.challenge/0.0.0",
+            "agtxiv.v3.challenge-disposition/0.0.0",
+            "agtxiv.v3.argument-snapshot/0.0.0",
+            "agtxiv.v3.argument-review/0.0.0",
+            "agtxiv.v3.upstream-import/0.0.0",
+            "agtxiv.v3.work-attempt/0.0.0",
+            "agtxiv.v3.formal-environment/0.0.0",
+            "agtxiv.v3.formalization-packet/0.0.0",
+            "agtxiv.v3.formalization-attempt/0.0.0",
+            "agtxiv.v3.formal-check/0.0.0",
+            "agtxiv.v3.backtranslation/0.0.0",
+            "agtxiv.v3.alignment-assessment/0.0.0",
+            "agtxiv.v3.empirical-evidence/0.0.0",
+            "agtxiv.v3.reproduction-record/0.0.0",
+            "agtxiv.v3.axis-assessment/0.0.0",
+            "agtxiv.v3.status-view/0.0.0",
+            "agtxiv.v3.baseline-snapshot/0.0.0",
+            "agtxiv.v3.relation-assessment/0.0.0",
+            "agtxiv.v3.contribution-delta/0.0.0",
+            "agtxiv.v3.reuse-decision/0.0.0",
+            "agtxiv.v3.environment-check/0.0.0",
+            "agtxiv.v3.frontier-item/0.0.0",
+            "agtxiv.v3.release-manifest/0.0.0",
+            "agtxiv.v3.release-audit/0.0.0",
+            "agtxiv.v3.release-certificate/0.0.0",
+            "agtxiv.v3.paper-release/0.0.0",
+            "agtxiv.v3.archive-receipt/0.0.0",
+            "agtxiv.v3.admission-decision/0.0.0",
+            "agtxiv.v3.knowledge-snapshot/0.0.0",
+            "agtxiv.v3.ingestion-receipt/0.0.0",
+            "agtxiv.v3.event/0.0.0",
+            "agtxiv.v3.event-checkpoint/0.0.0",
+            "agtxiv.v3.impact-analysis/0.0.0",
+            "agtxiv.v3.revision-record/0.0.0",
+            "agtxiv.v3.legacy-binding/0.0.0",
+            "agtxiv.v3.query-receipt/0.0.0",
+            "agtxiv.v3.evaluation-report/0.0.0",
+            "agtxiv.v3.source-request/0.0.0",
+            "agtxiv.v3.source-acquisition/0.0.0",
+            "agtxiv.v3.evidence-protocol/0.0.0",
+            "agtxiv.v3.work-completion/0.0.0",
+            "agtxiv.v3.counterexample/0.0.0"
+          ]
+        },
+        "record_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Stable record lineage identity."
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Exact immutable revision."
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "minLength": 71,
+          "maxLength": 71,
+          "description": "Canonical complete-record hash excluding only content_hash."
+        }
+      },
+      "required": [
+        "record_type",
+        "record_id",
+        "revision",
+        "content_hash"
+      ],
+      "additionalProperties": false
+    },
+    "ArtifactRef": {
+      "title": "ArtifactRef",
+      "description": "Identity of supplied raw bytes; a locator is not integrity evidence.",
+      "type": "object",
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Stable artifact identity."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "minLength": 71,
+          "maxLength": 71,
+          "description": "SHA-256 of unmodified raw bytes."
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Exact byte length."
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Declared media type."
+        },
+        "path_hint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*//)(?!.*\\\\)[^\\u0000-\\u001f]+(?![\\s\\S])",
+          "description": "Relative display locator, never an authority selector."
+        }
+      },
+      "required": [
+        "artifact_id",
+        "sha256",
+        "byte_size",
+        "media_type"
+      ],
+      "additionalProperties": false
+    },
+    "Producer": {
+      "title": "Producer",
+      "description": "Attributed producer and its visible execution boundary.",
+      "type": "object",
+      "properties": {
+        "principal_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Actual principal identity asserted by the execution record."
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "SOURCE_PRODUCER",
+            "CLAIM_PRODUCER",
+            "ARGUMENT_PRODUCER",
+            "ARGUMENT_REVIEWER",
+            "FORMALIZER",
+            "FORMAL_CHECKER",
+            "BACKTRANSLATOR",
+            "ALIGNMENT_REVIEWER",
+            "SCIENTIFIC_REVIEWER",
+            "SCOPE_REVIEWER",
+            "PAPER_AUDITOR",
+            "CERTIFIER",
+            "ARCHIVE_SERVICE",
+            "ADMISSION_REVIEWER",
+            "KNOWLEDGE_SERVICE",
+            "QUERY_SERVICE",
+            "COORDINATOR",
+            "MAINTAINER",
+            "MIGRATION_SERVICE"
+          ],
+          "description": "Role used for this operation."
+        },
+        "actor_kind": {
+          "type": "string",
+          "enum": [
+            "HUMAN",
+            "AGENT",
+            "MECHANICAL_SERVICE"
+          ],
+          "description": "Producer class, not an assurance level."
+        },
+        "identity_assurance": {
+          "type": "string",
+          "enum": [
+            "DECLARED",
+            "LOCALLY_ATTESTED",
+            "EXTERNALLY_ATTESTED"
+          ],
+          "description": "How identity was established; strings alone are not authentication."
+        },
+        "execution_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Exact attributed execution."
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Model identifier when an agent is used."
+        },
+        "visible_input_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "description": "Exact records visible to the actor."
+        },
+        "identity_evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+          },
+          "maxItems": 10000,
+          "description": "Independently supplied identity evidence."
+        }
+      },
+      "required": [
+        "principal_id",
+        "role",
+        "actor_kind",
+        "identity_assurance",
+        "execution_id",
+        "visible_input_refs",
+        "identity_evidence"
+      ],
+      "additionalProperties": false
+    },
+    "ReviewContext": {
+      "title": "ReviewContext",
+      "description": "Declared independence plus exact reviewed input; a runtime must verify it.",
+      "type": "object",
+      "properties": {
+        "reviewed_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact records assessed by this decision."
+        },
+        "producer_principal_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+            "maxLength": 512
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "All actual producers of the reviewed content."
+        },
+        "independence": {
+          "type": "string",
+          "enum": [
+            "UNESTABLISHED",
+            "ROLE_SEPARATED",
+            "INDEPENDENTLY_ATTESTED"
+          ],
+          "description": "Review boundary, not a truth guarantee."
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "description": "Known conflicts of interest or shared-model limitations."
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Public review procedure."
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "description": "Evidence supporting the review."
+        }
+      },
+      "required": [
+        "reviewed_refs",
+        "producer_principal_ids",
+        "independence",
+        "conflicts",
+        "method",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    },
+    "Condition": {
+      "title": "Condition",
+      "description": "A material condition with provenance and interpretation.",
+      "type": "object",
+      "properties": {
+        "condition_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Stable condition identity within its parent record."
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Complete condition including range and quantifiers."
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "SOURCE_EXPLICIT",
+            "SOURCE_RECONSTRUCTED",
+            "AGENT_ADDED",
+            "IMPORTED"
+          ],
+          "description": "Attribution of the condition."
+        },
+        "source_span_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.source-span/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Exact supporting source spans."
+        }
+      },
+      "required": [
+        "condition_id",
+        "statement",
+        "origin",
+        "source_span_refs"
+      ],
+      "additionalProperties": false
+    },
+    "SourceUnit": {
+      "title": "SourceUnit",
+      "description": "An inventoried source object and its activity in the selected rendering.",
+      "type": "object",
+      "properties": {
+        "unit_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Source inventory item identity."
+        },
+        "relative_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*//)(?!.*\\\\)[^\\u0000-\\u001f]+(?![\\s\\S])",
+          "description": "Canonical relative path."
+        },
+        "artifact": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef",
+          "description": "Exact unmodified source bytes."
+        },
+        "activity": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "DORMANT",
+            "UNKNOWN"
+          ],
+          "description": "Participation in the designated rendering."
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "TEX",
+            "PDF",
+            "BIBLIOGRAPHY",
+            "FIGURE",
+            "TABLE",
+            "CODE",
+            "DATA",
+            "OTHER"
+          ],
+          "description": "Source object role."
+        }
+      },
+      "required": [
+        "unit_id",
+        "relative_path",
+        "artifact",
+        "activity",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "StructureEdge": {
+      "title": "StructureEdge",
+      "description": "Document structure only, not mathematical inference.",
+      "type": "object",
+      "properties": {
+        "source_unit_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Including or containing source unit."
+        },
+        "target_unit_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Included or contained source unit."
+        },
+        "relation": {
+          "type": "string",
+          "enum": [
+            "INCLUDES",
+            "CONTAINS",
+            "REFERENCES",
+            "CAPTION_OF"
+          ],
+          "description": "Document relation."
+        },
+        "activity": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "DORMANT",
+            "UNKNOWN"
+          ],
+          "description": "Static activity observation."
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Location of the relation in the source."
+        }
+      },
+      "required": [
+        "source_unit_id",
+        "target_unit_id",
+        "relation",
+        "activity",
+        "locator"
+      ],
+      "additionalProperties": false
+    },
+    "Obligation": {
+      "title": "Obligation",
+      "description": "One immutable processing obligation in a frozen denominator.",
+      "type": "object",
+      "properties": {
+        "obligation_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Identity preserved across attempts."
+        },
+        "target_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "description": "Exact known targets; empty only for unresolved discovery items."
+        },
+        "source_unit_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+            "maxLength": 512
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Source units covered by the obligation."
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "SOURCE",
+            "INVENTORY",
+            "CLAIM",
+            "ARGUMENT",
+            "FORMAL",
+            "ALIGNMENT",
+            "SEMANTICS",
+            "EMPIRICAL",
+            "COMPUTATION",
+            "CONTRIBUTION",
+            "RELEASE"
+          ],
+          "description": "Required work stage."
+        },
+        "requirement": {
+          "type": "string",
+          "enum": [
+            "ACCOUNT_FOR",
+            "SUCCESS_REQUIRED"
+          ],
+          "description": "Accounting versus a required successful result."
+        },
+        "applicable_axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_fidelity",
+              "mathematical_correctness",
+              "formal_alignment",
+              "semantic_applicability",
+              "empirical_support",
+              "computational_reproducibility"
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Axes to which this work is relevant."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Why this obligation belongs in scope."
+        }
+      },
+      "required": [
+        "obligation_id",
+        "target_refs",
+        "source_unit_ids",
+        "stage",
+        "requirement",
+        "applicable_axes",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "Component": {
+      "title": "Component",
+      "description": "An independently attributable part of a source proposition.",
+      "type": "object",
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Component identity within the claim."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Complete component meaning."
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "CONCLUSION",
+            "ASSUMPTION",
+            "DEFINITION",
+            "MODEL",
+            "APPROXIMATION",
+            "EVIDENCE",
+            "ATTRIBUTION",
+            "LIMITATION"
+          ],
+          "description": "Semantic role."
+        },
+        "source_span_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.source-span/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact source anchors."
+        }
+      },
+      "required": [
+        "component_id",
+        "text",
+        "role",
+        "source_span_refs"
+      ],
+      "additionalProperties": false
+    },
+    "ComponentMapping": {
+      "title": "ComponentMapping",
+      "description": "Total mathematical, semantic and unresolved accounting for one component.",
+      "type": "object",
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Exact component in the source claim."
+        },
+        "math_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.math-claim/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Mathematical representations."
+        },
+        "semantic_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.semantic-context/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Scientific meanings retained separately."
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "description": "Evidence associated with this component."
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "MAPPED",
+            "RESIDUAL",
+            "UNRESOLVED",
+            "NON_CLAIM"
+          ],
+          "description": "Component disposition."
+        },
+        "residual": {
+          "type": "string",
+          "maxLength": 65536,
+          "description": "Exact meaning still outside the mapped representations."
+        }
+      },
+      "required": [
+        "component_id",
+        "math_refs",
+        "semantic_refs",
+        "evidence_refs",
+        "disposition",
+        "residual"
+      ],
+      "additionalProperties": false
+    },
+    "MathObject": {
+      "title": "MathObject",
+      "description": "A mathematical carrier with definitions, units and conventions.",
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Fully scoped symbol."
+        },
+        "object_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Mathematical carrier or type."
+        },
+        "definition_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.definition/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Exact imported definitions."
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 65536,
+          "description": "Unit, or empty for a dimensionless object."
+        },
+        "convention": {
+          "type": "string",
+          "maxLength": 65536,
+          "description": "Normalization and interpretation convention."
+        }
+      },
+      "required": [
+        "symbol",
+        "object_type",
+        "definition_refs",
+        "unit",
+        "convention"
+      ],
+      "additionalProperties": false
+    },
+    "Quantifier": {
+      "title": "Quantifier",
+      "description": "Ordered binder; order is semantically significant.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "FORALL",
+            "EXISTS",
+            "UNIQUE_EXISTS"
+          ],
+          "description": "Quantifier kind."
+        },
+        "variable": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Bound variable name."
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Quantified domain with restrictions."
+        }
+      },
+      "required": [
+        "kind",
+        "variable",
+        "domain"
+      ],
+      "additionalProperties": false
+    },
+    "FormalDeclaration": {
+      "title": "FormalDeclaration",
+      "description": "An exact declaration observed in one formal environment.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Fully qualified declaration name."
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Elaborated or inspected declaration type."
+        },
+        "source_artifact": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef",
+          "description": "Exact declaration source bytes."
+        },
+        "is_axiom": {
+          "type": "boolean",
+          "description": "Whether the declaration itself is an axiom."
+        },
+        "axioms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "description": "Transitive axiom names reported by the checker."
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "description": "Exact declaration dependency names in the fixed environment."
+        }
+      },
+      "required": [
+        "name",
+        "statement",
+        "source_artifact",
+        "is_axiom",
+        "axioms",
+        "dependencies"
+      ],
+      "additionalProperties": false
+    },
+    "ParameterComparison": {
+      "title": "ParameterComparison",
+      "description": "Explicit comparison of a reusable result with its target use.",
+      "type": "object",
+      "properties": {
+        "dimension": {
+          "type": "string",
+          "enum": [
+            "OBJECT",
+            "DEFINITION",
+            "QUANTIFIER",
+            "ASSUMPTION",
+            "CONCLUSION",
+            "UNIT",
+            "CONVENTION",
+            "REGIME",
+            "EVIDENCE",
+            "ENVIRONMENT"
+          ],
+          "description": "Compared dimension."
+        },
+        "source_value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Meaning on the reusable side."
+        },
+        "target_value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Meaning required by the target."
+        },
+        "relation": {
+          "type": "string",
+          "enum": [
+            "EQUIVALENT",
+            "SOURCE_STRONGER",
+            "TARGET_STRONGER",
+            "INCOMPARABLE",
+            "UNKNOWN"
+          ],
+          "description": "Assessed comparison, not text similarity."
+        },
+        "witness_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "description": "Evidence for the comparison."
+        }
+      },
+      "required": [
+        "dimension",
+        "source_value",
+        "target_value",
+        "relation",
+        "witness_refs"
+      ],
+      "additionalProperties": false
+    },
+    "AdmissionItem": {
+      "title": "AdmissionItem",
+      "description": "One exact candidate and its admission decision.",
+      "type": "object",
+      "properties": {
+        "candidate_ref": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef",
+          "description": "Exact proposed knowledge record."
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "ACCEPT",
+            "REJECT",
+            "BLOCK"
+          ],
+          "description": "Admission disposition, not truth."
+        },
+        "assessment_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.axis-assessment/0.0.0",
+                      "agtxiv.v3.relation-assessment/0.0.0",
+                      "agtxiv.v3.argument-review/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Relevant exact assessments."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Public admission rationale and conditions."
+        }
+      },
+      "required": [
+        "candidate_ref",
+        "decision",
+        "assessment_refs",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "ImpactTarget": {
+      "title": "ImpactTarget",
+      "description": "One affected target with a typed and axis-limited reason.",
+      "type": "object",
+      "properties": {
+        "target_ref": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef",
+          "description": "Exact affected target."
+        },
+        "axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_fidelity",
+              "mathematical_correctness",
+              "formal_alignment",
+              "semantic_applicability",
+              "empirical_support",
+              "computational_reproducibility"
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Axes needing review."
+        },
+        "proof_plan_ref": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+                },
+                {
+                  "properties": {
+                    "record_type": {
+                      "enum": [
+                        "agtxiv.v3.proof-plan/0.0.0"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Affected proof route, if applicable."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Why this target needs re-evaluation."
+        }
+      },
+      "required": [
+        "target_ref",
+        "axes",
+        "proof_plan_ref",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "QueryAssertion": {
+      "title": "QueryAssertion",
+      "description": "Public answer text backed by exact records.",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "One load-bearing assertion in the answer."
+        },
+        "support_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact records supporting the wording."
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 10000,
+          "description": "Scope and unresolved qualifications."
+        }
+      },
+      "required": [
+        "text",
+        "support_refs",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "Metric": {
+      "title": "Metric",
+      "description": "A measured value with a frozen denominator and comparison scope.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Metric name, never a paper truth or quality score."
+        },
+        "measurement_status": {
+          "type": "string",
+          "enum": [
+            "NOT_MEASURED",
+            "MEASURED",
+            "UNDEFINED"
+          ],
+          "description": "Whether a value was observed and a ratio can be defined."
+        },
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Observed count; null when not measured."
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Frozen eligible count; null when unknown and zero only for a measured empty set."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Measurement unit."
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Measurement protocol and scope."
+        }
+      },
+      "required": [
+        "name",
+        "measurement_status",
+        "numerator",
+        "denominator",
+        "unit",
+        "method"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "measurement_status": {
+                "const": "NOT_MEASURED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "numerator": {
+                "const": null
+              },
+              "denominator": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "measurement_status": {
+                "const": "MEASURED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "numerator": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "denominator": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "measurement_status": {
+                "const": "UNDEFINED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "numerator": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "denominator": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "PdfRegion": {
+      "title": "PdfRegion",
+      "description": "A page-local locator in an exact PDF, not a fabricated raw-byte text span.",
+      "type": "object",
+      "properties": {
+        "page_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Zero-based page index."
+        },
+        "x0": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact decimal left coordinate in normalized page units."
+        },
+        "y0": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact decimal top coordinate."
+        },
+        "x1": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact decimal right coordinate."
+        },
+        "y1": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact decimal bottom coordinate."
+        }
+      },
+      "required": [
+        "page_index",
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,2409 @@
+{
+  "profile": "agtxiv.vibefeld-offline/392b2da3.1",
+  "status": "EXPERIMENTAL_PINNED_STRUCTURAL_PROFILE",
+  "upstream_repository": "https://github.com/tobiasosborne/vibefeld",
+  "upstream_commit": "392b2da3bee5766cca1a201f28e0255056baaba4",
+  "graph_schema_version": "1",
+  "graph_features": [
+    "readiness-flags",
+    "closure-flag",
+    "node-dependencies",
+    "proof-author"
+  ],
+  "event_count": 35,
+  "unknown_field_policy": "REJECT_ACTIVE_IMPORT_AND_PRESERVE_ORIGINAL_BYTES_OUTSIDE_THIS_PROFILE",
+  "unknown_event_policy": "REJECT_REPLAY_AND_PRESERVE_ORIGINAL_BYTES_OUTSIDE_THIS_PROFILE",
+  "historical_missing_field_policy": "Only omitempty fields are optional; a missing non-omitempty field is outside this pinned emission profile, even if Go could decode a zero value.",
+  "array_policy": "Go slices accept null and empty arrays; omitempty controls required fields. Graph features and nodes are always initialized by the pinned exporter.",
+  "normalization_policy": "Preserve upstream raw bytes; do not apply AgtXIv record normalization to source text, nanosecond timestamps, floats, or upstream content hashes.",
+  "proof_limitations": [
+    "Schemas check structural compatibility only; replay and graph agreement require separate code.",
+    "Driver-supplied author and reviewer labels are not authenticated identities.",
+    "Upstream validated, closed, and passed fields are not Lean kernel checks or mathematical correctness certificates.",
+    "Graph exports omit context, scope, validation_deps, challenge bodies, and evidence histories; a graph alone is not a full snapshot.",
+    "Replay scope timestamps use runtime Now and discard discharge_node_id; original scope events must remain available.",
+    "Missing historical identity, challenge response text, or definition history must remain unknown rather than invented."
+  ],
+  "schemas": [
+    {
+      "path": "event.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/upstream/vibefeld-392b2da3/event.schema.json",
+      "sha256": "sha256:012a7318cb92ddcdb2935c8d1f57cbe03f18a24197424b84b2e7e63bce8d0f05",
+      "byte_size": 33288
+    },
+    {
+      "path": "graph.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/upstream/vibefeld-392b2da3/graph.schema.json",
+      "sha256": "sha256:4dc5b682eec906b40d2155ca3cb72461bbcf73cb94ef4979518a51c2cea999f0",
+      "byte_size": 9686
+    },
+    {
+      "path": "sidecar.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/upstream/vibefeld-392b2da3/sidecar.schema.json",
+      "sha256": "sha256:b428319c2d1d4dde1327a471509d241be43be3c54ee2304c9e7011ea0930e52c",
+      "byte_size": 11284
+    }
+  ],
+  "source_files": [
+    {
+      "path": "internal/ledger/event.go",
+      "sha256": "sha256:d74b276292e9708db88c2cbc304c39b9b5f022ca2f7855cea6a2f8e4dee9d98f",
+      "byte_size": 30531
+    },
+    {
+      "path": "internal/ledger/read.go",
+      "sha256": "sha256:5cfb0e722ba9d6a017c0018fc74a082c4dbead37df0cc226a0fceb3cee61b038",
+      "byte_size": 5707
+    },
+    {
+      "path": "internal/ledger/filename.go",
+      "sha256": "sha256:48297faf7b19921e1d793d1583261b5e1b43e4870d1823776004efd2a9155dbd",
+      "byte_size": 2345
+    },
+    {
+      "path": "internal/state/replay.go",
+      "sha256": "sha256:a0463dec715a801d101d0614d2eadc6c31aa1fc3222a28eada4213bf31db7ea8",
+      "byte_size": 10559
+    },
+    {
+      "path": "internal/state/apply.go",
+      "sha256": "sha256:fc5440844798c8d2b25e67461b78febb74f76effe93d946034f6fd23582a7265",
+      "byte_size": 22158
+    },
+    {
+      "path": "internal/state/state.go",
+      "sha256": "sha256:16cd6ccd2746ca3b6948a5584dff1241932223fe9aa9b24421cd732fc1b12c53",
+      "byte_size": 28046
+    },
+    {
+      "path": "internal/node/node.go",
+      "sha256": "sha256:5842f034525c8bd8c0aa2a714bf741ef335311ffb6b6e5b96aefe2b94c4352bb",
+      "byte_size": 12443
+    },
+    {
+      "path": "internal/node/definition.go",
+      "sha256": "sha256:d17f53b66f5e7093fcc690ec6894b8fb4445eb84d904054d12413d539e03f435",
+      "byte_size": 2479
+    },
+    {
+      "path": "internal/node/assumption.go",
+      "sha256": "sha256:4988b47f8355d68d7efedfefcfca24c97d9b5c8c095996431140cf34900c8e9f",
+      "byte_size": 2205
+    },
+    {
+      "path": "internal/node/external.go",
+      "sha256": "sha256:319d7e17c12b2d9bf9e8cad917443a56316bce3a20575758cbd95acde10c2f5f",
+      "byte_size": 2611
+    },
+    {
+      "path": "internal/node/lemma.go",
+      "sha256": "sha256:11780f6a9b994b60cba0ef69235556e27bcae2b22a4508bb2b43fd9f3f4c65dc",
+      "byte_size": 2231
+    },
+    {
+      "path": "internal/node/pending_def.go",
+      "sha256": "sha256:0adfe610b0b0f83f839b52565e7e0b6d66eb9e8e65aacd6e8c7ea8082900ce76",
+      "byte_size": 4971
+    },
+    {
+      "path": "internal/node/challenge.go",
+      "sha256": "sha256:95c4834eed90a06cc7fda5ad58a306fc4d827de7dd9e0c45603023d1b5659dfa",
+      "byte_size": 4111
+    },
+    {
+      "path": "internal/node/context_validate.go",
+      "sha256": "sha256:5ddc729c73512ecd0fbd5e793f3de3fed46201f2f87c45920d94108576d330fb",
+      "byte_size": 7852
+    },
+    {
+      "path": "internal/config/config.go",
+      "sha256": "sha256:0fe0954e5cc024dbf1e4b29d08763dc16a28a5f0a278c27d27049d9f43cdf5c9",
+      "byte_size": 4910
+    },
+    {
+      "path": "internal/export/graph.go",
+      "sha256": "sha256:7eba12688e5fe74feb4956246b282aab77a44088c5cb2b7fb763795a42ef005b",
+      "byte_size": 13460
+    },
+    {
+      "path": "internal/export/graph_closure.go",
+      "sha256": "sha256:f73e56280323312adf185213349f8daccfd307380103de50130cf3886649a2e9",
+      "byte_size": 4258
+    },
+    {
+      "path": "internal/export/export.go",
+      "sha256": "sha256:af6831189f18c841549dfa2f5118a159313ec95d1f830cf2f8a2df093e866b62",
+      "byte_size": 11336
+    },
+    {
+      "path": "internal/schema/nodetype.go",
+      "sha256": "sha256:1435ff2ec9a45720e5ad4ef7f17b73205fe7024b1929a000f05035a3e456c2b3",
+      "byte_size": 2724
+    },
+    {
+      "path": "internal/schema/workflow.go",
+      "sha256": "sha256:e181630ea2ca1f7d8761d11a511fd95e9c37dcd9dcacfbc35f1e3aaa465c2e7b",
+      "byte_size": 3688
+    },
+    {
+      "path": "internal/schema/epistemic.go",
+      "sha256": "sha256:44cb434830b52308782c6edbaff7db4538baf17b4900aa55aeca214bed34f44c",
+      "byte_size": 6083
+    },
+    {
+      "path": "internal/schema/severity.go",
+      "sha256": "sha256:59d1ae7d8be72dc4ea32d1e23531e42bf56cdeeb389b65627928c2e1dc7f5081",
+      "byte_size": 3589
+    },
+    {
+      "path": "internal/schema/category.go",
+      "sha256": "sha256:f93dc83a37649d2ca63210ea68003c2df125c66c93850fce327d2b1dd9aaaac0",
+      "byte_size": 3748
+    },
+    {
+      "path": "internal/types/time.go",
+      "sha256": "sha256:ae7accb23b4325cccf29b368fa722489c4c17aa41004614f543ba39e0b9e41f2",
+      "byte_size": 3023
+    },
+    {
+      "path": "internal/types/id.go",
+      "sha256": "sha256:8a1b20ba5cafe726736043ecfa2ce1f81499cd47067557fa29337ce7b1f73785",
+      "byte_size": 7816
+    },
+    {
+      "path": "internal/jobs/prover.go",
+      "sha256": "sha256:33c291633c4f9dc8915e1a5a6b0e7964b979eb0aa2b93b9e65f5ed0c7739632f",
+      "byte_size": 3465
+    },
+    {
+      "path": "internal/jobs/verifier.go",
+      "sha256": "sha256:211f77e10a774a25665b8122bc36e771c459c44dc6d89cdee995087ddfa6922c",
+      "byte_size": 5506
+    },
+    {
+      "path": "internal/taint/propagate.go",
+      "sha256": "sha256:62530f9290d808ad3d6dc7a95ed4ba119e924144d6facd11d20010626a7669ce",
+      "byte_size": 8407
+    },
+    {
+      "path": "internal/scope/scope.go",
+      "sha256": "sha256:82a72c3fe927509a0097e851a36ffd0a75a1d416fe7ea6c496d9041fb08e8ea9",
+      "byte_size": 2179
+    },
+    {
+      "path": "internal/scope/tracker.go",
+      "sha256": "sha256:a65990f7a18248bea9cd743c679769e01eaf552c65a792a5a085d4d90ab58d8b",
+      "byte_size": 4812
+    },
+    {
+      "path": "internal/service/proof.go",
+      "sha256": "sha256:d02edd4579d4d1a55a25943d8929d36072e4d43a0f863d0d07bfa64a6c934548",
+      "byte_size": 93892
+    },
+    {
+      "path": "internal/fs/init.go",
+      "sha256": "sha256:f635f0d78f77df9eab1c6a99287a499b6d2986659870c9f5591acf3b7a537b30",
+      "byte_size": 3323
+    },
+    {
+      "path": "internal/fs/paths.go",
+      "sha256": "sha256:49ad6903ecec2eb08ccc4050912f5afc8d86047faffa27196cb06bc734642cad",
+      "byte_size": 1642
+    },
+    {
+      "path": "internal/fs/schema_io.go",
+      "sha256": "sha256:9d974f6a3a9f0c39b03d8baa11313dce22dba3ee477d98413304c778bcf918ac",
+      "byte_size": 1583
+    },
+    {
+      "path": "internal/fs/pending_def_io.go",
+      "sha256": "sha256:49ef5ed7d2ee00576fbc419e3b9f727e6039e8d06b08277f6889b7d8dfe129c3",
+      "byte_size": 3816
+    }
+  ],
+  "events": [
+    {
+      "event_type": "proof_initialized",
+      "go_struct": "ProofInitialized",
+      "schema_ref": "event.schema.json#/$defs/ProofInitialized",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 78
+    },
+    {
+      "event_type": "node_created",
+      "go_struct": "NodeCreated",
+      "schema_ref": "event.schema.json#/$defs/NodeCreated",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 85
+    },
+    {
+      "event_type": "nodes_claimed",
+      "go_struct": "NodesClaimed",
+      "schema_ref": "event.schema.json#/$defs/NodesClaimed",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 91
+    },
+    {
+      "event_type": "nodes_released",
+      "go_struct": "NodesReleased",
+      "schema_ref": "event.schema.json#/$defs/NodesReleased",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 99
+    },
+    {
+      "event_type": "challenge_raised",
+      "go_struct": "ChallengeRaised",
+      "schema_ref": "event.schema.json#/$defs/ChallengeRaised",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 113
+    },
+    {
+      "event_type": "challenge_resolved",
+      "go_struct": "ChallengeResolved",
+      "schema_ref": "event.schema.json#/$defs/ChallengeResolved",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 126
+    },
+    {
+      "event_type": "challenge_withdrawn",
+      "go_struct": "ChallengeWithdrawn",
+      "schema_ref": "event.schema.json#/$defs/ChallengeWithdrawn",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 132
+    },
+    {
+      "event_type": "challenge_superseded",
+      "go_struct": "ChallengeSuperseded",
+      "schema_ref": "event.schema.json#/$defs/ChallengeSuperseded",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 139
+    },
+    {
+      "event_type": "node_validated",
+      "go_struct": "NodeValidated",
+      "schema_ref": "event.schema.json#/$defs/NodeValidated",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 156
+    },
+    {
+      "event_type": "node_admitted",
+      "go_struct": "NodeAdmitted",
+      "schema_ref": "event.schema.json#/$defs/NodeAdmitted",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 165
+    },
+    {
+      "event_type": "node_refuted",
+      "go_struct": "NodeRefuted",
+      "schema_ref": "event.schema.json#/$defs/NodeRefuted",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 171
+    },
+    {
+      "event_type": "node_archived",
+      "go_struct": "NodeArchived",
+      "schema_ref": "event.schema.json#/$defs/NodeArchived",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 177
+    },
+    {
+      "event_type": "node_amended",
+      "go_struct": "NodeAmended",
+      "schema_ref": "event.schema.json#/$defs/NodeAmended",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 226
+    },
+    {
+      "event_type": "taint_recomputed",
+      "go_struct": "TaintRecomputed",
+      "schema_ref": "event.schema.json#/$defs/TaintRecomputed",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 183
+    },
+    {
+      "event_type": "def_added",
+      "go_struct": "DefAdded",
+      "schema_ref": "event.schema.json#/$defs/DefAdded",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 198
+    },
+    {
+      "event_type": "lemma_extracted",
+      "go_struct": "LemmaExtracted",
+      "schema_ref": "event.schema.json#/$defs/LemmaExtracted",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 212
+    },
+    {
+      "event_type": "lock_reaped",
+      "go_struct": "LockReaped",
+      "schema_ref": "event.schema.json#/$defs/LockReaped",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 218
+    },
+    {
+      "event_type": "scope_opened",
+      "go_struct": "ScopeOpened",
+      "schema_ref": "event.schema.json#/$defs/ScopeOpened",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 515
+    },
+    {
+      "event_type": "scope_closed",
+      "go_struct": "ScopeClosed",
+      "schema_ref": "event.schema.json#/$defs/ScopeClosed",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 523
+    },
+    {
+      "event_type": "claim_refreshed",
+      "go_struct": "ClaimRefreshed",
+      "schema_ref": "event.schema.json#/$defs/ClaimRefreshed",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 555
+    },
+    {
+      "event_type": "refinement_requested",
+      "go_struct": "RefinementRequested",
+      "schema_ref": "event.schema.json#/$defs/RefinementRequested",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 577
+    },
+    {
+      "event_type": "node_submitted",
+      "go_struct": "NodeSubmitted",
+      "schema_ref": "event.schema.json#/$defs/NodeSubmitted",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 599
+    },
+    {
+      "event_type": "node_unvalidated",
+      "go_struct": "NodeUnvalidated",
+      "schema_ref": "event.schema.json#/$defs/NodeUnvalidated",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 619
+    },
+    {
+      "event_type": "node_unadmitted",
+      "go_struct": "NodeUnadmitted",
+      "schema_ref": "event.schema.json#/$defs/NodeUnadmitted",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 630
+    },
+    {
+      "event_type": "approach_tried",
+      "go_struct": "ApproachTried",
+      "schema_ref": "event.schema.json#/$defs/ApproachTried",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 639
+    },
+    {
+      "event_type": "evidence_attached",
+      "go_struct": "EvidenceAttached",
+      "schema_ref": "event.schema.json#/$defs/EvidenceAttached",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 663
+    },
+    {
+      "event_type": "outline_set",
+      "go_struct": "OutlineSet",
+      "schema_ref": "event.schema.json#/$defs/OutlineSet",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 698
+    },
+    {
+      "event_type": "outline_stage_linked",
+      "go_struct": "OutlineStageLinked",
+      "schema_ref": "event.schema.json#/$defs/OutlineStageLinked",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 717
+    },
+    {
+      "event_type": "hint_added",
+      "go_struct": "HintAdded",
+      "schema_ref": "event.schema.json#/$defs/HintAdded",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 736
+    },
+    {
+      "event_type": "node_vetoed",
+      "go_struct": "NodeVetoed",
+      "schema_ref": "event.schema.json#/$defs/NodeVetoed",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 759
+    },
+    {
+      "event_type": "strategy_proposed",
+      "go_struct": "StrategyProposed",
+      "schema_ref": "event.schema.json#/$defs/StrategyProposed",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 781
+    },
+    {
+      "event_type": "pattern_added",
+      "go_struct": "PatternAdded",
+      "schema_ref": "event.schema.json#/$defs/PatternAdded",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 834
+    },
+    {
+      "event_type": "claim_tested",
+      "go_struct": "ClaimTested",
+      "schema_ref": "event.schema.json#/$defs/ClaimTested",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 861
+    },
+    {
+      "event_type": "def_checked",
+      "go_struct": "DefChecked",
+      "schema_ref": "event.schema.json#/$defs/DefChecked",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 892
+    },
+    {
+      "event_type": "node_proof_authored",
+      "go_struct": "NodeProofAuthored",
+      "schema_ref": "event.schema.json#/$defs/NodeProofAuthored",
+      "source_path": "internal/ledger/event.go",
+      "source_line": 244
+    }
+  ],
+  "structs": [
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "BaseEvent",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "BaseEvent",
+      "source_line": 62,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "EventType",
+          "go_type": "EventType",
+          "json_field": "type",
+          "omitempty": false
+        },
+        {
+          "go_field": "EventTime",
+          "go_type": "types.Timestamp",
+          "json_field": "timestamp",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "Definition",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "Definition",
+      "source_line": 190,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Name",
+          "go_type": "string",
+          "json_field": "name",
+          "omitempty": false
+        },
+        {
+          "go_field": "Definition",
+          "go_type": "string",
+          "json_field": "definition",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "Lemma",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "Lemma",
+      "source_line": 204,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "OutlineStage",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "OutlineStage",
+      "source_line": 690,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "Label",
+          "go_type": "string",
+          "json_field": "label",
+          "omitempty": false
+        },
+        {
+          "go_field": "Description",
+          "go_type": "string",
+          "json_field": "description",
+          "omitempty": false
+        },
+        {
+          "go_field": "Criticality",
+          "go_type": "string",
+          "json_field": "criticality",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ProofInitialized",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ProofInitialized",
+      "source_line": 78,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Conjecture",
+          "go_type": "string",
+          "json_field": "conjecture",
+          "omitempty": false
+        },
+        {
+          "go_field": "Author",
+          "go_type": "string",
+          "json_field": "author",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeCreated",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeCreated",
+      "source_line": 85,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Node",
+          "go_type": "node.Node",
+          "json_field": "node",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodesClaimed",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodesClaimed",
+      "source_line": 91,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeIDs",
+          "go_type": "[]types.NodeID",
+          "json_field": "node_ids",
+          "omitempty": false
+        },
+        {
+          "go_field": "Owner",
+          "go_type": "string",
+          "json_field": "owner",
+          "omitempty": false
+        },
+        {
+          "go_field": "Timeout",
+          "go_type": "types.Timestamp",
+          "json_field": "timeout",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodesReleased",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodesReleased",
+      "source_line": 99,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeIDs",
+          "go_type": "[]types.NodeID",
+          "json_field": "node_ids",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ChallengeRaised",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ChallengeRaised",
+      "source_line": 113,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "ChallengeID",
+          "go_type": "string",
+          "json_field": "challenge_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Target",
+          "go_type": "string",
+          "json_field": "target",
+          "omitempty": false
+        },
+        {
+          "go_field": "Reason",
+          "go_type": "string",
+          "json_field": "reason",
+          "omitempty": false
+        },
+        {
+          "go_field": "Severity",
+          "go_type": "string",
+          "json_field": "severity",
+          "omitempty": false
+        },
+        {
+          "go_field": "RaisedBy",
+          "go_type": "string",
+          "json_field": "raised_by",
+          "omitempty": false
+        },
+        {
+          "go_field": "Category",
+          "go_type": "string",
+          "json_field": "category",
+          "omitempty": true
+        },
+        {
+          "go_field": "BatchID",
+          "go_type": "string",
+          "json_field": "batch_id",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ChallengeResolved",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ChallengeResolved",
+      "source_line": 126,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "ChallengeID",
+          "go_type": "string",
+          "json_field": "challenge_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ChallengeWithdrawn",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ChallengeWithdrawn",
+      "source_line": 132,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "ChallengeID",
+          "go_type": "string",
+          "json_field": "challenge_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ChallengeSuperseded",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ChallengeSuperseded",
+      "source_line": 139,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "ChallengeID",
+          "go_type": "string",
+          "json_field": "challenge_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeValidated",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeValidated",
+      "source_line": 156,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Note",
+          "go_type": "string",
+          "json_field": "note",
+          "omitempty": true
+        },
+        {
+          "go_field": "VerifiedBy",
+          "go_type": "string",
+          "json_field": "verified_by",
+          "omitempty": true
+        },
+        {
+          "go_field": "BatchID",
+          "go_type": "string",
+          "json_field": "batch_id",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeAdmitted",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeAdmitted",
+      "source_line": 165,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeRefuted",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeRefuted",
+      "source_line": 171,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeArchived",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeArchived",
+      "source_line": 177,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeAmended",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeAmended",
+      "source_line": 226,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "PreviousStatement",
+          "go_type": "string",
+          "json_field": "previous_statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "NewStatement",
+          "go_type": "string",
+          "json_field": "new_statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "Owner",
+          "go_type": "string",
+          "json_field": "owner",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "TaintRecomputed",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "TaintRecomputed",
+      "source_line": 183,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "NewTaint",
+          "go_type": "node.TaintState",
+          "json_field": "new_taint",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "DefAdded",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "DefAdded",
+      "source_line": 198,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Definition",
+          "go_type": "Definition",
+          "json_field": "definition",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "LemmaExtracted",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "LemmaExtracted",
+      "source_line": 212,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Lemma",
+          "go_type": "Lemma",
+          "json_field": "lemma",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "LockReaped",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "LockReaped",
+      "source_line": 218,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Owner",
+          "go_type": "string",
+          "json_field": "owner",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ScopeOpened",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ScopeOpened",
+      "source_line": 515,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ScopeClosed",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ScopeClosed",
+      "source_line": 523,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "DischargeNodeID",
+          "go_type": "types.NodeID",
+          "json_field": "discharge_node_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ClaimRefreshed",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ClaimRefreshed",
+      "source_line": 555,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Owner",
+          "go_type": "string",
+          "json_field": "owner",
+          "omitempty": false
+        },
+        {
+          "go_field": "NewTimeout",
+          "go_type": "types.Timestamp",
+          "json_field": "new_timeout",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "RefinementRequested",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "RefinementRequested",
+      "source_line": 577,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Reason",
+          "go_type": "string",
+          "json_field": "reason",
+          "omitempty": false
+        },
+        {
+          "go_field": "RequestedBy",
+          "go_type": "string",
+          "json_field": "requested_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeSubmitted",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeSubmitted",
+      "source_line": 599,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Owner",
+          "go_type": "string",
+          "json_field": "owner",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeUnvalidated",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeUnvalidated",
+      "source_line": 619,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Reason",
+          "go_type": "string",
+          "json_field": "reason",
+          "omitempty": true
+        },
+        {
+          "go_field": "RevokedBy",
+          "go_type": "string",
+          "json_field": "revoked_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeUnadmitted",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeUnadmitted",
+      "source_line": 630,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Reason",
+          "go_type": "string",
+          "json_field": "reason",
+          "omitempty": true
+        },
+        {
+          "go_field": "RevokedBy",
+          "go_type": "string",
+          "json_field": "revoked_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ApproachTried",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ApproachTried",
+      "source_line": 639,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Approach",
+          "go_type": "string",
+          "json_field": "approach",
+          "omitempty": false
+        },
+        {
+          "go_field": "Outcome",
+          "go_type": "string",
+          "json_field": "outcome",
+          "omitempty": true
+        },
+        {
+          "go_field": "TriedBy",
+          "go_type": "string",
+          "json_field": "tried_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "EvidenceAttached",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "EvidenceAttached",
+      "source_line": 663,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "FilePath",
+          "go_type": "string",
+          "json_field": "file_path",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "EvidenceType",
+          "go_type": "string",
+          "json_field": "evidence_type",
+          "omitempty": true
+        },
+        {
+          "go_field": "Description",
+          "go_type": "string",
+          "json_field": "description",
+          "omitempty": true
+        },
+        {
+          "go_field": "AttachedBy",
+          "go_type": "string",
+          "json_field": "attached_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "OutlineSet",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "OutlineSet",
+      "source_line": 698,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Stages",
+          "go_type": "[]OutlineStage",
+          "json_field": "stages",
+          "omitempty": false
+        },
+        {
+          "go_field": "SetBy",
+          "go_type": "string",
+          "json_field": "set_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "OutlineStageLinked",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "OutlineStageLinked",
+      "source_line": 717,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Label",
+          "go_type": "string",
+          "json_field": "label",
+          "omitempty": false
+        },
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "HintAdded",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "HintAdded",
+      "source_line": 736,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Text",
+          "go_type": "string",
+          "json_field": "text",
+          "omitempty": false
+        },
+        {
+          "go_field": "HintBy",
+          "go_type": "string",
+          "json_field": "hint_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeVetoed",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeVetoed",
+      "source_line": 759,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Reason",
+          "go_type": "string",
+          "json_field": "reason",
+          "omitempty": false
+        },
+        {
+          "go_field": "VetoedBy",
+          "go_type": "string",
+          "json_field": "vetoed_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "StrategyProposed",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "StrategyProposed",
+      "source_line": 781,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Strategy",
+          "go_type": "string",
+          "json_field": "strategy",
+          "omitempty": false
+        },
+        {
+          "go_field": "Novelty",
+          "go_type": "string",
+          "json_field": "novelty",
+          "omitempty": false
+        },
+        {
+          "go_field": "Rationale",
+          "go_type": "string",
+          "json_field": "rationale",
+          "omitempty": true
+        },
+        {
+          "go_field": "ProposedBy",
+          "go_type": "string",
+          "json_field": "proposed_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "PatternAdded",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "PatternAdded",
+      "source_line": 834,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "Name",
+          "go_type": "string",
+          "json_field": "name",
+          "omitempty": false
+        },
+        {
+          "go_field": "Description",
+          "go_type": "string",
+          "json_field": "description",
+          "omitempty": false
+        },
+        {
+          "go_field": "Indicators",
+          "go_type": "string",
+          "json_field": "indicators",
+          "omitempty": true
+        },
+        {
+          "go_field": "Remediation",
+          "go_type": "string",
+          "json_field": "remediation",
+          "omitempty": true
+        },
+        {
+          "go_field": "AddedBy",
+          "go_type": "string",
+          "json_field": "added_by",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "ClaimTested",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "ClaimTested",
+      "source_line": 861,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Engine",
+          "go_type": "string",
+          "json_field": "engine",
+          "omitempty": false
+        },
+        {
+          "go_field": "ScriptPath",
+          "go_type": "string",
+          "json_field": "script_path",
+          "omitempty": true
+        },
+        {
+          "go_field": "Expression",
+          "go_type": "string",
+          "json_field": "expression",
+          "omitempty": true
+        },
+        {
+          "go_field": "Passed",
+          "go_type": "bool",
+          "json_field": "passed",
+          "omitempty": false
+        },
+        {
+          "go_field": "Output",
+          "go_type": "string",
+          "json_field": "output",
+          "omitempty": true
+        },
+        {
+          "go_field": "Agent",
+          "go_type": "string",
+          "json_field": "agent",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "DefChecked",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "DefChecked",
+      "source_line": 892,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "DefName",
+          "go_type": "string",
+          "json_field": "def_name",
+          "omitempty": false
+        },
+        {
+          "go_field": "CheckType",
+          "go_type": "string",
+          "json_field": "check_type",
+          "omitempty": false
+        },
+        {
+          "go_field": "ScriptPath",
+          "go_type": "string",
+          "json_field": "script_path",
+          "omitempty": true
+        },
+        {
+          "go_field": "Passed",
+          "go_type": "bool",
+          "json_field": "passed",
+          "omitempty": false
+        },
+        {
+          "go_field": "Output",
+          "go_type": "string",
+          "json_field": "output",
+          "omitempty": true
+        },
+        {
+          "go_field": "Agent",
+          "go_type": "string",
+          "json_field": "agent",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "NodeProofAuthored",
+      "source_path": "internal/ledger/event.go",
+      "go_struct": "NodeProofAuthored",
+      "source_line": 244,
+      "embedded": [
+        "BaseEvent"
+      ],
+      "fields": [
+        {
+          "go_field": "NodeID",
+          "go_type": "types.NodeID",
+          "json_field": "node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Author",
+          "go_type": "string",
+          "json_field": "author",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "event.schema.json",
+      "schema_def": "Node",
+      "source_path": "internal/node/node.go",
+      "go_struct": "Node",
+      "source_line": 28,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "types.NodeID",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Type",
+          "go_type": "schema.NodeType",
+          "json_field": "type",
+          "omitempty": false
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "Latex",
+          "go_type": "string",
+          "json_field": "latex",
+          "omitempty": true
+        },
+        {
+          "go_field": "Inference",
+          "go_type": "schema.InferenceType",
+          "json_field": "inference",
+          "omitempty": false
+        },
+        {
+          "go_field": "Context",
+          "go_type": "[]string",
+          "json_field": "context",
+          "omitempty": true
+        },
+        {
+          "go_field": "Dependencies",
+          "go_type": "[]types.NodeID",
+          "json_field": "dependencies",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidationDeps",
+          "go_type": "[]types.NodeID",
+          "json_field": "validation_deps",
+          "omitempty": true
+        },
+        {
+          "go_field": "WorkflowState",
+          "go_type": "schema.WorkflowState",
+          "json_field": "workflow_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "EpistemicState",
+          "go_type": "schema.EpistemicState",
+          "json_field": "epistemic_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "TaintState",
+          "go_type": "TaintState",
+          "json_field": "taint_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Scope",
+          "go_type": "[]string",
+          "json_field": "scope",
+          "omitempty": true
+        },
+        {
+          "go_field": "ClaimedBy",
+          "go_type": "string",
+          "json_field": "claimed_by",
+          "omitempty": true
+        },
+        {
+          "go_field": "ClaimedAt",
+          "go_type": "types.Timestamp",
+          "json_field": "claimed_at",
+          "omitempty": true
+        },
+        {
+          "go_field": "Crux",
+          "go_type": "bool",
+          "json_field": "crux",
+          "omitempty": true
+        },
+        {
+          "go_field": "Author",
+          "go_type": "string",
+          "json_field": "author",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidatedBy",
+          "go_type": "string",
+          "json_field": "validated_by",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidationBatchID",
+          "go_type": "string",
+          "json_field": "validation_batch_id",
+          "omitempty": true
+        },
+        {
+          "go_field": "ProofAuthor",
+          "go_type": "string",
+          "json_field": "proof_author",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "graph.schema.json",
+      "schema_def": "GraphWorkspace",
+      "source_path": "internal/export/graph.go",
+      "go_struct": "GraphWorkspace",
+      "source_line": 37,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Title",
+          "go_type": "string",
+          "json_field": "title",
+          "omitempty": true
+        },
+        {
+          "go_field": "Conjecture",
+          "go_type": "string",
+          "json_field": "conjecture",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "graph.schema.json",
+      "schema_def": "GraphNode",
+      "source_path": "internal/export/graph.go",
+      "go_struct": "GraphNode",
+      "source_line": 46,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Type",
+          "go_type": "string",
+          "json_field": "type",
+          "omitempty": false
+        },
+        {
+          "go_field": "ParentID",
+          "go_type": "string",
+          "json_field": "parent_id",
+          "omitempty": true
+        },
+        {
+          "go_field": "ChildIDs",
+          "go_type": "[]string",
+          "json_field": "child_ids",
+          "omitempty": true
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "Latex",
+          "go_type": "string",
+          "json_field": "latex",
+          "omitempty": true
+        },
+        {
+          "go_field": "Inference",
+          "go_type": "string",
+          "json_field": "inference",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "WorkflowState",
+          "go_type": "string",
+          "json_field": "workflow_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "EpistemicState",
+          "go_type": "string",
+          "json_field": "epistemic_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "TaintState",
+          "go_type": "string",
+          "json_field": "taint_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "Crux",
+          "go_type": "bool",
+          "json_field": "crux",
+          "omitempty": true
+        },
+        {
+          "go_field": "Created",
+          "go_type": "string",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Author",
+          "go_type": "string",
+          "json_field": "author",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidatedBy",
+          "go_type": "string",
+          "json_field": "validated_by",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidationBatchID",
+          "go_type": "string",
+          "json_field": "validation_batch_id",
+          "omitempty": true
+        },
+        {
+          "go_field": "ProofAuthor",
+          "go_type": "string",
+          "json_field": "proof_author",
+          "omitempty": true
+        },
+        {
+          "go_field": "ProverReady",
+          "go_type": "bool",
+          "json_field": "prover_ready",
+          "omitempty": true
+        },
+        {
+          "go_field": "VerifierReady",
+          "go_type": "bool",
+          "json_field": "verifier_ready",
+          "omitempty": true
+        },
+        {
+          "go_field": "Dependencies",
+          "go_type": "[]string",
+          "json_field": "dependencies",
+          "omitempty": true
+        },
+        {
+          "go_field": "Closed",
+          "go_type": "bool",
+          "json_field": "closed",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "graph.schema.json",
+      "schema_def": "GraphValidation",
+      "source_path": "internal/export/graph.go",
+      "go_struct": "GraphValidation",
+      "source_line": 130,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "TotalNodes",
+          "go_type": "int",
+          "json_field": "total_nodes",
+          "omitempty": false
+        },
+        {
+          "go_field": "EpistemicCounts",
+          "go_type": "map[string]int",
+          "json_field": "epistemic_counts",
+          "omitempty": false
+        },
+        {
+          "go_field": "TaintCounts",
+          "go_type": "map[string]int",
+          "json_field": "taint_counts",
+          "omitempty": false
+        },
+        {
+          "go_field": "TotalChallenges",
+          "go_type": "int",
+          "json_field": "total_challenges",
+          "omitempty": false
+        },
+        {
+          "go_field": "ChallengeStatusCounts",
+          "go_type": "map[string]int",
+          "json_field": "challenge_status_counts",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "graph.schema.json",
+      "schema_def": "GraphExport",
+      "source_path": "internal/export/graph.go",
+      "go_struct": "GraphExport",
+      "source_line": 141,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "SchemaVersion",
+          "go_type": "string",
+          "json_field": "schema_version",
+          "omitempty": false
+        },
+        {
+          "go_field": "Features",
+          "go_type": "[]string",
+          "json_field": "features",
+          "omitempty": false
+        },
+        {
+          "go_field": "Workspace",
+          "go_type": "GraphWorkspace",
+          "json_field": "workspace",
+          "omitempty": false
+        },
+        {
+          "go_field": "Nodes",
+          "go_type": "[]GraphNode",
+          "json_field": "nodes",
+          "omitempty": false
+        },
+        {
+          "go_field": "Validation",
+          "go_type": "GraphValidation",
+          "json_field": "validation",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "Definition",
+      "source_path": "internal/node/definition.go",
+      "go_struct": "Definition",
+      "source_line": 15,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Name",
+          "go_type": "string",
+          "json_field": "name",
+          "omitempty": false
+        },
+        {
+          "go_field": "Content",
+          "go_type": "string",
+          "json_field": "content",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "Assumption",
+      "source_path": "internal/node/assumption.go",
+      "go_struct": "Assumption",
+      "source_line": 17,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Justification",
+          "go_type": "string",
+          "json_field": "justification",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "External",
+      "source_path": "internal/node/external.go",
+      "go_struct": "External",
+      "source_line": 16,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Name",
+          "go_type": "string",
+          "json_field": "name",
+          "omitempty": false
+        },
+        {
+          "go_field": "Source",
+          "go_type": "string",
+          "json_field": "source",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Notes",
+          "go_type": "string",
+          "json_field": "notes",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "Lemma",
+      "source_path": "internal/node/lemma.go",
+      "go_struct": "Lemma",
+      "source_line": 18,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "SourceNodeID",
+          "go_type": "types.NodeID",
+          "json_field": "source_node_id",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Proof",
+          "go_type": "string",
+          "json_field": "proof",
+          "omitempty": true
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "PendingDef",
+      "source_path": "internal/node/pending_def.go",
+      "go_struct": "PendingDef",
+      "source_line": 28,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "string",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Term",
+          "go_type": "string",
+          "json_field": "term",
+          "omitempty": false
+        },
+        {
+          "go_field": "RequestedBy",
+          "go_type": "types.NodeID",
+          "json_field": "requested_by",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "ResolvedBy",
+          "go_type": "string",
+          "json_field": "resolved_by",
+          "omitempty": false
+        },
+        {
+          "go_field": "Status",
+          "go_type": "PendingDefStatus",
+          "json_field": "status",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "Config",
+      "source_path": "internal/config/config.go",
+      "go_struct": "Config",
+      "source_line": 22,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "Title",
+          "go_type": "string",
+          "json_field": "title",
+          "omitempty": false
+        },
+        {
+          "go_field": "Conjecture",
+          "go_type": "string",
+          "json_field": "conjecture",
+          "omitempty": false
+        },
+        {
+          "go_field": "LockTimeout",
+          "go_type": "time.Duration",
+          "json_field": "lock_timeout",
+          "omitempty": false
+        },
+        {
+          "go_field": "MaxDepth",
+          "go_type": "int",
+          "json_field": "max_depth",
+          "omitempty": false
+        },
+        {
+          "go_field": "MaxChildren",
+          "go_type": "int",
+          "json_field": "max_children",
+          "omitempty": false
+        },
+        {
+          "go_field": "WarnDepth",
+          "go_type": "int",
+          "json_field": "warn_depth",
+          "omitempty": false
+        },
+        {
+          "go_field": "AutoCorrectThreshold",
+          "go_type": "float64",
+          "json_field": "auto_correct_threshold",
+          "omitempty": false
+        },
+        {
+          "go_field": "SchemaPath",
+          "go_type": "string",
+          "json_field": "schema_path",
+          "omitempty": true
+        },
+        {
+          "go_field": "Created",
+          "go_type": "time.Time",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Version",
+          "go_type": "string",
+          "json_field": "version",
+          "omitempty": false
+        }
+      ]
+    },
+    {
+      "schema_file": "sidecar.schema.json",
+      "schema_def": "Node",
+      "source_path": "internal/node/node.go",
+      "go_struct": "Node",
+      "source_line": 28,
+      "embedded": [],
+      "fields": [
+        {
+          "go_field": "ID",
+          "go_type": "types.NodeID",
+          "json_field": "id",
+          "omitempty": false
+        },
+        {
+          "go_field": "Type",
+          "go_type": "schema.NodeType",
+          "json_field": "type",
+          "omitempty": false
+        },
+        {
+          "go_field": "Statement",
+          "go_type": "string",
+          "json_field": "statement",
+          "omitempty": false
+        },
+        {
+          "go_field": "Latex",
+          "go_type": "string",
+          "json_field": "latex",
+          "omitempty": true
+        },
+        {
+          "go_field": "Inference",
+          "go_type": "schema.InferenceType",
+          "json_field": "inference",
+          "omitempty": false
+        },
+        {
+          "go_field": "Context",
+          "go_type": "[]string",
+          "json_field": "context",
+          "omitempty": true
+        },
+        {
+          "go_field": "Dependencies",
+          "go_type": "[]types.NodeID",
+          "json_field": "dependencies",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidationDeps",
+          "go_type": "[]types.NodeID",
+          "json_field": "validation_deps",
+          "omitempty": true
+        },
+        {
+          "go_field": "WorkflowState",
+          "go_type": "schema.WorkflowState",
+          "json_field": "workflow_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "EpistemicState",
+          "go_type": "schema.EpistemicState",
+          "json_field": "epistemic_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "TaintState",
+          "go_type": "TaintState",
+          "json_field": "taint_state",
+          "omitempty": false
+        },
+        {
+          "go_field": "ContentHash",
+          "go_type": "string",
+          "json_field": "content_hash",
+          "omitempty": false
+        },
+        {
+          "go_field": "Created",
+          "go_type": "types.Timestamp",
+          "json_field": "created",
+          "omitempty": false
+        },
+        {
+          "go_field": "Scope",
+          "go_type": "[]string",
+          "json_field": "scope",
+          "omitempty": true
+        },
+        {
+          "go_field": "ClaimedBy",
+          "go_type": "string",
+          "json_field": "claimed_by",
+          "omitempty": true
+        },
+        {
+          "go_field": "ClaimedAt",
+          "go_type": "types.Timestamp",
+          "json_field": "claimed_at",
+          "omitempty": true
+        },
+        {
+          "go_field": "Crux",
+          "go_type": "bool",
+          "json_field": "crux",
+          "omitempty": true
+        },
+        {
+          "go_field": "Author",
+          "go_type": "string",
+          "json_field": "author",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidatedBy",
+          "go_type": "string",
+          "json_field": "validated_by",
+          "omitempty": true
+        },
+        {
+          "go_field": "ValidationBatchID",
+          "go_type": "string",
+          "json_field": "validation_batch_id",
+          "omitempty": true
+        },
+        {
+          "go_field": "ProofAuthor",
+          "go_type": "string",
+          "json_field": "proof_author",
+          "omitempty": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,589 @@
+{
+  "schema": "agtxiv.query-run-dataset/0.1.0",
+  "dataset_id": "dataset:query:1937ac465269b64d:legacy-demo-20260823",
+  "captured_at": "2026-08-23T00:00:00Z",
+  "description": "Non-authoritative inventory of the existing Stabilizerness closed-form demo. Files remain in their original locations and no scientific status is promoted.",
+  "paper_versions": [
+    {
+      "work_id": "arxiv:2607.26154",
+      "paper_version_id": "arxiv:2607.26154v1",
+      "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
+      "role": "TARGET",
+      "primary_source_artifact_id": "artifact:sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "source_artifact_ids": [
+        "artifact:sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d"
+      ],
+      "source_bundle_complete": false
+    },
+    {
+      "work_id": "arxiv:2602.18939",
+      "paper_version_id": "arxiv:2602.18939v1",
+      "title": "Predicting Magic from Very Few Measurements",
+      "role": "DEPENDENCY",
+      "primary_source_artifact_id": "artifact:sha256:b0631e958da1934aa7b87d60d009499b9189f435773cccc74b4e782ab985d4e5",
+      "source_artifact_ids": [
+        "artifact:sha256:b0631e958da1934aa7b87d60d009499b9189f435773cccc74b4e782ab985d4e5"
+      ],
+      "source_bundle_complete": false
+    },
+    {
+      "work_id": "arxiv:1307.7171",
+      "paper_version_id": "arxiv:1307.7171v1",
+      "title": "The Resource Theory of Stabilizer Computation",
+      "role": "DEPENDENCY",
+      "primary_source_artifact_id": "artifact:sha256:1634926605e816b6bc0728559e2b7471750fdc849cf127f971e6ee859d277394",
+      "source_artifact_ids": [
+        "artifact:sha256:1634926605e816b6bc0728559e2b7471750fdc849cf127f971e6ee859d277394"
+      ],
+      "source_bundle_complete": false
+    },
+    {
+      "work_id": "arxiv:1609.07488",
+      "paper_version_id": "arxiv:1609.07488v2",
+      "title": "Application of a Resource Theory for Magic States to Fault-Tolerant Quantum Computing",
+      "role": "DEPENDENCY",
+      "primary_source_artifact_id": "artifact:sha256:48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+      "source_artifact_ids": [
+        "artifact:sha256:48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d"
+      ],
+      "source_bundle_complete": false
+    },
+    {
+      "work_id": "arxiv:quant-ph/9705052",
+      "paper_version_id": "arxiv:quant-ph/9705052v1",
+      "title": "Stabilizer Codes and Quantum Error Correction",
+      "role": "DEPENDENCY",
+      "primary_source_artifact_id": "artifact:sha256:79c810480bcce5635cd9507170c5327662bd33546c4638baa037c608db49db2f",
+      "source_artifact_ids": [
+        "artifact:sha256:79c810480bcce5635cd9507170c5327662bd33546c4638baa037c608db49db2f"
+      ],
+      "source_bundle_complete": false
+    }
+  ],
+  "query": {
+    "query_id": "query:1937ac465269b64d",
+    "raw_text": "Why does the reduced robustness of magic collapse to a maximum over anticommuting cliques when the measurement set has no Pauli-active dependency and its frustration graph is perfect?",
+    "normalized_text": "Why does the reduced robustness of magic collapse to a maximum over anticommuting cliques when the measurement set has no Pauli-active dependency and its frustration graph is perfect?",
+    "fingerprint_sha256": "1937ac465269b64dcf828871f495b36308c6101356e4197dc7600d0f126f6b39",
+    "target_refs": [
+      "statement:2607.26154v1:closed-form-equality"
+    ],
+    "scope_artifact_id": "artifact:sha256:9b9c751d4a02b32e52b7c3c337ee8dee8ab6da911cf6c7c4256c73039b3120f6"
+  },
+  "run": {
+    "run_id": "run:20260823T000000Z:legacy-demo-01",
+    "query_id": "query:1937ac465269b64d",
+    "attempt": 1,
+    "execution_state": "COMPLETED",
+    "outcome": "BLOCKED",
+    "captured_at": "2026-08-23T00:00:00Z",
+    "producer": {
+      "implementation": "tools/query_agent.py plus legacy demo artifact inventory",
+      "version": "0.1.0-prototype",
+      "implementation_hash": null
+    },
+    "code_commit": "66774235cadc6963b4d8afae6d5dd767d8986e24",
+    "working_tree_state": "UNKNOWN",
+    "command": [
+      "python3 tools/query_agent.py why statement:2607.26154v1:closed-form-equality"
+    ],
+    "reproducibility_refs": {
+      "configuration": [
+        "artifact:sha256:9b9c751d4a02b32e52b7c3c337ee8dee8ab6da911cf6c7c4256c73039b3120f6"
+      ],
+      "prompts": [],
+      "models": [],
+      "tools": [],
+      "formal_environments": [
+        "artifact:sha256:02d6aaaa3d86c91a017f912459896b290f3a630cde9bba54a215f84762496d14"
+      ]
+    },
+    "input_snapshot_ref": null,
+    "idempotency_key_sha256": null,
+    "retry_of_run_id": null
+  },
+  "run_artifacts": [
+    {
+      "artifact_id": "artifact:sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "kind": "frozen-source",
+      "role": "INPUT",
+      "storage_class": "SOURCE",
+      "authority": "AUTHORITATIVE_SOURCE",
+      "publication_state": "FROZEN",
+      "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+      "media_type": "application/x-tex",
+      "sha256": "4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "byte_size": 69678,
+      "schema_name": null,
+      "schema_version": null,
+      "source_refs": [
+        "arxiv:2607.26154v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:b0631e958da1934aa7b87d60d009499b9189f435773cccc74b4e782ab985d4e5",
+      "kind": "frozen-source",
+      "role": "INPUT",
+      "storage_class": "SOURCE",
+      "authority": "AUTHORITATIVE_SOURCE",
+      "publication_state": "FROZEN",
+      "path": "Reference/Predicting magic from very few measurements/pra_version.tex",
+      "media_type": "application/x-tex",
+      "sha256": "b0631e958da1934aa7b87d60d009499b9189f435773cccc74b4e782ab985d4e5",
+      "byte_size": 110488,
+      "schema_name": null,
+      "schema_version": null,
+      "source_refs": [
+        "arxiv:2602.18939v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:1634926605e816b6bc0728559e2b7471750fdc849cf127f971e6ee859d277394",
+      "kind": "frozen-source",
+      "role": "INPUT",
+      "storage_class": "SOURCE",
+      "authority": "AUTHORITATIVE_SOURCE",
+      "publication_state": "FROZEN",
+      "path": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+      "media_type": "application/x-tex",
+      "sha256": "1634926605e816b6bc0728559e2b7471750fdc849cf127f971e6ee859d277394",
+      "byte_size": 110546,
+      "schema_name": null,
+      "schema_version": null,
+      "source_refs": [
+        "arxiv:1307.7171v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+      "kind": "frozen-source",
+      "role": "INPUT",
+      "storage_class": "SOURCE",
+      "authority": "AUTHORITATIVE_SOURCE",
+      "publication_state": "FROZEN",
+      "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+      "media_type": "application/x-tex",
+      "sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+      "byte_size": 56170,
+      "schema_name": null,
+      "schema_version": null,
+      "source_refs": [
+        "arxiv:1609.07488v2"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:79c810480bcce5635cd9507170c5327662bd33546c4638baa037c608db49db2f",
+      "kind": "frozen-source",
+      "role": "INPUT",
+      "storage_class": "SOURCE",
+      "authority": "AUTHORITATIVE_SOURCE",
+      "publication_state": "FROZEN",
+      "path": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+      "media_type": "application/x-tex",
+      "sha256": "79c810480bcce5635cd9507170c5327662bd33546c4638baa037c608db49db2f",
+      "byte_size": 333351,
+      "schema_name": null,
+      "schema_version": null,
+      "source_refs": [
+        "arxiv:quant-ph/9705052v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:9b9c751d4a02b32e52b7c3c337ee8dee8ab6da911cf6c7c4256c73039b3120f6",
+      "kind": "query-scope",
+      "role": "INPUT",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "pilot-scope.json",
+      "media_type": "application/json",
+      "sha256": "9b9c751d4a02b32e52b7c3c337ee8dee8ab6da911cf6c7c4256c73039b3120f6",
+      "byte_size": 1217,
+      "schema_name": "legacy.pilot-scope",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "query:1937ac465269b64d"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:e793b583c26a0191a2a24bd03782f469599454c4fc1afa39630e33b5343d27e8",
+      "kind": "paper-agent-manifest",
+      "role": "INPUT",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/agent.json",
+      "media_type": "application/json",
+      "sha256": "e793b583c26a0191a2a24bd03782f469599454c4fc1afa39630e33b5343d27e8",
+      "byte_size": 2322,
+      "schema_name": "legacy.paper-agent-manifest",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "arxiv:2607.26154v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6",
+      "kind": "source-anchors",
+      "role": "INTERMEDIATE",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/source/anchors.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6",
+      "byte_size": 4972,
+      "schema_name": "legacy.source-anchor",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "arxiv:2607.26154v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:e6e0067ff826660830173748aa0700ad1ed746348d145953d3b1e5b15455df46",
+      "kind": "legacy-statements",
+      "role": "INTERMEDIATE",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "e6e0067ff826660830173748aa0700ad1ed746348d145953d3b1e5b15455df46",
+      "byte_size": 8526,
+      "schema_name": "legacy.statement",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "artifact:sha256:a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:7756a0fbddbb3736c66d6f98f86606b22f09770a111001716269a1e0c806f881",
+      "kind": "scientific-claims",
+      "role": "OUTPUT",
+      "storage_class": "KNOWLEDGE",
+      "authority": "AUTHORITATIVE_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "Stabilizerness/ScientificClaimRegistry/claims/graph-theoretic-nonstabilizerness.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "7756a0fbddbb3736c66d6f98f86606b22f09770a111001716269a1e0c806f881",
+      "byte_size": 14393,
+      "schema_name": "agtxiv.scientific-claim",
+      "schema_version": "1.0.0",
+      "source_refs": [
+        "arxiv:2607.26154v1"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:854e9a063798e99597f173070c19441b7710f4368ab8eb8de9fb4a161207718e",
+      "kind": "math-claim-ir",
+      "role": "OUTPUT",
+      "storage_class": "KNOWLEDGE",
+      "authority": "AUTHORITATIVE_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "Stabilizerness/MathClaimIRRegistry/claims/graph-theoretic-nonstabilizerness.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "854e9a063798e99597f173070c19441b7710f4368ab8eb8de9fb4a161207718e",
+      "byte_size": 97096,
+      "schema_name": "agtxiv.math-claimir",
+      "schema_version": "1.0.0",
+      "source_refs": [
+        "claim:graph-theoretic-nonstabilizerness:closed-form-equality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:9d25731a0486f0cec38e61e933c78f6528435fc22fce385502f056b2ae4d9acc",
+      "kind": "claim-migration-crosswalk",
+      "role": "EVIDENCE",
+      "storage_class": "KNOWLEDGE",
+      "authority": "AUTHORITATIVE_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/graph-theoretic-nonstabilizerness.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "9d25731a0486f0cec38e61e933c78f6528435fc22fce385502f056b2ae4d9acc",
+      "byte_size": 23581,
+      "schema_name": "agtxiv.claim-migration",
+      "schema_version": "1.0.0",
+      "source_refs": [
+        "statement:2607.26154v1:closed-form-equality",
+        "claim:graph-theoretic-nonstabilizerness:closed-form-equality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:8b45f5835d27b3283f567f7f478cd4ab70716c77ae0b6ac0f8a960ff32bb35d4",
+      "kind": "reasoning-steps",
+      "role": "INTERMEDIATE",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/reasoning/chains.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "8b45f5835d27b3283f567f7f478cd4ab70716c77ae0b6ac0f8a960ff32bb35d4",
+      "byte_size": 7285,
+      "schema_name": "legacy.reasoning-step",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "statement:2607.26154v1:closed-form-equality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:2e00d83b261889954d198e44344a3cd6ae07a97f102bbb0f39e21ffd545e7051",
+      "kind": "verification-evidence",
+      "role": "EVIDENCE",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/verification/records.jsonl",
+      "media_type": "application/x-ndjson",
+      "sha256": "2e00d83b261889954d198e44344a3cd6ae07a97f102bbb0f39e21ffd545e7051",
+      "byte_size": 3906,
+      "schema_name": "legacy.verification-record",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "statement:2607.26154v1:closed-form-equality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:02d6aaaa3d86c91a017f912459896b290f3a630cde9bba54a215f84762496d14",
+      "kind": "lean-verification-result",
+      "role": "EVIDENCE",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "formal/AgtXIvStabilizerness/verification-result.json",
+      "media_type": "application/json",
+      "sha256": "02d6aaaa3d86c91a017f912459896b290f3a630cde9bba54a215f84762496d14",
+      "byte_size": 3449,
+      "schema_name": "legacy.lean-verification",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "statement:2607.26154v1:closed-form-equality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:f342db7cf8216cb5c55e215860ca11c653a9978848002bf9e88355a6d5faac5a",
+      "kind": "query-claim-graph",
+      "role": "OUTPUT",
+      "storage_class": "DERIVED",
+      "authority": "DERIVED",
+      "publication_state": "PUBLISHED",
+      "path": "graph/claim-dependencies.json",
+      "media_type": "application/json",
+      "sha256": "f342db7cf8216cb5c55e215860ca11c653a9978848002bf9e88355a6d5faac5a",
+      "byte_size": 4720,
+      "schema_name": "legacy.claim-dependency-graph",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "query:1937ac465269b64d"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:f9b91ae3f7cfc6e5776f5d2896cfc220d2bc60358073692edea0dc09d8bf32b8",
+      "kind": "contract-export",
+      "role": "OUTPUT",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/exports/closed-form-equality.json",
+      "media_type": "application/json",
+      "sha256": "f9b91ae3f7cfc6e5776f5d2896cfc220d2bc60358073692edea0dc09d8bf32b8",
+      "byte_size": 2216,
+      "schema_name": "legacy.claim-contract",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "contract:2607.26154v1:closed-form-equality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:04492ee83d0edd3fbecf340297923c7137d36d0eb7c5ae878ae7df768108770a",
+      "kind": "blocker-record",
+      "role": "EVIDENCE",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+      "media_type": "application/json",
+      "sha256": "04492ee83d0edd3fbecf340297923c7137d36d0eb7c5ae878ae7df768108770a",
+      "byte_size": 440,
+      "schema_name": "legacy.blocker",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "statement:foundation:perfect-graph-weighted-duality"
+      ]
+    },
+    {
+      "artifact_id": "artifact:sha256:18e8be00de8eb64f67ce7e5a07f54a82b36ea8b414e59df94f36ddc648a80d1f",
+      "kind": "release-manifest",
+      "role": "OUTPUT",
+      "storage_class": "RUN",
+      "authority": "LEGACY_RECORD",
+      "publication_state": "PUBLISHED",
+      "path": "release-manifest.json",
+      "media_type": "application/json",
+      "sha256": "18e8be00de8eb64f67ce7e5a07f54a82b36ea8b414e59df94f36ddc648a80d1f",
+      "byte_size": 2936,
+      "schema_name": "legacy.release-manifest",
+      "schema_version": "0.1.0-prototype",
+      "source_refs": [
+        "query:1937ac465269b64d"
+      ]
+    }
+  ],
+  "provenance_edges": [
+    {
+      "edge_id": "edge:demo:001",
+      "from_ref": "artifact:sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "relation": "CONSUMED_BY",
+      "to_ref": "artifact:sha256:a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6"
+    },
+    {
+      "edge_id": "edge:demo:002",
+      "from_ref": "artifact:sha256:a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6",
+      "relation": "CONSUMED_BY",
+      "to_ref": "artifact:sha256:e6e0067ff826660830173748aa0700ad1ed746348d145953d3b1e5b15455df46"
+    },
+    {
+      "edge_id": "edge:demo:003",
+      "from_ref": "artifact:sha256:e6e0067ff826660830173748aa0700ad1ed746348d145953d3b1e5b15455df46",
+      "relation": "MIGRATED_TO",
+      "to_ref": "artifact:sha256:7756a0fbddbb3736c66d6f98f86606b22f09770a111001716269a1e0c806f881"
+    },
+    {
+      "edge_id": "edge:demo:004",
+      "from_ref": "artifact:sha256:7756a0fbddbb3736c66d6f98f86606b22f09770a111001716269a1e0c806f881",
+      "relation": "NORMALIZED_AS",
+      "to_ref": "artifact:sha256:854e9a063798e99597f173070c19441b7710f4368ab8eb8de9fb4a161207718e"
+    },
+    {
+      "edge_id": "edge:demo:005",
+      "from_ref": "artifact:sha256:e6e0067ff826660830173748aa0700ad1ed746348d145953d3b1e5b15455df46",
+      "relation": "CONSUMED_BY",
+      "to_ref": "artifact:sha256:8b45f5835d27b3283f567f7f478cd4ab70716c77ae0b6ac0f8a960ff32bb35d4"
+    },
+    {
+      "edge_id": "edge:demo:006",
+      "from_ref": "artifact:sha256:2e00d83b261889954d198e44344a3cd6ae07a97f102bbb0f39e21ffd545e7051",
+      "relation": "EVIDENCES",
+      "to_ref": "artifact:sha256:8b45f5835d27b3283f567f7f478cd4ab70716c77ae0b6ac0f8a960ff32bb35d4"
+    },
+    {
+      "edge_id": "edge:demo:007",
+      "from_ref": "artifact:sha256:8b45f5835d27b3283f567f7f478cd4ab70716c77ae0b6ac0f8a960ff32bb35d4",
+      "relation": "SUMMARIZED_BY",
+      "to_ref": "artifact:sha256:f342db7cf8216cb5c55e215860ca11c653a9978848002bf9e88355a6d5faac5a"
+    },
+    {
+      "edge_id": "edge:demo:008",
+      "from_ref": "artifact:sha256:2e00d83b261889954d198e44344a3cd6ae07a97f102bbb0f39e21ffd545e7051",
+      "relation": "EVIDENCES",
+      "to_ref": "artifact:sha256:f9b91ae3f7cfc6e5776f5d2896cfc220d2bc60358073692edea0dc09d8bf32b8"
+    },
+    {
+      "edge_id": "edge:demo:009",
+      "from_ref": "artifact:sha256:04492ee83d0edd3fbecf340297923c7137d36d0eb7c5ae878ae7df768108770a",
+      "relation": "BLOCKS",
+      "to_ref": "artifact:sha256:f9b91ae3f7cfc6e5776f5d2896cfc220d2bc60358073692edea0dc09d8bf32b8"
+    },
+    {
+      "edge_id": "edge:demo:010",
+      "from_ref": "artifact:sha256:f9b91ae3f7cfc6e5776f5d2896cfc220d2bc60358073692edea0dc09d8bf32b8",
+      "relation": "SUMMARIZED_BY",
+      "to_ref": "artifact:sha256:18e8be00de8eb64f67ce7e5a07f54a82b36ea8b414e59df94f36ddc648a80d1f"
+    },
+    {
+      "edge_id": "edge:demo:011",
+      "from_ref": "artifact:sha256:f342db7cf8216cb5c55e215860ca11c653a9978848002bf9e88355a6d5faac5a",
+      "relation": "SUMMARIZED_BY",
+      "to_ref": "artifact:sha256:18e8be00de8eb64f67ce7e5a07f54a82b36ea8b414e59df94f36ddc648a80d1f"
+    },
+    {
+      "edge_id": "edge:demo:012",
+      "from_ref": "artifact:sha256:9b9c751d4a02b32e52b7c3c337ee8dee8ab6da911cf6c7c4256c73039b3120f6",
+      "relation": "CONSUMED_BY",
+      "to_ref": "run:20260823T000000Z:legacy-demo-01"
+    }
+  ],
+  "knowledge_records": [
+    {
+      "object_id": "claim:graph-theoretic-nonstabilizerness:closed-form-equality",
+      "revision": 1,
+      "kind": "SCIENTIFIC_CLAIM",
+      "artifact_id": "artifact:sha256:7756a0fbddbb3736c66d6f98f86606b22f09770a111001716269a1e0c806f881",
+      "content_hash": "9168a6687534c0387f16decb4e334d18bd2557bd08e9cda18072214e27ac5c40",
+      "supersedes": null,
+      "record_locator": {
+        "format": "JSONL",
+        "id_field": "id",
+        "id_value": "claim:graph-theoretic-nonstabilizerness:closed-form-equality"
+      }
+    },
+    {
+      "object_id": "math-claim-ir:graph-theoretic-nonstabilizerness:closed-form-equality",
+      "revision": 1,
+      "kind": "MATH_CLAIM_IR",
+      "artifact_id": "artifact:sha256:854e9a063798e99597f173070c19441b7710f4368ab8eb8de9fb4a161207718e",
+      "content_hash": "bfd91f0b1a13fec71d05f5e4e5f0e890c64a6ebf7b62c8c2d09b4ff8cc24fd46",
+      "supersedes": null,
+      "record_locator": {
+        "format": "JSONL",
+        "id_field": "id",
+        "id_value": "math-claim-ir:graph-theoretic-nonstabilizerness:closed-form-equality"
+      }
+    }
+  ],
+  "audit": {
+    "legacy_capture": true,
+    "accepted_release": false,
+    "findings": [
+      {
+        "severity": "WARNING",
+        "code": "QUERY_RESULT_NOT_PERSISTED",
+        "message": "The legacy query tool scans mutable directories and prints to stdout; it does not persist an exact request, result, input snapshot, or dependency manifest.",
+        "related_refs": [
+          "run:20260823T000000Z:legacy-demo-01"
+        ]
+      },
+      {
+        "severity": "WARNING",
+        "code": "IDENTITY_CROSSWALK_INCOMPLETE",
+        "message": "The closed-form target has whole-paper DAG, legacy statement, ScientificClaim, MathClaimIR, and contract identifiers; only part of this chain has an explicit migration record.",
+        "related_refs": [
+          "statement:2607.26154v1:closed-form-equality",
+          "claim:graph-theoretic-nonstabilizerness:closed-form-equality",
+          "math-claim-ir:graph-theoretic-nonstabilizerness:closed-form-equality",
+          "contract:2607.26154v1:closed-form-equality"
+        ]
+      },
+      {
+        "severity": "WARNING",
+        "code": "STALE_DERIVED_STATUS",
+        "message": "The target-local Lean verification records four kernel-checked declarations, while older export, coverage, release, and synthesis views still describe the target declarations as queued or unimplemented.",
+        "related_refs": [
+          "artifact:sha256:02d6aaaa3d86c91a017f912459896b290f3a630cde9bba54a215f84762496d14",
+          "artifact:sha256:f9b91ae3f7cfc6e5776f5d2896cfc220d2bc60358073692edea0dc09d8bf32b8",
+          "artifact:sha256:18e8be00de8eb64f67ce7e5a07f54a82b36ea8b414e59df94f36ddc648a80d1f"
+        ]
+      },
+      {
+        "severity": "WARNING",
+        "code": "CANONICAL_SOURCE_ANCHOR_GAP",
+        "message": "The stable ScientificClaim set references more source anchors than the current canonical source-anchor registry provides; several references still depend on legacy anchors without complete content hashes.",
+        "related_refs": [
+          "artifact:sha256:a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6",
+          "artifact:sha256:7756a0fbddbb3736c66d6f98f86606b22f09770a111001716269a1e0c806f881"
+        ]
+      },
+      {
+        "severity": "WARNING",
+        "code": "SOURCE_BUNDLE_INCOMPLETE",
+        "message": "This legacy inventory pins each primary TeX file but does not yet enumerate every macro file, bibliography, figure, and supplement in each frozen paper bundle.",
+        "related_refs": [
+          "arxiv:2607.26154v1",
+          "arxiv:2602.18939v1",
+          "arxiv:1307.7171v1",
+          "arxiv:1609.07488v2",
+          "arxiv:quant-ph/9705052v1"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/empirical-evidence.schema.json",
+  "title": "EmpiricalEvidence",
+  "description": "Observations, uncertainty and methods tied to exact scientific targets.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.empirical-evidence/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "target_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.scientific-claim/0.0.0",
+                      "agtxiv.v3.derived-claim/0.0.0",
+                      "agtxiv.v3.semantic-context/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact scientific assumptions or conclusions examined."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact observation data."
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Data collection and analysis method."
+        },
+        "population_regime": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Population, system and applicable regime."
+        },
+        "uncertainty": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Error model and uncertainty reporting."
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 10000,
+          "description": "Bias, missingness and generalization limits."
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "ILLUSTRATIVE",
+            "SUPPORTING",
+            "LOAD_BEARING"
+          ],
+          "description": "Evidence importance to the stated conclusion."
+        }
+      },
+      "required": [
+        "target_refs",
+        "data",
+        "method",
+        "population_regime",
+        "uncertainty",
+        "limitations",
+        "role"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

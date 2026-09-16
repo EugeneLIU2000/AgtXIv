@@ -1,0 +1,2299 @@
+{
+  "format": "agtxiv.v3.evaluation-corpus",
+  "contract_version": "0.0.0",
+  "framework_version": "V3",
+  "corpus_id": "agtxiv-v3-stabilizer-evaluation-inputs",
+  "revision": 1,
+  "created_on": "2026-09-07",
+  "language": "en",
+  "state": "INPUTS_PINNED_REVIEW_PENDING",
+  "authority": {
+    "kind": "LOCAL_EXPERIMENTAL_INPUT_INVENTORY",
+    "user_authorization": "2026-09-07 instruction to provide schema v0.0 with Chinese documentation and begin implementation.",
+    "charter_identity": "AgtXIv-Charter/1.0",
+    "charter_state_observed": "PENDING_RATIFICATION",
+    "charter_ratification_commit": null,
+    "repository_head_observed": "4bc41cbd32a0bb6b5fa1ea2a0b69c972525b28bd",
+    "worktree_state": "DIRTY; assets are bound by current byte hashes rather than inferred from HEAD.",
+    "independent_scope_freeze": null,
+    "scientific_approval": null,
+    "non_implications": [
+      "No Charter ratification.",
+      "No version adoption or production scientific approval.",
+      "No whole-paper completeness claim.",
+      "No fresh Lean, vibefeld, demo or scientific pipeline execution.",
+      "Historical counterexamples, statuses and study gold labels are not scientific gold answers.",
+      "Local byte identity does not establish the arXiv acquisition/version chain."
+    ]
+  },
+  "selection": {
+    "domain": "Stabilizer formalism, magic resources and measurement-window nonstabilizerness",
+    "core_paper_count": 5,
+    "successor_slug": "graph-theoretic-nonstabilizerness",
+    "predecessor_slugs": [
+      "stabilizer-codes-and-quantum-error-correction",
+      "resource-theory-of-stabilizer-computation",
+      "robustness-of-magic",
+      "predicting-magic-from-very-few-measurements"
+    ],
+    "relatedness_basis": "Pinned legacy imports and graph/paper-dependencies.json; dependency meaning must be rechecked for the exact intended use.",
+    "supplementary_scope": "Out-of-domain study and V2 fixture inputs are only for migration and authority tests; not included as core paper verification targets.",
+    "selection_review_state": "PENDING_INDEPENDENT_REVIEW"
+  },
+  "input_integrity_policy": {
+    "algorithm": "sha256",
+    "hash_domain": "exact_file_bytes",
+    "path_basis": "repository_relative",
+    "missing_asset_policy": "Record missing paths explicitly; never synthesize replacement evidence.",
+    "changed_asset_policy": "A mismatch invalidates this input revision; preserve it and create a new reviewed revision.",
+    "manifest_hash_policy": "No self-hash field; consumers may bind the exact bytes of this file externally."
+  },
+  "denominators": {
+    "core_papers": 5,
+    "pinned_assets": 106,
+    "historical_cases": 10,
+    "required_acceptance_cases": 34,
+    "whole_paper_claims": null,
+    "load_bearing_argument_steps": null,
+    "formal_targets": null,
+    "empirical_obligations": null,
+    "computational_obligations": null,
+    "scientific_denominator_state": "NOT_FROZEN",
+    "successful_v3_checks": null,
+    "success_state": "NOT_EVALUATED",
+    "interpretation": "A material count is not a scientific coverage denominator. Unknown coverage or success is null, never zero or a percentage."
+  },
+  "papers": [
+    {
+      "paper_id": "arxiv:quant-ph/9705052v1",
+      "title": "Stabilizer Codes and Quantum Error Correction",
+      "slug": "stabilizer-codes-and-quantum-error-correction",
+      "evaluation_role": "FOUNDATIONAL_PREDECESSOR",
+      "source_version_basis": "Reported by the pinned legacy paper/source records; remote acquisition and completeness not reverified in this inventory.",
+      "canonical_source_path": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+      "source_asset_paths": [
+        "Reference/Stabilizer Codes and Quantum Error Correction/source.tar",
+        "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+        "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.sty",
+        "Reference/Stabilizer Codes and Quantum Error Correction/Capacity.eps"
+      ],
+      "historical_record_paths": [
+        "agents/stabilizer-codes-and-quantum-error-correction/agent.json",
+        "agents/stabilizer-codes-and-quantum-error-correction/source/source-hashes.json",
+        "agents/stabilizer-codes-and-quantum-error-correction/source/anchors.jsonl",
+        "agents/stabilizer-codes-and-quantum-error-correction/knowledge/statements.jsonl",
+        "agents/stabilizer-codes-and-quantum-error-correction/reasoning/chains.jsonl",
+        "agents/stabilizer-codes-and-quantum-error-correction/verification/records.jsonl",
+        "agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json",
+        "agents/stabilizer-codes-and-quantum-error-correction/verification/partition.json",
+        "Stabilizerness/PaperAgentRegistry/manifests/stabilizer-codes-and-quantum-error-correction.json",
+        "Stabilizerness/MathClaimIRRegistry/migrations/stabilizer-codes-and-quantum-error-correction-summary.json"
+      ],
+      "historical_observations": [
+        {
+          "asset_path": "agents/stabilizer-codes-and-quantum-error-correction/agent.json",
+          "json_pointer": "/agent/lifecycle_status",
+          "observed_value": "PARTIALLY_VERIFIED",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        }
+      ],
+      "selection_rationale": [
+        "Source construction versus modern density-operator reconstruction",
+        "Omitted phase and dimension assumptions"
+      ],
+      "legacy_inventory_counts": {
+        "source_anchor_rows": 4,
+        "statement_rows": 7,
+        "meaning": "Counts of existing rows only; not a whole-paper completeness or V3 obligation denominator."
+      },
+      "v3_denominators": {
+        "whole_paper_claims": null,
+        "load_bearing_argument_steps": null,
+        "formal_targets": null,
+        "empirical_obligations": null,
+        "computational_obligations": null,
+        "state": "NOT_FROZEN"
+      },
+      "unreviewed_fields": [
+        "arxiv_version_acquisition_binding",
+        "source_bundle_completeness",
+        "active_tex_include_and_macro_structure",
+        "whole_paper_claim_inventory",
+        "source_condition_alignment",
+        "mathematical_validity",
+        "formal_target_and_axiom_audit",
+        "formal_to_source_alignment",
+        "semantic_applicability",
+        "empirical_support",
+        "computational_reproducibility",
+        "reviewer_identity_and_independence",
+        "knowledge_admission",
+        "contribution_baseline_and_delta"
+      ],
+      "v3_scientific_status": "NOT_ASSESSED"
+    },
+    {
+      "paper_id": "arxiv:1307.7171v1",
+      "title": "The Resource Theory of Stabilizer Computation",
+      "slug": "resource-theory-of-stabilizer-computation",
+      "evaluation_role": "DEFINITION_PREDECESSOR",
+      "source_version_basis": "Reported by the pinned legacy paper/source records; remote acquisition and completeness not reverified in this inventory.",
+      "canonical_source_path": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+      "source_asset_paths": [
+        "Reference/The Resource Theory of Stabilizer Computation/source.tar",
+        "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+        "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.bbl"
+      ],
+      "historical_record_paths": [
+        "agents/resource-theory-of-stabilizer-computation/agent.json",
+        "agents/resource-theory-of-stabilizer-computation/source/source-hashes.json",
+        "agents/resource-theory-of-stabilizer-computation/source/anchors.jsonl",
+        "agents/resource-theory-of-stabilizer-computation/knowledge/statements.jsonl",
+        "agents/resource-theory-of-stabilizer-computation/reasoning/chains.jsonl",
+        "agents/resource-theory-of-stabilizer-computation/verification/records.jsonl",
+        "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json",
+        "agents/resource-theory-of-stabilizer-computation/verification/partition.json",
+        "Stabilizerness/PaperAgentRegistry/manifests/resource-theory-of-stabilizer-computation.json",
+        "Stabilizerness/MathClaimIRRegistry/migrations/resource-theory-of-stabilizer-computation-summary.json"
+      ],
+      "historical_observations": [
+        {
+          "asset_path": "agents/resource-theory-of-stabilizer-computation/agent.json",
+          "json_pointer": "/agent/lifecycle_status",
+          "observed_value": "PARTIALLY_VERIFIED",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        }
+      ],
+      "selection_rationale": [
+        "Source formalism and dimension regime versus qubit specialization",
+        "Unaccepted upstream definition bridge"
+      ],
+      "legacy_inventory_counts": {
+        "source_anchor_rows": 5,
+        "statement_rows": 7,
+        "meaning": "Counts of existing rows only; not a whole-paper completeness or V3 obligation denominator."
+      },
+      "v3_denominators": {
+        "whole_paper_claims": null,
+        "load_bearing_argument_steps": null,
+        "formal_targets": null,
+        "empirical_obligations": null,
+        "computational_obligations": null,
+        "state": "NOT_FROZEN"
+      },
+      "unreviewed_fields": [
+        "arxiv_version_acquisition_binding",
+        "source_bundle_completeness",
+        "active_tex_include_and_macro_structure",
+        "whole_paper_claim_inventory",
+        "source_condition_alignment",
+        "mathematical_validity",
+        "formal_target_and_axiom_audit",
+        "formal_to_source_alignment",
+        "semantic_applicability",
+        "empirical_support",
+        "computational_reproducibility",
+        "reviewer_identity_and_independence",
+        "knowledge_admission",
+        "contribution_baseline_and_delta"
+      ],
+      "v3_scientific_status": "NOT_ASSESSED"
+    },
+    {
+      "paper_id": "arxiv:1609.07488v2",
+      "title": "Application of a Resource Theory for Magic States to Fault-Tolerant Quantum Computing",
+      "slug": "robustness-of-magic",
+      "evaluation_role": "MEASURE_PREDECESSOR",
+      "source_version_basis": "Reported by the pinned legacy paper/source records; remote acquisition and completeness not reverified in this inventory.",
+      "canonical_source_path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+      "source_asset_paths": [
+        "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/source.tar",
+        "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+        "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.bbl"
+      ],
+      "historical_record_paths": [
+        "agents/robustness-of-magic/agent.json",
+        "agents/robustness-of-magic/source/source-hashes.json",
+        "agents/robustness-of-magic/source/anchors.jsonl",
+        "agents/robustness-of-magic/knowledge/statements.jsonl",
+        "agents/robustness-of-magic/reasoning/chains.jsonl",
+        "agents/robustness-of-magic/verification/records.jsonl",
+        "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json",
+        "agents/robustness-of-magic/verification/partition.json",
+        "Stabilizerness/PaperAgentRegistry/manifests/robustness-of-magic.json",
+        "Stabilizerness/MathClaimIRRegistry/migrations/robustness-of-magic-summary.json"
+      ],
+      "historical_observations": [
+        {
+          "asset_path": "agents/robustness-of-magic/agent.json",
+          "json_pointer": "/agent/lifecycle_status",
+          "observed_value": "PARTIALLY_VERIFIED",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        }
+      ],
+      "selection_rationale": [
+        "Source channel premise versus a stricter atom-preserving formal interface",
+        "Source theorem versus separately derived normalization"
+      ],
+      "legacy_inventory_counts": {
+        "source_anchor_rows": 3,
+        "statement_rows": 5,
+        "meaning": "Counts of existing rows only; not a whole-paper completeness or V3 obligation denominator."
+      },
+      "v3_denominators": {
+        "whole_paper_claims": null,
+        "load_bearing_argument_steps": null,
+        "formal_targets": null,
+        "empirical_obligations": null,
+        "computational_obligations": null,
+        "state": "NOT_FROZEN"
+      },
+      "unreviewed_fields": [
+        "arxiv_version_acquisition_binding",
+        "source_bundle_completeness",
+        "active_tex_include_and_macro_structure",
+        "whole_paper_claim_inventory",
+        "source_condition_alignment",
+        "mathematical_validity",
+        "formal_target_and_axiom_audit",
+        "formal_to_source_alignment",
+        "semantic_applicability",
+        "empirical_support",
+        "computational_reproducibility",
+        "reviewer_identity_and_independence",
+        "knowledge_admission",
+        "contribution_baseline_and_delta"
+      ],
+      "v3_scientific_status": "NOT_ASSESSED"
+    },
+    {
+      "paper_id": "arxiv:2602.18939v1",
+      "title": "Predicting Magic from Very Few Measurements",
+      "slug": "predicting-magic-from-very-few-measurements",
+      "evaluation_role": "DIRECT_PREDECESSOR",
+      "source_version_basis": "Reported by the pinned legacy paper/source records; remote acquisition and completeness not reverified in this inventory.",
+      "canonical_source_path": "Reference/Predicting magic from very few measurements/pra_version.tex",
+      "source_asset_paths": [
+        "Reference/Predicting magic from very few measurements/00README.json",
+        "Reference/Predicting magic from very few measurements/pra_version.tex",
+        "Reference/Predicting magic from very few measurements/pra_version.bbl",
+        "Reference/Predicting magic from very few measurements/F-ANNNI-and-XXZ.pdf",
+        "Reference/Predicting magic from very few measurements/F-ising.pdf",
+        "Reference/Predicting magic from very few measurements/F-reduced-polytopes.pdf"
+      ],
+      "historical_record_paths": [
+        "agents/predicting-magic-from-very-few-measurements/agent.json",
+        "agents/predicting-magic-from-very-few-measurements/source/source-hashes.json",
+        "agents/predicting-magic-from-very-few-measurements/source/anchors.jsonl",
+        "agents/predicting-magic-from-very-few-measurements/knowledge/statements.jsonl",
+        "agents/predicting-magic-from-very-few-measurements/reasoning/chains.jsonl",
+        "agents/predicting-magic-from-very-few-measurements/verification/records.jsonl",
+        "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+        "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json",
+        "Stabilizerness/PaperAgentRegistry/manifests/predicting-magic-from-very-few-measurements.json",
+        "Stabilizerness/MathClaimIRRegistry/migrations/predicting-magic-from-very-few-measurements-summary.json"
+      ],
+      "historical_observations": [
+        {
+          "asset_path": "agents/predicting-magic-from-very-few-measurements/agent.json",
+          "json_pointer": "/agent/lifecycle_status",
+          "observed_value": "PARTIALLY_VERIFIED",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json",
+          "json_pointer": "/status",
+          "observed_value": "CLAIM_FALSE",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        }
+      ],
+      "selection_rationale": [
+        "Fixed versus co-rotated measurement window",
+        "Original proof gap versus reconstructed conditional proof"
+      ],
+      "legacy_inventory_counts": {
+        "source_anchor_rows": 6,
+        "statement_rows": 10,
+        "meaning": "Counts of existing rows only; not a whole-paper completeness or V3 obligation denominator."
+      },
+      "v3_denominators": {
+        "whole_paper_claims": null,
+        "load_bearing_argument_steps": null,
+        "formal_targets": null,
+        "empirical_obligations": null,
+        "computational_obligations": null,
+        "state": "NOT_FROZEN"
+      },
+      "unreviewed_fields": [
+        "arxiv_version_acquisition_binding",
+        "source_bundle_completeness",
+        "active_tex_include_and_macro_structure",
+        "whole_paper_claim_inventory",
+        "source_condition_alignment",
+        "mathematical_validity",
+        "formal_target_and_axiom_audit",
+        "formal_to_source_alignment",
+        "semantic_applicability",
+        "empirical_support",
+        "computational_reproducibility",
+        "reviewer_identity_and_independence",
+        "knowledge_admission",
+        "contribution_baseline_and_delta"
+      ],
+      "v3_scientific_status": "NOT_ASSESSED"
+    },
+    {
+      "paper_id": "arxiv:2607.26154v1",
+      "title": "Graph Theoretic Approach to Quantum Nonstabilizerness",
+      "slug": "graph-theoretic-nonstabilizerness",
+      "evaluation_role": "SUCCESSOR_TARGET",
+      "source_version_basis": "Reported by the pinned legacy paper/source records; remote acquisition and completeness not reverified in this inventory.",
+      "canonical_source_path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+      "source_asset_paths": [
+        "Stabilizerness/arXiv-2607.26154v1/00README.json",
+        "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+        "Stabilizerness/arXiv-2607.26154v1/head.tex",
+        "Stabilizerness/arXiv-2607.26154v1/draft.bbl",
+        "Stabilizerness/arXiv-2607.26154v1/appendix.bbl",
+        "Stabilizerness/arXiv-2607.26154v1/fig1.pdf",
+        "Stabilizerness/arXiv-2607.26154v1/fig2.pdf"
+      ],
+      "historical_record_paths": [
+        "agents/graph-theoretic-nonstabilizerness/agent.json",
+        "agents/graph-theoretic-nonstabilizerness/source/source-hashes.json",
+        "agents/graph-theoretic-nonstabilizerness/source/anchors.jsonl",
+        "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+        "agents/graph-theoretic-nonstabilizerness/reasoning/chains.jsonl",
+        "agents/graph-theoretic-nonstabilizerness/verification/records.jsonl",
+        "agents/graph-theoretic-nonstabilizerness/blockers/root-contract-not-accepted.json",
+        "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+        "agents/graph-theoretic-nonstabilizerness/blockers/lean-environment-missing.json",
+        "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json",
+        "Stabilizerness/PaperAgentRegistry/manifests/graph-theoretic-nonstabilizerness.json",
+        "Stabilizerness/MathClaimIRRegistry/migrations/graph-theoretic-nonstabilizerness-summary.json"
+      ],
+      "historical_observations": [
+        {
+          "asset_path": "agents/graph-theoretic-nonstabilizerness/agent.json",
+          "json_pointer": "/agent/lifecycle_status",
+          "observed_value": "PARTIALLY_VERIFIED",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/graph-theoretic-nonstabilizerness/blockers/root-contract-not-accepted.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/graph-theoretic-nonstabilizerness/blockers/lean-environment-missing.json",
+          "json_pointer": "/status",
+          "observed_value": "RESOLVED",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        },
+        {
+          "asset_path": "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json",
+          "json_pointer": "/status",
+          "observed_value": "OPEN",
+          "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+        }
+      ],
+      "selection_rationale": [
+        "Use of an unaccepted predecessor result",
+        "Generic local mathematics versus a whole-paper theorem",
+        "Missing figure computation provenance"
+      ],
+      "legacy_inventory_counts": {
+        "source_anchor_rows": 14,
+        "statement_rows": 21,
+        "meaning": "Counts of existing rows only; not a whole-paper completeness or V3 obligation denominator."
+      },
+      "v3_denominators": {
+        "whole_paper_claims": null,
+        "load_bearing_argument_steps": null,
+        "formal_targets": null,
+        "empirical_obligations": null,
+        "computational_obligations": null,
+        "state": "NOT_FROZEN"
+      },
+      "unreviewed_fields": [
+        "arxiv_version_acquisition_binding",
+        "source_bundle_completeness",
+        "active_tex_include_and_macro_structure",
+        "whole_paper_claim_inventory",
+        "source_condition_alignment",
+        "mathematical_validity",
+        "formal_target_and_axiom_audit",
+        "formal_to_source_alignment",
+        "semantic_applicability",
+        "empirical_support",
+        "computational_reproducibility",
+        "reviewer_identity_and_independence",
+        "knowledge_admission",
+        "contribution_baseline_and_delta"
+      ],
+      "v3_scientific_status": "NOT_ASSESSED"
+    }
+  ],
+  "supplementary_historical_observations": [
+    {
+      "asset_path": "formal/AgtXIvVarela/verification-result.json",
+      "json_pointer": "/vrep_status",
+      "observed_value": "PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS",
+      "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+    },
+    {
+      "asset_path": "formal/AgtXIvStabilizerness/verification-result.json",
+      "json_pointer": "/status",
+      "observed_value": "TARGET_LOCAL_DELTA_KERNEL_CHECKED",
+      "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+    },
+    {
+      "asset_path": "formal/AgtXIvRootMath/verification-result.json",
+      "json_pointer": "/root_math_status",
+      "observed_value": "ROOT_MATH_KERNEL_COMPLETE",
+      "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+    },
+    {
+      "asset_path": "docs/specifications/mathclaim-semantic-contribution/data/evaluation-summary.json",
+      "json_pointer": "/assumption_note",
+      "observed_value": "All MathClaim fixtures are ASSUMED_VERIFIED_FOR_STUDY and are not repository proof artifacts.",
+      "interpretation": "Historical report only; no V3 endorsement or current-state scientific inference."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "C01",
+      "title": "Source conditions and derived specializations",
+      "asset_paths": [
+        "Stabilizerness/MathClaimIRRegistry/migrations/demo-comparison.json",
+        "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+        "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex"
+      ],
+      "historical_state": "Historical migration reports SEMANTIC_CORRECTION, SPLIT and RECLASSIFIED_EXTERNAL.",
+      "unreviewed_fields": [
+        "exact_source_span_support",
+        "condition_omission_or_new_premise_classification"
+      ],
+      "acceptance_target_ids": [
+        "A01",
+        "A02",
+        "A10",
+        "A19"
+      ],
+      "additional_evidence_required": [
+        "Independent source reading and explicit before/after claim components."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C02",
+      "title": "Unproved predecessor and explicit conditional Lean theorem",
+      "asset_paths": [
+        "agents/predicting-magic-from-very-few-measurements/reviews/vrep-proof-gap.md",
+        "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+        "formal/AgtXIvVarela/verification-result.json",
+        "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+        "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl"
+      ],
+      "historical_state": "Historical root blocker OPEN; Varela report PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS; imports include BLOCKED.",
+      "unreviewed_fields": [
+        "current_declaration_environment",
+        "proof_obligation_closure",
+        "source_alignment",
+        "independent_check_identity"
+      ],
+      "acceptance_target_ids": [
+        "A03",
+        "A05",
+        "A08",
+        "A10",
+        "VF-03",
+        "VF-11"
+      ],
+      "additional_evidence_required": [
+        "Complete V3 argument snapshot with dependencies and assumption contexts.",
+        "Independent formal and alignment evidence if formal support is requested."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C03",
+      "title": "Reported fixed-window counterexample",
+      "asset_paths": [
+        "agents/predicting-magic-from-very-few-measurements/reviews/reduced-rom-monotonicity-counterexample.md",
+        "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json",
+        "Reference/Predicting magic from very few measurements/pra_version.tex"
+      ],
+      "historical_state": "Historical blocker reports CLAIM_FALSE for fixed-window monotonicity.",
+      "unreviewed_fields": [
+        "counterexample_arithmetic",
+        "source_fixed_window_semantics",
+        "scope_of_refutation",
+        "independent_scientific_review"
+      ],
+      "acceptance_target_ids": [
+        "A10",
+        "A12"
+      ],
+      "additional_evidence_required": [
+        "Recheck exact source conditions and counterexample independently.",
+        "Compare a fixed-window reuse request against a co-rotated-window result."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C04",
+      "title": "Original method versus independent reconstruction",
+      "asset_paths": [
+        "agents/predicting-magic-from-very-few-measurements/reviews/vrep-proof-gap.md",
+        "agents/predicting-magic-from-very-few-measurements/reasoning/repaired-vrep-proof-candidate.md",
+        "agents/predicting-magic-from-very-few-measurements/reviews/source-alignment.md",
+        "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean"
+      ],
+      "historical_state": "Historical original proof has GAP_FOUND/FAILED according to alignment note; reconstruction reported conditional.",
+      "unreviewed_fields": [
+        "original_method_gap",
+        "reconstructed_method_attribution",
+        "method_contribution",
+        "proof_independence"
+      ],
+      "acceptance_target_ids": [
+        "A11",
+        "A13",
+        "VF-12"
+      ],
+      "additional_evidence_required": [
+        "Separate proof-scheme identities and edge-level evidence.",
+        "A second independently supported scheme is still needed for the two-proof impact test."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C05",
+      "title": "Missing computation material",
+      "asset_paths": [
+        "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json",
+        "Stabilizerness/arXiv-2607.26154v1/fig2.pdf",
+        "Stabilizerness/arXiv-2607.26154v1/draft.tex"
+      ],
+      "historical_state": "Historical blocker OPEN; code, samples, seed, distributions and comparison precision reported absent.",
+      "unreviewed_fields": [
+        "current_material_availability",
+        "load_bearing_status",
+        "empirical_interpretation",
+        "computation_protocol"
+      ],
+      "acceptance_target_ids": [
+        "A09",
+        "A12"
+      ],
+      "additional_evidence_required": [
+        "Keep missing evidence distinct from a false claim.",
+        "Proof-search failure needs its own typed attempt fixture; this material is not proof-search evidence."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C06",
+      "title": "Local mathematics does not certify the full theorem",
+      "asset_paths": [
+        "formal/AgtXIvStabilizerness/verification-result.json",
+        "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean",
+        "foundations/perfect-graph-weighted-duality.json"
+      ],
+      "historical_state": "Historical report TARGET_LOCAL_DELTA_KERNEL_CHECKED and explicitly says the closed-form theorem remains unproved.",
+      "unreviewed_fields": [
+        "target_build_membership",
+        "transitive_axioms",
+        "theorem_parameter_obligations",
+        "exact_claim_alignment"
+      ],
+      "acceptance_target_ids": [
+        "A03",
+        "A08",
+        "A10",
+        "A14",
+        "VF-03"
+      ],
+      "additional_evidence_required": [
+        "Independent target-specific checks; add mutations for an axiom target, omitted build target and unapproved premise."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C07",
+      "title": "Bounded contribution baseline",
+      "asset_paths": [
+        "Stabilizerness/ProvisionalClaimRegistry/papers/graph-theoretic-nonstabilizerness/paper-delta.json"
+      ],
+      "historical_state": "Historical originality_notice limits NEW_TO_REGISTRY to the fixed registry snapshot.",
+      "unreviewed_fields": [
+        "baseline_content_and_coverage",
+        "relation_witnesses",
+        "contribution_review",
+        "baseline_sensitivity"
+      ],
+      "acceptance_target_ids": [
+        "A11",
+        "A15",
+        "A16",
+        "A21"
+      ],
+      "additional_evidence_required": [
+        "A frozen reviewed baseline and a separately bound pre-ingestion snapshot.",
+        "Matched direct-handoff versus argument-layer trial inputs and measures."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C08",
+      "title": "Research-assumed mathematics is not verified knowledge",
+      "asset_paths": [
+        "docs/specifications/mathclaim-semantic-contribution/data/assumed-mathclaims.jsonl",
+        "docs/specifications/mathclaim-semantic-contribution/data/assumed-math-relations.jsonl",
+        "docs/specifications/mathclaim-semantic-contribution/data/evaluation-summary.json"
+      ],
+      "historical_state": "Study states all MathClaim fixtures are ASSUMED_VERIFIED_FOR_STUDY and not repository proof artifacts.",
+      "unreviewed_fields": [
+        "all_new_axis_assessments",
+        "original_evidence_validity",
+        "scientific_qualification",
+        "new_admission_eligibility"
+      ],
+      "acceptance_target_ids": [
+        "A18",
+        "A19",
+        "A20"
+      ],
+      "additional_evidence_required": [
+        "Migration output preserving the exact study qualification and missing axes.",
+        "Query view showing conflicting and unresolved records without promotion."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C09",
+      "title": "Legacy audit and admission fixtures are only fixture inputs",
+      "asset_paths": [
+        "fixtures/v2-paper-agentization/assessment-record-source-alignment.json",
+        "fixtures/v2-paper-agentization/release-certification-record.json",
+        "fixtures/v2-paper-agentization/knowledge-ingestion-receipt.json"
+      ],
+      "historical_state": "Existing V2 synthetic records; their reported decisions retain only their original fixture authority.",
+      "unreviewed_fields": [
+        "real_actor_identity",
+        "review_independence",
+        "actual_archive_or_admission",
+        "six_axis_coverage"
+      ],
+      "acceptance_target_ids": [
+        "A07",
+        "A16",
+        "A17",
+        "A18",
+        "A19"
+      ],
+      "additional_evidence_required": [
+        "V3 negative fixtures for same-actor aliases, stale bytes, concurrent transactions and archive-only status."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    },
+    {
+      "case_id": "C10",
+      "title": "Vibefeld adapter semantics require actual export evidence",
+      "asset_paths": [
+        "docs/architecture/v3-vibefeld-integration.md"
+      ],
+      "historical_state": "Design pins upstream commit 392b2da3bee5766cca1a201f28e0255056baaba4; no real imported ledger is asserted by this corpus.",
+      "unreviewed_fields": [
+        "ledger_export_consistency",
+        "scope_context_completeness",
+        "authenticated_actor_mapping",
+        "independent_checkpoint",
+        "upstream_capabilities"
+      ],
+      "acceptance_target_ids": [
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A13",
+        "A14",
+        "VF-01",
+        "VF-02",
+        "VF-03",
+        "VF-04",
+        "VF-05",
+        "VF-06",
+        "VF-07",
+        "VF-08",
+        "VF-09",
+        "VF-10",
+        "VF-11",
+        "VF-12",
+        "VF-13"
+      ],
+      "additional_evidence_required": [
+        "Pinned upstream bytes and complete input fixtures or attributable real workspace exports.",
+        "Never fabricate historical dialogue, identity attestation or checkpoints."
+      ],
+      "oracle_policy": "Expected behavior is a contract safety requirement. Historical scientific conclusions remain unreviewed inputs, not gold answers.",
+      "execution_status": "NOT_EXECUTED"
+    }
+  ],
+  "acceptance_targets": [
+    {
+      "acceptance_id": "A01",
+      "required_behavior": "Preserve omitted source conditions through a new extraction revision.",
+      "case_ids": [
+        "C01"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A02",
+      "required_behavior": "Create a distinct conditional claim for a newly added premise.",
+      "case_ids": [
+        "C01"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A03",
+      "required_behavior": "Keep referenced unproved prerequisites visible even when upstream says validated/clean.",
+      "case_ids": [
+        "C02",
+        "C06",
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A04",
+      "required_behavior": "Deleting or archiving a step cannot erase a frozen obligation.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A05",
+      "required_behavior": "Reject escaped assumptions or export an explicitly conditional statement.",
+      "case_ids": [
+        "C02",
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A06",
+      "required_behavior": "Reject splitting joint premises into independent entailments.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A07",
+      "required_behavior": "Reject self-review hidden by actor aliases.",
+      "case_ids": [
+        "C09",
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A08",
+      "required_behavior": "Reject axiom targets, unapproved premises or omitted build targets as formal support.",
+      "case_ids": [
+        "C02",
+        "C06"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A09",
+      "required_behavior": "A failed proof attempt produces failure/blocking, not a refutation.",
+      "case_ids": [
+        "C05"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A10",
+      "required_behavior": "Separate a successful formal statement from a source claim that fails alignment.",
+      "case_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C06"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A11",
+      "required_behavior": "Separate conclusion support from the contribution of an original proof method.",
+      "case_ids": [
+        "C04",
+        "C07"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A12",
+      "required_behavior": "Reject mismatched scientific uses without erasing conditional mathematics.",
+      "case_ids": [
+        "C03",
+        "C05"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A13",
+      "required_behavior": "Invalidate only affected proof schemes while preserving independent alternatives.",
+      "case_ids": [
+        "C04",
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A14",
+      "required_behavior": "A new upstream release does not change old bindings; explicit adoption triggers checks.",
+      "case_ids": [
+        "C06",
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A15",
+      "required_behavior": "A search miss in a bounded baseline does not imply global originality.",
+      "case_ids": [
+        "C07"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A16",
+      "required_behavior": "Keep comparison baseline separate from pre-ingestion snapshot.",
+      "case_ids": [
+        "C07",
+        "C09"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A17",
+      "required_behavior": "Reject stale reviews and prevent partial concurrent admission.",
+      "case_ids": [
+        "C09"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A18",
+      "required_behavior": "Archiving and indexing do not imply admission or positive scientific status.",
+      "case_ids": [
+        "C08",
+        "C09"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A19",
+      "required_behavior": "Preserve V1/V2 and study-assumed meanings without filling missing axes with success.",
+      "case_ids": [
+        "C01",
+        "C08",
+        "C09"
+      ],
+      "input_coverage": "HISTORICAL_INPUT_AVAILABLE",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A20",
+      "required_behavior": "Query filtering cannot hide relevant conflict or mutate canonical scope.",
+      "case_ids": [
+        "C08"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "A21",
+      "required_behavior": "Report no improvement honestly in a scope-matched argument-layer comparison.",
+      "case_ids": [
+        "C07"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-01",
+      "required_behavior": "Stable identity after workspace relocation.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-02",
+      "required_behavior": "Missing scope/context prevents a complete handoff.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-03",
+      "required_behavior": "Non-tree unproved dependencies constrain affected support.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-04",
+      "required_behavior": "Actor aliases do not provide independence.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-05",
+      "required_behavior": "All proof contributors participate in conflict checks.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-06",
+      "required_behavior": "Archived steps retain required obligations.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-07",
+      "required_behavior": "Scope changes invalidate old review despite unchanged node hashes.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-08",
+      "required_behavior": "Changed validation dependencies follow the pinned hash semantics.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-09",
+      "required_behavior": "Ledger/export disagreement rejects import and preserves evidence.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-10",
+      "required_behavior": "A checkpoint mismatch rejects rewritten history; no checkpoint means no history-integrity claim.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-11",
+      "required_behavior": "Undischarged local assumptions do not escape their scope.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-12",
+      "required_behavior": "Only affected schemes lose current support.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    },
+    {
+      "acceptance_id": "VF-13",
+      "required_behavior": "Unknown upstream events/semantics fail compatibility negotiation.",
+      "case_ids": [
+        "C10"
+      ],
+      "input_coverage": "ADDITIONAL_FIXTURE_REQUIRED",
+      "execution_status": "NOT_EXECUTED",
+      "evidence_paths": [],
+      "result": null
+    }
+  ],
+  "assets": [
+    {
+      "path": "CHARTER.md",
+      "byte_length": 19189,
+      "sha256": "fdf317a4b8d97a6e1dad6cb4e95c2cd11c5faf33c72eed1f22c49eb2ff9b0894",
+      "media_type": "text/plain",
+      "roles": [
+        "design_authority_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "byte_length": 9954,
+      "sha256": "5008001eacb2bac8dac54a35fa7209be711ec93dcbf069128cd2b89cbaa70b39",
+      "media_type": "text/plain",
+      "roles": [
+        "governance_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.bbl",
+      "byte_length": 32301,
+      "sha256": "2a4b5e14fd5ed446fa9b4d1ee4a25de8496ac77f9f2e8ad7e584878c5493deb3",
+      "media_type": "text/plain",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+      "byte_length": 56170,
+      "sha256": "48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d",
+      "media_type": "application/x-tex",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/source.tar",
+      "byte_length": 278200,
+      "sha256": "10aa3198541fa17c43f761d441bf3200fbea4c521368f91566a1fb0fc6895111",
+      "media_type": "application/x-tar",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Predicting magic from very few measurements/00README.json",
+      "byte_length": 220,
+      "sha256": "dab78fe2dcb9282e9cde67c22a5905c02986758d8c5ac069659168b5743d831a",
+      "media_type": "application/json",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Predicting magic from very few measurements/F-ANNNI-and-XXZ.pdf",
+      "byte_length": 325102,
+      "sha256": "a3888681112b2af9b2977f0a5bc2d3044d106e82ac70b3da030bb2d341dace46",
+      "media_type": "application/pdf",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Predicting magic from very few measurements/F-ising.pdf",
+      "byte_length": 126254,
+      "sha256": "9503d934e2b574d1836ff05fb3b02045992ba56957100cfe9ec64055c02904c5",
+      "media_type": "application/pdf",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Predicting magic from very few measurements/F-reduced-polytopes.pdf",
+      "byte_length": 203451,
+      "sha256": "5df64c692011b0365f26febe82a3d3fb858907e2ce96071ef5a2a280f5a61f14",
+      "media_type": "application/pdf",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Predicting magic from very few measurements/pra_version.bbl",
+      "byte_length": 50226,
+      "sha256": "bca65329603a4a9f18ecd29d247be4b7a22d2c71ea9221ea040fd630aa9f1d58",
+      "media_type": "text/plain",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Predicting magic from very few measurements/pra_version.tex",
+      "byte_length": 110488,
+      "sha256": "b0631e958da1934aa7b87d60d009499b9189f435773cccc74b4e782ab985d4e5",
+      "media_type": "application/x-tex",
+      "roles": [
+        "paper_source_asset",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Stabilizer Codes and Quantum Error Correction/Capacity.eps",
+      "byte_length": 4524,
+      "sha256": "5a46df85b020e4c15674f1edb4243c67946c9c38782edda18f33e10b4c8cbc47",
+      "media_type": "application/postscript",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.sty",
+      "byte_length": 3047,
+      "sha256": "9a58eba2a52ffbedecd468d36828a51997cac928c685ae67b19b7873c37b7c85",
+      "media_type": "application/octet-stream",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+      "byte_length": 333351,
+      "sha256": "79c810480bcce5635cd9507170c5327662bd33546c4638baa037c608db49db2f",
+      "media_type": "application/x-tex",
+      "roles": [
+        "paper_source_asset",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/Stabilizer Codes and Quantum Error Correction/source.tar",
+      "byte_length": 97560,
+      "sha256": "c138c0962ee4573b667180b2efa3a4c43d920798c9d7c0d887f29698de740e0c",
+      "media_type": "application/x-tar",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/The Resource Theory of Stabilizer Computation/source.tar",
+      "byte_length": 216055,
+      "sha256": "40b62e855ea148c9db0e51899263aa30c6e5fd292da3d4cc060ed4ee0365bb6f",
+      "media_type": "application/x-tar",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.bbl",
+      "byte_length": 10285,
+      "sha256": "3a84f0b3627f586393e47a7092c3f09bb3c1be39f4507a6f3940ad2f06fd9626",
+      "media_type": "text/plain",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+      "byte_length": 110546,
+      "sha256": "1634926605e816b6bc0728559e2b7471750fdc849cf127f971e6ee859d277394",
+      "media_type": "application/x-tex",
+      "roles": [
+        "paper_source_asset",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/demo-comparison.json",
+      "byte_length": 26181,
+      "sha256": "459ea8237fcc9545fde9bad666496d61404cf76d11d584a661f4193d034115c5",
+      "media_type": "application/json",
+      "roles": [
+        "historical_migration_report",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/graph-theoretic-nonstabilizerness-summary.json",
+      "byte_length": 7341,
+      "sha256": "d684fc97416bc57353a60d23bfaa060ada5678868b45b4542aa8e0930c856fb5",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/predicting-magic-from-very-few-measurements-summary.json",
+      "byte_length": 2832,
+      "sha256": "7bf8da2daa702364a5019343f9641802082618a5bbbd163bda800aa9243b35b8",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/resource-theory-of-stabilizer-computation-summary.json",
+      "byte_length": 2121,
+      "sha256": "314f66a261485cc5c30f2fddf39e1f911b6a2d78c73bd5ab7f0b787fe1bcd6ef",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/robustness-of-magic-summary.json",
+      "byte_length": 9224,
+      "sha256": "fc6c1034763d8f2b2b156de30d80501e9738a679b66636389fa2370b769882dc",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/MathClaimIRRegistry/migrations/stabilizer-codes-and-quantum-error-correction-summary.json",
+      "byte_length": 3406,
+      "sha256": "0a07938d3eb1dd19aa0c989215dcf327feecca6a8de7312861ad6a9fdc59f6d5",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/PaperAgentRegistry/manifests/graph-theoretic-nonstabilizerness.json",
+      "byte_length": 2689,
+      "sha256": "72214fccfc296871cb3489dbee4ba24bac893d2fca14774f754234e557ed12ae",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/PaperAgentRegistry/manifests/predicting-magic-from-very-few-measurements.json",
+      "byte_length": 2832,
+      "sha256": "b93dd06122905c51a3deb7597972ce13bbd88f5f9d3eda47c06dc3b9df76db28",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/PaperAgentRegistry/manifests/resource-theory-of-stabilizer-computation.json",
+      "byte_length": 2558,
+      "sha256": "0b1d753b02b3807218d7ca5ee8743f1b006660a58852f28e5fb742fca8da2fc4",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/PaperAgentRegistry/manifests/robustness-of-magic.json",
+      "byte_length": 2401,
+      "sha256": "1d6699220ae05bb79e0da8e553ec13b66018286e4c6f3de34c33265a005c0185",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/PaperAgentRegistry/manifests/stabilizer-codes-and-quantum-error-correction.json",
+      "byte_length": 2583,
+      "sha256": "5c55e85b8e8c94379d72df3c615364d85237ac194fbbd1f63771b62eea894493",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/ProvisionalClaimRegistry/papers/graph-theoretic-nonstabilizerness/paper-delta.json",
+      "byte_length": 201371,
+      "sha256": "d4e06494f04c5308f534c6e528c101879b58d089d4427d70e298ebcb8644223a",
+      "media_type": "application/json",
+      "roles": [
+        "historical_contribution_candidate",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/00README.json",
+      "byte_length": 297,
+      "sha256": "6d2805d1abdd54b3be6a20fb5e7324a7634f1c02c526aa25eb9c85d54fd16eae",
+      "media_type": "application/json",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/appendix.bbl",
+      "byte_length": 14839,
+      "sha256": "6b9790110999a9f0ab2bfca7d1612ab96f3a19ded0469661c5c2629df88db472",
+      "media_type": "text/plain",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/draft.bbl",
+      "byte_length": 29760,
+      "sha256": "00e9be1dec649b338e3350556c53dd2d6bd06a2096fb6320f0afec1301ed7b7c",
+      "media_type": "text/plain",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+      "byte_length": 69678,
+      "sha256": "4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "media_type": "application/x-tex",
+      "roles": [
+        "paper_source_asset",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/fig1.pdf",
+      "byte_length": 2380820,
+      "sha256": "91dff813046d5e2e3e12f05af252eebc2ae1ca25f271dbccba75363dadeac0a5",
+      "media_type": "application/pdf",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/fig2.pdf",
+      "byte_length": 33419,
+      "sha256": "215c62be8c3ae53d092c3bd53a9e7d6ed2f0f7123c8ce2454fadef5fb9195ef4",
+      "media_type": "application/pdf",
+      "roles": [
+        "paper_source_asset",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "Stabilizerness/arXiv-2607.26154v1/head.tex",
+      "byte_length": 3525,
+      "sha256": "42882e8bc40c7a5c6e007f739869eb8d9558936aa4e5ab3cabdf915eaa9ebfc5",
+      "media_type": "application/x-tex",
+      "roles": [
+        "paper_source_asset"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/agent.json",
+      "byte_length": 2322,
+      "sha256": "e793b583c26a0191a2a24bd03782f469599454c4fc1afa39630e33b5343d27e8",
+      "media_type": "application/json",
+      "roles": [
+        "legacy_paper_agent",
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json",
+      "byte_length": 510,
+      "sha256": "8310836b0e0cf53f3437d4fc4e254e63c2b48c798b26e4d2d291ebf36a6e827d",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/blockers/lean-environment-missing.json",
+      "byte_length": 698,
+      "sha256": "279e26788211a0809edd209be78da2b1cc85753ea98b52d6452df18901a98f35",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+      "byte_length": 440,
+      "sha256": "04492ee83d0edd3fbecf340297923c7137d36d0eb7c5ae878ae7df768108770a",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/blockers/root-contract-not-accepted.json",
+      "byte_length": 774,
+      "sha256": "f756eaa694d4bfdf70860eac57d03eb8f82eea6c04ccad71f2624211982b9cb7",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+      "byte_length": 8526,
+      "sha256": "e6e0067ff826660830173748aa0700ad1ed746348d145953d3b1e5b15455df46",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/reasoning/chains.jsonl",
+      "byte_length": 7285,
+      "sha256": "8b45f5835d27b3283f567f7f478cd4ab70716c77ae0b6ac0f8a960ff32bb35d4",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl",
+      "byte_length": 2929,
+      "sha256": "5dfedf9a9b497413f732cdaca44feee60ed15c771df827f2d1d39f8f51d09605",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_dependency_review",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/reviews/physical-semantics.md",
+      "byte_length": 2800,
+      "sha256": "0b7810c231cf70b50f3d0a0b7d511136d9bbaf2c803325f2d1b46875a9e389a2",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_agent_semantic_review"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/source/anchors.jsonl",
+      "byte_length": 4972,
+      "sha256": "a3f82a2e610f6dc3629903fe472244ed199819a89a3e4d6ce3d8368d4d83f9d6",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/source/artifacts.json",
+      "byte_length": 971,
+      "sha256": "910667384e22e1b8605404438dbd7d974a4a098852adea9974420a1f74d11ae2",
+      "media_type": "application/json",
+      "roles": [
+        "historical_source_manifest"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/source/source-hashes.json",
+      "byte_length": 922,
+      "sha256": "95b4d02872e8cd218e6c7400084d0777b7b0dcfd35561bbb1135328b6fa24f46",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/graph-theoretic-nonstabilizerness/verification/records.jsonl",
+      "byte_length": 3906,
+      "sha256": "2e00d83b261889954d198e44344a3cd6ae07a97f102bbb0f39e21ffd545e7051",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/agent.json",
+      "byte_length": 2042,
+      "sha256": "590781a274f10418f52db34f1c7cc89d009722125df36c6d2a8a07f4099adfb3",
+      "media_type": "application/json",
+      "roles": [
+        "legacy_paper_agent",
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json",
+      "byte_length": 694,
+      "sha256": "229421a4d0987821233b5f46aaabaf2f762538306a101b782cb95d663384b8b9",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+      "byte_length": 917,
+      "sha256": "4b2982f7fd84653b5c97662aa59319e601a56fadcad485c37f99871282f39676",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/knowledge/statements.jsonl",
+      "byte_length": 4571,
+      "sha256": "d01706821dbb4ea679f5053be8e4395099fc2b18a4e2f6ada1023facf46fe8cf",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/reasoning/chains.jsonl",
+      "byte_length": 4774,
+      "sha256": "a68065a0196bbd944cb039cfd663b1a8bbc085eaabfd54cc9cabb734719e56a0",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/reasoning/repaired-vrep-proof-candidate.md",
+      "byte_length": 5366,
+      "sha256": "a1b3cedfefec74f4817c55d79d0379d8cd0e959ca30bec7d2349d5c62608a310",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_reconstructed_argument",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/reviews/reduced-rom-monotonicity-counterexample.md",
+      "byte_length": 2398,
+      "sha256": "7b0b7b340dd35900c19ebd0b4960992e7c6a9fdd9d415db34df3781bee9685d0",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_counterexample_report",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/reviews/source-alignment.md",
+      "byte_length": 1323,
+      "sha256": "044124b6aa129e06906baaa6e8c124f3c4226d7544394a423039106414e253bf",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_alignment_report",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/reviews/vrep-proof-gap.md",
+      "byte_length": 1859,
+      "sha256": "8c3cce7d3a4eae9aea50c934caa0fbe20a3846c5c45e7c98083e240de272f639",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_proof_gap_report",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/source/anchors.jsonl",
+      "byte_length": 2515,
+      "sha256": "dbc7d849328cda13e77b905d39e70c8831be0cb888ab9db9f9cfcf73801ae872",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/source/artifacts.json",
+      "byte_length": 1051,
+      "sha256": "fd922969a3e75baad7d4ee79d38fb17f0dd72e82ec2a8475614828d4a5a3701a",
+      "media_type": "application/json",
+      "roles": [
+        "historical_source_manifest"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/source/source-hashes.json",
+      "byte_length": 961,
+      "sha256": "0661d56d899800897fd385d4db922e3c2350173afdfba0caed831a24b8d1e7f3",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/predicting-magic-from-very-few-measurements/verification/records.jsonl",
+      "byte_length": 5275,
+      "sha256": "c9162768650151e22f64b72e1ab75b630415c7042f7e3717bebfdf8ae28108ae",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/agent.json",
+      "byte_length": 1838,
+      "sha256": "63ee72f98193083bc6a968f172497cdb5807803ae99f0c3e266b81e2ca6e4b33",
+      "media_type": "application/json",
+      "roles": [
+        "legacy_paper_agent",
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json",
+      "byte_length": 1089,
+      "sha256": "dacee5bc82148507039212bf7c0991e7c2679489fe028ea6975b81abd8af4561",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/knowledge/statements.jsonl",
+      "byte_length": 3632,
+      "sha256": "a13a8722e002f9da45165cc788dff3d176cd73de22c4f0aebb6fe3d5479dc605",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/reasoning/chains.jsonl",
+      "byte_length": 1898,
+      "sha256": "452b2de840e37d1e3d589ec7d15901d4265750711970b1d20c69b980683004eb",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/source/anchors.jsonl",
+      "byte_length": 2277,
+      "sha256": "a36f91b473988fd1c5f52ff56b3afeff6b7e0b7dd862c223569e7258f79b092a",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/source/artifacts.json",
+      "byte_length": 627,
+      "sha256": "17d2ac68336327e19fe6ce9800c4ae70d17c5f9d604e2869a02aae5ad96a7de9",
+      "media_type": "application/json",
+      "roles": [
+        "historical_source_manifest"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/source/source-hashes.json",
+      "byte_length": 547,
+      "sha256": "1547ec380f7ab343f625708c934a12e98003e4b04419740b9b83a45d060e9ca1",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/verification/partition.json",
+      "byte_length": 11119,
+      "sha256": "801a02892a5831256c70bbc09fba802b00ae7de6342b4ae86212c7e3d276d8be",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/resource-theory-of-stabilizer-computation/verification/records.jsonl",
+      "byte_length": 2995,
+      "sha256": "6208ecb0cb05d5b29dc991099359d2d73a7e19ec133e4efcbe80f95ca8f84fb7",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/agent.json",
+      "byte_length": 1924,
+      "sha256": "6064588d8e26557892667327ed1b7bad5096eb25ff34ed4f21e41c63f9db44ed",
+      "media_type": "application/json",
+      "roles": [
+        "legacy_paper_agent",
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json",
+      "byte_length": 1425,
+      "sha256": "aaa941e01fd0c7b25d9f9658cd0f178be345970ac48e1925d45e55c7fbb0fd57",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/knowledge/statements.jsonl",
+      "byte_length": 3065,
+      "sha256": "e15915247c2b374095756231af8219e2aa36f1d7a254bf2a010366e362a0625e",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/reasoning/chains.jsonl",
+      "byte_length": 2587,
+      "sha256": "c2bbc795770c46c10692a564f00e3a74ec3505064859ad5fe31fb19b50dc6254",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/source/anchors.jsonl",
+      "byte_length": 1494,
+      "sha256": "15f12c667b6fef4d163356ad5c6796a09c9cb4b1d7213d2375832fa5f7af8360",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/source/artifacts.json",
+      "byte_length": 749,
+      "sha256": "3ebaf4fef89b3bf86e4958bfddf0143a77c8908f21bdc251b731f4e5f33b0e4f",
+      "media_type": "application/json",
+      "roles": [
+        "historical_source_manifest"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/source/source-hashes.json",
+      "byte_length": 667,
+      "sha256": "6e479b8b0e0320c4d18c16e268c1988921c75a4c55742206c7481a1b8685e31a",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/verification/partition.json",
+      "byte_length": 11021,
+      "sha256": "98dfcb8b798aca87111fcf079163a45942ef39b92897c648d502b131f20f4093",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/robustness-of-magic/verification/records.jsonl",
+      "byte_length": 4555,
+      "sha256": "f8bff4c52a5472e8b79836001cd10972a8ec7c2fbc80039123e478d550f1dffc",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/agent.json",
+      "byte_length": 2234,
+      "sha256": "ec18b8dcfd018b207143d4c866c2e543b2ededf63519e33e673f59a45d19a25b",
+      "media_type": "application/json",
+      "roles": [
+        "legacy_paper_agent",
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json",
+      "byte_length": 1142,
+      "sha256": "b611e64571c55b5e3f30b419a3efb22e9c7a544ab97b087f395a084230dc4725",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/knowledge/statements.jsonl",
+      "byte_length": 3745,
+      "sha256": "bb872949b965e4dc5ec38f17160ef54a9d1807328f211e7118fe2aee43594a6f",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/reasoning/chains.jsonl",
+      "byte_length": 2066,
+      "sha256": "155c1f7291427c9ac3467a5a781b0eaba0a0db50b9f42a5e7c0e263525210822",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/source/anchors.jsonl",
+      "byte_length": 1813,
+      "sha256": "f189c302c9243f8e0d7ec0423239bed4699504ebca3922ebf210820f81c25fed",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/source/source-hashes.json",
+      "byte_length": 655,
+      "sha256": "703f9a793c77105e9a93ba61e553050a44289bb65915fd7114d2f2604917eea6",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/verification/partition.json",
+      "byte_length": 12124,
+      "sha256": "967fce83b07503805fd64334d682291b50a9b462088f956aa23cb207e74e21a5",
+      "media_type": "application/json",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "agents/stabilizer-codes-and-quantum-error-correction/verification/records.jsonl",
+      "byte_length": 4518,
+      "sha256": "e79f9f4e5f69c3c872ccf7751fe3faeaae5dd2b20c7b0686caf3e224cdca31b7",
+      "media_type": "text/plain",
+      "roles": [
+        "historical_paper_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "docs/adr/0007-adopt-project-charter.md",
+      "byte_length": 14649,
+      "sha256": "f9b85fb98b8c3e7c14dcfe661e9217ae1b9921809ebc1ad0d92d97c3c14e69e5",
+      "media_type": "text/plain",
+      "roles": [
+        "governance_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "docs/architecture/v3-vibefeld-integration.md",
+      "byte_length": 11937,
+      "sha256": "285ba78be0d13e26dc600bf0cc642e48952495be3fa4dc85e71a0a1868011eb6",
+      "media_type": "text/plain",
+      "roles": [
+        "acceptance_design_input",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "docs/specifications/mathclaim-semantic-contribution/data/assumed-math-relations.jsonl",
+      "byte_length": 12949,
+      "sha256": "fb9974a712e89ce84d31f23f8517145d64bdb56267a285760bbf2ff3d94d9919",
+      "media_type": "text/plain",
+      "roles": [
+        "out_of_domain_migration_negative_input",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "docs/specifications/mathclaim-semantic-contribution/data/assumed-mathclaims.jsonl",
+      "byte_length": 19593,
+      "sha256": "1ebe70884b3f71e96490deca36d5ce1a31d10672b5ae386cfdc4ce90f1465b00",
+      "media_type": "text/plain",
+      "roles": [
+        "out_of_domain_migration_negative_input",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "docs/specifications/mathclaim-semantic-contribution/data/evaluation-summary.json",
+      "byte_length": 2077,
+      "sha256": "50ac91d0d911327c0c96803c4477d872c319e448569892854e07f1e682c2089f",
+      "media_type": "application/json",
+      "roles": [
+        "historical_study_report",
+        "acceptance_case_input",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "fixtures/v2-paper-agentization/assessment-record-source-alignment.json",
+      "byte_length": 674,
+      "sha256": "960bfcd5601b093d850e4d61037eec5e36359bf21d172f367e8bb1d32029761d",
+      "media_type": "application/json",
+      "roles": [
+        "historical_synthetic_v2_fixture",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "fixtures/v2-paper-agentization/knowledge-ingestion-receipt.json",
+      "byte_length": 4471,
+      "sha256": "43e9ba5c853bebdd8fca38f1c65ffcdd6d9d83dd535309c4d8c43a2847f701ab",
+      "media_type": "application/json",
+      "roles": [
+        "historical_synthetic_v2_fixture",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "fixtures/v2-paper-agentization/release-certification-record.json",
+      "byte_length": 1463,
+      "sha256": "13a7e1de8ebcb0cf9d09961083a45e147786e47d219683ca08eb7627166e7c5c",
+      "media_type": "application/json",
+      "roles": [
+        "historical_synthetic_v2_fixture",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvRootMath/verification-result.json",
+      "byte_length": 13609,
+      "sha256": "94111e224d0cb934aa98c164665859828955549e9fa1452797efe55188fb4e50",
+      "media_type": "application/json",
+      "roles": [
+        "historical_formal_report",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean",
+      "byte_length": 4194,
+      "sha256": "17bb3964088083529ffa7553d6fc7b5f0e43a7f48cf995a5450bb1c7faeb1883",
+      "media_type": "text/plain",
+      "roles": [
+        "formal_source_not_rerun",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvStabilizerness/verification-result.json",
+      "byte_length": 3449,
+      "sha256": "02d6aaaa3d86c91a017f912459896b290f3a630cde9bba54a215f84762496d14",
+      "media_type": "application/json",
+      "roles": [
+        "historical_formal_report",
+        "acceptance_case_input",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+      "byte_length": 2417,
+      "sha256": "8b421813476f88c412873b1478966b6de14ffe60a10b72730ee0b2a43f381ddf",
+      "media_type": "text/plain",
+      "roles": [
+        "formal_source_not_rerun",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+      "byte_length": 3330,
+      "sha256": "6d64c5b933f67621cf0cc5803923d382beb26d39c6ec2cba5c1c9771f331936a",
+      "media_type": "text/plain",
+      "roles": [
+        "formal_source_not_rerun"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+      "byte_length": 860,
+      "sha256": "9cfcf580303831782d07dcb791ea1071f5964631f7ec04793372c66c0ddfaf6f",
+      "media_type": "text/plain",
+      "roles": [
+        "formal_source_not_rerun",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "formal/AgtXIvVarela/verification-result.json",
+      "byte_length": 4948,
+      "sha256": "9d532854f826afe453ac350527070d74650cbb1e0a519c3e3da1df0bd79a9a6c",
+      "media_type": "application/json",
+      "roles": [
+        "historical_formal_report",
+        "acceptance_case_input",
+        "historical_state_record"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "foundations/perfect-graph-weighted-duality.json",
+      "byte_length": 2341,
+      "sha256": "bf5f4b590920b61afaf1dc6a0d899d18db32753fb32c220cd82c93e96a77bb00",
+      "media_type": "application/json",
+      "roles": [
+        "historical_external_foundation",
+        "acceptance_case_input"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    },
+    {
+      "path": "graph/paper-dependencies.json",
+      "byte_length": 1498,
+      "sha256": "8899cb259bb0f721080d939d207e0a557cb762fca53233bea4b01cd5912c27ce",
+      "media_type": "application/json",
+      "roles": [
+        "historical_dependency_graph"
+      ],
+      "inspection": "BYTES_PINNED_NOT_SCIENTIFICALLY_REVERIFIED"
+    }
+  ],
+  "missing_assets": [],
+  "next_required_actions": [
+    "Independently review the selection and pin acquisition evidence for each source version.",
+    "Discover complete active source structure and freeze whole-paper claim and obligation denominators.",
+    "Create explicitly labelled positive/negative fixtures for acceptance cases lacking runnable inputs.",
+    "Do not retrofit study assumptions or legacy reports into V3 successful assessments.",
+    "Run actual formal/scientific validation only when authorized and with appropriate independent evidence.",
+    "Record accepted and rejected reuse, a local revision and an unresolved frontier before claiming V3 end-to-end completion."
+  ]
+}

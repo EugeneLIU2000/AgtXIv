@@ -1,0 +1,627 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/query-run-dataset/0.1.0",
+  "title": "AgtXIv Query Run Dataset",
+  "description": "Portable manifest for one immutable scientific-query execution and its exact artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "dataset_id",
+    "captured_at",
+    "paper_versions",
+    "query",
+    "run",
+    "run_artifacts",
+    "provenance_edges",
+    "knowledge_records",
+    "audit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agtxiv.query-run-dataset/0.1.0"
+    },
+    "dataset_id": {
+      "$ref": "#/$defs/namespacedId"
+    },
+    "captured_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_versions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/paperVersion"
+      }
+    },
+    "query": {
+      "$ref": "#/$defs/query"
+    },
+    "run": {
+      "$ref": "#/$defs/run"
+    },
+    "run_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/runArtifact"
+      }
+    },
+    "provenance_edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provenanceEdge"
+      }
+    },
+    "knowledge_records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/knowledgeRecord"
+      }
+    },
+    "audit": {
+      "$ref": "#/$defs/audit"
+    }
+  },
+  "$defs": {
+    "namespacedId": {
+      "type": "string",
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^artifact:sha256:[0-9a-f]{64}$"
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(^|/)\\.\\.(/|$)).+$"
+    },
+    "paperVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "work_id",
+        "paper_version_id",
+        "title",
+        "role",
+        "primary_source_artifact_id",
+        "source_artifact_ids",
+        "source_bundle_complete"
+      ],
+      "properties": {
+        "work_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "paper_version_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "TARGET",
+            "DEPENDENCY",
+            "BACKGROUND"
+          ]
+        },
+        "primary_source_artifact_id": {
+          "$ref": "#/$defs/artifactId"
+        },
+        "source_artifact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/artifactId"
+          }
+        },
+        "source_bundle_complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query_id",
+        "raw_text",
+        "normalized_text",
+        "fingerprint_sha256",
+        "target_refs",
+        "scope_artifact_id"
+      ],
+      "properties": {
+        "query_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "raw_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fingerprint_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/namespacedId"
+          }
+        },
+        "scope_artifact_id": {
+          "$ref": "#/$defs/artifactId"
+        }
+      }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementation",
+        "version",
+        "implementation_hash"
+      ],
+      "properties": {
+        "implementation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "implementation_hash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "query_id",
+        "attempt",
+        "execution_state",
+        "outcome",
+        "captured_at",
+        "producer",
+        "code_commit",
+        "working_tree_state",
+        "command",
+        "reproducibility_refs",
+        "input_snapshot_ref",
+        "idempotency_key_sha256",
+        "retry_of_run_id"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "query_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "execution_state": {
+          "enum": [
+            "PENDING",
+            "RUNNING",
+            "COMPLETED",
+            "FAILED",
+            "CANCELLED",
+            "UNKNOWN"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "SUCCEEDED",
+            "REJECTED",
+            "BLOCKED",
+            "FAILED_TO_RUN"
+          ]
+        },
+        "captured_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "code_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "working_tree_state": {
+          "enum": [
+            "CLEAN",
+            "DIRTY",
+            "UNKNOWN"
+          ]
+        },
+        "command": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reproducibility_refs": {
+          "$ref": "#/$defs/reproducibilityRefs"
+        },
+        "input_snapshot_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/namespacedId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idempotency_key_sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retry_of_run_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/namespacedId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "reproducibilityRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "configuration",
+        "prompts",
+        "models",
+        "tools",
+        "formal_environments"
+      ],
+      "properties": {
+        "configuration": {
+          "$ref": "#/$defs/refArray"
+        },
+        "prompts": {
+          "$ref": "#/$defs/refArray"
+        },
+        "models": {
+          "$ref": "#/$defs/refArray"
+        },
+        "tools": {
+          "$ref": "#/$defs/refArray"
+        },
+        "formal_environments": {
+          "$ref": "#/$defs/refArray"
+        }
+      }
+    },
+    "refArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/namespacedId"
+      }
+    },
+    "runArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "kind",
+        "role",
+        "storage_class",
+        "authority",
+        "publication_state",
+        "path",
+        "media_type",
+        "sha256",
+        "byte_size",
+        "schema_name",
+        "schema_version",
+        "source_refs"
+      ],
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/artifactId"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]+$"
+        },
+        "role": {
+          "enum": [
+            "INPUT",
+            "INTERMEDIATE",
+            "OUTPUT",
+            "EVIDENCE",
+            "LOG"
+          ]
+        },
+        "storage_class": {
+          "enum": [
+            "SOURCE",
+            "RUN",
+            "KNOWLEDGE",
+            "DERIVED"
+          ]
+        },
+        "authority": {
+          "enum": [
+            "AUTHORITATIVE_SOURCE",
+            "AUTHORITATIVE_RECORD",
+            "LEGACY_RECORD",
+            "DERIVED",
+            "STAGING"
+          ]
+        },
+        "publication_state": {
+          "enum": [
+            "FROZEN",
+            "STAGING",
+            "PUBLISHED",
+            "SUPERSEDED"
+          ]
+        },
+        "path": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 3
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "schema_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/namespacedId"
+          }
+        }
+      }
+    },
+    "provenanceEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edge_id",
+        "from_ref",
+        "relation",
+        "to_ref"
+      ],
+      "properties": {
+        "edge_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "from_ref": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "relation": {
+          "enum": [
+            "CONSUMED_BY",
+            "DERIVED_FROM",
+            "EVIDENCES",
+            "BLOCKS",
+            "SUMMARIZED_BY",
+            "MIGRATED_TO",
+            "NORMALIZED_AS",
+            "PACKAGED_BY",
+            "SUPERSEDES",
+            "REFERENCES"
+          ]
+        },
+        "to_ref": {
+          "$ref": "#/$defs/namespacedId"
+        }
+      }
+    },
+    "knowledgeRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_id",
+        "revision",
+        "kind",
+        "artifact_id",
+        "content_hash",
+        "supersedes",
+        "record_locator"
+      ],
+      "properties": {
+        "object_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$"
+        },
+        "artifact_id": {
+          "$ref": "#/$defs/artifactId"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "supersedes": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/exactRecordRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "record_locator": {
+          "$ref": "#/$defs/recordLocator"
+        }
+      }
+    },
+    "exactRecordRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_id",
+        "revision",
+        "content_hash"
+      ],
+      "properties": {
+        "object_id": {
+          "$ref": "#/$defs/namespacedId"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "content_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "recordLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "id_field",
+        "id_value"
+      ],
+      "properties": {
+        "format": {
+          "enum": [
+            "JSON",
+            "JSONL"
+          ]
+        },
+        "id_field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id_value": {
+          "$ref": "#/$defs/namespacedId"
+        }
+      }
+    },
+    "auditFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "code",
+        "message",
+        "related_refs"
+      ],
+      "properties": {
+        "severity": {
+          "enum": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "related_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/namespacedId"
+          }
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "legacy_capture",
+        "accepted_release",
+        "findings"
+      ],
+      "properties": {
+        "legacy_capture": {
+          "type": "boolean"
+        },
+        "accepted_release": {
+          "type": "boolean"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/auditFinding"
+          }
+        }
+      }
+    }
+  }
+}

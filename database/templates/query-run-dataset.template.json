@@ -1,0 +1,81 @@
+{
+  "schema": "agtxiv.query-run-dataset/0.1.0",
+  "dataset_id": "dataset:replace-with-stable-id",
+  "captured_at": "2026-08-23T00:00:00Z",
+  "description": "Replace with a concise description of this immutable Query Run.",
+  "paper_versions": [
+    {
+      "work_id": "arxiv:0000.00000",
+      "paper_version_id": "arxiv:0000.00000v1",
+      "title": "Replace with the frozen paper title",
+      "role": "TARGET",
+      "primary_source_artifact_id": "artifact:sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "source_artifact_ids": [
+        "artifact:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "source_bundle_complete": false
+    }
+  ],
+  "query": {
+    "query_id": "query:replace-with-query-fingerprint-prefix",
+    "raw_text": "Replace with the user's exact question.",
+    "normalized_text": "Replace with the normalized scientific question.",
+    "fingerprint_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "target_refs": [
+      "claim:replace-with-target"
+    ],
+    "scope_artifact_id": "artifact:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "run": {
+    "run_id": "run:20260823T000000Z:replace-me",
+    "query_id": "query:replace-with-query-fingerprint-prefix",
+    "attempt": 1,
+    "execution_state": "COMPLETED",
+    "outcome": "BLOCKED",
+    "captured_at": "2026-08-23T00:00:00Z",
+    "producer": {
+      "implementation": "replace-with-pipeline-name",
+      "version": "0.1.0",
+      "implementation_hash": null
+    },
+    "code_commit": "0000000000000000000000000000000000000000",
+    "working_tree_state": "UNKNOWN",
+    "command": [],
+    "reproducibility_refs": {
+      "configuration": [],
+      "prompts": [],
+      "models": [],
+      "tools": [],
+      "formal_environments": []
+    },
+    "input_snapshot_ref": null,
+    "idempotency_key_sha256": null,
+    "retry_of_run_id": null
+  },
+  "run_artifacts": [
+    {
+      "artifact_id": "artifact:sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "kind": "frozen-source",
+      "role": "INPUT",
+      "storage_class": "SOURCE",
+      "authority": "AUTHORITATIVE_SOURCE",
+      "publication_state": "FROZEN",
+      "path": "replace/with/repository-relative/path.tex",
+      "media_type": "application/x-tex",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "byte_size": 0,
+      "schema_name": null,
+      "schema_version": null,
+      "source_refs": [
+        "arxiv:0000.00000v1"
+      ]
+    }
+  ],
+  "provenance_edges": [],
+  "knowledge_records": [],
+  "audit": {
+    "legacy_capture": false,
+    "accepted_release": false,
+    "findings": []
+  }
+}

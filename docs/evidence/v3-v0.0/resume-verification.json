@@ -1,0 +1,224 @@
+{
+  "observed_at": "2026-09-07T06:15:15.630908+00:00",
+  "scope": "RESUMED_LOCAL_V3_ENGINEERING_CHECKS",
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "python": "3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:54:21) [Clang 16.0.6 ]",
+  "tests": {
+    "tests": 648,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 648
+  },
+  "baseline": {
+    "passed": 493,
+    "failed": 2,
+    "path": "resume-baseline.junit.xml"
+  },
+  "new_test_cases": 153,
+  "commands": [
+    {
+      "command": ".venv/bin/python tools/generate_v3_schema_v00.py --check",
+      "exit_code": 0,
+      "generated_files": 70,
+      "record_families": 64,
+      "shared_structures": 19
+    },
+    {
+      "command": ".venv/bin/python tools/generate_vibefeld_protocol.py --check",
+      "exit_code": 0,
+      "events": 35,
+      "pinned_source_files": 35,
+      "schema_documents": 3,
+      "positive_structural_checks": 131,
+      "negative_structural_checks": 435
+    },
+    {
+      "command": ".venv/bin/python tools/validate_v3.py --bundle-only",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m compileall -q src/agtxiv_v3 tools/generate_v3_schema_v00.py tools/generate_vibefeld_protocol.py tools/validate_v3.py tools/inspect_v3_source.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/v3 -q --junitxml=docs/evidence/v3-v0.0/resume-final.junit.xml",
+      "exit_code": 0
+    }
+  ],
+  "independent_code_review": {
+    "obligation_and_import_fixes": "REVIEWED_AFTER_RESIDUAL_FIXES; 79 regression cases passed independently",
+    "dependencies": "REVIEWED_AFTER_FIXES; 21 tests passed independently",
+    "storage_and_recovery": "REVIEWED_AFTER_FIXES; 39 tests passed independently",
+    "scientific_review": false
+  },
+  "pinned_input_integrity": {
+    "matched": 106,
+    "total": 106,
+    "path": "resume-corpus-integrity.json"
+  },
+  "prohibited_executions_performed": {
+    "paper_demo": false,
+    "vibefeld_executable": false,
+    "lean": false,
+    "scientific_pipeline": false
+  },
+  "limits": [
+    "Only V3 targeted tests and compilation ran; repository-wide make/check profiles were not run.",
+    "Review and tests do not establish scientific acceptance, governance adoption, runtime authentication or official admission.",
+    "Local subprocess restart testing does not establish power-loss durability.",
+    "Preexisting dirty and untracked work was preserved; no sweeping git commit was made."
+  ],
+  "files": [
+    {
+      "path": "docs/evidence/v3-v0.0/resume-corpus-integrity.json",
+      "byte_size": 24853,
+      "sha256": "d03a743ef8c588224db822a454e2bff8c33ee2f94c07e61e21b97f354c1b0eb6"
+    },
+    {
+      "path": "docs/evidence/v3-v0.0/resume-final.junit.xml",
+      "byte_size": 139918,
+      "sha256": "ea2e9a7526203dfcfb1fab6d9eff3bb84d2a1ebb6d5bbb83ff047d1a7a17582f"
+    },
+    {
+      "path": "schema v0.0/manifest.json",
+      "byte_size": 19227,
+      "sha256": "9f48cc2c992b28f72a6592a50a0240203bd75b97eee036660a7bc0c80f597854"
+    },
+    {
+      "path": "schema v0.0/upstream/vibefeld-392b2da3/manifest.json",
+      "byte_size": 64866,
+      "sha256": "7134b46081655aba9cc24b4203dc6f791b136c142c4b66f4fbf8687a0d36d9ad"
+    },
+    {
+      "path": "src/agtxiv_v3/__init__.py",
+      "byte_size": 171,
+      "sha256": "d97a09dbe576ce1e36f2174655fe046c8cbec78dc8ad5524771a070ce9185e99"
+    },
+    {
+      "path": "src/agtxiv_v3/contracts.py",
+      "byte_size": 66572,
+      "sha256": "c266d09284ee085e1bb6d55d4d90a371350a835ed789703e66cd1fcb1e2c41d6"
+    },
+    {
+      "path": "src/agtxiv_v3/dependencies.py",
+      "byte_size": 7837,
+      "sha256": "1cd882d80aef048dd2c60e609052053a4d5ec4184de4dca0517a1d50f435d51f"
+    },
+    {
+      "path": "src/agtxiv_v3/intake.py",
+      "byte_size": 16624,
+      "sha256": "0ce52d77afff16cf4664c2a4985c9e0bcb1bb1373924f4d6fe2a369bdce95f3b"
+    },
+    {
+      "path": "src/agtxiv_v3/obligations.py",
+      "byte_size": 28998,
+      "sha256": "a694723d01fd06cfecf1b3a0266f12c5cb6ee9b317cb934ffec420a0957edf35"
+    },
+    {
+      "path": "src/agtxiv_v3/projections.py",
+      "byte_size": 6091,
+      "sha256": "1939c9c55fb14c12b135df299322b6a38611504fb98316a2480ff40b3f2108ba"
+    },
+    {
+      "path": "src/agtxiv_v3/source.py",
+      "byte_size": 27084,
+      "sha256": "fb2314a0d45fa89248636481543a6dfcf40580b6583f89ed8d45dad257d24aa1"
+    },
+    {
+      "path": "src/agtxiv_v3/storage.py",
+      "byte_size": 14253,
+      "sha256": "bfd3189f68448008fd703caabfc5d535c43de9a85cbf8a573543787ad2067f19"
+    },
+    {
+      "path": "src/agtxiv_v3/vibefeld.py",
+      "byte_size": 35699,
+      "sha256": "3286a23c02f5610b95f3914fa52a93986a88b04c44b0ef2d6f4e8900330e1cd9"
+    },
+    {
+      "path": "tests/v3/test_cli_projection.py",
+      "byte_size": 5148,
+      "sha256": "95ef1d93e4fc08711f9ffb6c8f0beed509ade98980976c9b23250251803a1070"
+    },
+    {
+      "path": "tests/v3/test_contract_regressions.py",
+      "byte_size": 24068,
+      "sha256": "f8f125038abe613b6481969f321f53fcc448b35ee6ee88b5834195a93e5f76dc"
+    },
+    {
+      "path": "tests/v3/test_contracts.py",
+      "byte_size": 24985,
+      "sha256": "6ad76b2437804a45064a2ddc75be6a2ae05d4fb8aa7504b062712dc1b5ca1d96"
+    },
+    {
+      "path": "tests/v3/test_dependencies.py",
+      "byte_size": 11590,
+      "sha256": "a15137d01fa999ac39fc7d1bb77ce9268f0f92ab0a7f75960374c23ecffa5529"
+    },
+    {
+      "path": "tests/v3/test_intake.py",
+      "byte_size": 13156,
+      "sha256": "7c26f4ea89eeacea01fced0d606bf6943eaacedc59f2f653b33b8fcc97b672d9"
+    },
+    {
+      "path": "tests/v3/test_obligation_review_fixes.py",
+      "byte_size": 15981,
+      "sha256": "ec1bb582ed3703c06ec85380f14a3de689242c3dae8b66c52a096d494d537dff"
+    },
+    {
+      "path": "tests/v3/test_obligations.py",
+      "byte_size": 25511,
+      "sha256": "e34ea7c5f5a133840d957f26df0b5ef91913eb876b492fc394abc42c444ea03d"
+    },
+    {
+      "path": "tests/v3/test_resume_boundaries.py",
+      "byte_size": 7999,
+      "sha256": "85c32d4a8b1c283c959e5b239690367a4ad2bb1289154f29f0520eb0e288a715"
+    },
+    {
+      "path": "tests/v3/test_schema_catalog.py",
+      "byte_size": 20660,
+      "sha256": "26fe615b288556b2cc75ae79c331d4ecfe2e6f4e203eafb6ab700e44672c4f56"
+    },
+    {
+      "path": "tests/v3/test_source.py",
+      "byte_size": 12953,
+      "sha256": "0c09937a726ec644d090a38b3523b9a8a6f0b8faceb2bffe6372d9ef5d545d22"
+    },
+    {
+      "path": "tests/v3/test_storage.py",
+      "byte_size": 21045,
+      "sha256": "809eb088d1a02450f0246f2211d44575e0631ce316bcd6e75c321d58ec5219ff"
+    },
+    {
+      "path": "tests/v3/test_storage_recovery.py",
+      "byte_size": 8013,
+      "sha256": "6639b7d9cedd0f3210f2702bb27509090f5634305f3c5cebd7a84daad0222625"
+    },
+    {
+      "path": "tests/v3/test_vibefeld.py",
+      "byte_size": 18383,
+      "sha256": "978f70527028bb044b419aed74ab197bfe5776d95589d4e018d7e67d18f644ce"
+    },
+    {
+      "path": "tools/generate_v3_schema_v00.py",
+      "byte_size": 103769,
+      "sha256": "42ffa671580c9e7cb21beabdd00d64b703b3d68739c4fc63c726319469b0ba37"
+    },
+    {
+      "path": "tools/generate_vibefeld_protocol.py",
+      "byte_size": 27928,
+      "sha256": "34f088e1627216078c57ff67a981e1e5068c1b8167fc0ef4ed0fa90680df1ba5"
+    },
+    {
+      "path": "tools/inspect_v3_source.py",
+      "byte_size": 3319,
+      "sha256": "3db8f92abd191318ba7bb72513796dddb65853f387bb8b29c27919a2e7cb1549"
+    },
+    {
+      "path": "tools/validate_v3.py",
+      "byte_size": 4963,
+      "sha256": "af7cb84bb37452eb008c333911024735bebc87cfcd3a26d17e473ae81a10f597"
+    }
+  ]
+}

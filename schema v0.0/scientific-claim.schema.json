@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/scientific-claim.schema.json",
+  "title": "ScientificClaim",
+  "description": "Source-faithful proposition preserving conditions, attribution and scientific scope.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.scientific-claim/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Complete independently revisable source proposition."
+        },
+        "source_span_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.source-span/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact source occurrences supporting every material part."
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Component"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Independently addressable statement parts."
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Condition"
+          },
+          "maxItems": 10000,
+          "description": "All truth-relevant source conditions."
+        },
+        "modality": {
+          "type": "string",
+          "enum": [
+            "ASSERTED",
+            "CONJECTURED",
+            "OBSERVED",
+            "APPROXIMATE",
+            "CONDITIONAL",
+            "INTERPRETIVE"
+          ],
+          "description": "Source strength and modality."
+        },
+        "attribution": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Who asserts which part."
+        },
+        "system": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Model, physical system or mathematical domain."
+        },
+        "comparison_baseline": {
+          "type": "string",
+          "maxLength": 65536,
+          "description": "Source comparison baseline when asserted."
+        }
+      },
+      "required": [
+        "statement",
+        "source_span_refs",
+        "components",
+        "conditions",
+        "modality",
+        "attribution",
+        "system",
+        "comparison_baseline"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

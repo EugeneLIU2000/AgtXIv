@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/upstream/vibefeld-392b2da3/graph.schema.json",
+  "title": "AgtXIv pinned vibefeld graph import profile",
+  "description": "Closed structural profile for one pinned upstream commit. This is neither a scientific validity certificate nor an upstream-issued JSON Schema.",
+  "x-upstream-commit": "392b2da3bee5766cca1a201f28e0255056baaba4",
+  "x-import-profile": "agtxiv.vibefeld-offline/392b2da3.1",
+  "$ref": "#/$defs/GraphExport",
+  "$defs": {
+    "EventType": {
+      "type": "string",
+      "enum": [
+        "proof_initialized",
+        "node_created",
+        "nodes_claimed",
+        "nodes_released",
+        "challenge_raised",
+        "challenge_resolved",
+        "challenge_withdrawn",
+        "challenge_superseded",
+        "node_validated",
+        "node_admitted",
+        "node_refuted",
+        "node_archived",
+        "node_amended",
+        "taint_recomputed",
+        "def_added",
+        "lemma_extracted",
+        "lock_reaped",
+        "scope_opened",
+        "scope_closed",
+        "claim_refreshed",
+        "refinement_requested",
+        "node_submitted",
+        "node_unvalidated",
+        "node_unadmitted",
+        "approach_tried",
+        "evidence_attached",
+        "outline_set",
+        "outline_stage_linked",
+        "hint_added",
+        "node_vetoed",
+        "strategy_proposed",
+        "pattern_added",
+        "claim_tested",
+        "def_checked",
+        "node_proof_authored"
+      ]
+    },
+    "NodeType": {
+      "type": "string",
+      "enum": [
+        "claim",
+        "local_assume",
+        "local_discharge",
+        "case",
+        "qed"
+      ]
+    },
+    "WorkflowState": {
+      "type": "string",
+      "enum": [
+        "available",
+        "claimed",
+        "blocked"
+      ]
+    },
+    "EpistemicState": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "validated",
+        "admitted",
+        "refuted",
+        "archived",
+        "needs_refinement",
+        "draft"
+      ]
+    },
+    "TaintState": {
+      "type": "string",
+      "enum": [
+        "clean",
+        "self_admitted",
+        "tainted",
+        "unresolved"
+      ]
+    },
+    "PendingDefStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "resolved",
+        "cancelled"
+      ]
+    },
+    "NodeID": {
+      "type": "string",
+      "pattern": "^1(?:\\.[1-9][0-9]*)*$",
+      "description": "Canonical hierarchical ID; numeric aliases accepted by Go are deliberately rejected by this import profile."
+    },
+    "TimestampString": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\\.[0-9]{1,9})?(?:Z|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$",
+      "description": "RFC3339 timestamp with at most nine fractional digits. Preserve original bytes and nanosecond precision; calendar validity requires format checking."
+    },
+    "Timestamp": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TimestampString"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The pinned Go timestamp decoder also accepts null as its zero value; null is never evidence of a recorded time."
+    },
+    "ContentHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Upstream lowercase SHA256 text without a prefix. Structure alone does not verify its content preimage."
+    },
+    "NonnegativeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "GraphWorkspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "conjecture": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "description": "Pinned GraphWorkspace from internal/export/graph.go; only non-omitempty JSON fields are required."
+    },
+    "GraphNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeType"
+        },
+        "parent_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "child_ids": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/NodeID"
+          }
+        },
+        "statement": {
+          "type": "string"
+        },
+        "latex": {
+          "type": "string"
+        },
+        "inference": {
+          "type": "string"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "workflow_state": {
+          "$ref": "#/$defs/WorkflowState"
+        },
+        "epistemic_state": {
+          "$ref": "#/$defs/EpistemicState"
+        },
+        "taint_state": {
+          "$ref": "#/$defs/TaintState"
+        },
+        "crux": {
+          "type": "boolean"
+        },
+        "created": {
+          "$ref": "#/$defs/TimestampString"
+        },
+        "author": {
+          "type": "string"
+        },
+        "validated_by": {
+          "type": "string"
+        },
+        "validation_batch_id": {
+          "type": "string"
+        },
+        "proof_author": {
+          "type": "string"
+        },
+        "prover_ready": {
+          "type": "boolean"
+        },
+        "verifier_ready": {
+          "type": "boolean"
+        },
+        "dependencies": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/NodeID"
+          }
+        },
+        "closed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "statement",
+        "inference",
+        "content_hash",
+        "workflow_state",
+        "epistemic_state",
+        "taint_state",
+        "created"
+      ],
+      "description": "Pinned GraphNode from internal/export/graph.go; only non-omitempty JSON fields are required."
+    },
+    "GraphValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "total_nodes": {
+          "$ref": "#/$defs/NonnegativeInteger"
+        },
+        "epistemic_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "pending": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "validated": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "admitted": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "refuted": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "archived": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "needs_refinement": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "draft": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            }
+          }
+        },
+        "taint_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "clean": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "self_admitted": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "tainted": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "unresolved": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            }
+          }
+        },
+        "total_challenges": {
+          "$ref": "#/$defs/NonnegativeInteger"
+        },
+        "challenge_status_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "open": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "resolved": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "withdrawn": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            },
+            "superseded": {
+              "$ref": "#/$defs/NonnegativeInteger"
+            }
+          }
+        }
+      },
+      "required": [
+        "total_nodes",
+        "epistemic_counts",
+        "taint_counts",
+        "total_challenges",
+        "challenge_status_counts"
+      ],
+      "description": "Pinned GraphValidation from internal/export/graph.go; only non-omitempty JSON fields are required."
+    },
+    "GraphExport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1"
+        },
+        "features": {
+          "type": "array",
+          "const": [
+            "readiness-flags",
+            "closure-flag",
+            "node-dependencies",
+            "proof-author"
+          ],
+          "description": "Exact ordered capability list emitted by this fixed commit; missing, added, or changed tokens reject this profile."
+        },
+        "workspace": {
+          "$ref": "#/$defs/GraphWorkspace"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GraphNode"
+          }
+        },
+        "validation": {
+          "$ref": "#/$defs/GraphValidation"
+        }
+      },
+      "required": [
+        "schema_version",
+        "features",
+        "workspace",
+        "nodes",
+        "validation"
+      ],
+      "description": "Pinned GraphExport from internal/export/graph.go; only non-omitempty JSON fields are required."
+    }
+  }
+}

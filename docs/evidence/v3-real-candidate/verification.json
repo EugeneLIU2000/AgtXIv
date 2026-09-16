@@ -1,0 +1,686 @@
+{
+  "observed_at": "2026-09-07T19:48:59.398015+00:00",
+  "scope": "REAL_PAPER_CANDIDATE_ENGINEERING_GOAL",
+  "goal_id": "goal_7bf61c73fab4",
+  "test_results": {
+    "total": 710,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "previous_tests": 648,
+  "new_test_cases": 62,
+  "schema_bundle_hash": "sha256:26287e63134da2300368eac04c855c1182218469e502c878930c72d2e0c8df0b",
+  "commands": [
+    {
+      "command": ".venv/bin/python tools/generate_v3_schema_v00.py --check",
+      "exit_code": 0,
+      "generated_files": 70,
+      "record_families": 64,
+      "shared_structures": 19
+    },
+    {
+      "command": ".venv/bin/python tools/generate_vibefeld_protocol.py --check",
+      "exit_code": 0,
+      "events": 35,
+      "source_pins": 35,
+      "protocol_schemas": 3
+    },
+    {
+      "command": ".venv/bin/python tools/validate_v3.py --bundle-only",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m compileall -q src/agtxiv_v3 tools/inspect_v3_candidates.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/v3 -q --junitxml=docs/evidence/v3-real-candidate/contracts.junit.xml",
+      "exit_code": 0,
+      "passed": 710
+    }
+  ],
+  "pinned_inputs": {
+    "matched": 106,
+    "total": 106,
+    "assets": [
+      {
+        "path": "CHARTER.md",
+        "matches": true
+      },
+      {
+        "path": "GOVERNANCE.md",
+        "matches": true
+      },
+      {
+        "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.bbl",
+        "matches": true
+      },
+      {
+        "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/Robustness_main_appendix.tex",
+        "matches": true
+      },
+      {
+        "path": "Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/source.tar",
+        "matches": true
+      },
+      {
+        "path": "Reference/Predicting magic from very few measurements/00README.json",
+        "matches": true
+      },
+      {
+        "path": "Reference/Predicting magic from very few measurements/F-ANNNI-and-XXZ.pdf",
+        "matches": true
+      },
+      {
+        "path": "Reference/Predicting magic from very few measurements/F-ising.pdf",
+        "matches": true
+      },
+      {
+        "path": "Reference/Predicting magic from very few measurements/F-reduced-polytopes.pdf",
+        "matches": true
+      },
+      {
+        "path": "Reference/Predicting magic from very few measurements/pra_version.bbl",
+        "matches": true
+      },
+      {
+        "path": "Reference/Predicting magic from very few measurements/pra_version.tex",
+        "matches": true
+      },
+      {
+        "path": "Reference/Stabilizer Codes and Quantum Error Correction/Capacity.eps",
+        "matches": true
+      },
+      {
+        "path": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.sty",
+        "matches": true
+      },
+      {
+        "path": "Reference/Stabilizer Codes and Quantum Error Correction/Thesis.tex",
+        "matches": true
+      },
+      {
+        "path": "Reference/Stabilizer Codes and Quantum Error Correction/source.tar",
+        "matches": true
+      },
+      {
+        "path": "Reference/The Resource Theory of Stabilizer Computation/source.tar",
+        "matches": true
+      },
+      {
+        "path": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.bbl",
+        "matches": true
+      },
+      {
+        "path": "Reference/The Resource Theory of Stabilizer Computation/stab_resource_theory_021.tex",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/MathClaimIRRegistry/migrations/demo-comparison.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/MathClaimIRRegistry/migrations/graph-theoretic-nonstabilizerness-summary.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/MathClaimIRRegistry/migrations/predicting-magic-from-very-few-measurements-summary.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/MathClaimIRRegistry/migrations/resource-theory-of-stabilizer-computation-summary.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/MathClaimIRRegistry/migrations/robustness-of-magic-summary.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/MathClaimIRRegistry/migrations/stabilizer-codes-and-quantum-error-correction-summary.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/PaperAgentRegistry/manifests/graph-theoretic-nonstabilizerness.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/PaperAgentRegistry/manifests/predicting-magic-from-very-few-measurements.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/PaperAgentRegistry/manifests/resource-theory-of-stabilizer-computation.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/PaperAgentRegistry/manifests/robustness-of-magic.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/PaperAgentRegistry/manifests/stabilizer-codes-and-quantum-error-correction.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/ProvisionalClaimRegistry/papers/graph-theoretic-nonstabilizerness/paper-delta.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/00README.json",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/appendix.bbl",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/draft.bbl",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/fig1.pdf",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/fig2.pdf",
+        "matches": true
+      },
+      {
+        "path": "Stabilizerness/arXiv-2607.26154v1/head.tex",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/agent.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/blockers/figure2-code-unavailable.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/blockers/lean-environment-missing.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/blockers/perfect-graph-foundation-unchecked.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/blockers/root-contract-not-accepted.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/knowledge/statements.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/reasoning/chains.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/reviews/import-matches.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/reviews/physical-semantics.md",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/source/anchors.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/source/artifacts.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/source/source-hashes.json",
+        "matches": true
+      },
+      {
+        "path": "agents/graph-theoretic-nonstabilizerness/verification/records.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/agent.json",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/blockers/fixed-window-monotonicity-false.json",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/blockers/root-reconstruction-pending.json",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/knowledge/statements.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/reasoning/chains.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/reasoning/repaired-vrep-proof-candidate.md",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/reviews/reduced-rom-monotonicity-counterexample.md",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/reviews/source-alignment.md",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/reviews/vrep-proof-gap.md",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/source/anchors.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/source/artifacts.json",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/source/source-hashes.json",
+        "matches": true
+      },
+      {
+        "path": "agents/predicting-magic-from-very-few-measurements/verification/records.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/agent.json",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/blockers/formalism-alignment-pending.json",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/knowledge/statements.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/reasoning/chains.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/source/anchors.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/source/artifacts.json",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/source/source-hashes.json",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/verification/partition.json",
+        "matches": true
+      },
+      {
+        "path": "agents/resource-theory-of-stabilizer-computation/verification/records.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/agent.json",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/blockers/free-set-import-alignment-pending.json",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/knowledge/statements.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/reasoning/chains.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/source/anchors.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/source/artifacts.json",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/source/source-hashes.json",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/verification/partition.json",
+        "matches": true
+      },
+      {
+        "path": "agents/robustness-of-magic/verification/records.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/agent.json",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/blockers/root-review-open.json",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/knowledge/statements.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/reasoning/chains.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/source/anchors.jsonl",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/source/source-hashes.json",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/verification/partition.json",
+        "matches": true
+      },
+      {
+        "path": "agents/stabilizer-codes-and-quantum-error-correction/verification/records.jsonl",
+        "matches": true
+      },
+      {
+        "path": "docs/adr/0007-adopt-project-charter.md",
+        "matches": true
+      },
+      {
+        "path": "docs/architecture/v3-vibefeld-integration.md",
+        "matches": true
+      },
+      {
+        "path": "docs/specifications/mathclaim-semantic-contribution/data/assumed-math-relations.jsonl",
+        "matches": true
+      },
+      {
+        "path": "docs/specifications/mathclaim-semantic-contribution/data/assumed-mathclaims.jsonl",
+        "matches": true
+      },
+      {
+        "path": "docs/specifications/mathclaim-semantic-contribution/data/evaluation-summary.json",
+        "matches": true
+      },
+      {
+        "path": "fixtures/v2-paper-agentization/assessment-record-source-alignment.json",
+        "matches": true
+      },
+      {
+        "path": "fixtures/v2-paper-agentization/knowledge-ingestion-receipt.json",
+        "matches": true
+      },
+      {
+        "path": "fixtures/v2-paper-agentization/release-certification-record.json",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvRootMath/verification-result.json",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvStabilizerness/verification-result.json",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+        "matches": true
+      },
+      {
+        "path": "formal/AgtXIvVarela/verification-result.json",
+        "matches": true
+      },
+      {
+        "path": "foundations/perfect-graph-weighted-duality.json",
+        "matches": true
+      },
+      {
+        "path": "graph/paper-dependencies.json",
+        "matches": true
+      }
+    ]
+  },
+  "independent_reviews": {
+    "source": "STATIC_SOURCE_GROUNDING_ONLY; full selected TeX read and five-paper source comparison",
+    "code": "FIXES_REVIEWED; 62 independent scoped tests passed; no residual must-fix finding",
+    "scientific_authority": false
+  },
+  "original_schema_changed": false,
+  "formal_scope_frozen": false,
+  "scientific_assessment": "NOT_PERFORMED",
+  "prohibited_executions_performed": false,
+  "files": [
+    {
+      "path": "docs/evidence/v3-real-candidate/archive-correspondence.json",
+      "byte_size": 2248,
+      "sha256": "2c10ca1847175c5e50a6929164fa422dc4620510ccd14eebce5141570d14bd0b"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/candidate-inventory.json",
+      "byte_size": 511518,
+      "sha256": "5eb77ba554ffee41f816b328d9a3668dc42fa443e63b2f4a06fc009f6b5e4881"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/closure-verification.json",
+      "byte_size": 4713,
+      "sha256": "d86b04ae78a6e0bd6afaba406cf0fee6b4c605eeecb543574fcc0bbad17edeea"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/contracts.junit.xml",
+      "byte_size": 148746,
+      "sha256": "d0c3329028bd0c7681d29eb154bd0811df94d75179f4d7a4f6de676ebd9e9585"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/dependency-impact.json",
+      "byte_size": 14528,
+      "sha256": "e363d9a37bfd641294593b7efce702c9f8bbc91bde16b761b110a1b29a6e20a5"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/input-inventory.json",
+      "byte_size": 10384,
+      "sha256": "fbbce4f84c776252e11894c10bc95b946002fb7f278aea7d0a44670a6f1b1992"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/records.json",
+      "byte_size": 216540,
+      "sha256": "a09408184f8be6ba833d7a274edccce3d01f5e5796c5f658645326fc4012942e"
+    },
+    {
+      "path": "docs/evidence/v3-real-candidate/source-review.md",
+      "byte_size": 6210,
+      "sha256": "75ffcf99826f51c878d1328d20a0d822000528420cd714ac406795999534046d"
+    },
+    {
+      "path": "schema v0.0/manifest.json",
+      "byte_size": 19227,
+      "sha256": "9f48cc2c992b28f72a6592a50a0240203bd75b97eee036660a7bc0c80f597854"
+    },
+    {
+      "path": "src/agtxiv_v3/__init__.py",
+      "byte_size": 171,
+      "sha256": "d97a09dbe576ce1e36f2174655fe046c8cbec78dc8ad5524771a070ce9185e99"
+    },
+    {
+      "path": "src/agtxiv_v3/candidates.py",
+      "byte_size": 34416,
+      "sha256": "b2035403633ed9810cbaef60d830ceb45e164ab7222b39cc05cccb79e632d150"
+    },
+    {
+      "path": "src/agtxiv_v3/contracts.py",
+      "byte_size": 66572,
+      "sha256": "c266d09284ee085e1bb6d55d4d90a371350a835ed789703e66cd1fcb1e2c41d6"
+    },
+    {
+      "path": "src/agtxiv_v3/dependencies.py",
+      "byte_size": 7837,
+      "sha256": "1cd882d80aef048dd2c60e609052053a4d5ec4184de4dca0517a1d50f435d51f"
+    },
+    {
+      "path": "src/agtxiv_v3/intake.py",
+      "byte_size": 16624,
+      "sha256": "0ce52d77afff16cf4664c2a4985c9e0bcb1bb1373924f4d6fe2a369bdce95f3b"
+    },
+    {
+      "path": "src/agtxiv_v3/obligations.py",
+      "byte_size": 28998,
+      "sha256": "a694723d01fd06cfecf1b3a0266f12c5cb6ee9b317cb934ffec420a0957edf35"
+    },
+    {
+      "path": "src/agtxiv_v3/projections.py",
+      "byte_size": 6091,
+      "sha256": "1939c9c55fb14c12b135df299322b6a38611504fb98316a2480ff40b3f2108ba"
+    },
+    {
+      "path": "src/agtxiv_v3/source.py",
+      "byte_size": 27084,
+      "sha256": "fb2314a0d45fa89248636481543a6dfcf40580b6583f89ed8d45dad257d24aa1"
+    },
+    {
+      "path": "src/agtxiv_v3/storage.py",
+      "byte_size": 14253,
+      "sha256": "bfd3189f68448008fd703caabfc5d535c43de9a85cbf8a573543787ad2067f19"
+    },
+    {
+      "path": "src/agtxiv_v3/vibefeld.py",
+      "byte_size": 35699,
+      "sha256": "3286a23c02f5610b95f3914fa52a93986a88b04c44b0ef2d6f4e8900330e1cd9"
+    },
+    {
+      "path": "tests/v3/test_candidate_boundaries.py",
+      "byte_size": 12821,
+      "sha256": "65d4aba66cba4f3d9e9d4b756134b4b32f2a9f5340e239ce5513e50f1f9b0e8f"
+    },
+    {
+      "path": "tests/v3/test_candidates.py",
+      "byte_size": 22362,
+      "sha256": "f92689f6cf8f301e24df095276226a69902eeaf45b45bc02169e2bdca2dad547"
+    },
+    {
+      "path": "tests/v3/test_cli_projection.py",
+      "byte_size": 5148,
+      "sha256": "95ef1d93e4fc08711f9ffb6c8f0beed509ade98980976c9b23250251803a1070"
+    },
+    {
+      "path": "tests/v3/test_contract_regressions.py",
+      "byte_size": 24068,
+      "sha256": "f8f125038abe613b6481969f321f53fcc448b35ee6ee88b5834195a93e5f76dc"
+    },
+    {
+      "path": "tests/v3/test_contracts.py",
+      "byte_size": 24985,
+      "sha256": "6ad76b2437804a45064a2ddc75be6a2ae05d4fb8aa7504b062712dc1b5ca1d96"
+    },
+    {
+      "path": "tests/v3/test_dependencies.py",
+      "byte_size": 11590,
+      "sha256": "a15137d01fa999ac39fc7d1bb77ce9268f0f92ab0a7f75960374c23ecffa5529"
+    },
+    {
+      "path": "tests/v3/test_intake.py",
+      "byte_size": 13156,
+      "sha256": "7c26f4ea89eeacea01fced0d606bf6943eaacedc59f2f653b33b8fcc97b672d9"
+    },
+    {
+      "path": "tests/v3/test_obligation_review_fixes.py",
+      "byte_size": 15981,
+      "sha256": "ec1bb582ed3703c06ec85380f14a3de689242c3dae8b66c52a096d494d537dff"
+    },
+    {
+      "path": "tests/v3/test_obligations.py",
+      "byte_size": 25511,
+      "sha256": "e34ea7c5f5a133840d957f26df0b5ef91913eb876b492fc394abc42c444ea03d"
+    },
+    {
+      "path": "tests/v3/test_resume_boundaries.py",
+      "byte_size": 7999,
+      "sha256": "85c32d4a8b1c283c959e5b239690367a4ad2bb1289154f29f0520eb0e288a715"
+    },
+    {
+      "path": "tests/v3/test_schema_catalog.py",
+      "byte_size": 20660,
+      "sha256": "26fe615b288556b2cc75ae79c331d4ecfe2e6f4e203eafb6ab700e44672c4f56"
+    },
+    {
+      "path": "tests/v3/test_source.py",
+      "byte_size": 12953,
+      "sha256": "0c09937a726ec644d090a38b3523b9a8a6f0b8faceb2bffe6372d9ef5d545d22"
+    },
+    {
+      "path": "tests/v3/test_storage.py",
+      "byte_size": 21045,
+      "sha256": "809eb088d1a02450f0246f2211d44575e0631ce316bcd6e75c321d58ec5219ff"
+    },
+    {
+      "path": "tests/v3/test_storage_recovery.py",
+      "byte_size": 8013,
+      "sha256": "6639b7d9cedd0f3210f2702bb27509090f5634305f3c5cebd7a84daad0222625"
+    },
+    {
+      "path": "tests/v3/test_vibefeld.py",
+      "byte_size": 18383,
+      "sha256": "978f70527028bb044b419aed74ab197bfe5776d95589d4e018d7e67d18f644ce"
+    },
+    {
+      "path": "tools/generate_v3_schema_v00.py",
+      "byte_size": 103769,
+      "sha256": "42ffa671580c9e7cb21beabdd00d64b703b3d68739c4fc63c726319469b0ba37"
+    },
+    {
+      "path": "tools/generate_vibefeld_protocol.py",
+      "byte_size": 27928,
+      "sha256": "34f088e1627216078c57ff67a981e1e5068c1b8167fc0ef4ed0fa90680df1ba5"
+    },
+    {
+      "path": "tools/inspect_v3_candidates.py",
+      "byte_size": 6720,
+      "sha256": "460c947a4f13c4fac040d6375c6659bbad87d58b6238390c3a1728d29e7d4076"
+    },
+    {
+      "path": "tools/inspect_v3_source.py",
+      "byte_size": 3319,
+      "sha256": "3db8f92abd191318ba7bb72513796dddb65853f387bb8b29c27919a2e7cb1549"
+    },
+    {
+      "path": "tools/validate_v3.py",
+      "byte_size": 4963,
+      "sha256": "af7cb84bb37452eb008c333911024735bebc87cfcd3a26d17e473ae81a10f597"
+    }
+  ],
+  "limitations": [
+    "Whole-text lexical candidates are not a complete semantic scientific inventory.",
+    "Nine candidate obligations are deferred; frozen-obligation checking is intentionally not performed without a real frozen scope.",
+    "No independent actor credentials, adopted policy, scientific approval or admission is created.",
+    "Large byte stores are retained locally under ignored tmp/, not committed.",
+    "Preexisting dirty/untracked V3 foundation and user changes were not swept into a git commit."
+  ]
+}

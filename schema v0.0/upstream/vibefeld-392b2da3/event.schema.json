@@ -1,0 +1,1408 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/upstream/vibefeld-392b2da3/event.schema.json",
+  "title": "AgtXIv pinned vibefeld event import profile",
+  "description": "Closed structural profile for one pinned upstream commit. This is neither a scientific validity certificate nor an upstream-issued JSON Schema.",
+  "x-upstream-commit": "392b2da3bee5766cca1a201f28e0255056baaba4",
+  "x-import-profile": "agtxiv.vibefeld-offline/392b2da3.1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ProofInitialized"
+    },
+    {
+      "$ref": "#/$defs/NodeCreated"
+    },
+    {
+      "$ref": "#/$defs/NodesClaimed"
+    },
+    {
+      "$ref": "#/$defs/NodesReleased"
+    },
+    {
+      "$ref": "#/$defs/ChallengeRaised"
+    },
+    {
+      "$ref": "#/$defs/ChallengeResolved"
+    },
+    {
+      "$ref": "#/$defs/ChallengeWithdrawn"
+    },
+    {
+      "$ref": "#/$defs/ChallengeSuperseded"
+    },
+    {
+      "$ref": "#/$defs/NodeValidated"
+    },
+    {
+      "$ref": "#/$defs/NodeAdmitted"
+    },
+    {
+      "$ref": "#/$defs/NodeRefuted"
+    },
+    {
+      "$ref": "#/$defs/NodeArchived"
+    },
+    {
+      "$ref": "#/$defs/NodeAmended"
+    },
+    {
+      "$ref": "#/$defs/TaintRecomputed"
+    },
+    {
+      "$ref": "#/$defs/DefAdded"
+    },
+    {
+      "$ref": "#/$defs/LemmaExtracted"
+    },
+    {
+      "$ref": "#/$defs/LockReaped"
+    },
+    {
+      "$ref": "#/$defs/ScopeOpened"
+    },
+    {
+      "$ref": "#/$defs/ScopeClosed"
+    },
+    {
+      "$ref": "#/$defs/ClaimRefreshed"
+    },
+    {
+      "$ref": "#/$defs/RefinementRequested"
+    },
+    {
+      "$ref": "#/$defs/NodeSubmitted"
+    },
+    {
+      "$ref": "#/$defs/NodeUnvalidated"
+    },
+    {
+      "$ref": "#/$defs/NodeUnadmitted"
+    },
+    {
+      "$ref": "#/$defs/ApproachTried"
+    },
+    {
+      "$ref": "#/$defs/EvidenceAttached"
+    },
+    {
+      "$ref": "#/$defs/OutlineSet"
+    },
+    {
+      "$ref": "#/$defs/OutlineStageLinked"
+    },
+    {
+      "$ref": "#/$defs/HintAdded"
+    },
+    {
+      "$ref": "#/$defs/NodeVetoed"
+    },
+    {
+      "$ref": "#/$defs/StrategyProposed"
+    },
+    {
+      "$ref": "#/$defs/PatternAdded"
+    },
+    {
+      "$ref": "#/$defs/ClaimTested"
+    },
+    {
+      "$ref": "#/$defs/DefChecked"
+    },
+    {
+      "$ref": "#/$defs/NodeProofAuthored"
+    }
+  ],
+  "$defs": {
+    "EventType": {
+      "type": "string",
+      "enum": [
+        "proof_initialized",
+        "node_created",
+        "nodes_claimed",
+        "nodes_released",
+        "challenge_raised",
+        "challenge_resolved",
+        "challenge_withdrawn",
+        "challenge_superseded",
+        "node_validated",
+        "node_admitted",
+        "node_refuted",
+        "node_archived",
+        "node_amended",
+        "taint_recomputed",
+        "def_added",
+        "lemma_extracted",
+        "lock_reaped",
+        "scope_opened",
+        "scope_closed",
+        "claim_refreshed",
+        "refinement_requested",
+        "node_submitted",
+        "node_unvalidated",
+        "node_unadmitted",
+        "approach_tried",
+        "evidence_attached",
+        "outline_set",
+        "outline_stage_linked",
+        "hint_added",
+        "node_vetoed",
+        "strategy_proposed",
+        "pattern_added",
+        "claim_tested",
+        "def_checked",
+        "node_proof_authored"
+      ]
+    },
+    "NodeType": {
+      "type": "string",
+      "enum": [
+        "claim",
+        "local_assume",
+        "local_discharge",
+        "case",
+        "qed"
+      ]
+    },
+    "WorkflowState": {
+      "type": "string",
+      "enum": [
+        "available",
+        "claimed",
+        "blocked"
+      ]
+    },
+    "EpistemicState": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "validated",
+        "admitted",
+        "refuted",
+        "archived",
+        "needs_refinement",
+        "draft"
+      ]
+    },
+    "TaintState": {
+      "type": "string",
+      "enum": [
+        "clean",
+        "self_admitted",
+        "tainted",
+        "unresolved"
+      ]
+    },
+    "PendingDefStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "resolved",
+        "cancelled"
+      ]
+    },
+    "NodeID": {
+      "type": "string",
+      "pattern": "^1(?:\\.[1-9][0-9]*)*$",
+      "description": "Canonical hierarchical ID; numeric aliases accepted by Go are deliberately rejected by this import profile."
+    },
+    "TimestampString": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\\.[0-9]{1,9})?(?:Z|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$",
+      "description": "RFC3339 timestamp with at most nine fractional digits. Preserve original bytes and nanosecond precision; calendar validity requires format checking."
+    },
+    "Timestamp": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TimestampString"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The pinned Go timestamp decoder also accepts null as its zero value; null is never evidence of a recorded time."
+    },
+    "ContentHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Upstream lowercase SHA256 text without a prefix. Structure alone does not verify its content preimage."
+    },
+    "NonnegativeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "BaseEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/EventType"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp"
+      ],
+      "description": "Pinned BaseEvent from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "Definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "created": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "definition",
+        "created"
+      ],
+      "description": "Pinned Definition from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "Lemma": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "created": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "statement",
+        "node_id",
+        "created"
+      ],
+      "description": "Pinned Lemma from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "OutlineStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "criticality": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "description",
+        "criticality"
+      ],
+      "description": "Pinned OutlineStage from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ProofInitialized": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "proof_initialized"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "conjecture": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "conjecture",
+        "author"
+      ],
+      "description": "Pinned ProofInitialized from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeCreated": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_created"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node": {
+          "$ref": "#/$defs/Node"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node"
+      ],
+      "description": "Pinned NodeCreated from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodesClaimed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "nodes_claimed"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_ids": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/NodeID"
+          }
+        },
+        "owner": {
+          "type": "string"
+        },
+        "timeout": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_ids",
+        "owner",
+        "timeout"
+      ],
+      "description": "Pinned NodesClaimed from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodesReleased": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "nodes_released"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_ids": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/NodeID"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_ids"
+      ],
+      "description": "Pinned NodesReleased from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ChallengeRaised": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "challenge_raised"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "challenge_id": {
+          "type": "string"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "target": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "raised_by": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "batch_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "challenge_id",
+        "node_id",
+        "target",
+        "reason",
+        "severity",
+        "raised_by"
+      ],
+      "description": "Pinned ChallengeRaised from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ChallengeResolved": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "challenge_resolved"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "challenge_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "challenge_id"
+      ],
+      "description": "Pinned ChallengeResolved from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ChallengeWithdrawn": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "challenge_withdrawn"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "challenge_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "challenge_id"
+      ],
+      "description": "Pinned ChallengeWithdrawn from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ChallengeSuperseded": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "challenge_superseded"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "challenge_id": {
+          "type": "string"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "challenge_id",
+        "node_id"
+      ],
+      "description": "Pinned ChallengeSuperseded from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeValidated": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_validated"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "note": {
+          "type": "string"
+        },
+        "verified_by": {
+          "type": "string"
+        },
+        "batch_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id"
+      ],
+      "description": "Pinned NodeValidated from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeAdmitted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_admitted"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id"
+      ],
+      "description": "Pinned NodeAdmitted from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeRefuted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_refuted"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id"
+      ],
+      "description": "Pinned NodeRefuted from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeArchived": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_archived"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id"
+      ],
+      "description": "Pinned NodeArchived from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeAmended": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_amended"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "previous_statement": {
+          "type": "string"
+        },
+        "new_statement": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "previous_statement",
+        "new_statement",
+        "owner"
+      ],
+      "description": "Pinned NodeAmended from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "TaintRecomputed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "taint_recomputed"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "new_taint": {
+          "$ref": "#/$defs/TaintState"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "new_taint"
+      ],
+      "description": "Pinned TaintRecomputed from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "DefAdded": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "def_added"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "definition": {
+          "$ref": "#/$defs/Definition"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "definition"
+      ],
+      "description": "Pinned DefAdded from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "LemmaExtracted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "lemma_extracted"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "lemma": {
+          "$ref": "#/$defs/Lemma"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "lemma"
+      ],
+      "description": "Pinned LemmaExtracted from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "LockReaped": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "lock_reaped"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "owner": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "owner"
+      ],
+      "description": "Pinned LockReaped from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ScopeOpened": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "scope_opened"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "statement": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "statement"
+      ],
+      "description": "Pinned ScopeOpened from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ScopeClosed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "scope_closed"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "discharge_node_id": {
+          "$ref": "#/$defs/NodeID"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "discharge_node_id"
+      ],
+      "description": "Pinned ScopeClosed from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ClaimRefreshed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "claim_refreshed"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "new_timeout": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "owner",
+        "new_timeout"
+      ],
+      "description": "Pinned ClaimRefreshed from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "RefinementRequested": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "refinement_requested"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "requested_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "reason"
+      ],
+      "description": "Pinned RefinementRequested from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeSubmitted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_submitted"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "owner": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "owner"
+      ],
+      "description": "Pinned NodeSubmitted from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeUnvalidated": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_unvalidated"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "revoked_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id"
+      ],
+      "description": "Pinned NodeUnvalidated from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeUnadmitted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_unadmitted"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "revoked_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id"
+      ],
+      "description": "Pinned NodeUnadmitted from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ApproachTried": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "approach_tried"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "approach": {
+          "type": "string"
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "tried_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "approach"
+      ],
+      "description": "Pinned ApproachTried from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "EvidenceAttached": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "evidence_attached"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "file_path": {
+          "type": "string"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "evidence_type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "attached_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "file_path",
+        "content_hash"
+      ],
+      "description": "Pinned EvidenceAttached from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "OutlineSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "outline_set"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "stages": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/OutlineStage"
+          }
+        },
+        "set_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "stages"
+      ],
+      "description": "Pinned OutlineSet from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "OutlineStageLinked": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "outline_stage_linked"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "label": {
+          "type": "string"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "label",
+        "node_id"
+      ],
+      "description": "Pinned OutlineStageLinked from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "HintAdded": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "hint_added"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "text": {
+          "type": "string"
+        },
+        "hint_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "text"
+      ],
+      "description": "Pinned HintAdded from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeVetoed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_vetoed"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "vetoed_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "reason"
+      ],
+      "description": "Pinned NodeVetoed from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "StrategyProposed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "strategy_proposed"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "strategy": {
+          "type": "string"
+        },
+        "novelty": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "proposed_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "strategy",
+        "novelty"
+      ],
+      "description": "Pinned StrategyProposed from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "PatternAdded": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "pattern_added"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "indicators": {
+          "type": "string"
+        },
+        "remediation": {
+          "type": "string"
+        },
+        "added_by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "name",
+        "description"
+      ],
+      "description": "Pinned PatternAdded from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "ClaimTested": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "claim_tested"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "engine": {
+          "type": "string"
+        },
+        "script_path": {
+          "type": "string"
+        },
+        "expression": {
+          "type": "string"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "output": {
+          "type": "string"
+        },
+        "agent": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "engine",
+        "passed"
+      ],
+      "description": "Pinned ClaimTested from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "DefChecked": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "def_checked"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "def_name": {
+          "type": "string"
+        },
+        "check_type": {
+          "type": "string"
+        },
+        "script_path": {
+          "type": "string"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "output": {
+          "type": "string"
+        },
+        "agent": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "def_name",
+        "check_type",
+        "passed"
+      ],
+      "description": "Pinned DefChecked from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "NodeProofAuthored": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "node_proof_authored"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "node_id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "author": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "timestamp",
+        "node_id",
+        "author"
+      ],
+      "description": "Pinned NodeProofAuthored from internal/ledger/event.go; only non-omitempty JSON fields are required."
+    },
+    "Node": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/NodeID"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeType"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "latex": {
+          "type": "string"
+        },
+        "inference": {
+          "type": "string"
+        },
+        "context": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependencies": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/NodeID"
+          }
+        },
+        "validation_deps": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/NodeID"
+          }
+        },
+        "workflow_state": {
+          "$ref": "#/$defs/WorkflowState"
+        },
+        "epistemic_state": {
+          "$ref": "#/$defs/EpistemicState"
+        },
+        "taint_state": {
+          "$ref": "#/$defs/TaintState"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "created": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "scope": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "claimed_by": {
+          "type": "string"
+        },
+        "claimed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "crux": {
+          "type": "boolean"
+        },
+        "author": {
+          "type": "string"
+        },
+        "validated_by": {
+          "type": "string"
+        },
+        "validation_batch_id": {
+          "type": "string"
+        },
+        "proof_author": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "statement",
+        "inference",
+        "workflow_state",
+        "epistemic_state",
+        "taint_state",
+        "content_hash",
+        "created"
+      ],
+      "description": "Pinned Node from internal/node/node.go; only non-omitempty JSON fields are required."
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "agtxiv.database-manifest/0.1.0",
+  "database_format_version": "0.1.0",
+  "agtxiv_specification": {
+    "path": "AgtXIv.md",
+    "version": "0.5",
+    "dated": "2026-08-22",
+    "relevant_change": "095f160"
+  },
+  "authoritative_planes": [
+    "database/sources",
+    "database/runs",
+    "database/knowledge"
+  ],
+  "derived_planes": [
+    "database/derived"
+  ],
+  "schemas": [
+    "database/schemas/query-run-dataset.schema.json"
+  ],
+  "migrations": [
+    "database/migrations/0001_core.sql"
+  ],
+  "templates": [
+    "database/templates/query-run-dataset.template.json",
+    "database/templates/knowledge-record.template.json"
+  ],
+  "examples": [
+    "database/examples/stabilizerness-closed-form/manifest.json"
+  ],
+  "authority_note": "Examples and derived indexes are non-authoritative. Scientific acceptance is never inferred from database validation."
+}

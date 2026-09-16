@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/frozen-scope.schema.json",
+  "title": "FrozenInventoryScope",
+  "description": "Immutable work denominator after an independent freeze decision.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.frozen-scope/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "plan_ref": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "enum": [
+                    "agtxiv.v3.agentization-plan/0.0.0"
+                  ]
+                }
+              }
+            }
+          ],
+          "description": "Exact governing plan."
+        },
+        "discovery_ref": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "enum": [
+                    "agtxiv.v3.inventory-discovery/0.0.0"
+                  ]
+                }
+              }
+            }
+          ],
+          "description": "Exact inventoried obligations."
+        },
+        "decision_ref": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "enum": [
+                    "agtxiv.v3.scope-decision/0.0.0"
+                  ]
+                }
+              }
+            }
+          ],
+          "description": "Accepting independent freeze decision."
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Obligation"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact obligations retained for total accounting."
+        },
+        "predecessor_ref": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+                },
+                {
+                  "properties": {
+                    "record_type": {
+                      "enum": [
+                        "agtxiv.v3.frozen-scope/0.0.0"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Previous immutable scope, if revised."
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Genesis reason or explicit scope extension/correction rationale."
+        },
+        "removed_obligation_dispositions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "description": "Explicit reviewed accounting for every removed prior obligation."
+        }
+      },
+      "required": [
+        "plan_ref",
+        "discovery_ref",
+        "decision_ref",
+        "obligations",
+        "predecessor_ref",
+        "change_reason",
+        "removed_obligation_dispositions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

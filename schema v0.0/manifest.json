@@ -1,0 +1,417 @@
+{
+  "architecture_version": "V3",
+  "contract_version": "0.0.0",
+  "status": "EXPERIMENTAL",
+  "canonicalization_profile": "agtxiv.record-canonical-json/2.0.0-candidate.1",
+  "schemas": [
+    {
+      "path": "admission-decision.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/admission-decision.schema.json",
+      "sha256": "sha256:f1503704857e94b37195a7cd57840034a75215fe4ec7529b77361afd5def0db3",
+      "record_type": "agtxiv.v3.admission-decision/0.0.0"
+    },
+    {
+      "path": "agentization-plan.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/agentization-plan.schema.json",
+      "sha256": "sha256:a96a2d584fdab15b220ad379d613fbff6626bf0a9112cc7487a1ea0912f26f8c",
+      "record_type": "agtxiv.v3.agentization-plan/0.0.0"
+    },
+    {
+      "path": "alignment-assessment.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/alignment-assessment.schema.json",
+      "sha256": "sha256:b9dde5ac0f2c57e145bbcf96b4d499d2c9ec00369be00098f3e58dfcedc22027",
+      "record_type": "agtxiv.v3.alignment-assessment/0.0.0"
+    },
+    {
+      "path": "archive-receipt.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/archive-receipt.schema.json",
+      "sha256": "sha256:5476fb738f7c0f3acbc7d62f2dbfdc3e13b98233fcc9f22d916c88c99385daee",
+      "record_type": "agtxiv.v3.archive-receipt/0.0.0"
+    },
+    {
+      "path": "argument-node.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/argument-node.schema.json",
+      "sha256": "sha256:7f108fcfebd182273f2778eb17e789d4867fcae510a0eda6f3ea9c1d81b2dc65",
+      "record_type": "agtxiv.v3.argument-node/0.0.0"
+    },
+    {
+      "path": "argument-review.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/argument-review.schema.json",
+      "sha256": "sha256:ad56a9002bbb847d9f82b34688720a5697b2c2d5e0a461968987733e869a832e",
+      "record_type": "agtxiv.v3.argument-review/0.0.0"
+    },
+    {
+      "path": "argument-snapshot.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/argument-snapshot.schema.json",
+      "sha256": "sha256:89d919233a48a2d78e75f95f7761bf14a7bba02b5f9751628a629fd9d5df4dc4",
+      "record_type": "agtxiv.v3.argument-snapshot/0.0.0"
+    },
+    {
+      "path": "assumption-context.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/assumption-context.schema.json",
+      "sha256": "sha256:38d581654f187824066a8d7dfc6d3f00ff57a366a0e6baef06023862d5a7d649",
+      "record_type": "agtxiv.v3.assumption-context/0.0.0"
+    },
+    {
+      "path": "authority-policy.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/authority-policy.schema.json",
+      "sha256": "sha256:53f7b0690df6937a79f936854a67ba34bfcb9fef9de257ba078a0d4dec105dfc",
+      "record_type": "agtxiv.v3.authority-policy/0.0.0"
+    },
+    {
+      "path": "axis-assessment.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/axis-assessment.schema.json",
+      "sha256": "sha256:cd35aff176deb0fafc928b12f62c6998428897816457113945375af3bd9c3d5f",
+      "record_type": "agtxiv.v3.axis-assessment/0.0.0"
+    },
+    {
+      "path": "backtranslation.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/backtranslation.schema.json",
+      "sha256": "sha256:87a05b9ac3e6df560eb7504c8fa04fe310cb0d5665e8f49345960775a81f22c7",
+      "record_type": "agtxiv.v3.backtranslation/0.0.0"
+    },
+    {
+      "path": "baseline-snapshot.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/baseline-snapshot.schema.json",
+      "sha256": "sha256:c0db11d10f51b94a29a7c0698fa435b5a41803eb0ebf4000f3fe0c1fc4320627",
+      "record_type": "agtxiv.v3.baseline-snapshot/0.0.0"
+    },
+    {
+      "path": "challenge-disposition.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/challenge-disposition.schema.json",
+      "sha256": "sha256:d695012d7e65915910b6302f69ba21cd0d4f5ba5039881c0bafa0b4354468592",
+      "record_type": "agtxiv.v3.challenge-disposition/0.0.0"
+    },
+    {
+      "path": "challenge.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/challenge.schema.json",
+      "sha256": "sha256:649909937a6070afeefd38b7be180684a79844ffd646b44f060ac2c35a3271b2",
+      "record_type": "agtxiv.v3.challenge/0.0.0"
+    },
+    {
+      "path": "claim-component-map.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/claim-component-map.schema.json",
+      "sha256": "sha256:7f466e45444be9a820b50223b9448c95a8827c9ee50f1d798f8db13ad4119c64",
+      "record_type": "agtxiv.v3.claim-component-map/0.0.0"
+    },
+    {
+      "path": "common.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json",
+      "sha256": "sha256:9fde043969561d0a2967965c978385b7345eb18730acf87c7daece4b5dbad522",
+      "record_type": null
+    },
+    {
+      "path": "contribution-delta.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/contribution-delta.schema.json",
+      "sha256": "sha256:8ef64d53195d902c1998aec84a75c87c9e81b644a60d469757939a5fb82411ab",
+      "record_type": "agtxiv.v3.contribution-delta/0.0.0"
+    },
+    {
+      "path": "counterexample.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/counterexample.schema.json",
+      "sha256": "sha256:bf75d3dd7fbf0eb5187e68effae144257eb498038753792ba0124178c0951e57",
+      "record_type": "agtxiv.v3.counterexample/0.0.0"
+    },
+    {
+      "path": "definition.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/definition.schema.json",
+      "sha256": "sha256:f42a61dff18925513b16321d227e259971fc5bef4ca4a0265ee211d8c8523ca0",
+      "record_type": "agtxiv.v3.definition/0.0.0"
+    },
+    {
+      "path": "dependency-binding.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/dependency-binding.schema.json",
+      "sha256": "sha256:d9322ec7fe4e692519b8b930840ea0e3ff391c47914004445a937ceef15da3f9",
+      "record_type": "agtxiv.v3.dependency-binding/0.0.0"
+    },
+    {
+      "path": "derived-claim.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/derived-claim.schema.json",
+      "sha256": "sha256:f0984943aefc783a035be91ea48afedc059113b925525e6995722351001118ea",
+      "record_type": "agtxiv.v3.derived-claim/0.0.0"
+    },
+    {
+      "path": "empirical-evidence.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/empirical-evidence.schema.json",
+      "sha256": "sha256:a332a9cfb25e6d4b656fe3dcc25032eeeee2a6ded9524283d95d07ba2cb4e47f",
+      "record_type": "agtxiv.v3.empirical-evidence/0.0.0"
+    },
+    {
+      "path": "environment-check.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/environment-check.schema.json",
+      "sha256": "sha256:f3935fcb19ac43f885b5a0cba5ca74fce8512dfed65222765b0705410dd26c25",
+      "record_type": "agtxiv.v3.environment-check/0.0.0"
+    },
+    {
+      "path": "evaluation-report.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/evaluation-report.schema.json",
+      "sha256": "sha256:bc78c9826ef1eaf5c939ce90d46781a7ea6c0ffa30f4f6753dd6ab9f94b789fe",
+      "record_type": "agtxiv.v3.evaluation-report/0.0.0"
+    },
+    {
+      "path": "event-checkpoint.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/event-checkpoint.schema.json",
+      "sha256": "sha256:4da1fbcc3149db706e830ef4b1e53d21fcb8de818438ea8d839a80e3b4b8e3d5",
+      "record_type": "agtxiv.v3.event-checkpoint/0.0.0"
+    },
+    {
+      "path": "event.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/event.schema.json",
+      "sha256": "sha256:640e0207ffb87382fc30d8f2ccfa88c4ed5611a836bdbac78d29522f922211fa",
+      "record_type": "agtxiv.v3.event/0.0.0"
+    },
+    {
+      "path": "evidence-protocol.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/evidence-protocol.schema.json",
+      "sha256": "sha256:620d5aefcd5f5f7f9bc675a54cca7510d9e6816af1031bd1567366133f6e475c",
+      "record_type": "agtxiv.v3.evidence-protocol/0.0.0"
+    },
+    {
+      "path": "formal-check.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/formal-check.schema.json",
+      "sha256": "sha256:2d0e52196c6551f24952a6f6a1ef668e903e78e9606ea1de9fef20372905fa9c",
+      "record_type": "agtxiv.v3.formal-check/0.0.0"
+    },
+    {
+      "path": "formal-environment.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/formal-environment.schema.json",
+      "sha256": "sha256:58fb9526d5f06a594d91f46d48cdabee09f7af7fa53295cc7b7f721dc1f2c31d",
+      "record_type": "agtxiv.v3.formal-environment/0.0.0"
+    },
+    {
+      "path": "formalization-attempt.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/formalization-attempt.schema.json",
+      "sha256": "sha256:db85083c8e142fcccbfcb1c3af38ecd3a34758cd3e5965b3b62b1a66cd1d0965",
+      "record_type": "agtxiv.v3.formalization-attempt/0.0.0"
+    },
+    {
+      "path": "formalization-packet.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/formalization-packet.schema.json",
+      "sha256": "sha256:c7902fe65e8a3a7dd63045a0ec1f64a1fdcbb86c132c02b0dd4b19de7fcb30a6",
+      "record_type": "agtxiv.v3.formalization-packet/0.0.0"
+    },
+    {
+      "path": "frontier-item.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/frontier-item.schema.json",
+      "sha256": "sha256:6ad4ba29bc55a88e5579ea35607a5b27813d9c5a0ffa91f6a1f13edf76722c24",
+      "record_type": "agtxiv.v3.frontier-item/0.0.0"
+    },
+    {
+      "path": "frozen-scope.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/frozen-scope.schema.json",
+      "sha256": "sha256:2befb634afd92dc891ec93b7a4895de49e25272b0d15774b97b6dd4b0d38c994",
+      "record_type": "agtxiv.v3.frozen-scope/0.0.0"
+    },
+    {
+      "path": "impact-analysis.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/impact-analysis.schema.json",
+      "sha256": "sha256:24b3d48099182480ab3b27099a6784a98e5a324021a7f9568d0740972fc1dd48",
+      "record_type": "agtxiv.v3.impact-analysis/0.0.0"
+    },
+    {
+      "path": "inference-step.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/inference-step.schema.json",
+      "sha256": "sha256:ce8ae22ecb99b5915e354b9f898c736cba15275313003e372dca1d3641a15afa",
+      "record_type": "agtxiv.v3.inference-step/0.0.0"
+    },
+    {
+      "path": "ingestion-receipt.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/ingestion-receipt.schema.json",
+      "sha256": "sha256:04eb7f7f8bdbb1d9a38baacb68e7aa18b4c51d2eec3103f1a0775f17c576550e",
+      "record_type": "agtxiv.v3.ingestion-receipt/0.0.0"
+    },
+    {
+      "path": "inventory-discovery.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/inventory-discovery.schema.json",
+      "sha256": "sha256:9ac46885ee04c7d95f94814796fe14aa8057da5d468264db54d451d6a90084eb",
+      "record_type": "agtxiv.v3.inventory-discovery/0.0.0"
+    },
+    {
+      "path": "knowledge-snapshot.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/knowledge-snapshot.schema.json",
+      "sha256": "sha256:1a4adccffe12a69822c5473b05c2cd21b21509fbe03363859da996f870a0e5f5",
+      "record_type": "agtxiv.v3.knowledge-snapshot/0.0.0"
+    },
+    {
+      "path": "legacy-binding.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/legacy-binding.schema.json",
+      "sha256": "sha256:cedef0c78db19c74360edf1227292267cea79491f4b812129c418cc858ce3a0d",
+      "record_type": "agtxiv.v3.legacy-binding/0.0.0"
+    },
+    {
+      "path": "math-claim.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/math-claim.schema.json",
+      "sha256": "sha256:8eab9e232b0e1c658f3921873c26546a41504cec77ae5d2d4f6c37cd51e7c96f",
+      "record_type": "agtxiv.v3.math-claim/0.0.0"
+    },
+    {
+      "path": "obligation-disposition.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/obligation-disposition.schema.json",
+      "sha256": "sha256:f7ded763e52a6d8610cacb47a6c08516bd204e26ad454ce0a6363d3e7ea163ce",
+      "record_type": "agtxiv.v3.obligation-disposition/0.0.0"
+    },
+    {
+      "path": "paper-release.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/paper-release.schema.json",
+      "sha256": "sha256:4d6227300e4e03ea1f479ac0f957c45d17aeb560ada36811ccb3df08d317c3bf",
+      "record_type": "agtxiv.v3.paper-release/0.0.0"
+    },
+    {
+      "path": "paper-structure.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/paper-structure.schema.json",
+      "sha256": "sha256:d62835b4fe33537bc675dc3ce3555a4dd839640af8c708884ba8fac565e2189e",
+      "record_type": "agtxiv.v3.paper-structure/0.0.0"
+    },
+    {
+      "path": "processing-profile.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/processing-profile.schema.json",
+      "sha256": "sha256:9ee5c6c7a6b54dbaec52bf4deb852fad4f29c1246813c51bba95d1b64299b621",
+      "record_type": "agtxiv.v3.processing-profile/0.0.0"
+    },
+    {
+      "path": "proof-plan.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/proof-plan.schema.json",
+      "sha256": "sha256:20a7b7f4836c9622ba1c448cf908d7328a5cbf0a6362c54fb1986e9d10e3d7ac",
+      "record_type": "agtxiv.v3.proof-plan/0.0.0"
+    },
+    {
+      "path": "query-receipt.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/query-receipt.schema.json",
+      "sha256": "sha256:d329f0950b7b6b37a31409cda4c64c19c5a1e68ea74d51a4a29394f91aa095e8",
+      "record_type": "agtxiv.v3.query-receipt/0.0.0"
+    },
+    {
+      "path": "record.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/record.schema.json",
+      "sha256": "sha256:33d6b42cb27d31b70857173dd76d0d846528c835923176e776328ddfaa40c3e2",
+      "record_type": null
+    },
+    {
+      "path": "relation-assessment.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/relation-assessment.schema.json",
+      "sha256": "sha256:37a48df4cdd37d37390423e7fc66a4ac5db050c19cc48849a28fe8518acd499b",
+      "record_type": "agtxiv.v3.relation-assessment/0.0.0"
+    },
+    {
+      "path": "release-audit.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/release-audit.schema.json",
+      "sha256": "sha256:c706b519b4eb0bcde76e2bc5c2b2dd451a5b7a3d8b5597f9d2e4d75cf40035b1",
+      "record_type": "agtxiv.v3.release-audit/0.0.0"
+    },
+    {
+      "path": "release-certificate.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/release-certificate.schema.json",
+      "sha256": "sha256:2f142804a0cdea640b0f4bfd5376f39792cc13fe3bd3b5962a7e6566dfdc04af",
+      "record_type": "agtxiv.v3.release-certificate/0.0.0"
+    },
+    {
+      "path": "release-manifest.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/release-manifest.schema.json",
+      "sha256": "sha256:8ece5375f992468cd881061afce9fe467f7661b41d7dcaa91bc2b421afd543a2",
+      "record_type": "agtxiv.v3.release-manifest/0.0.0"
+    },
+    {
+      "path": "reproduction-record.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/reproduction-record.schema.json",
+      "sha256": "sha256:a90c101305adccb9fd4c3ed6c5838f6ec04e80efd20d8d522b9a12b8da3641db",
+      "record_type": "agtxiv.v3.reproduction-record/0.0.0"
+    },
+    {
+      "path": "reuse-decision.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/reuse-decision.schema.json",
+      "sha256": "sha256:c5c49bae927551f8ea3442ec831a10a70263d0e8d06caba724ac1003c5d7b669",
+      "record_type": "agtxiv.v3.reuse-decision/0.0.0"
+    },
+    {
+      "path": "revision-record.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/revision-record.schema.json",
+      "sha256": "sha256:f6b6a6783b0f115c03833a6351730cef62caf503dd28cbff156d3da745dcbb5d",
+      "record_type": "agtxiv.v3.revision-record/0.0.0"
+    },
+    {
+      "path": "scientific-claim.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/scientific-claim.schema.json",
+      "sha256": "sha256:1a26c0af3817adc7825cd60e4f985f98ebc49920da6e17e959f4e8c391e80107",
+      "record_type": "agtxiv.v3.scientific-claim/0.0.0"
+    },
+    {
+      "path": "scope-decision.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/scope-decision.schema.json",
+      "sha256": "sha256:60c14ba6f06c90034e986bd13aeea243e84adc050266f9849bd3c0b615659f49",
+      "record_type": "agtxiv.v3.scope-decision/0.0.0"
+    },
+    {
+      "path": "semantic-context.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/semantic-context.schema.json",
+      "sha256": "sha256:92224be2d85c784b4991b13a3ebc8f3e189e8aca02c3d5a420043168abd150b0",
+      "record_type": "agtxiv.v3.semantic-context/0.0.0"
+    },
+    {
+      "path": "source-acquisition.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/source-acquisition.schema.json",
+      "sha256": "sha256:97ed6392ba3303ed13e16da99724e4291c965c4d9e3f11a9709440eed987a388",
+      "record_type": "agtxiv.v3.source-acquisition/0.0.0"
+    },
+    {
+      "path": "source-request.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/source-request.schema.json",
+      "sha256": "sha256:23165631c0b2b60e5825a65360bbdc900027b33daace9975a4f18b6856725da8",
+      "record_type": "agtxiv.v3.source-request/0.0.0"
+    },
+    {
+      "path": "source-snapshot.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/source-snapshot.schema.json",
+      "sha256": "sha256:074fbd659d874d93caa6bfa076cc9d259886ae157264ff6950a794cef43b8e9d",
+      "record_type": "agtxiv.v3.source-snapshot/0.0.0"
+    },
+    {
+      "path": "source-span.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/source-span.schema.json",
+      "sha256": "sha256:9bee9f0f30e22219f3f1e9dfef19677efaf53af097778fa6a84f57b40d98c6ee",
+      "record_type": "agtxiv.v3.source-span/0.0.0"
+    },
+    {
+      "path": "source-transformation.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/source-transformation.schema.json",
+      "sha256": "sha256:0eb8fb911b2ae9a0c4edbe2384d8224d319b97f0c2542d57e9f5a98607c7aa8b",
+      "record_type": "agtxiv.v3.source-transformation/0.0.0"
+    },
+    {
+      "path": "status-view.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/status-view.schema.json",
+      "sha256": "sha256:4d305df97d37e4bf5feb4d189b7cd29faee300b079fcd27587265674fa38ac38",
+      "record_type": "agtxiv.v3.status-view/0.0.0"
+    },
+    {
+      "path": "upstream-import.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/upstream-import.schema.json",
+      "sha256": "sha256:5484a87bf507a9b73fd2632ba605eb1b30ee5e79914421e9362a68c032d9e1b7",
+      "record_type": "agtxiv.v3.upstream-import/0.0.0"
+    },
+    {
+      "path": "work-attempt.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/work-attempt.schema.json",
+      "sha256": "sha256:aa405ab3101087d180143ff5a10327f318394363cb608a1c99304a9fb4cde442",
+      "record_type": "agtxiv.v3.work-attempt/0.0.0"
+    },
+    {
+      "path": "work-completion.schema.json",
+      "uri": "https://agtxiv.org/schema/v3/0.0.0/work-completion.schema.json",
+      "sha256": "sha256:676f5e7b349203036c5b9cbf74d0c0478dbbc74fc4b36bac16309d0318ac824c",
+      "record_type": "agtxiv.v3.work-completion/0.0.0"
+    }
+  ],
+  "record_count": 64,
+  "axes": [
+    "source_fidelity",
+    "mathematical_correctness",
+    "formal_alignment",
+    "semantic_applicability",
+    "empirical_support",
+    "computational_reproducibility"
+  ],
+  "non_implications": [
+    "Schema validity is structural only.",
+    "No scientific, release or admission authority is granted."
+  ]
+}
