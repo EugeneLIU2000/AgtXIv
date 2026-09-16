@@ -5,7 +5,7 @@ applies-to-business-contract: v3/0.0.0
 applies-to-orchestration-overlay: 0.1.0
 status: 接口规范、离线契约检查与教学案例；不是已上线的自动形式化系统。本次为 1.0 内部重排（2026-09-15），草稿 schema 与业务记录接口未变；实现边界见 [validation-report.json](validation-report.json)。
 
-本目录承接 Paper Agent 的数学目标，分两步：**先把证明写清楚**（`proof.expand`），**再把证明转成 Lean 4**（`formalization.generate`）。它不是可以同时生产、审阅和批准自己的全能 agent。本文件只规定不变量、流水线与边界；运行接口见 [INTERFACE.md](INTERFACE.md)，证明与代码细则见 [LAMPORT.md](LAMPORT.md) 与 [LEAN4.md](LEAN4.md)，审阅轮次见 [REVIEW.md](REVIEW.md)，Lean 环境与可信库见 [ENVIRONMENT.md](ENVIRONMENT.md) 与 [registry/](registry/README.md)。
+本目录承接 Paper Agent 的数学目标，分两步：**先把证明写清楚**（`proof.expand`），**再把证明转成 Lean 4**（`formalization.generate`）。它不是可以同时生产、审阅和批准自己的全能 agent。本文件只规定不变量、流水线与边界；运行接口见 [INTERFACE.md](INTERFACE.md)，证明与代码细则见 [LAMPORT.md](LAMPORT.md) 与 [LEAN4.md](LEAN4.md)，本流水线的审阅轮次见 [REVIEW.md](REVIEW.md)，通用审阅契约见 [Review Agent](<../Review Agent/AGENT.md>)，Lean 环境与可信库见 [ENVIRONMENT.md](ENVIRONMENT.md) 与 [registry/](registry/README.md)。
 
 ## 1. 不变量 I1–I6
 
@@ -22,7 +22,7 @@ status: 接口规范、离线契约检查与教学案例；不是已上线的自
 
 ## 2. 流水线索引
 
-轮次编号以 [REVIEW.md](REVIEW.md) 为唯一来源，本节只给顺序与分工。阅读视图（lamport-view）是派生附件，不是生产步骤。
+**本流水线的**轮次编号以 [REVIEW.md](REVIEW.md) 为唯一来源，本节只给顺序与分工。阅读视图（lamport-view）是派生附件，不是生产步骤。
 
 | 阶段 | 操作／角色 | 产物 | 检查门 | 细则 |
 |---|---|---|---|---|
@@ -33,9 +33,9 @@ status: 接口规范、离线契约检查与教学案例；不是已上线的自
 | R2 声明与生成 | `formalization.generate` | 完整定理声明 + lean-draft | 陈述与原文一致，且过**可复用性关** | [LEAN4.md](LEAN4.md)、REVIEW |
 | R3 形式检查 | `utility.formal-check` | formal-check + 构建产物 | 目标声明、公理依赖、构建产物 | [ENVIRONMENT.md](ENVIRONMENT.md)、REVIEW |
 | R3b 精简迭代 | 生成者修订 → 重跑 `utility.formal-check` | 最终代码字节 | 只改证明体；收敛即停、上限 2 轮；动到陈述即按新定理回 R2 | ENVIRONMENT、REVIEW |
-| R4 盲反译 | `review.backtranslate` | backtranslation | 输入隔离：不给原文与预期答案 | REVIEW |
+| R4 盲反译 | `review.backtranslate` | backtranslation | 输入隔离：不给原文与预期答案 | REVIEW、[Review Agent INTERFACE](<../Review Agent/INTERFACE.md>) |
 | R5 独立对齐 | `review.alignment` | MATH_TO_FORMAL 等对齐结论 | 形式代码含义与源目标一致 | REVIEW |
-| 完成 | 宿主 | Result + 分层状态记录 | `DELIVERED` 只表示产物交齐 | REVIEW |
+| 完成 | 宿主 | Result + 分层状态记录 | `DELIVERED` 只表示产物交齐 | AGENT §5、[AGENT-CONTRACTS.md](../AGENT-CONTRACTS.md) §2.1 |
 
 这些是不同检查边界，不要求每篇论文固定调用同样次数；没有独立执行条件时明确报告缺失，不换个模型名字假装独立审阅。
 
@@ -45,7 +45,7 @@ frozen-scope = 本轮固定的证明范围；packet = 形式化交接包（forma
 
 ## 4. 输入与开始前
 
-- 每次调用完整加载本文件及 INTERFACE、LAMPORT、LEAN4、REVIEW、ENVIRONMENT 与当前阶段的草稿 schema。只提供路径不算模型已经读取。
+- 每次调用完整加载本文件及 INTERFACE、LAMPORT、LEAN4、REVIEW、ENVIRONMENT 与当前阶段的草稿 schema；REVIEW 只用于定位本流水线的轮次，`review.*` 调用改为加载 [Review Agent](<../Review Agent/AGENT.md>) 模块。只提供路径不算模型已经读取。
 - 只使用当次 Task 提供的记录与字节。需要新记录时先保存，再创建新 Task；不猜未来引用，不隐式展开未授权输入。
 - 没有 frozen-scope 时不能启动正式 `proof.expand`；这不要求 Paper 停止候选提取。
 - 统一使用现有 Task → Result；不新增 `autoformalization.run` 操作，也不合并原有权限。Review、Dependency 和 Utility 按各自操作参与；逐项输入白名单与草稿形状见 INTERFACE。

@@ -1,0 +1,123 @@
+{
+  "report_version": "review-agent/1.0",
+  "date": "2026-09-16",
+  "scope": "Offline specification and interface regression checks for the eight review.* operations; no model was run, no reviewer identity was authenticated and no business record was created.",
+  "note": "Development checks only. Passing them is not an independent review, not a SUPPORTED/ALIGNED/KERNEL_CHECKED result, and not evidence that any producer and reviewer were actually separate principals.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "agent_id": "review",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "review.scope",
+      "review.argument",
+      "review.reuse",
+      "review.backtranslate",
+      "review.alignment",
+      "review.scientific",
+      "review.audit",
+      "review.admission"
+    ],
+    "checker": "check_interfaces.py",
+    "draft_schemas": [
+      "admission-draft.schema.json",
+      "alignment-draft.schema.json",
+      "argument-draft.schema.json",
+      "audit-draft.schema.json",
+      "backtranslate-draft.schema.json",
+      "reuse-draft.schema.json",
+      "scientific-draft.schema.json",
+      "scope-draft.schema.json"
+    ],
+    "new_business_record_types": [],
+    "agents_json_changed": false,
+    "checker_self_reported_blind_spots": [
+      "record_set",
+      "source_bytes",
+      "independence",
+      "assessment_meaning",
+      "blind_isolation",
+      "record_conditionals",
+      "result"
+    ]
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Review Agent/check_interfaces.py\" --kind backtranslate --input \"schema v0.1/Review Agent/conformance/backtranslate-draft.json\"",
+      "exit_code": 0,
+      "result": "Valid blind-backtranslation draft accepted."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Review Agent/check_interfaces.py\" --kind backtranslate --input \"schema v0.1/Review Agent/conformance/backtranslate-draft.json\" --task \"schema v0.1/Review Agent/conformance/task-backtranslate.json\"",
+      "exit_code": 0,
+      "result": "Task whose business input_refs are exactly {formal-environment} accepted."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Review Agent/check_interfaces.py\" --kind backtranslate --input \"schema v0.1/Review Agent/conformance/backtranslate-draft.json\" --task \"schema v0.1/Review Agent/conformance/task-backtranslate-leak.json\"",
+      "exit_code": 1,
+      "result": "Task leaking a non formal-environment business input rejected. This is the machine half of the blind-isolation rule."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1/Review Agent/tests\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "passed_tests": 54
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/tests/run_agent_tests.py\"",
+      "exit_code": 0,
+      "result": "All 21 schema v0.1 checks passed (shared runner, wired into tools/validate_repo.py)."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "result": "443 passed. --import-mode=importlib is REQUIRED: 'Reader Agent/tests/test_interfaces.py' and 'Autoformalization Agent/tests/test_interfaces.py' share a basename and the tests directories have no __init__.py, so a plain run fails at collection."
+    }
+  ],
+  "total_test_cases_passed": 54,
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "implementation",
+        "validation"
+      ],
+      "focus": "Complete the committed scaffold to parity with the Paper and Autoformalization modules: add INTERFACE.md, CONFORMANCE.md, a pytest suite with a unique basename, and this report.",
+      "changes": [
+        "Wrote INTERFACE.md describing the operation boundaries, the return shape keyed to the schema files that exist, and the model-versus-host ownership split.",
+        "Wrote CONFORMANCE.md with numbered counterexamples, each naming the layer that actually catches it and the real error code where a machine does.",
+        "Added a pytest suite under a module-unique basename to avoid the existing test_interfaces.py basename collision.",
+        "Recorded this report from observed command output only."
+      ],
+      "result": "54 module tests pass; shared runner 21/21; full package tree 443 passed with --import-mode=importlib.",
+      "independent_review": false,
+      "pending": "No independent reader or interface-compatibility review of this module has been performed. No model was run and no business record was assembled."
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "Reviewer independence is DECLARED, never established: a draft may only carry UNESTABLISHED identity, and the host assembles real separation from execution facts. Renaming a model or restarting a process is not independence and nothing here can detect that it was attempted.",
+    "The blind-isolation check covers the fixed Task input families only. What an interpreter actually read at run time, and whether a code comment or file name leaked the expected answer, are not checked.",
+    "No review outcome value (SUPPORTED, ALIGNED, KERNEL_CHECKED, admission) is produced or validated for correctness; only the draft shape is checked.",
+    "No model execution, scheduling, record persistence or identity authentication. Draft shape validity is not record-set validity and not scientific correctness.",
+    "No RecordSet closure, stored envelope or hash verification; business root-level if/then gates are inherited only where this checker re-implements them.",
+    "This module has no worked example directory; its conformance fixtures are synthetic teaching material with placeholder references, not real records."
+  ],
+  "checked_file_sha256": {
+    "AGENT.md": "0c369f963fa10d8eaf4fdd0baa410e9b23264758b39cecf6c6ed513e36bdae65",
+    "CONFORMANCE.md": "af8ebc1f585879938d1a5f67d6f7fbd152ceaa3ba0037ffe31ee72912e0d952d",
+    "INTERFACE.md": "12fa1170ec6792ba8af0f9710c4ee87afe6979b23ff97c1728c06e7ec8d64989",
+    "admission-draft.schema.json": "4b3f0e2100c921dbf01552c1f97f6810d707195cedc5a3913a39da4d7394ec79",
+    "alignment-draft.schema.json": "772885494f46eed8ea77d713e3f152814ee317938dc170c3508afdba9c2cffb3",
+    "argument-draft.schema.json": "98c9ccb6904196cb412e3de51d1dd022fe6cb45e48863b5f34165518cfc0add8",
+    "audit-draft.schema.json": "04c63b2640fd228d5013ad335994cdddc884cf4ef87df8f1844a67d7828e8b93",
+    "backtranslate-draft.schema.json": "88767187dcdbaa1d36b11198f3cfb607fb7a2beeea56d77fa988fd471fb7ea75",
+    "check_interfaces.py": "231a875073f639d91204d4bce28cf47b8e5344ea37a1e47a99e1c329d51dd6b9",
+    "conformance/backtranslate-draft.json": "0883d9aa05a8773b6e04a15600063dbc3387ab2ae85b5a3f4fe2f6686e9e6682",
+    "conformance/task-backtranslate-leak.json": "3b3d3ef07dcabd13548aaa6a13167800d9b130cb7bfd77d2a262a321953ca068",
+    "conformance/task-backtranslate.json": "d1d39a907247ddedcc5654a8bcafb778f6bc9dd279c3fae9b269a7b22df140fb",
+    "reuse-draft.schema.json": "f93473bcde941eb39c6c900140b9df8fbc5bdec78bdfe22c79a14cdada0849e2",
+    "scientific-draft.schema.json": "9e11d5b07b73f9e7ece9c706e6cc5707e82709baf8f2b904b5a77a393f86cbc6",
+    "scope-draft.schema.json": "f733f97954a5d7d5faf543a8bfefc94eeb44dd5211222fdfec433403cc950572",
+    "tests/test_review_interfaces.py": "865b83916ed1c2a2ca49a9d101303d1da0a57413dd555233e8aebb5712019524"
+  }
+}

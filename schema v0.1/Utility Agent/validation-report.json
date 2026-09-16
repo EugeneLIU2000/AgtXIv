@@ -1,0 +1,122 @@
+{
+  "report_version": "utility-agent/1.0",
+  "date": "2026-09-16",
+  "scope": "Offline request and receipt shape checks for the eight PROGRAM services; no program was executed, no bytes were captured and no receipt was verified against a real process.",
+  "note": "Development checks only. utility is execution_kind PROGRAM: no model produces these outputs. A shape-valid receipt is not evidence that anything ran.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "agent_id": "utility",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "utility.capture",
+      "utility.register-plan",
+      "utility.assemble-packet",
+      "utility.formal-check",
+      "utility.persist",
+      "utility.export",
+      "utility.project",
+      "utility.certify"
+    ],
+    "checker": "check_interfaces.py",
+    "draft_schemas": [
+      "assemble-packet-receipt.schema.json",
+      "capture-receipt.schema.json",
+      "certify-receipt.schema.json",
+      "export-receipt.schema.json",
+      "formal-check-receipt.schema.json",
+      "persist-receipt.schema.json",
+      "project-receipt.schema.json",
+      "register-plan-receipt.schema.json",
+      "utility-request.schema.json"
+    ],
+    "new_business_record_types": [],
+    "agents_json_changed": false,
+    "checker_self_reported_blind_spots": [
+      "record_set",
+      "source_bytes",
+      "execution_facts",
+      "request_binding",
+      "outputs",
+      "authority",
+      "meaning",
+      "result"
+    ]
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Utility Agent/check_interfaces.py\" --kind request --input \"schema v0.1/Utility Agent/conformance/request-capture.json\"",
+      "exit_code": 0,
+      "result": "Valid utility.capture request accepted."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Utility Agent/check_interfaces.py\" --kind request --input \"schema v0.1/Utility Agent/conformance/request-capture-rejected.json\"",
+      "exit_code": 1,
+      "result": "Request outside the pinned operation whitelist rejected."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1/Utility Agent/tests\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "passed_tests": 48
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/tests/run_agent_tests.py\"",
+      "exit_code": 0,
+      "result": "All 21 schema v0.1 checks passed (shared runner, wired into tools/validate_repo.py)."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "result": "443 passed. --import-mode=importlib is REQUIRED: 'Reader Agent/tests/test_interfaces.py' and 'Autoformalization Agent/tests/test_interfaces.py' share a basename and the tests directories have no __init__.py, so a plain run fails at collection."
+    }
+  ],
+  "total_test_cases_passed": 48,
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "implementation",
+        "validation"
+      ],
+      "focus": "Complete the committed scaffold to parity with the Paper and Autoformalization modules: add INTERFACE.md, CONFORMANCE.md, a pytest suite with a unique basename, and this report.",
+      "changes": [
+        "Wrote INTERFACE.md describing the operation boundaries, the return shape keyed to the schema files that exist, and the model-versus-host ownership split.",
+        "Wrote CONFORMANCE.md with numbered counterexamples, each naming the layer that actually catches it and the real error code where a machine does.",
+        "Added a pytest suite under a module-unique basename to avoid the existing test_interfaces.py basename collision.",
+        "Recorded this report from observed command output only."
+      ],
+      "result": "48 module tests pass; shared runner 21/21; full package tree 443 passed with --import-mode=importlib.",
+      "independent_review": false,
+      "pending": "No independent reader or interface-compatibility review of this module has been performed. No model was run and no business record was assembled."
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "Receipt execution facts are SELF-REPORTED. Commands, exit codes, timestamps, tool versions and host mode are not verified against any real process.",
+    "request_hash is not recomputed from canonical request bytes and no request is bound to a real Task; host adapters own that binding.",
+    "allowed_commands enforcement, permissions and the host execution boundary are not checked. The Lean-specific environment policy for utility.formal-check lives in 'Autoformalization Agent/ENVIRONMENT.md' and is not re-implemented here.",
+    "No model execution, scheduling, record persistence or identity authentication. Draft shape validity is not record-set validity and not scientific correctness.",
+    "No RecordSet closure, stored envelope or hash verification; business root-level if/then gates are inherited only where this checker re-implements them.",
+    "This module has no worked example directory; its conformance fixtures are synthetic teaching material with placeholder references, not real records."
+  ],
+  "checked_file_sha256": {
+    "AGENT.md": "d57f60f220022ae10c8a695cbd593c8fe9c93d708e8501debfc0113f6af8739e",
+    "CONFORMANCE.md": "e5e0180c0ad564a91efcfa2014a014a33f699830e5b96e0b49fa44b2dfe23c4b",
+    "INTERFACE.md": "292097a6d051032a339bae8a1a02ff2b853ac412b8970e2760d65bef781d3bec",
+    "assemble-packet-receipt.schema.json": "767f3f4c7eaf8481aa089183e6400169278e77e6aea52eb2ad6ba87fc3fefbb6",
+    "capture-receipt.schema.json": "3126c38d7a8303a3393579905a0420e3fe4a22b2292312e30cec887e21a021f7",
+    "certify-receipt.schema.json": "e501605ee5c6c2f05d55e3b619afd43576ccf6204715a7ee70b935e0a20fd025",
+    "check_interfaces.py": "5cf9d1427a561df9dd5a5d1f084f200942a7b9154a26c0fab1cd97acfc7ff3bc",
+    "conformance/capture-receipt-diagnostic.json": "d716705189a3cfe4907545c8e5d7f9c0ab00af9e77d385684cfe1ea1946359da",
+    "conformance/project-receipt-diagnostic-output.json": "9a1c14092a8a298ed4dda9cd72a7ae02deb0cca0b6e396a775e4a53692ac3196",
+    "conformance/request-capture-rejected.json": "489d9bcdbd7648c5ec3cde60fa5c41dcfd6c6688a10ca50358a8efe4b68eee80",
+    "conformance/request-capture.json": "5cfc3a19a0e1390607a1017b2c2ca72131fb31520355ddb0e269d7111540d526",
+    "export-receipt.schema.json": "79d99191a00dcba349f27f4b793599ee5844f7fd626bade35eee43f8e6dab72c",
+    "formal-check-receipt.schema.json": "bb4a53f6c3ec5b098f217e91fa065cf9201109716585f5a86b2cbd6acc4657f2",
+    "persist-receipt.schema.json": "d30070d0a32f3fd252ab2eba901b090f491060f69192eab388e1af602d9ce4e3",
+    "project-receipt.schema.json": "3537cb738ed52797bf67d01d5da70cf5dafcaf37cb9e88731b585f22ae7ef309",
+    "register-plan-receipt.schema.json": "2b8eb5fb348b80ca252914187f849dff928532c41dd14b229b44fd16bce5c064",
+    "tests/test_utility_interfaces.py": "ede82a346aef6e71c697c0a83051bc5254b10cd52ad2a061279678c767f9234d",
+    "utility-request.schema.json": "45fdb4711204b446700330febed258f4249a6896b82837acab327b6c9f127dbc"
+  }
+}

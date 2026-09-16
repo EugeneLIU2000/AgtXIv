@@ -1,0 +1,59 @@
+{
+  "draft_version": "1.0",
+  "attribution": "SELF_CHECK",
+  "explanations": [
+    {
+      "target_ref": {
+        "record_type": "agtxiv.v3.math-claim/0.0.0",
+        "record_id": "math-claim:robustness-bound",
+        "revision": 1,
+        "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "audience": "Graduate reader with linear algebra but no formal-verification background",
+      "text": "结论：这条数学目标目前是候选，不是已确认的定理。它说的是：对任意作用在给定空间上的态 rho，某个稳健度量不小于 1。背景：这里的 rho 取自 definition:density-matrix 固定的对象，量词按原文写成对所有 rho，而不是只对一族例子。依据：陈述来自 math-claim:robustness-bound 本身；使用的定义来自 definition:density-matrix；论证结构来自 argument-snapshot:round-1，那份快照记录了论证节点的组织方式，但没有记录任何独立审阅结论。缺口：本轮没有 formal-check 记录，也没有 argument-review 记录，所以证据只到“作者给出的论证已被结构化保存”这一层。下一步只有一件事：对 argument-snapshot:round-1 发起一次独立论证审阅。",
+      "basis_refs": [
+        {
+          "record_type": "agtxiv.v3.math-claim/0.0.0",
+          "record_id": "math-claim:robustness-bound",
+          "revision": 1,
+          "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "record_type": "agtxiv.v3.definition/0.0.0",
+          "record_id": "definition:density-matrix",
+          "revision": 1,
+          "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        {
+          "record_type": "agtxiv.v3.argument-snapshot/0.0.0",
+          "record_id": "argument-snapshot:round-1",
+          "revision": 1,
+          "content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        }
+      ],
+      "gaps": [
+        "target=math-claim:robustness-bound; missing=独立论证审阅结论（argument-review）; checked=本轮 Task 提供的三条记录; next=对 argument-snapshot:round-1 发起 review.argument",
+        "target=math-claim:robustness-bound; missing=形式检查回执（formal-check）; checked=本轮 Task 提供的记录中没有任何形式化产物; next=先组包再由受控服务执行检查"
+      ]
+    }
+  ],
+  "records": [],
+  "open_items": [
+    "target=reader task; missing=读者水平的确认（brief 只写了“研究生”）; checked=本轮 brief 与 input_artifacts; next=宿主确认读者是否已熟悉稳健度量的定义"
+  ],
+  "follow_up_requests": [
+    {
+      "agent": "review",
+      "operation": "review.argument",
+      "input_refs": [
+        {
+          "record_type": "agtxiv.v3.argument-snapshot/0.0.0",
+          "record_id": "argument-snapshot:round-1",
+          "revision": 1,
+          "content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        }
+      ],
+      "reason": "target=math-claim:robustness-bound; need=独立论证审阅; purpose=把证据从“论证已保存”推进到“论证已被独立检查”，本说明本身不能充当这一步"
+    }
+  ]
+}

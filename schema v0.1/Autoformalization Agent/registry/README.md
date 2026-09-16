@@ -30,7 +30,7 @@
 ## 4. 增、改、撤销
 
 - 新增：先做 import 冒烟测试，记录 toolchain 与实际 mathlib rev，再写条目；`rationale` 必须说明信任来源，不能只写"需要"。
-- 升级：更新条目与 manifest，按 [../REVIEW.md](../REVIEW.md) 第 6 节重跑受影响检查；旧环境结论不迁移。
+- 升级：更新条目与 manifest，按 [../REVIEW.md](../REVIEW.md) 第 4 节重跑受影响检查；旧环境结论不迁移。
 - 撤销：`status` 改为 `REVOKED` 并保留条目与理由；既有历史记录保持原样。
 
 ## 5. 第一版说明与待决事项
@@ -38,7 +38,7 @@
 - 第一版按用户决定只收录 `mathlib` 与 `physlib`。`physlib` 状态为 `PROBATIONARY`：政策上准入，**实际上当前被阻断**（见下条）。
 - 2026-09-15 直接读上游构建文件得到三项事实，已写入条目：
   1. **三个 lean_lib 全部设 `-Dwarn.sorry=false`**——physlib 刻意保留 `sorry` 并关闭警告。我们 import 它之后，目标的 `#print axioms` 可能报 `sorryAx`，对允许集 `{propext, Classical.choice, Quot.sound}` 是硬失败。这是 [CONFORMANCE E06](../CONFORMANCE.md) 的情形，属于预期会发生，不是理论风险。
-  2. **版本冲突已确证**，不再是“待验证”：physlib 用 Lean `v4.33.0` + mathlib `v4.33.0`，本仓库锁 `v4.30.0-rc2` + mathlib `c1e30e17…`。一个 lake 项目只有一个 toolchain 和一个 mathlib，所以不升级整条链就装不进来；升级则三个 `formal/` 项目的既有通过全部作废重跑（[REVIEW](../REVIEW.md) §6）。
+  2. **版本冲突已确证**，不再是“待验证”：physlib 用 Lean `v4.33.0` + mathlib `v4.33.0`，本仓库锁 `v4.30.0-rc2` + mathlib `c1e30e17…`。一个 lake 项目只有一个 toolchain 和一个 mathlib，所以不升级整条链就装不进来；升级则三个 `formal/` 项目的既有通过全部作废重跑（[REVIEW](../REVIEW.md) §4）。
   3. physlib 的 lakefile 用 **tag** `v4.33.0` 作 mathlib 的 `rev`，与本注册表 `pin_rule` 的“完整 commit”要求不一致；真实 pin 必须从它自己的 `lake-manifest.json` 读，不能信 lakefile。另外它还 require `doc-gen4`，一个文档生成器会进入依赖闭包。
 - `PhyslibAlpha`（评审较松、接受 AI 大规模贡献）与 `QuantumInfo`（独立规范）均未自动准入。注意 `defaultTargets` 只管 physlib 仓库内 `lake build` 构建什么，**对下游 import 没有任何约束**：`PhyslibAlpha` 是已声明的 `lean_lib`，`import PhyslibAlpha.X` 照样能用。这条限制只能由我们自己的 import 扫描执行，目前属待实现项。
 - `LeanQuantum` 暂未登记，但既有 `formal/AgtXIvRootMath` 已在用。新形式化在登记为 `LOCAL_FROZEN` 条目（含 `Quantumlib.Data.Error.Operator` 禁用项）之前，不得新导入。

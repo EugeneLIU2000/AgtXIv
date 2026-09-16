@@ -1,0 +1,107 @@
+{
+  "report_version": "delta-agent/1.0",
+  "date": "2026-09-16",
+  "scope": "Offline specification and interface regression checks for delta.compare; no baseline was resolved, no prior art was searched and no contribution was accepted.",
+  "note": "Development checks only. A contribution-delta is an assessment relative to one pinned baseline-snapshot; it is never a priority claim and never scientific acceptance.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "agent_id": "delta",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "delta.compare"
+    ],
+    "checker": "check_interfaces.py",
+    "draft_schemas": [
+      "delta-draft.schema.json"
+    ],
+    "new_business_record_types": [],
+    "agents_json_changed": false,
+    "checker_self_reported_blind_spots": [
+      "record_set",
+      "source_bytes",
+      "execution_identity",
+      "meaning",
+      "result",
+      "baseline_fixation_time",
+      "baseline_content",
+      "prior_art",
+      "relation_evidence",
+      "qualification_meaning",
+      "record_conditionals"
+    ]
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Delta Agent/check_interfaces.py\" --kind delta --input \"schema v0.1/Delta Agent/conformance/delta-draft.json\"",
+      "exit_code": 0,
+      "result": "Valid delta draft accepted."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Delta Agent/check_interfaces.py\" --kind delta --input \"schema v0.1/Delta Agent/conformance/delta-draft-invalid.json\"",
+      "exit_code": 1,
+      "result": "Invalid delta draft rejected."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Delta Agent/check_interfaces.py\" --kind delta --input \"schema v0.1/Delta Agent/conformance/delta-draft-multi-target-covered.json\" --task \"schema v0.1/Delta Agent/conformance/task-multi-target.json\"",
+      "exit_code": 0,
+      "result": "Every Task target covered by a comparison or an explicit declaration (UNCOVERED_TARGET rule satisfied)."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1/Delta Agent/tests\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "passed_tests": 41
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/tests/run_agent_tests.py\"",
+      "exit_code": 0,
+      "result": "All 21 schema v0.1 checks passed (shared runner, wired into tools/validate_repo.py)."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "result": "443 passed. --import-mode=importlib is REQUIRED: 'Reader Agent/tests/test_interfaces.py' and 'Autoformalization Agent/tests/test_interfaces.py' share a basename and the tests directories have no __init__.py, so a plain run fails at collection."
+    }
+  ],
+  "total_test_cases_passed": 41,
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "implementation",
+        "validation"
+      ],
+      "focus": "Complete the committed scaffold to parity with the Paper and Autoformalization modules: add INTERFACE.md, CONFORMANCE.md, a pytest suite with a unique basename, and this report.",
+      "changes": [
+        "Wrote INTERFACE.md describing the operation boundaries, the return shape keyed to the schema files that exist, and the model-versus-host ownership split.",
+        "Wrote CONFORMANCE.md with numbered counterexamples, each naming the layer that actually catches it and the real error code where a machine does.",
+        "Added a pytest suite under a module-unique basename to avoid the existing test_interfaces.py basename collision.",
+        "Recorded this report from observed command output only."
+      ],
+      "result": "41 module tests pass; shared runner 21/21; full package tree 443 passed with --import-mode=importlib.",
+      "independent_review": false,
+      "pending": "No independent reader or interface-compatibility review of this module has been performed. No model was run and no business record was assembled."
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "WHEN the baseline was pinned is not checked. A baseline chosen after the result was known passes exactly like one fixed at the start.",
+    "The baseline-snapshot is not resolved: its domain, selection_method, search_coverage and limitations are never read, so a narrow baseline named as if exhaustive passes.",
+    "An empty prior_refs means nothing was compared here; it is not evidence that no prior work exists.",
+    "No model execution, scheduling, record persistence or identity authentication. Draft shape validity is not record-set validity and not scientific correctness.",
+    "No RecordSet closure, stored envelope or hash verification; business root-level if/then gates are inherited only where this checker re-implements them.",
+    "This module has no worked example directory; its conformance fixtures are synthetic teaching material with placeholder references, not real records."
+  ],
+  "checked_file_sha256": {
+    "AGENT.md": "0ef3ed51bd3b7fd33768d107ab41c1c7b10f4b570d5bfabefc24c20b2f9ca97a",
+    "CONFORMANCE.md": "761649f5211740887196fc30fb76464743eb14003e90fc0cb5c7c13c76f76ea6",
+    "INTERFACE.md": "e29025991a0c5091a183059d705eee1bdd3d075179d064a413ee70f91d5963fe",
+    "check_interfaces.py": "f3a7918abd8219ec2c5d728c1140ec7e7e6efde4ff2a5a46bacd035efafbbdfc",
+    "conformance/delta-draft-invalid.json": "2e0d4d1d1c7af83b7ccb44653d7ba9fef92221f56265884c6a2cedb92640281d",
+    "conformance/delta-draft-multi-target-covered.json": "fc78c1626e648b5a6ceb80cac34fe738669c5aad8581ae0758b31fbc52a7ef42",
+    "conformance/delta-draft.json": "32ac1dd7e46499e32310d90f5e364bb256e8dc98f8d119fdf3915bca9c49c5fe",
+    "conformance/task-multi-target.json": "71f1eef0507c3dfae67656758a5979435a5f78a00d08e102976ae9ff24447f1a",
+    "delta-draft.schema.json": "34c033756a04f0587b73a46bdf1391774ee602987cafb3bfa8394d45db63804d",
+    "tests/test_delta_interfaces.py": "7fc47ff58d98be371eded7196da991d012376b783c687753dfc0de8e426212b1"
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "report_version": "reader-agent/1.0",
+  "date": "2026-09-16",
+  "scope": "Offline specification and interface regression checks for reader.explain; no model execution and no business record was created.",
+  "note": "These are development checks. Passing them is not a readability approval, not scientific acceptance, and not evidence for any claim explained by this agent.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "reader.explain"
+    ],
+    "draft_schemas": [
+      "explanation-draft.schema.json"
+    ],
+    "normative_documents": [
+      "AGENT.md",
+      "INTERFACE.md",
+      "CONFORMANCE.md"
+    ],
+    "registry_change": [],
+    "agents_json_disagreements": [],
+    "checker_additions": [],
+    "added_this_round": [
+      "INTERFACE.md",
+      "CONFORMANCE.md",
+      "validation-report.json",
+      "conformance/explanation-draft.json",
+      "conformance/task.json",
+      "conformance/explanation-draft-smuggled.json",
+      "conformance/explanation-draft-ungrounded.json",
+      "conformance/task-unexplained-target.json"
+    ],
+    "unchanged_this_round": [
+      "AGENT.md",
+      "check_interfaces.py",
+      "explanation-draft.schema.json",
+      "tests/test_interfaces.py"
+    ],
+    "conformance_fixtures": {
+      "path": "conformance/",
+      "purpose": "Give the counterexamples in CONFORMANCE.md E01, E06 and E08 a file the checker can run directly.",
+      "fixture_references_are_real_records": false,
+      "fixture_hashes_are_real": false,
+      "task_and_result_constructed": true,
+      "result_constructed": false,
+      "record_set_closure_checked": false,
+      "wired_into_run_agent_tests": false
+    }
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Reader Agent/check_interfaces.py' --kind explanation --input 'schema v0.1/Reader Agent/conformance/explanation-draft.json'",
+      "exit_code": 0,
+      "checks_passed": true,
+      "checked_layers": 5,
+      "unchecked_keys": 10,
+      "task_supplied": false,
+      "result": "Five layers executed: no_business_records, schema, explanation_interface_rules and the two follow-up layers. The Task layer was not executed and is reported as unchecked.task."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Reader Agent/check_interfaces.py' --kind explanation --input 'schema v0.1/Reader Agent/conformance/explanation-draft.json' --task 'schema v0.1/Reader Agent/conformance/task.json'",
+      "exit_code": 0,
+      "checks_passed": true,
+      "checked_layers": 8,
+      "unchecked_keys": 9,
+      "task_supplied": true,
+      "result": "Adds task_reader_preconditions, task_contract and task_exact_refs_and_target_coverage. Exit 0 means no problem was found in the layers that ran; it does not mean the explanation is correct or readable."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Reader Agent/check_interfaces.py' --kind explanation --input 'schema v0.1/Reader Agent/conformance/explanation-draft-smuggled.json'",
+      "exit_code": 1,
+      "checks_passed": false,
+      "error_codes": [
+        "SMUGGLED_RECORD",
+        "SMUGGLED_RECORD",
+        "SCHEMA",
+        "SCHEMA"
+      ],
+      "result": "CONFORMANCE E01. The anti-smuggling scan runs before the schema gate, so a business record is named as smuggling first and reported as a shape error second."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Reader Agent/check_interfaces.py' --kind explanation --input 'schema v0.1/Reader Agent/conformance/explanation-draft-ungrounded.json'",
+      "exit_code": 1,
+      "checks_passed": false,
+      "error_codes": [
+        "UNGROUNDED_EXPLANATION"
+      ],
+      "result": "CONFORMANCE E06. An explanation with no target and no basis record must declare in gaps what it could not ground."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Reader Agent/check_interfaces.py' --kind explanation --input 'schema v0.1/Reader Agent/conformance/explanation-draft.json' --task 'schema v0.1/Reader Agent/conformance/task-unexplained-target.json'",
+      "exit_code": 1,
+      "checks_passed": false,
+      "error_codes": [
+        "UNEXPLAINED_TARGET"
+      ],
+      "result": "CONFORMANCE E08. The second Task target is never the target_ref of any explanation."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Reader Agent/check_interfaces.py' --kind explanation --input 'schema v0.1/Reader Agent/AGENT.md'",
+      "exit_code": 2,
+      "checks_passed": false,
+      "error_codes": [
+        "INPUT_ERROR"
+      ],
+      "result": "Unreadable input produces exit 2, not exit 1: that is a caller or checker-setup failure, not a finding about a draft."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1/Reader Agent/tests' -q -p no:cacheprovider",
+      "exit_code": 0,
+      "passed_tests": 42,
+      "result": "The module's own regression suite, unchanged this round."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/tests/run_agent_tests.py'",
+      "exit_code": 0,
+      "steps_passed": 21,
+      "steps_total": 21,
+      "result": "Canonical package entry point. Step reader-pytest covers this module; the six conformance commands above are not wired into it."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1' -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "passed_tests_package_wide": 341,
+      "result": "Package-wide count observed on 2026-09-16 and deliberately excluded from total_test_cases_passed to avoid double counting the 42 above. The figure is volatile: sibling modules were being written concurrently in the same checkout."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1' -q -p no:cacheprovider",
+      "exit_code": 2,
+      "result": "Recorded as a failure on purpose. Without --import-mode=importlib, collection aborts with 'import file mismatch' on schema v0.1/Reader Agent/tests/test_interfaces.py: that basename is shared with Autoformalization Agent and neither tests directory has an __init__.py."
+    },
+    {
+      "command": "Markdown relative-link check over schema v0.1/Reader Agent (every non-http target must exist on disk)",
+      "exit_code": 0,
+      "result": "0 broken relative links."
+    }
+  ],
+  "total_test_cases_passed": 42,
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "module documentation author"
+      ],
+      "focus": "Bring the Reader module to the package skeleton: write INTERFACE.md, CONFORMANCE.md and this report against the checker, schema and tests that already existed, without rewriting any of them.",
+      "changes": [
+        "INTERFACE.md: operation table with explicit non-responsibilities, empty-shape draft JSON, per-field rules with a 'does not mean' column, host/model ownership table, staged reference rules, per-round run directory with record_counts fixed at an empty map.",
+        "CONFORMANCE.md: fixed conflict priority, the two-value attribution decision order, counterexamples E01-E13 each naming the layer that catches it, three-layer acceptance and a runnable command block.",
+        "Added five conformance fixtures so E01, E06 and E08 can be run by the checker directly instead of only inside pytest.",
+        "Every 'which layer catches it' line was verified by running the checker on that exact input; five of the thirteen are recorded as having no machine interception today."
+      ],
+      "result": "42 module tests pass unchanged; six conformance commands returned the exit codes recorded above; run_agent_tests.py 21/21; 0 broken relative links.",
+      "independent_review": false,
+      "pending": "No second reader has checked these documents against the checker. The cross-model readability cases L-01 to L-04 in ../PENDING_TESTS.md remain unexecuted, and the six conformance commands are not wired into ../tests/run_agent_tests.py, whose owner is outside this module."
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "NO MACHINE INTERCEPTION for a reader's opinion written as prose (CONFORMANCE E07). A draft whose text says the argument 'looks correct, so the result can be treated as verified', with gaps emptied, passes all eight layers. The draft carries no verdict field, but nothing stops that sentence from later being quoted as support. Declared as unchecked.opinion_as_support and asserted as passing in tests/test_interfaces.py::test_known_gap_opinion_text_passes.",
+    "NO MACHINE INTERCEPTION for a business record smuggled as prose (CONFORMANCE E05). The anti-smuggling scan walks JSON structure only; a complete record serialised into a text string passes. Verified by running the checker on such a draft.",
+    "NO MACHINE INTERCEPTION for turning an unknown into a denial or a success (CONFORMANCE E11), for example 'no counterexample was found, therefore the claim holds'. Explanation text is never read at all (unchecked.explanation_quality).",
+    "NO MACHINE INTERCEPTION for a silently dropped gap (CONFORMANCE E12). Declared gaps are counted, never compared with the open items of the explained records (unchecked.gap_fidelity).",
+    "NO MACHINE INTERCEPTION for an untrue attribution (CONFORMANCE E04, second half). The declared UNESTABLISHED or SELF_CHECK value is taken as given; whether the same principal produced the explained material is a host fact this checker does not have (unchecked.attribution). Note that reader is not in validate.py's independent set, so a reader Task is not required to declare exclusions either.",
+    "Whether an explanation is correct, readable, matched to its stated audience, or an answer to the brief at all is not checked anywhere in this module.",
+    "INVISIBLE_REF and UNEXPLAINED_TARGET only run when --task is supplied. The same draft citing a record the Task never provided passes when the checker is run without a Task.",
+    "The checker never verifies that any referenced record exists, and never verifies that a follow-up request names all the inputs its target operation requires; both are the scheduler's and the host's responsibility.",
+    "No RecordSet, stored envelope, content hash, root record constraint or reference closure is checked; source bytes and provenance are not checked; no Result, delivery outcome or approval is produced.",
+    "No assembler, manifest writer, Result generator or delivery channel exists for this module. INTERFACE.md section 5 is a contract for those, not a description of running code.",
+    "Cross-model readability cases L-01 to L-04 in ../PENDING_TESTS.md have not been executed. A checker exit 0 says nothing about whether a reader could follow the explanation.",
+    "The conformance fixtures are synthetic: their record ids and content hashes do not correspond to any stored record, and the Task fixtures were hand-built rather than issued by a host.",
+    "The six conformance commands in CONFORMANCE.md section 5 are not wired into ../tests/run_agent_tests.py; only the pytest suite is. Wiring them requires editing a file this module does not own.",
+    "Running pytest across the whole package requires --import-mode=importlib, because this module's tests/test_interfaces.py shares a basename with Autoformalization Agent's and neither tests directory has an __init__.py. Without the flag, collection aborts at exit 2.",
+    "AGENT.md was left unchanged this round and now understates the module. Its status line says the checker source exists but was not run in that round, and section 6 says no checker or cross-model case is executed; as of this report the checker is wired into run_agent_tests.py as step reader-pytest and 42 tests pass. AGENT.md also does not link INTERFACE.md or CONFORMANCE.md, because both postdate it.",
+    "AGENT.md front-matter uses operation / execution-kind / business-contract / orchestration-overlay / draft-version, while Paper Agent and Autoformalization Agent use applies-to-business-contract / applies-to-orchestration-overlay / <kind>-draft-version. The two spellings were not unified, and AGENT.md carries no I1-I6 landing table.",
+    "The draft schema $id uses .../schema/reader-agent/1.0/..., matching Paper Agent but not Autoformalization Agent's .../schema/autoformalization/1.0/.... This package-level inconsistency is recorded, not resolved here.",
+    "No disagreement was found between this module's documents and agents.json: reader.explain keeps one operation, an empty output_record_types, 64 input types and exactly the two capabilities records.read and reader.explain."
+  ],
+  "checked_file_sha256": {
+    "AGENT.md": "40402b53634a0bef162b63d3c2c1841bd1853fd4c0e45b85110aff0c41a14387",
+    "INTERFACE.md": "a90f5df4e3bbc83f1856c35c3f23141a316cf73669ed0b0656f861b792a6e37e",
+    "CONFORMANCE.md": "02d406dfcc463596287ee08055d0df3c9c6cafd5334970ae703ff192335b89a9",
+    "check_interfaces.py": "cb922c2f5568fd3478b69d4d5191937ae843adfde21d49b365f14b62cd77842f",
+    "explanation-draft.schema.json": "27b23b644867196c1707c973d29b33e6579e6505f3e0df0fc00af5ff04ef0ce2",
+    "tests/test_interfaces.py": "b80e680b3d13f64d305affc9c9b456a147f66e12cff794e456465b7c7f6f0981",
+    "conformance/explanation-draft.json": "70263bb176c9bdaa2772962086a5457bc67a5785f5f12f7b7f1172073459b1a6",
+    "conformance/task.json": "185cb6a2f9a1f47b4635839f2bd71c5f8fa9791498d7d2d0b1a6498775c9e109",
+    "conformance/explanation-draft-smuggled.json": "8034a5375a4cd60d23006b693f23e481ceddfc8d24ce0b94cbb25005aa8b169e",
+    "conformance/explanation-draft-ungrounded.json": "956c9b8cbf8941263e22891fa848c1c2add6c7f1ba8eea460f92d80514dd6b0e",
+    "conformance/task-unexplained-target.json": "a9016db8188d550947cc515ccc50a4ef92b446fe7d5baa74302a764e785b482a"
+  }
+}

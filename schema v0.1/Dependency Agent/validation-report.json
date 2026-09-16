@@ -1,0 +1,106 @@
+{
+  "report_version": "dependency-agent/1.0",
+  "date": "2026-09-16",
+  "scope": "Offline specification and interface regression checks for dependency.search; no retrieval was executed, no knowledge source was queried and no reuse was authorized.",
+  "note": "Development checks only. Passing them is not evidence that any search ran, that a dependency is reusable, or that a result is novel. Reuse permission belongs to review.reuse.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "agent_id": "dependency",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "dependency.search"
+    ],
+    "checker": "check_interfaces.py",
+    "draft_schemas": [
+      "search-draft.schema.json"
+    ],
+    "new_business_record_types": [],
+    "agents_json_changed": false,
+    "checker_self_reported_blind_spots": [
+      "record_set",
+      "source_bytes",
+      "execution_identity",
+      "meaning",
+      "result",
+      "retrieval_not_run",
+      "baseline_content",
+      "absence",
+      "binding_semantics",
+      "authorization",
+      "record_conditionals"
+    ]
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Dependency Agent/check_interfaces.py\" --kind search --input \"schema v0.1/Dependency Agent/conformance/search-draft.json\"",
+      "exit_code": 0,
+      "result": "Valid candidate search draft accepted."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Dependency Agent/check_interfaces.py\" --kind search --input \"schema v0.1/Dependency Agent/conformance/search-draft-self-binding.json\"",
+      "exit_code": 1,
+      "result": "A dependency-binding whose dependent and prerequisite are the same record is rejected."
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/Dependency Agent/check_interfaces.py\" --kind search --input \"schema v0.1/Dependency Agent/conformance/search-draft-duplicate.json\"",
+      "exit_code": 1,
+      "result": "Duplicate binding rejected."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1/Dependency Agent/tests\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "passed_tests": 50
+    },
+    {
+      "command": ".venv/bin/python -B \"schema v0.1/tests/run_agent_tests.py\"",
+      "exit_code": 0,
+      "result": "All 21 schema v0.1 checks passed (shared runner, wired into tools/validate_repo.py)."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest \"schema v0.1\" -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "result": "443 passed. --import-mode=importlib is REQUIRED: 'Reader Agent/tests/test_interfaces.py' and 'Autoformalization Agent/tests/test_interfaces.py' share a basename and the tests directories have no __init__.py, so a plain run fails at collection."
+    }
+  ],
+  "total_test_cases_passed": 50,
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "implementation",
+        "validation"
+      ],
+      "focus": "Complete the committed scaffold to parity with the Paper and Autoformalization modules: add INTERFACE.md, CONFORMANCE.md, a pytest suite with a unique basename, and this report.",
+      "changes": [
+        "Wrote INTERFACE.md describing the operation boundaries, the return shape keyed to the schema files that exist, and the model-versus-host ownership split.",
+        "Wrote CONFORMANCE.md with numbered counterexamples, each naming the layer that actually catches it and the real error code where a machine does.",
+        "Added a pytest suite under a module-unique basename to avoid the existing test_interfaces.py basename collision.",
+        "Recorded this report from observed command output only."
+      ],
+      "result": "50 module tests pass; shared runner 21/21; full package tree 443 passed with --import-mode=importlib.",
+      "independent_review": false,
+      "pending": "No independent reader or interface-compatibility review of this module has been performed. No model was run and no business record was assembled."
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "No retrieval was executed or verified. search_requests are proposed actions; the checker cannot tell a real search log from a proposed one.",
+    "An empty result is evidence of a bounded search, never evidence of absence or of novelty.",
+    "Formal dependencies are not checked against 'Autoformalization Agent/registry/trusted-packages.json'; that registry is still read by no checker.",
+    "No model execution, scheduling, record persistence or identity authentication. Draft shape validity is not record-set validity and not scientific correctness.",
+    "No RecordSet closure, stored envelope or hash verification; business root-level if/then gates are inherited only where this checker re-implements them.",
+    "This module has no worked example directory; its conformance fixtures are synthetic teaching material with placeholder references, not real records."
+  ],
+  "checked_file_sha256": {
+    "AGENT.md": "8eb5e1df817510914a707adadb2512fd15f3b0b5efc72e6dec69988d34193080",
+    "CONFORMANCE.md": "88b15a496bb5f79666daa73b1c7007bd86ba7596d59f890f97e7c633b6e78b42",
+    "INTERFACE.md": "280b31d2e21ed54a9f65f27b2f32a7cd775ed2afc4fe0486ccffdabe2314d0de",
+    "check_interfaces.py": "1d0d9b694890077748c4b0fc46529e324b10bc425b65a91ddf1ab266d45053c5",
+    "conformance/search-draft-duplicate.json": "cd0dc3d914d47ec5116a7c806852bf14a3e018b09e4f8f4b08c8298da4b35f58",
+    "conformance/search-draft-self-binding.json": "4bba98f77623ac59e557acc0436b09074f8fcbb11438bfb53a680eb7324dc742",
+    "conformance/search-draft.json": "11f8d08e0957a4661178a9932f55007df7374bab460aa6e87ec1de38a96c7003",
+    "search-draft.schema.json": "078012f2fba61846cb7c4b7afe708cacd7ab52623c2e853ced95b49a38da1fa9",
+    "tests/test_dependency_interfaces.py": "8b12c6b94050b20211c710cb5c3aede244f51a5cb4762972d6c7175180b19588"
+  }
+}

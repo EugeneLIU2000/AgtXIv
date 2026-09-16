@@ -1,0 +1,157 @@
+{
+  "report_version": "planner-agent/1.0",
+  "date": "2026-09-16",
+  "scope": "Offline specification and interface regression checks for planner.propose; no model execution, no scheduling, no Task creation.",
+  "note": "Development checks, not an authenticated business formal-check, a scheduling decision or a scientific acceptance record. A draft that passes check_interfaces.py is a suggestion, not accepted work.",
+  "implementation": {
+    "entry": "AGENT.md",
+    "spec_version": "1.0",
+    "business_contract": "v3/0.0.0",
+    "orchestration_contract": "0.1.0",
+    "operations": [
+      "planner.propose"
+    ],
+    "draft_schemas": [
+      "propose-draft.schema.json"
+    ],
+    "normative_documents": [
+      "AGENT.md",
+      "INTERFACE.md",
+      "CONFORMANCE.md"
+    ],
+    "conformance_fixtures": [
+      "conformance/propose-draft.json",
+      "conformance/propose-draft-rejected.json",
+      "conformance/propose-draft-blocked-follow-up.json",
+      "conformance/task.json"
+    ],
+    "registry_change": [],
+    "checker_additions": [],
+    "files_added_this_cycle": [
+      "INTERFACE.md",
+      "CONFORMANCE.md",
+      "validation-report.json",
+      "tests/test_planner_interfaces.py"
+    ],
+    "files_unchanged_this_cycle": [
+      "AGENT.md",
+      "check_interfaces.py",
+      "propose-draft.schema.json",
+      "conformance/propose-draft.json",
+      "conformance/propose-draft-rejected.json",
+      "conformance/propose-draft-blocked-follow-up.json",
+      "conformance/task.json"
+    ],
+    "shared_files_changed": [],
+    "test_file_basename": "test_planner_interfaces.py, deliberately unique: test_interfaces.py already collides between Reader Agent and Autoformalization Agent."
+  },
+  "automated_checks": [
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Planner Agent/check_interfaces.py' --kind propose --input 'schema v0.1/Planner Agent/conformance/propose-draft.json'",
+      "exit_code": 0,
+      "checks_passed": true,
+      "checked_layers": 8,
+      "unchecked_keys": 10,
+      "warnings": 0,
+      "task_supplied": false
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Planner Agent/check_interfaces.py' --kind propose --input 'schema v0.1/Planner Agent/conformance/propose-draft.json' --task 'schema v0.1/Planner Agent/conformance/task.json'",
+      "exit_code": 0,
+      "checks_passed": true,
+      "checked_layers": 11,
+      "unchecked_keys": 9,
+      "warnings": 0,
+      "result": "task_declared_outputs, task_contract and task_exact_refs execute; the unchecked.task entry disappears."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Planner Agent/check_interfaces.py' --kind propose --input 'schema v0.1/Planner Agent/conformance/propose-draft-rejected.json'",
+      "exit_code": 1,
+      "checks_passed": false,
+      "errors": [
+        "PROPOSAL_INPUT at /proposals/2/input_refs"
+      ],
+      "warnings": [
+        "SELF_REDISPATCH at /proposals/3"
+      ],
+      "result": "Without a Task the self-redispatch rule can only warn; rerunning the same fixture with conformance/task.json turns SELF_REDISPATCH into an error (observed, exit 1)."
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Planner Agent/check_interfaces.py' --kind propose --input 'schema v0.1/Planner Agent/conformance/propose-draft-blocked-follow-up.json'",
+      "exit_code": 1,
+      "checks_passed": false,
+      "errors": [
+        "FOLLOW_UP_BLOCKED at /follow_up_requests/0"
+      ]
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/Planner Agent/check_interfaces.py' --kind propose --input 'schema v0.1/Planner Agent/AGENT.md'",
+      "exit_code": 2,
+      "result": "Unparseable input produces a single INPUT_ERROR report; exit 2 is the input/checker-setup class, not a finding about a draft."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1/Planner Agent/tests' -q -p no:cacheprovider",
+      "exit_code": 0,
+      "passed_tests": 44
+    },
+    {
+      "command": ".venv/bin/python -B 'schema v0.1/tests/run_agent_tests.py'",
+      "exit_code": 0,
+      "passed_steps": 21,
+      "result": "All 21 schema v0.1 checks passed, including the three planner conformance probes (expected 0, 1, 1)."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1' -q -p no:cacheprovider --import-mode=importlib",
+      "exit_code": 0,
+      "passed_tests_all_modules": 443,
+      "result": "Package-wide count re-observed on 2026-09-16 after all six modules were completed; it includes this module's 44 tests. It moves whenever any module adds tests, so treat it as a snapshot, not a contract."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest 'schema v0.1' -q -p no:cacheprovider",
+      "exit_code": 2,
+      "result": "Collection error, zero tests run (pytest returns 2 for a usage/collection error, not 1): 'Reader Agent/tests/test_interfaces.py' and 'Autoformalization Agent/tests/test_interfaces.py' share a basename and neither tests directory has __init__.py. Package-wide pytest requires --import-mode=importlib. Recorded because the failure is an environment fact, not a defect in any draft."
+    },
+    {
+      "command": "Markdown relative-link check across schema v0.1/Planner Agent/*.md (every non-http target must exist relative to its own file)",
+      "exit_code": 0,
+      "result": "0 broken relative links."
+    }
+  ],
+  "total_test_cases_passed": 44,
+  "development_reviews": [
+    {
+      "round": 1,
+      "roles": [
+        "module documentation author"
+      ],
+      "focus": "Bring the Planner module to parity with Paper and Autoformalization by adding INTERFACE.md, CONFORMANCE.md, validation-report.json and a pytest regression suite, describing the AGENT.md, checker, schema and fixtures that already exist without rewriting them.",
+      "changes": [
+        "INTERFACE.md: operation table with explicit non-responsibilities, the five-root-field draft shape, a host-versus-model ownership table naming budget and no-progress accounting as host-owned, staged registration and reference rules, the per-round file convention, and a compatibility section recording the agents.json-versus-document differences.",
+        "CONFORMANCE.md: counterexamples E01-E14, each stating the situation, what should happen, what is forbidden and which layer catches it; the catch line was written after reading check_interfaces.py and running the case, and names the real error code or says plainly that no machine catches it.",
+        "tests/test_planner_interfaces.py: 44 pytest cases covering every error and warning code the checker emits, the schema-versus-agents.json drift guards, the three CLI exit codes, read-only behaviour, and three tests that fix known blind spots by asserting they still pass."
+      ],
+      "result": "44 module tests pass; run_agent_tests.py reports 21/21; the four checker probes returned the recorded exit codes 0, 0, 1, 1 and the unparseable-input probe returned 2; 0 broken relative links.",
+      "independent_review": false,
+      "pending": "No second reader reviewed these documents. No model was run, no Task was created and no scheduler behaviour was exercised. AGENT.md, check_interfaces.py, propose-draft.schema.json and the conformance fixtures were deliberately left unchanged, so the stale sentences listed below remain in the repository."
+    }
+  ],
+  "not_implemented_or_not_established": [
+    "STALE STATUS IN AGENT.md: the front-matter status line says '已有检查器源码，本轮未运行', and section 3 says '现有检查器只覆盖部分结构，不保证已实现这条可派单规则'. The checker does implement that rule (FOLLOW_UP_BLOCKED) and is wired into tests/run_agent_tests.py, which ran it on 2026-09-16. AGENT.md was not edited in this cycle; the correction lives here.",
+    "AGENT.md front-matter deviates from the shape used by Paper and Autoformalization: it writes 'business-contract'/'orchestration-overlay'/'draft-version' instead of 'applies-to-business-contract'/'applies-to-orchestration-overlay'/'propose-draft-version', adds 'operation' and 'execution-kind' lines, and its status line carries no validation-report.json link. Left as found.",
+    "AGENT.md has no invariant-mapping section for I1-I6 and no pipeline index table, unlike the two reference modules. Left as found; INTERFACE.md links to the invariants instead of restating them.",
+    "SMUGGLED_RECORD IS UNREACHABLE TODAY. check_interfaces.py runs the anti-smuggling scan only after the schema layer passes, and the draft schema is fully closed (every object has additionalProperties:false and RecordRef carries exactly record_type, record_id, revision, content_hash). Every smuggling attempt is therefore reported as SCHEMA, never as SMUGGLED_RECORD. The scan is a second gate for a future relaxed schema, not a check that fires today. A test characterises this so the claim fails loudly if it changes.",
+    "NO MACHINE INTERCEPTION for an escalation written as prose. A request for capabilities, a larger budget, removal of exclusions or a lowered EVIDENCE gate placed inside reason, blocked_on or open_items passes the checker unchanged (report key escalation_in_prose). Only the structured form is blocked, and only because the draft schema has no such key.",
+    "NO MACHINE INTERCEPTION for budget or no-progress exhaustion. The checker cannot see the parent plan's reserved allowance, so it cannot distinguish a bounded decomposition from a fan-out that exhausts the tree budget (report key budget_and_no_progress). The host budget ledger that would enforce SCHEDULING.md section 5 rule 5 does not exist.",
+    "NO MACHINE JUDGEMENT of plan quality: whether a proposal is well founded, bounded, non-redundant, decomposed to a useful depth, or an answer to the user's actual goal is not checked (report key plan_quality).",
+    "The checker does not verify that the proposed operation's required inputs are complete, that the referenced records exist, or that the scheduler would accept the proposal (report key required_inputs_of_proposed_operation). An empty blocked_on is a model statement, not a verified precondition.",
+    "PURPOSE AND ROUTE CANNOT BE EXPRESSED. The draft has no field for purpose, route, template or policy, so DUPLICATE_PROPOSAL keys only on agent + operation + input_refs and collapses two genuinely different jobs that share inputs. This is interface gap G-05 in PENDING_TESTS.md; the host-side WorkBinding template and acceptance service that would fix it are not implemented.",
+    "agents.json principle 2 requires proposals to carry '预算边界和停止条件', but propose-draft.schema.json deliberately has no limits key, so a budget bound can only appear as unchecked prose in reason or blocked_on. The machine-checkable part of a stop condition is only the fixed text order of blocked_on, which is a warning, not an error.",
+    "AGENT-CONTRACTS.md section 2 describes the Reader/Planner input type set as '有限类型全集'. Measured against agents.json, planner.propose's input_record_types equals all 64 catalog short names, not a proper subset. agents.json wins; no document was edited.",
+    "SCHEDULING.md never names planner.propose, so this module's scheduling constraints are derived only from its general clauses (section 4 state machine and gates, section 5 concurrency/reuse/retry/budget). No claim is made that SCHEDULING.md prescribes an order for this operation.",
+    "PENDING_TESTS.md section 6 still records P-02 as '通过（记录缺口）：阻塞建议进入 follow_up 仍被接受，规则未机器化', which predates the N-02 checker rule now enforced as FOLLOW_UP_BLOCKED; section 4's P-02 entry already reflects the newer state. PENDING_TESTS.md is a shared file and was not edited.",
+    "No RecordSet closure, stored envelopes, hashes, root-record constraints, source bytes, producer identity, visibility or independence are checked by this module's checker; the constant unchecked map states this on every report.",
+    "No scheduler, no Task creation, no budget accounting, no model runner and no record registration exist. Every conformance fixture is synthetic: its record identities and content hashes are placeholders and refer to no stored record.",
+    "No CI integration of this module's checks beyond tests/run_agent_tests.py, and no independent review of these documents has been performed."
+  ],
+  "checked_file_sha256": {}
+}

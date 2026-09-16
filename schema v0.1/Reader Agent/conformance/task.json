@@ -1,0 +1,50 @@
+{
+  "contract_version": "0.1.0",
+  "task_id": "reader-synthetic-1",
+  "agent": "reader",
+  "operation": "reader.explain",
+  "brief": "向一位有线性代数基础、没有形式化验证背景的研究生解释：这条数学目标现在的证据到了哪一层，还缺什么。",
+  "target_refs": [
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:robustness-bound",
+      "revision": 1,
+      "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ],
+  "input_refs": [
+    {
+      "record_type": "agtxiv.v3.math-claim/0.0.0",
+      "record_id": "math-claim:robustness-bound",
+      "revision": 1,
+      "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "record_type": "agtxiv.v3.definition/0.0.0",
+      "record_id": "definition:density-matrix",
+      "revision": 1,
+      "content_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    {
+      "record_type": "agtxiv.v3.argument-snapshot/0.0.0",
+      "record_id": "argument-snapshot:round-1",
+      "revision": 1,
+      "content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  ],
+  "input_artifacts": [],
+  "depends_on": [],
+  "expected_record_types": [],
+  "limits": {
+    "max_attempts": 2,
+    "max_seconds": 600,
+    "max_cost_units": 0,
+    "no_progress_limit": 1
+  },
+  "acceptance": "DELIVERY",
+  "exclusions": [],
+  "capabilities": [
+    "records.read",
+    "reader.explain"
+  ]
+}

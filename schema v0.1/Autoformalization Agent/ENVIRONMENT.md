@@ -4,7 +4,7 @@
 
 ## 1. 工具链与构建
 
-- 每个 Lean 项目以单行 `lean-toolchain` 固定版本；当前三个项目均为 `leanprover/lean4:v4.30.0-rc2`（release commit `3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc`）。换工具链等于换环境，按 REVIEW §6 重跑受影响检查。
+- 每个 Lean 项目以单行 `lean-toolchain` 固定版本；当前三个项目均为 `leanprover/lean4:v4.30.0-rc2`（release commit `3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc`）。换工具链等于换环境，按 REVIEW §4 重跑受影响检查。
 - 工具链装在仓库本地（`.tools/elan`，已 gitignore），构建时设 `ELAN_HOME` 指向它并调用其 `lake`，例如：
   - `ELAN_HOME=<repo>/.tools/elan <repo>/.tools/elan/bin/lake build`
   - 审计：`… lake env lean Audit.lean`
@@ -51,13 +51,13 @@
 - 目的：提升跨项目可复用性、降低构建成本，不改变数学含义。
 - 只允许修改证明体。每轮红线（必须重跑并保持不变）：`#print axioms` 输出一致；TARGET 声明**名**集合一致（`--expect-target-names`）。
 - 这两条红线的实际覆盖范围必须说清楚：公理比对拦不住陈述改动（改弱一个仍可证的定理，公理依赖一模一样）；名摘要拦不住同名改写（摘要取的是全限定名，不是陈述）。**同名改写陈述目前没有机器拦截**，靠人工复核与 R3 的可信目标比较，R4／R5 兜底；elaborated 类型摘要是未实现项。
-- 修改陈述、定义或类型实例不是精简：视为新定理，回 R2 重新走声明关与组包，按 REVIEW §6 重跑对应检查。
+- 修改陈述、定义或类型实例不是精简：视为新定理，回 R2 重新走声明关与组包，按 REVIEW §4 重跑对应检查。
 - 每轮至少记录一项可测量指标：未使用假设警告／`#lint`、import 足迹（importGraph）、构建时间、mathlib 既有定义的复用、禁用构造清单。没有可测量改进即停；最多 2 轮。
 - 最终字节必须重跑 formal-check；若精简前后字节哈希不同，R4／R5 不能沿用旧结论。
 
 ## 6. 环境变更与失效
 
-修改工具链、库锁、定义、类型实例或公理政策时，旧环境的通过结论不能迁移；按 REVIEW §6 的失效范围表处理。新环境与新 packet 绑定，历史通过记录保持原环境归属。
+修改工具链、库锁、定义、类型实例或公理政策时，旧环境的通过结论不能迁移；按 REVIEW §4 的失效范围表处理。新环境与新 packet 绑定，历史通过记录保持原环境归属。
 
 ## 7. 当前实现边界
 

@@ -25,7 +25,7 @@
 | Lamport 阅读视图 | [lamport-view.schema.json](lamport-view.schema.json) | 宿主按已登记记录导出 | 只给已登记节点和推理安排编号、层级与结束位置，不创造第二套数学事实；不是生产 operation |
 | Lean 代码草稿 | [lean-draft.schema.json](lean-draft.schema.json) | `formalization.generate` | `packet_ref`、`files`、`declaration_map`、预声明的 frontier 草稿与缺口；不含执行回执，也不得编造 work-attempt、formalization-attempt 或 formal-check |
 
-字段级必填、枚举与引用闭包以 schema 和 `check_interfaces.py` 为准；语义与来源审阅见 REVIEW。草稿合法不等于记录集合法，也不等于数学正确。
+字段级必填、枚举与引用闭包以 schema 和 `check_interfaces.py` 为准；语义与来源审阅见 [Review Agent](<../Review Agent/AGENT.md>)；本流水线的轮次与退回见 REVIEW。草稿合法不等于记录集合法，也不等于数学正确。
 
 ## 3. 宿主与模型的分工
 
