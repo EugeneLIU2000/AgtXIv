@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/upstream-import.schema.json",
+  "title": "UpstreamImport",
+  "description": "Preserved engine report and independently checked import boundary.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.upstream-import/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "const": "vibefeld",
+          "description": "Upstream engine identity."
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?(?![\\s\\S])",
+          "maxLength": 64,
+          "description": "Exact source commit."
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact supported export protocol."
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Exact AgtXIv importer version."
+        },
+        "ledger": {
+          "anyOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Raw event ledger, or null when unavailable."
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Raw graph projection, or null when unavailable."
+        },
+        "context_artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+          },
+          "maxItems": 10000,
+          "description": "Available scope, definitions, externals, identity and full objections."
+        },
+        "identity_map": {
+          "anyOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Exact identity mapping, null if unavailable."
+        },
+        "reported_states": {
+          "anyOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Original reported states, null if unavailable."
+        },
+        "import_checks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Explicit checks that actually ran."
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "INCOMPLETE",
+            "REJECTED",
+            "STRUCTURALLY_IMPORTED"
+          ],
+          "description": "Import result, never scientific support."
+        },
+        "missing_items": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 10000,
+          "description": "Required upstream information absent."
+        }
+      },
+      "required": [
+        "engine",
+        "commit",
+        "protocol_version",
+        "adapter_version",
+        "ledger",
+        "graph",
+        "context_artifacts",
+        "identity_map",
+        "reported_states",
+        "import_checks",
+        "outcome",
+        "missing_items"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "outcome": {
+                "const": "STRUCTURALLY_IMPORTED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "missing_items": {
+                "maxItems": 0
+              },
+              "ledger": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+              },
+              "graph": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+              },
+              "identity_map": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+              },
+              "reported_states": {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef"
+              },
+              "context_artifacts": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "outcome": {
+                "const": "INCOMPLETE"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "missing_items": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

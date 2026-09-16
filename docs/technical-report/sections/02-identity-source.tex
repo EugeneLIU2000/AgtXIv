@@ -1,0 +1,37 @@
+\section{Exact identity, sources and claim reconstruction}\label{sec:source}
+
+\subsection{Two hashes answer different questions}
+
+An artifact hash identifies original bytes. A record hash identifies a canonical serialized record. These questions differ: a reformatted JSON file can encode the same canonical record while having different original bytes. Conversely, unchanged paper bytes can support several different candidate interpretations. AgtXIv keeps these identities separate.
+
+\ruleid{I1: exact reference.} A reference to a record binds the tuple
+\begin{equation}
+  r=(\text{record type},\text{lineage identifier},\text{revision},\text{content hash}).
+\end{equation}
+The revision is a positive integer. A floating request for the latest version is a convenience query and cannot stand in for this tuple in reproducible evidence. The same lineage and revision cannot be silently reused for changed content.
+
+\ruleid{I2: record envelope.} Each V3 record includes its exact discriminator, identifier, revision, creation time, material class, schema-bundle hash, attributed producer, policy reference, input references, content hash and payload. The canonical record hash excludes only the root \code{content_hash} field. Nested hashes and references remain covered. The implementation uses the existing V2 normalization and integer-safe JSON parser while hashing the V3 flat envelope with its own procedure.
+
+\ruleid{I3: original bytes.} Byte-bearing references bind an artifact identifier, media type, byte size and SHA-256. A filename is a locator, not proof of identity. The local validators reject unresolved references, stale hashes and duplicate identities inside the supplied set. Their scope does not establish that the caller supplied every relevant record in the world.
+
+The bundle manifest binds schema bytes and the offline resolver uses local identifiers. Schema URIs are not instructions to download arbitrary network resources during validation. The generated appendix binds the source manifest used in this report and records the individual input digests in \code{generated/schema-inputs.json}.
+
+\subsection{Acquisition precedes interpretation}
+
+The request identifies the intended paper; acquisition records what was actually obtained. An omitted arXiv version must be resolved and then stored as an exact version for that run. A request, a successful response, a downloaded archive and a published rendering are different observations. Missing source packages, absent supplementary data and unsupported formats require explicit outcomes.
+
+\ruleid{S1: source boundary.} Preserve the selected source bytes and an inventory of the files actually captured. Record their origin and their relationship to the work and version. In the existing robustness example, six original/archive files and eight locally generated build files were all captured. The additional build files were observed artifacts, not evidence that this task executed a paper build.
+
+\ruleid{S2: span boundary.} For text artifacts, byte spans use zero-based, half-open intervals $[a,b)$ over the original bytes. A span binds the parent artifact and selected byte hash. Human-facing line numbers aid navigation but do not replace byte identity. If normalization changes text, retain a transformation record linking its input and output; do not attach normalized offsets to the original artifact.
+
+\ruleid{S3: activity boundary.} TeX is a programmable document format. Static inspection can identify some includes, environments and local references, but does not establish complete macro expansion or published rendering activity. Commented, inactive and unknown material must remain distinguishable. The source pipeline processes data without executing untrusted TeX or scripts.
+
+\subsection{A source claim is not a normalized theorem}
+
+A source-faithful claim retains its statement, source spans, components, conditions, modality, attribution, scientific system and comparison baseline. Mathematical normalization records typed objects, quantifiers, assumptions and conclusions in a separate representation. A component map states which parts were represented mathematically and which scientific meaning remains outside that representation.
+
+\ruleid{S4: preserve meaning.} Dropping a quantifier, changing a physical system, replacing an approximation with an equality or adding a new premise requires an explicit account. A harmless representation correction may remain within a lineage after suitable review; a changed proposition needs a distinct claim identity or explicitly derived claim. Neither a text similarity score nor a matching hash is an oracle for semantic identity.
+
+\ruleid{S5: freeze the denominator.} An inventory records discovered claims, non-claim material and unknown content. A frozen scope binds a reviewed inventory and the required work. A later failure cannot be hidden by deleting an obligation. Corrections to omissions, additions of work and new scientific hypotheses follow different revision paths, with old records retained.
+
+\boundary{A lexical candidate inventory is a reproducible reading aid. Its number of lines, spans or cues is not a count of scientifically distinct propositions, and complete byte coverage does not establish complete semantic discovery.}

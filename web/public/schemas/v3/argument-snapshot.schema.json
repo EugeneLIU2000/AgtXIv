@@ -1,0 +1,362 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/argument-snapshot.schema.json",
+  "title": "ArgumentSnapshot",
+  "description": "Full fixed argument, not merely the upstream graph projection.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.argument-snapshot/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "scope_ref": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "enum": [
+                    "agtxiv.v3.frozen-scope/0.0.0"
+                  ]
+                }
+              }
+            }
+          ],
+          "description": "Exact query-independent argument work scope."
+        },
+        "source_claim_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.scientific-claim/0.0.0",
+                      "agtxiv.v3.derived-claim/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact argument targets."
+        },
+        "math_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.math-claim/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Fixed mathematical targets associated with the argument."
+        },
+        "node_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.argument-node/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Full node inventory."
+        },
+        "inference_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.inference-step/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Joint-premise inferences."
+        },
+        "context_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.assumption-context/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "All local assumption scopes."
+        },
+        "proof_plan_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.proof-plan/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Distinct proof routes."
+        },
+        "dependency_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.dependency-binding/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Full reference and definition dependencies."
+        },
+        "challenge_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.challenge/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "All objections including archived paths."
+        },
+        "challenge_disposition_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.challenge-disposition/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Complete known objection history."
+        },
+        "upstream_import_ref": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+                },
+                {
+                  "properties": {
+                    "record_type": {
+                      "enum": [
+                        "agtxiv.v3.upstream-import/0.0.0"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Exact preserved engine input; null for native arguments."
+        },
+        "missing_items": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 10000,
+          "description": "Explicit incompleteness of this snapshot."
+        }
+      },
+      "required": [
+        "scope_ref",
+        "source_claim_refs",
+        "math_refs",
+        "node_refs",
+        "inference_refs",
+        "context_refs",
+        "proof_plan_refs",
+        "dependency_refs",
+        "challenge_refs",
+        "challenge_disposition_refs",
+        "upstream_import_ref",
+        "missing_items"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

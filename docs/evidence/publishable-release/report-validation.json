@@ -1,0 +1,255 @@
+{
+  "kind": "AGTXIV_TECHNICAL_REPORT_VALIDATION",
+  "observed_at": "2026-09-07T23:09:03.416108+00:00",
+  "scope": "Report generation, compilation, portable source packaging, layout review and explicit evidence binding; not an overall release or scientific acceptance decision.",
+  "status": "PASS",
+  "pdf": {
+    "path": "docs/technical-report/build/main.pdf",
+    "bytes": 501630,
+    "sha256": "sha256:d93638c80c6bda28daf168f2e6e6ed63760446c7f0248ae266ccc1adca308db4"
+  },
+  "portable_source": {
+    "path": "docs/technical-report/agtxiv-technical-report-source.zip",
+    "bytes": 64968,
+    "sha256": "sha256:3fe13d6726c735953adc5815f1fa1932019411db713ac86559e2a139e4396f6f"
+  },
+  "page_count": 55,
+  "checks": {
+    "generated_schema_appendix_current": "PASS",
+    "all_64_lifecycle_families_named": "PASS",
+    "three_pass_pdflatex_and_bibtex": "PASS",
+    "final_tex_warnings": 0,
+    "zip_crc_and_source_manifest": "PASS",
+    "archive_excludes_build_caches": "PASS",
+    "independent_extracted_source_compilation": "PASS",
+    "portable_pdf_text_matches_repository_pdf": "PASS",
+    "final_http_result_hash_and_etag": "PASS",
+    "final_http_timeout_20000": "PASS",
+    "browser_file_hashes": "PASS"
+  },
+  "appendix": {
+    "record_families": 64,
+    "shared_types": 19,
+    "field_rows": 569,
+    "input_files": 67
+  },
+  "source_archive": {
+    "entry_count": 18,
+    "manifested_source_files": 17,
+    "standalone_command": "bash build.sh --frozen-appendix",
+    "standalone_scope": "Uses included appendix snapshot; does not claim drift checks against absent repository schemas.",
+    "source_files": [
+      {
+        "path": "README.md",
+        "bytes": 10443,
+        "sha256": "f9be4568b8634acf85617093654b654049f635abf8df22080ce89ddb0df5a9bb"
+      },
+      {
+        "path": "build.sh",
+        "bytes": 790,
+        "sha256": "4c5265da9b6718e9309cbb54cef5c48e05e6aa88616deea8a67b8cb1e71a27da"
+      },
+      {
+        "path": "generate_appendix.py",
+        "bytes": 8288,
+        "sha256": "6a3cd455d36fff4c9ce0a0fdb80ca86deb9a3ad130f42c824d39357e8f9060f6"
+      },
+      {
+        "path": "generated/schema-fields.tex",
+        "bytes": 132814,
+        "sha256": "0bbb998969ffb7102790be7c572ac360b3ee50af43402a76713b889e84f74c9c"
+      },
+      {
+        "path": "generated/schema-identity.tex",
+        "bytes": 169,
+        "sha256": "6cab61989f2b786c77fee6f200371238ba9f84fd98372588b63fdaee68dcb414"
+      },
+      {
+        "path": "generated/schema-inputs.json",
+        "bytes": 22252,
+        "sha256": "17728cd3b4245dfa62df1339f43b8e157c31dd2502b8e0b477684fa026a20923"
+      },
+      {
+        "path": "main.tex",
+        "bytes": 4287,
+        "sha256": "de67266bde309ac08e963eda3b4d7d06e4841b3b01e65812e7eeef661e7767d3"
+      },
+      {
+        "path": "package_source.py",
+        "bytes": 1911,
+        "sha256": "4b544141459d290946276f8ce21aa90a33916de9041a2fbc5dfa1924713114b0"
+      },
+      {
+        "path": "references.bib",
+        "bytes": 354,
+        "sha256": "d9f16a9a526dd4ada9956fcbd900628efb81f12e31ca8aee12a9d041833ca448"
+      },
+      {
+        "path": "sections/01-purpose.tex",
+        "bytes": 4855,
+        "sha256": "fb799cad816d6fdf4ec3e889146f63960a86f9d8517652539c7fe940ce5d7421"
+      },
+      {
+        "path": "sections/02-identity-source.tex",
+        "bytes": 5285,
+        "sha256": "9c5d6ea6b8b99ef0e41abbe8c1717b311992b0b7661541e22e14d79b9124177a"
+      },
+      {
+        "path": "sections/03-argument-assessment.tex",
+        "bytes": 6643,
+        "sha256": "282392f0ae6862b52b669f6d3748bffa0037e05050378f8f228d112801fce981"
+      },
+      {
+        "path": "sections/04-lifecycle.tex",
+        "bytes": 7468,
+        "sha256": "b9cee35c604fa0b83f72288ca7bfebc157af418ad05bd611830037d5790d4d0a"
+      },
+      {
+        "path": "sections/05-robustness.tex",
+        "bytes": 6059,
+        "sha256": "6f412f083cc403425755dc96cf0da21b168c147863b9bfd967976bf67b703c98"
+      },
+      {
+        "path": "sections/06-web-api.tex",
+        "bytes": 15199,
+        "sha256": "5caba9558621af8605e6ab3acd5ce9c395b4f94e1617ca1c576e51e1fc3fef60"
+      },
+      {
+        "path": "sections/07-evidence-release.tex",
+        "bytes": 7958,
+        "sha256": "a1074ad196aa3f2b1f5b9c8de4d8ebfec5149b7c52f91c81bb8c41b51cf78a7b"
+      },
+      {
+        "path": "sections/08-discussion.tex",
+        "bytes": 2104,
+        "sha256": "a576e4e9790c219065da426fb0cededb45adf115592513e0f80285fddfcc0b9e"
+      }
+    ]
+  },
+  "layout_review": {
+    "rendered_pages": 55,
+    "review": "All 55 pages reviewed as contact sheets. Scientific equations, axes, API and appendix pages also inspected at larger size; final small wording change rerendered and page 13 reviewed. No clipping, table overlap or isolated reference page observed.",
+    "retained_samples": [
+      {
+        "path": "docs/evidence/publishable-release/report-build/reviewed-page-01.png",
+        "bytes": 67148,
+        "sha256": "sha256:d6b814993d73ee71ba7e5f9e4ab7fcf13b94a3f599a36cf7b2b18a77171ac5ea"
+      },
+      {
+        "path": "docs/evidence/publishable-release/report-build/reviewed-page-13.png",
+        "bytes": 190967,
+        "sha256": "sha256:e182ed2fdb158b79eac9689bfc842a9743b5e7078e9f33e154d81cc20b7fdcea"
+      },
+      {
+        "path": "docs/evidence/publishable-release/report-build/reviewed-page-16.png",
+        "bytes": 124820,
+        "sha256": "sha256:3ac7abf90a5ddfd5cfaa7b1479391acc174791455a761f2d1c5e2e3d41d1d48b"
+      }
+    ]
+  },
+  "compile_logs": [
+    {
+      "path": "docs/evidence/publishable-release/report-build/compile-1.txt",
+      "bytes": 14517,
+      "sha256": "sha256:05811681255cc780cdd732da8eafbbedce0870bc330f5000bf67375f1db08693"
+    },
+    {
+      "path": "docs/evidence/publishable-release/report-build/bibtex.txt",
+      "bytes": 153,
+      "sha256": "sha256:1bc06247fcea24cd199816a159163f830e7dd0328931e45f9457195b31ca0bc7"
+    },
+    {
+      "path": "docs/evidence/publishable-release/report-build/compile-2.txt",
+      "bytes": 14517,
+      "sha256": "sha256:05811681255cc780cdd732da8eafbbedce0870bc330f5000bf67375f1db08693"
+    },
+    {
+      "path": "docs/evidence/publishable-release/report-build/compile-3.txt",
+      "bytes": 14517,
+      "sha256": "sha256:05811681255cc780cdd732da8eafbbedce0870bc330f5000bf67375f1db08693"
+    },
+    {
+      "path": "docs/evidence/publishable-release/report-build/main.log",
+      "bytes": 41662,
+      "sha256": "sha256:2d8b132a099674521e1780885ff6170effd81320b01a31451a21cc74086c1e35"
+    },
+    {
+      "path": "docs/evidence/publishable-release/report-build/portable-compile-3.txt",
+      "bytes": 14517,
+      "sha256": "sha256:05811681255cc780cdd732da8eafbbedce0870bc330f5000bf67375f1db08693"
+    },
+    {
+      "path": "docs/evidence/publishable-release/report-build/portable-main.log",
+      "bytes": 41662,
+      "sha256": "sha256:2d8b132a099674521e1780885ff6170effd81320b01a31451a21cc74086c1e35"
+    }
+  ],
+  "bound_evidence": [
+    {
+      "path": "docs/evidence/publishable-release/heplean-http-final/verification.json",
+      "bytes": 3047,
+      "sha256": "sha256:38685deece9e7f3ac0ea9cd8e489c6c32d13b50836f2b1ea2cfed3b703d24413"
+    },
+    {
+      "path": "docs/evidence/publishable-release/heplean-http-final/result.json",
+      "bytes": 39386,
+      "sha256": "sha256:473f17c7b59b4350a326a038b454ce59718a42399b002def0fc45ed9879e3416"
+    },
+    {
+      "path": "docs/evidence/publishable-release/browser-verification.json",
+      "bytes": 3103,
+      "sha256": "sha256:f3418c8a715d92af8356ed7bd914e6ffdfb6023900b308a302135bf6fb286989"
+    },
+    {
+      "path": "docs/evidence/publishable-release/intake-checks/concurrency-local.json",
+      "bytes": 664,
+      "sha256": "sha256:f1bf1b1520c3976435200518f09e4cc0ae288f9cb47ea26efc0d0fe2ef2f8b48"
+    },
+    {
+      "path": "docs/audits/repository-archive-manifest.json",
+      "bytes": 26630,
+      "sha256": "sha256:82213d8e9e672b689f0364a379c652ff3f98c4b77f80f3de6f299f53dbc4f7a4"
+    },
+    {
+      "path": "docs/audits/prototype-archive-verification.json",
+      "bytes": 6953,
+      "sha256": "sha256:13836c926acce8a379d0feb8a2906604a30732d1d2025bdc10d457a7fb6fd8a1"
+    }
+  ],
+  "implementation_inputs": [
+    {
+      "path": "web/server.mjs",
+      "bytes": 12288,
+      "sha256": "sha256:bf12d6f5391ca25328e862311e472dc5db470dd813465a972cc0fecac4065b05"
+    },
+    {
+      "path": "src/agtxiv_web/intake.mjs",
+      "bytes": 47848,
+      "sha256": "sha256:0b1e3bc4f84de97aa66e91cef3953313f80f59a772ce3081690de8d26df146d9"
+    },
+    {
+      "path": "src/agtxiv_web/analysis.schema.json",
+      "bytes": 16304,
+      "sha256": "sha256:b9240db8ef642b7dc32760602c93bd9efb476ae10259fb1758086c058df88bd0"
+    },
+    {
+      "path": "web/public/api/v1/openapi.json",
+      "bytes": 40829,
+      "sha256": "sha256:9dee2132f84b543cc0b5b355ad3ee6773589d8c0ccda9ece3cd9e23b8b3729e6"
+    }
+  ],
+  "commands": [
+    "python3 docs/technical-report/generate_appendix.py --check",
+    "bash docs/technical-report/build.sh",
+    "python3 docs/technical-report/package_source.py",
+    "bash build.sh --frozen-appendix (inside extracted archive)",
+    "pdftotext -layout and cmp of repository/portable PDFs"
+  ],
+  "open_release_items": [
+    "Verify copied public PDF/source downloads",
+    "Deploy and verify hosted service; no public deployment is claimed by this report",
+    "Resolve/document aggregate frozen-baseline gate and record independent full-suite result separately"
+  ],
+  "scientific_acceptance": false,
+  "overall_release_accepted": false
+}

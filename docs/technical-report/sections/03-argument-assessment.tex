@@ -1,0 +1,52 @@
+\section{Arguments and six separate assessment questions}\label{sec:assessment}
+
+\subsection{Joint premises and local assumptions}
+
+An argument is represented through nodes, inference steps, assumption contexts, proof routes and explicit dependency bindings. A joint inference has the form
+\begin{equation}
+  (P_1,\ldots,P_k;\Gamma,\mathcal{R})\Longrightarrow Q,
+\end{equation}
+where $\Gamma$ names the local assumptions and $\mathcal{R}$ the stated rule. This representation preserves the fact that the premises are used together. Drawing independent arrows $P_i\to Q$ without recording their joint use can incorrectly suggest that each premise alone proves the conclusion.
+
+\ruleid{A1: distinguish graph meanings.} Document containment, provenance, mathematical dependence and scientific comparison are different relations. A heading containing a theorem is not a proof dependency. A paper citing another paper does not by itself identify a load-bearing theorem. The interface must expose relation type and candidate status before relying on graph reachability.
+
+\ruleid{A2: preserve context.} A statement proved under a local assumption cannot escape that context merely because a producer labels the assumption discharged. The implemented record checks constrain supported discharge forms and evidence references, but do not themselves prove every inference rule. Alternative proof routes remain separate, so a gap in one route does not automatically negate another.
+
+The pinned vibefeld adapter illustrates another boundary: replaying supplied ledger bytes and comparing them with an export can establish internal consistency of that capture. It does not authenticate declared identities or establish that an independent upstream process actually ran. Upstream labels such as \code{validated}, \code{clean}, \code{closed} and \code{admitted} remain attributed reports. They are not V3 scientific approval or knowledge admission.
+
+\subsection{What the six axes ask}
+
+\begin{longtable}{@{}P{37mm}P{58mm}P{24mm}@{}}
+\toprule
+Axis & Scientific question & Example evidence \\
+\midrule\endfirsthead
+\toprule Axis & Scientific question & Example evidence \\
+\midrule\endhead
+Source fidelity & Does the recorded proposition preserve what the source says, including attribution and conditions? & Exact spans and source review \\
+Mathematical correctness & Does the stated mathematical conclusion follow under the recorded assumptions? & Argument review or suitable formal evidence \\
+Formal alignment & Does the formal statement express the intended mathematical target? & Exact endpoint comparison and backtranslation \\
+Semantic applicability & Do mathematical objects, assumptions and approximations apply to the scientific use under discussion? & Model and domain review \\
+Empirical support & Do observations support the scientific claim under the stated methodology and uncertainty? & Data and empirical review \\
+Computational reproducibility & Can the specified computation be reproduced under its input, environment and comparison protocol? & Execution records and reproduction review \\
+\bottomrule
+\end{longtable}
+
+\ruleid{A3: no automatic transfer.} Lean kernel success concerns a formal declaration in an environment. It does not, alone, establish source fidelity, correct translation, physical applicability or empirical support. Similarly, reproducing a plotted numerical value does not establish that the experiment supports the physical interpretation assigned to it.
+
+\subsection{Applicability, conclusion and execution}
+
+Each axis assessment separates three state dimensions. Applicability asks whether the question applies: \code{UNDETERMINED}, \code{APPLICABLE} or \code{NOT_APPLICABLE}. Result records the evidence conclusion: \code{NOT_ASSESSED}, \code{INCONCLUSIVE}, \code{PARTIALLY_SUPPORTED}, \code{SUPPORTED} or \code{COUNTEREVIDENCE}. Execution records what work occurred: \code{DEFERRED}, \code{BLOCKED}, \code{FAILED} or \code{COMPLETED}. A method, exact targets, review context, supporting and opposing evidence, conditions and unresolved frontiers accompany these labels.
+
+\ruleid{A4: retain disagreement.} A status view is a read-only projection over a supplied record set. It must preserve differing assessments of the same exact target, including their conditions and methods. Selecting the newest positive assessment while hiding an earlier relevant objection is not an acceptable reduction. Missing evidence is not zero evidence, and an unmeasured quantity is not a measured zero.
+
+The local \code{project_axes} function retains the assessments of the exact target in the supplied collection. A serialized \code{StatusView} is a separate record whose validation checks implemented bindings; it is not a mechanical proof that its author supplied every assessment. Neither mechanism establishes completeness outside the submitted record universe.
+
+\ruleid{A5: distinguish success from accounting.} A work obligation can be accounted for by a documented failure or deferral where its processing profile permits this. An obligation marked \code{SUCCESS_REQUIRED} additionally needs suitable success evidence for the exact target. Filling a result-reference field with an arbitrary existing record cannot discharge that requirement. Unsupported completion stages remain fail-closed in the local implementation.
+
+\subsection{Independence is more than a different name}
+
+Review records bind who reviewed what, which inputs were visible and the applicable policy. The local \code{AuthorityContext} is an explicit capability supplied by a trusted integrating caller. It can check aliases, visible inputs, named roles and allowed policies within that boundary. A self-authored identity file is not independent authentication, and different agent names do not establish independent institutions or uncorrelated reasoning.
+
+\ruleid{A6: do not promote validation output.} A consistent candidate graph may legitimately report that authority was not checked. Such output is not a release token. Formal scientific decisions require the adopted qualification and separation policies, actual execution evidence where applicable, and appropriate domain review. These institutional and scientific requirements are not supplied by the schema package.
+
+A precise formal expression can align with an intended mathematical target before its proof is complete. Conversely, kernel acceptance cannot rescue a formal statement that expresses a different target. Formal-alignment evidence must therefore name the actual comparison endpoints, rather than borrowing a source-to-argument review that never compared the formal representation.

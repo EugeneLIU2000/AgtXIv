@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/status-view.schema.json",
+  "title": "StatusView",
+  "description": "Rebuildable six-axis view preserving all exact and conflicting assessments.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.status-view/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "target_ref": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef",
+          "description": "Exact queried subject."
+        },
+        "assessment_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.axis-assessment/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Full selected assessment evidence."
+        },
+        "conflicting_assessment_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.axis-assessment/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Independently inspectable disagreements."
+        },
+        "axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_fidelity",
+              "mathematical_correctness",
+              "formal_alignment",
+              "semantic_applicability",
+              "empirical_support",
+              "computational_reproducibility"
+            ]
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "description": "Exactly the six axes, each appearing once.",
+          "uniqueItems": true
+        },
+        "frontier_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.frontier-item/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Unresolved boundaries."
+        },
+        "projection_method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Deterministic view policy, never a truth-score aggregation."
+        }
+      },
+      "required": [
+        "target_ref",
+        "assessment_refs",
+        "conflicting_assessment_refs",
+        "axes",
+        "frontier_refs",
+        "projection_method"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

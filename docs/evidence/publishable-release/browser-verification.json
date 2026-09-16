@@ -1,0 +1,86 @@
+{
+  "kind": "AGTXIV_BROWSER_VERIFICATION",
+  "observed_at": "2026-09-07T22:59:59.379840+00:00",
+  "environment": "Codex in-app browser; local Node service at http://127.0.0.1:8787",
+  "production_deployment_verified": false,
+  "checks": [
+    {
+      "name": "HTML response and desktop visual layout",
+      "outcome": "PASS",
+      "detail": "Root originally returned application/octet-stream. Fixed to text/html and no-cache; actual browser rendered the white reader."
+    },
+    {
+      "name": "Visible form real submission",
+      "outcome": "PASS",
+      "job_id": "52744ee0-fbf9-447f-a36a-ccc5fc9b5a2b",
+      "paper": "2405.08863v1",
+      "visible_title": "HepLean: Digitalising high energy physics",
+      "candidates": 15,
+      "source_files": 3
+    },
+    {
+      "name": "WebMCP discovery, submission and read",
+      "outcome": "PASS",
+      "tools": [
+        "submit_arxiv_paper",
+        "read_analysis_job"
+      ],
+      "job_id": "528f0110-95a5-4766-a3fe-639544d04caf",
+      "resolved_arxiv": "1706.03762v7",
+      "visible_title": "Attention Is All You Need",
+      "candidates": 11,
+      "source_files": 23
+    },
+    {
+      "name": "WebMCP invalid external URL",
+      "outcome": "PASS",
+      "detail": "https://example.com/not-arxiv rejected by server parser; no new job returned."
+    },
+    {
+      "name": "Form invalid external URL",
+      "outcome": "PASS",
+      "detail": "Same rejection displayed as readable inline feedback."
+    },
+    {
+      "name": "Retained job after browser reload",
+      "outcome": "PASS",
+      "detail": "Attention Is All You Need completed result reappeared after reload."
+    },
+    {
+      "name": "Coefficient interaction with keyboard",
+      "outcome": "PASS",
+      "detail": "End moved t to 50%; output absolute weight displayed 1.00. Home returned to 0%. Explicit algebra-only disclaimer visible."
+    },
+    {
+      "name": "Narrow viewport",
+      "outcome": "PASS",
+      "viewport_override": {
+        "width": 390,
+        "height": 844
+      },
+      "measured_client_width": 375,
+      "measured_document_scroll_width": 375,
+      "detail": "Submission form and visualization inspected; no page-wide horizontal overflow. Override reset."
+    },
+    {
+      "name": "Schema search and field expansion",
+      "outcome": "PASS",
+      "detail": "SourceSnapshot search returned one record; expansion displayed real payload fields, required flags and descriptions."
+    },
+    {
+      "name": "Browser error log",
+      "outcome": "PASS",
+      "detail": "No captured error or warning entries during checked flows."
+    }
+  ],
+  "file_hashes": {
+    "attention-result.json": "sha256:245c3475a1feb92f33a1ea2a29a31627dbb0fbf2758a16795c190fa451988e7a",
+    "attention-job.json": "sha256:bf7047c2750403bd354fbe417065afb5434b077dacd8376e8cdc75fbce323ce5",
+    "heplean-job.json": "sha256:e303159fda4276746a2143bd40c2a4b3e38eac096199d9f2c38cc22f8d5b70b1"
+  },
+  "remaining": [
+    "Verify report download resources after final report copy.",
+    "Deploy and check hosted service separately."
+  ],
+  "scientific_acceptance": false
+}

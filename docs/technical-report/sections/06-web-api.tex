@@ -1,0 +1,95 @@
+\section{New-paper web and API architecture}\label{sec:web}
+
+\subsection{Purpose and implementation status}
+
+The release interface must accept a new arXiv paper and perform a real bounded analysis. This operational requirement is distinct from the precomputed V1 demonstration and from independent scientific assessment. The primary user path is submission, acquisition, processing, visible progress or failure, and a result linked to source evidence. A successful run may still report incomplete extraction or no supported scientific conclusions.
+
+\boundary{The routes and state behaviour below are bound to the local implementation and an actual HTTP submission of HepLean, arXiv:2405.08863v1. The retained verification covers task/result schemas, exact-version acquisition, repeated result reads and six unassessed axes. Local browser checks additionally cover real submissions, refresh recovery, narrow-screen layout and keyboard interaction. Public deployment remains a separate release check.}
+
+The selected implementation uses a plain HTML, CSS and JavaScript front end under \code{web/}, with an ECMAScript-module Cloudflare Worker as the server. D1 stores task metadata and stage transitions; R2 retains acquired source bytes and generated results. An independent intake module performs arXiv input handling, real acquisition, bounded archive and TeX parsing, candidate source-span extraction and local-reference dependency extraction. These are source-processing operations; no language-model scientific approval is supplied by this path.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=7mm,box/.style={draw=accent!55,rounded corners=2pt,fill=wash,align=center,text width=36mm,minimum height=13mm,font=\small},link/.style={-{Stealth[length=2mm]},thick,draw=accent}]
+\node[box] (browser) {Browser\\submit / inspect};
+\node[box,right=of browser] (worker) {Worker API\\task coordination};
+\node[box,right=of worker] (intake) {Bounded intake\\acquire / parse};
+\node[box,below=10mm of worker] (d1) {D1\\task state and ownership};
+\node[box,below=10mm of intake] (r2) {R2\\source and result bytes};
+\draw[link] (browser)--(worker);
+\draw[link] (worker)--(intake);
+\draw[link] (worker)--(d1);
+\draw[link] (worker.south east)--(r2.north west);
+\end{tikzpicture}
+\caption{Operational architecture for new-paper processing. Task metadata and byte objects serve different roles. Cross-service failures require explicit recovery; this diagram does not imply a single atomic transaction across D1 and R2.}
+\label{fig:web}
+\end{figure}
+
+\subsection{Required transport contract}
+
+The API has a major-version path prefix \code{/api/v1} and currently returns \code{api_version: "1.0"}. The inspected routes are:
+
+\begin{longtable}{@{}P{62mm}P{76mm}@{}}
+\toprule
+Operation & Request and response meaning \\
+\midrule\endfirsthead
+\toprule Operation & Request and response meaning \\
+\midrule\endhead
+GET \code{/api/v1/health} & Service configuration state: \code{READY} if both stores are bound, otherwise \code{READ_ONLY}; no scientific assessment. \\
+GET \code{/api/v1/library?q=...} & Curated paper records, optionally filtered by a case-insensitive query of at most 200 characters. This endpoint returns the selected finite library, not a paginated global arXiv index. \\
+GET \code{/api/v1/papers/SLUG} & One curated paper, or 404. A missing curated paper can be submitted through the jobs endpoint. \\
+GET \code{/api/v1/schemas} & The exposed schema catalog and its bundle identity. \\
+POST \code{/api/v1/jobs} & JSON object with exactly one string field, \code{arxiv}. Returns 202 with a task view and \code{Location} pointing to the task. \\
+GET \code{/api/v1/jobs/JOB_ID} & Persisted task view: state, timestamps, revision, parent, result location and structured error where applicable. \\
+GET \code{/api/v1/jobs/JOB_ID/result} & Completed result bytes; 409 before completion; 503 for a missing or hash-mismatched retained result. \\
+POST \code{/api/v1/jobs/JOB_ID/retry} & Empty JSON object. Only failed or interrupted tasks are retryable. Creates a new task with \code{parent_id}; it does not overwrite the previous attempt. \\
+\bottomrule
+\end{longtable}
+
+The capitalized segments \code{SLUG} and \code{JOB_ID} are route variables, not literal path components. JSON requests are limited to 2 KiB and require \code{application/json}. Cross-origin browser POST requests are rejected. Error responses contain a code, message and request identifier; a successful transport status does not imply a supported scientific claim.
+
+\ruleid{W1: submit intent.} The submission request contains exactly the \code{arxiv} field, accepting an arXiv identifier or recognized arXiv URL; no processing-options field is currently supported. The server validates and normalizes the identifier before acquisition. An arbitrary user-supplied URL is not an authorized fetch destination. The response supplies a stable task identifier and the means to inspect its state. The acquired version and source identity are recorded separately from the requested identifier.
+
+\ruleid{W2: report actual state.} A task exposes its current stage, update or revision identity, and structured errors. Progress reflects persisted work transitions rather than a client-side timer. Concurrent attempts must not both take ownership of the same stage; a compare-and-swap transition checks the expected state before changing it. Interrupted or expired attempts require an explicit retry/recovery policy rather than indefinite apparent progress.
+
+The persisted success sequence is \code{QUEUED} $\to$ \code{FETCHING} $\to$ \code{ANALYZING} $\to$ \code{COMPLETED}, with \code{FAILED} for a recorded processing failure. A non-terminal task with no update for more than 120 seconds is projected as \code{INTERRUPTED} when read. This derived view does not rewrite its stored state or confirm that the worker has stopped. The earlier attempt may still complete. A retry records a separate task and parent link, preserving both attempts and their possible results. All task views explicitly report \code{scientific_assessment: "NOT_PERFORMED"}.
+
+\ruleid{W3: retain evidence.} Results bind the resolved source identity, original byte digest, processing version, extraction limits, candidate records and warnings. Candidate relations preserve their extraction basis. A local TeX reference is evidence of an explicit textual reference; it is not automatically a validated mathematical implication. Reading a job result must not mutate its source record or scientific status.
+
+Source archives are retained privately under keys derived from their SHA-256. Result JSON is likewise stored under its own byte digest, which is checked on result retrieval. A source digest and a result digest identify different byte objects. The result includes requested and resolved source information, retrieval time, archive digest, engine version, candidate spans and explicit remaining limitations. In the HTTP result, \code{transport.archive_sha256} uses the \code{sha256:} prefix required by the response schema. Candidate assessment entries remain \code{NO_ASSESSMENT}; they are not V3 \code{AxisAssessment} records.
+
+\ruleid{W4: expose failure.} Invalid input, unknown work, source unavailability, unsupported source format, archive rejection, resource limits and processing failure need separate error codes or documented details. An error response must not expose internal credentials or arbitrary filesystem paths. The client displays which stage failed and whether retry is meaningful. A failed parse must not leave a successful-result label.
+
+\ruleid{W5: document the actual interface.} The OpenAPI 3.1 description is published as a build artifact at \code{web/public/api/v1/openapi.json}, exposed at \code{/api/v1/openapi.json}. It defines routes, methods, request/response schemas, status codes and polling/retry semantics. The strict intake result schema is maintained at \code{src/agtxiv_web/analysis.schema.json}. Task retention and production access policy still require operational decisions. The task-result contract remains distinct from V3 scientific records; similar field names do not make an operational JSON object a sealed V3 record.
+
+\subsection{Bounded processing and separation from scientific work}
+
+Input acquisition must constrain network destinations, redirects, response size and time. Archive processing must constrain expanded bytes, entry count, path traversal, links and malformed members. TeX inspection is static and must not execute source-controlled commands. The configured limits belong in API documentation and actual server-side checks, not only in front-end validation.
+
+The server uses a 20-second configured timeout for both acquisition and analysis, and a conditional update to a shared submission clock permitting a new task no more often than every 3.5 seconds. A conditional SQL insertion admits a task only while fewer than three non-terminal tasks have recent updates. The 120-second cutoff bounds recently active records, not every worker that may still run after a stale projection. Intake bounds downloads to 8 MiB, expansion to 16 MiB, one file to 2 MiB, total TeX text to 4 MiB, tar entries to 1,024, files to 512 and candidates to 240. Other limits bound labels, references, includes, structural spans and hashing work. Each result records the configured limits under its defined response schema. Earlier browser receipts retain their original 30-second engine field; the final HTTP receipt records the current 20-second configuration.
+
+Source-span candidates provide a route from a displayed item to the bytes examined. They do not establish complete semantic claim discovery, source-faithful paraphrase or theorem validity. If a run cannot resolve macros, parse a document class or interpret a figure, that uncertainty belongs in the result. Restricting work is acceptable when the limit is explicit; reporting that limited work as complete scientific analysis is not.
+
+The web service therefore has its own operational lifecycle, while V3 describes a richer scientific lifecycle. D1 and R2 here serve the bounded web task implementation. Their use does not silently adopt or replace the V2 production authority proposal, which distinguishes reviewed Git material, canonical replay bundles, operational transactions and disposable projections. A future adapter must bind a task's actual artifacts, producer and evidence to the relevant V3 records before any stronger scientific interpretation is made.
+
+\subsection{Reader and interface acceptance}
+
+A reader should be able to submit a new paper, inspect a persisted task after refreshing the page, open the result, locate a source passage and identify missing evidence. The graph must distinguish workflow steps from paper-specific dependencies. Keyboard navigation, visible focus, narrow-screen layout, readable formulas and text labels for status colours are part of the acceptance path.
+
+The signed-weight interaction accompanying R3 is an algebraic illustration of nonnegative redistribution and cancellation. Its displayed coefficients and transition matrix are not a specified quantum state and channel, and its total absolute weight is not a computed state robustness. The interface must keep this distinction visible alongside the optimal-decomposition and trace-preserving assumptions.
+
+Final integration checks must include a new paper outside the precomputed example list, actual source acquisition, result evidence, a meaningful failure case, persisted task lookup and an independent comparison of API and displayed states. Successful local checks are not evidence of public deployment; the release record must name the actual running location or provide an explicitly local run procedure.
+
+The local adapter in \code{web/dev.mjs} uses Node's SQLite support and a private local object directory to exercise the same handler. Its default address is \code{http://127.0.0.1:8787}. It is a development environment, not a measurement of the production Cloudflare deployment. The server entry point can be started from the repository root with \code{node web/dev.mjs} after the required runtime and web assets are available.
+
+\subsection{Retained live HTTP evidence}
+
+The local run recorded in \code{docs/evidence/publishable-release/heplean-http-final/verification.json} submitted \code{2405.08863v1} to the running HTTP service on 7 September 2026 at 23:03 UTC. It observed \code{QUEUED}, then \code{COMPLETED} with revision 3, and retrieved identical result bytes twice. Polling did not capture each intermediate stage separately. The exact version 1 archive contains three source files, including two TeX files; the extractor returned 15 candidates. All six axes remained \code{NO_ASSESSMENT}, and \code{scientific_acceptance} remained false.
+
+The receipt reports successful job-schema, full result-schema, exact-version, retained-source, repeated-read and six-axis checks. The result in \code{heplean-http-final/result.json} has a nonempty entity tag matching its byte digest and reports \code{limits.timeoutMs=20000}. Earlier receipts remain historical evidence. These checks establish a real processing path, not extraction accuracy or scientific endorsement of HepLean.
+
+Browser checks initially exposed an incorrect MIME type for the root HTML page, observed as \code{ERR_BLOCKED_BY_CLIENT}. The root response was corrected to \code{text/html} and a regression test added. The local browser then rendered the white interface and completed a form submission of HepLean with 15 candidates and three source files. The browser's two exposed WebMCP tools were discovered; reading the submitted task agreed with the API, a new tool submission of \code{1706.03762} resolved to version 7 and completed with 11 candidates and 23 inventoried source files, and an invalid external URL was rejected by both tool and form paths.
+
+The receipt \code{docs/evidence/publishable-release/browser-verification.json} records these checks and additional refresh recovery, keyboard interaction with the signed-weight slider, real schema-field expansion and absence of captured browser errors. A 390-by-844 viewport override produced equal measured client and document-scroll widths of 375 pixels, with no page-wide horizontal overflow in the inspected flow. This is scoped local interface evidence, not a complete accessibility audit. The retained task/result JSON files accompany the receipt under \code{browser/}. Report-download verification and an actual public deployment URL remain separate next steps.
+
+A separate local handler check submitted 20 concurrent same-origin requests: one received 202, nineteen received 429, and one processing task was scheduled. Its receipt is \code{docs/evidence/publishable-release/intake-checks/concurrency-local.json}. This check injected a synthetic TeX upstream and used the local SQLite adapter; it tests the observed admission behaviour, not Cloudflare production concurrency or real upstream throughput. The accompanying retained logs report 14 engine tests, 23 response-schema tests and six handler tests passing. These scoped results do not replace a full repository or production release check.

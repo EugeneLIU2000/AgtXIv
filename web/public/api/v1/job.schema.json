@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/web/1.0/job.schema.json",
+  "title": "AgtXIv source-analysis job",
+  "description": "Retained processing state; COMPLETED means candidate extraction finished, not scientific acceptance.",
+  "type": "object",
+  "properties": {
+    "api_version": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "arxiv": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "QUEUED",
+        "FETCHING",
+        "ANALYZING",
+        "COMPLETED",
+        "FAILED",
+        "INTERRUPTED"
+      ]
+    },
+    "stages": {
+      "const": [
+        "QUEUED",
+        "FETCHING",
+        "ANALYZING",
+        "COMPLETED"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "result_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "analysis_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "scientific_assessment": {
+      "const": "NOT_PERFORMED"
+    }
+  },
+  "required": [
+    "api_version",
+    "id",
+    "arxiv",
+    "status",
+    "stages",
+    "created_at",
+    "updated_at",
+    "revision",
+    "result_url",
+    "analysis_id",
+    "parent_id",
+    "error",
+    "scientific_assessment"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "COMPLETED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result_url": {
+            "type": "string",
+            "pattern": "^/api/v1/jobs/"
+          },
+          "analysis_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "error": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "FAILED",
+              "INTERRUPTED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "type": "object"
+          },
+          "result_url": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

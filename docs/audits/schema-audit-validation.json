@@ -1,0 +1,52 @@
+{
+  "format": "agtxiv.schema-audit-validation/1.0.0",
+  "scientific_acceptance": false,
+  "executions": [
+    {
+      "command": ".venv/bin/python -B -m pytest tests/v3 tests/test_schema_audit.py -q -p no:cacheprovider",
+      "result": "742 passed in 285.09s",
+      "scope": "All V3 regression tests, including both contract fixes. The auditor generated-copy mapping and its associated test were corrected during this run; the separate 11-test execution below verifies that final auditor state."
+    },
+    {
+      "command": ".venv/bin/python -B -m pytest tests/test_schema_audit.py -q -p no:cacheprovider",
+      "result": "11 passed in 0.18s",
+      "scope": "Latest audit utility, including web/dist/client publication-copy paths."
+    },
+    {
+      "command": ".venv/bin/python -B tools/audit_schemas.py",
+      "result": "PASS; 374 files, 135 primary schemas, 1335 primary references, 64 V3 families; zero primary or API structural issues and zero generated web copy mismatches",
+      "scope": "Snapshot fingerprint in schema-release-audit.json; future workspace edits require regeneration."
+    }
+  ],
+  "input_files": [
+    {
+      "path": "src/agtxiv_v3/contracts.py",
+      "sha256": "sha256:40ae07eb68d6b47e2f369eb66d3b3e558e8c4f46d7aa6c2b8957b47f6fd979e0"
+    },
+    {
+      "path": "tools/audit_schemas.py",
+      "sha256": "sha256:ad39677e54c676d12df76c0a5615ada31c453785bb30ea355408158ef3d63231"
+    },
+    {
+      "path": "tests/v3/test_release_alignment_audit.py",
+      "sha256": "sha256:1ce45edb32434c581751b23032840fed8e55b72c01e4eb466b221d6cef3829ef"
+    },
+    {
+      "path": "tests/v3/test_release_query_audit.py",
+      "sha256": "sha256:f5148e01a2ddcc53c7b8f0b6843880fb5293974bb831747bfb5bf172a6ff609c"
+    },
+    {
+      "path": "tests/test_schema_audit.py",
+      "sha256": "sha256:5860bcfd08deef1543c3634c2370bf7d34aac53f58d4fc3e7568fa73dbcb771f"
+    },
+    {
+      "path": "docs/audits/schema-semantic-review.json",
+      "sha256": "sha256:0e1ffcea52f5803adad80c994114a536d9823f28f22b356d28dfdfa17dc9b0d8"
+    }
+  ],
+  "limitations": [
+    "These execution results are test evidence, not a proof that every cross-record semantic invariant is enforced.",
+    "Synthetic formal-alignment controls preserve faithful formal statements whose proofs are unfinished or whose kernel checks failed. No prover is executed by these tests.",
+    "The schema inventory compares contracts and exact references; new-paper job execution and published HTTP runtime conformance require separate release evidence."
+  ]
+}

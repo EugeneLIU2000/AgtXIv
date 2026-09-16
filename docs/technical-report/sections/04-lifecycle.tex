@@ -1,0 +1,45 @@
+\section{Record families across the lifecycle}\label{sec:lifecycle}
+
+The \RecordFamilyCount{} V3 record families cover a planned lifecycle rather than \RecordFamilyCount{} running services. The groups below explain why each family exists and where it hands information to another stage. Appendix~\ref{app:fields} supplies the generated payload and shared-field reference. The groups are an explanatory organization; exact discriminators and references remain those of the schemas.
+
+\subsection{Policy and evidence planning: three families}
+
+\textbf{ProcessingProfile, AuthorityPolicy, EvidenceProtocol.} A processing profile specifies required stages, axes, success obligations and permitted unresolved outcomes. Authority policy records governance state, role separation, identity requirements and human-review triggers. Evidence protocols state a comparison plan before the result being assessed is selected. Their shared purpose is to make the acceptance question explicit in advance; an authored policy record does not adopt itself.
+
+\subsection{Acquisition and source representation: six families}
+
+\textbf{SourceRequest, SourceAcquisition, SourceSnapshot, SourceSpan, SourceTransformation, PaperStructure.} The request expresses intent, acquisition records its actual outcome, and the snapshot binds acquired material. Spans locate specific bytes, transformations describe changed representations, and paper structure records document relationships. This separation allows an acquisition failure or uncertain rendering status to remain visible without destroying the request or inventing source content.
+
+\subsection{Inventory, scope and obligations: five families}
+
+\textbf{AgentizationPlan, InventoryDiscovery, ScopeFreezeDecision, FrozenInventoryScope, ObligationDisposition.} The plan proposes work; discovery records what the source inventory actually contains; an independent scope decision may freeze that work under a profile. Each frozen obligation has a current disposition while historical attempts remain available. Scope is a versioned scientific boundary, not an adjustable progress-bar denominator.
+
+\subsection{Scientific and mathematical meaning: seven families}
+
+\textbf{ScientificClaim, DerivedClaim, ClaimComponentMap, SemanticContext, MathematicalDefinition, MathClaimIR, AssumptionContext.} These records separate attributed source propositions from system-derived propositions, retain the component correspondence, and describe mathematical and scientific context. MathClaimIR means mathematical claim intermediate representation. A definition can be reused only under a compatible meaning and version. Assumption contexts are explicit so that a conditional derivation can be displayed without silently turning into an unconditional claim.
+
+\subsection{Arguments and work history: eleven families}
+
+\textbf{ArgumentNode, InferenceStep, ProofPlan, DependencyBinding, Challenge, ChallengeDisposition, ArgumentSnapshot, ArgumentReview, UpstreamImport, WorkAttempt, WorkCompletion.} Nodes and joint inference steps represent an argument; proof plans distinguish routes; bindings identify exact dependencies. Challenges and their dispositions preserve objections and responses. A snapshot supplies a recoverable argument boundary. Imports retain upstream attribution, while attempts and completions retain reported or observed work evidence. Establishing actual execution requires suitable independently supplied receipts. A reply does not automatically resolve a challenge, and a worker completion does not itself establish a theorem.
+
+\subsection{Formalization and assessment: twelve families}
+
+\textbf{FormalEnvironment, FormalizationPacket, FormalizationAttempt, FormalCheckRecord, BacktranslationRecord, AlignmentAssessment, EmpiricalEvidence, ReproductionRecord, AxisAssessment, StatusView, CounterexampleRecord, EnvironmentCompatibility.} A formalization packet binds a target and context. An attempt records attributed production; a check binds reported or observed evidence to declared targets and an environment. Independent execution receipts are needed to establish which checks actually ran. Backtranslation and alignment inspect meaning at exact endpoints. Empirical and computational evidence remain separate. Counterexamples specify what they contradict; environment checks support a proposed use. A status view aggregates these records without changing their targets or authority.
+
+\subsection{Knowledge comparison and reuse: five families}
+
+\textbf{BaselineSnapshot, RelationAssessment, ContributionDelta, ReuseDecision, FrontierItem.} A contribution is relative to an explicit baseline. Relations such as equivalence, restriction, extension or refutation require the appropriate endpoint comparisons and evidence. A new proof of a known theorem can be a method contribution without becoming a new theorem; a textually different formulation may add no supported result. Reuse decisions are use-specific and preserve assumptions, environment and conflicts. Frontier items retain the work required before a future decision becomes possible.
+
+\subsection{Package, archive and admission: eight families}
+
+\textbf{PaperAgentManifest, ReleaseAudit, ReleaseCertificate, PaperAgentRelease, ArchiveReceipt, AdmissionDecision, KnowledgeSnapshot, KnowledgeIngestionReceipt.} The manifest fixes candidate contents; audit and mechanical certification bind that exact manifest; a paper release fixes the resulting package. Archiving preserves the release. A later admission decision selects eligible records for a knowledge snapshot, and an ingestion receipt records the actual transaction. Software merge, package release, archive and knowledge admission are separate events. A successful database write is not an independent scientific review.
+
+\subsection{History, migration and observation: seven families}
+
+\textbf{EventRecord, EventCheckpoint, ImpactAnalysis, RevisionRecord, LegacyBinding, QueryReceipt, EvaluationReport.} Events and checkpoints retain operational history. Impact analysis identifies potentially affected records along declared dependencies without rewriting old assessments. Revision records preserve changes; legacy bindings retain the source contract of older material. Query receipts bind what was returned under a snapshot. Evaluation reports record measured scope, baselines and limitations rather than converting absent measurements into favourable results.
+
+\subsection{Local implementation boundary}
+
+The current Python modules implement offline schema and supplied-record validation, local source inspection, frozen-obligation checks, a pinned upstream capture parser, potential dependency analysis and bounded SQLite candidate storage. The local store validates an input set before committing, preserves immutable object identities and can update a provisional head with compare-and-swap. That operation changes the head only if it still equals the expected previous value, preventing a stale writer from silently replacing a concurrent update.
+
+Historical queries resolve exact records and retain known relevant conflict endpoints. Their responses remain provisional. The implementation trusts its local filesystem and integrating process; it is not a production identity provider, externally witnessed archive or formal admission service. The richer release and scientific lifecycle families remain necessary interfaces even where only their shape and some cross-record rules are currently implemented.

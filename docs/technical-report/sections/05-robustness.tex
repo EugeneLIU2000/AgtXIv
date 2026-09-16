@@ -1,0 +1,79 @@
+\section{Worked example: robustness of magic}\label{sec:robustness}
+
+\subsection{What is being reconstructed}
+
+Howard and Campbell define robustness of magic through signed decompositions into pure stabilizer states and state its monotonicity under trace-preserving stabilizer channels~\cite{howard2016magic}. The local source-grounding note identifies the definition, the R3 statement, its proof steps and a separate postselection extension. This section explains the recorded argument and its assumptions; it is not a new independent scientific certification.
+
+For a finite multiqubit system, let $\Stab_n=\{\sigma_i\}$ denote the pure stabilizer projectors used as decomposition atoms. A density operator $\rho$ has a real signed decomposition
+\begin{equation}
+  \rho=\sum_i x_i\sigma_i,
+  \qquad \sum_i x_i=1,
+  \qquad x_i\in\mathbb{R}.
+\end{equation}
+The coefficients need not be probabilities: some can be negative. The source defines
+\begin{equation}
+  \RoM(\rho)=\min_{\{x_i:\rho=\sum_i x_i\sigma_i\}}\sum_i|x_i|.
+  \label{eq:robustness}
+\end{equation}
+The total absolute coefficient weight measures how much signed weight is needed to represent the state in these free atoms. An ordinary convex mixture has total weight one. The technical obligation to establish feasible decompositions and attainment of the minimum is separate from writing down this definition.
+
+\subsection{Why trace preservation gives the contraction}
+
+For the selected R3 argument, assume linearity and that the channel maps every input stabilizer atom to a nonnegative, normalized mixture of output stabilizer atoms:
+\begin{equation}
+  \mathcal{E}(\sigma_i)=\sum_j p_{ij}\sigma_j,
+  \qquad p_{ij}\geq0,
+  \qquad\sum_jp_{ij}=1.
+  \label{eq:channel}
+\end{equation}
+This is mixture preservation, not the stronger claim that every input atom maps to a single atom. It is therefore important to keep the two indices and normalization condition in the recorded mathematical target.
+
+Take an optimal input decomposition $x$. Linearity and regrouping give the feasible output decomposition
+\begin{equation}
+  \mathcal{E}(\rho)=\sum_jx'_j\sigma_j,
+  \qquad x'_j=\sum_ix_ip_{ij}.
+\end{equation}
+The definition, triangle inequality, nonnegativity and row normalization yield
+\begin{align}
+  \RoM(\mathcal{E}(\rho))
+  &\leq\sum_j\left|\sum_ix_ip_{ij}\right|\nonumber\\
+  &\leq\sum_{i,j}|x_i|p_{ij}\nonumber\\
+  &=\sum_i|x_i|\underbrace{\sum_jp_{ij}}_{1}\nonumber\\
+  &=\RoM(\rho).
+  \label{eq:contraction}
+\end{align}
+The final equality uses optimality of the input decomposition. For an arbitrary feasible $x$, the preceding argument gives only the upper bound $\sum_i|x_i|$, which may exceed $\RoM(\rho)$. An alternative proof could use an infimum and a limiting argument, but that is a distinct reconstruction with its own obligations.
+
+The physical picture is simple: a free operation redistributes each signed input weight among free output atoms using nonnegative proportions that sum to one. Redistribution cannot increase the total absolute weight, and cancellations can reduce it. The assumptions in Eq.~\eqref{eq:channel} are precisely what makes this picture match the algebra.
+
+\subsection{Why postselection is a separate claim}
+
+A selected measurement branch is represented before normalization by a trace-nonincreasing map $\mathcal{E}_b$. Its success probability is
+\begin{equation}
+  q_b=\Tr\mathcal{E}_b(\rho),\qquad
+  \rho_b=\mathcal{E}_b(\rho)/q_b\quad(q_b>0).
+\end{equation}
+Normalization divides by a state-dependent probability. The row sums used in Eq.~\eqref{eq:contraction} are no longer all one for an individual branch. The trace-preserving proof therefore does not directly show $\RoM(\rho_b)\leq\RoM(\rho)$ for each normalized selected outcome.
+
+The source separately discusses an average/postselection extension and points to another argument. A probability-weighted quantity, such as an average over outcomes, asks a different question from the robustness of a single conditional branch. AgtXIv keeps this assertion on a separate route with its own source span and open obligations; it does not count it as discharged by R3.
+
+\subsection{Exact anchors and observed evidence}
+
+\begin{tabularx}{\linewidth}{@{}P{33mm}P{25mm}X@{}}
+\toprule
+Source segment & TeX lines & Original byte interval \\
+\midrule
+Definition & 75--79 & \code{[9218,10126)} \\
+R3 statement & 225 & \code{[33249,33406)} \\
+Channel action & 251--255 & \code{[35064,35619)} \\
+Output mixture & 256--259 & \code{[35619,35847)} \\
+Norm contraction & 260--265 & \code{[35847,36153)} \\
+Separate extension & 266 & \code{[36153,36418)} \\
+\bottomrule
+\end{tabularx}
+
+The original TeX is \code{Robustness_main_appendix.tex}, SHA-256 \code{48adf581a5f8353bb1125c75b8e0a075ff7ba79917f2a12d9f7e0f4ad1a8312d}. These anchors were read from the retained source and source-review note. The historical candidate capture contains 14 files totalling 1,542,636 bytes. Its 548 main-text lines were assigned 240 tentative claim cues, 204 non-claim cues and 104 unknown-text items. These numbers describe lexical coverage, not scientific claim counts.
+
+The recorded output contains 35 candidate records, one unadopted context policy, six proposed interpretations, five dependency bindings, twelve frontier items and nine open/deferred candidate obligations. A fresh database import, a separate-process read-only reopen and byte-identical replay under the same known observation were recorded. No formal frozen scope, scientific assessment or knowledge admission was produced. Supplementary numerical matrices and solver evidence referenced by the paper were not found in the inspected source package; this observation does not establish their absence from every remote location.
+
+\boundary{The candidate chain can expose the optimal-decomposition assumption and keep postselection separate. This is evidence of useful representation and traceability. The mathematical obligations, source-to-formal alignment, full-paper semantic coverage and formal scientific admission remain open in this V3 candidate record.}

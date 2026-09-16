@@ -1,0 +1,61 @@
+\section{Implementation evidence, maintenance and release}\label{sec:release}
+
+\subsection{What has been checked}
+
+The historical \code{docs/evidence/v3-real-candidate/verification.json} records 710 V3 tests with no failures, errors or skips on 7 September 2026. Its scope also includes 70 generated package files, the pinned upstream protocol, bundle validation, compilation and 106 unchanged historical inputs. These figures do not certify the current release.
+
+Rejection tests cover malformed or stale identities, escaped assumptions, conditional promotion, unsupported reuse, misleading evidence wrappers, historical forks and transaction recovery. They constrain incorrect bindings in supplied records; they do not measure semantic extraction accuracy or establish independent scientific review.
+
+Current HTTP evidence is scoped in Section~\ref{sec:web}. The aggregate gate encountered a pre-existing dirty frozen-baseline mismatch against \code{HEAD}, rather than a newly failing test. The independent full test run was outstanding at this checkpoint. Historical tests and local HTTP success do not complete that gate. Report compilation and packaging have a separate receipt at \code{docs/evidence/publishable-release/report-validation.json}.
+
+\begin{tabularx}{\linewidth}{@{}P{35mm}X@{}}
+\toprule
+Evidence & Appropriate interpretation \\
+\midrule
+Schema/record validation & The implemented constraints hold for the supplied objects and exact bundle. \\
+Parser/source tests & Bounded input handling and selected source-location behaviours match the tested cases. \\
+Candidate replay & The recorded local observation can be re-read or replayed with the stated byte identity. \\
+Historical Lean evidence & Only its named declaration, environment, premise and alignment scope; not all V3 scientific obligations. \\
+Browser/API test & The tested user operation reaches the recorded service result; not scientific approval. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Compatibility and document authority}
+
+\ruleid{M1: preserve old contracts.} V1 and V2 records retain their original schema and evidence scope. The root pilot release manifest is historically \code{accepted_release=false}; its scientific release gate is blocked. That state is not changed by introducing V3 schemas or a new website. A legacy adapter can expose older records with explicit version labels, but cannot turn three old assessment dimensions into six newly assessed dimensions.
+
+\ruleid{M2: make authority visible.} The V3 proposal, V1/V2 specifications, pending Charter, research studies and implementation receipts serve distinct roles. This report describes implementation and maintenance; it does not ratify the Charter. Its appendix derives fields from the bound schemas rather than redefining them.
+
+The existing static Pages builder previously selected the old mathematics-pipeline demonstration, while newer visual prototypes and V3 candidates were outside that path. Publication must verify the actual assembled entry point, not merely the existence of a new page in the repository. The new service also requires a running processing backend; a static website alone cannot fulfil the new-paper analysis requirement.
+
+\subsection{Recoverable repository organization}
+
+\ruleid{M3: preserve before cleaning.} A cleanup first records original paths, destinations, sizes, hashes and reasons. Unique historical byte stores require preservation before deleting temporary files. Fixed historical evidence is not rewritten to conceal changed paths or inputs. A new relocation record explains where unchanged bytes can be found.
+
+The first organization pass copied five complete candidate-history files from the temporary capture directory to an ignored \code{local-archive/} directory and kept the originals. The destination bytes matched the historical closure receipt; both SQLite copies passed a read-only structural quick check. Four historical presentation exports were moved from the repository root into \code{docs/archive/presentations/2026-08/}. The nine archived files total 16,488,328 bytes. The archive manifest records exact hashes and reversible path mappings.
+
+A second pass moved 17 files from the two superseded interface prototypes into \code{docs/archive/prototypes/}. Three README files gained explicit relocation notes; other file bytes were unchanged, and the original README content remains recoverable as verified prefixes. The combined manifest has 26 entries and 18,943,027 destination bytes. Local prototype resources, anchors and graph-data references were checked after relocation.
+
+The operation left scientific source caches, fixed reference inputs, active slides, schema packages and Lean caches untouched. The local copy reduces the risk of losing historical evidence during temporary-directory cleanup; it is not an off-device backup or independent tamper-proof archive. Archiving material locally does not grant permission to redistribute it in a public website or release.
+
+\subsection{Build and release procedure}
+
+\ruleid{R1: bind the candidate.} Record the exact source revision, dependency locks, generated-input identities, migration notes and output digests. Separate the software version from record contracts, API version and paper releases. A clean reproducible build is a software property, not scientific acceptance.
+
+\ruleid{R2: run appropriate checks.} The release check set should include the repository aggregate validation, schema and upstream-generation drift checks, V3 contract checks, the new intake's resource and failure tests, API/task integration, browser acceptance and report compilation. A known blocker is reported as such, rather than silently skipped or counted as a scientific pass. Expensive formal builds use their defined environment and scope.
+
+\ruleid{R3: publish the intended bytes.} Build the website and service from the reviewed candidate. Verify deep links, downloads, subpath behaviour, error states and the actual deployed endpoint when deployment occurs. Public artifacts must be selected deliberately; local research caches and preserved byte stores are not default release content. Root licence, contributor and production-governance decisions remain governed by the project's actual policies.
+
+\ruleid{R4: preserve operations.} Document service configuration, data retention, access boundaries, failure recovery and backup/restore procedures. Recovery must account for both task metadata and byte objects. A task that points to a missing result needs an explicit repair path, and an unreferenced byte object needs a retention policy. Production durability and throughput require separate measurements.
+
+\ruleid{R5: retain an honest handoff.} The authorized work window ends at 03:00 Europe/Amsterdam on 8 September 2026, equivalent to 01:00 UTC. Work remaining at that deadline is saved with concrete files, evidence, failure reasons and next operations. The deadline does not make an unfinished implementation or scientific task complete.
+
+\subsection{Reproducible report commands}
+
+The report appendix generator reads the source schemas and writes only its own generated files. It exposes a no-write comparison mode. From the repository root:
+\begin{lstlisting}
+.venv/bin/python docs/technical-report/generate_appendix.py
+.venv/bin/python docs/technical-report/generate_appendix.py --check
+bash docs/technical-report/build.sh
+\end{lstlisting}
+The PDF is written to \code{docs/technical-report/build/main.pdf}. Build intermediates are ignored. A portable source archive includes the TeX, BibTeX, generated appendix and build script. Outside the repository, \code{bash build.sh --frozen-appendix} compiles that included snapshot without claiming to check drift against absent schema inputs. The default repository build retains the generation check. The layout is rendered and reviewed separately from compilation, because successful TeX execution does not guarantee readable tables or diagrams.

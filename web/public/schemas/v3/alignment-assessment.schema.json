@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/alignment-assessment.schema.json",
+  "title": "AlignmentAssessment",
+  "description": "One explicit semantic comparison with exact endpoints and independent review.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.alignment-assessment/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "comparison_kind": {
+          "type": "string",
+          "enum": [
+            "SOURCE_TO_ARGUMENT",
+            "SOURCE_TO_MATH",
+            "MATH_TO_FORMAL",
+            "SOURCE_TO_FORMAL"
+          ],
+          "description": "Which alignment boundary was checked."
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact source-side objects."
+        },
+        "target_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Exact target-side objects."
+        },
+        "review": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ReviewContext",
+          "description": "Independent semantic review."
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ParameterComparison"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Quantifiers, types, assumptions, meaning and strength comparisons."
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "PARTIAL",
+            "MISALIGNED",
+            "ALIGNED"
+          ],
+          "description": "Scoped alignment only, not proof correctness."
+        },
+        "backtranslation_refs": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+              },
+              {
+                "properties": {
+                  "record_type": {
+                    "enum": [
+                      "agtxiv.v3.backtranslation/0.0.0"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "maxItems": 10000,
+          "description": "Independently generated formal interpretations."
+        }
+      },
+      "required": [
+        "comparison_kind",
+        "source_refs",
+        "target_refs",
+        "review",
+        "comparisons",
+        "outcome",
+        "backtranslation_refs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

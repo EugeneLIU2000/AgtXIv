@@ -1,0 +1,48 @@
+{
+  "assurance_tier": "LOCAL_REPOSITORY_DIAGNOSTIC",
+  "filesystem_isolation_enforced": false,
+  "generated_at": "2026-09-07T23:22:24.430561+00:00",
+  "network_isolation_enforced": false,
+  "network_mode": "OFFLINE_INTENDED_PRELOADED_ONLY",
+  "network_note": "Checks are selected for local, preloaded inputs; this runner does not enforce operating-system outbound network blocking.",
+  "outcome": "PASS",
+  "profile": "full",
+  "python": {
+    "executable": "/Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python",
+    "minimum_supported": "3.12",
+    "version": "3.12.2"
+  },
+  "repository_root": "/Users/Yingjian/Documents/GitHub/AgtXIv",
+  "results": [
+    {
+      "check_id": "lean-root-math",
+      "command": [
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python",
+        "tools/validate_lean_formalization.py"
+      ],
+      "description": "Rebuild and axiom-audit the RootMath Lean project.",
+      "details": {
+        "resolved_tools": {
+          "repository-local lake": "/Users/Yingjian/Documents/GitHub/AgtXIv/.tools/elan/bin/lake"
+        }
+      },
+      "duration_seconds": 29.56924,
+      "exit_code": 0,
+      "status": "PASS",
+      "stderr": "",
+      "stdout": "{\n  \"artifact_hashes\": \"PASSED\",\n  \"declarations_audited\": 43,\n  \"errors\": [],\n  \"formalization_validation\": \"PASSED\",\n  \"kernel_build\": \"PASSED\",\n  \"placeholder_scan\": \"PASSED\",\n  \"project\": \"formal/AgtXIvRootMath\",\n  \"reported_axioms\": [\n    \"Classical.choice\",\n    \"Quot.sound\",\n    \"propext\"\n  ],\n  \"root_math_status\": \"ROOT_MATH_KERNEL_COMPLETE\",\n  \"schema_version\": \"0.1.0-prototype\",\n  \"scientific_acceptance_effect\": \"NONE; parent Root PaperAgents remain accepted=false\"\n}\n"
+    }
+  ],
+  "schema": "agtxiv.repository-validation-report/0.2.0",
+  "selected_checks": [
+    "lean-root-math"
+  ],
+  "summary": {
+    "EXPECTED_BLOCKED": 0,
+    "FAIL": 0,
+    "KNOWN_STALE": 0,
+    "MISSING_TOOL": 0,
+    "PASS": 1,
+    "SKIPPED": 0
+  }
+}

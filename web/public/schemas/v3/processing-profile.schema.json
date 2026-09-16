@@ -1,0 +1,424 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/processing-profile.schema.json",
+  "title": "ProcessingProfile",
+  "description": "Versioned work obligations, including required success and permitted unresolved work.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.processing-profile/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "V3_SOURCE_MAP",
+            "V3_ARGUMENT_AUDIT",
+            "V3_FORMAL_SUPPORT"
+          ],
+          "description": "Named V3 processing profile."
+        },
+        "required_stages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Stages every applicable scope must account for."
+        },
+        "success_required_stages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "description": "Stages whose required targets must actually succeed."
+        },
+        "required_axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_fidelity",
+              "mathematical_correctness",
+              "formal_alignment",
+              "semantic_applicability",
+              "empirical_support",
+              "computational_reproducibility"
+            ]
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "description": "Applicable axes whose assessments are required.",
+          "uniqueItems": true
+        },
+        "allowed_terminal_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "Explicit permitted unresolved execution outcomes."
+        },
+        "empirical_requirement": {
+          "type": "string",
+          "enum": [
+            "ACCOUNT_FOR",
+            "REVIEW_REQUIRED"
+          ],
+          "description": "Empirical work obligation."
+        },
+        "computation_requirement": {
+          "type": "string",
+          "enum": [
+            "ACCOUNT_FOR",
+            "REPRODUCTION_REQUIRED"
+          ],
+          "description": "Computational work obligation."
+        },
+        "non_implications": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "description": "What completion of this profile does not establish."
+        }
+      },
+      "required": [
+        "name",
+        "required_stages",
+        "success_required_stages",
+        "required_axes",
+        "allowed_terminal_outcomes",
+        "empirical_requirement",
+        "computation_requirement",
+        "non_implications"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "name": {
+                "const": "V3_SOURCE_MAP"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "required_stages": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "SOURCE"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "INVENTORY"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "CLAIM"
+                    }
+                  }
+                ]
+              },
+              "success_required_stages": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "SOURCE"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "INVENTORY"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "CLAIM"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "name": {
+                "const": "V3_ARGUMENT_AUDIT"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "required_stages": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "SOURCE"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "INVENTORY"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "CLAIM"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "ARGUMENT"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "ALIGNMENT"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "SEMANTICS"
+                    }
+                  }
+                ]
+              },
+              "success_required_stages": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "SOURCE"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "INVENTORY"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "CLAIM"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "name": {
+                "const": "V3_FORMAL_SUPPORT"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "required_stages": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "SOURCE"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "INVENTORY"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "CLAIM"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "ARGUMENT"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "FORMAL"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "ALIGNMENT"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "SEMANTICS"
+                    }
+                  }
+                ]
+              },
+              "success_required_stages": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "SOURCE"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "INVENTORY"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "CLAIM"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "FORMAL"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "ALIGNMENT"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

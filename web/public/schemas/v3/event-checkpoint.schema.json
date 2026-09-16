@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/v3/0.0.0/event-checkpoint.schema.json",
+  "title": "EventCheckpoint",
+  "description": "Separately held history anchor with explicit assurance limitations.",
+  "type": "object",
+  "properties": {
+    "record_type": {
+      "const": "agtxiv.v3.event-checkpoint/0.0.0",
+      "description": "Exact record discriminator."
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+      "maxLength": 512,
+      "description": "Stable identity; semantic changes may require a new lineage."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Exact immutable version within the lineage."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "maxLength": 40,
+      "description": "Attributable creation time in UTC."
+    },
+    "data_class": {
+      "type": "string",
+      "enum": [
+        "RESEARCH",
+        "OBSERVED",
+        "SYNTHETIC"
+      ],
+      "description": "Evidence origin, not an authority status."
+    },
+    "schema_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Exact manifest hash of the schema bundle."
+    },
+    "producer": {
+      "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/Producer",
+      "description": "Actual attributed producer and execution boundary."
+    },
+    "policy_ref": {
+      "allOf": [
+        {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "enum": [
+                "agtxiv.v3.authority-policy/0.0.0"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Exact authority policy binding."
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+      },
+      "maxItems": 10000,
+      "description": "Explicit exact inputs used to construct this record."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "minLength": 71,
+      "maxLength": 71,
+      "description": "Canonical record hash excluding this one field only."
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "event_ref": {
+          "allOf": [
+            {
+              "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/RecordRef"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "enum": [
+                    "agtxiv.v3.event/0.0.0"
+                  ]
+                }
+              }
+            }
+          ],
+          "description": "Exact anchored event."
+        },
+        "anchor_artifact": {
+          "$ref": "https://agtxiv.org/schema/v3/0.0.0/common.schema.json#/$defs/ArtifactRef",
+          "description": "Actual checkpoint or signed attestation bytes."
+        },
+        "holder_principal_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[A-Za-z0-9][A-Za-z0-9._:/-]*(?![\\s\\S])",
+          "maxLength": 512,
+          "description": "Principal retaining the checkpoint outside the worker."
+        },
+        "assurance": {
+          "type": "string",
+          "enum": [
+            "LOCAL_COPY",
+            "INDEPENDENTLY_HELD",
+            "SIGNATURE_VERIFIED"
+          ],
+          "description": "Observed anchoring assurance, not inferred from hashes."
+        },
+        "verification_method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "How the anchor was independently checked."
+        }
+      },
+      "required": [
+        "event_ref",
+        "anchor_artifact",
+        "holder_principal_id",
+        "assurance",
+        "verification_method"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "record_type",
+    "record_id",
+    "revision",
+    "created_at",
+    "data_class",
+    "schema_bundle_hash",
+    "producer",
+    "policy_ref",
+    "input_refs",
+    "content_hash",
+    "payload"
+  ],
+  "additionalProperties": false
+}

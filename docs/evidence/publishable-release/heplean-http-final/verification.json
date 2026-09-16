@@ -1,0 +1,101 @@
+{
+  "kind": "AGTXIV_LIVE_HTTP_VERIFICATION",
+  "started_at": "2026-09-07T23:03:41.656050+00:00",
+  "finished_at": "2026-09-07T23:03:42.753435+00:00",
+  "base_url": "http://127.0.0.1:8787",
+  "request": {
+    "arxiv": "2405.08863v1"
+  },
+  "events": [
+    {
+      "observed_at": "2026-09-07T23:03:41.733008+00:00",
+      "job": {
+        "api_version": "1.0",
+        "id": "ce264f52-2ec9-4a0b-b01d-3734b6466d3b",
+        "arxiv": "2405.08863v1",
+        "status": "QUEUED",
+        "stages": [
+          "QUEUED",
+          "FETCHING",
+          "ANALYZING",
+          "COMPLETED"
+        ],
+        "created_at": "2026-09-07T23:03:41.705Z",
+        "updated_at": "2026-09-07T23:03:41.705Z",
+        "revision": 0,
+        "result_url": null,
+        "analysis_id": null,
+        "parent_id": null,
+        "error": null,
+        "scientific_assessment": "NOT_PERFORMED"
+      }
+    },
+    {
+      "observed_at": "2026-09-07T23:03:42.740403+00:00",
+      "job": {
+        "api_version": "1.0",
+        "id": "ce264f52-2ec9-4a0b-b01d-3734b6466d3b",
+        "arxiv": "2405.08863v1",
+        "status": "COMPLETED",
+        "stages": [
+          "QUEUED",
+          "FETCHING",
+          "ANALYZING",
+          "COMPLETED"
+        ],
+        "created_at": "2026-09-07T23:03:41.705Z",
+        "updated_at": "2026-09-07T23:03:42.366Z",
+        "revision": 3,
+        "result_url": "/api/v1/jobs/ce264f52-2ec9-4a0b-b01d-3734b6466d3b/result",
+        "analysis_id": "analysis:9ca8f5b76b83e239e7cee7db3f4b2a2d",
+        "parent_id": null,
+        "error": null,
+        "scientific_assessment": "NOT_PERFORMED"
+      }
+    }
+  ],
+  "result_sha256": "sha256:473f17c7b59b4350a326a038b454ce59718a42399b002def0fc45ed9879e3416",
+  "etag": "\"473f17c7b59b4350a326a038b454ce59718a42399b002def0fc45ed9879e3416\"",
+  "analysis_id": "analysis:9ca8f5b76b83e239e7cee7db3f4b2a2d",
+  "resolved_arxiv": {
+    "id": "2405.08863",
+    "version": 1,
+    "canonical": "2405.08863v1",
+    "sourceUrl": "https://arxiv.org/src/2405.08863v1",
+    "abstractUrl": "https://arxiv.org/abs/2405.08863v1"
+  },
+  "title": "HepLean: Digitalising high energy physics",
+  "candidates": 15,
+  "sources": 3,
+  "limits": {
+    "maxDownloadBytes": 8388608,
+    "maxExpandedBytes": 16777216,
+    "maxFileBytes": 2097152,
+    "maxTexBytes": 4194304,
+    "maxEntries": 1024,
+    "maxFiles": 512,
+    "maxPathBytes": 512,
+    "maxCandidates": 240,
+    "maxExcerptCharacters": 1800,
+    "maxIncludes": 512,
+    "maxCommands": 50000,
+    "maxStructuralSpans": 4096,
+    "maxReferenceCues": 1024,
+    "maxCitationCues": 1024,
+    "maxLabels": 1024,
+    "maxIssues": 256,
+    "maxAnchoredBytes": 33554432,
+    "timeoutMs": 20000,
+    "maxRedirects": 3
+  },
+  "source_sha256": "sha256:541ef719277e7587e0e992ac87fbf7534d863217cfa481ba6e1d3ee433926114",
+  "checks": {
+    "job_schema": "PASS",
+    "full_http_result_schema": "PASS",
+    "exact_version": "PASS",
+    "retained_source": "PASS",
+    "identical_repeat_read": "PASS",
+    "six_axes_unassessed": "PASS"
+  },
+  "scientific_acceptance": false
+}

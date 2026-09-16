@@ -1,0 +1,76 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,needspace}
+\usepackage{graphicx,xcolor}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
+\usepackage{listings}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{142637}
+\definecolor{accent}{HTML}{216B8B}
+\definecolor{muted}{HTML}{536472}
+\definecolor{wash}{HTML}{F2F6F8}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,pdftitle={AgtXIv: Source-Grounded Scientific Records and a Publishable Research Interface},pdfauthor={AgtXIv Project}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt,leftmargin=*}
+\renewcommand{\arraystretch}{1.17}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}AgtXIv technical report}
+\fancyhead[R]{\small\color{muted}Working release specification}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\code}[1]{\path{#1}}
+\newcommand{\ruleid}[1]{\textbf{\color{accent}#1}}
+\newcommand{\boundary}[1]{\par\smallskip\noindent\colorbox{wash}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small\textbf{Evidence boundary.} #1}}\par\smallskip}
+\newcommand{\RoM}{\mathcal{R}}
+\newcommand{\Stab}{\mathcal{S}}
+\DeclareMathOperator{\Tr}{Tr}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!15},backgroundcolor=\color{wash},aboveskip=8pt,belowskip=8pt}
+\input{generated/schema-identity}
+
+\title{\color{ink}\bfseries AgtXIv\\[5pt]\Large Source-Grounded Scientific Records\\and a Publishable Research Interface}
+\author{AgtXIv Project}
+\date{Technical report and maintenance rules\\8 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Scientific results are reusable only when their source, assumptions, supporting argument and unresolved conditions remain accessible together. AgtXIv represents these elements as separately versioned records, with exact evidence references and six distinct assessment questions. This report describes the experimental V3 contract package, its local validation and candidate-storage mechanisms, and the architecture of a new-paper web interface. A source-grounded robustness-of-magic example illustrates why an optimal decomposition, trace preservation and postselection must remain distinct in a scientific record. Existing local evidence establishes a reproducible candidate-processing path and rejection tests for several incorrect bindings; it does not establish completed scientific review or formal knowledge admission. The report also specifies API, release and repository-maintenance boundaries. A generated appendix covers all \RecordFamilyCount{} record families and \SharedTypeCount{} shared value structures in the bound contract package, so the field reference can be regenerated rather than manually synchronized.
+\end{abstract}
+
+\boundary{This is an implementation-oriented working report. The project Charter remains pending ratification. V3 denotes the architecture; \ContractVersion{} denotes the experimental record contracts. Operational success, schema validity and scientific acceptance are different claims. The new-paper path has retained local HTTP, browser and responsive-interface evidence; public deployment and the complete repository release gate remain distinct checks.}
+
+\clearpage
+\tableofcontents
+\newpage
+\input{sections/01-purpose}
+\input{sections/02-identity-source}
+\input{sections/03-argument-assessment}
+\input{sections/04-lifecycle}
+\input{sections/05-robustness}
+\input{sections/06-web-api}
+\input{sections/07-evidence-release}
+\input{sections/08-discussion}
+\begingroup\small
+\renewcommand{\bibsection}{\paragraph{Reference}}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\endgroup
+\clearpage
+\appendix
+\input{generated/schema-fields}
+\end{document}

@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schemas/web-source-intake/1.0.0",
+  "title": "AgtXIv bounded source intake report",
+  "description": "Source-linked structural candidates from original source bytes. This is not an admitted V3 scientific claim or a scientific assessment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "analysisId", "status", "paper", "main", "candidates", "sources", "includes", "counts", "frontier", "provenance", "limits"],
+  "properties": {
+    "schemaVersion": { "const": "agtxiv.web-source-intake/1.0.0" },
+    "analysisId": { "type": "string", "pattern": "^analysis:[a-f0-9]{32}$" },
+    "status": { "const": "SOURCE_LINKED_CANDIDATES" },
+    "paper": { "$ref": "#/$defs/paper" },
+    "main": { "$ref": "#/$defs/path" },
+    "candidates": { "type": "array", "maxItems": 240, "items": { "$ref": "#/$defs/candidate" } },
+    "sources": { "type": "array", "minItems": 1, "maxItems": 512, "items": { "$ref": "#/$defs/source" } },
+    "includes": { "type": "array", "maxItems": 512, "items": { "$ref": "#/$defs/include" } },
+    "counts": { "$ref": "#/$defs/counts" },
+    "frontier": { "$ref": "#/$defs/frontier" },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "limits": { "$ref": "#/$defs/limits" },
+    "transport": { "$ref": "#/$defs/transport" },
+    "scientific_assessment": { "const": "NOT_PERFORMED" }
+  },
+  "$defs": {
+    "path": { "type": "string", "minLength": 1, "maxLength": 512, "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\\\u0000-\\u001f\\u007f]+$" },
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "candidateId": { "type": "string", "pattern": "^candidate:[a-f0-9]{24}$" },
+    "offset": { "type": "integer", "minimum": 0, "maximum": 2097152 },
+    "activity": { "enum": ["ACTIVE", "INACTIVE", "UNKNOWN"] },
+    "anchor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sourceSha256", "startByte", "endByte", "startLine", "endLine", "spanSha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" }, "sourceSha256": { "$ref": "#/$defs/hash" },
+        "startByte": { "$ref": "#/$defs/offset" }, "endByte": { "$ref": "#/$defs/offset" },
+        "startLine": { "type": "integer", "minimum": 1, "maximum": 2097153 },
+        "endLine": { "type": "integer", "minimum": 1, "maximum": 2097153 },
+        "spanSha256": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "arxiv": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "version", "canonical", "sourceUrl", "abstractUrl"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^(?:[0-9]{4}\\.[0-9]{4,5}|[a-z][a-z-]*/[0-9]{7})$" },
+        "version": { "type": ["integer", "null"], "minimum": 1, "maximum": 999 },
+        "canonical": { "type": "string", "pattern": "^(?:[0-9]{4}\\.[0-9]{4,5}|[a-z][a-z-]*/[0-9]{7})(?:v[1-9][0-9]{0,2})?$" },
+        "sourceUrl": { "type": "string", "pattern": "^https://arxiv\\.org/src/[a-z0-9./-]+$", "maxLength": 128 },
+        "abstractUrl": { "type": "string", "pattern": "^https://arxiv\\.org/abs/[a-z0-9./-]+$", "maxLength": 128 }
+      }
+    },
+    "paper": {
+      "type": "object", "additionalProperties": false,
+      "required": ["title", "authors", "abstract", "arxiv", "metadataBasis", "metadataAnchors"],
+      "properties": {
+        "title": { "type": "string", "maxLength": 500 },
+        "authors": { "type": "array", "maxItems": 30, "items": { "type": "string", "maxLength": 500 } },
+        "abstract": { "type": "string", "maxLength": 3000 },
+        "arxiv": { "anyOf": [{ "$ref": "#/$defs/arxiv" }, { "type": "null" }] },
+        "metadataBasis": { "const": "STATIC_TEX_WITH_OPTIONAL_ARXIV_METADATA_FALLBACK" },
+        "metadataAnchors": {
+          "type": "object", "additionalProperties": false, "required": ["title", "authors", "abstract"],
+          "properties": {
+            "title": { "type": "array", "maxItems": 1, "items": { "$ref": "#/$defs/anchor" } },
+            "authors": { "type": "array", "maxItems": 30, "items": { "$ref": "#/$defs/anchor" } },
+            "abstract": { "type": "array", "maxItems": 1, "items": { "$ref": "#/$defs/anchor" } }
+          }
+        }
+      }
+    },
+    "assessments": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_fidelity", "mathematical_correctness", "formal_alignment", "semantic_applicability", "empirical_support", "computational_reproducibility"],
+      "properties": {
+        "source_fidelity": { "const": "NO_ASSESSMENT" }, "mathematical_correctness": { "const": "NO_ASSESSMENT" },
+        "formal_alignment": { "const": "NO_ASSESSMENT" }, "semantic_applicability": { "const": "NO_ASSESSMENT" },
+        "empirical_support": { "const": "NO_ASSESSMENT" }, "computational_reproducibility": { "const": "NO_ASSESSMENT" }
+      }
+    },
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["relation", "label", "command", "targetIds", "resolution", "evidence", "meaning"],
+      "properties": {
+        "relation": { "const": "LOCAL_REFERENCE" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "command": { "enum": ["ref", "eqref", "autoref", "cref", "Cref", "vref", "Vref"] },
+        "targetIds": { "type": "array", "maxItems": 240, "uniqueItems": true, "items": { "$ref": "#/$defs/candidateId" } },
+        "resolution": { "enum": ["RESOLVED_CANDIDATE", "AMBIGUOUS_LABEL", "UNRESOLVED_LABEL"] },
+        "evidence": { "$ref": "#/$defs/anchor" },
+        "meaning": { "const": "A textual reference was observed; logical support has not been assessed." }
+      },
+      "allOf": [
+        { "if": { "properties": { "resolution": { "const": "RESOLVED_CANDIDATE" } } }, "then": { "properties": { "targetIds": { "minItems": 1, "maxItems": 1 } } } },
+        { "if": { "properties": { "resolution": { "const": "UNRESOLVED_LABEL" } } }, "then": { "properties": { "targetIds": { "maxItems": 0 } } } },
+        { "if": { "properties": { "resolution": { "const": "AMBIGUOUS_LABEL" } } }, "then": { "properties": { "targetIds": { "minItems": 2 } } } }
+      ]
+    },
+    "citation": {
+      "type": "object", "additionalProperties": false, "required": ["keys", "command", "evidence", "status"],
+      "properties": {
+        "keys": { "type": "array", "maxItems": 1024, "items": { "type": "string", "minLength": 1, "maxLength": 200 } },
+        "command": { "type": "string", "pattern": "^cite[A-Za-z]*$", "maxLength": 200 },
+        "evidence": { "$ref": "#/$defs/anchor" }, "status": { "const": "BIBLIOGRAPHIC_CUE_UNASSESSED" }
+      }
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "type", "environment", "text", "latex", "excerptTruncated", "anchor", "excerptAnchor", "labels", "activity", "interpretation", "dependencies", "citationCues", "assessments"],
+      "properties": {
+        "id": { "$ref": "#/$defs/candidateId" },
+        "type": { "enum": ["THEOREM", "LEMMA", "PROPOSITION", "COROLLARY", "DEFINITION", "CONJECTURE", "CLAIM", "ASSUMPTION", "REMARK", "OBSERVATION", "EXAMPLE", "EQUATION", "ASSERTION_PARAGRAPH"] },
+        "environment": { "type": ["string", "null"], "maxLength": 100 },
+        "text": { "type": "string", "maxLength": 3600 }, "latex": { "type": "string", "maxLength": 1800 },
+        "excerptTruncated": { "type": "boolean" }, "anchor": { "$ref": "#/$defs/anchor" }, "excerptAnchor": { "$ref": "#/$defs/anchor" },
+        "labels": { "type": "array", "maxItems": 1024, "uniqueItems": true, "items": { "type": "string", "maxLength": 200 } },
+        "activity": { "$ref": "#/$defs/activity" },
+        "interpretation": { "const": "SOURCE_LINKED_CANDIDATE_NOT_SCIENTIFIC_APPROVAL" },
+        "dependencies": { "type": "array", "maxItems": 1024, "items": { "$ref": "#/$defs/reference" } },
+        "citationCues": { "type": "array", "maxItems": 1024, "items": { "$ref": "#/$defs/citation" } },
+        "assessments": { "$ref": "#/$defs/assessments" }
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "sizeBytes", "role", "activity", "publishedRenderingActivity", "analysis"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" }, "sha256": { "$ref": "#/$defs/hash" },
+        "sizeBytes": { "type": "integer", "minimum": 0, "maximum": 2097152 },
+        "role": { "enum": ["TEX", "BIBLIOGRAPHY", "UNSUPPORTED_RESOURCE"] },
+        "activity": { "enum": ["ACTIVE", "UNKNOWN", "UNCLASSIFIED"] },
+        "publishedRenderingActivity": { "const": "UNASSESSED" },
+        "analysis": { "enum": ["BOUNDED_STATIC_TEX", "HASHED_ONLY", "BINARY_TEX_UNSUPPORTED"] },
+        "encoding": { "enum": ["UTF-8", "BYTE_PRESERVING_LATIN1_FALLBACK"] }
+      }
+    },
+    "include": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "requested", "target", "activity", "resolution", "anchor"],
+      "properties": {
+        "source": { "$ref": "#/$defs/path" }, "requested": { "type": "string", "maxLength": 512 },
+        "target": { "anyOf": [{ "$ref": "#/$defs/path" }, { "type": "null" }] },
+        "activity": { "$ref": "#/$defs/activity" },
+        "resolution": { "enum": ["DYNAMIC_INCLUDE_UNRESOLVED", "UNSAFE_INCLUDE_REJECTED", "STATIC_PATH_MATCH", "AMBIGUOUS_INCLUDE", "MISSING_INCLUDE"] },
+        "anchor": { "$ref": "#/$defs/anchor" }
+      }
+    },
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sources", "texFiles", "discoveredCandidates", "returnedCandidates", "omittedCandidates", "localReferences"],
+      "properties": {
+        "sources": { "type": "integer", "minimum": 1, "maximum": 512 }, "texFiles": { "type": "integer", "minimum": 1, "maximum": 512 },
+        "discoveredCandidates": { "type": "integer", "minimum": 0, "maximum": 4096 }, "returnedCandidates": { "type": "integer", "minimum": 0, "maximum": 240 },
+        "omittedCandidates": { "type": "integer", "minimum": 0, "maximum": 4096 }, "localReferences": { "type": "integer", "minimum": 0, "maximum": 1024 }
+      }
+    },
+    "issue": {
+      "type": "object", "additionalProperties": false, "required": ["code", "path", "detail"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[A-Z_]+$", "maxLength": 64 }, "path": { "$ref": "#/$defs/path" },
+        "detail": { "type": "string", "maxLength": 1024 }, "byteOffset": { "$ref": "#/$defs/offset" }, "anchor": { "$ref": "#/$defs/anchor" }
+      }
+    },
+    "range": {
+      "type": "object", "additionalProperties": false, "required": ["path", "startByte", "endByte"],
+      "properties": { "path": { "$ref": "#/$defs/path" }, "startByte": { "$ref": "#/$defs/offset" }, "endByte": { "$ref": "#/$defs/offset" } }
+    },
+    "frontier": {
+      "type": "object", "additionalProperties": false,
+      "required": ["issues", "omittedByFile", "unclassifiedSpans", "unclassifiedFiles", "unsupportedContent", "inactiveCandidates", "uncertainCandidates", "macroDefinitions", "macroSemantics", "sourceCompleteness", "scientificAssessment", "limitations"],
+      "properties": {
+        "issues": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/issue" } },
+        "omittedByFile": { "type": "array", "maxItems": 512, "items": { "type": "object", "additionalProperties": false, "required": ["path", "count"], "properties": { "path": { "$ref": "#/$defs/path" }, "count": { "type": "integer", "minimum": 1, "maximum": 4096 } } } },
+        "unclassifiedSpans": { "type": "array", "maxItems": 752, "items": { "$ref": "#/$defs/range" } },
+        "unclassifiedFiles": { "type": "array", "maxItems": 512, "uniqueItems": true, "items": { "$ref": "#/$defs/path" } },
+        "unsupportedContent": { "type": "array", "maxItems": 512, "items": { "type": "object", "additionalProperties": false, "required": ["path", "analysis"], "properties": { "path": { "$ref": "#/$defs/path" }, "analysis": { "enum": ["HASHED_ONLY", "BINARY_TEX_UNSUPPORTED"] } } } },
+        "inactiveCandidates": { "type": "array", "maxItems": 240, "uniqueItems": true, "items": { "$ref": "#/$defs/candidateId" } },
+        "uncertainCandidates": { "type": "array", "maxItems": 240, "uniqueItems": true, "items": { "$ref": "#/$defs/candidateId" } },
+        "macroDefinitions": { "type": "integer", "minimum": 0, "maximum": 50000 },
+        "macroSemantics": { "const": "NOT_EXECUTED_OR_EXPANDED" },
+        "sourceCompleteness": { "const": "ARCHIVE_INVENTORIED_EXTERNAL_AND_PUBLICATION_COMPLETENESS_UNASSESSED" },
+        "scientificAssessment": { "const": "NOT_PERFORMED" },
+        "limitations": { "type": "array", "minItems": 1, "maxItems": 20, "items": { "type": "string", "maxLength": 1024 } }
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["engine", "method", "archiveSha256", "manifestSha256", "archiveFormat", "archiveBytes", "sourceUrl", "fetchedAt", "exactVersion", "sourceStored", "anchorConvention"],
+      "properties": {
+        "engine": { "const": "agtxiv.web-source-intake/1.0.0" }, "method": { "const": "BOUNDED_STATIC_TEX_STRUCTURE" },
+        "archiveSha256": { "$ref": "#/$defs/hash" }, "manifestSha256": { "$ref": "#/$defs/hash" },
+        "archiveFormat": { "enum": ["TEX", "GZIP_TEX", "TAR", "TAR_GZIP"] },
+        "archiveBytes": { "type": "integer", "minimum": 1, "maximum": 8388608 },
+        "sourceUrl": { "type": ["string", "null"], "maxLength": 256 },
+        "fetchedAt": { "type": ["string", "null"], "format": "date-time" },
+        "exactVersion": { "type": ["integer", "null"], "minimum": 1, "maximum": 999 },
+        "sourceStored": { "type": "boolean" },
+        "sourceStorage": { "type": "string", "maxLength": 256 },
+        "anchorConvention": { "const": "Zero-based byte offsets, half-open [startByte,endByte); line numbers are one-based." }
+      }
+    },
+    "transport": {
+      "type": "object", "additionalProperties": false, "required": ["requested_arxiv", "retrieved_url", "retrieved_at", "archive_sha256"],
+      "properties": {
+        "requested_arxiv": { "type": "string", "maxLength": 256 }, "retrieved_url": { "type": "string", "maxLength": 256 },
+        "retrieved_at": { "type": "string", "format": "date-time" }, "archive_sha256": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["maxDownloadBytes", "maxExpandedBytes", "maxFileBytes", "maxTexBytes", "maxEntries", "maxFiles", "maxPathBytes", "maxCandidates", "maxExcerptCharacters", "maxIncludes", "maxCommands", "maxStructuralSpans", "maxReferenceCues", "maxCitationCues", "maxLabels", "maxIssues", "maxAnchoredBytes", "timeoutMs", "maxRedirects"],
+      "properties": {
+        "maxDownloadBytes": { "type": "integer", "minimum": 1, "maximum": 8388608 }, "maxExpandedBytes": { "type": "integer", "minimum": 1, "maximum": 16777216 },
+        "maxFileBytes": { "type": "integer", "minimum": 1, "maximum": 2097152 }, "maxTexBytes": { "type": "integer", "minimum": 1, "maximum": 4194304 },
+        "maxEntries": { "type": "integer", "minimum": 1, "maximum": 1024 }, "maxFiles": { "type": "integer", "minimum": 1, "maximum": 512 },
+        "maxPathBytes": { "type": "integer", "minimum": 1, "maximum": 512 }, "maxCandidates": { "type": "integer", "minimum": 1, "maximum": 240 },
+        "maxExcerptCharacters": { "type": "integer", "minimum": 1, "maximum": 1800 }, "maxIncludes": { "type": "integer", "minimum": 1, "maximum": 512 },
+        "maxCommands": { "type": "integer", "minimum": 1, "maximum": 50000 }, "maxStructuralSpans": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "maxReferenceCues": { "type": "integer", "minimum": 1, "maximum": 1024 }, "maxCitationCues": { "type": "integer", "minimum": 1, "maximum": 1024 },
+        "maxLabels": { "type": "integer", "minimum": 1, "maximum": 1024 }, "maxIssues": { "type": "integer", "minimum": 1, "maximum": 256 },
+        "maxAnchoredBytes": { "type": "integer", "minimum": 1, "maximum": 33554432 }, "timeoutMs": { "type": "integer", "minimum": 1, "maximum": 30000 },
+        "maxRedirects": { "type": "integer", "minimum": 0, "maximum": 3 }
+      }
+    }
+  }
+}

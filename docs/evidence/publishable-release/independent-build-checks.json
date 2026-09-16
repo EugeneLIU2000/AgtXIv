@@ -1,0 +1,109 @@
+{
+  "assurance_tier": "LOCAL_REPOSITORY_DIAGNOSTIC",
+  "filesystem_isolation_enforced": false,
+  "generated_at": "2026-09-07T23:20:28.736342+00:00",
+  "network_isolation_enforced": false,
+  "network_mode": "OFFLINE_INTENDED_PRELOADED_ONLY",
+  "network_note": "Checks are selected for local, preloaded inputs; this runner does not enforce operating-system outbound network blocking.",
+  "outcome": "FAIL",
+  "profile": "full",
+  "python": {
+    "executable": "/Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python",
+    "minimum_supported": "3.12",
+    "version": "3.12.2"
+  },
+  "repository_root": "/Users/Yingjian/Documents/GitHub/AgtXIv",
+  "results": [
+    {
+      "check_id": "pages-site",
+      "command": [
+        "bash",
+        "tools/build_pages_site.sh",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/tmp/validate-repo-site-lq7uxh8o/site"
+      ],
+      "description": "Assemble and validate the Pages site in an ignored temporary directory.",
+      "details": {
+        "resolved_tools": {
+          "bash": "/bin/bash",
+          "rsync": "/usr/bin/rsync"
+        }
+      },
+      "duration_seconds": 0.102414,
+      "exit_code": 0,
+      "status": "PASS",
+      "stderr": "",
+      "stdout": "PAGES_SITE_VALIDATION=PASS contracts=74 lean_linked_claims=10 lean_modules=24 unresolved_sources=8 default_query_unresolved=2 default_query_gap=15 default_query_planned=2 default_query_blockers=7\n"
+    },
+    {
+      "check_id": "lean-root-math",
+      "command": [
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python",
+        "tools/validate_lean_formalization.py"
+      ],
+      "description": "Rebuild and axiom-audit the RootMath Lean project.",
+      "details": {
+        "resolved_tools": {
+          "repository-local lake": "/Users/Yingjian/Documents/GitHub/AgtXIv/.tools/elan/bin/lake"
+        }
+      },
+      "duration_seconds": 900.126885,
+      "exit_code": 124,
+      "status": "FAIL",
+      "stderr": "command timed out after 900 seconds; process group terminated",
+      "stdout": ""
+    },
+    {
+      "check_id": "lean-varela",
+      "command": [
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python",
+        "tools/validate_varela_formalization.py"
+      ],
+      "description": "Rebuild and axiom-audit the Varela Lean project.",
+      "details": {
+        "resolved_tools": {
+          "repository-local lake": "/Users/Yingjian/Documents/GitHub/AgtXIv/.tools/elan/bin/lake"
+        }
+      },
+      "duration_seconds": 784.993837,
+      "exit_code": 0,
+      "status": "PASS",
+      "stderr": "",
+      "stdout": "{\n  \"artifact_hashes\": \"PASSED\",\n  \"declarations_audited\": 6,\n  \"errors\": [],\n  \"formalization_validation\": \"PASSED\",\n  \"kernel_build\": \"PASSED\",\n  \"placeholder_scan\": \"PASSED\",\n  \"project\": \"formal/AgtXIvVarela\",\n  \"reported_axioms\": [\n    \"Classical.choice\",\n    \"Quot.sound\",\n    \"propext\"\n  ],\n  \"schema_version\": \"0.1.0-prototype\",\n  \"scientific_acceptance_effect\": \"NONE; Varela export remains accepted=false\",\n  \"vrep_status\": \"PARTIALLY_FORMALIZED_EXPLICIT_OBLIGATIONS\"\n}\n"
+    },
+    {
+      "check_id": "lean-stabilizerness-dynamic",
+      "command": [
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python",
+        "tools/validate_stabilizerness_formalization.py"
+      ],
+      "description": "Audit the pinned Stabilizerness inputs and report the unverified-cache blocker.",
+      "details": {
+        "blocker_code": "UNVERIFIED_FUTURE_LEAN_CACHE_CLOSURE",
+        "exact_reviewed_blocker_state": true,
+        "policy": "This local static diagnostic cannot authorize admission or merge; add an externally anchored cache closure or a clean isolated rebuild first.",
+        "reason": "consumed_cache_closure=NOT_VERIFIED: a future Lean run would consume preloaded .lake artifacts without an external exact type/mode/content manifest; clean scratch execution, OS-level no-egress, and executable byte locks are also not implemented",
+        "resolved_tools": {}
+      },
+      "duration_seconds": 0.121114,
+      "exit_code": 2,
+      "status": "EXPECTED_BLOCKED",
+      "stderr": "",
+      "stdout": "{\n  \"admission_eligible\": false,\n  \"admission_note\": \"An EXPECTED_BLOCKED diagnostic must not be used for database admission, merge approval, or a threat-model security gate.\",\n  \"artifact_hashes\": \"PASSED\",\n  \"assurance_tier\": \"LOCAL_PRELOADED_DIAGNOSTIC\",\n  \"axiom_audit\": \"NOT_RUN\",\n  \"cache_mode\": \"DYNAMIC_NOT_RUN_FUTURE_PRELOADED_CACHE_UNVERIFIED\",\n  \"consumed_cache_closure\": \"NOT_VERIFIED\",\n  \"declaration_audit\": {\n    \"AgtXIv.GraphFoundation.IsPerfect\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"imported\"\n    },\n    \"AgtXIv.GraphFoundation.independentFinsets\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"imported\"\n    },\n    \"AgtXIv.GraphFoundation.maxWeightIndependent\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"imported\"\n    },\n    \"AgtXIv.Stabilizerness.abs_signed_sum_add_le\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"target-local\"\n    },\n    \"AgtXIv.Stabilizerness.affineSpan_eq_top_of_vectorSpan_eq_top\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"target-local\"\n    },\n    \"AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"target-local\"\n    },\n    \"AgtXIv.Stabilizerness.max_abs_signed_sum\": {\n      \"audit_status\": \"NOT_RUN\",\n      \"axioms\": [],\n      \"scope\": \"target-local\"\n    }\n  },\n  \"declarations_audited\": 0,\n  \"declared_historical_status\": \"TARGET_LOCAL_DELTA_KERNEL_CHECKED\",\n  \"dependency_git_identity\": {\n    \"consumed_cache_closure\": \"NOT_VERIFIED\",\n    \"source_tree_closure\": \"NOT_RUN\",\n    \"validation\": \"NOT_RUN\"\n  },\n  \"dynamic_blocker_code\": \"UNVERIFIED_FUTURE_LEAN_CACHE_CLOSURE\",\n  \"dynamic_blocker_reason\": \"consumed_cache_closure=NOT_VERIFIED: a future Lean run would consume preloaded .lake artifacts without an external exact type/mode/content manifest; clean scratch execution, OS-level no-egress, and executable byte locks are also not implemented\",\n  \"dynamic_execution\": \"EXPECTED_BLOCKED\",\n  \"effective_validation_status\": \"EXPECTED_BLOCKED\",\n  \"environment_binding\": \"PASSED\",\n  \"environment_policy\": {\n    \"credential_minimized\": true,\n    \"network_mode\": \"OFFLINE_INTENDED_PRELOADED_ONLY\"\n  },\n  \"errors\": [],\n  \"evidence_anchors\": \"PASSED\",\n  \"evidence_id\": \"lean-verification:stabilizerness-local-delta:2026-08-16\",\n  \"expected_imported_declarations\": [\n    \"AgtXIv.GraphFoundation.IsPerfect\",\n    \"AgtXIv.GraphFoundation.independentFinsets\",\n    \"AgtXIv.GraphFoundation.maxWeightIndependent\"\n  ],\n  \"expected_target_local_declarations\": [\n    \"AgtXIv.Stabilizerness.abs_signed_sum_add_le\",\n    \"AgtXIv.Stabilizerness.affineSpan_eq_top_of_vectorSpan_eq_top\",\n    \"AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum\",\n    \"AgtXIv.Stabilizerness.max_abs_signed_sum\"\n  ],\n  \"external_commands\": [],\n  \"filesystem_isolation_enforced\": false,\n  \"formal_input_inventory\": \"PASSED\",\n  \"formalization_validation\": \"EXPECTED_BLOCKED\",\n  \"historical_evidence_schema_version\": \"0.1.0-prototype\",\n  \"imported_declarations_audited\": 0,\n  \"kernel_build\": \"NOT_RUN\",\n  \"kernel_build_failure_excerpt\": [],\n  \"m0_completion_effect\": \"NONE\",\n  \"network_isolation_enforced\": false,\n  \"network_mode\": \"OFFLINE_INTENDED_PRELOADED_ONLY\",\n  \"network_note\": \"No dynamic command ran. This validator does not enforce operating-system outbound network blocking.\",\n  \"placeholder_scan\": \"PASSED\",\n  \"project\": \"formal/AgtXIvStabilizerness\",\n  \"protected_input_integrity\": \"PASSED\",\n  \"remaining_m0_security_blockers\": [\n    \"externally anchored consumed .lake cache closure or clean scratch rebuild\",\n    \"clean scratch workspace\",\n    \"operating-system enforced no-egress execution\",\n    \"cryptographic lock for Lean, Lake, and Git executable bytes\"\n  ],\n  \"reported_axioms\": [],\n  \"schema\": \"agtxiv.stabilizerness-dynamic-validation-report/0.1.0\",\n  \"scientific_acceptance_effect\": \"NONE; this static run only confirms that the anchored source and historical record bytes associated with four target-local and three imported declaration names remain unchanged. It does not type-check or build those declarations, audit their axioms, reassess mapping correctness or source alignment, modify the registry, establish scientific acceptance, or prove the closed-form theorem.\",\n  \"scope_limitations\": [\n    \"The affine-span declaration is only a generic reduction from vector span and does not prove claim:relaxed-affine-span.\",\n    \"The sign-maximization declaration does not by itself prove claim:relaxed-mwis-dual; the LP-to-MWIS bridge remains open.\",\n    \"Weighted perfect-graph duality remains an explicit external foundation and is not proved by this project.\"\n  ],\n  \"security_gate_eligible\": false,\n  \"side_effect_observation_scope\": {\n    \"filesystem_isolation_enforced\": false,\n    \"future_dynamic_note\": \"A future Lean run would consume these unverified cache roots; this static diagnostic did not consume or validate them.\",\n    \"method\": \"two pure-Python lstat/O_NOFOLLOW raw-byte snapshots of the exact anchored evidence, artifact, and three-project formal inventories\",\n    \"observed_paths\": [\n      \"formal/AgtXIvRootMath/AgtXIvRootMath.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/CanonicalStabilizerAtoms.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/DensityStabilizerRoM.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/F2Coordinates.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/F2SymplecticNondegenerate.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomConvexHull.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanCharacterDimension.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanConcretePauliFrame.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankPauliFrame.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/HermitianAffineFeasibility.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/HermitianPauliBasis.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliAdjoint.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliDualFrame.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliF2Support.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliFaithful.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameNormalForm.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSupportCompletion.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSymplecticBasis.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliSupportWord.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeData.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeIntertwiner.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/ProductStabilizerFrames.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/QubitStabilizerAffineComplete.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/SemanticClifford.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/SemanticCliffordFrames.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAtomMaps.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerFrameProjector.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerRoMInstantiation.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StandardZIndependentFrame.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StandardZProjectorBridge.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/StochasticContraction.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/SymplecticCompletion.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/SyndromeBasis.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/VeitchConvexHull.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitBridge.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean\",\n      \"formal/AgtXIvRootMath/AgtXIvRootMath/VeitchStabilizerPolytope.lean\",\n      \"formal/AgtXIvRootMath/Audit.lean\",\n      \"formal/AgtXIvRootMath/README.md\",\n      \"formal/AgtXIvRootMath/lake-manifest.json\",\n      \"formal/AgtXIvRootMath/lakefile.toml\",\n      \"formal/AgtXIvRootMath/lean-toolchain\",\n      \"formal/AgtXIvRootMath/verification-result.json\",\n      \"formal/AgtXIvStabilizerness/AgtXIvStabilizerness.lean\",\n      \"formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean\",\n      \"formal/AgtXIvStabilizerness/Audit.lean\",\n      \"formal/AgtXIvStabilizerness/lake-manifest.json\",\n      \"formal/AgtXIvStabilizerness/lakefile.toml\",\n      \"formal/AgtXIvStabilizerness/lean-toolchain\",\n      \"formal/AgtXIvStabilizerness/verification-result.json\",\n      \"formal/AgtXIvVarela/AgtXIvVarela.lean\",\n      \"formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean\",\n      \"formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean\",\n      \"formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean\",\n      \"formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean\",\n      \"formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean\",\n      \"formal/AgtXIvVarela/Audit.lean\",\n      \"formal/AgtXIvVarela/README.md\",\n      \"formal/AgtXIvVarela/lake-manifest.json\",\n      \"formal/AgtXIvVarela/lakefile.toml\",\n      \"formal/AgtXIvVarela/lean-toolchain\",\n      \"formal/AgtXIvVarela/verification-result.json\",\n      \"tools/validate_varela_formalization.py\"\n    ],\n    \"paths_outside_observed_formal_and_evidence_closure\": \"NOT_MEASURED\",\n    \"reused_unmeasured_cache_roots\": [\n      \"formal/AgtXIvStabilizerness/.lake/**\",\n      \"formal/AgtXIvRootMath/.lake/**\",\n      \"formal/AgtXIvVarela/.lake/**\",\n      \"Reference/LeanQuantum/.lake/**\"\n    ]\n  },\n  \"source_clean_rebuild\": false,\n  \"target_local_declarations_audited\": 0,\n  \"tool_identity\": {\n    \"dynamic_identity\": \"NOT_RUN\",\n    \"paths\": {\n      \"lake\": \"/Users/Yingjian/Documents/GitHub/AgtXIv/.tools/elan/toolchains/leanprover--lean4---v4.30.0-rc2/bin/lake\",\n      \"lean\": \"/Users/Yingjian/Documents/GitHub/AgtXIv/.tools/elan/toolchains/leanprover--lean4---v4.30.0-rc2/bin/lean\"\n    },\n    \"resolved_git_executable\": null,\n    \"static_path_validation\": \"PASSED\",\n    \"validation\": \"NOT_RUN\"\n  }\n}\n"
+    }
+  ],
+  "schema": "agtxiv.repository-validation-report/0.2.0",
+  "selected_checks": [
+    "pages-site",
+    "lean-root-math",
+    "lean-varela",
+    "lean-stabilizerness-dynamic"
+  ],
+  "summary": {
+    "EXPECTED_BLOCKED": 1,
+    "FAIL": 1,
+    "KNOWN_STALE": 0,
+    "MISSING_TOOL": 0,
+    "PASS": 2,
+    "SKIPPED": 0
+  }
+}

@@ -1,0 +1,49 @@
+\section{Scientific purpose and reading model}\label{sec:purpose}
+
+AgtXIv aims to make a scientific result inspectable at the level at which someone would reuse it. A reader needs more than a paper title: they need the precise proposition, its assumptions, the argument that supports it, the source passage, the checks performed and any remaining obstacle. A result about pure states, for example, does not automatically apply to mixed states. Preserving the mathematical formula while dropping that distinction changes what a reader is entitled to conclude.
+
+The useful mental picture is a laboratory notebook attached to a collection of scientific claim cards. A source snapshot preserves the original sample. A claim card states what was asserted and under which conditions. An argument connects several cards through an explicit reasoning step. An assessment records what a particular check concluded about an exact target. The notebook retains unsuccessful attempts and competing assessments, rather than replacing them with a single colour or score.
+
+The project's contribution at the present checkpoint is an explicit record architecture, implemented local consistency checks and bounded candidate-processing mechanisms. It has not measured an improvement in research productivity, demonstrated general scientific verification, or completed the entire V3 lifecycle. The report therefore treats reliability claims as engineering claims about named checks and supplied records. Scientific adequacy remains a distinct question requiring evidence appropriate to the domain.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=6mm,box/.style={draw=accent!55,rounded corners=2pt,fill=wash,align=center,text width=30mm,minimum height=13mm,font=\small},link/.style={-{Stealth[length=2mm]},thick,draw=accent}]
+\node[box] (source) {Exact source\\bytes and version};
+\node[box,right=of source] (claim) {Claim\\conditions and attribution};
+\node[box,right=of claim] (arg) {Argument\\joint premises and gaps};
+\node[box,right=of arg] (view) {Reader / API\\evidence and limits};
+\node[box,below=10mm of arg,text width=47mm] (review) {Independent assessments\\six separate questions};
+\draw[link] (source)--(claim);
+\draw[link] (claim)--(arg);
+\draw[link] (arg)--(view);
+\draw[link] (arg)--(review);
+\draw[link] (review.east)-|(view.south);
+\end{tikzpicture}
+\caption{The reading path and evidence path meet at the interface. Arrows in this overview show information flow. They are not themselves mathematical implications. Assessment and publication decisions require their own records.}
+\label{fig:overview}
+\end{figure}
+
+\subsection{Three related products}
+
+The project produces a protocol, a working implementation and a scientific reading interface. The protocol describes records and constraints; code enforces the implemented subset; the interface helps humans and other programs inspect actual records. A publishable version requires these three products to agree. A field described in a schema does not establish that its producer exists, and an attractive interface cannot supply missing evidence.
+
+The new-paper product path adds an operational requirement: a user submits a new arXiv identifier, the service acquires an exact source version, performs bounded analysis, reports actual task progress and exposes the resulting evidence. This path is more than a replay of a precomputed example. Its first output is a source-grounded candidate view, whose open questions remain visible. Section~\ref{sec:web} separates this operational path from the richer V3 scientific contract.
+
+\subsection{Stable terminology}
+
+\begin{tabularx}{\linewidth}{@{}P{31mm}X@{}}
+\toprule
+Term & Meaning in this report \\
+\midrule
+Paper Agent & A versioned, source-bounded collection of records about a paper; not automatically an independently qualified reviewer. \\
+Scientific claim & A proposition attributed to a source, preserving scientific conditions and modality. \\
+Candidate & A proposed extraction, relation or interpretation whose scientific status has not been admitted by the required process. \\
+Assessment & A method-specific conclusion about an exact target, with conditions and evidence. \\
+Snapshot & An explicit version boundary defining which records are visible. Its existence does not imply approval. \\
+Frontier item & A retained unresolved question, with the affected target and the next evidence needed. \\
+API & Application programming interface: the contract by which a program submits work or reads records. \\
+\bottomrule
+\end{tabularx}
+
+V3 is the architecture version, whereas \ContractVersion{} is the experimental contract version. Software version, API version, paper version, record revision and knowledge snapshot are independent identifiers. The proposed Charter is not currently effective; this report does not ratify it.

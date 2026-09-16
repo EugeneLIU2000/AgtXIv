@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore scientific claims with their sources, assumptions, reasoning and open questions. Submit an arXiv paper for traceable candidate analysis.">
+  <meta name="theme-color" content="#ffffff">
+  <title>AgtXIv · Follow the reasoning</title>
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a href="#explore" class="brand" aria-label="AgtXIv home"><img src="/assets/logo.svg" alt="" width="74" height="31"><span>AgtXIv</span></a>
+    <nav aria-label="Main navigation"><a href="#explore">Explore</a><a href="#protocol">Protocol</a><a href="#report">Technical report</a><a href="https://github.com/EugeneLIU2000/AgtXIv" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main">
+    <section class="intro page-width" id="intro">
+      <div class="intro-copy"><p class="eyebrow"><span class="dot"></span> A living record of scientific reasoning</p><h1>Follow the reasoning.<br><em>Keep the evidence.</em></h1><p class="lede">Explore what a paper claims, the assumptions it uses, and what remains to be checked.</p></div>
+      <div class="submit-panel"><h2>Start with a paper</h2><form id="intake-form"><label for="arxiv">arXiv link or identifier</label><div class="input-row"><input id="arxiv" name="arxiv" placeholder="1609.07488v2" autocomplete="off" required maxlength="180"><button type="submit">Analyze paper <span aria-hidden="true">↗</span></button></div><p class="field-note">Fetches source archives up to 8 MiB and identifies claim candidates, equations and references. Mathematical and scientific review are not performed.</p></form><p id="intake-message" class="feedback" role="status" aria-live="polite"></p><div id="job-panel" hidden></div></div>
+    </section>
+    <section class="page-width explore-section" id="explore-surface">
+      <div class="section-heading"><div><p class="eyebrow">The research collection</p><h2>Ideas, with their dependencies.</h2></div><a href="#protocol" class="text-link">How to read the evidence <span aria-hidden="true">↗</span></a></div>
+      <div class="workspace"><aside class="paper-sidebar"><label class="search-label" for="paper-filter">Find a paper or claim</label><input id="paper-filter" type="search" placeholder="Search the collection…"><div id="paper-list" class="paper-list" aria-live="polite"></div></aside><div id="reader" class="reader" aria-live="polite"><article class="reading-intro"><p class="eyebrow">Featured reasoning</p><h2>Why trace-preserving free operations cannot increase robustness</h2><p>Pure stabilizer states can be redistributed into probability mixtures. The smallest total absolute weight needed to express a state can only stay the same or decrease.</p><p class="status-label">Source-linked candidate · Scientific review not performed</p></article></div></div>
+    </section>
+    <section id="protocol-surface" class="page-width document-surface" hidden></section>
+    <section id="report-surface" class="page-width document-surface" hidden></section>
+  </main>
+  <footer class="site-footer page-width"><span>AgtXIv · Traceable scientific knowledge</span><span>V3 architecture · Experimental contracts 0.0.0</span><a href="/api/v1/openapi.json">API specification</a></footer>
+  <noscript><p class="page-width">JavaScript is needed for the interactive reader. Download the <a href="/api/v1/library">structured collection</a> or the <a href="/docs/technical-report.pdf">technical report</a>.</p></noscript>
+</body>
+</html>
