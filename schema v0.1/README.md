@@ -19,6 +19,7 @@
 | 图查询具体接收/返回什么，怎样交给下一 Agent？ | [GRAPH-INTERFACE.md](GRAPH-INTERFACE.md) |
 | 已有 64 类 schema 是否要重做？ | [COMPATIBILITY.md](COMPATIBILITY.md) |
 | 现在交付了什么，下一步具体实现什么？ | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
+| 宿主如何用固定程序调度、用 Pydantic AI 调用模型？ | [宿主参考版](host_reference/README.md)（控制流与端口；未运行） |
 | 以前运行过哪些检查？ | [VALIDATION.md](VALIDATION.md)（历史范围） |
 | 当前还有什么需要我检查、以后再测试？ | [PENDING_TESTS.md](PENDING_TESTS.md)（唯一待测入口） |
 | 数学目标怎样拆成 Lamport 证明，再交给 Lean 4？ | [Autoformalization Agent/AGENT.md](<Autoformalization Agent/AGENT.md>) |
@@ -26,11 +27,13 @@
 
 2026-09-15 增补：`handoff/` 已实现一条从已有 Paper 候选到 Dependency 本地引用扫描的有界执行路径。它不调用新模型、不远程检索、不建立已认可的数学依赖；本包其余调度/存储规划不能因此视为已经实现。
 
-2026-09-15 底层审阅修订：图服务被定位为 host 的可替换查询模块，不新增 Agent。新增 [graph-contract.schema.json](storage/graph-contract.schema.json)，规范投影请求、三类有界查询和带来源的结果；本地验证批次可分别进入图投影和 Git 归档，不再把 Git push 当成本地研究前置。**新图 schema 尚未接入检查器，旧 SQL/Cypher 仍是归档优先参考；没有新运行器、迁移或本轮测试。**
+2026-09-15 底层审阅修订：图服务被定位为 host 的可替换查询模块，不新增 Agent。新增 [graph-contract.schema.json](storage/graph-contract.schema.json)，规范投影请求、三类有界查询和带来源的结果；本地验证批次可分别进入图投影和 Git 归档，不再把 Git push 当成本地研究前置。**新图 schema 尚未接入检查器，旧 SQL/Cypher 仍是归档优先参考；未部署图服务或迁移。**
+
+同日后续进展：复核已有执行日志，统一 runner 的 21 步均符合预期退出码；这不代表科学验证或新宿主已通过。新增 `host_reference/` 的确定性控制流与 Pydantic AI 调用适配，实际运行库、身份/证据门及固定程序端口尚未接通；本轮没有运行新测试。当前证据与待测范围见 [PENDING_TESTS §8–9](PENDING_TESTS.md)。
 
 ## 其他六个 Agent：从哪里开始读
 
-先前规范轮补齐以下六个 `AGENT.md`，按职责、输入、输出、工作顺序、停止与交接组织。本次底层审阅继续沿用它们的业务草稿格式，仅补充图读取与交接边界，另新增独立图服务 schema；不修改运行代码，不执行测试。其他轮次的历史执行记录见中央清单。
+先前规范轮补齐以下六个 `AGENT.md`，按职责、输入、输出、工作顺序、停止与交接组织。后续图接口和宿主参考版继续沿用它们的业务草稿格式，不重写科学含义；其他轮次的历史执行记录见中央清单。
 
 | 入口 | 只负责什么 |
 |---|---|
@@ -57,6 +60,7 @@
 - `examples/`：明确标记为人工教学样例的工作单、回执和文件导出；不是论文验证证据。
 - `storage/`：SQL 运行表和 Neo4j/Docker 参考材料，以及独立的 graph-service/1.0 消息 schema；图 schema 尚未注册到根检查器，不自动修改当前数据库。旧 SQL/Cypher 不直接支持新本地封存 profile。
 - `validate.py`、`tests/`：离线格式与跨对象约束检查及反例测试。
+- `host_reference/`：固定程序宿主与 Pydantic AI 模型适配的未执行参考；强制后端端口仍需实现，不是已部署服务。
 
 ## 最小调用接口
 

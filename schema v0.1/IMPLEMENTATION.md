@@ -1,10 +1,10 @@
 # 交付边界与后续开发顺序
 
-当前阶段补充（2026-09-15）：已为 Dependency / Review / Utility / Planner / Delta / Reader 补齐 AGENT.md，并细化共同草稿交接及开始条件。本次底层审阅新增 [SYSTEM-REVIEW](SYSTEM-REVIEW.md)、[GRAPH-INTERFACE](GRAPH-INTERFACE.md) 和独立图服务消息 schema；不更改 Agent 业务草稿格式或运行代码，不执行测试。待设计的接口缺口、待实现的适配及待测试项统一在 [PENDING_TESTS.md](PENDING_TESTS.md)。下文的原有路线和验收方法保留为规划/历史背景，不构成自动运行指令。
+当前阶段补充（2026-09-15）：六个 Agent 规范与底层图接口已补齐；同日另轮为 Dependency / Review / Utility 增加最小检查器并接入统一 runner。当前轮按用户要求复核已完成的测试日志，并新增 [Pydantic AI 宿主参考版](host_reference/README.md)：固定控制流、模型适配代码及强制后端接口；没有执行新测试、模型、迁移或部署。待设计、待实现及待测项统一在 [PENDING_TESTS.md](PENDING_TESTS.md)。下文验收方法是后续规划，不构成自动运行指令。
 
 已有 `handoff/` 只覆盖从保留 Paper 候选到 Dependency 本地引用扫描的单机路径，不能据此把下文的通用模型调度、独立审阅或 SQL/Git/Neo4j 集成标记完成。
 
-新接口落地时先采用单进程的任务/存储/证据门/关系/归档五个逻辑模块，不先拆微服务。Neo4j 是关系模块的一种后端，缺失时不阻止已知引用上的合法任务。本地封存与 Git 归档分开推进；旧 runtime.sql 的非空 Git 检查点和全局视图头仍需专门适配，新 profile 未接通前不启用。新增图 schema 未注册到根五文件加载器，本次没有可宣称通过的图接口测试。
+新接口落地时先采用单进程的任务/存储/证据门/关系/归档五个逻辑模块，不先拆微服务。参考版已明确模块间调用和端口，但数据库与身份服务尚未接通。Neo4j 是关系模块的一种后端，缺失时不阻止已知引用上的合法任务。本地封存与 Git 归档分开推进；旧 runtime.sql 的非空 Git 检查点和全局视图头仍需专门适配，新 profile 未接通前不启用。新增图 schema 未注册到根五文件加载器，本次没有可宣称通过的图接口测试。
 
 ## 1. 本轮要完成的事情
 
@@ -31,7 +31,7 @@
 
 以下仍需后续实现，不能靠更多 schema 字段替代：
 
-- 真正的模型调用和 paper/proof/dependency 语义生产者。
+- 模型调用的实际接通与 paper/proof/dependency 语义生产验收；`host_reference/` 已有 Pydantic AI 调用代码，但未安装依赖、执行调用或接通运行后端。
 - 运行队列、任务领取、预算扣留、租约回收、幂等重试及取消。
 - 实际执行身份、生产参与者闭包、权限隔离和反向解释的可见内容控制。
 - 目标级 EVIDENCE 判断及有条件结果的安全复用。
@@ -74,51 +74,40 @@
 
 验收：能说明节省了哪段实际工作、仍承担哪些假设、拒绝复用的具体原因。未测量成本节约时不宣称低价模型一定足够；低成本模型先用于已有评测覆盖的操作。
 
-## 4. 运行层框架选型：Pydantic AI（建议，未决策）
+## 4. 运行层参考选型：Pydantic AI（参考实现，未生产接通）
 
-记录日期 2026-09-15。这是一条**建议**，不是已采纳的决定，也不改变本包任何现有契约。
+2026-09-15 按用户要求，将原建议推进为 [host_reference](host_reference/README.md)。这是一个独立目录内的实现参考，不等于决定将 SDK 作为全部底层基础设施，也没有安装到仓库主环境。
 
-### 4.1 结论
+### 4.1 框架与宿主各负责什么
 
-[Pydantic AI](https://pydantic.dev/docs/ai/overview/) 是一个 Python 运行时 SDK：带类型的 agent 循环、`@agent.tool` 工具注册、用 Pydantic 模型做结构化输出（校验失败自动重试）、依赖注入、durable execution（Temporal／DBOS／Prefect／Restate）、OpenTelemetry 可观测性。
+| 层 | 本次决定 |
+|---|---|
+| 业务记录与 Agent 接口 | 原 JSON Schema 和规范继续是真源，不用 Pydantic 重新生成或改变包身份 |
+| 模型调用适配 | 使用 Pydantic AI 的结构化输出、输出检查回调、消息与用量接口；参考代码已写，未执行 |
+| 宿主控制流 | 自己的固定程序负责前置核对、冻结输入、预算/租约接口、草稿暂存及交付关卡，不是模型 Agent |
+| 数据库、身份、固定程序、图、归档 | 显式端口；真实事务和服务适配尚待实现，不由 SDK 自动提供 |
 
-判断要按三层分开，三层答案不同：
+模型只获得工作单明确允许的材料。源码中只有专业任务调用，没有把 SQL、Neo4j、Git 或 shell 暴露为自由选择的模型工具。[Pydantic AI 概览](https://pydantic.dev/docs/ai/overview/)
 
-| 层 | 是什么 | 用 Pydantic AI |
-|---|---|---|
-| 业务记录（`schema v0.0/` 的 64 类） | 科学**档案格式** | **否** |
-| 规范文档（各 agent 目录的 AGENT／INTERFACE／CONFORMANCE 等） | 认识论约束 | **否** |
-| 宿主运行时（§3 五步里尚未实现的部分） | 执行、校验、调度、归属 | **值得，等真正动手写宿主时** |
+### 4.2 对原选型说明的纠正
 
-### 4.2 档案层与规范层为什么不用
+- **工具未注册不等于“物理不可能越权”。** SDK 路由限制之外，仍需受控供应商配置、网络/进程隔离、文件读取授权及固定程序白名单。
+- **依赖注入不等于盲审隔离。** brief、记录外壳、附件、工具输出或历史消息都可能泄露原目标；实际发送内容必须单独检查。[依赖注入文档](https://pydantic.dev/docs/ai/core-concepts/dependencies/)
+- **Trace 不等于真实身份或独立性。** 必须有可信执行边界及生产参与者闭包；模型自报 principal 或一个追踪 ID 均不够。
+- **Durable execution 需要后端集成。** 本参考没有接持久执行服务，也没有实现数据库领取/恢复事务，不能用“支持 durable”替代这些工作。[持久执行文档](https://pydantic.dev/docs/ai/capabilities/durable_execution/overview/)
+- **结构化输出不自动完整验证原 schema。** `StructuredDict` 仍需原检查器；草稿的 payload 验证也不覆盖完整业务记录的根级条件与 RecordSet 关系。复杂 schema 能否被特定 provider 接受须另行验证，不能承诺无损自动生成必然可用。[输出文档](https://pydantic.dev/docs/ai/core-concepts/output/)
 
-业务记录有 `$id` URI、`schema_bundle_hash` 绑定整包、封闭 union、全字段 `required`，设计目标是活得比任何框架久——十年后用任何语言都能验证。改写成 Pydantic 模型会把档案格式绑死在一个 Python 库的生命周期上，而且 `schema_bundle_hash` 会随该库 JSON Schema 生成器的版本变化而变，整包哈希纪律就散了。
+### 4.3 结合已完成测试落实的宿主关卡
 
-规范层写的是"生产者不得审阅或批准自己的产物"这类认识论约束。没有任何 agent 框架有独立审阅、证据门、盲反译隔离的概念，这部分仍然要自己写。
+Planner 的 `FOLLOW_UP_BLOCKED` 与 Delta 的多目标检查已有新执行证据；Dependency / Review / Utility 已有最小检查器。参考宿主直接适配这些检查器，而不是另写一套较弱判定。
 
-### 4.3 运行层为什么值得
+但“检查通过”仍只属于报告覆盖范围：派单前重新核对真实前置；模型输出后先保存草稿；Delta 全空草稿或未逐目标交代的诊断不能当完整比较；完整记录、独立身份和字节闭包在正式交付前另行检查。旧日志与本轮新增待测项见 [PENDING_TESTS §8–9](PENDING_TESTS.md)。
 
-它恰好对着本包目前最弱的一环：字段声明了但没有任何代码检查。`formal-environment` 的 `allowed_axioms` 是唯一被真正交叉检查的字段；`allowed_trust_mechanisms`、`package_manifest`、`command`、`network_access` 都是写入即遗忘。框架能把其中几条从"事后审计"变成"架构保证"：
+### 4.4 开发顺序
 
-| 现状 | 框架对应 | 差别 |
-|---|---|---|
-| 草稿写完后离线校验，不合格整轮失败 | 结构化输出 + 校验失败自动重试 | 从"事后判死"变成"生成期收敛" |
-| `capabilities` 是 `agents.json` 里没人检查的字符串 | `@agent.tool` 注册：未注册的工具不可调用 | 从"声明"变成"物理不可能" |
-| `INVISIBLE_REF` 事后查引用是否属于 `Task.input_refs` | 依赖注入：上下文里只放允许的记录 | 从"事后抓"变成"事前不可及" |
-| "达到预算或无进展就保存并暂停"是散文 | durable execution，跨重启恢复 | 从规则变成运行时 |
-| "宿主拥有执行事实"无实现 | OpenTelemetry trace 即真实执行归属 | 从原则变成数据 |
+先落实 `RuntimePort` 的单任务领取、不可变输入/草稿留存和业务/Result/outbox 同事务，再接真实 `EvidenceGate`、Utility 固定程序与专用装配。按中央清单取得用户测试授权后，才验证这一轮的新代码。
 
-第三行尤其关键：它正是 `review.backtranslate` 输入隔离的执行机制。现在靠检查器里硬编码的白名单事后拦截，用依赖注入则是反译者的上下文里根本没有原文与预期答案。
-
-### 4.4 采纳时必须守住的三条边界
-
-1. **规范保持框架中立。** 规范该说"模型返回一个符合 `proof-draft.schema.json` 的 JSON 对象"；用什么实现是宿主的事。一旦规范开始用框架概念（Agent／Tool／RunContext）表述，就把一份要长期存续的契约绑在了一个快速演进的库上。
-2. **生成方向不能反。** JSON Schema 是真源，Pydantic 模型是生成物（`datamodel-code-generator` 一类工具）。草稿 schema 用 `oneOf` 做记录类型分支，对应 Pydantic 的 discriminated union，生成没有障碍；但真源必须留在 JSON Schema 一侧，否则 `schema_bundle_hash` 失去意义。
-3. **时机：等有宿主再引入。** 目前尚无运行时，`validation-report.json` 里未实现项全是运行层的东西。单人维护下，多一个活跃演进的依赖就是多一份负担；在没有宿主的阶段引入，只有成本没有收益。
-
-### 4.5 复核时点
-
-开始 §3 第一步（单个可恢复工作单）时复核本节：确认 Pydantic AI 当时的 durable execution 后端与结构化输出行为，再决定采纳或另选。若采纳，先只在第一步的 handler 上试，不一次性铺开。
+参考一次 attempt 最多一个 SDK 请求，SDK 自动重试关闭；宿主另行决定后续修订和计费。依赖版本独立固定为参考选择，尚未解析或锁定；供应商 HTTP 重试、token 上限与实际费用之间的差异不能忽略。[用量文档](https://pydantic.dev/docs/ai/api/pydantic-ai/usage/)
 
 ## 5. 以后演进契约的规则
 
