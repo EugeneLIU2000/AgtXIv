@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AgtXIv paper-first layered architecture local explorer.">
+  <title>AgtXIv · Paper-first architecture explorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">A</span><div><strong>AgtXIv</strong><small>PAPER-FIRST ARCHITECTURE</small></div></div>
+      <div class="topbar-title"><span>ARCHITECTURE EXPLORER</span><strong>Stepwise Paper Verification and Knowledge Lifecycle</strong></div>
+    <div class="topbar-actions"><span class="live-dot"></span><span>LOCAL / READ-ONLY</span><button id="theme-toggle" type="button" aria-label="切换明暗主题">◐</button></div>
+  </header>
+
+  <main class="shell">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">BASED ON <code>agtxiv-paper-first-layered.architecture</code></p>
+        <h1>先把一篇论文做成<br><em>可审计的系统对象。</em></h1>
+        <p class="intro-copy">这张地图展示 AgtXIv 的 paper-first 逻辑：整篇论文先按固定范围建立，再经过核查、发布和知识准入，最后才由 query 只读地读取。</p>
+      </div>
+      <div class="intro-stats" aria-label="图表统计"><span><b>19</b>节点</span><span><b>18</b>关系</span><span><b>4</b>引导视图</span></div>
+    </section>
+
+    <section class="viewbar" aria-label="架构视图">
+      <div class="view-copy"><span class="view-kicker">GUIDED VIEW</span><strong id="view-title">Construction / 构建</strong><p id="view-note">Whole-paper construction is exact-profile, exact-scope, and query-independent.</p></div>
+      <div class="view-tabs" role="tablist" aria-label="选择架构视图">
+        <button class="view-tab is-active" type="button" role="tab" aria-selected="true" data-view="construction"><i></i>Construction<span>构建</span></button>
+        <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="verification"><i></i>Verification<span>核查</span></button>
+        <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="release_knowledge"><i></i>Release &amp; Knowledge<span>发布与知识</span></button>
+        <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="provisional"><i></i>Provisional Path<span>临时路径</span></button>
+      </div>
+    </section>
+
+    <section class="explorer" aria-label="Paper-first architecture diagram">
+      <div class="diagram-frame">
+        <div class="diagram-toolbar"><span><i></i> SEMANTIC MAP</span><span id="diagram-status">VIEW / CONSTRUCTION</span><button id="reset-view" type="button">RESET FOCUS</button></div>
+        <div class="diagram-scroll"><svg id="architecture-svg" viewBox="0 0 1390 640" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">AgtXIv paper-first architecture</title><desc id="diagram-desc">Clickable architecture diagram for construction, verification, release, knowledge and provisional query paths.</desc></svg></div>
+        <div class="legend"><span><i class="legend-dot external"></i>External</span><span><i class="legend-dot backend"></i>Backend</span><span><i class="legend-dot database"></i>Knowledge</span><span><i class="legend-dot security"></i>Gate / review</span><span><i class="legend-dot cloud"></i>Release</span><span><i class="legend-dot frontend"></i>Query</span></div>
+      </div>
+
+      <aside class="inspector" aria-live="polite">
+        <div class="inspector-head"><span class="view-kicker">SELECTED NODE</span><button id="clear-selection" type="button" aria-label="清除节点选择">×</button></div>
+        <div class="inspector-type" id="inspector-type">EXTERNAL · CANONICAL INPUT</div>
+        <h2 id="inspector-title">Exact Paper Release</h2>
+        <p class="inspector-cn" id="inspector-cn">精确论文版本：固定的来源字节和哈希。</p>
+        <p class="inspector-sub" id="inspector-sub">Pinned source bytes and hash</p>
+        <div class="inspector-grid"><div><span>STABLE ID</span><strong id="inspector-id">exact_paper_release</strong></div><div><span>角色</span><strong id="inspector-tag">canonical input</strong></div><div><span>进入 / UPSTREAM</span><strong id="inspector-incoming">—</strong></div><div><span>流向 / DOWNSTREAM</span><strong id="inspector-outgoing">Profile-Scoped Paper Analysis</strong></div><div><span>边界</span><strong id="inspector-boundary">固定来源，不等于已经审阅</strong></div></div>
+        <div class="inspector-note" id="inspector-note">点击节点查看它在整条 paper-first 链条中的位置。颜色表示语义角色，不表示通过或失败。</div>
+      </aside>
+    </section>
+
+    <section class="route-panel" aria-label="有向路径追踪">
+      <div class="route-copy"><span class="view-kicker">DIRECTED ROUTE</span><h2>Trace a paper-first route</h2><p>箭头有方向：选择起点和终点，查看图中真实存在的连续路径。</p></div>
+      <div class="route-controls"><label>FROM<select id="route-from"></select></label><span class="route-arrow">→</span><label>TO<select id="route-to"></select></label><button id="trace-route" type="button">TRACE ROUTE</button><button id="clear-route" type="button" class="quiet-button">CLEAR</button></div>
+      <div class="route-result" id="route-result">选择起点和终点后，路径会在图中高亮。Provisional Path 不会自动连入 canonical release。</div>
+    </section>
+
+    <section class="principles">
+      <div class="principle"><span>01</span><strong>Query-independent</strong><p>先完整处理论文，用户问题不能偷偷删掉论文范围。</p></div>
+      <div class="principle"><span>02</span><strong>Separate gates</strong><p>归档、准入、核查和发布是不同的门，不互相冒充。</p></div>
+      <div class="principle"><span>03</span><strong>Read-only query</strong><p>Query 读取已有知识；临时回答不会写入正式知识库。</p></div>
+    </section>
+  </main>
+
+  <footer class="footer"><span>AgtXIv · local architecture explorer</span><span>Source: docs/architecture/agtxiv-paper-first-layered.architecture.json</span></footer>
+  <script src="app.js"></script>
+</body>
+</html>

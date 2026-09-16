@@ -227,3 +227,81 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Minimal visual layer: restrained chrome around the necessary graph colors. */
+:root {
+  --ink: #20242a;
+  --muted: #626a75;
+  --line: #deddd7;
+  --paper: #f7f6f2;
+  --white: #fffefa;
+  --navy: #303840;
+  --contribution: #365f91;
+  --definition: #39766f;
+  --lemma: #715e91;
+  --proposition: #9a672d;
+  --theorem: #9a465f;
+  --other-claim: #687685;
+  --gray-claim: #7b8087;
+  --radius: 8px;
+  --shadow: 0 10px 28px rgba(30, 35, 40, .06);
+}
+body { -webkit-font-smoothing: antialiased; }
+:focus-visible { outline-color: rgba(54, 95, 145, .45); border-radius: 3px; }
+.skip-link { border-radius: 3px; background: #294c75; }
+.site-header { position: sticky; z-index: 40; top: 0; color: var(--ink); background: rgba(247, 246, 242, .96); border-color: var(--line); backdrop-filter: blur(12px); }
+.header-inner { min-height: 62px; }
+.header-inner img { filter: none; }
+.header-context { border-color: var(--line-strong, #c9c8c1); }
+.header-context span, .snapshot { color: var(--muted); }
+.snapshot i { background: var(--contribution); }
+.outcome-strip { margin-top: 22px; padding: 17px 19px; border: 1px solid #c9c8c1; border-left: 3px solid var(--contribution); border-radius: 6px; box-shadow: none; }
+.outcome-statuses div { border-left-width: 1px; }
+.intake-return { border: 1px solid var(--contribution); border-radius: 4px; }
+.intake-return:hover { background: #294c75; }
+.graph-intro { padding-block: 42px 32px; }
+.graph-intro h1 { font-size: clamp(30px, 4vw, 49px); }
+.boundary-copy { background: #f2f3f2; border-color: var(--line); border-radius: 5px; }
+.loading-status { background: #eef3f6; border-color: #c8d3dd; border-radius: 5px; }
+.load-error { color: #793b37; background: #f8ecea; border-color: #d9aaa6; border-radius: 5px; }
+.load-error button, .graph-toolbar button { border-radius: 4px; }
+.load-error button { background: #8c3e39; }
+.graph-app { border-color: #c9c8c1; border-radius: var(--radius); box-shadow: var(--shadow); }
+.legend { background: rgba(255, 254, 250, .97); backdrop-filter: blur(8px); }
+.shape-swatch { box-shadow: none; }
+.graph-toolbar { background: #f4f4f1; }
+.graph-toolbar button:hover { color: #294c75; border-color: #8fa6bb; background: #f7fafc; }
+.graph-toolbar button:disabled { cursor: not-allowed; opacity: .5; }
+.graph-stage { background-color: #fafaf7; background-image: none; }
+.graph-edge-underlay { stroke: rgba(250, 250, 247, .98); }
+.node-shape { fill: color-mix(in srgb, var(--node-color) 9%, white); filter: none; }
+.external-node-label { fill: #303a43; stroke: #fafaf7; }
+.graph-status { background: #f4f4f1; }
+.detail-panel { background: var(--white); }
+#unpinButton { border-radius: 4px; background: #f2f2ef; }
+#unpinButton:hover { color: #294c75; border-color: #8fa6bb; }
+.markdown-body code, .math-fallback { background: #efefec; }
+.markdown-body pre { color: #edf0f2; background: #2d343b; border-radius: 4px; }
+.math-figure { background: #f5f5f2; border-color: var(--line); border-radius: 4px; }
+.node-tooltip { border-color: #c9c8c1; border-radius: 6px; box-shadow: 0 12px 32px rgba(30, 35, 40, .12); }
+.site-footer { background: var(--white); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* Accessibility contrast corrections for keyboard focus and compact metadata. */
+:root { --metadata: #56606a; --focus-ring: #274c77; }
+:focus-visible { outline: 2px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 4px var(--focus-ring); }
+.eyebrow,
+.header-context span,
+.snapshot,
+.outcome-heading > p:last-child,
+.outcome-statuses dt,
+.shape-legend span,
+.type-legend span,
+.edge-legend span,
+.pan-hint,
+.graph-status,
+.math-figure summary,
+.site-footer { color: var(--metadata); }
