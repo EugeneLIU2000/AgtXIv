@@ -1,0 +1,31 @@
+\section{Universal Graph}
+\label{sec:universal-graph}
+
+The informal and formal graphs differ sharply in density and representation: the informal graph is sparse (edge-to-statement ratio $\sim$1.56), the formal graph is dense ($\sim$29.2), and no edges initially connect them. To link equivalent or closely related statements across papers and across the informal/formal divide, we map every statement into a shared semantic space using slogans, embeddings, and nearest-neighbor lookup.
+
+\paragraph{Slogans.} Following prior work on statement-level retrieval \cite{leansearch-v1, theoremsearch2026}, for each statement, we generate a \emph{slogan}: a concise, standalone natural-language summary produced by Qwen3-235B-A22B-Instruct-2507 \cite{qwen3technicalreport}. Informal slogans are generated with an escalating prompt chain that adds context only when the previous attempt is self-flagged as insufficient. 
+
+The stages add, in order, the statement body, proof and local context, neighboring statements and outgoing dependencies, and finally a forced best-guess slogan. This achieves full coverage over 11.75M statements, with 70.3\% resolved at the minimal stage and 98.1\% before the final fallback (Table~\ref{tab:slogan-chain}). For formal declarations, we rank outgoing dependencies by semantic role and pack the highest-priority mathematically informative context into a fixed-size prompt, filtering ubiquitous declarations and Lean/kernel plumbing. Exact ranking and filtering rules are given in the released code.
+
+\begin{table}[h]
+  \centering
+  \setlength{\tabcolsep}{4pt}
+  \small
+  \begin{tabular}{lrrr}
+    \toprule
+    \textbf{Stage} & \textbf{Statements} & \textbf{Sufficient} & \textbf{Coverage} \\
+    \midrule
+    \texttt{minimal}       & 11.75M & 8.26M\ (70.3\%) & 70.3\% \\
+    \texttt{standard}      & 3.49M  & 2.87M\ (82.1\%) & 94.7\% \\
+    \texttt{comprehensive} & 624K   & 406K\ (65.1\%)  & 98.1\% \\
+    \texttt{final}         & 218K   & 218K\ (100\%)   & 100\% \\
+    \bottomrule
+  \end{tabular}
+  \caption{Slogan rescue rates along the escalating prompt chain.}
+  \label{tab:slogan-chain}
+\end{table}
+
+\label{sec:embeddings-semantic-representation}
+\paragraph{Embeddings.} Each slogan is embedded into $\mathbb{R}^{4096}$ using Qwen3-Embedding-8B \cite{zhang2025qwen3embedding} with a retrieval instruction, then $\ell_2$-normalized so inner products equal cosine similarity. Vectors are stored in \texttt{pgvector} with an HNSW index \cite{malkov2018efficientrobustapproximatenearest}; a binary-quantized projection is used for fast candidate generation.
+
+\paragraph{Semantic representation.} For each target statement, we can retrieve semantically similar statements using the embedding index. Retrieval first uses binary HNSW to produce an approximate shortlist, then reranks candidates by full-precision cosine similarity and keeps matches above a     fixed threshold. Figure \ref{fig:match-types} details the possibilities: formal (or informal) to itself can surface duplicates while formal to informal finds semantic restatement edges (matches).

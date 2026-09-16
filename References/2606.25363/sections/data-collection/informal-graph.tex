@@ -1,0 +1,54 @@
+\section{Informal Graph}
+
+We parse over 11.7 million theorem-like statements from mathematics arXiv papers and recover 18.3 million directed dependency edges within and across papers.
+
+\paragraph{Corpus and statement extraction.}
+Our corpus is the arXiv Kaggle metadata snapshot filtered to mathematics-tagged papers. For each paper, we store metadata, references resolved through Semantic Scholar when possible, and the paper's \LaTeX{} source. A regex-based parser identifies theorem-like environments and records each statement's type, reference number, \verb|\label| key, body, proof, and local context. We discard malformed or implausible statements, including empty bodies, unbalanced math delimiters, very short statements, and statements ending mid-clause.
+
+\begin{table}[ht]
+  \centering
+  \setlength{\tabcolsep}{4pt}
+  \small
+  \begin{tabular}{lrrr}
+    \toprule
+    \textbf{Extractor} & \textbf{Edges} & \textbf{Within-paper} & \textbf{External} \\
+    \midrule
+    Deterministic & 5.23M  & 3.31M  & 1.92M\ (79K) \\
+    Heuristic     & 6.47M  & 4.77M  & 1.70M\ (53K) \\
+    Notation      & 7.88M  & 7.88M  & -- \\
+    \midrule
+    Any           & 18.32M & 14.86M & 3.46M\ (130K) \\
+    \bottomrule
+  \end{tabular}
+  \caption{Breakdown of informal dependency edges by extractor. The Within-paper and External columns are not a partition of all edges and need not sum to the Edges total. Per-extractor rows may overlap; the ``Any'' row deduplicates.
+  }
+  \label{tab:informal-edge-breakdown}
+\end{table}
+
+\paragraph{Dependency extraction.}
+Each edge is tagged with the extractor or extractors that proposed it (Table~\ref{tab:informal-edge-breakdown}). The \emph{deterministic} extractor resolves \verb|\ref|-like commands within a paper and \verb|\cite| keys against the paper's reference list, using arXiv IDs or title matching; citations that name a target theorem are further resolved to a specific statement. The \emph{heuristic} extractor adds edges from nearby references, backward discourse cues, and prose references such as ``Theorem 3.2,'' with all heuristic edges constrained to point backward in document order. The \emph{notation} extractor uses Qwen3-235B-A22B-Instruct-2507 to identify notation defined and used by each statement, then links each use to the closest prior compatible definition.
+
+\paragraph{Validation.}
+We evaluate the extractor pipeline on 500 sampled papers using an independent LLM judge, Kimi K2.5. The judge first proposes within-paper dependencies from the full statement list, then verifies extractor-proposed edges it missed. Results are shown in Table~\ref{tab:informal-dep-judge}; examples of rejected and missed edges appear in Appendix~\ref{app:informal-dep-fails}. Each released edge retains its extractor label, allowing users to trade coverage for precision; deterministic edges, for example, achieve 98.8\% judge-verified precision.
+
+\begin{table}[ht]
+  \centering
+  \setlength{\tabcolsep}{3pt}
+  \small
+  \begin{tabular}{lrrr}
+    \toprule
+    \textbf{Extractor} & \textbf{Edges} & \textbf{Judge-Verified} & \textbf{Judge-Rejected} \\
+    \midrule
+    Deterministic & 5{,}051  & 4{,}989\ (98.8\%) &      62\ \,(1.2\%) \\
+    Heuristic     & 4{,}616  & 3{,}535\ (76.6\%) & 1{,}081\ (23.4\%) \\
+    Notation      & 6{,}241  & 2{,}665\ (42.7\%) & 3{,}576\ (57.3\%) \\
+    \midrule
+    Any           & 14{,}481 & 9{,}855\ (68.1\%) & 4{,}626\ (31.9\%) \\
+    \midrule
+    \multicolumn{3}{l}{Judge-only edges (no extractor recovered)} & 6{,}372 \\
+    \multicolumn{3}{l}{$F_1 \;=\; 2\,\mathrm{TP} / (2\,\mathrm{TP} + \mathrm{FP} + \mathrm{FN})$} & $0.642$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Agreement between extracted informal dependency edges and an independent LLM judge on 500 arXiv papers. Assuming the judge to be ground truth, judge-verified edges are true positives, judge-rejected extractor edges are false positives, and judge-only edges are false negatives. Per-extractor rows may overlap; the ``Any'' row deduplicates.}
+  \label{tab:informal-dep-judge}
+\end{table}

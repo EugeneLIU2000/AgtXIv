@@ -1,0 +1,161 @@
+\section{Example Judge-Rejected and Missed Informal Dependencies}
+\label{app:informal-dep-fails}
+
+For each extractor and for the judge, we present three samples drawn from the 500-paper judge subset. The first three tables show edges the parser found but the LLM judge rejected; the fourth shows edges only the judge identified. Statement bodies are reproduced from the parsed \LaTeX\ source.
+
+\begingroup
+\small\setlength{\tabcolsep}{6pt}
+\begin{longtable}{@{}p{0.48\linewidth}p{0.48\linewidth}@{}}
+\caption{Deterministic edges the judge rejected. The first and last are explicit author-declared restatements that the judge rejected. The second makes an explicit reference to a lemma in the proof.}
+\label{tab:dep-det} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endfirsthead
+\caption[]{Deterministic edges the judge rejected (continued)} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Object-unital groupoid graded rings, crossed products and separability''
+  (arXiv:2001.05164)%
+} \\[2pt]
+\textbf{Proposition 48.} \emph{(Theorem 3)} Suppose that $L/K$ is a separable (not necessarily finite) field extension. Then the object crossed product $R = (L/K,\beta)$ is separable over $R_0$ if and only if $\mathrm{Aut}_K(L)$ is finite. In particular, if $L/K$ is Galois, then $R$ is separable over $R_0 = L$ if and only if $L/K$ is finite. & \textbf{Theorem 3.} Suppose that $L/K$ is a separable (not necessarily finite) field extension. Then the object crossed product $R = (L/K,\beta)$ is separable over $R_0$ if and only if $\mathrm{Aut}_K(L)$ is finite. In particular, if $L/K$ is Galois, then $R$ is separable over $R_0 = L$ if and only if $L/K$ is finite. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\linewidth}@{}}{%
+  \itshape From ``Koszul duality and equivalences of categories''
+  (arXiv:math/0012264)%
+} \\[2pt]
+\textbf{Corollary 5.9.} Let $P$ be any complex in $\mathrm{KomF}(U)$. (a) $H^p G(P) = H^p(k \otimes_U P)$. (b) $P$ is in $N_{K(U)}$ iff $P$ and $k \otimes_U P$ are acyclic.
+% \newline \emph{Proof.} This is analog to Corollary 5.6. In order to prove the analog of Lemma 5.4 one should use that $P$ is $\underset{\longleftarrow}{\lim}\sigma^{\leq p}P$ and that $G$ commutes with inverse limits.
+& \textbf{Lemma 5.4.} Let $I \in \mathrm{KomCoF}(A^{!},d)$ be (forgetting the differential) $I = \prod_{p > 0} \mathrm{Hom}_k(A^{!}, N^p(-p))$. Then $H^p F(I) = 0$ for $p \leq 0$. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Cluster Algebras, Invariant Theory, and Kronecker Coefficients II''
+  (arXiv:1711.00163)%
+} \\[2pt]
+\textbf{Theorem 2.} \emph{(Theorem 2.0.1.22)} There is a rigid potential $\widetilde{W}_l^m$ on $\widetilde{\Diamond}_l^m$ such that $(\widetilde{\Diamond}_l^m, \widetilde{W}_l^m)$ is a polyhedral cluster model. & \textbf{Theorem 2.0.1.22.} The rigid potential IQP $(\overline{\Diamond}_l^m, \overline{W}_l^m)$ is a polyhedral cluster model and its Jacobian algebra is finite-dimensional. \\
+\end{longtable}
+\endgroup
+
+\begingroup
+\small\setlength{\tabcolsep}{6pt}
+\begin{longtable}{@{}p{0.48\linewidth}p{0.48\linewidth}@{}}
+\caption{Heuristic edges the judge rejected. These illustrate a common heuristic failure: sibling theorems in adjacent positions, where proximity-weighted scoring fires but the two are parallel results rather than a dependency.}
+\label{tab:dep-heur} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endfirsthead
+\caption[]{Heuristic edges the judge rejected (continued)} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``On the spectral $\nu$-continuity''
+  (arXiv:2009.08977)%
+} \\[2pt]
+\textbf{Theorem 4.2.} Let $T \in \Phi(H)$ be such that $T$ satisfies Browder's theorem. If $0 \in \mathrm{acc}\,\sigma_w(T)$ and $(T_n)$ is a sequence of essentially $G_1$ operators such that $T_n \xrightarrow{\nu} T$, then $\sigma(T_n) \to \sigma(T)$. & \textbf{Theorem 4.1.} Let $T \in \Phi(H)$ be such that $0 \notin \sigma_w(T)$ or $0 \in \mathrm{acc}\,\sigma_w(T)$. If $(T_n)$ is a sequence of essentially $G_1$ operators such that $T_n \xrightarrow{\nu} T$, then $\sigma_w(T_n) \to \sigma_w(T)$. \\
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Polar Codes for the m-User MAC''
+  (arXiv:1002.0777)%
+} \\[2pt]
+\textbf{Lemma 7.} $U_{2,4}$ cannot be the uniform rate region of any MAC with four users and binary inputs. & \textbf{Lemma 6.} $\mathcal{A}_4 \subset \mathrm{BMAT}_4 \subsetneq \mathrm{MAT}_4$. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``A characterization of Johnson and Hamming graphs and proof of Babai's conjecture''
+  (arXiv:1912.11427)%
+} \\[2pt]
+\textbf{Fact A.12.} Let $X$ be a generalized $2d$-gon of order $(s, s)$ for $2d \leq 6$, $s > 1$. Then the zero-weight spectral radius of $X$ satisfies $\xi(X) \leq 2s$. & \textbf{Theorem A.11.} A generalized $2d$-gon of order $(s, t)$ exists only for $2d \in \{4, 6, 8, 12\}$ unless $s = t = 1$. If $s > 1$, then $2d \neq 12$. \\
+\end{longtable}
+\endgroup
+
+\begingroup
+\small\setlength{\tabcolsep}{6pt}
+\begin{longtable}{@{}p{0.48\linewidth}p{0.48\linewidth}@{}}
+\caption{Notation edges the judge rejected. These show the dominant notation-extractor failure mode: shared symbols ($\Omega$, $\boldsymbol{S}$, $X:\Sigma\to\mathbb{S}^2\times\mathbb{R}$) without genuine dependency.}
+\label{tab:dep-notation} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endfirsthead
+\caption[]{Notation edges the judge rejected (continued)} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Padé Approximants, density of rational functions in $A^\infty(\Omega)$\ldots''
+  (arXiv:1212.4394)%
+} \\[2pt]
+\textbf{Proposition 6.3.} There exist a Jordan domain $\Omega$ and a function $f \in A(\Omega)$ such that the antiderivative of $f$ is not bounded inside $\Omega$. & \textbf{Lemma 5.4.} Let $\Omega$ be an open set, $\Omega \subseteq \mathbb{C}$. Then for every $N \in \mathbb{N}$ we have $\overline{\overline{(\Omega \cap D(0,N))}^{\,0}} = \overline{(\Omega \cap D(0,N))}$. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Weak Convergence of Probability Measures''
+  (arXiv:2007.10293)%
+} \\[2pt]
+\textbf{Corollary 3.12 (Mapping theorem).} Let $h : \boldsymbol{S} \to \boldsymbol{S}'$ be a continuous mapping between two metric spaces. If $P_n \Rightarrow P$ on $\boldsymbol{S}$ and $P$ has a separable support, then $P_n h^{-1} \Rightarrow P h^{-1}$ on $\boldsymbol{S}'$. & \textbf{Theorem 3.9 (Prokhorov, direct part).} If a family of probability measures $\Pi$ on $(\boldsymbol{S}, \mathcal{S})$ is tight, then it is relatively compact. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``The Gauss map of minimal surfaces in $\mathbb{S}^2 \times \mathbb{R}$''
+  (arXiv:2006.09995)%
+} \\[2pt]
+\textbf{Proposition 4.7.} There is no minimal conformal immersion $X : \Sigma \to \mathbb{S}^2 \times \mathbb{R}$ whose Gauss map $g$ is an anti-holomorphic non-constant map. & \textbf{Proposition 4.3.} Let $X : \Sigma \to \mathbb{S}^2 \times \mathbb{R}$ be a minimal conformal immersion and $g$ its Gauss map. Then $g$ is constant if and only if $X(\Sigma)$ is part of a vertical cylinder over a geodesic of $\mathbb{S}^2$ in $\mathbb{S}^2 \times \mathbb{R}$. \\
+\end{longtable}
+\endgroup
+
+\begingroup
+\small\setlength{\tabcolsep}{6pt}
+\begin{longtable}{@{}p{0.48\linewidth}p{0.48\linewidth}@{}}
+\caption{Edges only the judge identified, typically genuine proof-level dependencies the parser missed because the author used the prior result implicitly.}
+\label{tab:dep-judge-only} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endfirsthead
+\caption[]{Edges only the judge identified (continued)} \\
+\toprule
+\textbf{Source statement} & \textbf{Dependency statement} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Graphs with large chromatic number induce $3k$-cycles''
+  (arXiv:1408.2172)%
+} \\[2pt]
+\textbf{Theorem 8.} If $G$ is a connected trinity graph with large chromatic number and $r$ is a vertex of $G$, there exists a shadow or an antishadow. & \textbf{Theorem 1.} Every vertex $r$ in a connected trinity graph $G$ with large chromatic number is the origin of a large-order TCP. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Weak Convergence of Probability Measures''
+  (arXiv:2007.10293)%
+} \\[2pt]
+\textbf{Theorem 1.6.} The following three conditions are equivalent: (i) $\boldsymbol{S}$ is separable; (ii) $\boldsymbol{S}$ has a countable base (a class of open sets such that each open set is a union of sets in the class); (iii) Each open cover of each subset of $\boldsymbol{S}$ has a countable subcover. & \textbf{Definition 1.5.} An \emph{open cover} of $A \subset \boldsymbol{S}$ is a class of open sets whose union contains $A$. \\
+\midrule
+\addlinespace
+\multicolumn{2}{@{}>{\centering\arraybackslash}p{\dimexpr0.96\textwidth+1.5em\relax}@{}}{%
+  \itshape From ``Extension of isometries between unit spheres of finite-dimensional polyhedral Banach spaces''
+  (arXiv:1206.4839)%
+} \\[2pt]
+\textbf{Corollary 4.3.} If $\dim X = 2$, then $F$ is Gateaux differentiable at every non-zero point. & \textbf{Theorem 4.2.} In the following cases we can guarantee the Gateaux differentiability of $F$ at a point $y \in S_X$: (i) if $y \in \Sigma(X)$; (ii) if $\mathrm{lin}\, \gimel(y) = X^*$. \\
+\end{longtable}
+\endgroup

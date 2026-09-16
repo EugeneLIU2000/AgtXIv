@@ -1,0 +1,30 @@
+\section{Retrieval-Augmented Formalization}
+\label{sec:exp3}
+
+We test whether slogan retrieval helps an LLM autoformalize natural-language statements into Lean. We use a statement-only setting: given an informal description, \texttt{claude-sonnet-4-6} generates a single Lean~4 declaration ending in \texttt{:= sorry}, with no proof. The compiler is available during generation, with at most three \texttt{typecheck} calls per target.
+
+To reduce memorization, we evaluate on 24 theorems introduced in Mathlib v4.30 while retrieving only from the v4.29 corpus. Queries are \texttt{qwen3-8b} back-translations of the gold Lean signature with the declaration name removed, so the informal text must identify the relevant mathematical objects without relying on the target name. The retriever uses slogan representations with a query head trained on typed dependency labels; on a held-out Mathlib premise benchmark, this improves R@100 from 0.16 with raw cosine similarity to 0.54. On the 24-target evaluation, top-15 retrieval recall is 0.161.
+
+We compare four conditions: \emph{None}, using only the informal statement; \emph{RAG}, adding the top retrieved premises; \emph{Library}, adding a \texttt{grep} tool over the full v4.29 declaration listing; and \emph{RAG+Library}, allowing both. A \texttt{claude-opus-4-7} judge, checked by hand, labels each output as \emph{strict} if it states the same proposition up to notation, and \emph{evaluated correct} if it is a high-confidence equivalent restatement.
+
+\begin{table}[t]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Cond.} & \textbf{TC} & \textbf{Strict} & \textbf{Eval.} & \textbf{Tok.} & \textbf{Calls} \\
+    \midrule
+    None          & 22/24 & 4/24 & 5/24 & 52k & 276 \\
+    RAG           & 20/24 & 6/24 & \textbf{8/24} & \textbf{14k} & \textbf{68} \\
+    Library       & 23/24 & 5/24 & 6/24 & 52k & 275 \\
+    RAG+Library   & \textbf{24/24} & \textbf{7/24} & \textbf{8/24} & 37k & 188 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Statement-only autoformalization of 24 Mathlib v4.30 theorems, retrieving over v4.29.
+  \emph{Strict} = same proposition; \emph{Eval.} = strict plus high-confidence equivalent
+  (\texttt{claude-opus-4-7}-judged, hand-checked). \emph{TC} = typecheck.}
+  \label{tab:formalize}
+\end{table}
+
+\paragraph{Results.} Retrieval improves evaluated correctness from 5/24 to 8/24 while using fewer output tokens and tool calls than library search (Table~\ref{tab:formalize}). The RAG condition matches RAG+Library on evaluated correctness, but uses 14k output tokens and 68 tool calls, compared with 37k tokens and 188 calls. Typechecking alone is not a reliable success signal: the ungrounded condition typechecks 22/24 outputs but is evaluated correct on only 5/24. About 10/24 targets fail in every condition, suggesting that some informal queries underdetermine the intended Lean statement.

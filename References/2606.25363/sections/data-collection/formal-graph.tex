@@ -1,0 +1,13 @@
+\section{Formal Graph}
+
+LeanGraph is a Lean 4 elaborator-level extractor that builds typed declaration-dependency graphs from compiled Lean projects. Each human-facing declaration becomes a node, and dependencies are assigned one of six semantic edge types. The Mathlib v4.27--v4.29 graph contains 351K declaration nodes and 9.3M within-library edges; across all 25 Lean projects, LeanGraph extracts 388,105 nodes and 11,335,708 edges in total (including cross-library).
+
+\paragraph{Scope and granularity.}
+LeanGraph runs inside Lean 4 over the kernel \texttt{Environment} API, extracting dependencies from elaborated, type-checked declarations rather than source text. This gives access to post-elaboration constants and proof terms that source-level parsers, such as \texttt{lean4export}'s Python pipeline \cite{lean4export}, cannot reliably recover.
+
+\paragraph{Edge types.}
+
+LeanGraph emits six edge categories. \texttt{extends} captures structure or class inheritance; \texttt{field} captures dependencies in structure field types; \texttt{sig} captures constants appearing in declaration signatures; \texttt{proof} captures constants used in theorem proof terms; \texttt{def} captures constants used in non-\texttt{Prop} definition bodies; and \texttt{docref} captures valid backtick references in docstrings. This taxonomy separates structural, type-level, value-level, and documentation-level dependencies, enabling downstream systems to rank or filter edges by role.
+
+\paragraph{Node inclusion.}
+A declaration is included when it satisfies \texttt{shouldIncludeConstant}, a structural predicate based on Lean's classification APIs and doc-gen4's renderability criteria \cite{docgen4}. This removes kernel-generated artifacts such as auxiliary recursors, \texttt{noConfusion} lemmas, matcher declarations, projections, and parent accessors, while retaining user-facing declarations. Anonymous instances and tactic objects are kept but tagged with metadata, allowing downstream consumers to filter them if needed.

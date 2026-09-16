@@ -1,0 +1,59 @@
+\section{In-Context Literature Search}
+
+Research mathematicians often need to identify a known result from a partial description embedded in an ongoing proof or exposition. We study a related task: recovering a cited theorem from a local passage of mathematical text after its citation has been removed.
+
+\subsection{Methodology}
+
+We evaluate whether language models can recover cited mathematical results from redacted arXiv passages using either unrestricted web search or retrieval over our mathematical statement database. We sampled 149 passages from mathematics arXiv papers released after February 2026. Restricting the sample to recent papers was intended to reduce the likelihood that the evaluated passages were available in the models' pretraining data.
+
+Each selected passage contained a citation command referring to a named theorem, lemma, proposition, or analogous statement in another arXiv paper. We replaced the citation with \texttt{[Citation Needed]} and removed the corresponding bibliographic entry from the source paper's \texttt{.bib} file. Models received the same redacted passage and complete remaining bibliography in every condition.
+
+We evaluate three retrieval settings. In the web-search baseline, models had unrestricted web access. In the dense-retrieval condition, models could issue repeated searches against our statement database, receiving the top 10 retrieved candidates for each query. In the graph-based condition, models could repeatedly search and navigate the statement dependency graph. An \emph{exact match} requires the model to return both the correct theorem identifier and the cited paper's arXiv identifier; a \emph{paper-level match} requires recovery of the correct cited arXiv paper, irrespective of the theorem identifier.
+
+\subsection{Results}
+
+\begin{table}[h]
+\centering
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{tabular}{lrr}
+\toprule
+\textbf{System} & \textbf{Exact Match} & \textbf{Paper-Level Match} \\
+\midrule
+\multicolumn{3}{c}{\textbf{Web Search Baseline}} \\
+ChatGPT 5.4       & 0.336 & 0.523 \\
+Gemini 3.1 Pro    & \textbf{0.570} & \textbf{0.752} \\
+Claude Sonnet 4.5 & 0.181 & 0.443 \\
+\midrule
+\multicolumn{3}{c}{\textbf{Dense Retrieval}} \\
+ChatGPT 5.4       & 0.228 & 0.409 \\
+Gemini 3.1 Pro    & 0.181 & 0.409 \\
+Claude Sonnet 4.5 & 0.121 & 0.396 \\
+\midrule
+\multicolumn{3}{c}{\textbf{Graph-Based Retrieval}} \\
+ChatGPT 5.4       & 0.255 & 0.456 \\
+Gemini 3.1 Pro    & 0.289 & 0.597 \\
+Claude Sonnet 4.5 & 0.148 & 0.322 \\
+\bottomrule
+\end{tabular}
+\caption{
+In-context citation recovery on 149 redacted arXiv passages. Exact match
+requires the correct theorem identifier and cited paper arXiv identifier;
+paper-level match requires only the correct cited paper.
+}
+\label{tab:literature-search}
+\end{table}
+
+Graph-based retrieval improves exact-match performance relative to dense
+retrieval for all models, and improves paper-level
+retrieval for ChatGPT 5.4 and Gemini 3.1 Pro. However, neither database-backed method outperforms unrestricted web search. The largest gap occurs for Gemini 3.1 Pro, which reaches a 0.570 exact-match rate with web search compared with 0.289 under graph-based retrieval.
+
+These results suggest that graph navigation can provide useful additional structure beyond dense statement retrieval, but that the current retrieval interface and agent behavior do not yet match the effectiveness of unrestricted web search for this task.
+
+\subsection{Limitations}
+
+The web-search baseline is not a controlled retrieval comparison. Because the models can issue unrestricted searches, they may recover the original source paper by searching an exact quotation from the surrounding passage. Once that paper is identified, the redacted citation can often be recovered directly from the source document. Thus, web-search performance partly reflects access to the original evaluation instance rather than solely a model's ability to infer the missing citation from mathematical context.
+
+The experiment also permits repeated retrieval and navigation actions without a matched search budget across conditions. Performance therefore reflects a combination of retrieval quality, agent search strategy, stopping behavior, and the practical affordances of each interface. In particular, dense retrieval returns a fixed top-10 candidate set per query, whereas graph-based retrieval permits open-ended local navigation.
+
+Our evaluation set is limited to 149 examples and contains only citations that explicitly name a theorem-like result in an arXiv paper. It therefore does not represent the broader range of scholarly citations, including citations for background, methods, attribution, or entire lines of work. Moreover, the ground-truth citation may not be the only mathematically appropriate response: a model can identify a related theorem or an alternative source that supports the passage while still being scored as incorrect.

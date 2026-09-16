@@ -1,0 +1,33 @@
+\begin{abstract}
+Mathematical knowledge is organized around statements and their dependencies, but
+this structure is exposed unevenly: informal papers cite mostly at the document
+level, while formal libraries record fine-grained dependencies over a much smaller
+body of mathematics. We introduce \textbf{TheoremGraph}, a unified statement-level
+dependency graph spanning both informal and formal mathematics. On the informal side,
+we parse $11.7$M theorem-like environments from mathematics arXiv and recover $18.3$M
+candidate directed dependencies, each labeled by the extractor that proposed it so
+downstream users can trade coverage for precision. On the formal side, we release
+\textbf{LeanGraph}, a Lean~4 elaborator-level extractor producing $388{,}105$
+declaration nodes and $11.3$M typed edges across 25 Lean projects. We bridge the two
+graphs by embedding generated natural-language slogans into a shared semantic space,
+linking related statements across papers and across the informal/formal divide; an
+LLM judge affirms $47{,}952$ such matches above a $0.8$ cosine floor, with the judge-acceptance rate rising from $48\%$ across the floor to $87\%$ in the $\geq\!0.9$ tier. On formal
+concept retrieval, our name-and-signature representation with graph expansion comes within 0.5pp of LeanSearch~v2's reranked Recall@10 ($0.775$ vs.\ $0.780$) without an LM reranker. We release the dataset, extractors, HTTP API, and MCP interface as infrastructure for mathematical search, attribution, and retrieval-augmented reasoning, available at \href{https://www.theoremsearch.com/}{theoremsearch.com} and \href{https://huggingface.co/datasets/uw-math-ai/theorem-matching}{huggingface.co}.
+\end{abstract}
+
+\section{Introduction}
+Mathematical knowledge is built upon discrete statements and their dependencies. Beginning with a chosen set of axioms, mathematicians derive new statements by applying inference rules; once established, these statements become premises for subsequent results. Yet in contemporary mathematical research, the vast scale and specialization of the literature make these dependency structures difficult to track. Authors typically cite papers rather than the exact lemmas, definitions, or theorems required for a proof, in part because expert readers are expected to supply the relevant background. This practice avoids the burdens of explicit dependency annotations, but coarsens the structure of mathematical knowledge. As a result, attribution may be obscured or rendered imprecise, and related work may be duplicated when researchers are unaware of equivalent or overlapping results. In a large study of withdrawn arXiv submissions, $2.4\%$ of categorized withdrawals are ones whose authors self-identify as ``not novel'' ($357$ of $14{,}839$ cases), reflecting work later judged to duplicate or lack originality relative to existing results \cite{rao2024withdrarxivlargescaledatasetretraction}.
+
+Proof assistants have emerged as an important tool for making mathematical verification more rigorous and explicit. These systems allow mathematicians to express definitions, theorems, and proofs in a formal language whose correctness can be verified by a trusted kernel. In contrast to informal proofs, where references to prior results and routine intermediate arguments are often left implicit, formal proofs must specify each logical dependency and enough intermediate structure to be type-checked by the kernel. As a result, formalization reveals the fine-grained dependency structure underlying mathematical arguments. 
+
+Lean is one of the most prominent modern proof assistants, based on the calculus of constructions and supported by an active open-source ecosystem. Lean's mathematical library, \verb|mathlib4|, contains over 400,000 formalized definitions, lemmas, theorems, and proofs contributed by the community across mathematical fields such as algebra, topology, analysis, and number theory \cite{lean4export}. Despite this rapid growth, formalized mathematics remains much smaller and less comprehensive than the body of informal mathematical knowledge. Lean’s coverage is strongest in foundational material, standard undergraduate- and graduate-level mathematics, and a growing number of targeted research-level formalization projects. Its limited coverage of all research literature caps the extent to which formal methods can be used to navigate or verify contemporary mathematics at scale.
+
+In this work, we collect and analyze dependency graphs for both formalized and informal mathematics. Our main contributions are: 
+\begin{enumerate}
+    \item \textbf{Informal dependency graph.} We extract dependency structure from informal mathematical sources, including arXiv and Lean Community, recovering 18.3 million dependencies connecting over 11.7 million statements.
+    \item \textbf{Formal dependency graph.} We extract typed declaration-level dependencies from Mathlib4 and several open-source formalization projects.
+    \item \textbf{Systematic analyses.} We perform comprehensive studies of both graphs, examining their structural properties and their applicability to mathematical search, navigation, and reasoning.
+    \item \textbf{Cross-formality bridge.} We link informal and formal statements in a shared slogan-embedding space, yielding $47{,}952$ LLM-affirmed (informal, formal) matches; the same name-and-signature representation with graph expansion comes within 0.5pp points of LeanSearch~v2's reranked Recall@10 without a reranker.
+    \item \textbf{Public dataset.} We release the resulting formal and informal dependency data as a public resource for the mathematical and machine-learning communities.
+    \item \textbf{Programmatic access.} We provide an API and MCP interface that allow users, applications, and AI agents to query the dependency data directly.
+\end{enumerate}

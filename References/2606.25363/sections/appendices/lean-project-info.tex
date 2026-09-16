@@ -1,0 +1,47 @@
+\section{Corpus Composition by Library}
+\label{app:corpus}
+
+Our dependency graph spans 388{,}105 formal declarations and 9{,}585{,}510 within-library dependency edges across 25 Lean libraries. Mathlib dominates both, supplying 90.5\% of declarations and 97.4\% of within-library edges; the Mathlib rows aggregate the v4.27--v4.29 snapshots. The remaining libraries are research/blueprint developments, each contributing at most a few thousand declarations. Their internal edge counts are sparser still: most of their dependencies point into Mathlib, and such cross-library edges are excluded here---each count reflects only edges whose source and target lie in the same library. Table~\ref{tab:corpus} reports declarations and within-library edges side by side.
+
+\begin{table}[H]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrlr}
+\toprule
+\multicolumn{2}{c}{\textbf{Declarations}} & \multicolumn{2}{c}{\textbf{Within-lib.\ edges}} \\
+\cmidrule(r){1-2}\cmidrule(l){3-4}
+\textbf{Library} & \textbf{Count} & \textbf{Library} & \textbf{Count} \\
+\midrule
+Mathlib (v4.27--v4.29) & 351{,}397 & Mathlib (v4.27--v4.29) & 9{,}333{,}251 \\
+\midrule
+\texttt{physlib} & 8{,}205 & \texttt{physlib} & 93{,}688 \\
+\texttt{PrimeNumberTheoremAnd} & 5{,}108 & \texttt{carleson} & 27{,}553 \\
+\texttt{sphere-packing-math-inc} & 4{,}125 & \texttt{sphere-packing-math-inc} & 25{,}867 \\
+\texttt{carleson} & 2{,}852 & \texttt{combinatorial-games} & 24{,}666 \\
+\texttt{combinatorial-games} & 2{,}702 & \texttt{PrimeNumberTheoremAnd} & 20{,}818 \\
+\texttt{FLT} & 2{,}368 & \texttt{cslib} & 15{,}042 \\
+\texttt{cslib} & 2{,}273 & \texttt{FLT} & 10{,}833 \\
+\texttt{ClassFieldTheory} & 1{,}387 & \texttt{sphere-eversion} & 6{,}740 \\
+\texttt{sphere-eversion} & 1{,}208 & \texttt{pfr} & 5{,}671 \\
+\texttt{pfr} & 1{,}073 & \texttt{ClassFieldTheory} & 4{,}482 \\
+\texttt{brownian-motion} & 1{,}071 & \texttt{brownian-motion} & 3{,}124 \\
+\texttt{Sphere-Packing-Lean} & 821 & \texttt{toric} & 2{,}630 \\
+\texttt{apap} & 670 & \texttt{HarderNarasimhan} & 2{,}320 \\
+\texttt{formal-conjectures} & 639 & \texttt{apap} & 2{,}155 \\
+\texttt{toric} & 485 & \texttt{flt-regular} & 1{,}361 \\
+\texttt{misc-yd} & 362 & \texttt{misc-yd} & 1{,}200 \\
+\texttt{flt-regular} & 344 & \texttt{formal-conjectures} & 976 \\
+\texttt{HarderNarasimhan} & 309 & \texttt{Sphere-Packing-Lean} & 945 \\
+\texttt{add-combi} & 190 & \texttt{PersistentDecomp} & 785 \\
+\texttt{PersistentDecomp} & 161 & \texttt{add-combi} & 507 \\
+\texttt{cam-combi} & 132 & \texttt{gibbs-measure} & 341 \\
+\texttt{gibbs-measure} & 113 & \texttt{forbidden-matrix} & 308 \\
+\texttt{forbidden-matrix} & 86 & \texttt{cam-combi} & 170 \\
+\texttt{chandra-furst-lipton} & 24 & \texttt{chandra-furst-lipton} & 77 \\
+\midrule
+\textbf{Total} & \textbf{388{,}105} & \textbf{Total} & \textbf{9{,}585{,}510} \\
+\bottomrule
+\end{tabular}
+\caption{Corpus composition by library: declarations and within-library dependency edges. Cross-library edges are excluded; non-Mathlib libraries contribute 36{,}708 declarations (9.5\%) and 252{,}259 within-library edges (2.6\%).}
+\label{tab:corpus}
+\end{table}

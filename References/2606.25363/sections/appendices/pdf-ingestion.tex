@@ -1,0 +1,40 @@
+\section{Extending the Corpus Beyond arXiv: PDF Ingestion}
+\label{app:pdf-ingestion}
+
+The informal graph (the \emph{Informal Graph} section) is built entirely from arXiv \LaTeX{} source, which excludes a large body of mathematical writing---textbooks, lecture notes, and older papers---that exists only as PDF. As a first step toward extending the corpus beyond arXiv, we built a PDF ingestion tool that recovers statement-level content from PDF sources in the same schema as our existing non-arXiv ingests (e.g.\ ProofWiki). We describe the pipeline and report a single-source run on Artin's \emph{Algebra} \cite{artin2011algebra}; we treat this as a feasibility study rather than a contribution to the headline corpus, since the resulting statements lack the cross-reference structure the deterministic and heuristic extractors rely on.
+
+\paragraph{Two-stage extraction.}
+Optical character recognition over an entire textbook is slow and largely wasted, since most pages carry no theorem-like content. We therefore split ingestion into a cheap localization pass and an expensive recognition pass. A \texttt{pymupdf} \cite{pymupdf2026} text scan first identifies pages whose text contains a numbered environment header (\texttt{Theorem}, \texttt{Lemma}, \texttt{Proposition}, \texttt{Corollary}, \texttt{Definition}, and similar) at the start of a line, distinguishing genuine headers from in-text references such as ``by Theorem~1.2.'' Each matched page is retained together with a one-page buffer on either side, so that proofs spilling onto an adjacent page are not truncated. The retained pages are copied into a temporary PDF, and only that reduced document is passed to Nougat OCR \cite{nougat-ocr}, which emits Mathpix Markdown (\texttt{.mmd}): a Markdown-style format with mathematics in \LaTeX{} delimiters \cite{mathpix_markdown}. On Artin's \emph{Algebra}, 182 of 555 pages carry a numbered environment header, so OCR runs on roughly a third of the book plus buffer pages rather than the whole volume.
+
+\paragraph{Statement parsing.}
+The Markdown output is parsed into statement records by a line-oriented pass that recognizes both Nougat's bold-header style (\verb|**Theorem 1.2**|) and plain numbered headers. For each environment it records the type, the environment number, an optional inline title, the statement body, and---when present---the proof, which is delimited by a leading \emph{Proof} marker and a closing \texttt{QED} symbol ($\square$ or $\blacksquare$). Markdown emphasis is stripped while inline and display math spans are masked and restored intact, so the recognized \LaTeX{} survives the cleaning step. The output is a JSON list of statement records matching the schema of our other non-arXiv sources, which lets ingested PDFs enter the corpus through the same path as ProofWiki without a separate \LaTeX{}-source stage. Multiple PDFs placed in the input directory are processed in a single batch.
+
+\paragraph{Feasibility run.}
+Table~\ref{tab:pdf-artin} reports the result of running the pipeline on Artin's \emph{Algebra}. The tool recovers 406 statements, 242 of which (59.6\%) carry an extracted proof, and every recovered statement retains its environment number. The recovered counts track---and slightly exceed---a strict line-start header count of the source PDF (75 theorems, 104 propositions, 59 lemmas, 55 corollaries, 13 numbered definitions), indicating that the parser captures essentially all numbered environments plus a small number formatted irregularly.
+
+\begin{table}[H]
+\centering\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Type} & \textbf{Recovered} & \textbf{With proof} \\
+\midrule
+Proposition & 126 & 91 \\
+Theorem     &  92 & 52 \\
+Lemma       &  81 & 64 \\
+Corollary   &  66 & 34 \\
+Example     &  26 &  1 \\
+Definition  &  15 &  0 \\
+\midrule
+\textbf{Total} & \textbf{406} & \textbf{242} \\
+\bottomrule
+\end{tabular}
+\caption{PDF ingestion of Artin's \emph{Algebra}. ``With proof'' counts statements for which a delimited proof block was extracted. Proof-bearing counts are illustrative of the proof-splitting behavior and were not separately validated.}
+\label{tab:pdf-artin}
+\end{table}
+
+\paragraph{Definition yield and authorial style.}
+The low definition count (15) is not an extraction failure but a property of the source. The book contains only 13 numbered \texttt{Definition} environments; across 102 occurrences of the word ``definition'' in the text, the remainder are prose definitions introduced inline and referred back to throughout (``the definition of matrix multiplication,'' ``a recursive definition of the determinant''). Artin formalizes a small definitional core as numbered environments and reuses it in running prose, so definition yield reflects how a given text sets off its definitions rather than the recognizer's coverage. This source-dependence is a general feature of OCR-based ingestion: extraction recovers what a text marks as a numbered environment, and the proportion of content exposed this way varies by author and by subject area.
+
+\paragraph{Limitations.}
+PDF-derived statements arrive without the machine-readable cross-reference structure that drives the informal extractors. There are no \verb|\label| keys, no \verb|\ref| commands, and no resolvable reference list, so the deterministic extractor---which achieves 98.8\% judge-verified precision on arXiv source---cannot propose within-source edges for these statements, and the heuristic extractor is limited to prose cues such as ``Theorem~3.2.'' Dependency recovery for PDF sources therefore rests largely on the notation extractor and on the semantic restatement edges of the universal graph as seen in Section~\ref{sec:universal-graph}. Bringing PDF sources to parity with arXiv ingestion---in particular, recovering usable within-source references from OCR'd text---is left to future work.

@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[preprint]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+
+% For math symbols
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% For tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{xltabular}
+\usepackage{dashrule}
+
+% For placing figures
+\usepackage{float}
+\usepackage{placeins}
+
+% I used this to get colored rows
+\usepackage[table]{xcolor}
+
+% For prompts in the appendix
+\usepackage{tcolorbox}
+
+% For comments
+\usepackage{comment}
+
+\tcbset{
+  prompt/.style={
+    colback=gray!6,
+    colframe=gray!55,
+    boxrule=0.6pt,
+    arc=2pt,
+    left=10pt, right=10pt,
+    top=6pt, bottom=6pt,
+    toptitle=4pt, bottomtitle=4pt,
+    fonttitle=\bfseries\sffamily\small,
+    coltitle=white,
+    colbacktitle=black!65,
+  }
+}
+
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{graphicx}
+
+% Required by figures/out/emb_vs_lexical_grid.tex (subfigure layout, bucket-color
+% dot marks, panel separator rule). The new TikZ figures also need tikz/xcolor.
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% to help me space macros (simon), remove if better solution exists and please teach me it
+\usepackage{xspace}
+
+% Code styling
+\setlength{\fboxsep}{2.5pt}
+\newcommand{\lc}[1]{\colorbox{gray!12}{\parbox[t]{\dimexpr0.5\textwidth-2.8cm-2\fboxsep\relax}{\ttfamily\footnotesize #1\strut}}}
+
+% author commenting commands
+\newcommand{\tofix}[1]{\textcolor{red}{#1}}
+\newcommand{\luke}[1]{\textcolor{orange}{[LA] #1}}
+\newcommand{\simon}[1]{\textcolor{cyan}{[SK] #1}}
+\newcommand{\evan}[1]{\textcolor{green}{[EW] #1}}
+\newcommand{\sophie}[1]{\textcolor{blue}{[SS] #1}}
+\newcommand{\vasily}[1]{\textcolor{purple}{[VI] #1}}
+\newcommand{\giovanni}[1]{\textcolor{magenta}{[GI] #1}}
+\newcommand{\eric}[1]{\textcolor{teal}{[EL] #1}}
+\newcommand{\artemii}[1]{\textcolor{brown}{[AR] #1}}
+
+% some colors for the judging section
+\newcommand{\bx}[2]{\colorbox{#1}{\small #2}} % colored verdict chip
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+\setlength\titlebox{7cm}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{TheoremGraph: Bridging Formal and Informal Mathematics}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+
+\author{
+  \textbf{Simon Kurgan\textsuperscript{*~1}} \\
+  \texttt{simku22@uw.edu}
+  \And
+  \textbf{Evan Wang\textsuperscript{* 1}} \\
+  \texttt{aurasoph@uw.edu}
+  \And
+  \textbf{Eric Leonen\textsuperscript{* 1}} \\
+  \texttt{eol05@uw.edu}
+  \AND
+  \textbf{Sophie Szeto\textsuperscript{1}} \\
+  \texttt{slszeto@uw.edu}
+  \And
+  \textbf{Luke Alexander\textsuperscript{1}} \\
+  \texttt{lukealex@uw.edu}
+  \And
+  \textbf{Artemii Remizov\textsuperscript{1}} \\
+  \texttt{aremizov@uw.edu}
+  \AND
+  \textbf{Jarod Alper\textsuperscript{1}} \\
+  \texttt{jarod@uw.edu}
+  \And
+  \textbf{Giovanni Inchiostro\textsuperscript{1}} \\
+  \texttt{ginchios@uw.edu}
+  \And
+  \textbf{Vasily Ilin\textsuperscript{1}} \\
+  \texttt{vilin@uw.edu}
+  \\
+  \\
+  \textsuperscript{1}University of Washington Math AI Lab
+  \\
+  \textsuperscript{*} Equal contribution
+  \\
+  \small{
+    \textbf{Correspondence:}
+    \href{mailto:vilin@uw.edu}{vilin@uw.edu}
+  }
+}
+
+
+
+
+\begin{comment}
+\author{Simon Kurgan \and Evan Wang \and Eric Leonen \and Sophie Szeto \and Luke Alexander \and Artemii Remizov \and Jarod Alper \and Giovanni Inchiostro \and Vasily Ilin \\
+        Address line \\ ... \\ Address line}
+\end{comment}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a separate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+\begin{comment}
+\author{First Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+  \texttt{email@domain} \\\And
+  Second Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+  \texttt{email@domain} \\}
+\end{comment}
+
+%\author{
+%  \textbf{First Author\textsuperscript{1}},
+%  \textbf{Second Author\textsuperscript{1,2}},
+%  \textbf{Third T. Author\textsuperscript{1}},
+%  \textbf{Fourth Author\textsuperscript{1}},
+%\\
+%  \textbf{Fifth Author\textsuperscript{1,2}},
+%  \textbf{Sixth Author\textsuperscript{1}},
+%  \textbf{Seventh Author\textsuperscript{1}},
+%  \textbf{Eighth Author \textsuperscript{1,2,3,4}},
+%\\
+%  \textbf{Ninth Author\textsuperscript{1}},
+%  \textbf{Tenth Author\textsuperscript{1}},
+%  \textbf{Eleventh E. Author\textsuperscript{1,2,3,4,5}},
+%  \textbf{Twelfth Author\textsuperscript{1}},
+%\\
+%  \textbf{Thirteenth Author\textsuperscript{3}},
+%  \textbf{Fourteenth F. Author\textsuperscript{2,4}},
+%  \textbf{Fifteenth Author\textsuperscript{1}},
+%  \textbf{Sixteenth Author\textsuperscript{1}},
+%\\
+%  \textbf{Seventeenth S. Author\textsuperscript{4,5}},
+%  \textbf{Eighteenth Author\textsuperscript{3,4}},
+%  \textbf{Nineteenth N. Author\textsuperscript{2,5}},
+%  \textbf{Twentieth Author\textsuperscript{1}}
+%\\
+%\\
+%  \textsuperscript{1}Affiliation 1,
+%  \textsuperscript{2}Affiliation 2,
+%  \textsuperscript{3}Affiliation 3,
+%  \textsuperscript{4}Affiliation 4,
+%  \textsuperscript{5}Affiliation 5
+%\\
+%  \small{
+%    \textbf{Correspondence:} \href{mailto:email@domain}{email@domain}
+%  }
+%}
+
+\begin{document}
+\maketitle
+\input{sections/introduction/introduction}
+
+\input{sections/background/related-works}
+
+\input{sections/data-collection/informal-graph}
+
+\input{sections/data-collection/formal-graph}
+
+\input{sections/data-collection/universal-graph}
+
+% \input{sections/data-collection/matching}
+
+% \input{sections/data-collection/matching-v2}
+
+\input{sections/data-collection/matching-v3}
+
+% \input{sections/informal-experiments/rl}
+
+\input{sections/formal-experiments/autoformalization}
+
+\input{sections/formal-experiments/leansearch-v2-comparison-rewritten}
+
+\input{sections/limitations-conclusion/conclusion}
+
+\input{sections/limitations-conclusion/limitations}
+
+\bibliography{custom}
+\include{sections/appendices/appendix}
+
+\input{sections/formal-experiments/node_distance_and_embedding_distance}
+
+\input{sections/informal-experiments/citation_retrieval}
+
+\end{document}
