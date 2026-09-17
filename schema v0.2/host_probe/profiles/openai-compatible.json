@@ -1,0 +1,8 @@
+{
+  "provider": "openai_compatible",
+  "model": "gpt-5",
+  "endpoint": "https://api.openai.com/v1/chat/completions",
+  "auth": {"style": "bearer", "env": ["OPENAI_API_KEY"]},
+  "generation": {"max_output_tokens": 16000, "json_mode": true, "temperature": 0},
+  "note": "Any OpenAI-compatible Chat Completions endpoint. Change endpoint and env to reach OpenRouter, Together, Fireworks, DeepSeek, Mistral, vLLM, or anything else speaking the same shape."
+}

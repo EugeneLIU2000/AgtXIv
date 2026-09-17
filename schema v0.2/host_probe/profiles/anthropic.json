@@ -1,0 +1,10 @@
+{
+  "provider": "anthropic",
+  "model": "claude-opus-5",
+  "endpoint": "https://api.anthropic.com/v1/messages",
+  "auth": {"style": "header", "header": "x-api-key", "env": ["ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"]},
+  "extra_headers": {"anthropic-version": "2023-06-01"},
+  "request_id_header": "request-id",
+  "generation": {"max_output_tokens": 16000, "thinking": {"type": "adaptive"}, "effort": "high"},
+  "note": "Anthropic Messages API. If you only ever target Anthropic, the official anthropic SDK is a better choice than this raw-HTTP adapter."
+}

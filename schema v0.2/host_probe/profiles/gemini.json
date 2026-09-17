@@ -1,0 +1,8 @@
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+  "auth": {"style": "query", "param": "key", "env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"]},
+  "generation": {"max_output_tokens": 16000, "json_mode": true, "temperature": 0},
+  "note": "Google Generative Language API. Set model to whatever your key has access to; this field is not validated against a list and no model id is assumed to exist."
+}
