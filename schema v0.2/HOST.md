@@ -40,6 +40,8 @@ Preserve requests as lossless, reconstructible descriptions: a pinned renderer v
 - Every non-Paper target must resolve to one committed math_claim. Changing target conditions creates a new MathClaim rather than overwriting the old object.
 - A non-null Dependency upstream must resolve to a supplied actual upstream mathematical target or definition. Preserve citation when only bibliographic information exists; do not manufacture nodes. Candidate relationships remain candidates.
 - Lamport artifacts bind the same target. Lean's lamport must reference a **previously committed** lamport_proof with the same target version. A string authored in the current call is not a pinned intermediate layer.
+- Every committed item an attempt reads is recorded in `run.consumes` with the run that produced it, and each entry must resolve to a real COMMITTED run. The producing principal is read from the ledger, never from the consuming receipt: a receipt that names a different producer than the ledger does is rejected rather than believed. An attempt may not cite itself as its own producer.
+- The host attributes the principal from its own execution facts. **Changing a role prompt inside one agent context does not create a second principal.** `Task.excluded_principals` is matched against that attributed principal; a principal the model reports about itself establishes nothing. v0.2 has no review operation yet, so this is lineage rather than independent review - but it is what a review operation will stand on.
 - Lean's environment must reference a host-registered environment descriptor fixing the toolchain, actual package identities, and axiom/trust-mechanism policy. Models cannot expand permissions. Environment checking remains unimplemented.
 - Output item.id values, component IDs, input aliases, and check layers must each be unique in their respective scopes. Complete root fields do not establish real references or source code.
 - Report generation, source resolution, Lamport structure, actual builds, and semantic alignment separately. A candidate graph does not provide independent review or scientific approval.
@@ -52,6 +54,27 @@ Source, definition, scientific, and mathematical items may use local references 
 Workers with expired leases must not overwrite newer attempts. Recheck task cancellation, parent-budget exhaustion, and prior commits inside the write transaction. An SDK timeout does not establish that the provider charged nothing. Retain reserved funds when costs are unknown and reconcile before deciding whether to retry.
 
 Persist intent before calling and pin response bytes before committing. If commit is interrupted, look up existing outputs by task/attempt. A missing success response is not permission to call the model again. Staged drafts may resume mechanical checking and commit; such recovery is not a new Agent execution.
+
+Bound the retries per stage rather than globally, and stop on a condition that has not changed.
+`Task.limits.max_attempts` is a ceiling the caller sets; these are the host's own defaults when
+the caller sets none, and they differ because the stages fail differently:
+
+| Stage | Attempts | Why this number |
+|---|---|---|
+| input assembly, registration, source resolution | 3 | a marker that is ambiguous on the third reading is ambiguous; report it |
+| a model call per Task | 3 | output repair takes another attempt, so three covers one bad parse and one revision |
+| a formal build per target | 6 | compilation genuinely converges through iteration, and this is where it does |
+
+**Do not retry an unchanged condition.** A missing credential, an absent dataset, an unavailable
+package, a source that was never supplied - none of these become present by asking again, and a
+retry loop over one of them spends budget while reporting nothing. Record the condition, stop
+that branch, and let a new Task carry the material once it exists. `no_progress_limit` counts
+attempts that changed nothing, not attempts that failed: a build failing on a *different* error
+each round is making progress, and one failing identically twice is not.
+
+Retain every failed attempt with its reason. Archive a fixed-path receipt before replacing it so
+earlier run hashes still resolve, and never rewrite an old receipt to conceal a failure. A marker
+that work ended is not a record that it passed.
 
 Keep ongoing state in the execution ledger. run.json is an immutable attempt checkpoint or final receipt; revisions create new versions and retain predecessors rather than overwrite history. Recovering UNKNOWN must not rewrite an old error receipt into fabricated success.
 

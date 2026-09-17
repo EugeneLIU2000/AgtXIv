@@ -313,4 +313,6 @@
 
 - [ ] **V02-19 / 待实现：读取接口与交付形态检查。** 对象为 [READ-INTERFACE](../schema%20v0.2/READ-INTERFACE.md) 的四个读操作（`claim.get` / `claim.dependencies` / `source.span` / `formal.check`）；前置查询后端、返回三元组与打包检查。准备：只返回 `message` 而无 `reference` 的响应；`reference` 用路径或显示名而非持久身份（producer_task 哈希 + output 哈希 + item_id）；把整份记录集内联进响应；未实现的查询类别返回空成功而不是明确不支持；超出 `Limits` 却不在 `coverage` 里交代；暴露后端无法兑现的参数（对 kernel 检查给 tolerance、对无传递展开的后端给 depth）；仅在本仓库 venv 内通过而未做「按交付形态」的打包检查。预期：三元组齐全，`reference` 可回源到真实已提交 run；**空结果绝不冒充未实现**；紧凑摘要字段允许、完整数组不允许；进程内通过不等于交付可用。**明确不适用**：Paper2Agent 的 tutorial/notebook 抽取链与参考值-容差比较不进入 claim 层——理论论文的 kernel 给的是通过或失败,不是带容差的参考值;该纪律只适用于论文的数值附录,而本目标论文的数值附录已由 `figure2-code-unavailable` 如实阻塞。当前只有规范与一个有界依赖查询的参考实现。
 
+- [ ] **V02-20 / 部分覆盖：血缘、阶段门禁与分阶段重试。** 对象为 `run.call.principal`、`run.consumes[]`、`Task.excluded_principals` 与 `HOST §5` 的重试默认值；前置真实生命周期事件采集。**已有探针覆盖并实测通过 8/8**:无已提交 lamport、自引为生产者、引用 STAGED 运行、引用不存在的 item、回执谎报生产者(账本压倒回执)、principal 被 Task 排除、NOT_STARTED 却声称读过 item、宿主未归属 principal。**已有阶段门禁** `verify_phase.py --through`:重算全部 blob 哈希、把每个被消费 item 追到产出运行、要求每个阶段有 COMMITTED 运行;对当前 store 如实返回 `PHASE_NOT_REACHED`。**仍待**:真实生命周期事件来源(现在 principal 由测试装配)、跨 plan 的预算与租约、「不变条件不重试」的运行时执行、以及**独立审阅本身**——v0.2 没有 review 操作,本项只是血缘,不是独立审阅。
+
 本轮状态：只新增规范/schema/人工样例并做静态阅读；**没有执行测试、示例、模型调用、依赖安装、Lean、数据库或 Neo4j 操作**。v0.2 宿主实现是下一步工作，不由本清单或旧 PASS 自动补齐。

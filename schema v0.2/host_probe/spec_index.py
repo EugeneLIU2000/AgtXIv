@@ -25,7 +25,8 @@ AGENT_FOR = {
 # Pinned for specification identity but never rendered into a write-operation prompt.
 IMPL = ["READ-INTERFACE.md", "host_probe/registry.py", "host_probe/resolve.py", "host_probe/store.py",
         "host_probe/check_output.py", "host_probe/adapter.py", "host_probe/expand.py",
-        "host_probe/cost.py", "host_probe/spec_index.py"]
+        "host_probe/cost.py", "host_probe/lineage.py",
+        "host_probe/verify_phase.py", "host_probe/spec_index.py"]
 
 def digest(b): return "sha256:" + hashlib.sha256(b).hexdigest()
 

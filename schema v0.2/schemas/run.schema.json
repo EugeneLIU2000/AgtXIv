@@ -3,7 +3,7 @@
   "$id": "https://agtxiv.org/schema/research/0.2.0/run.schema.json",
   "title": "Host-owned attempt receipt; candidates committed is not scientific acceptance",
   "type": "object", "additionalProperties": false,
-  "required": ["contract_version", "attempt_id", "task", "state", "call", "output", "checks", "source_bindings", "artifacts", "reason", "expansions"],
+  "required": ["contract_version", "attempt_id", "task", "state", "call", "output", "checks", "source_bindings", "artifacts", "reason", "expansions", "consumes"],
   "properties": {
     "contract_version": {"const": "0.2.0"},
     "attempt_id": {"$ref": "common.schema.json#/$defs/Id"},
@@ -14,9 +14,10 @@
         {"type": "null"},
         {
           "type": "object", "additionalProperties": false,
-          "required": ["execution_id", "provider", "model", "provider_request_id", "request", "response", "started_at", "finished_at", "input_tokens", "output_tokens", "cost_microusd"],
+          "required": ["execution_id", "principal", "provider", "model", "provider_request_id", "request", "response", "started_at", "finished_at", "input_tokens", "output_tokens", "cost_microusd"],
           "properties": {
             "execution_id": {"$ref": "common.schema.json#/$defs/Id"},
+          "principal": {"$ref": "common.schema.json#/$defs/Id", "description": "The identity the HOST attributes this execution to, from real execution facts. Never authored or reported by the model. Changing a role prompt inside one agent context does not create a second principal."},
             "provider": {"$ref": "common.schema.json#/$defs/Id"},
             "model": {"type": "string", "minLength": 1, "maxLength": 256},
             "provider_request_id": {"type": ["string", "null"], "maxLength": 512},
@@ -61,6 +62,21 @@
         }
       }
     },
+    "consumes": {
+      "description": "Every committed item this attempt actually read as an input, with the run that produced it. CONTRACT section 3 requires the next Task to verify a real COMMITTED run binding the Task/output pair it cites; this is where that verification is recorded. Lineage, not provenance decoration: an entry that resolves to nothing, or to a run that is not COMMITTED, invalidates the commit.",
+      "type": "array", "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["input", "producer_task", "output", "item_id", "producer_principal"],
+        "properties": {
+          "input": {"$ref": "common.schema.json#/$defs/Id", "description": "The alias this item was supplied under in the current Task."},
+          "producer_task": {"$ref": "common.schema.json#/$defs/Hash"},
+          "output": {"$ref": "common.schema.json#/$defs/Hash"},
+          "item_id": {"$ref": "common.schema.json#/$defs/Id"},
+          "producer_principal": {"$ref": "common.schema.json#/$defs/Id", "description": "The principal of the producing run, read from the ledger rather than from the current Task."}
+        }
+      }
+    },
     "expansions": {
       "description": "Host-computed macro tables for the sources shown in this attempt. Mechanical and deterministic; the model never authors one. Byte offsets in source_bindings remain offsets into the ORIGINAL source bytes - expansion supplies a table, it does not rewrite the source.",
       "type": "array", "maxItems": 64,
@@ -83,7 +99,7 @@
   "allOf": [
     {
       "if": {"properties": {"state": {"const": "NOT_STARTED"}}},
-      "then": {"properties": {"call": {"type": "null"}, "output": {"type": "null"}, "source_bindings": {"maxItems": 0}, "expansions": {"maxItems": 0}, "reason": {"$ref": "common.schema.json#/$defs/Text"}}},
+      "then": {"properties": {"call": {"type": "null"}, "output": {"type": "null"}, "source_bindings": {"maxItems": 0}, "expansions": {"maxItems": 0}, "consumes": {"maxItems": 0}, "reason": {"$ref": "common.schema.json#/$defs/Text"}}},
       "else": {"properties": {"call": {"type": "object"}}}
     },
     {

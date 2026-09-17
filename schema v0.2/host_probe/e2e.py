@@ -59,13 +59,14 @@ def main():
 
     rep=blob(json.dumps({"shape":"pass","references":"pass","sources":binds},sort_keys=True).encode())
     r2={"contract_version":"0.2.0","attempt_id":"a-staged","task":blob(tb),"state":"STAGED",
-        "call":{"execution_id":"x-none","provider":"none","model":"NOT-A-MODEL-CALL","provider_request_id":None,
+        "call":{"execution_id":"x-none","principal":"host-probe-machinery-test","provider":"none","model":"NOT-A-MODEL-CALL","provider_request_id":None,
                 "request":blob(b"n/a"),"response":blob(b"n/a"),"started_at":"2026-09-17T09:00:00Z",
                 "finished_at":"2026-09-17T09:00:00Z","input_tokens":0,"output_tokens":0,"cost_microusd":0},
         "output":blob(ob),"checks":checks(rep,SHAPE="PASS",REFERENCES="PASS",SOURCES="PASS"),
         "source_bindings":[{k:v for k,v in b.items() if k in
             ("locator_id","source_sha256","byte_start","byte_end","span_sha256")} for b in binds],
-        "artifacts":[],"reason":"Machinery test only: no model was called, so this is not a v0.2 Agent execution."}
+        "artifacts":[],"expansions":[],"consumes":[],
+        "reason":"Machinery test only: no model was called, so this is not a v0.2 Agent execution."}
     e2=list(rv.iter_errors(r2))
     print(f"5. STAGED receipt ......... {'PASS' if not e2 else 'FAIL'}")
     for e in e2[:3]: print("     ",list(e.path),e.message[:110])
@@ -74,7 +75,7 @@ def main():
     if os.path.exists(dbp): os.remove(dbp)
     st=Store(dbp)
     st.pin(raw,"text/x-tex")
-    t,o,rr=st.commit_run("a-staged",tb,ob,r2,out["items"],binds)
+    t,o,rr=st.commit_run("a-staged",tb,ob,r2,out["items"],binds,operation="paper.extract")
     print(f"6. atomic commit .......... task={t[:22]}... output={o[:22]}...")
     return dbp
 

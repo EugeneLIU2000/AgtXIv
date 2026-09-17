@@ -3,7 +3,7 @@
   "$id": "https://agtxiv.org/schema/research/0.2.0/task.schema.json",
   "title": "Frozen model task; candidate research, not a v0.1 Task",
   "type": "object", "additionalProperties": false,
-  "required": ["contract_version", "task_id", "plan_id", "operation", "purpose", "target_ids", "inputs", "spec", "policy", "model_profile", "module", "limits"],
+  "required": ["contract_version", "task_id", "plan_id", "operation", "purpose", "target_ids", "inputs", "spec", "policy", "model_profile", "module", "limits", "excluded_principals"],
   "properties": {
     "contract_version": {"const": "0.2.0"},
     "task_id": {"$ref": "common.schema.json#/$defs/Id"},
@@ -34,6 +34,11 @@
     "policy": {"$ref": "common.schema.json#/$defs/Blob"},
     "model_profile": {"$ref": "common.schema.json#/$defs/Blob"},
     "module": {"anyOf": [{"$ref": "common.schema.json#/$defs/Blob"}, {"type": "null"}]},
+    "excluded_principals": {
+      "description": "Principals the trusted scheduler must not assign to this task, because they produced something this task is meant to assess independently. A declared string alone establishes nothing: the host matches these against the principal it actually attributes to the execution, never against one the model reports.",
+      "type": "array", "maxItems": 256, "uniqueItems": true,
+      "items": {"$ref": "common.schema.json#/$defs/Id"}
+    },
     "limits": {
       "type": "object", "additionalProperties": false,
       "required": ["max_input_bytes", "max_output_bytes", "max_output_tokens", "max_seconds", "max_attempts", "no_progress_limit", "max_cost_microusd"],

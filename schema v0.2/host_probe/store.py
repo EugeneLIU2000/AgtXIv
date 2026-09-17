@@ -9,8 +9,14 @@ CREATE TABLE IF NOT EXISTS blob(
   media_type TEXT NOT NULL, body BLOB NOT NULL);
 CREATE TABLE IF NOT EXISTS run(
   attempt_id TEXT PRIMARY KEY, task_sha256 TEXT NOT NULL, state TEXT NOT NULL,
+  principal TEXT, operation TEXT,
   output_sha256 TEXT, receipt_sha256 TEXT NOT NULL,
   FOREIGN KEY(task_sha256) REFERENCES blob(sha256));
+CREATE TABLE IF NOT EXISTS consumes(
+  attempt_id TEXT NOT NULL, input TEXT NOT NULL,
+  producer_task TEXT NOT NULL, output TEXT NOT NULL, item_id TEXT NOT NULL,
+  producer_principal TEXT NOT NULL,
+  PRIMARY KEY(attempt_id, input));
 CREATE TABLE IF NOT EXISTS item(
   producer_task_sha256 TEXT NOT NULL, output_sha256 TEXT NOT NULL, item_id TEXT NOT NULL,
   kind TEXT NOT NULL, attempt_id TEXT NOT NULL,
@@ -49,14 +55,20 @@ class Store:
         self.db.commit()
         return h
 
-    def commit_run(self, attempt_id, task_bytes, output_bytes, receipt, items, bindings):
+    def commit_run(self, attempt_id, task_bytes, output_bytes, receipt, items, bindings,
+                   operation=None):
         """STORAGE section 5: pin blobs first, then ONE transaction for run+index."""
         t = self.pin(task_bytes, "application/json")
         o = self.pin(output_bytes, "application/json")
         r = self.pin(json.dumps(receipt, sort_keys=True).encode(), "application/json")
+        principal = ((receipt.get("call") or {}) or {}).get("principal")
         with self.tx() as db:
-            db.execute("INSERT INTO run VALUES(?,?,?,?,?)",
-                       (attempt_id, t, receipt["state"], o, r))
+            db.execute("INSERT INTO run VALUES(?,?,?,?,?,?,?)",
+                       (attempt_id, t, receipt["state"], principal, operation, o, r))
+            for c in receipt.get("consumes", []) or []:
+                db.execute("INSERT INTO consumes VALUES(?,?,?,?,?,?)",
+                           (attempt_id, c["input"], c["producer_task"], c["output"],
+                            c["item_id"], c["producer_principal"]))
             for it in items:
                 db.execute("INSERT INTO item VALUES(?,?,?,?,?)",
                            (t, o, it["id"], it["kind"], attempt_id))
@@ -68,11 +80,11 @@ class Store:
         return t, o, r
 
     def read_back(self, attempt_id):
-        r = self.db.execute("SELECT task_sha256,state,output_sha256 FROM run WHERE attempt_id=?", (attempt_id,)).fetchone()
+        r = self.db.execute("SELECT task_sha256,state,output_sha256,principal FROM run WHERE attempt_id=?", (attempt_id,)).fetchone()
         if not r: return None
-        t, state, o = r
+        t, state, o, principal = r
         out = json.loads(self.db.execute("SELECT body FROM blob WHERE sha256=?", (o,)).fetchone()[0])
         items = self.db.execute("SELECT item_id,kind FROM item WHERE producer_task_sha256=? AND output_sha256=?", (t,o)).fetchall()
         binds = self.db.execute("SELECT locator_id,byte_start,byte_end,span_sha256 FROM source_binding WHERE attempt_id=?", (attempt_id,)).fetchall()
-        return {"state":state, "task_sha256":t, "output_sha256":o,
+        return {"state":state, "principal":principal, "task_sha256":t, "output_sha256":o,
                 "items":items, "bindings":binds, "output_verifies": len(out["items"])==len(items)}

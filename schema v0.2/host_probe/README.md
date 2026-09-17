@@ -18,6 +18,8 @@ Everything below was executed. Nothing is estimated.
 | `run.json` honesty gates | `e2e.py` | The contract refuses a faked success. See below. |
 | Pinned spec index, rendered for any model | `spec_index.py` | **16 entries pinned by hash; 9 rendered into the prompt, 7 identity-only.** The whole protocol renders to 58,155 bytes — roughly 14.5k tokens. |
 | Provider-neutral model adapter | `adapter.py`, `profiles/` | **Four providers render a real request with no credential at all.** Anthropic, Gemini, any OpenAI-compatible endpoint, and a locally run model. |
+| Lineage checks | `lineage.py`, `test_lineage.py` | **8 of 8 lineage failures rejected**, including a receipt that names a different producer than the ledger does. |
+| Phase gate | `verify_phase.py` | Re-hashes every blob and traces every consumed item to its producing run; **correctly refuses to call the extract phase reached**, because no model has been called. |
 | Per-paper cost model | `cost.py` | **≈$9.5 per paper** to extract and depend on all 25 claims and formalize one; **≈$39** to formalize all. **82% of all input is the same 14.5k-token spec prefix**, sent 66 times. |
 | Macro table extraction | `expand.py` | **42 of the paper's own macros recovered**, `\Mcal` to `\mathcal M` among them. 45 control sequences reported unresolved rather than guessed. |
 
@@ -32,12 +34,20 @@ From the repository root, with the project virtualenv:
 .venv/bin/python 'schema v0.2/host_probe/test_adapter.py'
 .venv/bin/python 'schema v0.2/host_probe/test_resolve.py'
 .venv/bin/python 'schema v0.2/host_probe/check_output.py' 'schema v0.2/examples/paper-minimal/output.json' paper_text
+.venv/bin/python 'schema v0.2/host_probe/test_lineage.py'
 .venv/bin/python 'schema v0.2/host_probe/expand.py'
 .venv/bin/python 'schema v0.2/host_probe/cost.py'
 .venv/bin/python 'schema v0.2/host_probe/e2e.py'
 ```
 
-`e2e.py` writes `e2e.sqlite` beside itself. Delete it to start clean.
+`e2e.py` writes `e2e.sqlite` beside itself. Delete it to start clean. Then gate it:
+
+```bash
+.venv/bin/python 'schema v0.2/host_probe/verify_phase.py' --store 'schema v0.2/host_probe/e2e.sqlite' --through extract
+```
+
+It exits non-zero with `PHASE_NOT_REACHED`, which is the right answer: the store is internally
+sound but holds no `COMMITTED` `paper.extract` run, because no model has been called.
 
 ## The ten negative cases
 
@@ -66,6 +76,42 @@ Deliberate attempts to record a success that did not happen, and what the contra
 One further constraint surfaced only by running it: `report: null` is admissible **only** with
 status `NOT_RUN`. Every `PASS` or `FAIL` must point at an actual check-report blob — a layer
 cannot be marked passing without evidence behind it.
+
+## Lineage, and why seven check layers are not a chain
+
+v0.2 states two lineage requirements and nothing previously enforced either. CONTRACT section 3:
+the next Task "verifies a real COMMITTED run binding that Task/output pair." HOST section 4:
+Lean's lamport "must reference a **previously committed** lamport_proof" and "a string authored
+in the current call is not a pinned intermediate layer."
+
+A run can satisfy all seven of its own check layers and still stand on a predecessor that never
+committed. So `run.consumes` now records every committed item an attempt read together with the
+run that produced it, `run.call.principal` records who the **host** attributed the execution to,
+and `Task.excluded_principals` returns from v0.1. `lineage.py` rejects:
+
+| Failure | Code |
+|---|---|
+| lean consumed no committed lamport at all | `NO_COMMITTED_LAMPORT` |
+| an attempt cites itself as its own producer | `SELF_CONSUME` |
+| the cited producing run is `STAGED`, not `COMMITTED` | `CONSUMED_UNCOMMITTED` |
+| the cited item was never produced by anything | `DANGLING_CONSUME` |
+| the receipt names a producer the ledger disagrees with | `PRINCIPAL_MISMATCH` |
+| the principal is one the Task excluded | `EXCLUDED_PRINCIPAL` |
+| `NOT_STARTED` yet claims to have read items | `NOT_STARTED_CONSUMES` |
+| the host attributed no principal at all | `NO_PRINCIPAL` |
+
+`PRINCIPAL_MISMATCH` is the one worth naming: **the ledger wins over the receipt's assertion.**
+Paper2Agent states the underlying rule most sharply — "do not substitute a changed role prompt in
+the same agent context for independent verification" — and a principal a model reports about
+itself is not a principal.
+
+Say the boundary plainly: **v0.2 has no review operation, so this is lineage and not independent
+review.** It is what a review operation will stand on when one exists.
+
+`verify_phase.py` is the gate across runs, adapted from Paper2Agent's `verify_workflow.py`. It
+re-hashes every stored blob — "never refresh hashes alone to make stale evidence current" — traces
+every consumed item to its producing run, and requires a `COMMITTED` run for each phase up to the
+one requested. It decides nothing scientific, and its passing message says so.
 
 ## Macros: mechanical, and the host's job
 
@@ -115,9 +161,10 @@ The third row is the point. The convention refuses rather than guessing, on real
 | Everything in the table above, including its tests | **4–5** (done) |
 | Pinned spec index and the provider-neutral adapter, four profiles, render verified | **2** (done) |
 | Macro table extraction and the normalization self-consistency checks | **1** (done) |
+| Lineage checks, the phase gate, and per-stage retry bounds | **1** (done) |
 | Response path: parse, stage, commit, and the `TASK_BINDING` check layer | 2–3 |
 | A `prepare` / `run` / `status` CLI over the above | 2 |
-| **Minimal v0.2 slice, total** | **11–13**, of which **7–8 are done** |
+| **Minimal v0.2 slice, total** | **11–13**, of which **8–9 are done** |
 
 For comparison, the v0.1 route priced in the framework gap-analysis record came to roughly
 23 hours, and what it delivered would not satisfy v0.2's first principle: its five "rounds"
