@@ -27,6 +27,7 @@ This documentation rule does not authorize translating or modifying external sou
 | What does one task receive and return, and what belongs to the model? | [CONTRACT.md](CONTRACT.md) |
 | How do we prevent files and content from growing unnecessarily? | [STORAGE.md](STORAGE.md) |
 | How do real calls, scheduling, and recovery connect? | [HOST.md](HOST.md) |
+| What may a tool expose when reading records back, and what must it return with the answer? | [READ-INTERFACE.md](READ-INTERFACE.md) |
 | What carries over from v0.1, what changes, and which report recommendations are accepted or rejected? | [MIGRATION.md](MIGRATION.md) |
 | What are the minimum responsibilities of each Agent? | [Paper](<Paper Agent/AGENT.md>), [Dependency](<Dependency Agent/AGENT.md>), [Autoformalization](<Autoformalization Agent/AGENT.md>) |
 | What does a short output look like? | [examples/paper-minimal](examples/paper-minimal/README.md), hand-authored rather than executed |
