@@ -5,9 +5,7 @@
     {
       "id": "loc1",
       "kind": "source_locator",
-      "source": {
-        "input": "paper_text"
-      },
+      "source": {"input": "paper_text"},
       "start_marker": "For every real number x,",
       "end_marker": "x*x is nonnegative."
     },
@@ -24,45 +22,20 @@
         {
           "id": "c1",
           "conclusion": "For every real number x, x*x is nonnegative.",
-          "sources": [
-            {
-              "local": "loc1"
-            }
-          ],
-          "math_refs": [
-            {
-              "local": "mc1"
-            }
-          ],
+          "sources": [{"local": "loc1"}],
+          "math_refs": [{"local": "mc1"}],
           "residual": null
         }
       ],
-      "sources": [
-        {
-          "local": "loc1"
-        }
-      ]
+      "sources": [{"local": "loc1"}]
     },
     {
       "id": "mc1",
       "kind": "math_claim",
-      "source_claim": {
-        "local": "sc1"
-      },
+      "source_claim": {"local": "sc1"},
       "component_id": "c1",
-      "objects": [
-        {
-          "symbol": "x",
-          "domain": "Real numbers"
-        }
-      ],
-      "quantifiers": [
-        {
-          "kind": "FORALL",
-          "variable": "x",
-          "domain": "Real numbers"
-        }
-      ],
+      "objects": [{"symbol": "x", "domain": "Real numbers"}],
+      "quantifiers": [{"kind": "FORALL", "variable": "x", "domain": "Real numbers"}],
       "assumptions": [],
       "conclusion": "x*x ≥ 0",
       "exactness": "EXACT",
