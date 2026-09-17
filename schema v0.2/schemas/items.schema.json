@@ -56,7 +56,7 @@
     },
     "MathClaim": {
       "type": "object", "additionalProperties": false,
-      "required": ["id", "kind", "source_claim", "component_id", "objects", "quantifiers", "assumptions", "conclusion", "exactness", "definitions"],
+      "required": ["id", "kind", "source_claim", "component_id", "objects", "quantifiers", "assumptions", "conclusion", "exactness", "definitions", "normalization"],
       "properties": {
         "id": {"$ref": "common.schema.json#/$defs/Id"},
         "kind": {"const": "math_claim"},
@@ -83,7 +83,20 @@
         "assumptions": {"$ref": "common.schema.json#/$defs/Conditions"},
         "conclusion": {"$ref": "common.schema.json#/$defs/Text"},
         "exactness": {"enum": ["EXACT", "APPROXIMATE", "ASYMPTOTIC", "UNCLEAR"]},
-        "definitions": {"$ref": "common.schema.json#/$defs/Refs"}
+        "definitions": {"$ref": "common.schema.json#/$defs/Refs"},
+        "normalization": {
+          "description": "How far this statement departs from the source wording, and in which direction. The model declares the relation; it is never inferred from text similarity.",
+          "type": "object", "additionalProperties": false,
+          "required": ["relation_to_source", "source_statement", "normalized_statement", "unresolved_symbols"],
+          "properties": {
+            "relation_to_source": {
+              "description": "VERBATIM: source wording, paper macros expanded only. NOTATION_NORMALIZED: symbols replaced by the shared convention, meaning unchanged. LOGICAL_FORM_EXPANDED: structure the source left compressed is written out. SOURCE_IMPLICIT_CONTEXT_EXPLICIT: something the source left implicit, such as a quantifier domain, is now stated. Pick the furthest step that applies.",
+              "enum": ["VERBATIM", "NOTATION_NORMALIZED", "LOGICAL_FORM_EXPANDED", "SOURCE_IMPLICIT_CONTEXT_EXPLICIT"]},
+            "source_statement": {"$ref": "common.schema.json#/$defs/Text", "description": "As the source words it, with the paper's own macros expanded using the host-supplied macro table. Notation is NOT unified here."},
+            "normalized_statement": {"$ref": "common.schema.json#/$defs/Text", "description": "The same statement in the shared convention. Identical to source_statement when relation_to_source is VERBATIM."},
+            "unresolved_symbols": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 256}, "description": "Symbols that could not be expanded or mapped to the convention. A non-empty list is a reportable gap, not a defect to hide by guessing."}
+          }
+        }
       }
     },
     "DependencyCandidate": {

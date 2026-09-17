@@ -50,6 +50,18 @@ def check(path, task_input_aliases):
             if "local" in s and kind.get(s["local"]) != "source_locator":
                 errs.append(("REFERENCES", i["id"], f"sources -> {s['local']} is {kind.get(s['local'])}, not source_locator"))
         if i["kind"] == "math_claim":
+            n = i.get("normalization") or {}
+            rel = n.get("relation_to_source")
+            src_s, norm_s = n.get("source_statement"), n.get("normalized_statement")
+            # VERBATIM means exactly that: no notation was unified, so the two agree.
+            if rel == "VERBATIM" and src_s is not None and src_s != norm_s:
+                errs.append(("REFERENCES", i["id"],
+                             "relation_to_source VERBATIM but source_statement and "
+                             "normalized_statement differ"))
+            # Conversely, a declared departure that changed nothing is a mislabel.
+            if rel and rel != "VERBATIM" and src_s is not None and src_s == norm_s:
+                errs.append(("REFERENCES", i["id"],
+                             f"relation_to_source {rel} but the two statements are identical"))
             sc = i.get("source_claim") or {}
             if "local" in sc and kind.get(sc["local"]) != "scientific_claim":
                 errs.append(("REFERENCES", i["id"], "source_claim must point at a scientific_claim"))

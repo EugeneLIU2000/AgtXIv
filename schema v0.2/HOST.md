@@ -12,7 +12,10 @@ Pydantic AI is an optional model-adapter implementation, not a reason to change 
 
 ## 2. Seven program-controlled steps
 
-1. **Prepare sources and the plan.** Register actual local/remote source bytes and transformation provenance. The parent plan fixes paper count, depth, cumulative calls/time/cost, no-progress limits, and allowed sources. A missing tarball is valid. Do not start before plan, authorization, and input registration are implemented.
+1. **Prepare sources and the plan.** Register actual local/remote source bytes and transformation provenance. The parent plan fixes paper count, depth, cumulative calls/time/cost, no-progress limits, and allowed sources. A missing tarball is valid. Build the macro table here, from the preamble and the main file
+together, and register it as a context input alongside the sources it was read from; report every
+control sequence used but defined nowhere supplied instead of interpreting it. Do not start
+before plan, authorization, and input registration are implemented.
 2. **Pin the Task.** Select operation, existing inputs, target, purpose, and interface version. Input aliases must be unique; verify all references against source bytes and authorization. Future outputs must not masquerade as existing inputs.
 3. **Claim work and persist call intent.** Through one write entry point, reserve parent budget, obtain a generation-bound lease, and save the Task and a lossless description of actual model-visible content. Private authorization data and secrets stay out of model context.
 4. **Call the model once.** The adapter uses the shared task/output contract and records the actual model, provider request identifier when available, response, duration, and usage. By default, one attempt issues at most one model request. Output repair requires another attempt, and transport retries are also accounted for.
@@ -40,6 +43,7 @@ Preserve requests as lossless, reconstructible descriptions: a pinned renderer v
 - Lean's environment must reference a host-registered environment descriptor fixing the toolchain, actual package identities, and axiom/trust-mechanism policy. Models cannot expand permissions. Environment checking remains unimplemented.
 - Output item.id values, component IDs, input aliases, and check layers must each be unique in their respective scopes. Complete root fields do not establish real references or source code.
 - Report generation, source resolution, Lamport structure, actual builds, and semantic alignment separately. A candidate graph does not provide independent review or scientific approval.
+- A MathClaim's declared relation to its source is the model's statement and must be checked for consistency, not for honesty: VERBATIM with two differing wordings is a mislabel, and so is a declared departure that changed nothing. Whether the declared step is the *right* one is a reading judgement and belongs to review, not to the host. Macro expansion is the host's own mechanical output and is never taken from the model.
 
 Source, definition, scientific, and mathematical items may use local references within one batch. This is a bounded atomic candidate batch, not permission for cross-task future references or direct conversion to a v0.0 RecordSet.
 

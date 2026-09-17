@@ -1,0 +1,79 @@
+{
+ "contract_version": "0.2.0",
+ "operation": "paper.extract",
+ "items": [
+  {
+   "id": "loc1",
+   "kind": "source_locator",
+   "source": {
+    "input": "paper_text"
+   },
+   "start_marker": "For every real number x,",
+   "end_marker": "x*x is nonnegative."
+  },
+  {
+   "id": "sc1",
+   "kind": "scientific_claim",
+   "statement": "For every real number x, x*x is nonnegative.",
+   "modality": "ASSERTED",
+   "attribution": "AUTHOR",
+   "system": "The real numbers with their usual multiplication and order.",
+   "comparison_baseline": null,
+   "conditions": [],
+   "components": [
+    {
+     "id": "c1",
+     "conclusion": "For every real number x, x*x is nonnegative.",
+     "sources": [
+      {
+       "local": "loc1"
+      }
+     ],
+     "math_refs": [
+      {
+       "local": "mc1"
+      }
+     ],
+     "residual": null
+    }
+   ],
+   "sources": [
+    {
+     "local": "loc1"
+    }
+   ]
+  },
+  {
+   "id": "mc1",
+   "kind": "math_claim",
+   "source_claim": {
+    "local": "sc1"
+   },
+   "component_id": "c1",
+   "objects": [
+    {
+     "symbol": "x",
+     "domain": "Real numbers"
+    }
+   ],
+   "quantifiers": [
+    {
+     "kind": "FORALL",
+     "variable": "x",
+     "domain": "Real numbers"
+    }
+   ],
+   "assumptions": [],
+   "conclusion": "x*x ≥ 0",
+   "exactness": "EXACT",
+   "definitions": [],
+   "normalization": {
+    "relation_to_source": "SOURCE_IMPLICIT_CONTEXT_EXPLICIT",
+    "source_statement": "For every real number x, x*x is nonnegative.",
+    "normalized_statement": "For every real number x, x*x is nonnegative.",
+    "unresolved_symbols": []
+   }
+  }
+ ],
+ "issues": []
+}

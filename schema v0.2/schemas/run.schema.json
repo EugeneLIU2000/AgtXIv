@@ -3,7 +3,7 @@
   "$id": "https://agtxiv.org/schema/research/0.2.0/run.schema.json",
   "title": "Host-owned attempt receipt; candidates committed is not scientific acceptance",
   "type": "object", "additionalProperties": false,
-  "required": ["contract_version", "attempt_id", "task", "state", "call", "output", "checks", "source_bindings", "artifacts", "reason"],
+  "required": ["contract_version", "attempt_id", "task", "state", "call", "output", "checks", "source_bindings", "artifacts", "reason", "expansions"],
   "properties": {
     "contract_version": {"const": "0.2.0"},
     "attempt_id": {"$ref": "common.schema.json#/$defs/Id"},
@@ -61,13 +61,29 @@
         }
       }
     },
+    "expansions": {
+      "description": "Host-computed macro tables for the sources shown in this attempt. Mechanical and deterministic; the model never authors one. Byte offsets in source_bindings remain offsets into the ORIGINAL source bytes - expansion supplies a table, it does not rewrite the source.",
+      "type": "array", "maxItems": 64,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["input", "profile", "outcome", "macro_table", "included_sources", "unresolved_macros"],
+        "properties": {
+          "input": {"$ref": "common.schema.json#/$defs/Id"},
+          "profile": {"const": "agtxiv.macro-expansion/1.0.0"},
+          "outcome": {"enum": ["EXPANDED", "PARTIALLY_EXPANDED", "EXPANSION_FAILED", "NOT_APPLICABLE"]},
+          "macro_table": {"$ref": "common.schema.json#/$defs/Blob", "description": "The table itself, pinned as a blob and supplied to the model as a context input."},
+          "included_sources": {"type": "array", "maxItems": 64, "items": {"$ref": "common.schema.json#/$defs/Id"}, "description": "Input aliases the definitions were read from: the preamble and the main source together."},
+          "unresolved_macros": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 256}, "description": "Used in the source but defined nowhere supplied. Never interpreted from memory."}
+        }
+      }
+    },
     "artifacts": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/Blob"}},
     "reason": {"anyOf": [{"$ref": "common.schema.json#/$defs/Text"}, {"type": "null"}]}
   },
   "allOf": [
     {
       "if": {"properties": {"state": {"const": "NOT_STARTED"}}},
-      "then": {"properties": {"call": {"type": "null"}, "output": {"type": "null"}, "source_bindings": {"maxItems": 0}, "reason": {"$ref": "common.schema.json#/$defs/Text"}}},
+      "then": {"properties": {"call": {"type": "null"}, "output": {"type": "null"}, "source_bindings": {"maxItems": 0}, "expansions": {"maxItems": 0}, "reason": {"$ref": "common.schema.json#/$defs/Text"}}},
       "else": {"properties": {"call": {"type": "object"}}}
     },
     {

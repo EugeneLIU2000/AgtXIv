@@ -23,7 +23,8 @@ AGENT_FOR = {
     "autoformalization.lean": "Autoformalization Agent/AGENT.md",
 }
 IMPL = ["host_probe/registry.py", "host_probe/resolve.py", "host_probe/store.py",
-        "host_probe/check_output.py", "host_probe/adapter.py", "host_probe/spec_index.py"]
+        "host_probe/check_output.py", "host_probe/adapter.py", "host_probe/expand.py",
+        "host_probe/spec_index.py"]
 
 def digest(b): return "sha256:" + hashlib.sha256(b).hexdigest()
 

@@ -88,3 +88,51 @@
 - 内容寻址与依赖闭包相当于**给出误差传播路径**：一条结论依赖什么、上游变动会波及什么，必须是可计算的。
 
 **判据：** 任何设计决策都可以拿这条来问——「这让结果更像测量，还是更像轶事？」
+
+---
+
+## 5. 成本估算：对一篇论文的所有 MathClaim 跑完 schema v0.2 (2026-09-17)
+
+**状态：** 待估算（已记录估算模型与初步数量级，未实测，不执行）
+
+### 先说一个口径问题
+
+v0.2 README 明确写着：Lamport→Lean 分支 **只对一条选定的 MathClaim** 运行（"operates on one selected MathClaim only"，且 "There is no whole-paper autoformalization operation"）。所以「对所有 math claim 跑完 v0.2」**不是 v0.2 的默认路径**，而是一个扩展场景。估算时要分开两个口径，否则数字会差一个量级：
+
+- **口径 A（v0.2 规格内）**：extract 全文 + dependency 逐条 claim + 形式化 **1 条** claim。
+- **口径 B（本条问题）**：extract 全文 + dependency 逐条 + 形式化 **每一条** claim。
+
+### 估算模型（参数化，数字待实测替换）
+
+四个 operation，逐个拆 input / output：
+
+| Operation | 频次 | 单次 input | 单次 output | 备注 |
+|---|---|---|---|---|
+| `paper.extract` | 每个 chunk 一次，约 10 chunk | ~11k（spec ~8k + 正文 chunk ~2k + 去重上下文 ~1k） | ~2k | spec 部分高度可缓存 |
+| `dependency.search` | 每条 claim ~2 轮 | ~12k（spec ~5k + claim + host 检索回来的上游材料，**方差最大项**） | ~2k | host 在任务之间做实际检索 |
+| `autoformalization.lamport` | 每条 claim，含重试 ~2 次 | ~9k | ~5k | 结构化证明，输出偏长 |
+| `autoformalization.lean` | 每条 claim，含迭代 ~4 次 | ~15k（含固定环境/mathlib 片段） | ~4k | **成本大头**，迭代次数是主导因素 |
+
+**每条 claim 的形式化成本** ≈ 100k in / 30k out（dependency + lamport + lean 合计）。
+
+### 初步数量级（假设一篇理论论文 ~25 条 MathClaim）
+
+- **口径 A**：extract 110k in / 20k out + dependency 25×24k = 600k in + 形式化 1 条 78k in
+  → **约 0.8M input / 0.2M output**
+- **口径 B**：extract 110k + 25 条 × 100k
+  → **约 2.6M input / 0.8M output**
+
+开 prompt caching（spec 部分约 8k × ~100 次调用重复）可省下大约 0.6M input，口径 B 降到 **~2.0M 有效 input**。
+
+### 主导成本与敏感度（真正该先测的）
+
+1. **`autoformalization.lean` 的迭代次数**——占口径 B 的一半以上。4 次 vs 10 次直接决定总量翻不翻倍。**这是第一个该实测的量。**
+2. **MathClaim 条数**——线性因子。25 条是猜的，不同领域论文差很多。
+3. **host 喂给 dependency / lean 的上游材料体积**——方差最大，取决于检索策略给多少上下文。
+4. spec payload 是否走缓存——影响约 25%。
+
+### 待做
+
+- 不要整篇估。先拿 `examples/paper-minimal` 或一篇真论文的**一节**，实跑一次，量出上面四个参数的真实值，再线性外推。
+- 单价换算另算：需要查当时的 model 价目表，不要用记忆中的价格。
+- 注意与第 3 条呼应：lean 分支的迭代成本正是「验证只做一次、结果存成凭证」要摊销掉的东西。

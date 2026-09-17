@@ -57,6 +57,20 @@ The host applies the following exact-byte convention: UTF-8 encode both markers;
 
 The host records locator_id, source_sha256, byte range, and the actual span hash in run.source_bindings, rather than adding these fields to model output. Inputs referencing existing source locators also require reading their producing committed runs' location evidence. Resolving bytes establishes location correctness, not that the passage supports the claim.
 
+The host also publishes the paper's own macro table. A preprocessing pass reads every
+`\newcommand`, `\renewcommand`, `\providecommand` and `\def` out of the supplied sources -
+the preamble **and the main file, since a paper may define its shorthand there** - and records
+the table, the sources it was read from, the outcome, and any control sequence used but defined
+nowhere supplied. This is mechanical work with a deterministic result, so a program does it and
+the model never authors the table.
+
+**Expansion supplies a table; it does not rewrite the source.** Byte offsets in
+`run.source_bindings` remain offsets into the original source bytes, and `source_locator` markers
+are still copied verbatim from the text the model was shown. The table travels as a separate
+context input, so the model can write out `\mathcal{M}` where the paper wrote `\Mcal` without
+anyone having to guess what `\Mcal` means. A macro defined nowhere supplied is reported in
+`unresolved_macros` and never interpreted from memory.
+
 A source need not have a downloaded tarball. Preserve actual local-file provenance without inventing downloads. Register TeX macros, main text, appendices, and .bbl files as actual source units; do not interpret unavailable macros from memory. PDF-to-text conversion, chunking, and similar transformations must first preserve their input/output relationships. Locations in transformed text must not be presented as original PDF byte positions.
 
 ## 5. Run: Host facts and separate checking layers

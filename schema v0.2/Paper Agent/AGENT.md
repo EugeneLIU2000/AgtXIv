@@ -19,8 +19,20 @@ Shared rules are in [CONTRACT](../CONTRACT.md); field definitions are governed b
 2. **Record the ScientificClaim.** statement preserves the author's specific assertion, applicability conditions, and quantifier strength. modality distinguishes assertion, conditionality, approximation, conjecture, observation, interpretation, and uncertainty; attribution distinguishes the author's results from cited results. system preserves the studied system or context, and comparison_baseline preserves the comparison target. Use null only when that content does not apply. Record missing sources or unclear context separately as issues.
 3. **Split into components.** Each component expresses one identifiable conclusion. Do not pack independent conclusions into one identifier or separate jointly required conditions. Supply conclusion, sources, math_refs, and residual for each component.
 4. **Extract the MathClaim.** Specify objects/domain, quantifiers in scope order, assumptions, conclusion, exactness, and definitions. Dependent quantifier domains may refer to earlier variables. Express branching or nested scopes explicitly in conclusion; do not flatten them in ways that change meaning. Every implicit condition must be reconstructible from supplied sources; otherwise record the gap.
-5. **Preserve bidirectional correspondence.** A MathClaim's source_claim + component_id must resolve to a real component, whose math_refs must include that MathClaim. Do not extract only an easily formalized fragment and claim coverage of the entire component. Put non-mathematized interpretation or physical meaning in residual. If no mathematical extraction is possible, use math_refs=[] and retain the original component.
-6. **Include only needed definitions.** Definitions require sources, and MathClaim.definitions may reference only definition items. Do not copy the complete notation table, paper text, or bibliography.
+5. **Declare how far the statement moved from the source.** Every MathClaim carries a
+`normalization` block with both wordings and the relation between them. `source_statement` is the
+statement as the source words it, with the paper's own macros expanded using the macro table the
+host supplied - `\Mcal` becomes `\mathcal{M}`; a macro absent from the table goes in
+`unresolved_symbols` rather than being guessed. `normalized_statement` is the same statement in
+the shared convention. `relation_to_source` names the furthest step that applies: `VERBATIM` when
+only macros were expanded, `NOTATION_NORMALIZED` when symbols were unified without changing
+meaning, `LOGICAL_FORM_EXPANDED` when compressed structure was written out, and
+`SOURCE_IMPLICIT_CONTEXT_EXPLICIT` when something the source left implicit - typically a
+quantifier domain - is now stated. Both wordings are retained; unifying notation is permitted,
+quietly replacing the author's claim is not. `VERBATIM` with two differing statements, and a
+declared departure that changed nothing, are both mislabels.
+6. **Preserve bidirectional correspondence.** A MathClaim's source_claim + component_id must resolve to a real component, whose math_refs must include that MathClaim. Do not extract only an easily formalized fragment and claim coverage of the entire component. Put non-mathematized interpretation or physical meaning in residual. If no mathematical extraction is possible, use math_refs=[] and retain the original component.
+7. **Include only needed definitions.** Definitions require sources, and MathClaim.definitions may reference only definition items. Do not copy the complete notation table, paper text, or bibliography.
 
 The origin of assumptions/conditions is limited to SOURCE_EXPLICIT or SOURCE_RECONSTRUCTED and must have source references. The latter means implicit but reconstructible from the source, not permission to add an assumption that makes a proof work. Do not silently remove approximations, limits, probabilities, or units during mathematization. Keep unreliable portions in residual/issues instead of substituting a weaker known theorem.
 

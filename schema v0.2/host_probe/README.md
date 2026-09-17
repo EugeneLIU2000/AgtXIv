@@ -12,12 +12,13 @@ Everything below was executed. Nothing is estimated.
 | Component | File | Result |
 |---|---|---|
 | Offline schema registry | `registry.py` | **109 `$ref`s walked, 0 unresolved.** Registers the five v0.2 schemas separately; it does not touch the v0.1 root loader, which hard-asserts exactly five files. |
-| Cross-object checks (SHAPE, REFERENCES) | `check_output.py` | **10 of 10 negative cases rejected.** Fixtures in `negative/`. |
+| Cross-object checks (SHAPE, REFERENCES) | `check_output.py` | **13 of 13 negative cases rejected.** Fixtures in `negative/`. |
 | Source locator resolution | `resolve.py`, `test_resolve.py` | **3 of 3 refusal cases correct.** Two real theorem locators resolved from the target paper; a third correctly refused. |
 | Blob store, ledger, atomic commit, cross-process read-back | `store.py`, `e2e.py` | Commit and read-back verified from a separate process. |
 | `run.json` honesty gates | `e2e.py` | The contract refuses a faked success. See below. |
-| Pinned spec index, rendered for any model | `spec_index.py` | **14 entries pinned by hash; 9 rendered into the prompt, 5 identity-only.** The whole protocol renders to 52,171 bytes — roughly 13k tokens. |
+| Pinned spec index, rendered for any model | `spec_index.py` | **16 entries pinned by hash; 9 rendered into the prompt, 7 identity-only.** The whole protocol renders to 58,155 bytes — roughly 14.5k tokens. |
 | Provider-neutral model adapter | `adapter.py`, `profiles/` | **Four providers render a real request with no credential at all.** Anthropic, Gemini, any OpenAI-compatible endpoint, and a locally run model. |
+| Macro table extraction | `expand.py` | **42 of the paper's own macros recovered**, `\Mcal` to `\mathcal M` among them. 45 control sequences reported unresolved rather than guessed. |
 
 ## Run it
 
@@ -43,7 +44,9 @@ nothing, so the fixtures are kept alongside the code:
 unknown root field · duplicate `item.id` · dangling local reference · invisible input alias ·
 `sources` pointing at the wrong item kind · item kind not allowed for the operation · a
 component with neither `math_refs` nor a residual · `component_id` naming no component of its
-claim · a Markdown fence in place of the contract version · operation mismatched against the Task
+claim · a Markdown fence in place of the contract version · operation mismatched against the
+Task · a missing `normalization` block · `VERBATIM` with two differing wordings · a declared
+departure that changed nothing
 
 ## The `run.json` gates have teeth
 
@@ -60,6 +63,34 @@ Deliberate attempts to record a success that did not happen, and what the contra
 One further constraint surfaced only by running it: `report: null` is admissible **only** with
 status `NOT_RUN`. Every `PASS` or `FAIL` must point at an actual check-report blob — a layer
 cannot be marked passing without evidence behind it.
+
+## Macros: mechanical, and the host's job
+
+`\Mcal` means `\mathcal M` in this paper, and the model should not have to guess that. `expand.py`
+reads every `\newcommand` / `\renewcommand` / `\providecommand` / `\def` out of the supplied
+sources and publishes a table as a context input.
+
+**It scans the main file as well as the preamble.** This paper defines `\Mcal` on line 8 of
+`draft.tex`, not in the `head.tex` it inputs; scanning only the preamble reported the paper's own
+notation as unresolved, which is how the bug was found. Result: 42 macros recovered, outcome
+`PARTIALLY_EXPANDED`, and 45 remaining control sequences reported — all standard LaTeX or TikZ
+(`\draw`, `\foreach`, `\hbar`). `STOCK` in that file is a curated allowlist, not a complete
+inventory of LaTeX, so an entry in `unresolved_macros` is a prompt to look rather than proof of
+a defect.
+
+**Expansion supplies a table; it does not rewrite the source.** Byte offsets stay offsets into
+the original bytes and locator markers are still verbatim from the text the model saw. The model
+then declares, per MathClaim, how far its wording moved from the source — `VERBATIM`,
+`NOTATION_NORMALIZED`, `LOGICAL_FORM_EXPANDED`, or `SOURCE_IMPLICIT_CONTEXT_EXPLICIT` — and both
+wordings are retained. The checker verifies that declaration is self-consistent; whether it is
+the *right* step is a reading judgement and belongs to review.
+
+For contrast, the earlier V1 mechanism at
+`Stabilizerness/MathClaimIRRegistry/` recorded the same discipline and produced 25 MathClaimIR
+records for this paper with **zero** marked `VERBATIM`: 8 `SOURCE_IMPLICIT_CONTEXT_EXPLICIT`,
+11 `LOGICAL_FORM_EXPANDED`, 6 `NOTATION_NORMALIZED`, no unresolved symbols. Its sibling
+`normalization/` directory, however, is empty — the notation layer was given a home and never
+populated, which is why it went missing from v0.2 until it was put back.
 
 ## Real source resolution
 
@@ -80,9 +111,10 @@ The third row is the point. The convention refuses rather than guessing, on real
 |---|---|
 | Everything in the table above, including its tests | **4–5** (done) |
 | Pinned spec index and the provider-neutral adapter, four profiles, render verified | **2** (done) |
+| Macro table extraction and the normalization self-consistency checks | **1** (done) |
 | Response path: parse, stage, commit, and the `TASK_BINDING` check layer | 2–3 |
 | A `prepare` / `run` / `status` CLI over the above | 2 |
-| **Minimal v0.2 slice, total** | **10–12**, of which **6–7 are done** |
+| **Minimal v0.2 slice, total** | **11–13**, of which **7–8 are done** |
 
 For comparison, the v0.1 route priced in the framework gap-analysis record came to roughly
 23 hours, and what it delivered would not satisfy v0.2's first principle: its five "rounds"
