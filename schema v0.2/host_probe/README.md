@@ -18,6 +18,7 @@ Everything below was executed. Nothing is estimated.
 | `run.json` honesty gates | `e2e.py` | The contract refuses a faked success. See below. |
 | Pinned spec index, rendered for any model | `spec_index.py` | **16 entries pinned by hash; 9 rendered into the prompt, 7 identity-only.** The whole protocol renders to 58,155 bytes — roughly 14.5k tokens. |
 | Provider-neutral model adapter | `adapter.py`, `profiles/` | **Four providers render a real request with no credential at all.** Anthropic, Gemini, any OpenAI-compatible endpoint, and a locally run model. |
+| Per-paper cost model | `cost.py` | **≈$9.5 per paper** to extract and depend on all 25 claims and formalize one; **≈$39** to formalize all. **82% of all input is the same 14.5k-token spec prefix**, sent 66 times. |
 | Macro table extraction | `expand.py` | **42 of the paper's own macros recovered**, `\Mcal` to `\mathcal M` among them. 45 control sequences reported unresolved rather than guessed. |
 
 ## Run it
@@ -31,6 +32,8 @@ From the repository root, with the project virtualenv:
 .venv/bin/python 'schema v0.2/host_probe/test_adapter.py'
 .venv/bin/python 'schema v0.2/host_probe/test_resolve.py'
 .venv/bin/python 'schema v0.2/host_probe/check_output.py' 'schema v0.2/examples/paper-minimal/output.json' paper_text
+.venv/bin/python 'schema v0.2/host_probe/expand.py'
+.venv/bin/python 'schema v0.2/host_probe/cost.py'
 .venv/bin/python 'schema v0.2/host_probe/e2e.py'
 ```
 
@@ -160,6 +163,31 @@ official SDK is the better choice than this file.
 
 **Nothing has been sent.** No credential is configured on this machine, so `send()` has never
 executed against any provider. The render path is verified; the response path is not.
+
+## What a paper costs
+
+`cost.py` prints the model behind the talk's cost slide. Two scopes, kept apart because v0.2's
+Lamport/Lean branch runs on one selected MathClaim by design:
+
+| Scope | Calls | Input | Output | Cost |
+|---|---|---|---|---|
+| A — extract, dependency on all 25 claims, formalize **one** | 66 | 1.17 M | 146 k | **≈ $9.5** |
+| B — the same, formalizing **all 25** | 210 | 3.93 M | 770 k | **≈ $39** |
+
+The claim count is measured from `Stabilizerness/MathClaimIRRegistry/`, not assumed. The token
+counts are a four-characters-per-token approximation and the rate card is quoted from a cached
+table — both are to be replaced with receipts, and the script says so in its own output.
+
+The number that matters is not the price: **82% of scope A's input is the same 14.5k-token
+specification prefix, sent 66 times.** The largest lever is therefore free, and it comes before
+any effort-tiering decision. The adapter already renders in cache-friendly order — instruction,
+specification, then the varying brief and sources — but declares no cache breakpoints, so that
+82% is currently paid in full. Fixing that is the first cost item.
+
+Effort then goes where the difficulty is: `low`/`medium` for extraction, `medium` for dependency
+comparison, `high` for structuring a proof, `xhigh`/`max` for writing Lean that must compile. In
+scope B that last operation alone is over half the bill, and its **iteration count** — not its
+per-call price — decides the total. That is the first quantity to measure.
 
 ## `evidence/`
 
