@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.2.0/run.schema.json",
+  "title": "Host-owned attempt receipt; candidates committed is not scientific acceptance",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "attempt_id", "task", "state", "call", "output", "checks", "source_bindings", "artifacts", "reason"],
+  "properties": {
+    "contract_version": {"const": "0.2.0"},
+    "attempt_id": {"$ref": "common.schema.json#/$defs/Id"},
+    "task": {"$ref": "common.schema.json#/$defs/Blob"},
+    "state": {"enum": ["NOT_STARTED", "FAILED", "CANCELLED", "OUTPUT_REJECTED", "STAGED", "COMMITTED", "UNKNOWN"]},
+    "call": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["execution_id", "provider", "model", "provider_request_id", "request", "response", "started_at", "finished_at", "input_tokens", "output_tokens", "cost_microusd"],
+          "properties": {
+            "execution_id": {"$ref": "common.schema.json#/$defs/Id"},
+            "provider": {"$ref": "common.schema.json#/$defs/Id"},
+            "model": {"type": "string", "minLength": 1, "maxLength": 256},
+            "provider_request_id": {"type": ["string", "null"], "maxLength": 512},
+            "request": {"$ref": "common.schema.json#/$defs/Blob"},
+            "response": {"anyOf": [{"$ref": "common.schema.json#/$defs/Blob"}, {"type": "null"}]},
+            "started_at": {"$ref": "common.schema.json#/$defs/Time"},
+            "finished_at": {"anyOf": [{"$ref": "common.schema.json#/$defs/Time"}, {"type": "null"}]},
+            "input_tokens": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991},
+            "output_tokens": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991},
+            "cost_microusd": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991}
+          }
+        }
+      ]
+    },
+    "output": {"anyOf": [{"$ref": "common.schema.json#/$defs/Blob"}, {"type": "null"}]},
+    "checks": {
+      "type": "array", "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["layer", "status", "report"],
+        "properties": {
+          "layer": {"enum": ["SHAPE", "TASK_BINDING", "REFERENCES", "SOURCES", "LAMPORT_STRUCTURE", "FORMAL_BUILD", "ALIGNMENT"]},
+          "status": {"enum": ["PASS", "FAIL", "NOT_RUN"]},
+          "report": {"anyOf": [{"$ref": "common.schema.json#/$defs/Blob"}, {"type": "null"}]}
+        },
+        "if": {"properties": {"status": {"const": "NOT_RUN"}}},
+        "then": {"properties": {"report": {"type": "null"}}},
+        "else": {"properties": {"report": {"$ref": "common.schema.json#/$defs/Blob"}}}
+      }
+    },
+    "source_bindings": {
+      "type": "array", "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["locator_id", "source_sha256", "byte_start", "byte_end", "span_sha256"],
+        "properties": {
+          "locator_id": {"$ref": "common.schema.json#/$defs/Id"},
+          "source_sha256": {"$ref": "common.schema.json#/$defs/Hash"},
+          "byte_start": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+          "byte_end": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+          "span_sha256": {"$ref": "common.schema.json#/$defs/Hash"}
+        }
+      }
+    },
+    "artifacts": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/Blob"}},
+    "reason": {"anyOf": [{"$ref": "common.schema.json#/$defs/Text"}, {"type": "null"}]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "NOT_STARTED"}}},
+      "then": {"properties": {"call": {"type": "null"}, "output": {"type": "null"}, "source_bindings": {"maxItems": 0}, "reason": {"$ref": "common.schema.json#/$defs/Text"}}},
+      "else": {"properties": {"call": {"type": "object"}}}
+    },
+    {
+      "if": {"properties": {"state": {"enum": ["STAGED", "COMMITTED"]}}},
+      "then": {
+        "properties": {
+          "output": {"$ref": "common.schema.json#/$defs/Blob"},
+          "call": {"properties": {"response": {"$ref": "common.schema.json#/$defs/Blob"}, "finished_at": {"$ref": "common.schema.json#/$defs/Time"}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "COMMITTED"}}},
+      "then": {
+        "properties": {
+          "checks": {
+            "allOf": [
+              {"contains": {"properties": {"layer": {"const": "SHAPE"}, "status": {"const": "PASS"}}, "required": ["layer", "status"]}},
+              {"contains": {"properties": {"layer": {"const": "TASK_BINDING"}, "status": {"const": "PASS"}}, "required": ["layer", "status"]}},
+              {"contains": {"properties": {"layer": {"const": "REFERENCES"}, "status": {"const": "PASS"}}, "required": ["layer", "status"]}},
+              {"contains": {"properties": {"layer": {"const": "SOURCES"}, "status": {"const": "PASS"}}, "required": ["layer", "status"]}}
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

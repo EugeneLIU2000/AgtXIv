@@ -283,3 +283,30 @@
 - [ ] **H-19 / 待测试、语义案例待准备：跨模型格式及结论边界。** 前置 H-01–H-16 的必要实现与用户模型调用授权；对固定输入、原规范和预算使用不同批准模型。预期：输出经同一原检查器、保留各自草稿/失败与实际费用；不以节点数、措辞或哈希一致要求科学判断相同，不把一个模型答案泄露给独立盲审者。
 
 本轮交付事实：新增参考控制流、输入/检查器/SDK 适配代码与强制端口，修订架构说明并阅读旧测试结果。**没有新测试通过数，没有新模型产物，也没有数据库/Neo4j/持久化服务已接通的声明。**
+
+## 10. Schema v0.2 收敛（V02-*，2026-09-16，全部未执行）
+
+本轮新增 [schema v0.2](../schema%20v0.2/README.md)：独立 research/0.2.0 候选协议、五份 JSON Schema、三个 Agent 规范、宿主/存储契约及人工教学输出。不替换 v0.1 Task/业务 schema，不修改旧运行结果。**尚无 v0.2 宿主、跨对象检查器或真实模型运行；本节不声称任何一项通过。**
+
+以下条目覆盖本轮新增边界，不重复 H-* / NG-* 的全部深层场景。执行需用户后续明确授权；待实现的前置未齐时保持阻塞，不用手工回执填补。
+
+- [ ] **V02-01 / 待测试：五份 schema 的形状与注册。** 对象为 common/task/items/output/run；前置离线 Draft 2020-12 注册器。准备合法及缺字段、额外字段、错误版本、未知操作、条件分支越界、重复 JSON 键样例。预期：引用只从固定本地注册解析，完整根/嵌套约束生效，不联网抓 schema、不静默降级；人工教学样例也必须实际检查后才称合法。本轮未解析或运行校验器。
+- [ ] **V02-02 / 待实现：配置、计划和模型入口。** 对象为 spec/policy/model_profile/module 描述及父计划；前置注册格式、实际授权和配置适配。准备未注册/被篡改描述、无模型配置、零预算、旧 seed/纯扫描作为产物。预期：缺前置 NOT_STARTED；实际研究执行四种 operation 均有真实调用，机械动作不是模型执行，缺后端不默认放行。当前描述以契约规定，注册/检查代码未实现。
+- [ ] **V02-03 / 待实现：跨对象引用与批次原子性。** 对象为 input/local、item 索引及组件映射；前置语义检查器。准备重复 ID、错类型、悬空/未来引用、错误 component_id、只单向对应、相同输出字节却不同输入绑定、伪 producer_task。预期：错配拒绝；合法科学/数学双向映射允许，不能误判证明环；持久身份为真实 producer_task 哈希+output 哈希+item.id，核对其真实 COMMITTED run；不同来源不误合并，整批提交或不提交。
+- [ ] **V02-04 / 待实现：来源定位。** 对象为 source_locator/source_bindings；前置 UTF-8 精确读取和定位器。准备 Unicode、多种换行、重复/缺失/反序 marker、相同起止 marker、旧 locator 绑定被替换。预期：按精确字节和唯一匹配定位、包括结束 marker，歧义不猜；模型不产哈希；旧来源项回读所属已提交 run，定位正确不当作内容支持成立。
+- [ ] **V02-05 / 待实现：通用来源适配与范围。** 对象为 source 登记和覆盖账本；前置来源/转换适配。准备 null archive、非 main.tex 入口、宏/附录、.bbl、PDF/非 UTF-8、不同论文目录。预期：无需伪 tarball 或论文专属 seed；缺宏/未给来源明确阻塞，转换有真实输入输出关联；局部输入不报告全文已读，超过范围/大小拆任务而非截断。
+- [ ] **V02-06 / 待实现：实际可见输入和紧凑请求。** 对象为 item 选择器、request 渲染清单；前置精确读取器和固定 renderer。准备一个 blob 含授权与未授权项、嵌套引用、转义后越限、换 renderer/参数、源文件含指令。预期：只展示获准选择项，规范/schema 计入实际请求字节，来源指令不执行；无损重建与真实 SDK 请求哈希匹配，不能只存摘要后声称可重放。
+- [ ] **V02-07 / 待实现：Paper 最小充分内容。** 对象为科学分量与 MathClaim；前置结构检查及人工语义判读样本。准备联合条件、多量词/嵌套作用域、比较基准、物理语境、近似/渐近结论、引用主张和非数学残余。预期：结构完整，system/baseline/条件/强度不丢；SOURCE_RECONSTRUCTED 有来源，不补救原命题；未覆盖内容进入 residual/issues，不为较易形式化而换题。
+- [ ] **V02-08 / 待实现：Dependency 阶段交接。** 对象为 search_request/dependency_candidate；前置受控检索、来源登记和新 Task 装配。准备只有书目、无上游节点、真实上游、条件不匹配、A+B 联合支持、无结果/循环/无新材料。预期：请求不是执行回执；先取得来源再让新任务读取；候选不自动成为绑定或已证明 DAG，citation 不造 MathClaim，子任务不重置父预算。
+- [ ] **V02-09 / 待实现：单 MathClaim 与 Lamport 边界。** 对象为两个 AF 操作；前置目标/模块绑定和 Lamport 结构检查器。准备论文或双目标、同轮虚构 Lamport、旧目标版本、作用域泄漏、循环步骤、未完成 QED、虚构 CHECK_EVIDENCE_PROVIDED。预期：目标类型/版本固定；Lean 只消费此前已提交的同目标 Lamport；缺口可保存但不获证明状态，模块升级显式版本化。
+- [ ] **V02-10 / 待实现：Lean 环境和代码草稿。** 对象为 environment/files；前置环境登记、隔离构建接口与授权。准备已有上游模块/固定包、缺包、错版本、同名/大小写别名文件、越界路径/符号链接、sorry/额外公理、代码证明较弱目标。预期：不自动安装或执行任意命令；只生成单目标相关代码；结构、实际构建和对齐分别报告，不递归形式化全链条。本轮不执行 Lean。
+- [ ] **V02-11 / 待实现：真实 run 和检查层。** 对象为 run.schema 与调用/检查证据；前置适配器、检查器及受控账本。准备伪 call/PASS、重复或缺少 layer、PASS 无报告、NOT_RUN 带报告、未知费用、失败或超时响应。预期：七层各一次，PASS/FAIL 能回源实际报告；非 NOT_STARTED 有真实调用绑定；COMMITTED 前四层 PASS，但不能推定完整提取或科学认可。
+- [ ] **V02-12 / 待实现：大小和增量保存。** 对象为 output/run、共享 blob 和请求清单；前置内容库/索引。准备重复来源、多轮长文、多模型相同输入、超过 256 items/输出字节/token 限额。预期：原文和规范不逐轮复制；原响应与提取 JSON 只有字节相同时去重，不将重新编码称原字节；限额覆盖实际包装；按范围拆分并交代未读，不能以两个逻辑文件宣称无其他证据存储成本。
+- [ ] **V02-13 / 待实现：并发、失败恢复和原子保存。** 对象为租约、父预算、SQL item/run/outbox；前置持久事务与故障注入。准备同时领取、陈旧 worker、调用后断线、stage 后中断、commit 成功但回包丢失、迟到费用。预期：查账恢复，不盲目重调模型、不双扣预算/双提交；未知费用保留额度；run 检查点保留前驱，原字节和旧失败不覆盖。
+- [ ] **V02-14 / 待实现：旧协议隔离及正式转换。** 对象为 research namespace 与旧 RecordSet/LocalStore；前置显式转换器和完整旧检查。准备新 item 直接写旧库、伪 producer/review、payload 合法但根条件失败、缺 scope/packet。预期：拒绝混用，不删旧 guard、不用 EXPLORATORY 绕过 scope；正式科学内容和证据逐项保留，不能将 COMMITTED 转成 EVIDENCE。
+- [ ] **V02-15 / 待实现：Neo4j/Git 派生与回源。** 对象为派生 outbox/查询；前置 v0.2 映射和消费者。准备图离线/滞后、Git 失败、重放 outbox、新图材料对旧 Task 不可见。预期：候选本地提交不因派生失败重跑模型；恢复按精确身份幂等；新材料进入新 Task，候选边带状态，不由中心性/路径提升可信度。深层场景继续按 NG-*。
+- [ ] **V02-16 / 待实现：真实新论文与跨模型格式。** 对象为端到端最小路径；前置 V02-01–08、11–13 的必要实现和用户模型调用授权。用不依赖既有 2608 专属脚本的一篇新论文片段，完成 Paper 保存与一个 Dependency 交接，再换批准模型处理同一输入。预期：相同接口、不同内容可并存，保留每次真实请求/失败/费用，不要求节点数相同；教学输出不能冒充本验收证据。单 claim AF 验收另依赖 V02-09/10。
+
+- [ ] **V02-17 / Pending implementation: English-only specification maintenance.** Scope: all specification documents, Agent instructions, schema descriptions/comments, bundled examples, and names under schema v0.2. Prerequisite: a future documentation-language check and explicit authorization to run it. Scenarios: introduce Chinese prose, headings, link labels, comments, or filenames; retain legitimate mathematical Unicode and byte-preserved external runtime sources. Expected: reject Chinese in the specification tree without banning mathematical notation or rewriting runtime evidence; preserve interface fields and constraints. Current status: documents translated and reviewed through static text search only; no automated checker implemented or executed. Historical documents outside schema v0.2 remain unchanged.
+
+本轮状态：只新增规范/schema/人工样例并做静态阅读；**没有执行测试、示例、模型调用、依赖安装、Lean、数据库或 Neo4j 操作**。v0.2 宿主实现是下一步工作，不由本清单或旧 PASS 自动补齐。

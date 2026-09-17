@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.2.0/task.schema.json",
+  "title": "Frozen model task; candidate research, not a v0.1 Task",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "task_id", "plan_id", "operation", "purpose", "target_ids", "inputs", "spec", "policy", "model_profile", "module", "limits"],
+  "properties": {
+    "contract_version": {"const": "0.2.0"},
+    "task_id": {"$ref": "common.schema.json#/$defs/Id"},
+    "plan_id": {"$ref": "common.schema.json#/$defs/Id"},
+    "operation": {"$ref": "common.schema.json#/$defs/Operation"},
+    "purpose": {"$ref": "common.schema.json#/$defs/Text"},
+    "target_ids": {"type": "array", "maxItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/Id"}},
+    "inputs": {
+      "type": "array", "minItems": 1, "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "kind", "blob", "item_id", "producer_task"],
+        "properties": {
+          "id": {"$ref": "common.schema.json#/$defs/Id"},
+          "kind": {"enum": ["source", "item", "context", "artifact"]},
+          "blob": {"$ref": "common.schema.json#/$defs/Blob"},
+          "item_id": {"anyOf": [{"$ref": "common.schema.json#/$defs/Id"}, {"type": "null"}]},
+          "producer_task": {"anyOf": [{"$ref": "common.schema.json#/$defs/Blob"}, {"type": "null"}]}
+        },
+        "allOf": [{
+          "if": {"properties": {"kind": {"const": "item"}}},
+          "then": {"properties": {"item_id": {"$ref": "common.schema.json#/$defs/Id"}, "producer_task": {"$ref": "common.schema.json#/$defs/Blob"}}},
+          "else": {"properties": {"item_id": {"type": "null"}, "producer_task": {"type": "null"}}}
+        }]
+      }
+    },
+    "spec": {"$ref": "common.schema.json#/$defs/Blob"},
+    "policy": {"$ref": "common.schema.json#/$defs/Blob"},
+    "model_profile": {"$ref": "common.schema.json#/$defs/Blob"},
+    "module": {"anyOf": [{"$ref": "common.schema.json#/$defs/Blob"}, {"type": "null"}]},
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_input_bytes", "max_output_bytes", "max_output_tokens", "max_seconds", "max_attempts", "no_progress_limit", "max_cost_microusd"],
+      "properties": {
+        "max_input_bytes": {"type": "integer", "minimum": 1, "maximum": 8388608},
+        "max_output_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576},
+        "max_output_tokens": {"type": "integer", "minimum": 1, "maximum": 65536},
+        "max_seconds": {"type": "integer", "minimum": 1, "maximum": 3600},
+        "max_attempts": {"type": "integer", "minimum": 1, "maximum": 20},
+        "no_progress_limit": {"type": "integer", "minimum": 1, "maximum": 20},
+        "max_cost_microusd": {"type": "integer", "minimum": 0, "maximum": 9007199254740991}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operation": {"const": "paper.extract"}}},
+      "then": {
+        "properties": {
+          "target_ids": {"maxItems": 0},
+          "inputs": {"contains": {"properties": {"kind": {"const": "source"}}, "required": ["kind"]}},
+          "module": {"type": "null"}
+        }
+      },
+      "else": {"properties": {"target_ids": {"minItems": 1, "maxItems": 1}}}
+    },
+    {
+      "if": {"properties": {"operation": {"enum": ["autoformalization.lamport", "autoformalization.lean"]}}},
+      "then": {"properties": {"module": {"$ref": "common.schema.json#/$defs/Blob"}}}
+    },
+    {
+      "if": {"properties": {"operation": {"const": "dependency.search"}}},
+      "then": {"properties": {"module": {"type": "null"}}}
+    }
+  ]
+}

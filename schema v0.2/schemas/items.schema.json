@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.2.0/items.schema.json",
+  "title": "Model-authored candidate items; no execution or approval assertions",
+  "$defs": {
+    "Locator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "source", "start_marker", "end_marker"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "source_locator"},
+        "source": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "start_marker": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "end_marker": {"type": "string", "minLength": 1, "maxLength": 2048}
+      }
+    },
+    "Definition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "term", "meaning", "sources"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "definition"},
+        "term": {"$ref": "common.schema.json#/$defs/Text"},
+        "meaning": {"$ref": "common.schema.json#/$defs/Text"},
+        "sources": {"$ref": "common.schema.json#/$defs/Sources"}
+      }
+    },
+    "ScientificClaim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "statement", "modality", "attribution", "system", "comparison_baseline", "conditions", "components", "sources"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "scientific_claim"},
+        "statement": {"$ref": "common.schema.json#/$defs/Text"},
+        "modality": {"enum": ["ASSERTED", "CONDITIONAL", "APPROXIMATE", "CONJECTURED", "OBSERVED", "INTERPRETIVE", "UNCLEAR"]},
+        "attribution": {"enum": ["AUTHOR", "CITED", "UNCLEAR"]},
+        "system": {"anyOf": [{"$ref": "common.schema.json#/$defs/Text"}, {"type": "null"}]},
+        "comparison_baseline": {"anyOf": [{"$ref": "common.schema.json#/$defs/Text"}, {"type": "null"}]},
+        "conditions": {"$ref": "common.schema.json#/$defs/Conditions"},
+        "components": {
+          "type": "array", "minItems": 1, "maxItems": 64,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "conclusion", "sources", "math_refs", "residual"],
+            "properties": {
+              "id": {"$ref": "common.schema.json#/$defs/Id"},
+              "conclusion": {"$ref": "common.schema.json#/$defs/Text"},
+              "sources": {"$ref": "common.schema.json#/$defs/Sources"},
+              "math_refs": {"$ref": "common.schema.json#/$defs/Refs"},
+              "residual": {"anyOf": [{"$ref": "common.schema.json#/$defs/Text"}, {"type": "null"}]}
+            }
+          }
+        },
+        "sources": {"$ref": "common.schema.json#/$defs/Sources"}
+      }
+    },
+    "MathClaim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "source_claim", "component_id", "objects", "quantifiers", "assumptions", "conclusion", "exactness", "definitions"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "math_claim"},
+        "source_claim": {"$ref": "common.schema.json#/$defs/Ref"},
+        "component_id": {"$ref": "common.schema.json#/$defs/Id"},
+        "objects": {
+          "type": "array", "maxItems": 128,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["symbol", "domain"],
+            "properties": {"symbol": {"$ref": "common.schema.json#/$defs/Text"}, "domain": {"$ref": "common.schema.json#/$defs/Text"}}
+          }
+        },
+        "quantifiers": {
+          "type": "array", "maxItems": 128,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["kind", "variable", "domain"],
+            "properties": {
+              "kind": {"enum": ["FORALL", "EXISTS"]},
+              "variable": {"$ref": "common.schema.json#/$defs/Text"},
+              "domain": {"$ref": "common.schema.json#/$defs/Text"}
+            }
+          }
+        },
+        "assumptions": {"$ref": "common.schema.json#/$defs/Conditions"},
+        "conclusion": {"$ref": "common.schema.json#/$defs/Text"},
+        "exactness": {"enum": ["EXACT", "APPROXIMATE", "ASYMPTOTIC", "UNCLEAR"]},
+        "definitions": {"$ref": "common.schema.json#/$defs/Refs"}
+      }
+    },
+    "DependencyCandidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "target", "upstream", "citation", "relation", "basis", "differences", "evidence"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "dependency_candidate"},
+        "target": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "upstream": {"anyOf": [{"$ref": "common.schema.json#/$defs/InputRef"}, {"type": "null"}]},
+        "citation": {"anyOf": [{"$ref": "common.schema.json#/$defs/Text"}, {"type": "null"}]},
+        "relation": {"enum": ["CITES", "USES_DEFINITION", "USES_LEMMA", "SIMILAR", "UNKNOWN"]},
+        "basis": {"$ref": "common.schema.json#/$defs/Text"},
+        "differences": {"type": "array", "maxItems": 64, "items": {"$ref": "common.schema.json#/$defs/Text"}},
+        "evidence": {"$ref": "common.schema.json#/$defs/Sources"}
+      },
+      "anyOf": [
+        {"properties": {"upstream": {"$ref": "common.schema.json#/$defs/InputRef"}}},
+        {"properties": {"citation": {"$ref": "common.schema.json#/$defs/Text"}}}
+      ]
+    },
+    "SearchRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "target", "query", "sources"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "search_request"},
+        "target": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "query": {"$ref": "common.schema.json#/$defs/Text"},
+        "sources": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"$ref": "common.schema.json#/$defs/Text"}}
+      }
+    },
+    "LamportProof": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "target", "format_version", "text", "premises", "open_steps"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "lamport_proof"},
+        "target": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "format_version": {"const": "lamport-text/0.1"},
+        "text": {"type": "string", "minLength": 1, "maxLength": 65536},
+        "premises": {
+          "type": "array", "maxItems": 128,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["ref", "use", "qualification"],
+            "properties": {
+              "ref": {"$ref": "common.schema.json#/$defs/InputRef"},
+              "use": {"$ref": "common.schema.json#/$defs/Text"},
+              "qualification": {"enum": ["PROPOSED", "EXPLICIT_ASSUMPTION", "CHECK_EVIDENCE_PROVIDED"]}
+            }
+          }
+        },
+        "open_steps": {"type": "array", "maxItems": 128, "items": {"$ref": "common.schema.json#/$defs/Text"}}
+      }
+    },
+    "LeanSource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "target", "lamport", "environment", "files", "target_declarations"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/Id"},
+        "kind": {"const": "lean_source"},
+        "target": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "lamport": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "environment": {"$ref": "common.schema.json#/$defs/InputRef"},
+        "files": {
+          "type": "array", "minItems": 1, "maxItems": 16,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["path", "content"],
+            "properties": {
+              "path": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*(/[A-Za-z][A-Za-z0-9_]*)*[.]lean$", "maxLength": 256},
+              "content": {"type": "string", "maxLength": 262144}
+            }
+          }
+        },
+        "target_declarations": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/Text"}}
+      }
+    }
+  }
+}

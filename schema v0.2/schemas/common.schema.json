@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.2.0/common.schema.json",
+  "$defs": {
+    "Id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"},
+    "Hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$", "minLength": 71, "maxLength": 71},
+    "Text": {"type": "string", "minLength": 1, "maxLength": 16384},
+    "Time": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "Operation": {"enum": ["paper.extract", "dependency.search", "autoformalization.lamport", "autoformalization.lean"]},
+    "Blob": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sha256", "byte_size", "media_type"],
+      "properties": {
+        "sha256": {"$ref": "#/$defs/Hash"},
+        "byte_size": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "media_type": {"type": "string", "minLength": 1, "maxLength": 128}
+      }
+    },
+    "InputRef": {
+      "type": "object", "additionalProperties": false, "required": ["input"],
+      "properties": {"input": {"$ref": "#/$defs/Id"}}
+    },
+    "LocalRef": {
+      "type": "object", "additionalProperties": false, "required": ["local"],
+      "properties": {"local": {"$ref": "#/$defs/Id"}}
+    },
+    "Ref": {"oneOf": [{"$ref": "#/$defs/InputRef"}, {"$ref": "#/$defs/LocalRef"}]},
+    "Refs": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/Ref"}},
+    "Sources": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/Ref"}},
+    "Issue": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "subject", "detail"],
+      "properties": {
+        "code": {"enum": ["MISSING_SOURCE", "AMBIGUOUS_SOURCE", "UNREAD_SCOPE", "MISSING_DEPENDENCY", "UNRESOLVED_PROOF", "UNSUPPORTED_INPUT", "OTHER"]},
+        "subject": {"anyOf": [{"$ref": "#/$defs/Ref"}, {"type": "null"}]},
+        "detail": {"$ref": "#/$defs/Text"}
+      }
+    },
+    "Condition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text", "origin", "sources"],
+      "properties": {
+        "text": {"$ref": "#/$defs/Text"},
+        "origin": {"enum": ["SOURCE_EXPLICIT", "SOURCE_RECONSTRUCTED"]},
+        "sources": {"$ref": "#/$defs/Sources"}
+      }
+    },
+    "Conditions": {"type": "array", "maxItems": 128, "items": {"$ref": "#/$defs/Condition"}}
+  }
+}
