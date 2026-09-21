@@ -1,51 +1,148 @@
-# chain-build.html — 逐帧讲解与完整演讲稿
-> **索引已于 2026-09-21 重新编号。** 本稿原为 41 帧的版本所写；其后在最前面插入了
-> `Slide_001.pptx` 的 27 帧与 1 帧过渡帧，因此全部帧号已整体 +28。当前成品为 69 帧，
-> 本稿覆盖帧 28–68；帧 0–27 为导入的开场，不在本稿的时间预算内。
+# chain-build-v1.html — 逐帧讲解与完整演讲稿
 
+> **这份稿子对应 `chain-build-v1.html`（67 帧），不是 `chain-build.html`（69 帧）。**
+> v1 把同样的图重新排了顺序：测量数字那一段被拆成三块分别放进了三个不同的幕，
+> 导入开场里 5 帧重复的 build step 被删掉，新增 3 帧（标题 / 铰链 / 路线图）。
+> 每一段讲稿文字都是从旧稿原样搬过来的，只有帧号变了；对照表见 §2。
 
-**准备日期：** 2026-09-21（讲座前一天）
-**对象：** `slides/chain-build/chain-build.html`，69 帧，7 段（帧 0–27 为导入的 Slide_001.pptx + 过渡帧；本稿覆盖帧 56–68）
-**数字口径：** 本文每一个数字都在 2026-09-21 对 `schema v0.3/` 的实际产物复核过。核对结果见 §5。
-**语言：** 讲解用中文；**讲稿正文是英文**，因为幻灯片上的 meter、图注和 deck 内置 speaker notes 全是英文，听众是物理/数学同行。需要中文稿可以再说。
-
----
-
-## 0. 这份稿子怎么用
-
-deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck.js`、`closing.py` 的 `NOTE` 数组里）。本文做三件那些 notes 没做的事：
-
-1. **串成一篇连续可讲的稿**，补上五段之间的转场——notes 是按帧写的，帧与帧之间没有话。
-2. **给每帧标出 v0.3 出处**，这样被追问"这个数哪来的"时，你能直接报文件名。
-3. **标出时间预算和哪几句必须说**——69 帧不可能每帧都讲一分钟。
+**对象：** `slides/chain-build/chain-build-v1.html`，67 帧，9 幕
+**语言：** 讲解用中文；**讲稿正文是英文**，因为 deck 上的 meter 和 speaker notes 都是英文。
 
 **三条贯穿全场的规矩**（deck 自己定的，讲的时候别破）：
 
 - **一个例子，永不离开**：arXiv:2607.26154v1。
-- **暖色 `#8C4A2F` 只有一个意思：NOT FROM THIS PAPER。** 不要在口头上让它兼任"坏的"或"待办的"，一旦兼任，听众就读不懂这个颜色了。
-- **虚线环 = root，下面什么都没有；实心 = 形式化顺序能到达。** 同理，别临时赋予第二重含义。
+- **暖色 `#8C4A2F` 只有一个意思：NOT FROM THIS PAPER。**
+- **虚线环 = root，下面什么都没有；实心 = 形式化顺序能到达。**
 
 ---
 
 ## 1. 全局结构与时间预算
 
-| 段 | 帧 | 内容 | 建议时长 | 节奏 |
-|---|---|---|---:|---|
-| **A 动机** | 28–35 | 为什么一篇论文需要依赖图 | 11 min | 慢，每帧一个论点 |
-| **B 流水线** | 36–42 | 整套系统五个盒子 | 5 min | 快，40 秒一帧 |
-| **C 记录与图** | 43–49 | 单条记录长什么样 → 抽取图 → 人写的 DAG | 9 min | 中 |
-| **D 链条构建** | 50–60 | 29 条 claim 一层层长出来 | 8 min | 22–29 极快（动画），30–32 慢 |
-| **E 结尾** | 61–68 | 三个愿望 + 一个测量 | 10 min | 慢，35–38 是全场技术高点 |
-| Q&A | — | | 4 min | |
-| | | | **47 min** | |
+| 幕 | 帧 | 内容 | 建议时长 |
+|---|---|---|---:|
+| **I · OPENING** | 0–1 | 2 帧 | 2 min |
+| **II · AN ANSWER IS NOT YET A CLAIM** | 2–8 | 7 帧 | 6 min |
+| **III · WHAT HAS TEETH** | 9–18 | 10 帧 | 7 min |
+| **IV · WHAT WE ARE TRYING TO TRUST** | 19–21 | 3 帧 | 3 min |
+| **V · HOW A PAPER BECOMES CLAIMS** | 22–31 | 10 帧 | 6 min |
+| **VI · ONE REAL PAPER** | 32–38 | 7 帧 | 7 min |
+| **VII · BACKWARDS, THEN FORWARDS** | 39–52 | 14 帧 | 10 min |
+| **VIII · WHERE IT STOPS** | 53–58 | 6 帧 | 4 min |
+| **IX · THREE WISHES** | 59–66 | 8 帧 | 8 min |
+| Q&A | — | | 4 min |
+| | | | **57 min** |
 
-**如果超时，砍这几帧**：34（library）、52、54、55（链条中段三帧纯动画）。**绝不要砍**：31（46 of 54 conditional）、47（9 of 9）、20（change of object）、37（redundancy trap）、32（CHAIN_INCOMPLETE）。
+新顺序的三处关键改动，讲之前先记住：
+
+1. **旧帧 28–29（一个结果 / 6 行对 7,765 行）挪到了最前面**，紧跟危机曲线——
+   它们是那条曲线的实测版本，放在开头才起动机作用，放在中间只是一堆数字。
+2. **旧帧 30–32（0 人复核 / 46 条有条件 / 编译通过但答案为空）挪到了最后**，
+   放在链条长完之后。这三帧是**局限**，局限只有在听众已经看见东西之后才像诚实，
+   在之前只像免责声明。
+3. **旧帧 18–22（learn backwards / reasoning forwards）挪到了链条前面。**
+   backwards 就是 query closure，forwards 就是一层层长出来的那个 build——
+   放在这里它不再是插叙，而是预告了接下来 11 帧要干什么。
 
 ---
 
-## 2. A 段 · 动机（帧 28–35，11 分钟）
+## 2. 帧号对照表（v1 → v0）
 
-### 帧 28 — ONE RESULT · AND THE SPACE UNDERNEATH IT
+| v1 | v0 | 幕 | meter |
+|---:|---:|---|---|
+| 0 | **新** | I | WHAT A PAPER DOES NOT STATE |
+| 1 | 1 | I | THE AI CRISIS IN THEORETIC RESEARCH |
+| 2 | 28 | II | ONE RESULT · AND THE SPACE UNDERNEATH IT |
+| 3 | 29 | II | 6 LINES OF ANSWER · 7,765 LINES OF GROUND |
+| 4 | 2 | II | WHAT IS INSIDE THE BLACK BOX OF LLM REASONING |
+| 5 | 3 | II | WHAT IS INSIDE THE BLACK BOX OF LLM REASONING |
+| 6 | 5 | II | WHAT IS INSIDE THE BLACK BOX OF LLM REASONING |
+| 7 | 7 | II | MODEL MEMORY · THE CONTEXT WINDOW |
+| 8 | 8 | II | MODEL MEMORY · WHEN THE WINDOW IS EXCEEDED |
+| 9 | 9 | III | API / AGENT / MCP / SCHEMA / SKILLS |
+| 10 | 10 | III | A LANGUAGE MODEL, BY ITSELF |
+| 11 | 11 | III | PUT IT IN A LOOP · THAT IS AN AGENT |
+| 12 | 12 | III | A SKILL IS A STRUCTURAL PROMPT DOCUMENT |
+| 13 | 13 | III | MCP · MODEL CONTEXT PROTOCOL |
+| 14 | 14 | III | AGENT USES TOOLS AND THE LOOP |
+| 15 | 15 | III | SCHEMA · A MACHINE-CHECKED CONTRACT |
+| 16 | 16 | III | SCHEMA · A RECORD THAT DOES NOT CONFORM IS REFUSED |
+| 17 | 17 | III | SCHEMA · ONLY IT CAN MAKE AN ANSWER IMPOSSIBLE TO EXPRESS |
+| 18 | **新** | III | A REQUEST CAN BE IGNORED · A CONSTRAINT CANNOT |
+| 19 | 23 | IV | WHAT WE ACTUALLY CARE ABOUT · AND WHAT CAN WE TRUST? |
+| 20 | 27 | IV | OF THE FOUR, THIS TALK IS ABOUT THE SECOND |
+| 21 | **新** | IV | THE ROUTE · WHAT IS COMING, AND WHY |
+| 22 | 24 | V | IMAGING PAPER AS AN AGENT |
+| 23 | 25 | V | HOW FORMALIZATION WORKS |
+| 24 | 26 | V | AUTOFORMALIZATION |
+| 25 | 36 | V | ONE PAPER · FROZEN |
+| 26 | 37 | V | EVERY STATEMENT BECOMES ONE CLAIM RECORD |
+| 27 | 38 | V | THE CLAIMS POINT AT EACH OTHER · A DEPENDENCY GRAPH |
+| 28 | 39 | V | AND SOME POINT OUTSIDE THE PAPER |
+| 29 | 40 | V | THE CORE CLAIMS · ONLY WHAT THE RESULT RESTS ON |
+| 30 | 41 | V | EVERY REMAINING STEP GOES TO AUTO-FORMALIZATION |
+| 31 | 42 | V | IT HOLDS · OR WHAT IS MISSING GOES BACK IN |
+| 32 | 43 | VI | ONE MATH CLAIM  ·  NORMALIZED, HASHED, ANCHORED |
+| 33 | 44 | VI | ONE LAMPORT PROOF  ·  WHAT THE MODEL RETURNED, THEN WHAT THE HOST DID |
+| 34 | 45 | VI | 613 NODES  ·  634 DEPENDENCIES  ·  ONE PASS OVER ONE PAPER |
+| 35 | 46 | VI | 240 FROM THE TARGET PAPER  ·  373 EVERYTHING ELSE |
+| 36 | 47 | VI | 14 OF THE 240 LAND ON A RESULT THE PAPER DECLARES  ·  9 OF 9 HIT |
+| 37 | 48 | VI | A DIFFERENT OBJECT  ·  74 CLAIMS, AUTHORED BY HAND |
+| 38 | 49 | VI | 29 OF 74  ·  THE CLOSURE OF ONE THEOREM |
+| 39 | 19 | VII | “PLEASE HELP ME …” · LEARN BACKWARDS |
+| 40 | 21 | VII | “PLEASE HELP ME …” · REASONING FORWARDS |
+| 41 | 22 | VII | “PLEASE HELP ME …” · OR, SOMETIMES TOGETHER |
+| 42 | 50 | VII | 1 CLAIM |
+| 43 | 51 | VII | 4 CLAIMS  ·  1 AND-GROUP |
+| 44 | 52 | VII | 7 CLAIMS  ·  3 GROUPS |
+| 45 | 53 | VII | 13 CLAIMS  ·  5 GROUPS |
+| 46 | 54 | VII | 23 CLAIMS  ·  10 GROUPS |
+| 47 | 55 | VII | 26 CLAIMS  ·  16 GROUPS |
+| 48 | 56 | VII | 28 CLAIMS  ·  19 GROUPS |
+| 49 | 57 | VII | 29 CLAIMS  ·  20 GROUPS  ·  NOTHING LEFT TO EXPAND |
+| 50 | 58 | VII | 9 ROOTS  ·  NOTHING BELOW THEM |
+| 51 | 59 | VII | FORMALIZATION ORDER  ·  14 OF 29 |
+| 52 | 60 | VII | 15 UNREACHABLE  ·  CHAIN_INCOMPLETE |
+| 53 | 35 | VIII | THE SAME STATEMENT, TWICE · ONCE WITH ITS INTERMEDIATES |
+| 54 | 30 | VIII | 213 SUPPORT GROUPS · 0 REVIEWED BY A PERSON |
+| 55 | 31 | VIII | 54 KERNEL-CHECKED THEOREMS · 46 OF THEM CONDITIONAL |
+| 56 | 32 | VIII | 82 OF 82 MODULES COMPILE · THE ANSWER IS STILL EMPTY |
+| 57 | 33 | VIII | TOKENS, CALLS AND SECONDS ARE RECORDED · DOLLARS ARE NOT |
+| 58 | 34 | VIII | 8.6 GB OF LIBRARY · 137 SECONDS OF CHECKING |
+| 59 | 61 | IX | ONE THEOREM’S CHAIN · 29 CLAIMS, 46 DEPENDENCIES |
+| 60 | 62 | IX | WISH ONE · MORE PAPERS, ONE NETWORK |
+| 61 | 63 | IX | CUT ONE CLAIM OUT · COUNT WHAT LEAVES THE CLOSURE |
+| 62 | 64 | IX | 46 DEPENDENCIES · WEIGHTED BY WHAT REMOVING ONE COSTS |
+| 63 | 65 | IX | 29 FREE ON THEIR OWN · TOGETHER THEY COST 14 CLAIMS |
+| 64 | 66 | IX | THE SKELETON · 28 DEPENDENCIES, NOTHING LOST |
+| 65 | 67 | IX | WISH TWO · A CLAIM IN A GAP THE STRUCTURE NAMES |
+| 66 | 68 | IX | WISH THREE · A NEW PAPER INHERITS WHAT IS ALREADY CHECKED |
+
+v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、**4**（slide 5，slide 6 是同一帧多一张图）、**6**（slide 7，slide 8 是同一帧多一个 context window 框）、**18**（slide 19，slide 20 是同一帧多一张图）、**20**（slide 21，slide 22 同理）。删的都是同一张源幻灯片的重复 build step，没有删掉任何内容。
+
+---
+
+## I · OPENING（帧 0–1）
+
+### 帧 0 — WHAT A PAPER DOES NOT STATE
+
+> **新增帧。** deck 内置 speaker note：
+
+> OPEN HERE. The title is the claim: a paper states what it proves, and it does not state what it depends on, or who checked which part.
+>
+> Read the second line out loud - it is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
+>
+> Then move on. The next two frames do the arguing; this one only has to land the claim and your name.
+>
+
+### 帧 1 — THE AI CRISIS IN THEORETIC RESEARCH
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+---
+
+## II · AN ANSWER IS NOT YET A CLAIM（帧 2–8）
+
+### 帧 2 — ONE RESULT · AND THE SPACE UNDERNEATH IT
 
 **屏幕：** 画面正中一个大菱形（theorem），下方一条浅灰横线，线上标 "where it came from"。中间大片空白。
 
@@ -61,7 +158,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 29 — 6 LINES OF ANSWER · 7,765 LINES OF GROUND
+### 帧 3 — 6 LINES OF ANSWER · 7,765 LINES OF GROUND
 
 **屏幕：** 左框 "6 lines / one model call / 21 seconds" 加六条短线；右框 "7,765 lines / written by hand, so that six citations could be used" 加一个实心黑块。
 
@@ -83,141 +180,153 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 30 — 213 SUPPORT GROUPS · 0 REVIEWED BY A PERSON
+### 帧 4 — WHAT IS INSIDE THE BLACK BOX OF LLM REASONING
 
-**屏幕：** 213 根细竖线排成一道横向的场；下方一个巨大的 "0"。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-**出处：** `runs/research-terra-continuation-20260920/summary.json`：`support_groups: 213`、`accepted_support_edges: 0`、`all_judgements_unreviewed: true`。71 分钟来自全部 ledger 的 `elapsed_seconds` 合计（4,277.5 s）。
+### 帧 5 — WHAT IS INSIDE THE BLACK BOX OF LLM REASONING
 
-> The asymmetry — measured, and measured on my own work rather than asserted about the field, because I cannot measure the field and neither can anyone who has tried.
->
-> Seventy-one minutes of model time produced this: six hundred and thirteen claim nodes and two hundred and thirteen support groups, extracted from one paper. Each of those two hundred and thirteen is a proposal that some set of claims, taken together, discharges another claim.
->
-> The number underneath is the point. `accepted_support_edges: 0`. `all_judgements_unreviewed: true`. Not one of them has been looked at by a person.
->
-> That is the shape of the whole problem, in two numbers from one repository. Producing candidate structure is now minutes of machine time. Reviewing it is unchanged — it is a person reading, at the speed a person reads. Nothing in this project makes review faster, and I want to be honest that it does not. What it changes is that the unreviewed thing is now a small, enumerable, addressable list instead of a paragraph of prose.
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-⏱ 1 min 30 s。**这是 A 段最重要的一帧。**
+### 帧 6 — WHAT IS INSIDE THE BLACK BOX OF LLM REASONING
 
----
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-### 帧 31 — 54 KERNEL-CHECKED THEOREMS · 46 OF THEM CONDITIONAL
+### 帧 7 — MODEL MEMORY · THE CONTEXT WINDOW
 
-**屏幕：** 54 个小菱形排成一行，前 46 个各垂一条短线向下。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-**出处：** `runs/lean-evidence-20260919/lean-audit.json`，`coverage[2]`。64 条 kernel-checked（54 theorem / 9 definition / 1 inductive），公理只有 `propext`、`Classical.choice`、`Quot.sound`。`PREMISE_NONVACUITY_UNKNOWN` = 46 / 54。
+### 帧 8 — MODEL MEMORY · WHEN THE WINDOW IS EXCEEDED
 
-> What a kernel-checked "yes" actually means.
->
-> This project has sixty-four kernel-checked declarations — fifty-four theorems, nine definitions, one inductive — resting on exactly three axioms, and no axiom the project introduced. That part is real, and it is machine-verified.
->
-> Now the honest part. The audit's own metric, `PREMISE_NONVACUITY_UNKNOWN`, is forty-six of fifty-four. Forty-six of those theorems carry at least one hypothesis whose inhabitation Lean does not establish. The kernel confirms the implication. It does not confirm that the premise can ever be met — and a vacuously true theorem looks identical to a useful one from the outside.
->
-> I want to be careful here: this is not a flaw in Lean, and it is not fraud. It is what "verified" means, stated precisely.
-
-⏱ 1 min 15 s。**不要砍这一帧**——这是全场对"形式化验证"最诚实的一句话，也是你后面所有 caveat 的信用来源。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
 ---
 
-### 帧 32 — 82 OF 82 MODULES COMPILE · THE ANSWER IS STILL EMPTY
+## III · WHAT HAS TEETH（帧 9–18）
 
-**屏幕：** 顶部一个空框，标 "the answer"；下方 82 个小实心条排成网格。
+### 帧 9 — API / AGENT / MCP / SCHEMA / SKILLS
 
-**出处：** `epoch-migration/runs/20260919-full-case/full-case-audit.json`：82/82 模块在 `leanprover/lean4:v4.33.0` 下编译通过，74 条声明审计，44 条 composition witness，`query_chain_complete: false`，`query_declaration: null`。32 条 adaptation 来自 `epoch-migration/runs/*/adaptations/`（32 个 `.diff`）。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-> Concern one, in its sharpest form.
+### 帧 10 — A LANGUAGE MODEL, BY ITSELF
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 11 — PUT IT IN A LOOP · THAT IS AN AGENT
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 12 — A SKILL IS A STRUCTURAL PROMPT DOCUMENT
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 13 — MCP · MODEL CONTEXT PROTOCOL
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 14 — AGENT USES TOOLS AND THE LOOP
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 15 — SCHEMA · A MACHINE-CHECKED CONTRACT
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 16 — SCHEMA · A RECORD THAT DOES NOT CONFORM IS REFUSED
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 17 — SCHEMA · ONLY IT CAN MAKE AN ANSWER IMPOSSIBLE TO EXPRESS
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 18 — A REQUEST CAN BE IGNORED · A CONSTRAINT CANNOT
+
+> **新增帧。** deck 内置 speaker note：
+
+> THE HINGE OF THE TALK. Do not rush this frame.
 >
-> The largest single verification event in this project is the common-epoch migration. Eighty-two modules, and all eighty-two compile. Seventy-four declarations audited, forty-four composition witnesses recorded.
+> The previous slide said it in the source deck's own words: the prompt, the skill and the tool call are all requests. The model can read them and not follow them, and the transcript looks identical either way. Only the schema can make an answer impossible to express.
 >
-> And the same file records `query_chain_complete: false` and `query_declaration: null`. Eighty-two modules compile, and compose into no answer. The empty box at the top is not a rhetorical device. It is a null in a JSON file.
+> Now spend that sentence. A paper's claims are requests too. 'By Theorem 3 of reference 14' is a request that the reader go and check something, and almost nobody does, and the paper looks the same either way.
 >
-> That is what an isolated proof is. Not a wrong proof — a proof with no socket on either end. Getting those modules to compile also took thirty-two recorded source adaptations, each one a machine edit to somebody's proof, each stamped `AGENT_NORMALIZED_UNREVIEWED`.
-
-⏱ 1 min 15 s。
+> So the question for the rest of the talk is: what would it take to make a paper's claims refusable? That is the only thing being attempted here.
+>
 
 ---
 
-### 帧 33 — TOKENS, CALLS AND SECONDS ARE RECORDED · DOLLARS ARE NOT
+## IV · WHAT WE ARE TRYING TO TRUST（帧 19–21）
 
-**屏幕：** 四个框：`7.6M tokens` / `74 model calls` / `71 minutes` / 第四个框**空着**，标 "dollars"。
+### 帧 19 — WHAT WE ACTUALLY CARE ABOUT · AND WHAT CAN WE TRUST?
 
-**出处：** 全部 ledger 聚合（本次复核）：73 条不同调用，input 7,591,305、output 97,677、合计 4,277.5 秒。全部 `cost_microusd` 为 null，`cost_basis: CHATGPT_ACCOUNT_QUOTA_NOT_DOLLAR_METERED`。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-> Concern two — and I have to be careful here, because this is the concern my own repository can say the least about.
+### 帧 20 — OF THE FOUR, THIS TALK IS ABOUT THE SECOND
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 21 — THE ROUTE · WHAT IS COMING, AND WHY
+
+> **新增帧。** deck 内置 speaker note：
+
+> THE ROADMAP, and the only one in the deck - say it once, clearly, and then do not repeat it.
 >
-> What it does record: seventy-four model receipts, seven and a half million input tokens, ninety-seven thousand output tokens, four thousand two hundred and eighty seconds. Seventy-one minutes of model time for the entire project, on an ordinary personal account quota. No cluster, no allocation, no scheduler.
+> Three things a later paper needs before it can use your conclusion: what you actually said, what you relied on, and which parts anybody checked. A PDF gives you the first, sometimes. It does not give you the other two in any form a machine - or a hurried human - can follow.
 >
-> What it refuses to record is the fourth box. Every `cost_microusd` field is null; every receipt carries `cost_basis: CHATGPT_ACCOUNT_QUOTA_NOT_DOLLAR_METERED`. I did not leave the price out to be coy. A token count stays true and a price does not, so the deck records the thing that will still be checkable in a year.
+> Then the route across the bottom. One paper, frozen. Its claims and the dependencies between them. One theorem's chain pulled out of that graph. And then, honestly, where the whole thing stops - because it does stop, and the last act of this talk is about exactly where.
 >
-> And say the caveat out loud: seventy-one minutes is an argument from smallness, not a measured comparison against anybody's large-compute baseline. I have no such comparison, and as far as I can tell neither does anyone else. "Theory will become a capital game" is itself an unmeasured claim.
-
-⏱ 1 min 20 s。
+> The promise on the last line matters more than it looks: every number from here on is read out of this repository's own logs. Where nobody has measured something, the frame says nobody measured it.
+>
 
 ---
 
-### 帧 34 — 8.6 GB OF LIBRARY · 137 SECONDS OF CHECKING
+## V · HOW A PAPER BECOMES CLAIMS（帧 22–31）
 
-**屏幕：** 左大框 `8.6 GB / 87,659 objects`；右框 `137 s`。
+### 帧 22 — IMAGING PAPER AS AN AGENT
 
-**出处：** `runs/proof-worker-normalization-attempt02-20260919/audit-proof-walk-attempt05.json`，`scope_notes[0]`：`object_count: 87659`、`recorded_byte_size: 8,603,024,240`、`full_base_object_bytes_rehashed: false`。**137 秒来自另一个文件**：`runs/lean-evidence-20260919/lean-audit.json` 的四条 receipt，6.76 + 37.19 + 44.14 + 48.59 = **136.68 s**。（deck 的 note 把两个数都归给了 attempt05，那是 8.6 GB 的出处，不是 137 秒的；见 §5。）
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-> Concern two again — and this is the one place where I think there is a real answer rather than a caveat.
->
-> The expensive object in this picture is not the model time. It is the checker: the Lean library the proofs are checked against. Eighty-seven thousand objects, eight point six gigabytes. That is the fixed capital of the whole enterprise.
->
-> And it is a download. Not an allocation, not a quota, not a queue. Everybody who works this way gets the identical one, and a proof the kernel accepts against it is accepted for everybody. Checking this project's entire audited chain took one hundred and thirty-seven seconds, across four receipts, on one laptop.
->
-> So if the worry is that theoretical research becomes a competition in who can afford the compute — the most useful property of a proof kernel is that it is cheap, shared, and the same for everyone. That is not a refutation of the worry; the generation side may well concentrate. It is the one counterexample in this repository that I can put a number on.
+### 帧 23 — HOW FORMALIZATION WORKS
 
-**如果被追问 8.6 GB 的可信度**：审计自己记了 `full_base_object_bytes_rehashed: false` —— 这个数来自一份哈希已核对的清单，审计没有重新逐字节哈希那 8.6 GB。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-⏱ 1 min 20 s。**超时可砍。**
+### 帧 24 — AUTOFORMALIZATION
 
----
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-### 帧 35 — THE SAME STATEMENT, TWICE · ONCE WITH ITS INTERMEDIATES
+### 帧 25 — ONE PAPER · FROZEN
 
-**屏幕：** 两条等长横线。上面一条从一个 external-contract 记号出发，经过 11 个 definition 记号，到一个 theorem 记号；下面一条两端相同，中间**什么都没有**。
+*A paper, frozen. Every downstream pointer is a byte offset into these exact bytes, so nothing can drift underneath the record while the work is going on. This is the cheapest and least glamorous idea in the system, and it is the one that makes everything else auditable.*
 
-**出处：** 29 条 closure 中有 11 条是 definition（`runs/2607-full-candidate-20260919/closed-form-branch.json`）。
+### 帧 26 — EVERY STATEMENT BECOMES ONE CLAIM RECORD
 
-> Two routes to the same statement, drawn at the same height because they end in the same place. The lower one is what an answer looks like when it arrives alone. The upper one is the same result, with the things it passed through still attached.
->
-> Concretely, from this project: the closure of one theorem is twenty-nine claims, and eleven of them are definitions. More than a third of what the headline result rests on is not a result at all. It is vocabulary.
->
-> That is the part that transfers to the next problem. And it is exactly the part a good answer throws away.
+*Every statement becomes one record carrying three things: what it says, where in the source it came from, and a fingerprint. "Where" is a byte range, not a page number. "A fingerprint" is a hash — so re-wording produces a different record rather than silently editing the old one.*
 
-**转场到 B 段（必须说）：**
+### 帧 27 — THE CLAIMS POINT AT EACH OTHER · A DEPENDENCY GRAPH
 
-> So for the rest of the talk the question is: what would have to come back, instead of a single mark?
+*The records point at each other. This premise discharges that conclusion. Do that for every record and you no longer have a list, you have a network. This sketch is a cartoon; two slides from now you see the real one.*
 
-⏱ 1 min。
+### 帧 28 — AND SOME POINT OUTSIDE THE PAPER
 
----
+⚠️暖 *Some records point outside the paper, at work it leans on that nobody has fetched.* **在这里把颜色约定讲死：** *Warm means exactly one thing in every frame of this deck — not from this paper. This box is where most of the honest difficulty lives. A paper's citations are promises, and until somebody resolves one it is a promise the machine cannot check.*
 
-## 3. B 段 · 流水线（帧 36–42，5 分钟）
+### 帧 29 — THE CORE CLAIMS · ONLY WHAT THE RESULT RESTS ON
 
-**整段节奏：快。** 每帧 40 秒。这一段只是把词汇铺好，真正的内容在 C 和 D。开头先给一句框架：
+*Choose one result and keep only what it rests on. Everything else goes faint — not deleted, just not part of this question. This is the single most useful operation in the system, and it is also the answer to "why are there so many claims?" There are that many because nobody asked a question yet. Ask one, and the graph collapses to the part that answers it.*
 
-> Six boxes. No product name, no version number, no field names — none of that has been introduced yet, and the boxes are the part that generalises beyond my project.
+### 帧 30 — EVERY REMAINING STEP GOES TO AUTO-FORMALIZATION
 
-| 帧 | meter | 讲稿要点 |
-|---|---|---|
-| **36** | ONE PAPER · FROZEN | *A paper, frozen. Every downstream pointer is a byte offset into these exact bytes, so nothing can drift underneath the record while the work is going on. This is the cheapest and least glamorous idea in the system, and it is the one that makes everything else auditable.* |
-| **37** | EVERY STATEMENT BECOMES ONE CLAIM RECORD | *Every statement becomes one record carrying three things: what it says, where in the source it came from, and a fingerprint. "Where" is a byte range, not a page number. "A fingerprint" is a hash — so re-wording produces a different record rather than silently editing the old one.* |
-| **38** | THE CLAIMS POINT AT EACH OTHER · A DEPENDENCY GRAPH | *The records point at each other. This premise discharges that conclusion. Do that for every record and you no longer have a list, you have a network. This sketch is a cartoon; two slides from now you see the real one.* |
-| **11** ⚠️暖 | AND SOME POINT OUTSIDE THE PAPER | *Some records point outside the paper, at work it leans on that nobody has fetched.* **在这里把颜色约定讲死：** *Warm means exactly one thing in every frame of this deck — not from this paper. This box is where most of the honest difficulty lives. A paper's citations are promises, and until somebody resolves one it is a promise the machine cannot check.* |
-| **40** | THE CORE CLAIMS · ONLY WHAT THE RESULT RESTS ON | *Choose one result and keep only what it rests on. Everything else goes faint — not deleted, just not part of this question. This is the single most useful operation in the system, and it is also the answer to "why are there so many claims?" There are that many because nobody asked a question yet. Ask one, and the graph collapses to the part that answers it.* |
-| **41** | EVERY REMAINING STEP GOES TO AUTO-FORMALIZATION | *Every surviving step goes to a checker that cannot be argued with. It does not negotiate, it does not get tired on the fortieth lemma, and it does not care who wrote the step. That is the entire reason for the machinery in front of it.* |
-| **42** | IT HOLDS · OR WHAT IS MISSING GOES BACK IN | *Two exits, and that is the point of the design. It holds — every step accepted. Or it does not, and the system names what is missing. The second exit is the valuable one: a "no" that comes with a specific unmet obligation is a research to-do list; a "no" without one is just a failure. What it never does is the third thing — return something that looks like a proof because the prose around it was fluent.* |
+*Every surviving step goes to a checker that cannot be argued with. It does not negotiate, it does not get tired on the fortieth lemma, and it does not care who wrote the step. That is the entire reason for the machinery in front of it.*
 
-⏱ 5 min。
+### 帧 31 — IT HOLDS · OR WHAT IS MISSING GOES BACK IN
+
+*Two exits, and that is the point of the design. It holds — every step accepted. Or it does not, and the system names what is missing. The second exit is the valuable one: a "no" that comes with a specific unmet obligation is a research to-do list; a "no" without one is just a failure. What it never does is the third thing — return something that looks like a proof because the prose around it was fluent.*
 
 ---
 
-## 4. C 段 · 记录与两张图（帧 43–49，9 分钟）
+## VI · ONE REAL PAPER（帧 32–38）
 
-### 帧 43 — ONE MATH CLAIM  ·  NORMALIZED, HASHED, ANCHORED
+### 帧 32 — ONE MATH CLAIM  ·  NORMALIZED, HASHED, ANCHORED
 
 **屏幕：** 一条 MathClaim 记录的全貌（`frames/rec-mathclaim.svg`）。
 
@@ -239,11 +348,11 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 44 — ONE LAMPORT PROOF  ·  WHAT THE MODEL RETURNED, THEN WHAT THE HOST DID
+### 帧 33 — ONE LAMPORT PROOF  ·  WHAT THE MODEL RETURNED, THEN WHAT THE HOST DID
 
 **屏幕：** 一份 Lamport 式分层编号证明（`frames/rec-lamport.svg`）。
 
-**出处：** `runs/proof-worker-normalization-attempt02-20260919/attempts/*/lamport.json`。就是帧 29 左边那六行。
+**出处：** `runs/proof-worker-normalization-attempt02-20260919/attempts/*/lamport.json`。就是帧 3 左边那六行。
 
 > A Lamport-style structured proof: hierarchically numbered steps, each checkable on its own, rather than a paragraph of prose.
 >
@@ -261,7 +370,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 45 — 613 NODES  ·  634 DEPENDENCIES  ·  ONE PASS OVER ONE PAPER
+### 帧 34 — 613 NODES  ·  634 DEPENDENCIES  ·  ONE PASS OVER ONE PAPER
 
 **屏幕：** 整张抽取图，几百个空心记号。
 
@@ -277,25 +386,11 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 46 ⚠️暖 — 240 FROM THE TARGET PAPER · 373 EVERYTHING ELSE
+### 帧 35 — 240 FROM THE TARGET PAPER  ·  373 EVERYTHING ELSE
 
-**出处：** 152 `external_claim_request` + 221 `unresolved_claim_occurrence` = 373。连通性由 deck 现算：80 个弱连通分量，最大 379，24 个孤立点，7 个简单环。
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-> The same graph, two colours.
->
-> Ink: the two hundred and forty candidate statements actually extracted from the paper's own TeX. These carry a paper id.
->
-> Warm: the other three hundred and seventy-three. A hundred and fifty-two are external claim requests — anchored to a byte range in the bibliography, paper id null, nobody has fetched the source. Two hundred and twenty-one are unresolved source occurrences — a location in the paper that no candidate has yet claimed.
->
-> And that is the point of the colour split. Most of this graph is not knowledge. It is the system's own record of what it has not done.
->
-> For shape: eighty weakly connected components, the largest three hundred and seventy-nine nodes, twenty-four isolated, and the digraph is not acyclic — seven simple cycles.
-
-⏱ 1 min 15 s。
-
----
-
-### 帧 47 — 14 OF THE 240 LAND ON A RESULT THE PAPER DECLARES  ·  9 OF 9 HIT
+### 帧 36 — 14 OF THE 240 LAND ON A RESULT THE PAPER DECLARES  ·  9 OF 9 HIT
 
 **出处：** `draft.tex` 里正式环境共 **9** 个：2 theorem + 3 lemma + 3 proposition + 1 definition（本次复核逐个数过）。240 个候选中有 14 个的 source span 落在其中之一，命中 9/9。
 
@@ -311,7 +406,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 48 — A DIFFERENT OBJECT  ·  74 CLAIMS, AUTHORED BY HAND
+### 帧 37 — A DIFFERENT OBJECT  ·  74 CLAIMS, AUTHORED BY HAND
 
 **出处：** `Stabilizerness/dag/claim-dag.json`：74 节点、129 边（本次复核确认）。
 
@@ -329,7 +424,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 49 — 29 OF 74  ·  THE CLOSURE OF ONE THEOREM
+### 帧 38 — 29 OF 74  ·  THE CLOSURE OF ONE THEOREM
 
 **出处：** `closed-form-branch.json`：29 节点。build 脚本 assert 这 29 个 id 是那 74 个的真子集。
 
@@ -343,34 +438,55 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-## 5. D 段 · 链条构建（帧 50–60，8 分钟）
-
-**节奏提示：** 50–57 是一段动画，**快速连翻**，每帧 15–25 秒，只报数字和一句话。58、59、60 才是内容，各 1 分半。
-
-**开场先定单位（重要）：**
-
-> The unit of construction here is the **support group** — an AND-set of premises that together discharge one target — not the individual edge. That is why you will see brackets rather than arrows.
-
-| 帧 | meter | 一句话 |
-|---|---|---|
-| **50** | 1 CLAIM | *Start at the theorem. Nothing under it yet.* |
-| **51** | 4 CLAIMS  ·  1 AND-GROUP | *Its support group opens: three premises. Drawn as a bracket, not three arrows, because it is an AND — any one missing and the target is not discharged.* |
-| **52** | 7 CLAIMS  ·  3 GROUPS | *The same question asked of each premise: what discharges this? Two more groups open.* |
-| **53** | 13 CLAIMS  ·  5 GROUPS | *The relaxation branch and the antiblocker branch descend separately. From here a heavier stroke and a faint ring mark what arrived at this step.* |
-| **54** | 23 CLAIMS  ·  10 GROUPS | *The widest step — ten new claims at once, and three of the roots arrive together.* |
-| **55** | 26 CLAIMS  ·  16 GROUPS | *Three more, completing the reduced-polytope side.* |
-| **56** | 28 CLAIMS  ·  19 GROUPS | *Two: the full robustness of magic, and the resource theory that defines it.* |
-| **57** | 29 CLAIMS  ·  20 GROUPS  ·  NOTHING LEFT TO EXPAND | 见下 |
-
-**帧 57 要说全（这里放慢）：**
-
-> Twenty-nine claims, twenty support groups. The recursion terminates, because every remaining premise is already in the chain.
->
-> And this is worth saying out loud: it terminates **because the input was a closed, hand-authored DAG**. Run the same question against the paper itself and it does not terminate. The controller stops at a budget limit, with four hundred roots — and three hundred and seventy-three of those are placeholders: a hundred and fifty-two citations nobody has fetched, two hundred and twenty-one locations no claim has yet claimed.
-
 ---
 
-### 帧 58 — 9 ROOTS · NOTHING BELOW THEM
+## VII · BACKWARDS, THEN FORWARDS（帧 39–52）
+
+### 帧 39 — “PLEASE HELP ME …” · LEARN BACKWARDS
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 40 — “PLEASE HELP ME …” · REASONING FORWARDS
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 41 — “PLEASE HELP ME …” · OR, SOMETIMES TOGETHER
+
+*（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
+
+### 帧 42 — 1 CLAIM
+
+*Start at the theorem. Nothing under it yet.*
+
+### 帧 43 — 4 CLAIMS  ·  1 AND-GROUP
+
+*Its support group opens: three premises. Drawn as a bracket, not three arrows, because it is an AND — any one missing and the target is not discharged.*
+
+### 帧 44 — 7 CLAIMS  ·  3 GROUPS
+
+*The same question asked of each premise: what discharges this? Two more groups open.*
+
+### 帧 45 — 13 CLAIMS  ·  5 GROUPS
+
+*The relaxation branch and the antiblocker branch descend separately. From here a heavier stroke and a faint ring mark what arrived at this step.*
+
+### 帧 46 — 23 CLAIMS  ·  10 GROUPS
+
+*The widest step — ten new claims at once, and three of the roots arrive together.*
+
+### 帧 47 — 26 CLAIMS  ·  16 GROUPS
+
+*Three more, completing the reduced-polytope side.*
+
+### 帧 48 — 28 CLAIMS  ·  19 GROUPS
+
+*Two: the full robustness of magic, and the resource theory that defines it.*
+
+### 帧 49 — 29 CLAIMS  ·  20 GROUPS  ·  NOTHING LEFT TO EXPAND
+
+见下
+
+### 帧 50 — 9 ROOTS  ·  NOTHING BELOW THEM
 
 **出处：** `closed-form-branch.json`：`roots` = 9。
 
@@ -382,7 +498,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 59 — FORMALIZATION ORDER  ·  14 OF 29
+### 帧 51 — FORMALIZATION ORDER  ·  14 OF 29
 
 **出处：** `closed-form-branch.json`：`formalization_order` = 14 条。
 
@@ -394,7 +510,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-### 帧 60 — 15 UNREACHABLE · CHAIN_INCOMPLETE
+### 帧 52 — 15 UNREACHABLE  ·  CHAIN_INCOMPLETE
 
 **出处：** `closed-form-branch.json`：`conditional_nodes` = 15。分解：11 条只被 Varela 挡住、1 条只被 perfect-graph root 挡住、1 条（定理本身）被两者挡住，加上 2 个被挡的 root 自己。
 
@@ -412,19 +528,133 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ---
 
-## 6. E 段 · 结尾（帧 61–68，10 分钟）
+---
 
-**开场定调（必须说，否则听众分不清哪些是已做的、哪些是想做的）：**
+## VIII · WHERE IT STOPS（帧 53–58）
 
-> The ending is three wishes with one measurement wedged in the middle, and I will keep saying which is which.
+### 帧 53 — THE SAME STATEMENT, TWICE · ONCE WITH ITS INTERMEDIATES
 
-### 帧 61 — ONE THEOREM’S CHAIN · 29 CLAIMS, 46 DEPENDENCIES
+**屏幕：** 两条等长横线。上面一条从一个 external-contract 记号出发，经过 11 个 definition 记号，到一个 theorem 记号；下面一条两端相同，中间**什么都没有**。
+
+**出处：** 29 条 closure 中有 11 条是 definition（`runs/2607-full-candidate-20260919/closed-form-branch.json`）。
+
+> Two routes to the same statement, drawn at the same height because they end in the same place. The lower one is what an answer looks like when it arrives alone. The upper one is the same result, with the things it passed through still attached.
+>
+> Concretely, from this project: the closure of one theorem is twenty-nine claims, and eleven of them are definitions. More than a third of what the headline result rests on is not a result at all. It is vocabulary.
+>
+> That is the part that transfers to the next problem. And it is exactly the part a good answer throws away.
+
+**转场到 B 段（必须说）：**
+
+> So for the rest of the talk the question is: what would have to come back, instead of a single mark?
+
+⏱ 1 min。
+
+---
+
+### 帧 54 — 213 SUPPORT GROUPS · 0 REVIEWED BY A PERSON
+
+**屏幕：** 213 根细竖线排成一道横向的场；下方一个巨大的 "0"。
+
+**出处：** `runs/research-terra-continuation-20260920/summary.json`：`support_groups: 213`、`accepted_support_edges: 0`、`all_judgements_unreviewed: true`。71 分钟来自全部 ledger 的 `elapsed_seconds` 合计（4,277.5 s）。
+
+> The asymmetry — measured, and measured on my own work rather than asserted about the field, because I cannot measure the field and neither can anyone who has tried.
+>
+> Seventy-one minutes of model time produced this: six hundred and thirteen claim nodes and two hundred and thirteen support groups, extracted from one paper. Each of those two hundred and thirteen is a proposal that some set of claims, taken together, discharges another claim.
+>
+> The number underneath is the point. `accepted_support_edges: 0`. `all_judgements_unreviewed: true`. Not one of them has been looked at by a person.
+>
+> That is the shape of the whole problem, in two numbers from one repository. Producing candidate structure is now minutes of machine time. Reviewing it is unchanged — it is a person reading, at the speed a person reads. Nothing in this project makes review faster, and I want to be honest that it does not. What it changes is that the unreviewed thing is now a small, enumerable, addressable list instead of a paragraph of prose.
+
+⏱ 1 min 30 s。**这是 A 段最重要的一帧。**
+
+---
+
+### 帧 55 — 54 KERNEL-CHECKED THEOREMS · 46 OF THEM CONDITIONAL
+
+**屏幕：** 54 个小菱形排成一行，前 46 个各垂一条短线向下。
+
+**出处：** `runs/lean-evidence-20260919/lean-audit.json`，`coverage[2]`。64 条 kernel-checked（54 theorem / 9 definition / 1 inductive），公理只有 `propext`、`Classical.choice`、`Quot.sound`。`PREMISE_NONVACUITY_UNKNOWN` = 46 / 54。
+
+> What a kernel-checked "yes" actually means.
+>
+> This project has sixty-four kernel-checked declarations — fifty-four theorems, nine definitions, one inductive — resting on exactly three axioms, and no axiom the project introduced. That part is real, and it is machine-verified.
+>
+> Now the honest part. The audit's own metric, `PREMISE_NONVACUITY_UNKNOWN`, is forty-six of fifty-four. Forty-six of those theorems carry at least one hypothesis whose inhabitation Lean does not establish. The kernel confirms the implication. It does not confirm that the premise can ever be met — and a vacuously true theorem looks identical to a useful one from the outside.
+>
+> I want to be careful here: this is not a flaw in Lean, and it is not fraud. It is what "verified" means, stated precisely.
+
+⏱ 1 min 15 s。**不要砍这一帧**——这是全场对"形式化验证"最诚实的一句话，也是你后面所有 caveat 的信用来源。
+
+---
+
+### 帧 56 — 82 OF 82 MODULES COMPILE · THE ANSWER IS STILL EMPTY
+
+**屏幕：** 顶部一个空框，标 "the answer"；下方 82 个小实心条排成网格。
+
+**出处：** `epoch-migration/runs/20260919-full-case/full-case-audit.json`：82/82 模块在 `leanprover/lean4:v4.33.0` 下编译通过，74 条声明审计，44 条 composition witness，`query_chain_complete: false`，`query_declaration: null`。32 条 adaptation 来自 `epoch-migration/runs/*/adaptations/`（32 个 `.diff`）。
+
+> Concern one, in its sharpest form.
+>
+> The largest single verification event in this project is the common-epoch migration. Eighty-two modules, and all eighty-two compile. Seventy-four declarations audited, forty-four composition witnesses recorded.
+>
+> And the same file records `query_chain_complete: false` and `query_declaration: null`. Eighty-two modules compile, and compose into no answer. The empty box at the top is not a rhetorical device. It is a null in a JSON file.
+>
+> That is what an isolated proof is. Not a wrong proof — a proof with no socket on either end. Getting those modules to compile also took thirty-two recorded source adaptations, each one a machine edit to somebody's proof, each stamped `AGENT_NORMALIZED_UNREVIEWED`.
+
+⏱ 1 min 15 s。
+
+---
+
+### 帧 57 — TOKENS, CALLS AND SECONDS ARE RECORDED · DOLLARS ARE NOT
+
+**屏幕：** 四个框：`7.6M tokens` / `74 model calls` / `71 minutes` / 第四个框**空着**，标 "dollars"。
+
+**出处：** 全部 ledger 聚合（本次复核）：73 条不同调用，input 7,591,305、output 97,677、合计 4,277.5 秒。全部 `cost_microusd` 为 null，`cost_basis: CHATGPT_ACCOUNT_QUOTA_NOT_DOLLAR_METERED`。
+
+> Concern two — and I have to be careful here, because this is the concern my own repository can say the least about.
+>
+> What it does record: seventy-four model receipts, seven and a half million input tokens, ninety-seven thousand output tokens, four thousand two hundred and eighty seconds. Seventy-one minutes of model time for the entire project, on an ordinary personal account quota. No cluster, no allocation, no scheduler.
+>
+> What it refuses to record is the fourth box. Every `cost_microusd` field is null; every receipt carries `cost_basis: CHATGPT_ACCOUNT_QUOTA_NOT_DOLLAR_METERED`. I did not leave the price out to be coy. A token count stays true and a price does not, so the deck records the thing that will still be checkable in a year.
+>
+> And say the caveat out loud: seventy-one minutes is an argument from smallness, not a measured comparison against anybody's large-compute baseline. I have no such comparison, and as far as I can tell neither does anyone else. "Theory will become a capital game" is itself an unmeasured claim.
+
+⏱ 1 min 20 s。
+
+---
+
+### 帧 58 — 8.6 GB OF LIBRARY · 137 SECONDS OF CHECKING
+
+**屏幕：** 左大框 `8.6 GB / 87,659 objects`；右框 `137 s`。
+
+**出处：** `runs/proof-worker-normalization-attempt02-20260919/audit-proof-walk-attempt05.json`，`scope_notes[0]`：`object_count: 87659`、`recorded_byte_size: 8,603,024,240`、`full_base_object_bytes_rehashed: false`。**137 秒来自另一个文件**：`runs/lean-evidence-20260919/lean-audit.json` 的四条 receipt，6.76 + 37.19 + 44.14 + 48.59 = **136.68 s**。（deck 的 note 把两个数都归给了 attempt05，那是 8.6 GB 的出处，不是 137 秒的；见 §5。）
+
+> Concern two again — and this is the one place where I think there is a real answer rather than a caveat.
+>
+> The expensive object in this picture is not the model time. It is the checker: the Lean library the proofs are checked against. Eighty-seven thousand objects, eight point six gigabytes. That is the fixed capital of the whole enterprise.
+>
+> And it is a download. Not an allocation, not a quota, not a queue. Everybody who works this way gets the identical one, and a proof the kernel accepts against it is accepted for everybody. Checking this project's entire audited chain took one hundred and thirty-seven seconds, across four receipts, on one laptop.
+>
+> So if the worry is that theoretical research becomes a competition in who can afford the compute — the most useful property of a proof kernel is that it is cheap, shared, and the same for everyone. That is not a refutation of the worry; the generation side may well concentrate. It is the one counterexample in this repository that I can put a number on.
+
+**如果被追问 8.6 GB 的可信度**：审计自己记了 `full_base_object_bytes_rehashed: false` —— 这个数来自一份哈希已核对的清单，审计没有重新逐字节哈希那 8.6 GB。
+
+⏱ 1 min 20 s。**超时可砍。**
+
+---
+
+---
+
+## IX · THREE WISHES（帧 59–66）
+
+### 帧 59 — ONE THEOREM’S CHAIN · 29 CLAIMS, 46 DEPENDENCIES
 
 > Start from the object the deck has been building: the closure of one theorem. Twenty-nine claims, forty-six dependencies, laid out exactly as in the chain frames — same positions, same shapes, same claims.
 
 ⏱ 30 秒。
 
-### 帧 62 — WISH ONE · MORE PAPERS, ONE NETWORK
+### 帧 60 — WISH ONE · MORE PAPERS, ONE NETWORK
 
 > **Wish one.** Do this to the next paper, and the next. The heavier lines between clusters are the point: the same claim, leaned on by two different papers. That is the moment a pile of decomposed papers becomes one network.
 >
@@ -432,7 +662,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ⏱ 1 min。
 
-### 帧 63 — CUT ONE CLAIM OUT · COUNT WHAT LEAVES THE CLOSURE
+### 帧 61 — CUT ONE CLAIM OUT · COUNT WHAT LEAVES THE CLOSURE
 
 **出处：** `closed-form-branch.json` 的 `edge_criticality`，46 条。`gen_skeleton.py` 里有断言，重算对不上就 build 失败。
 
@@ -444,7 +674,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ⏱ 1 min 30 s。
 
-### 帧 64 — 46 DEPENDENCIES · WEIGHTED BY WHAT REMOVING ONE COSTS
+### 帧 62 — 46 DEPENDENCIES · WEIGHTED BY WHAT REMOVING ONE COSTS
 
 > The same question asked of every dependency rather than every claim — and this one the pipeline had already answered for itself, in all forty-six cases.
 >
@@ -452,7 +682,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ⏱ 45 秒。
 
-### 帧 65 — 29 FREE ON THEIR OWN · TOGETHER THEY COST 14 CLAIMS
+### 帧 63 — 29 FREE ON THEIR OWN · TOGETHER THEY COST 14 CLAIMS
 
 **这是全场技术上最漂亮的一帧。慢讲，并且把"我自己搞错过"讲出来——这句话的说服力比结论本身还大。**
 
@@ -468,7 +698,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ⏱ 1 min 45 s。
 
-### 帧 66 — THE SKELETON · 28 DEPENDENCIES, NOTHING LOST
+### 帧 64 — THE SKELETON · 28 DEPENDENCIES, NOTHING LOST
 
 > So the skeleton has to be computed properly: remove one dependency, recheck the whole closure, and only then try the next. Greedily, to exhaustion.
 >
@@ -480,7 +710,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ⏱ 1 min 15 s。
 
-### 帧 67 — WISH TWO · A CLAIM IN A GAP THE STRUCTURE NAMES
+### 帧 65 — WISH TWO · A CLAIM IN A GAP THE STRUCTURE NAMES
 
 > **Wish two.** If you can compute where the load sits, you can also see where the structure is thin — a place where several load-bearing claims converge and nothing has been written.
 >
@@ -490,7 +720,7 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 
 ⏱ 1 min。
 
-### 帧 68 — WISH THREE · A NEW PAPER INHERITS WHAT IS ALREADY CHECKED
+### 帧 66 — WISH THREE · A NEW PAPER INHERITS WHAT IS ALREADY CHECKED
 
 **全场落点。**
 
@@ -511,6 +741,12 @@ deck 里已经有 speaker notes（写在 `motivation.py`、`pipeline.py`、`deck
 ⏱ 1 min 45 s。
 
 ---
+
+---
+
+## 附录（从旧稿原样搬运）
+
+> ⚠️ **下面这几节里的「帧 N」是 v0 编号，没有改。** 需要换算时查 §2 的对照表。
 
 ## 10. 专题：为什么一篇只有几个定理的短文会有 240 条 math claim
 

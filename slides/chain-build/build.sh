@@ -21,3 +21,12 @@ for f in rec-mathclaim rec-lamport; do
 done
 node deck.js
 python3 build_html.py
+
+# ---- v1: the same figures, re-ordered ------------------------------------
+# build_v1.py reads the finished chain-build.html and writes a NEW file, so a
+# restructure can never damage the deck that already works. Run order matters:
+# frames_v1 makes the three new frames, build_v1 places them, gen_script_v1
+# re-keys the speaking script against the order build_v1 declared.
+python3 frames_v1.py
+python3 build_v1.py
+python3 gen_script_v1.py
