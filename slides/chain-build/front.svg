@@ -1,0 +1,370 @@
+<svg class="pipe-svg" data-cum="0" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Front matter: publication rate against verification bandwidth; what an LLM is as a function; what its memory is; the agent, skill, MCP, tool and schema stack built one box at a time; how the tool is actually used; and the four things a theorist might want to trust.">
+<defs><marker id="froah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1A1A16"/></marker><marker id="froaw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8C4A2F"/></marker></defs>
+  <g class="pp-g" data-step="0">
+    <line x1="240.0" y1="760.0" x2="1180.0" y2="760.0" stroke="#8A8A80" stroke-width="1.8" marker-end="url(#froah)"/>
+    <line x1="240.0" y1="760.0" x2="240.0" y2="250.0" stroke="#8A8A80" stroke-width="1.8" marker-end="url(#froah)"/>
+    <text x="150.0" y="258.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">scale</text>
+    <text x="1160.0" y="800.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">time</text>
+    <line x1="560.0" y1="752.0" x2="560.0" y2="768.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <text x="516.0" y="800.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">2024</text>
+    <line x1="240.0" y1="749.8" x2="475.0" y2="729.4" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="475.0" y1="729.4" x2="663.0" y2="693.7" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="663.0" y1="693.7" x2="804.0" y2="637.6" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="804.0" y1="637.6" x2="916.8" y2="556.0" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="916.8" y1="556.0" x2="1010.8" y2="464.2" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="1010.8" y1="464.2" x2="1086.0" y2="377.5" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="1086.0" y1="377.5" x2="1180.0" y2="275.5" stroke="#1A1A16" stroke-width="3.4"/>
+    <line x1="240.0" y1="744.7" x2="522.0" y2="732.0" stroke="#8A8A80" stroke-width="3.4"/>
+    <line x1="522.0" y1="732.0" x2="804.0" y2="719.2" stroke="#8A8A80" stroke-width="3.4"/>
+    <line x1="804.0" y1="719.2" x2="992.0" y2="709.0" stroke="#8A8A80" stroke-width="3.4"/>
+    <line x1="992.0" y1="709.0" x2="1180.0" y2="698.8" stroke="#8A8A80" stroke-width="3.4"/>
+    <text x="1000.0" y="252.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">scientific publications</text>
+    <text x="1000.0" y="660.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">human verification bandwidth</text>
+    <rect x="240.0" y="838.0" width="700.0" height="92.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="272.0" y="889.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">read  ≠  checked  ≠  reusable</text>
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">The AI crisis in theoretical research</text>
+  </g>
+  <g class="pp-g" data-step="1">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">What is inside the black box of LLM reasoning</text>
+    <rect x="150.0" y="300.0" width="300.0" height="300.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <rect x="560.0" y="300.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="343.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String  →  String</text>
+  </g>
+  <g class="pp-g" data-step="2">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">What is inside the black box of LLM reasoning</text>
+    <rect x="150.0" y="300.0" width="300.0" height="300.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <rect x="560.0" y="300.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="343.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String  →  String</text>
+    <rect x="560.0" y="404.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="447.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String → token → prob. distribution → (next) token → String</text>
+  </g>
+  <g class="pp-g" data-step="3">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">What is inside the black box of LLM reasoning</text>
+    <rect x="150.0" y="300.0" width="300.0" height="300.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <rect x="560.0" y="300.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="343.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String  →  String</text>
+    <rect x="560.0" y="404.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="447.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String → token → prob. distribution → (next) token → String</text>
+    <rect x="640.0" y="670.0" width="66.0" height="30.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="640.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the</text>
+    <rect x="756.0" y="604.0" width="66.0" height="96.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="756.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">cat</text>
+    <rect x="872.0" y="646.0" width="66.0" height="54.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="872.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">dog</text>
+    <rect x="988.0" y="682.0" width="66.0" height="18.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="988.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">sat</text>
+    <rect x="1104.0" y="690.0" width="66.0" height="10.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1104.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">…</text>
+    <text x="560.0" y="564.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a distribution over the next token, then one is sampled</text>
+  </g>
+  <g class="pp-g" data-step="4">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">What is inside the black box of LLM reasoning</text>
+    <rect x="150.0" y="300.0" width="300.0" height="300.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <rect x="560.0" y="300.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="343.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String  →  String</text>
+    <rect x="560.0" y="404.0" width="1210.0" height="74.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="586.0" y="447.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">f  :  String → token → prob. distribution → (next) token → String</text>
+    <rect x="640.0" y="670.0" width="66.0" height="30.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="640.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the</text>
+    <rect x="756.0" y="604.0" width="66.0" height="96.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="756.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">cat</text>
+    <rect x="872.0" y="646.0" width="66.0" height="54.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="872.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">dog</text>
+    <rect x="988.0" y="682.0" width="66.0" height="18.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="988.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">sat</text>
+    <rect x="1104.0" y="690.0" width="66.0" height="10.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1104.0" y="734.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">…</text>
+    <text x="560.0" y="564.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a distribution over the next token, then one is sampled</text>
+    <text x="150.0" y="863.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">the model returns a conditioned probability distribution — not an answer</text>
+  </g>
+  <g class="pp-g" data-step="5">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">Model memory</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the conversation is a forward pass. It does not update any weight.</text>
+    <rect x="150.0" y="260.0" width="760.0" height="430.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="186.0" y="310.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">Turn 1</text>
+    <text x="186.0" y="352.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: I am a physicist.]</text>
+    <text x="186.0" y="394.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  → LLM → [Response: Understood.]</text>
+    <text x="186.0" y="478.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">Turn 2</text>
+    <text x="186.0" y="520.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: I am a physicist.]</text>
+    <text x="186.0" y="562.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [Response: Understood.]</text>
+    <text x="186.0" y="604.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: Explain entropy at my level.]</text>
+    <text x="186.0" y="646.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  → LLM → [Response: …]</text>
+    <text x="150.0" y="730.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the whole history is re-sent every single time</text>
+  </g>
+  <g class="pp-g" data-step="6">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">Model memory</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the conversation is a forward pass. It does not update any weight.</text>
+    <rect x="150.0" y="260.0" width="760.0" height="430.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="186.0" y="310.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">Turn 1</text>
+    <text x="186.0" y="352.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: I am a physicist.]</text>
+    <text x="186.0" y="394.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  → LLM → [Response: Understood.]</text>
+    <text x="186.0" y="478.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">Turn 2</text>
+    <text x="186.0" y="520.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: I am a physicist.]</text>
+    <text x="186.0" y="562.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [Response: Understood.]</text>
+    <text x="186.0" y="604.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: Explain entropy at my level.]</text>
+    <text x="186.0" y="646.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  → LLM → [Response: …]</text>
+    <text x="150.0" y="730.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the whole history is re-sent every single time</text>
+    <rect x="990.0" y="380.0" width="230.0" height="110.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="2.4"/>
+    <text x="1006.0" y="432.5" text-anchor="start" font-size="22" fill="#fff" class="pp-t">system prompt</text>
+    <rect x="1220.0" y="380.0" width="410.0" height="110.0" fill="none" stroke="#1A1A16" stroke-width="2.4"/>
+    <text x="1236.0" y="432.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">conversation history</text>
+    <rect x="1630.0" y="380.0" width="190.0" height="110.0" fill="none" stroke="#1A1A16" stroke-width="2.4"/>
+    <text x="1646.0" y="432.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">new prompt</text>
+    <line x1="990.0" y1="532.0" x2="1820.0" y2="532.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <line x1="990.0" y1="518.0" x2="990.0" y2="546.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <line x1="1820.0" y1="518.0" x2="1820.0" y2="546.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <text x="990.0" y="576.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">context window  —  a fixed token capacity</text>
+  </g>
+  <g class="pp-g" data-step="7">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">Model memory</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the conversation is a forward pass. It does not update any weight.</text>
+    <rect x="150.0" y="260.0" width="760.0" height="430.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="186.0" y="310.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">Turn 1</text>
+    <text x="186.0" y="352.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: I am a physicist.]</text>
+    <text x="186.0" y="394.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  → LLM → [Response: Understood.]</text>
+    <text x="186.0" y="478.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">Turn 2</text>
+    <text x="186.0" y="520.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: I am a physicist.]</text>
+    <text x="186.0" y="562.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [Response: Understood.]</text>
+    <text x="186.0" y="604.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  [User: Explain entropy at my level.]</text>
+    <text x="186.0" y="646.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">  → LLM → [Response: …]</text>
+    <text x="150.0" y="730.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the whole history is re-sent every single time</text>
+    <rect x="990.0" y="380.0" width="230.0" height="110.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="2.4"/>
+    <text x="1006.0" y="432.5" text-anchor="start" font-size="22" fill="#fff" class="pp-t">system prompt</text>
+    <rect x="1220.0" y="380.0" width="410.0" height="110.0" fill="none" stroke="#1A1A16" stroke-width="2.4"/>
+    <text x="1236.0" y="432.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">conversation history</text>
+    <rect x="1630.0" y="380.0" width="190.0" height="110.0" fill="none" stroke="#1A1A16" stroke-width="2.4"/>
+    <text x="1646.0" y="432.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">new prompt</text>
+    <line x1="990.0" y1="532.0" x2="1820.0" y2="532.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <line x1="990.0" y1="518.0" x2="990.0" y2="546.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <line x1="1820.0" y1="518.0" x2="1820.0" y2="546.0" stroke="#8A8A80" stroke-width="1.6"/>
+    <text x="990.0" y="576.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">context window  —  a fixed token capacity</text>
+    <text x="1000.0" y="673.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">exceed it and something must be</text>
+    <text x="1000.0" y="713.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">compressed, truncated or dropped</text>
+  </g>
+  <g class="pp-g" data-step="8">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">API / Agent / MCP / schema / skills</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">prompt sorcery from the LLM era</text>
+    <rect x="150.0" y="300.0" width="740.0" height="300.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="186.0" y="351.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">a numpy API</text>
+    <text x="186.0" y="422.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">import numpy as np</text>
+    <text x="186.0" y="460.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">result = np.mean([1, 2, 3])</text>
+    <text x="186.0" y="532.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">one answer, and the same one every time</text>
+    <rect x="1030.0" y="300.0" width="740.0" height="300.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1066.0" y="351.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">an LLM API</text>
+    <rect x="1066.0" y="392.0" width="200.0" height="70.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1090.0" y="432.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">client</text>
+    <rect x="1506.0" y="392.0" width="200.0" height="70.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1530.0" y="432.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">model</text>
+    <line x1="1266.0" y1="414.0" x2="1506.0" y2="414.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="1300.0" y="400.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">prompt</text>
+    <line x1="1506.0" y1="446.0" x2="1266.0" y2="446.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="1300.0" y="470.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">response</text>
+    <text x="1066.0" y="532.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a distribution, and a different sample each time</text>
+    <text x="150.0" y="701.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">an agent is a system with a model at its core: the model decides the next step</text>
+  </g>
+  <g class="pp-g" data-step="9">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">A language model, by itself</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">text in, a distribution over next tokens out</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="423.0" y="553.3" text-anchor="start" font-size="42" fill="#1A1A16" class="pp-t">LLM</text>
+    <text x="403.0" y="627.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">text → a distribution over next tokens</text>
+  </g>
+  <g class="pp-g" data-step="10">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">Put it in a loop — that is an agent</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the model is the engine; the loop is the agent</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+  </g>
+  <g class="pp-g" data-step="11">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">Give the loop a task</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">what to do, on what, and what counts as finished</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+    <rect x="79.0" y="460.0" width="209.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="101.0" y="543.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">TASK</text>
+    <line x1="288.0" y1="543.0" x2="353.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+  </g>
+  <g class="pp-g" data-step="12">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">A skill is a written procedure</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a protocol loaded into context — drawn dashed, because it is advice</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+    <rect x="79.0" y="460.0" width="209.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="101.0" y="543.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">TASK</text>
+    <line x1="288.0" y1="543.0" x2="353.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <rect x="353.0" y="251.0" width="540.0" height="98.0" fill="none" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7"/>
+    <text x="373.0" y="303.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">SKILL · a written procedure</text>
+    <line x1="623.0" y1="349.0" x2="623.0" y2="460.0" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7" marker-end="url(#froah)"/>
+    <text x="637.0" y="402.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">loaded into context — advice</text>
+  </g>
+  <g class="pp-g" data-step="13">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">MCP is the socket, not the tool</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a published convention for exposing a tool</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+    <rect x="79.0" y="460.0" width="209.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="101.0" y="543.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">TASK</text>
+    <line x1="288.0" y1="543.0" x2="353.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <rect x="353.0" y="251.0" width="540.0" height="98.0" fill="none" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7"/>
+    <text x="373.0" y="303.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">SKILL · a written procedure</text>
+    <line x1="623.0" y1="349.0" x2="623.0" y2="460.0" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7" marker-end="url(#froah)"/>
+    <text x="637.0" y="402.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">loaded into context — advice</text>
+    <rect x="389.0" y="755.0" width="223.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="409.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">MCP</text>
+    <line x1="500.5" y1="626.0" x2="500.5" y2="755.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="514.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">tool call</text>
+  </g>
+  <g class="pp-g" data-step="14">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">Tools are what actually act</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a compiler, a database, a filesystem</text>
+    <line x1="860.5" y1="755.0" x2="860.5" y2="626.0" stroke="#8A8A80" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="874.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">result returns</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+    <rect x="79.0" y="460.0" width="209.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="101.0" y="543.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">TASK</text>
+    <line x1="288.0" y1="543.0" x2="353.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <rect x="353.0" y="251.0" width="540.0" height="98.0" fill="none" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7"/>
+    <text x="373.0" y="303.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">SKILL · a written procedure</text>
+    <line x1="623.0" y1="349.0" x2="623.0" y2="460.0" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7" marker-end="url(#froah)"/>
+    <text x="637.0" y="402.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">loaded into context — advice</text>
+    <rect x="389.0" y="755.0" width="223.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="409.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">MCP</text>
+    <line x1="500.5" y1="626.0" x2="500.5" y2="755.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="514.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">tool call</text>
+    <rect x="684.0" y="755.0" width="353.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="704.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">TOOLS</text>
+    <text x="684.0" y="885.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a compiler · a database · a filesystem</text>
+    <line x1="612.0" y1="804.0" x2="684.0" y2="804.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+  </g>
+  <g class="pp-g" data-step="15">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">The output meets a schema</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a machine-checked contract</text>
+    <line x1="860.5" y1="755.0" x2="860.5" y2="626.0" stroke="#8A8A80" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="874.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">result returns</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+    <rect x="79.0" y="460.0" width="209.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="101.0" y="543.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">TASK</text>
+    <line x1="288.0" y1="543.0" x2="353.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <rect x="353.0" y="251.0" width="540.0" height="98.0" fill="none" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7"/>
+    <text x="373.0" y="303.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">SKILL · a written procedure</text>
+    <line x1="623.0" y1="349.0" x2="623.0" y2="460.0" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7" marker-end="url(#froah)"/>
+    <text x="637.0" y="402.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">loaded into context — advice</text>
+    <rect x="389.0" y="755.0" width="223.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="409.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">MCP</text>
+    <line x1="500.5" y1="626.0" x2="500.5" y2="755.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="514.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">tool call</text>
+    <rect x="684.0" y="755.0" width="353.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="704.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">TOOLS</text>
+    <text x="684.0" y="885.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a compiler · a database · a filesystem</text>
+    <line x1="612.0" y1="804.0" x2="684.0" y2="804.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <line x1="893.0" y1="543.0" x2="1087.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <text x="915.0" y="518.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">output</text>
+    <rect x="1087.0" y="460.0" width="389.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="1111.0" y="539.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">SCHEMA</text>
+    <text x="1087.0" y="662.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a machine-checked contract</text>
+  </g>
+  <g class="pp-g" data-step="16">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">And the schema can say no</text>
+    <text x="120.0" y="186.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">the only arrow on the diagram that rejects</text>
+    <line x1="860.5" y1="755.0" x2="860.5" y2="626.0" stroke="#8A8A80" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="874.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">result returns</text>
+    <rect x="403.0" y="493.0" width="439.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="423.0" y="539.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">LLM</text>
+    <rect x="353.0" y="460.0" width="540.0" height="166.0" fill="none" stroke="#1A1A16" stroke-width="2.6"/>
+    <text x="353.0" y="438.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">AGENT · the loop</text>
+    <rect x="79.0" y="460.0" width="209.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="101.0" y="543.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">TASK</text>
+    <line x1="288.0" y1="543.0" x2="353.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <rect x="353.0" y="251.0" width="540.0" height="98.0" fill="none" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7"/>
+    <text x="373.0" y="303.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">SKILL · a written procedure</text>
+    <line x1="623.0" y1="349.0" x2="623.0" y2="460.0" stroke="#8A8A80" stroke-width="2.0" stroke-dasharray="9 7" marker-end="url(#froah)"/>
+    <text x="637.0" y="402.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">loaded into context — advice</text>
+    <rect x="389.0" y="755.0" width="223.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="409.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">MCP</text>
+    <line x1="500.5" y1="626.0" x2="500.5" y2="755.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <text x="514.5" y="682.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">tool call</text>
+    <rect x="684.0" y="755.0" width="353.0" height="98.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="704.0" y="807.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">TOOLS</text>
+    <text x="684.0" y="885.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a compiler · a database · a filesystem</text>
+    <line x1="612.0" y1="804.0" x2="684.0" y2="804.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <line x1="893.0" y1="543.0" x2="1087.0" y2="543.0" stroke="#1A1A16" stroke-width="2.2" marker-end="url(#froah)"/>
+    <text x="915.0" y="518.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">output</text>
+    <rect x="1087.0" y="460.0" width="389.0" height="166.0" fill="#1A1A16" stroke="#1A1A16" stroke-width="0"/>
+    <text x="1111.0" y="539.8" text-anchor="start" font-size="26" fill="#fff" class="pp-t">SCHEMA</text>
+    <text x="1087.0" y="662.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">a machine-checked contract</text>
+    <line x1="1476.0" y1="543.0" x2="1555.0" y2="475.0" stroke="#1A1A16" stroke-width="2.0" marker-end="url(#froah)"/>
+    <line x1="1476.0" y1="543.0" x2="1555.0" y2="588.0" stroke="#1A1A16" stroke-width="2.6" marker-end="url(#froah)"/>
+    <rect x="1555.0" y="438.0" width="281.0" height="75.0" fill="none" stroke="#1A1A16" stroke-width="1.8"/>
+    <text x="1573.0" y="480.5" text-anchor="start" font-size="22" fill="#1A1A16" class="pp-t">conforms → recorded</text>
+    <rect x="1555.0" y="551.0" width="281.0" height="75.0" fill="none" stroke="#1A1A16" stroke-width="3.6"/>
+    <text x="1573.0" y="593.5" text-anchor="start" font-size="22" fill="#1A1A16" font-weight="700" class="pp-t">does not → REFUSED</text>
+  </g>
+  <g class="pp-g" data-step="17">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">“Please help me …”</text>
+    <rect x="150.0" y="300.0" width="760.0" height="260.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="186.0" y="357.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">learn backwards</text>
+    <text x="186.0" y="422.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">here is a result I do not understand.</text>
+    <text x="186.0" y="456.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">take me back to what it rests on.</text>
+    <line x1="830.0" y1="510.0" x2="230.0" y2="510.0" stroke="#1A1A16" stroke-width="2.4" marker-end="url(#froah)"/>
+  </g>
+  <g class="pp-g" data-step="18">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">“Please help me …”</text>
+    <rect x="150.0" y="300.0" width="760.0" height="260.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="186.0" y="357.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">learn backwards</text>
+    <text x="186.0" y="422.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">here is a result I do not understand.</text>
+    <text x="186.0" y="456.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">take me back to what it rests on.</text>
+    <line x1="830.0" y1="510.0" x2="230.0" y2="510.0" stroke="#1A1A16" stroke-width="2.4" marker-end="url(#froah)"/>
+    <rect x="1010.0" y="300.0" width="760.0" height="260.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1046.0" y="357.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">reason forwards</text>
+    <text x="1046.0" y="422.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">here is where I want to get to.</text>
+    <text x="1046.0" y="456.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">work out what has to hold first.</text>
+    <line x1="1090.0" y1="510.0" x2="1690.0" y2="510.0" stroke="#1A1A16" stroke-width="2.4" marker-end="url(#froah)"/>
+    <text x="150.0" y="661.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">— and, more often than either, both at once</text>
+  </g>
+  <g class="pp-g" data-step="19">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">What we actually care about — and what can we trust?</text>
+    <rect x="150.0" y="300.0" width="760.0" height="190.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="176.0" y="355.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">The story</text>
+    <text x="176.0" y="414.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">What did the paper actually state?</text>
+    <rect x="980.0" y="300.0" width="760.0" height="190.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1006.0" y="355.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">Mathematical correctness</text>
+    <text x="1006.0" y="414.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Does the conclusion follow from the stated assumptions?</text>
+    <rect x="150.0" y="550.0" width="760.0" height="190.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="176.0" y="605.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">Computational reproducibility</text>
+    <text x="176.0" y="664.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Can the numerical result be reproduced?</text>
+    <rect x="980.0" y="550.0" width="760.0" height="190.0" fill="none" stroke="#1A1A16" stroke-width="2.0"/>
+    <text x="1006.0" y="605.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">Physical-semantic alignment</text>
+    <text x="1006.0" y="664.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Does the formal object represent the intended physics?</text>
+  </g>
+  <g class="pp-g" data-step="20">
+    <text x="120.0" y="148.6" text-anchor="start" font-size="34" fill="#1A1A16" class="pp-t">What we actually care about — and what can we trust?</text>
+    <rect x="150.0" y="300.0" width="760.0" height="190.0" fill="none" stroke="#8A8A80" stroke-width="2.0"/>
+    <text x="176.0" y="355.8" text-anchor="start" font-size="26" fill="#8A8A80" class="pp-t">The story</text>
+    <text x="176.0" y="414.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">What did the paper actually state?</text>
+    <rect x="980.0" y="300.0" width="760.0" height="190.0" fill="none" stroke="#1A1A16" stroke-width="3.4"/>
+    <text x="1006.0" y="355.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">Mathematical correctness</text>
+    <text x="1006.0" y="414.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Does the conclusion follow from the stated assumptions?</text>
+    <rect x="150.0" y="550.0" width="760.0" height="190.0" fill="none" stroke="#8A8A80" stroke-width="2.0"/>
+    <text x="176.0" y="605.8" text-anchor="start" font-size="26" fill="#8A8A80" class="pp-t">Computational reproducibility</text>
+    <text x="176.0" y="664.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Can the numerical result be reproduced?</text>
+    <rect x="980.0" y="550.0" width="760.0" height="190.0" fill="none" stroke="#8A8A80" stroke-width="2.0"/>
+    <text x="1006.0" y="605.8" text-anchor="start" font-size="26" fill="#8A8A80" class="pp-t">Physical-semantic alignment</text>
+    <text x="1006.0" y="664.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Does the formal object represent the intended physics?</text>
+    <text x="150.0" y="841.8" text-anchor="start" font-size="26" fill="#1A1A16" class="pp-t">everything after this slide is about the second box</text>
+    <text x="150.0" y="890.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">and about one paper, one theorem, and what it actually rests on</text>
+  </g>
+</svg>
