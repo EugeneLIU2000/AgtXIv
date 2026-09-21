@@ -102,3 +102,195 @@ Then the route across the bottom. One paper, frozen. Its claims and the dependen
 
 The promise on the last line matters more than it looks: every number from here on is read out of this repository's own logs. Where nobody has measured something, the frame says nobody measured it."""],
  'pipe-svg','roadmap.svg','roadmap.json',cumulative=False)
+
+# =========================================================================
+# v1.1 - the frames this revision adds
+# =========================================================================
+
+# ---- 4. the one-sentence bridge, crisis -> what the machine is ----------
+# It replaces two frames (a lone theorem, and 6 lines over 7,765) that opened
+# an argument the deck then did not make here. One sentence, one turn.
+B=Fig('crb','Before asking whether the output can be trusted, look at what the'
+            ' machine is doing when it produces it.')
+B.txt(0,150,380,1620,54,'Before asking whether we can trust what it writes,')
+B.txt(0,150,456,1620,54,'look at what it is doing when it writes.')
+B.line(0,150,584,700,584,color=LIGHT,lw=1.4)
+B.txt(0,150,620,1620,26,'Nothing in the next four frames is a criticism. It is a description.',
+      color=LIGHT)
+B.dump(1,['WHAT IS THE MACHINE ACTUALLY DOING'],[False],
+ ["""ONE SENTENCE, THEN TURN THE PAGE. Do not elaborate - the next four frames are the elaboration.
+
+The curve you just saw is about volume. This is the turn from volume to mechanism: the reason a generated result is hard to reuse is not that it is sloppy, it is that of what the machine did to produce it, nothing survives except the text.
+
+Say the second line - it is a description, not a criticism - and move on. It buys you the room's patience for four frames of mechanism."""],
+ 'pipe-svg','crisisbridge.svg','crisisbridge.json',cumulative=False)
+
+# ---- 5,6,7. what formalization actually looks like ----------------------
+MONO=0.60                                  # a monospace space, as a fraction of em
+def ind(n,size): return n*size*MONO
+
+L=Fig('lna','A Lean 4 example: a definition, a theorem about it, and a proof the'
+            ' kernel re-runs; each part annotated.')
+L.txt(0,150,120,1620,44,'Lean 4  —  a definition, a claim, and a proof')
+L.box(0,150,220,880,430,color=LIGHT,lw=1.8)
+CODE=[(0,'def double (n : Nat) : Nat :='),
+      (2,'2 * n'),
+      (0,''),
+      (0,'theorem double_eq_add (n : Nat) :'),
+      (4,'double n = n + n := by'),
+      (2,'unfold double'),
+      (2,'omega')]
+CY=268; CH=52; CS=26
+for k,(sp,t) in enumerate(CODE):
+    if t: L.txt(0,186+ind(sp,CS),CY+k*CH,820,CS,t,mono=True)
+ANN=[(268,'a new object, built.','Nothing to prove: it is true by construction.'),
+     (424,'a claim about it.','This line is the only part a human has to read.'),
+     (528,'the proof.','A program. The kernel re-runs every step.')]
+for y,h,s in ANN:
+    L.line(0,1040,y+16,1074,y+16,color=LIGHT,lw=1.6)
+    L.txt(0,1090,y,680,28,h)
+    L.txt(0,1090,y+38,680,22,s,color=LIGHT)
+L.txt(0,150,700,1620,26,'No natural language anywhere. "double n = n + n" is not a description'
+                        ' of a theorem — it is the theorem.',color=LIGHT)
+L.txt(0,150,740,1620,26,'That is the whole trade: you give up prose, and in exchange'
+                        ' the claim becomes something a machine can refuse.',color=LIGHT)
+L.dump(1,['LEAN 4 · A DEFINITION, A CLAIM, A PROOF'],[False],
+ ["""THE ONLY CODE IN THE TALK. Give it a full minute; most of the room has never seen Lean.
+
+Read it top to bottom. 'def double' - I am building a thing. Nothing is being claimed yet, so there is nothing to check; a definition cannot be wrong, only useless.
+
+'theorem double_eq_add' - now I am claiming something about the thing I built. Point at this line and say: this is the only line a human has to read. Everything below it is for the machine.
+
+':= by unfold double; omega' - the proof. It is a program. 'unfold' replaces the name by what it stands for, 'omega' is a decision procedure for linear arithmetic. When you compile this file the kernel re-runs both from scratch and either accepts or does not.
+
+Land the bottom two lines: you give up prose, and you get back a claim that can be refused. That trade is the entire subject of the talk."""],
+ 'pipe-svg','lean1.svg','lean1.json',cumulative=False)
+
+K=Fig('lnb','Lean accepts or rejects; the only escape hatch is sorry, and this'
+            ' repository contains none.')
+K.txt(0,150,130,1620,44,'It compiles, or it does not. There is no third answer.')
+K.box(0,150,250,760,230,lw=3.4)
+K.txt(0,186,286,688,34,'accepted')
+K.txt(0,186,348,688,22,'each step re-checked by a kernel of a few thousand lines',color=LIGHT)
+K.txt(0,186,384,688,22,'that does not know who wrote it, or how tired it is',color=LIGHT)
+K.box(0,1010,250,760,230,color=LIGHT,lw=1.8)
+K.txt(0,1046,286,688,34,'rejected',color=LIGHT)
+K.txt(0,1046,348,688,24,'and it names the step it would not take —',color=LIGHT)
+K.txt(0,1046,386,688,24,'which is a research to-do list, not a failure',color=LIGHT)
+K.line(0,150,548,1770,548,color=LIGHT,lw=1.4)
+K.txt(0,150,588,1620,30,'There is exactly one way to cheat, and it is a keyword:')
+K.txt(0,186,644,700,40,'sorry',mono=True)
+K.txt(0,420,652,1340,24,'— accept this claim without a proof. It compiles. It is also'
+                        ' recorded, forever, in the file.',color=LIGHT)
+K.box(0,150,730,1620,150,color=LIGHT,lw=1.8)
+for k,(n,t) in enumerate((('66','.lean files in this repository'),
+                          ('0','containing  sorry'),
+                          ('0','containing  admit'),
+                          ('0','declaring a new  axiom'))):
+    x=186+k*400
+    K.txt(0,x,760,380,48,n)
+    K.txt(0,x,828,380,21,t,color=LIGHT)
+K.dump(1,['ACCEPTED, OR REFUSED · AND THE ONE WAY TO CHEAT'],[False],
+ ["""THE POINT OF THE WHOLE APPROACH IS ON THIS FRAME.
+
+A referee can be tired, generous, or in a hurry. A kernel is none of those. It re-checks every step, and it does not know whose proof it is.
+
+The right-hand box matters more than it looks. When Lean refuses, it tells you WHICH step it would not take. A 'no' with a specific unmet obligation is a to-do list. A 'no' without one is just a failure. That distinction is why this is worth doing at all.
+
+Then be honest about the escape hatch. 'sorry' means: accept this without proof. It compiles. Anybody can write it. The difference from prose is that it is WRITTEN DOWN - you cannot wave at it, it sits in the file and anybody grepping finds it.
+
+The four numbers are this repository, counted this morning: sixty-six files, and not one sorry, admit, or new axiom. Say 'counted this morning' - it is the kind of claim you should be able to date."""],
+ 'pipe-svg','lean2.svg','lean2.json',cumulative=False)
+
+M=Fig('lnc','Nobody proves from nothing: Mathlib, Quantumlib and this project’s'
+            ' own files, and the gap where a physics library would be.')
+M.txt(0,150,130,1620,44,'Nobody proves anything from nothing')
+M.txt(0,150,200,1620,26,'Every proof above stands on definitions somebody else already'
+                        ' wrote and checked.',color=LIGHT)
+# NO PROPORTIONAL BARS HERE. The first draft drew one bar per library with the
+# width encoding its size, which asserts a ratio - and I had measured only the
+# project's own 66 files. These three counts are `find -name '*.lean'` on this
+# machine, and the frame says out loud that a to-scale drawing is impossible.
+LIB=[('8,450','Mathlib','the mathematics. 11 GB on disk here, pinned to one revision.'),
+     ('29','Quantumlib','stabilizers, Cliffords, density matrices. It stands on Mathlib.'),
+     ('66','this paper','written by hand, for one theorem. The only part that is ours.')]
+for k,(n,name,d) in enumerate(LIB):
+    y=280+k*120
+    M.txt(0,150,y,260,52,n,color=INK if k==2 else LIGHT)
+    M.txt(0,440,y+4,420,32,name,color=INK)
+    M.txt(0,440,y+50,1330,22,d,color=LIGHT)
+M.txt(0,150,646,1620,22,'.lean files, counted on this machine',color=LIGHT)
+M.line(0,150,700,1770,700,color=LIGHT,lw=1.4)
+M.txt(0,150,730,1620,30,'Drawn to scale, the bottom two rows would be a pixel wide.'
+                        ' That is the point.',color=LIGHT)
+M.txt(0,150,790,1620,34,'Mathematics has one of these. Physics does not.')
+M.txt(0,150,848,1620,24,'Every object our subject needs that Mathlib lacks has to be'
+                        ' built first \u2014 most of why this is hard for us.',color=LIGHT)
+M.dump(1,['THE LIBRARIES · AND THE ONE PHYSICS DOES NOT HAVE'],[False],
+ ["""THE FRAME FOR THIS AUDIENCE. Slow down here; this is the part a physicist should leave the room remembering.
+
+Three bars. Mathlib is the mathematics - it is enormous, it is other people's work, and it is pinned in this project to one exact revision, so 'it compiles' means something a year from now. Quantumlib is much smaller and sits on top of it. The bottom bar - sixty-six files - is the only part that is ours.
+
+Look at the ratio and say the obvious thing: almost none of this is my work, and that is the point. Formalization is only affordable because the ground already exists.
+
+Then the honest line. Mathematics has a Mathlib. Physics does not have an equivalent - there are efforts, PhysLean is the one to look up, but nothing on that scale. Every time our subject needs an object that is not already in Mathlib, somebody has to build it first, and that is most of the reason this is hard for us and comparatively easy for number theory.
+
+If you are asked about PhysLean, say what is true: I have not used it, and I am not in a position to assess it from this work."""],
+ 'pipe-svg','lean3.svg','lean3.json',cumulative=False)
+
+# ---- 8,9. the ending -----------------------------------------------------
+C=Fig('ccl','What was shown, what it cost, and where it stops.')
+C.txt(0,150,130,1620,46,'Where this actually is')
+ROWS=[('shown','One paper, frozen. 29 claims and 46 dependencies for one theorem,'
+                ' and a chain that runs.'),
+      ('shown','Removing a claim has a measurable cost, so the structure can say'
+                ' which parts carry load.'),
+      ('not yet','The 613-claim extraction is not usable: every node is blocked'
+                ' pending review, and nothing is accepted.'),
+      ('not yet','The chain rests on a DAG written by hand, for this paper.'
+                ' Automatic library lookup is zero lines of code.'),
+      ('not shown','Whether the formal object means the physics you had in mind.'
+                ' No kernel judges that.')]
+Y=230
+for k,(tag,t) in enumerate(ROWS):
+    y=Y+k*98
+    live = tag=='shown'
+    C.box(0,150,y,190,68,color=INK if live else LIGHT,lw=2.8 if live else 1.6)
+    C.txt(0,168,y+20,154,24,tag,color=INK if live else LIGHT)
+    C.txt(0,376,y+18,1394,24,t,color=INK if live else LIGHT)
+C.line(0,150,760,1770,760,color=LIGHT,lw=1.4)
+C.txt(0,150,796,1620,34,'The claim is not that this works. It is that it is now'
+                        ' small enough to argue about.')
+C.txt(0,150,856,1620,24,'Everything on this frame is one paper and one run — a'
+                        ' possibility with a receipt, not a result.',color=LIGHT)
+C.dump(1,['IN CLOSING · WHAT IS SHOWN, AND WHAT IS NOT'],[False],
+ ["""THE CONCLUSION. Do not soften it and do not oversell it - the credibility of the whole talk is spent or kept here.
+
+Two things are shown. A chain for one theorem that actually runs, and a structure whose load-bearing parts can be measured rather than guessed.
+
+Three things are not. The big extraction is not usable - every one of those six hundred nodes is blocked pending a review nobody has done. The chain that does run stands on a dependency graph I wrote by hand for this paper, and automatic library lookup - finding the matching declaration in Mathlib - is zero lines of code today. And none of this touches whether the formal object means the physics you had in mind; no kernel judges that.
+
+Then the last line, which is the honest version of the whole talk: the claim is not that this works. It is that it has become small enough to argue about. A year ago I could not have shown you a specific place where it stops."""],
+ 'pipe-svg','conclusion.svg','conclusion.json',cumulative=False)
+
+D=Fig('dsc','One question, left open for discussion.')
+D.txt(0,150,300,1620,30,'One question I do not have an answer to',color=LIGHT)
+D.txt(0,150,372,1620,58,'How much of your last paper could you hand over')
+D.txt(0,150,448,1620,58,'as a chain — and what would break first?')
+D.line(0,150,580,700,580,color=LIGHT,lw=1.4)
+# the discussion glyph: two bubbles, drawn rather than pasted
+for cx,cy,r,col in ((1380,700,96,INK),(1560,790,72,LIGHT)):
+    D.dot(0,cx,cy,r,color=col,lw=3.0 if col==INK else 2.2)
+    for k in (-1,0,1):
+        D.dot(0,cx+k*r*0.42,cy,r*0.10,color=col,lw=1.0,fill=col)
+D.line(0,1320,772,1286,832,color=INK,lw=3.0)
+D.line(0,1286,832,1356,796,color=INK,lw=3.0)
+D.txt(0,150,626,1000,26,'yingjian@lorentz.leidenuniv.nl',color=LIGHT)
+D.txt(0,150,666,1000,26,'the deck, the records and the logs are all in the repository',color=LIGHT)
+D.dump(1,['DISCUSSION'],[False],
+ ["""THE LAST FRAME. Ask the question and then stop talking.
+
+It is a real question and I do not have an answer. Every person in this room has a most-recent paper. Some of them would decompose into a chain almost immediately; some would hit an unformalisable physical assumption in the first three claims, and I would like to know which, and where.
+
+If the room is slow to start, two prompts that usually work: ask somebody what their paper's ROOT claims would be - the things they assumed without proof - and ask whether they would have been willing to write them down."""],
+ 'pipe-svg','discussion.svg','discussion.json',cumulative=False)

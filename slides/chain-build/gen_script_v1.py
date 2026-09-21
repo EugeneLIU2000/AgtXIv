@@ -55,7 +55,10 @@ if cur is not None: blocks[cur]='\n'.join(buf).strip()
 APPENDIX='\n'.join(S[next(k for k,l in enumerate(S) if l.startswith('## 10. 专题')):])
 
 # ---- the new document ---------------------------------------------------
-NOTE_NEW={k:json.load(open(f'{k}.json'))['note'][0] for k in ('title','hinge','roadmap')}
+# derived from the order, not hard-coded - a new frame added to build_v1.py's
+# ARC must not silently fall out of the script.
+NOTE_NEW={k:json.load(open(f'{k}.json'))['note'][0]
+          for k in {p for p in PROV if isinstance(p,str)}}
 KEY_OF_NEWFRAME={}
 for k,p in enumerate(PROV):
     if isinstance(p,str): KEY_OF_NEWFRAME[k]=p
@@ -65,7 +68,7 @@ for k,a in enumerate(ACTS):
     if not acts or acts[-1][0]!=a: acts.append((a,[k]))
     else: acts[-1][1].append(k)
 
-BUDGET={'I':2,'II':6,'III':7,'IV':3,'V':6,'VI':7,'VII':10,'VIII':4,'IX':8}
+BUDGET={'I':1,'II':4,'III':6,'IV':4,'V':8,'VI':5,'VII':6,'VIII':5,'IX':2}
 out=[]
 w=out.append
 w('# chain-build-v1.html — 逐帧讲解与完整演讲稿')
@@ -97,16 +100,19 @@ for a,ks in acts:
 w(f'| Q&A | — | | 4 min |')
 w(f'| | | | **{tot+4} min** |')
 w('')
-w('新顺序的三处关键改动，讲之前先记住：')
+w('这一版相对 v0 的改动，讲之前先记住：')
 w('')
-w('1. **旧帧 28–29（一个结果 / 6 行对 7,765 行）挪到了最前面**，紧跟危机曲线——')
-w('   它们是那条曲线的实测版本，放在开头才起动机作用，放在中间只是一堆数字。')
-w('2. **旧帧 30–32（0 人复核 / 46 条有条件 / 编译通过但答案为空）挪到了最后**，')
-w('   放在链条长完之后。这三帧是**局限**，局限只有在听众已经看见东西之后才像诚实，')
-w('   在之前只像免责声明。')
-w('3. **旧帧 18–22（learn backwards / reasoning forwards）挪到了链条前面。**')
-w('   backwards 就是 query closure，forwards 就是一层层长出来的那个 build——')
-w('   放在这里它不再是插叙，而是预告了接下来 11 帧要干什么。')
+w('1. **危机曲线之后只有一句话**，然后直接进 LLM 机制——旧稿里那两帧'
+  '（一个孤立的定理 / 6 行对 7,765 行）开了一个此处不打算展开的论证，已删。')
+w('2. **「please help me …」三帧挪到了 trust 四象限之前**，'
+  '因为 learn backwards / reason forwards 正是后面 closure 与 build 两个方向的引子。')
+w('3. **How formalization works 之后加了三帧 Lean**：一段能读的代码、'
+  'kernel 接受或拒绝、以及库（Mathlib / Quantumlib / 本文 66 个文件）。'
+  '**这三帧是给物理听众的，讲慢一点。**')
+w('4. **旧的测量段（213 support groups / 46 conditional / 8.6 GB …）整段删除。**'
+  '这是一场关于可能性的报告，不是 schema 的技术汇报。'
+  '其中最该说的那几句诚实话，现在集中在倒数第二帧「IN CLOSING」上。')
+w('5. **最后两帧是新的**：结论，然后一帧只有一个问题的讨论页。')
 w('')
 w('---')
 w('')

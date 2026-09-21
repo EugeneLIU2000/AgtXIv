@@ -40,10 +40,32 @@ def where(i):
     if i >= len(OLD)-NCLO:           return 'z', i-(len(OLD)-NCLO)
     return 'c', i-NFRO-NMOT-NPIPE-NOPEN
 
+# ---- 0b. re-inline the figures whose generators v1 changed --------------
+# build_v1 reads the FINISHED v0 page, so a figure only reaches v1 if it is
+# re-inlined here. closing.py's headline band and heavier strokes went into
+# closing.svg and stopped there - the page kept showing the v0 drawing while
+# the generator had moved on. Same failure build_html.py once had with #fig.
+def put_wrap(H, wid, path):
+    svg=re.sub(r'>\s*\n\s*<','><',open(path,encoding='utf-8').read()).strip()
+    block=f'<div class="wrap" id="{wid}">{svg}</div>'
+    m=re.search(rf'<div class="wrap" id="{wid}">.*?</div>', H, re.S)
+    assert m, f'no wrap #{wid} in {SRC}'
+    print(f'  re-inlined #{wid} <- {path}')
+    return H[:m.start()]+block+H[m.end():]
+
+for wid,path in (('cw','closing.svg'), ('pw','pipeline.svg')):
+    H=put_wrap(H, wid, path)
+
 # ---- 1. the three new front frames, appended to #fw ---------------------
 NEW=[('title','title.svg','title.json'),
      ('hinge','hinge.svg','hinge.json'),
-     ('roadmap','roadmap.svg','roadmap.json')]
+     ('roadmap','roadmap.svg','roadmap.json'),
+     ('crisisbridge','crisisbridge.svg','crisisbridge.json'),
+     ('lean1','lean1.svg','lean1.json'),
+     ('lean2','lean2.svg','lean2.json'),
+     ('lean3','lean3.svg','lean3.json'),
+     ('conclusion','conclusion.svg','conclusion.json'),
+     ('discussion','discussion.svg','discussion.json')]
 def mini(s): return re.sub(r'>\s*\n\s*<','><',s).strip()
 frag=''; NEWAT={}
 for k,(key,svgp,jsonp) in enumerate(NEW):
@@ -66,16 +88,18 @@ H=H[:m.end(1)]+frag+H[m.end(1):]
 #   6  source slide 7  - slide 8 is the same frame plus the context window
 #   18 source slide 19 - slide 20 is the same frame with the second picture
 #   20 source slide 21 - slide 22 is the same frame with the fourth picture
+# Each entry is a v0 frame index or one of the new keys.
 ARC=[
- ('I · OPENING',                      ['title', 1]),
- ('II · AN ANSWER IS NOT YET A CLAIM', [28, 29, 2, 3, 5, 7, 8]),
- ('III · WHAT HAS TEETH',              [9, 10, 11, 12, 13, 14, 15, 16, 17, 'hinge']),
- ('IV · WHAT WE ARE TRYING TO TRUST',  [23, 27, 'roadmap']),
- ('V · HOW A PAPER BECOMES CLAIMS',    [24, 25, 26, 36, 37, 38, 39, 40, 41, 42]),
- ('VI · ONE REAL PAPER',               [43, 44, 45, 46, 47, 48, 49]),
- ('VII · BACKWARDS, THEN FORWARDS',    [19, 21, 22] + list(range(50, 61))),
- ('VIII · WHERE IT STOPS',             [35, 30, 31, 32, 33, 34]),
- ('IX · THREE WISHES',                 list(range(61, 69))),
+ ('I \u00b7 OPENING',                      ['title', 1]),
+ ('II \u00b7 WHAT THE MACHINE IS DOING',   ['crisisbridge', 2, 3, 5, 7, 8]),
+ ('III \u00b7 WHAT HAS TEETH',             [9, 10, 11, 12, 13, 14, 15, 16, 17, 'hinge']),
+ ('IV \u00b7 WHAT WE ARE TRYING TO TRUST', [19, 21, 22, 23, 27, 'roadmap']),
+ ('V \u00b7 HOW A PAPER BECOMES CLAIMS',   [24, 25, 'lean1', 'lean2', 'lean3', 26,
+                                          36, 37, 38, 39, 40, 41, 42]),
+ ('VI \u00b7 ONE REAL PAPER',              [43, 44, 45, 46, 47, 48, 49]),
+ ('VII \u00b7 ONE THEOREM\u2019S CHAIN',    list(range(50, 61))),
+ ('VIII \u00b7 THREE WISHES',              list(range(61, 69))),
+ ('IX \u00b7 IN CLOSING',                  ['conclusion', 'discussion']),
 ]
 ORDER=[]; METER=[]; ACTS=[]; OPENM=[]; provenance=[]
 for act,items in ARC:
@@ -89,7 +113,10 @@ for act,items in ARC:
 
 used={it for _,items in ARC for it in items if isinstance(it,int)}
 dropped=sorted(set(range(len(OLD)))-used)
-assert dropped==[0,4,6,18,20], f'unexpected cut list {dropped}'
+# 0/4/6/18/20 are duplicate build steps of one source slide; 28-35 is the whole
+# measured-numbers region, which the speaker cut as a technical report in a talk
+# that is about a possibility. What it said honestly now lives on the conclusion.
+assert dropped==[0,4,6,18,20]+list(range(28,36)), f'unexpected cut list {dropped}'
 assert len(ORDER)==len(METER)==len(ACTS)
 assert len({p for p in provenance if isinstance(p,int)})==len(used), 'a frame is used twice'
 

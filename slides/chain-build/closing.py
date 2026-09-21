@@ -69,7 +69,7 @@ def chain_nodes(step, weighted, labels=False):
         r = (8 + 16*f) if weighted else 9
         col = sh(0.42+0.58*f) if weighted else INK
         mark(step, n['kind'], PX(n['x']), PY(n['y']), r,
-             color=col, lw=3.0 if (weighted and f>0.6) else 2.0)
+             color=col, lw=3.4 if (weighted and f>0.6) else 2.6)
     if labels:
         for nid,(lab,dx,dy) in NAME.items():
             n=next(x for x in SK['nodes'] if x['id']==nid)
@@ -81,8 +81,8 @@ def chain_edges(step, weighted=False, only_load=False):
     for e in SK['edges']:
         if only_load and e['loss']==0: continue
         f=e['loss']/MAXE
-        lw = (1.2 + 4.6*f) if weighted else 1.3
-        col = sh(0.20+0.80*f) if weighted else sh(0.30)
+        lw = (1.6 + 5.0*f) if weighted else 1.9
+        col = sh(0.24+0.76*f) if weighted else sh(0.46)
         x1,y1,x2,y2 = PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2'])
         ym=(y1+y2)/2
         curve(step, x1,y1, x1,ym, x2,ym, x2,y2, color=col, lw=lw)
@@ -114,7 +114,6 @@ def inset(step, mark_zero=False):
 # 0 - the object: one paper, as the deck left it
 # =====================================================================
 chain_edges(0); chain_nodes(0, weighted=False)
-txt(0,80,150,980,SS,'one theorem’s chain — 29 claims, 46 dependencies',color=LIGHT)
 
 # =====================================================================
 # 1 - WISH ONE: more papers, and it stops being a pile
@@ -140,22 +139,21 @@ def schematic(step, clusters, heavy=()):
         pts=NET[ci]
         for k in range(1,len(pts)):
             j=min(range(k), key=lambda q:(pts[q][0]-pts[k][0])**2+(pts[q][1]-pts[k][1])**2)
-            line(step,pts[k][0],pts[k][1],pts[j][0],pts[j][1],color=LIGHT,lw=1.4)
+            line(step,pts[k][0],pts[k][1],pts[j][0],pts[j][1],color=sh(.40),lw=2.0)
     for a,b in ((0,1),(1,3),(0,2),(2,3)):
         if a in clusters and b in clusters:
             pa,pb=NET[a][0],NET[b][len(NET[b])//2]
-            line(step,pa[0],pa[1],pb[0],pb[1],lw=1.8)
+            line(step,pa[0],pa[1],pb[0],pb[1],lw=2.8)
     # ONE neutral mark, not the kind vocabulary. These points are invented;
     # drawing them as diamonds and hexagons made every one of them assert a
     # kind, thirty frames after the deck taught the audience to read that.
     for ci in clusters:
         for k,(x,y) in enumerate(NET[ci]):
             hv=(ci,k) in heavy
-            dot(step,x,y,13 if hv else 9,lw=3.4 if hv else 1.9)
+            dot(step,x,y,15 if hv else 10,lw=4.2 if hv else 2.5)
     txt(step,1560,980,320,20,'schematic',color=LIGHT)
 
 schematic(1,[0,1,2,3])
-txt(1,150,140,980,SS,'more papers, and the same claim leaned on twice',color=LIGHT)
 
 # =====================================================================
 # 2 - MEASURED: which claims carry the load
@@ -172,17 +170,13 @@ chain_edges(3, weighted=True); chain_nodes(3, weighted=False); inset(3)
 # =====================================================================
 for e in SK['edges']:
     if e['free']:
-        line(4,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),color=sh(.85),lw=3.0)
+        line(4,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),color=sh(.88),lw=3.6)
     else:
         line(4,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),color=sh(.16),lw=1.2)
 for n in SK['nodes']:
     gone=n['lost_together']
     mark(4,n['kind'],PX(n['x']),PY(n['y']),9,
          color=sh(.16) if gone else INK, lw=2.0)
-txt(4,80,150,980,SS,f"each of these {SK['n_free']} dependencies is free on its own")
-txt(4,80,186,980,SS,
-    f"take them away together and {SK['n_lost_together']} of the {SK['total']} claims leave the closure",
-    color=LIGHT)
 inset(4, mark_zero=True)
 
 # =====================================================================
@@ -191,9 +185,8 @@ inset(4, mark_zero=True)
 for e in SK['edges']:
     if e['skel']:
         line(5,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),
-             color=sh(0.25+0.75*e['loss']/MAXE), lw=1.4+4.4*e['loss']/MAXE)
+             color=sh(0.30+0.70*e['loss']/MAXE), lw=1.9+4.6*e['loss']/MAXE)
 chain_nodes(5, weighted=False)
-txt(5,80,150,980,SS,f"{SK['n_skel']} dependencies, and every claim still reachable")
 
 # =====================================================================
 # 6 - WISH TWO: a claim in a gap the structure names
@@ -208,7 +201,6 @@ line(6,NX,JY-8,NX,JY+8,color=JUNC,lw=2.2)
 line(6,NX,JY-13,NX,NY+26,lw=2.4,arrow=True)
 mark(6,'theorem',NX,NY,26,lw=4.0)
 txt(6,NX+44,NY-14,620,SS,'proposed')
-txt(6,150,140,980,SS,'a claim nobody has written, in a gap the structure names')
 
 # =====================================================================
 # 7 - WISH THREE: the next paper is cheap, because it inherits
@@ -249,6 +241,43 @@ for k in sorted(NEWK):
     line(7,x,y+48,x,y+60,color=JUNC,lw=2.0)
     line(7,x,y+43,x,y+15,lw=2.2,arrow=True)
 txt(7,1120,600,760,SS,'three new checks, not a hundred',color=JUNC)
+
+# ---- the headline band -------------------------------------------------
+# Every frame in this act used to open with a 22px grey caption, or with
+# nothing at all, which left the room to work out from the picture what it was
+# being shown. The band above y=238 is empty on the measured frames and empty
+# left of x=815 on the schematic ones, so the headline goes there - wide on the
+# first kind, narrow and two-line on the second.
+HS2=34
+CHAINW, SCHEMW = 1150, 640
+HEADS=[
+ (0,'chain','One theorem, and everything it rests on',
+    '29 claims and 46 dependencies \u2014 the object the rest of this act works on'),
+ (1,'schem','Wish one','More papers, one network',
+    'the same claim leaned on twice, by two papers'),
+ (2,'chain','Which claims actually carry the load',
+    'remove one claim, recompute the closure, count what leaves \u2014 size is what is lost'),
+ (3,'chain','The same question, asked of every dependency',
+    f"{len(SK['edges'])} links, each weighted by what removing it costs"),
+ (4,'chain',f"Alone every one of these {SK['n_free']} is free",
+    f"take them away together and {SK['n_lost_together']} of the {SK['total']} claims leave the closure"),
+ (5,'chain','The skeleton',
+    f"{SK['n_skel']} dependencies, and every claim still reachable"),
+ (6,'schem','Wish two','A claim in a gap the structure names',
+    'a claim nobody has written yet'),
+ (7,'schem','Wish three','A new paper inherits what is checked',
+    'and only three of its claims are genuinely new'),
+]
+for h in HEADS:
+    st, kind = h[0], h[1]
+    if kind=='chain':
+        txt(st,80,118,CHAINW,HS2,h[2])
+        txt(st,80,172,CHAINW,SS,h[3],color=LIGHT)
+    else:
+        txt(st,150,110,SCHEMW,30,h[2],color=LIGHT)
+        txt(st,150,152,SCHEMW,30,h[3])
+        txt(st,150,200,SCHEMW,20,h[4],color=LIGHT)
+
 
 METER=[
  'ONE THEOREM’S CHAIN · 29 CLAIMS, 46 DEPENDENCIES',

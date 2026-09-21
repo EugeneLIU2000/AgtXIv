@@ -21,6 +21,7 @@ FONT='Calibri'
 FONT_CSS="Calibri,Carlito,sans-serif"
 ADV_EM=0.55          # pessimistic average advance, for the overflow guard
 SPACE_EM=0.2256      # Calibri's actual space width
+MONO_EM=0.62         # a monospace advance, for the same guard on code
 from shapes import shape_markup, _poly, _norm
 
 # node kind -> its SVG polygon, and the PowerPoint preset that matches it.
@@ -41,9 +42,14 @@ class Fig:
     def box(self,step,x,y,w,h,style='solid',color=INK,lw=2.0,fill=None):
         self.P.append(dict(t='box',step=step,x=x,y=y,w=w,h=h,style=style,
                            color=color,lw=lw,fill=fill)); return self.P[-1]
-    def txt(self,step,x,y,w,s,text,color=INK,align='l',bold=False,italic=False,h=None):
+    def txt(self,step,x,y,w,s,text,color=INK,align='l',bold=False,italic=False,h=None,
+            mono=False):
+        """mono=True sets the font on the element itself rather than through a
+        class, because these figures are inlined into a page whose stylesheet
+        they do not control, and rsvg-convert resolves no cascade at all."""
         self.P.append(dict(t='text',step=step,x=x,y=y,w=w,h=h or s*1.45,size=s,
-                           text=text,color=color,align=align,bold=bold,italic=italic))
+                           text=text,color=color,align=align,bold=bold,italic=italic,
+                           mono=mono))
         return self.P[-1]
     def line(self,step,x1,y1,x2,y2,color=INK,lw=2.0,style='solid',arrow=False):
         self.P.append(dict(t='line',step=step,x1=x1,y1=y1,x2=x2,y2=y2,color=color,
@@ -81,7 +87,8 @@ class Fig:
     def check(self, bottom=1000, right=1880):
         """Nothing may overflow its own box, and nothing may sit where the
         meter line goes. A figure that clips is a figure the room cannot read."""
-        bad=[p for p in self.P if p['t']=='text' and len(p['text'])*p['size']*ADV_EM > p['w']+0.5]
+        bad=[p for p in self.P if p['t']=='text'
+             and len(p['text'])*p['size']*(MONO_EM if p.get('mono') else ADV_EM) > p['w']+0.5]
         assert not bad, f'{self.name}: text overflows its box: ' + repr([(p['text'],p['w']) for p in bad])
         out=[p for p in self.P if p['t']=='box' and
              (p['x']<40 or p['x']+p['w']>right or p['y']+p['h']>bottom)]
@@ -139,9 +146,12 @@ class Fig:
                     anc={'l':'start','c':'middle'}[p['align']]
                     x=p['x'] if p['align']=='l' else p['x']+p['w']/2
                     w=' font-weight="700"' if p.get('bold') else ''
+                    fam=(' font-family="Menlo,Consolas,DejaVu Sans Mono,monospace"'
+                         if p.get('mono') else '')
+                    esc=(p['text'].replace('&','&amp;').replace('<','&lt;').replace('>','&gt;'))
                     o.append(f'    <text x="{x:.1f}" y="{p["y"]+p["size"]*0.84:.1f}"'
                              f' text-anchor="{anc}" font-size="{p["size"]}" fill="{p["color"]}"'
-                             f'{w} class="pp-t">{p["text"]}</text>')
+                             f'{w}{fam} class="pp-t">{esc}</text>')
             o.append('  </g>')
         o.append('</svg>')
         return '\n'.join(o)
