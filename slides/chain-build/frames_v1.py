@@ -15,25 +15,20 @@ they stay editable and can never be a pasted picture.
 from frames_lib import Fig, INK, LIGHT, PAPER
 
 # ---- 1. the title -------------------------------------------------------
-T=Fig('ttl','Some thoughts about LLM for theoretical research: a paper states what'
-            ' it proves, not what it depends on, nor who checked which part.')
-T.txt(0,150,250,1620,72,'Some thoughts about LLM')
-T.txt(0,150,336,1620,72,'for theoretical research')
-T.line(0,150,466,1770,466,color=LIGHT,lw=1.4)
-T.txt(0,150,506,1620,30,'A paper states what it proves. It does not state what it'
-                        ' depends on, or who checked which part.',color=LIGHT)
-# NO PICTURE HERE ON PURPOSE. The first draft previewed the diamond-over-an-
-# empty-line that Act II opens on, two frames before that frame arrives, which
-# spends the reveal for nothing. The title slide is text.
-T.txt(0,150,800,900,26,'Yingjian Liu')
-T.txt(0,150,846,900,22,'AgtXIv  ·  schema v0.3  ·  a companion figure deck',color=LIGHT)
-T.txt(0,150,882,900,22,'Lorentz Institute  ·  Leiden University  ·  22 September 2026',color=LIGHT)
+T=Fig('ttl','Some thoughts about LLM for theoretical research. Yingjian Liu.')
+T.txt(0,150,330,1620,72,'Some thoughts about LLM')
+T.txt(0,150,416,1620,72,'for theoretical research')
+T.line(0,150,556,900,556,color=LIGHT,lw=1.4)
+T.txt(0,150,596,900,30,'Yingjian Liu')
+# NOTHING ELSE ON THIS FRAME. The affiliation, the date, the schema version and
+# the one-sentence thesis were all here and all left again: the room can read
+# the title and the name, and everything else is something the speaker says.
 T.dump(1,['SOME THOUGHTS ABOUT LLM FOR THEORETICAL RESEARCH'],[False],
- ["""OPEN HERE. The title is deliberately modest - these are thoughts, not results, and saying so in the first ten seconds buys you the room's patience for the honest parts later.
+ ["""OPEN HERE, on almost nothing. The title is deliberately modest - these are thoughts, not results, and saying so in the first ten seconds buys the room's patience for the honest parts later.
 
-Read the line under the rule out loud - a paper states what it proves, and does not state what it depends on or who checked which part. It is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
+Everything that used to be printed on this frame is now yours to say: where you are, what the date is, and the sentence the talk is actually about - a paper states what it proves, and it does not state what it depends on, or who checked which part.
 
-Then move on. The next two frames do the arguing; this one only has to land the claim and your name."""],
+Say that sentence here, word for word. It is the only one in the talk worth memorising."""],
  'pipe-svg','title.svg','title.json',cumulative=False)
 
 # ---- 2. the hinge -------------------------------------------------------

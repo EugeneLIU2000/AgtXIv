@@ -22,6 +22,12 @@ NS={'a':'http://schemas.openxmlformats.org/drawingml/2006/main',
     'p':'http://schemas.openxmlformats.org/presentationml/2006/main',
     'r':'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
 EMU=1920/12192000.0
+# what a highlighted run becomes. EMPH is #C00000 because the source deck
+# already uses exactly that red for emphasis on nine other runs - this
+# introduces no new colour, it reuses the author's own.
+EMPH='#C00000'
+BODY={'#242832','#1A1A16','#000000'}
+
 def px(v): return float(v)*EMU
 
 z=zipfile.ZipFile(SRC)
@@ -234,17 +240,20 @@ def sp_svg(sp, box, o):
         wpx=sum(c[1]*ADV for c in ln)
         ax = {'ctr':x+w/2-wpx/2, 'r':x+w-pad-wpx}.get(algn, x+pad)
         if bul: o.append(f'<text x="{ax-16:.1f}" y="{cy:.1f}" font-size="{fs*.8:.0f}" fill="#8A8A80">\u2022</text>')
-        # highlight wash, measured on the same advance the text is laid out with
-        hx=ax
-        for c in ln:
-            if c[5] and c[0] != ' ':
-                o.append(f'<rect x="{hx:.1f}" y="{cy-fs*.82:.1f}" width="{c[1]*ADV:.2f}" '
-                         f'height="{fs*1.06:.1f}" fill="#FFF3A3"/>')
-            hx += c[1]*ADV
+        # NO HIGHLIGHT WASH. PowerPoint's yellow marker was drawn here as one
+        # rect per character, sized on the pessimistic ADV advance, so every
+        # marked phrase came out as a ragged row of overlapping blocks. The
+        # emphasis is carried by the type instead: bold, and - for runs the
+        # author left in plain body colour - EMPH, which is the red this same
+        # deck already uses for emphasis elsewhere. A run that already has a
+        # colour of its own keeps it and only gains the weight.
         parts=[]; run=[]
         def flush():
             if not run: return
             t,sz,b,i,col,hl = ''.join(q[0] for q in run), run[0][1],run[0][2],run[0][3],run[0][4],run[0][5]
+            if hl:
+                b=True
+                if col.upper() in BODY: col=EMPH
             st=f'font-size="{sz:.0f}" fill="{col}"'
             if b: st+=' font-weight="700"'
             if i: st+=' font-style="italic"'

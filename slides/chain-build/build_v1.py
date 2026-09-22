@@ -56,7 +56,12 @@ def put_wrap(H, wid, path):
 for wid,path in (('cw','closing.svg'), ('pw','pipeline.svg')):
     H=put_wrap(H, wid, path)
 
-# ---- 1. the three new front frames, appended to #fw ---------------------
+# ---- 1. the whole front region, rebuilt from its generators --------------
+# This used to APPEND the new frames to the #fw it found in the v0 page, which
+# meant the 27 converted slides were whatever chain-build.html happened to hold.
+# When pptx2svg.py changed how it draws a highlighted run, the change reached
+# front-slides.json and stopped there. The region is rebuilt from source now,
+# so a converter edit cannot fail to arrive.
 NEW=[('title','title.svg','title.json'),
      ('hinge','hinge.svg','hinge.json'),
      ('roadmap','roadmap.svg','roadmap.json'),
@@ -67,19 +72,26 @@ NEW=[('title','title.svg','title.json'),
      ('conclusion','conclusion.svg','conclusion.json'),
      ('discussion','discussion.svg','discussion.json')]
 def mini(s): return re.sub(r'>\s*\n\s*<','><',s).strip()
-frag=''; NEWAT={}
-for k,(key,svgp,jsonp) in enumerate(NEW):
-    idx=NFRO+k                                  # its position among #fw's children
-    s=mini(open(svgp,encoding='utf-8').read())
-    s=re.sub(r'<svg class="pipe-svg"[^>]*?(?= viewBox| xmlns)',
-             f'<svg class="frosvg" id="fs{idx}"', s, count=1)
-    # the front region shows whole SVGs, so the build group is on at author time
-    s=s.replace('class="pp-g"','class="pp-g on"')
-    frag+=s
-    NEWAT[key]=(idx, json.load(open(jsonp))['meter'][0])
-m=re.search(r'(<div class="wrap" id="fw">.*?)(</div>\s*<div class="wrap" id="cw">)', H, re.S)
+
+FRO=list(json.load(open('front-slides.json'))['svg'])          # the 27 source slides
+FRO.append(open('bridge.svg',encoding='utf-8').read())         # the hand-over frame
+assert len(FRO)==NFRO, f'{len(FRO)} front slides but the v0 driver declared {NFRO}'
+NEWAT={}
+for key,svgp,jsonp in NEW:
+    NEWAT[key]=(len(FRO), json.load(open(jsonp))['meter'][0])
+    FRO.append(open(svgp,encoding='utf-8').read())
+
+block='<div class="wrap" id="fw">'+''.join(
+    re.sub(r'<svg class="pipe-svg"[^>]*?(?= viewBox| xmlns)',
+           f'<svg class="frosvg" id="fs{k}"', mini(x), count=1)
+      # a whole-SVG front frame is shown or hidden as a unit, so any build
+      # group inside it is on at author time
+      .replace('class="pp-g"','class="pp-g on"')
+    for k,x in enumerate(FRO))+'</div>'
+m=re.search(r'<div class="wrap" id="fw">.*?</div>\s*(?=<div class="wrap" id="cw">)', H, re.S)
 assert m, 'could not find the front wrap'
-H=H[:m.end(1)]+frag+H[m.end(1):]
+H=H[:m.start()]+block+H[m.end():]
+print(f'  rebuilt #fw <- {NFRO} converted slides + {len(NEW)} native frames')
 
 # ---- 2. the arc ---------------------------------------------------------
 # Each entry is a v0 frame index or one of the new keys. Cut on purpose:

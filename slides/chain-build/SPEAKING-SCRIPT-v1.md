@@ -122,11 +122,11 @@ v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、*
 
 > **新增帧。** deck 内置 speaker note：
 
-> OPEN HERE. The title is deliberately modest - these are thoughts, not results, and saying so in the first ten seconds buys you the room's patience for the honest parts later.
+> OPEN HERE, on almost nothing. The title is deliberately modest - these are thoughts, not results, and saying so in the first ten seconds buys the room's patience for the honest parts later.
 >
-> Read the line under the rule out loud - a paper states what it proves, and does not state what it depends on or who checked which part. It is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
+> Everything that used to be printed on this frame is now yours to say: where you are, what the date is, and the sentence the talk is actually about - a paper states what it proves, and it does not state what it depends on, or who checked which part.
 >
-> Then move on. The next two frames do the arguing; this one only has to land the claim and your name.
+> Say that sentence here, word for word. It is the only one in the talk worth memorising.
 >
 
 ### 帧 1 — THE AI CRISIS IN THEORETIC RESEARCH
