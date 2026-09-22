@@ -168,8 +168,7 @@ RENDER = """function render(){
    });
  }
  const m=document.getElementById('m');
- m.textContent=METER[i];
- m.classList.toggle('open', OPENM.has(i));
+ if(m){ m.textContent=METER[i]; m.classList.toggle('open', OPENM.has(i)); }
  const a=document.getElementById('act');
  if(a) a.textContent=ACTS[i];
  hint.style.display = (chain && !insp.classList.contains('on')) ? '' : 'none';
@@ -178,14 +177,15 @@ RENDER = """function render(){
 H,n=re.subn(r'function render\(\)\{[\s\S]*?\n\}\n', lambda _: RENDER, H, count=1)
 assert n==1, 'render() not replaced'
 
-# ---- 4. the act line, opposite the meter --------------------------------
-if 'id="act"' not in H:
-    H=H.replace('<div class="meter" id="m"></div>',
-                '<div class="meter" id="m"></div>\n  <div class="actline" id="act"></div>',1)
-    H=H.replace('.meter{',
- '.actline{position:absolute;right:58px;bottom:34px;font-family:var(--f-mono);'
- 'font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--light);'
- 'opacity:.8;text-align:right}\n.meter{',1)
+# ---- 4. the two running footnotes, removed ------------------------------
+# The meter (bottom left) and the act line (bottom right) were the deck's own
+# furniture, not the slides'. They read as footnotes on every frame, including
+# the ones whose whole point is that they are nearly empty. The METER and ACTS
+# arrays stay in the driver - they are how the speaking script and the frame
+# map are keyed - they simply are not painted any more.
+H=re.sub(r'<div class="meter" id="m"></div>\s*', '', H)
+H=re.sub(r'<div class="actline" id="act"></div>\s*', '', H)
+assert 'id="m"' not in H and 'id="act"' not in H, 'a running footnote survived'
 
 open(OUT,'w',encoding='utf-8').write(H)
 json.dump({'order':[list(t) for t in ORDER],'meter':METER,'acts':ACTS,

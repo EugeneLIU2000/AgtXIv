@@ -72,9 +72,9 @@
 | 23 | **新** | IV | THE ROUTE · WHAT IS COMING, AND WHY |
 | 24 | 24 | V | IMAGING PAPER AS AN AGENT |
 | 25 | 25 | V | HOW FORMALIZATION WORKS |
-| 26 | **新** | V | LEAN 4 · A DEFINITION, A CLAIM, A PROOF |
+| 26 | **新** | V | LEAN 4 · HOW TO READ IT |
 | 27 | **新** | V | ACCEPTED, OR REFUSED · AND THE ONE WAY TO CHEAT |
-| 28 | **新** | V | THE LIBRARIES · AND THE ONE PHYSICS DOES NOT HAVE |
+| 28 | **新** | V | THE LIBRARIES · AND HOW MUCH IS ALREADY THERE |
 | 29 | 26 | V | AUTOFORMALIZATION |
 | 30 | 36 | V | ONE PAPER · FROZEN |
 | 31 | 37 | V | EVERY STATEMENT BECOMES ONE CLAIM RECORD |
@@ -270,19 +270,19 @@ v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、*
 
 *（导入开场帧，旧稿未覆盖——照着幻灯片讲即可。）*
 
-### 帧 26 — LEAN 4 · A DEFINITION, A CLAIM, A PROOF
+### 帧 26 — LEAN 4 · HOW TO READ IT
 
 > **新增帧。** deck 内置 speaker note：
 
-> THE ONLY CODE IN THE TALK. Give it a full minute; most of the room has never seen Lean.
+> THE ONLY CODE IN THE TALK. Give it a full minute and read it out loud, left column then right column, line by line. Most of the room has never seen this.
 >
-> Read it top to bottom. 'def double' - I am building a thing. Nothing is being claimed yet, so there is nothing to check; a definition cannot be wrong, only useless.
+> Line one: def. I am DEFINING a thing. 'double' is its name, '(n : Nat)' means it takes a whole number which I will call n, and the ': Nat' after it means it hands back a whole number too. Line two says what it hands back: two times n. Stop and make one point - a definition cannot be wrong. It is not claiming anything. It is just naming a construction.
 >
-> 'theorem double_eq_add' - now I am claiming something about the thing I built. Point at this line and say: this is the only line a human has to read. Everything below it is for the machine.
+> Line three is where it gets interesting: theorem. Now I am CLAIMING something, and I give the claim a name so other work can refer to it. Line four is the claim itself: double n equals n + n, for every n. The word 'by' at the end means: what follows is the proof.
 >
-> ':= by unfold double; omega' - the proof. It is a program. 'unfold' replaces the name by what it stands for, 'omega' is a decision procedure for linear arithmetic. When you compile this file the kernel re-runs both from scratch and either accepts or does not.
+> Lines five and six are the proof, and they are a program, not an argument. 'unfold double' replaces the name by what it stands for, so the goal becomes 2 * n = n + n. 'omega' is a decision procedure for this kind of arithmetic; it either closes the goal or it does not.
 >
-> Land the bottom two lines: you give up prose, and you get back a claim that can be refused. That trade is the entire subject of the talk.
+> Then the bottom line, which is the point of the frame: that fourth line is not a description of a theorem. It IS the theorem. You gave up the prose and got back something checkable.
 >
 
 ### 帧 27 — ACCEPTED, OR REFUSED · AND THE ONE WAY TO CHEAT
@@ -300,19 +300,19 @@ v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、*
 > The four numbers are this repository, counted this morning: sixty-six files, and not one sorry, admit, or new axiom. Say 'counted this morning' - it is the kind of claim you should be able to date.
 >
 
-### 帧 28 — THE LIBRARIES · AND THE ONE PHYSICS DOES NOT HAVE
+### 帧 28 — THE LIBRARIES · AND HOW MUCH IS ALREADY THERE
 
 > **新增帧。** deck 内置 speaker note：
 
-> THE FRAME FOR THIS AUDIENCE. Slow down here; this is the part a physicist should leave the room remembering.
+> THE FRAME FOR THIS AUDIENCE. Slow down; this is what a physicist should leave the room remembering.
 >
-> Three bars. Mathlib is the mathematics - it is enormous, it is other people's work, and it is pinned in this project to one exact revision, so 'it compiles' means something a year from now. Quantumlib is much smaller and sits on top of it. The bottom bar - sixty-six files - is the only part that is ours.
+> Mathlib is the mathematics - eight and a half thousand files of it, other people's work, and it is the reason formalizing a piece of mathematics is affordable at all. You are not proving anything from nothing; you are standing on a decade of somebody else's checked definitions.
 >
-> Look at the ratio and say the obvious thing: almost none of this is my work, and that is the point. Formalization is only affordable because the ground already exists.
+> physlib is the physics equivalent, and you saw its front page a few frames ago. It exists, it is a real community project, and it is much earlier in its life.
 >
-> Then the honest line. Mathematics has a Mathlib. Physics does not have an equivalent - there are efforts, PhysLean is the one to look up, but nothing on that scale. Every time our subject needs an object that is not already in Mathlib, somebody has to build it first, and that is most of the reason this is hard for us and comparatively easy for number theory.
+> Then the honest question, which is the one that decides whether any of this is practical for us. It is not 'can Lean express my physics' - the answer to that is almost always yes, eventually. It is: how much of what my paper stands on is already in a library, and how much does somebody have to build first? For a physics paper today, a great deal has to be built first, and that is where the time goes.
 >
-> If you are asked about PhysLean, say what is true: I have not used it, and I am not in a position to assess it from this work.
+> If somebody asks how much: say you have not measured it, because you have not.
 >
 
 ### 帧 29 — AUTOFORMALIZATION

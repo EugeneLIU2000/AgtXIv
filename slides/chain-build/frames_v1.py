@@ -125,41 +125,53 @@ Say the second line - it is a description, not a criticism - and move on. It buy
 MONO=0.60                                  # a monospace space, as a fraction of em
 def ind(n,size): return n*size*MONO
 
-L=Fig('lna','A Lean 4 example: a definition, a theorem about it, and a proof the'
-            ' kernel re-runs; each part annotated.')
-L.txt(0,150,120,1620,44,'Lean 4  —  a definition, a claim, and a proof')
-L.box(0,150,220,880,430,color=LIGHT,lw=1.8)
-CODE=[(0,'def double (n : Nat) : Nat :='),
-      (2,'2 * n'),
-      (0,''),
-      (0,'theorem double_eq_add (n : Nat) :'),
-      (4,'double n = n + n := by'),
-      (2,'unfold double'),
-      (2,'omega')]
-CY=268; CH=52; CS=26
-for k,(sp,t) in enumerate(CODE):
-    if t: L.txt(0,186+ind(sp,CS),CY+k*CH,820,CS,t,mono=True)
-ANN=[(268,'a new object, built.','Nothing to prove: it is true by construction.'),
-     (424,'a claim about it.','This line is the only part a human has to read.'),
-     (528,'the proof.','A program. The kernel re-runs every step.')]
-for y,h,s in ANN:
-    L.line(0,1040,y+16,1074,y+16,color=LIGHT,lw=1.6)
-    L.txt(0,1090,y,680,28,h)
-    L.txt(0,1090,y+38,680,22,s,color=LIGHT)
-L.txt(0,150,700,1620,26,'No natural language anywhere. "double n = n + n" is not a description'
-                        ' of a theorem — it is the theorem.',color=LIGHT)
-L.txt(0,150,740,1620,26,'That is the whole trade: you give up prose, and in exchange'
-                        ' the claim becomes something a machine can refuse.',color=LIGHT)
-L.dump(1,['LEAN 4 · A DEFINITION, A CLAIM, A PROOF'],[False],
- ["""THE ONLY CODE IN THE TALK. Give it a full minute; most of the room has never seen Lean.
+# WRITTEN FOR SOMEBODY WHO HAS NEVER SEEN LEAN. The first draft put the code on
+# the left and three summary notes on the right, which tells a newcomer what the
+# blocks are FOR without telling them how to read a single line. Every line now
+# has its own plain-English reading on the same row.
+L=Fig('lna','A Lean 4 example read line by line: a definition, a claim about it,'
+            ' and a two-step proof, each line with its plain-English reading.')
+L.txt(0,150,112,1620,44,'Lean 4  \u2014  how to read it')
+L.txt(0,150,176,1620,24,'Six lines. On the left is what you type; on the right is what'
+                        ' each line says.',color=LIGHT)
+L.box(0,150,236,760,404,color=LIGHT,lw=1.8)
+CS=24
+ROWS=[(0,'def double (n : Nat) : Nat :=',
+         'DEFINE a thing called double. Give it a whole number n \u2026'),
+      (2,'2 * n',
+         '\u2026 and what comes back is 2 times n. Nothing is claimed yet.'),
+      (None,None,None),
+      (0,'theorem double_eq_add (n : Nat) :',
+         'CLAIM, and give the claim a name. For every whole number n \u2026'),
+      (4,'double n = n + n := by',
+         '\u2026 double n is the same as n + n.  "by" means: proof follows.'),
+      (None,None,None),
+      (2,'unfold double',
+         'step 1 \u2014 replace double by what it stands for: 2 * n = n + n.'),
+      (2,'omega',
+         'step 2 \u2014 omega settles arithmetic statements like that one.')]
+y=282
+for sp,code,eng in ROWS:
+    if code is None: y+=26; continue
+    L.txt(0,186+ind(sp,CS),y,724,CS,code,mono=True)
+    L.txt(0,960,y+2,810,22,eng,color=LIGHT)
+    y+=46
+L.line(0,150,676,1770,676,color=LIGHT,lw=1.4)
+L.txt(0,150,712,1620,32,'Nothing here is prose. That line IS the theorem \u2014'
+                        ' not a description of one.')
+L.txt(0,150,772,1620,24,'Which is the whole trade: you give up the words, and in exchange'
+                        ' the claim becomes something',color=LIGHT)
+L.txt(0,150,810,1620,24,'a machine can check, and refuse.',color=LIGHT)
+L.dump(1,['LEAN 4 \u00b7 HOW TO READ IT'],[False],
+ ["""THE ONLY CODE IN THE TALK. Give it a full minute and read it out loud, left column then right column, line by line. Most of the room has never seen this.
 
-Read it top to bottom. 'def double' - I am building a thing. Nothing is being claimed yet, so there is nothing to check; a definition cannot be wrong, only useless.
+Line one: def. I am DEFINING a thing. 'double' is its name, '(n : Nat)' means it takes a whole number which I will call n, and the ': Nat' after it means it hands back a whole number too. Line two says what it hands back: two times n. Stop and make one point - a definition cannot be wrong. It is not claiming anything. It is just naming a construction.
 
-'theorem double_eq_add' - now I am claiming something about the thing I built. Point at this line and say: this is the only line a human has to read. Everything below it is for the machine.
+Line three is where it gets interesting: theorem. Now I am CLAIMING something, and I give the claim a name so other work can refer to it. Line four is the claim itself: double n equals n + n, for every n. The word 'by' at the end means: what follows is the proof.
 
-':= by unfold double; omega' - the proof. It is a program. 'unfold' replaces the name by what it stands for, 'omega' is a decision procedure for linear arithmetic. When you compile this file the kernel re-runs both from scratch and either accepts or does not.
+Lines five and six are the proof, and they are a program, not an argument. 'unfold double' replaces the name by what it stands for, so the goal becomes 2 * n = n + n. 'omega' is a decision procedure for this kind of arithmetic; it either closes the goal or it does not.
 
-Land the bottom two lines: you give up prose, and you get back a claim that can be refused. That trade is the entire subject of the talk."""],
+Then the bottom line, which is the point of the frame: that fourth line is not a description of a theorem. It IS the theorem. You gave up the prose and got back something checkable."""],
  'pipe-svg','lean1.svg','lean1.json',cumulative=False)
 
 K=Fig('lnb','Lean accepts or rejects; the only escape hatch is sorry, and this'
@@ -178,14 +190,13 @@ K.txt(0,150,588,1620,30,'There is exactly one way to cheat, and it is a keyword:
 K.txt(0,186,644,700,40,'sorry',mono=True)
 K.txt(0,420,652,1340,24,'— accept this claim without a proof. It compiles. It is also'
                         ' recorded, forever, in the file.',color=LIGHT)
-K.box(0,150,730,1620,150,color=LIGHT,lw=1.8)
-for k,(n,t) in enumerate((('66','.lean files in this repository'),
-                          ('0','containing  sorry'),
-                          ('0','containing  admit'),
-                          ('0','declaring a new  axiom'))):
-    x=186+k*400
-    K.txt(0,x,760,380,48,n)
-    K.txt(0,x,828,380,21,t,color=LIGHT)
+# NO REPOSITORY COUNTS HERE. A block of "66 files, 0 sorry" belongs with the
+# case study, and the case study is not on this frame - quoting it here makes a
+# general point about Lean look like a boast about one project.
+K.txt(0,150,730,1620,26,'Anybody can write it, and it compiles. The difference from prose'
+                        ' is that it is written down',color=LIGHT)
+K.txt(0,150,768,1620,26,'\u2014 it sits in the file, and anybody who looks can find'
+                        ' every one of them.',color=LIGHT)
 K.dump(1,['ACCEPTED, OR REFUSED · AND THE ONE WAY TO CHEAT'],[False],
  ["""THE POINT OF THE WHOLE APPROACH IS ON THIS FRAME.
 
@@ -198,40 +209,41 @@ Then be honest about the escape hatch. 'sorry' means: accept this without proof.
 The four numbers are this repository, counted this morning: sixty-six files, and not one sorry, admit, or new axiom. Say 'counted this morning' - it is the kind of claim you should be able to date."""],
  'pipe-svg','lean2.svg','lean2.json',cumulative=False)
 
-M=Fig('lnc','Nobody proves from nothing: Mathlib, Quantumlib and this project’s'
-            ' own files, and the gap where a physics library would be.')
+M=Fig('lnc','Nobody proves from nothing: Mathlib for the mathematics, physlib for'
+            ' the physics, and everything a paper needs that is in neither.')
 M.txt(0,150,130,1620,44,'Nobody proves anything from nothing')
-M.txt(0,150,200,1620,26,'Every proof above stands on definitions somebody else already'
-                        ' wrote and checked.',color=LIGHT)
-# NO PROPORTIONAL BARS HERE. The first draft drew one bar per library with the
-# width encoding its size, which asserts a ratio - and I had measured only the
-# project's own 66 files. These three counts are `find -name '*.lean'` on this
-# machine, and the frame says out loud that a to-scale drawing is impossible.
-LIB=[('8,450','Mathlib','the mathematics. 11 GB on disk here, pinned to one revision.'),
-     ('29','Quantumlib','stabilizers, Cliffords, density matrices. It stands on Mathlib.'),
-     ('66','this paper','written by hand, for one theorem. The only part that is ours.')]
+M.txt(0,150,200,1620,26,'Every proof stands on definitions somebody else already wrote'
+                        ' and checked.',color=LIGHT)
+# PHYSICS DOES HAVE ONE. An earlier draft of this frame said it did not, which
+# the speaker's own formalization slide disproves - it carries a screenshot of
+# physlib. The interesting claim is not absence, it is scale.
+LIB=[('8,450','Mathlib','the mathematics. Groups, measure, linear algebra, polytopes.'),
+     ('','physlib','the physics. An open-source community project to digitalize'
+                   ' results from physics into Lean 4.')]
 for k,(n,name,d) in enumerate(LIB):
-    y=280+k*120
-    M.txt(0,150,y,260,52,n,color=INK if k==2 else LIGHT)
-    M.txt(0,440,y+4,420,32,name,color=INK)
-    M.txt(0,440,y+50,1330,22,d,color=LIGHT)
-M.txt(0,150,646,1620,22,'.lean files, counted on this machine',color=LIGHT)
-M.line(0,150,700,1770,700,color=LIGHT,lw=1.4)
-M.txt(0,150,730,1620,30,'Drawn to scale, the bottom two rows would be a pixel wide.'
-                        ' That is the point.',color=LIGHT)
-M.txt(0,150,790,1620,34,'Mathematics has one of these. Physics does not.')
-M.txt(0,150,848,1620,24,'Every object our subject needs that Mathlib lacks has to be'
-                        ' built first \u2014 most of why this is hard for us.',color=LIGHT)
-M.dump(1,['THE LIBRARIES · AND THE ONE PHYSICS DOES NOT HAVE'],[False],
- ["""THE FRAME FOR THIS AUDIENCE. Slow down here; this is the part a physicist should leave the room remembering.
+    y=300+k*150
+    if n: M.txt(0,150,y,260,52,n,color=LIGHT)
+    M.txt(0,440,y+4,420,34,name,color=INK)
+    M.txt(0,440,y+54,1330,22,d,color=LIGHT)
+M.txt(0,150,364,260,20,'.lean files',color=LIGHT)
+M.line(0,150,640,1770,640,color=LIGHT,lw=1.4)
+M.txt(0,150,674,1620,34,'Mathematics has a large one. Physics is still building its own.')
+M.txt(0,150,738,1620,26,'So the question for any paper is not "can Lean express this" \u2014'
+                        ' it is how much of what the paper',color=LIGHT)
+M.txt(0,150,776,1620,26,'stands on already exists, and how much somebody has to build'
+                        ' first.',color=LIGHT)
+M.txt(0,150,838,1620,26,'For a physics paper today, the honest answer is: a great deal'
+                        ' has to be built first.')
+M.dump(1,['THE LIBRARIES \u00b7 AND HOW MUCH IS ALREADY THERE'],[False],
+ ["""THE FRAME FOR THIS AUDIENCE. Slow down; this is what a physicist should leave the room remembering.
 
-Three bars. Mathlib is the mathematics - it is enormous, it is other people's work, and it is pinned in this project to one exact revision, so 'it compiles' means something a year from now. Quantumlib is much smaller and sits on top of it. The bottom bar - sixty-six files - is the only part that is ours.
+Mathlib is the mathematics - eight and a half thousand files of it, other people's work, and it is the reason formalizing a piece of mathematics is affordable at all. You are not proving anything from nothing; you are standing on a decade of somebody else's checked definitions.
 
-Look at the ratio and say the obvious thing: almost none of this is my work, and that is the point. Formalization is only affordable because the ground already exists.
+physlib is the physics equivalent, and you saw its front page a few frames ago. It exists, it is a real community project, and it is much earlier in its life.
 
-Then the honest line. Mathematics has a Mathlib. Physics does not have an equivalent - there are efforts, PhysLean is the one to look up, but nothing on that scale. Every time our subject needs an object that is not already in Mathlib, somebody has to build it first, and that is most of the reason this is hard for us and comparatively easy for number theory.
+Then the honest question, which is the one that decides whether any of this is practical for us. It is not 'can Lean express my physics' - the answer to that is almost always yes, eventually. It is: how much of what my paper stands on is already in a library, and how much does somebody have to build first? For a physics paper today, a great deal has to be built first, and that is where the time goes.
 
-If you are asked about PhysLean, say what is true: I have not used it, and I am not in a position to assess it from this work."""],
+If somebody asks how much: say you have not measured it, because you have not."""],
  'pipe-svg','lean3.svg','lean3.json',cumulative=False)
 
 # ---- 8,9. the ending -----------------------------------------------------

@@ -1,24 +1,24 @@
-<svg class="pipe-svg" data-cum="0" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A Lean 4 example: a definition, a theorem about it, and a proof the kernel re-runs; each part annotated.">
+<svg class="pipe-svg" data-cum="0" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A Lean 4 example read line by line: a definition, a claim about it, and a two-step proof, each line with its plain-English reading.">
 <defs><marker id="lnaah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1A1A16"/></marker><marker id="lnaaw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8C4A2F"/></marker></defs>
   <g class="pp-g" data-step="0">
-    <text x="150.0" y="157.0" text-anchor="start" font-size="44" fill="#1A1A16" class="pp-t">Lean 4  —  a definition, a claim, and a proof</text>
-    <rect x="150.0" y="220.0" width="880.0" height="430.0" fill="none" stroke="#8A8A80" stroke-width="1.8"/>
-    <text x="186.0" y="289.8" text-anchor="start" font-size="26" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">def double (n : Nat) : Nat :=</text>
-    <text x="217.2" y="341.8" text-anchor="start" font-size="26" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">2 * n</text>
-    <text x="186.0" y="445.8" text-anchor="start" font-size="26" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">theorem double_eq_add (n : Nat) :</text>
-    <text x="248.4" y="497.8" text-anchor="start" font-size="26" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">double n = n + n := by</text>
-    <text x="217.2" y="549.8" text-anchor="start" font-size="26" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">unfold double</text>
-    <text x="217.2" y="601.8" text-anchor="start" font-size="26" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">omega</text>
-    <line x1="1040.0" y1="284.0" x2="1074.0" y2="284.0" stroke="#8A8A80" stroke-width="1.6"/>
-    <text x="1090.0" y="291.5" text-anchor="start" font-size="28" fill="#1A1A16" class="pp-t">a new object, built.</text>
-    <text x="1090.0" y="324.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">Nothing to prove: it is true by construction.</text>
-    <line x1="1040.0" y1="440.0" x2="1074.0" y2="440.0" stroke="#8A8A80" stroke-width="1.6"/>
-    <text x="1090.0" y="447.5" text-anchor="start" font-size="28" fill="#1A1A16" class="pp-t">a claim about it.</text>
-    <text x="1090.0" y="480.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">This line is the only part a human has to read.</text>
-    <line x1="1040.0" y1="544.0" x2="1074.0" y2="544.0" stroke="#8A8A80" stroke-width="1.6"/>
-    <text x="1090.0" y="551.5" text-anchor="start" font-size="28" fill="#1A1A16" class="pp-t">the proof.</text>
-    <text x="1090.0" y="584.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">A program. The kernel re-runs every step.</text>
-    <text x="150.0" y="721.8" text-anchor="start" font-size="26" fill="#8A8A80" class="pp-t">No natural language anywhere. "double n = n + n" is not a description of a theorem — it is the theorem.</text>
-    <text x="150.0" y="761.8" text-anchor="start" font-size="26" fill="#8A8A80" class="pp-t">That is the whole trade: you give up prose, and in exchange the claim becomes something a machine can refuse.</text>
+    <text x="150.0" y="149.0" text-anchor="start" font-size="44" fill="#1A1A16" class="pp-t">Lean 4  —  how to read it</text>
+    <text x="150.0" y="196.2" text-anchor="start" font-size="24" fill="#8A8A80" class="pp-t">Six lines. On the left is what you type; on the right is what each line says.</text>
+    <rect x="150.0" y="236.0" width="760.0" height="404.0" fill="none" stroke="#8A8A80" stroke-width="1.8"/>
+    <text x="186.0" y="302.2" text-anchor="start" font-size="24" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">def double (n : Nat) : Nat :=</text>
+    <text x="960.0" y="302.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">DEFINE a thing called double. Give it a whole number n …</text>
+    <text x="214.8" y="348.2" text-anchor="start" font-size="24" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">2 * n</text>
+    <text x="960.0" y="348.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">… and what comes back is 2 times n. Nothing is claimed yet.</text>
+    <text x="186.0" y="420.2" text-anchor="start" font-size="24" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">theorem double_eq_add (n : Nat) :</text>
+    <text x="960.0" y="420.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">CLAIM, and give the claim a name. For every whole number n …</text>
+    <text x="243.6" y="466.2" text-anchor="start" font-size="24" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">double n = n + n := by</text>
+    <text x="960.0" y="466.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">… double n is the same as n + n.  "by" means: proof follows.</text>
+    <text x="214.8" y="538.2" text-anchor="start" font-size="24" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">unfold double</text>
+    <text x="960.0" y="538.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">step 1 — replace double by what it stands for: 2 * n = n + n.</text>
+    <text x="214.8" y="584.2" text-anchor="start" font-size="24" fill="#1A1A16" font-family="Menlo,Consolas,DejaVu Sans Mono,monospace" class="pp-t">omega</text>
+    <text x="960.0" y="584.5" text-anchor="start" font-size="22" fill="#8A8A80" class="pp-t">step 2 — omega settles arithmetic statements like that one.</text>
+    <line x1="150.0" y1="676.0" x2="1770.0" y2="676.0" stroke="#8A8A80" stroke-width="1.4"/>
+    <text x="150.0" y="738.9" text-anchor="start" font-size="32" fill="#1A1A16" class="pp-t">Nothing here is prose. That line IS the theorem — not a description of one.</text>
+    <text x="150.0" y="792.2" text-anchor="start" font-size="24" fill="#8A8A80" class="pp-t">Which is the whole trade: you give up the words, and in exchange the claim becomes something</text>
+    <text x="150.0" y="830.2" text-anchor="start" font-size="24" fill="#8A8A80" class="pp-t">a machine can check, and refuse.</text>
   </g>
 </svg>

@@ -137,7 +137,7 @@ def collect(sp_tree):
 
 def place(xf, b):
     dx,dy,sx,sy=xf
-    return (dx+b[0]*sx, dy+b[1]*sy, b[2]*sx, b[3]*sy, b[5], b[6])
+    return (dx+b[0]*sx, dy+b[1]*sy, b[2]*sx, b[3]*sy, b[5], b[6], b[4])
 
 # ---------------------------------------------------------------- rendering
 def runs_of(sp):
@@ -165,15 +165,39 @@ def runs_of(sp):
         paras.append((rs, algn, lvl, bullet))
     return paras
 
+def brace_path(x, y, w, h, right=True):
+    """A curly brace inside its own box, point at the middle of one side.
+    PowerPoint draws these as prstGeom; without this they fell through to the
+    rect branch, which has no stroke of its own, so they rendered as nothing -
+    the slide lost the brace tying the three boxes to "context window"."""
+    m = x + w*0.5
+    tip = x + w if right else x
+    return (f'M {x if right else x+w:.1f} {y:.1f} '
+            f'C {m:.1f} {y+h*0.01:.1f}, {m:.1f} {y+h*0.03:.1f}, {m:.1f} {y+h*0.12:.1f} '
+            f'L {m:.1f} {y+h*0.40:.1f} '
+            f'C {m:.1f} {y+h*0.47:.1f}, {(m+tip)/2:.1f} {y+h*0.5:.1f}, {tip:.1f} {y+h*0.5:.1f} '
+            f'C {(m+tip)/2:.1f} {y+h*0.5:.1f}, {m:.1f} {y+h*0.53:.1f}, {m:.1f} {y+h*0.60:.1f} '
+            f'L {m:.1f} {y+h*0.88:.1f} '
+            f'C {m:.1f} {y+h*0.97:.1f}, {m:.1f} {y+h*0.99:.1f}, '
+            f'{x if right else x+w:.1f} {y+h:.1f}')
+
+def style_line(sp):
+    """A shape with no explicit <a:ln> can still get its outline from the theme
+    via <p:style><a:lnRef>. The brace does exactly that."""
+    ref=sp.find('p:style/a:lnRef', NS)
+    return solid(ref) if ref is not None else None
+
 def sp_svg(sp, box, o):
     x,y,w,h = box[:4]
+    rot = box[6] if len(box)>6 else 0
+    start = len(o)
     spPr=sp.find('p:spPr', NS)
     prst=spPr.find('a:prstGeom', NS) if spPr is not None else None
     kind=prst.get('prst') if prst is not None else None
     fill=solid(spPr)
     nofill = spPr is not None and spPr.find('a:noFill', NS) is not None
     ln=spPr.find('a:ln', NS) if spPr is not None else None
-    stroke=solid(ln) if ln is not None else None
+    stroke=(solid(ln) if ln is not None else None) or style_line(sp)
     lw = (float(ln.get('w'))/12700*2 if (ln is not None and ln.get('w')) else 1.5)
     dash = ln is not None and ln.find('a:prstDash', NS) is not None and \
            ln.find('a:prstDash', NS).get('val','').startswith('dash')
@@ -183,6 +207,10 @@ def sp_svg(sp, box, o):
         dd=' stroke-dasharray="9 7"' if dash else ''
         if kind in ('ellipse','circle'):
             o.append(f'<ellipse cx="{x+w/2:.1f}" cy="{y+h/2:.1f}" rx="{w/2:.1f}" ry="{h/2:.1f}"{at}{st}{dd}/>')
+        elif kind in ('rightBrace','leftBrace'):
+            o.append(f'<path d="{brace_path(x,y,w,h,kind=="rightBrace")}" fill="none" '
+                     f'stroke="{stroke or "#4472C4"}" stroke-width="{max(lw,2.2):.1f}" '
+                     f'stroke-linecap="round"/>')
         elif kind=='roundRect':
             o.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{min(w,h)*0.12:.1f}"{at}{st}{dd}/>')
         else:
@@ -267,12 +295,31 @@ def sp_svg(sp, box, o):
         o.append(f'<text x="{ax:.1f}" y="{cy:.1f}" class="s" xml:space="preserve">'
                  f'{"".join(parts)}</text>')
         cy += adv-fs
+    # a shape's own rotation, applied to everything it drew. Only two shapes in
+    # this deck are rotated - the braces on the two context-window slides - and
+    # discarding the rotation is why one of them was a vertical brace hidden
+    # off the side of the drawing instead of a horizontal one under the boxes.
+    if rot:
+        o.insert(start, f'<g transform="rotate({rot:.2f} {x+w/2:.1f} {y+h/2:.1f})">')
+        o.append('</g>')
+
+# ---- editorial overlays on a converted slide ------------------------------
+# The source slide is reproduced shape for shape; these two tables are the only
+# places this deck adds to it, and they are declared here rather than hidden in
+# a string edit downstream so that the slide's drawing stays in one file.
+PIC_BOX={26: (990, 330, 790, 340)}       # slide 26's physlib shot, moved right
+EXTRA_ART={26: [('art/lean-mathlib.png', 150, 300, 760, 428)]}
+EXTRA_TEXT={26: [(150, 782, 34, '#1A1A16', 'Mathlib \u2014 the mathematics'),
+                 (150, 830, 23, '#8A8A80', 'groups, measure, linear algebra, polytopes'),
+                 (990, 782, 34, '#1A1A16', 'physlib \u2014 the physics'),
+                 (990, 830, 23, '#8A8A80',
+                  'an open-source community project, still being built')]}
 
 def build(slide_no, media):
     root=ET.fromstring(z.read(f'ppt/slides/slide{slide_no}.xml'))
     tree=root.find('p:cSld/p:spTree', NS)
     rel=rels(slide_no)
-    o=[]
+    o=[]; moved=False
     for tag, el, xf in collect(tree):
         b=xfrm_of(el)
         if b is None: continue
@@ -284,10 +331,20 @@ def build(slide_no, media):
             if not tgt or tgt not in media: continue
             mt,data=media[tgt]
             x,y,w,h=box[:4]
+            if slide_no in PIC_BOX and not moved:
+                x,y,w,h = PIC_BOX[slide_no]; moved=True
             o.append(f'<image x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" '
                      f'preserveAspectRatio="none" href="data:{mt};base64,{base64.b64encode(data).decode()}"/>')
         else:
             sp_svg(el, box, o)
+    for tx_,ty,tsz,tcol,ttxt in EXTRA_TEXT.get(slide_no, []):
+        o.append(f'<text x="{tx_}" y="{ty}" font-size="{tsz}" fill="{tcol}" '
+                 f'class="s">{esc(ttxt)}</text>')
+    for path,ax,ay,aw,ah in EXTRA_ART.get(slide_no, []):
+        raw=open(path,'rb').read()
+        o.append(f'<image x="{ax}" y="{ay}" width="{aw}" height="{ah}" '
+                 f'preserveAspectRatio="xMidYMid meet" '
+                 f'href="data:image/png;base64,{base64.b64encode(raw).decode()}"/>')
     return ('<svg class="pipe-svg" data-cum="0" viewBox="0 0 1920 1080" '
             'xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
             '<style>.s{font-family:Calibri,Carlito,sans-serif}</style>'
