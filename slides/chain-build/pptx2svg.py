@@ -67,17 +67,57 @@ def emit_media():
 
 def esc(s): return (s.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;'))
 
+def _to_hsl(r,g,b):
+    r,g,b=r/255,g/255,b/255; mx,mn=max(r,g,b),min(r,g,b); l=(mx+mn)/2
+    if mx==mn: return 0.0,0.0,l
+    d=mx-mn; sat=d/(2-mx-mn) if l>0.5 else d/(mx+mn)
+    h={mx:0}.get(None,0)
+    h=((g-b)/d+(6 if g<b else 0)) if mx==r else ((b-r)/d+2 if mx==g else (r-g)/d+4)
+    return h/6, sat, l
+
+def _to_rgb(h,s,l):
+    def f(p,q,t):
+        t%=1
+        if t<1/6: return p+(q-p)*6*t
+        if t<1/2: return q
+        if t<2/3: return p+(q-p)*(2/3-t)*6
+        return p
+    if s==0: v=int(round(l*255)); return v,v,v
+    q=l*(1+s) if l<0.5 else l+s-l*s; p=2*l-q
+    return tuple(int(round(max(0,min(1,f(p,q,h+o)))*255)) for o in (1/3,0,-1/3))
+
+def _mods(hexcol, el):
+    """OOXML colour transforms. Without these a shape filled with accent1 at
+    lumMod 40% / lumOff 60% - PowerPoint's "Lighter 60%" - came out as solid
+    accent1, which is why the context window's three blocks rendered as one
+    unbroken bar. shade and tint are applied in RGB, which is an approximation
+    PowerPoint does in linear space; lumMod/lumOff are exact."""
+    r,g,b=(int(hexcol[i:i+2],16) for i in (1,3,5))
+    h,sa,l=_to_hsl(r,g,b)
+    for ch in el:
+        tag=ch.tag.split('}')[-1]; v=ch.get('val')
+        if v is None: continue
+        f=int(v)/100000.0
+        if   tag=='lumMod': l*=f
+        elif tag=='lumOff': l+=f
+        elif tag=='satMod': sa*=f
+        elif tag=='shade':  r,g,b=_to_rgb(h,sa,l); r,g,b=(int(round(c*f)) for c in (r,g,b)); h,sa,l=_to_hsl(r,g,b)
+        elif tag=='tint':   r,g,b=_to_rgb(h,sa,l); r,g,b=(int(round(c*f+255*(1-f))) for c in (r,g,b)); h,sa,l=_to_hsl(r,g,b)
+    l=max(0.0,min(1.0,l)); sa=max(0.0,min(1.0,sa))
+    return '#%02X%02X%02X' % _to_rgb(h,sa,l)
+
 def solid(el):
     if el is None: return None
     f=el.find('a:solidFill/a:srgbClr', NS)
-    if f is not None: return '#'+f.get('val')
+    if f is not None: return _mods('#'+f.get('val'), f)
     sc=el.find('a:solidFill/a:schemeClr', NS)
     if sc is not None:
-        return {'bg1':'#FFFFFF','lt1':'#FFFFFF','tx1':'#000000','dk1':'#000000',
-                'bg2':'#EEEEEE','lt2':'#EEEEEE','tx2':'#333333','dk2':'#333333',
-                'accent1':'#4472C4','accent2':'#ED7D31','accent3':'#A5A5A5',
-                'accent4':'#FFC000','accent5':'#5B9BD5','accent6':'#70AD47'
-               }.get(sc.get('val'),'#666666')
+        base={'bg1':'#FFFFFF','lt1':'#FFFFFF','tx1':'#000000','dk1':'#000000',
+              'bg2':'#EEEEEE','lt2':'#EEEEEE','tx2':'#333333','dk2':'#333333',
+              'accent1':'#4472C4','accent2':'#ED7D31','accent3':'#A5A5A5',
+              'accent4':'#FFC000','accent5':'#5B9BD5','accent6':'#70AD47'
+             }.get(sc.get('val'),'#666666')
+        return _mods(base, sc)
     return None
 
 def xfrm_of(sp):
@@ -187,11 +227,11 @@ def style_line(sp):
     ref=sp.find('p:style/a:lnRef', NS)
     return solid(ref) if ref is not None else None
 
-# All three context-window blocks are accent1 in the source, so "conversation
-# history" and "new prompt" came out as one continuous blue bar with no visible
-# partition. Only the fill is overridden - the text colours already contrast
-# correctly against both.
-BLOCK_FILL={'new prompt':'#203864'}
+# NOTHING IS OVERRIDDEN HERE ANY MORE. "new prompt" looked merged into
+# "conversation history" because both resolved to flat accent1; in the source
+# the second one carries lumMod 40% / lumOff 60%. Honouring the transform in
+# solid() partitions them exactly as the author drew it.
+BLOCK_FILL={}
 
 def sp_svg(sp, box, o):
     x,y,w,h = box[:4]
