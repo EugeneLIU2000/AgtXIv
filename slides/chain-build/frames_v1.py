@@ -15,11 +15,12 @@ they stay editable and can never be a pasted picture.
 from frames_lib import Fig, INK, LIGHT, PAPER
 
 # ---- 1. the title -------------------------------------------------------
-T=Fig('ttl','What a paper does not state: a paper states what it proves, not what'
-            ' it depends on, nor who checked which part.')
-T.txt(0,150,250,1620,84,'What a paper does not state')
-T.line(0,150,392,1770,392,color=LIGHT,lw=1.4)
-T.txt(0,150,430,1620,30,'A paper states what it proves. It does not state what it'
+T=Fig('ttl','Some thoughts about LLM for theoretical research: a paper states what'
+            ' it proves, not what it depends on, nor who checked which part.')
+T.txt(0,150,250,1620,72,'Some thoughts about LLM')
+T.txt(0,150,336,1620,72,'for theoretical research')
+T.line(0,150,466,1770,466,color=LIGHT,lw=1.4)
+T.txt(0,150,506,1620,30,'A paper states what it proves. It does not state what it'
                         ' depends on, or who checked which part.',color=LIGHT)
 # NO PICTURE HERE ON PURPOSE. The first draft previewed the diamond-over-an-
 # empty-line that Act II opens on, two frames before that frame arrives, which
@@ -27,10 +28,10 @@ T.txt(0,150,430,1620,30,'A paper states what it proves. It does not state what i
 T.txt(0,150,800,900,26,'Yingjian Liu')
 T.txt(0,150,846,900,22,'AgtXIv  ·  schema v0.3  ·  a companion figure deck',color=LIGHT)
 T.txt(0,150,882,900,22,'Lorentz Institute  ·  Leiden University  ·  22 September 2026',color=LIGHT)
-T.dump(1,['WHAT A PAPER DOES NOT STATE'],[False],
- ["""OPEN HERE. The title is the claim: a paper states what it proves, and it does not state what it depends on, or who checked which part.
+T.dump(1,['SOME THOUGHTS ABOUT LLM FOR THEORETICAL RESEARCH'],[False],
+ ["""OPEN HERE. The title is deliberately modest - these are thoughts, not results, and saying so in the first ten seconds buys you the room's patience for the honest parts later.
 
-Read the second line out loud - it is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
+Read the line under the rule out loud - a paper states what it proves, and does not state what it depends on or who checked which part. It is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
 
 Then move on. The next two frames do the arguing; this one only has to land the claim and your name."""],
  'pipe-svg','title.svg','title.json',cumulative=False)
@@ -273,24 +274,39 @@ Three things are not. The big extraction is not usable - every one of those six 
 Then the last line, which is the honest version of the whole talk: the claim is not that this works. It is that it has become small enough to argue about. A year ago I could not have shown you a specific place where it stops."""],
  'pipe-svg','conclusion.svg','conclusion.json',cumulative=False)
 
-D=Fig('dsc','One question, left open for discussion.')
-D.txt(0,150,300,1620,30,'One question I do not have an answer to',color=LIGHT)
-D.txt(0,150,372,1620,58,'How much of your last paper could you hand over')
-D.txt(0,150,448,1620,58,'as a chain — and what would break first?')
-D.line(0,150,580,700,580,color=LIGHT,lw=1.4)
+D=Fig('dsc','Three open questions: whether more compute and more intelligence is a'
+            ' golden age for theoretical research, and whether that is the same thing'
+            ' as a golden age for theoretical researchers.')
+D.txt(0,150,190,1620,26,'Three questions I do not have answers to',color=LIGHT)
+D.txt(0,150,256,1620,52,'A golden age for theoretical research.')
+D.txt(0,150,330,1620,52,'But for theoretical researchers?')
+D.line(0,150,450,1260,450,color=LIGHT,lw=1.4)
+QS=['Does more compute and more intelligence excite you \u2014 or frustrate you?',
+    'If a machine can produce the result, which part did you want to do?',
+    'What would have to be checked before you would build on it?']
+for k,q in enumerate(QS):
+    y=500+k*68
+    D.txt(0,150,y,50,26,f'{k+1}',color=LIGHT)
+    D.txt(0,210,y,1050,26,q)
 # the discussion glyph: two bubbles, drawn rather than pasted
-for cx,cy,r,col in ((1380,700,96,INK),(1560,790,72,LIGHT)):
+for cx,cy,r,col in ((1480,640,88,INK),(1640,720,64,LIGHT)):
     D.dot(0,cx,cy,r,color=col,lw=3.0 if col==INK else 2.2)
     for k in (-1,0,1):
         D.dot(0,cx+k*r*0.42,cy,r*0.10,color=col,lw=1.0,fill=col)
-D.line(0,1320,772,1286,832,color=INK,lw=3.0)
-D.line(0,1286,832,1356,796,color=INK,lw=3.0)
-D.txt(0,150,626,1000,26,'yingjian@lorentz.leidenuniv.nl',color=LIGHT)
-D.txt(0,150,666,1000,26,'the deck, the records and the logs are all in the repository',color=LIGHT)
+D.line(0,1420,712,1386,772,color=INK,lw=3.0)
+D.line(0,1386,772,1456,736,color=INK,lw=3.0)
+D.txt(0,150,808,1000,24,'yingjian@lorentz.leidenuniv.nl',color=LIGHT)
+D.txt(0,150,846,1000,24,'the deck, the records and the logs are all in the repository',color=LIGHT)
 D.dump(1,['DISCUSSION'],[False],
- ["""THE LAST FRAME. Ask the question and then stop talking.
+ ["""THE LAST FRAME. Ask, then stop talking. Do not answer your own questions.
 
-It is a real question and I do not have an answer. Every person in this room has a most-recent paper. Some of them would decompose into a chain almost immediately; some would hit an unformalisable physical assumption in the first three claims, and I would like to know which, and where.
+The framing is the useful part: it is entirely possible that this is a golden age for theoretical RESEARCH and a difficult one for theoretical RESEARCHERS, and those two things pull in opposite directions. Say that out loud - most people in the room have thought it and not said it.
 
-If the room is slow to start, two prompts that usually work: ask somebody what their paper's ROOT claims would be - the things they assumed without proof - and ask whether they would have been willing to write them down."""],
+Question one is the honest one and usually gets the room going: excited, or frustrated? Both answers are respectable and people will disagree in public, which is what you want.
+
+Question two is the one that produces the best answers. If the machine can produce the result, which part did you actually want to do? Some people will say the proof; more will say the question, or the picture, or the argument about what it means.
+
+Question three brings it back to this talk: what would have to be checked before you would build on it. That is the only question the last forty minutes was about.
+
+If the room is slow, ask somebody what the ROOT claims of their last paper would be - the things they assumed without proof - and whether they would have been willing to write them down."""],
  'pipe-svg','discussion.svg','discussion.json',cumulative=False)

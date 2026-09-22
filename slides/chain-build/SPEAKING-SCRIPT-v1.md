@@ -46,7 +46,7 @@
 
 | v1 | v0 | 幕 | meter |
 |---:|---:|---|---|
-| 0 | **新** | I | WHAT A PAPER DOES NOT STATE |
+| 0 | **新** | I | SOME THOUGHTS ABOUT LLM FOR THEORETICAL RESEARCH |
 | 1 | 1 | I | THE AI CRISIS IN THEORETIC RESEARCH |
 | 2 | **新** | II | WHAT IS THE MACHINE ACTUALLY DOING |
 | 3 | 2 | II | WHAT IS INSIDE THE BLACK BOX OF LLM REASONING |
@@ -118,13 +118,13 @@ v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、*
 
 ## I · OPENING（帧 0–1）
 
-### 帧 0 — WHAT A PAPER DOES NOT STATE
+### 帧 0 — SOME THOUGHTS ABOUT LLM FOR THEORETICAL RESEARCH
 
 > **新增帧。** deck 内置 speaker note：
 
-> OPEN HERE. The title is the claim: a paper states what it proves, and it does not state what it depends on, or who checked which part.
+> OPEN HERE. The title is deliberately modest - these are thoughts, not results, and saying so in the first ten seconds buys you the room's patience for the honest parts later.
 >
-> Read the second line out loud - it is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
+> Read the line under the rule out loud - a paper states what it proves, and does not state what it depends on or who checked which part. It is the whole argument in one sentence, and the only sentence in the talk you should deliver word for word.
 >
 > Then move on. The next two frames do the arguing; this one only has to land the claim and your name.
 >
@@ -660,11 +660,17 @@ v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、*
 
 > **新增帧。** deck 内置 speaker note：
 
-> THE LAST FRAME. Ask the question and then stop talking.
+> THE LAST FRAME. Ask, then stop talking. Do not answer your own questions.
 >
-> It is a real question and I do not have an answer. Every person in this room has a most-recent paper. Some of them would decompose into a chain almost immediately; some would hit an unformalisable physical assumption in the first three claims, and I would like to know which, and where.
+> The framing is the useful part: it is entirely possible that this is a golden age for theoretical RESEARCH and a difficult one for theoretical RESEARCHERS, and those two things pull in opposite directions. Say that out loud - most people in the room have thought it and not said it.
 >
-> If the room is slow to start, two prompts that usually work: ask somebody what their paper's ROOT claims would be - the things they assumed without proof - and ask whether they would have been willing to write them down.
+> Question one is the honest one and usually gets the room going: excited, or frustrated? Both answers are respectable and people will disagree in public, which is what you want.
+>
+> Question two is the one that produces the best answers. If the machine can produce the result, which part did you actually want to do? Some people will say the proof; more will say the question, or the picture, or the argument about what it means.
+>
+> Question three brings it back to this talk: what would have to be checked before you would build on it. That is the only question the last forty minutes was about.
+>
+> If the room is slow, ask somebody what the ROOT claims of their last paper would be - the things they assumed without proof - and whether they would have been willing to write them down.
 >
 
 ---

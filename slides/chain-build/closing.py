@@ -133,14 +133,15 @@ CL=[(11,400,540,195,175,16),(23,1000,280,185,115,12),
     (37,1060,790,185,110,11),(51,1610,510,170,150,12)]
 NET={i:cluster(*c) for i,c in enumerate(CL)}
 HUB=((0,0),(1,0),(2,0),(3,0))
+PAIRS=((0,1),(1,3),(0,2),(2,3))
 
-def schematic(step, clusters, heavy=()):
+def schematic(step, clusters, heavy=(), links=True):
     for ci in clusters:
         pts=NET[ci]
         for k in range(1,len(pts)):
             j=min(range(k), key=lambda q:(pts[q][0]-pts[k][0])**2+(pts[q][1]-pts[k][1])**2)
             line(step,pts[k][0],pts[k][1],pts[j][0],pts[j][1],color=sh(.40),lw=2.0)
-    for a,b in ((0,1),(1,3),(0,2),(2,3)):
+    for a,b in (PAIRS if links else ()):
         if a in clusters and b in clusters:
             pa,pb=NET[a][0],NET[b][len(NET[b])//2]
             line(step,pa[0],pa[1],pb[0],pb[1],lw=2.8)
@@ -153,7 +154,44 @@ def schematic(step, clusters, heavy=()):
             dot(step,x,y,15 if hv else 10,lw=4.2 if hv else 2.5)
     txt(step,1560,980,320,20,'schematic',color=LIGHT)
 
-schematic(1,[0,1,2,3])
+# WHAT THIS FRAME HAS TO SAY, and the old drawing did not: four anonymous
+# blobs joined by four lines is a picture of "things are connected", which the
+# room already believes. The wish is specific - decompose two papers and they
+# do not merely cite each other, they LAND ON THE SAME CLAIM, one node with two
+# dependents. So: each paper gets a boundary and a name, and the thing between
+# two papers is drawn as a claim, not as a line.
+PAPERS=[(0,175,335,450,410,'this paper',        175,304),
+        (1,795,145,410,270,'another paper',     795,114),
+        (2,855,660,410,260,'a third',           855,952),
+        (3,1420,340,380,340,'and so on',       1420,309)]
+# (0,2) sits low on purpose: wish two puts its proposed claim at (712,545) with
+# a junction at (712,657), and a shared node in the obvious middle of that gap
+# landed 51px away from it.
+SHARED={(0,1):(710,400),(0,2):(730,762),(1,3):(1310,390),(2,3):(1340,660)}
+
+def papers(step, faint=False):
+    for ci,bx,by,bw,bh,lab,lx,ly in PAPERS:
+        box(step,bx,by,bw,bh,style='dash',color=sh(.13 if faint else .22),lw=1.6)
+        txt(step,lx,ly,bw,22,lab,color=LIGHT if (faint or ci) else INK)
+
+def shared(step, faint=False):
+    """The claim two papers both land on. It is the whole content of the wish,
+    so it is a node with weight, not a line between two blobs."""
+    for (a,b),(sx,sy) in SHARED.items():
+        for ci in (a,b):
+            for px,py in sorted(NET[ci], key=lambda p:(p[0]-sx)**2+(p[1]-sy)**2)[:2]:
+                line(step,sx,sy,px,py,color=sh(.30 if faint else .62),lw=1.8 if faint else 2.2)
+        dot(step,sx,sy,30,color=sh(.16 if faint else .30),lw=1.6)
+        dot(step,sx,sy,18,lw=2.6 if faint else 4.0,fill='#ffffff')
+
+papers(1); schematic(1,[0,1,2,3],links=False); shared(1)
+
+# the key, in the band under the first paper - the only empty quarter left
+dot(1,186,806,26,color=sh(.30),lw=1.6)
+dot(1,186,806,15,lw=3.4,fill='#ffffff')
+txt(1,240,782,550,26,'a claim both papers lean on')
+txt(1,240,832,550,21,'one node, not two \u2014 check it once and',color=LIGHT)
+txt(1,240,864,550,21,'everything above it inherits the check',color=LIGHT)
 
 # =====================================================================
 # 2 - MEASURED: which claims carry the load
@@ -191,7 +229,7 @@ chain_nodes(5, weighted=False)
 # =====================================================================
 # 6 - WISH TWO: a claim in a gap the structure names
 # =====================================================================
-schematic(6,[0,1,2,3],heavy=HUB)
+papers(6,faint=True); schematic(6,[0,1,2,3],heavy=HUB,links=False); shared(6,faint=True)
 NX,NY=712,545; JY=NY+112
 for px,py in [NET[0][0],NET[1][0],NET[2][0]]:
     line(6,px,py,NX,JY,color=JUNC,lw=1.8)
@@ -253,8 +291,8 @@ CHAINW, SCHEMW = 1150, 640
 HEADS=[
  (0,'chain','One theorem, and everything it rests on',
     '29 claims and 46 dependencies \u2014 the object the rest of this act works on'),
- (1,'schem','Wish one','More papers, one network',
-    'the same claim leaned on twice, by two papers'),
+ (1,'schem','Wish one','Papers stop being separate piles',
+    'because they land on the same claims'),
  (2,'chain','Which claims actually carry the load',
     'remove one claim, recompute the closure, count what leaves \u2014 size is what is lost'),
  (3,'chain','The same question, asked of every dependency',
