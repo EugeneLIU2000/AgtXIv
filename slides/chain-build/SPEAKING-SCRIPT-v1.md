@@ -306,9 +306,9 @@ v0 里被删掉的 5 帧：**0**（源文件 slide 1，两个空占位符）、*
 
 > THE FRAME FOR THIS AUDIENCE. Slow down; this is what a physicist should leave the room remembering.
 >
-> Mathlib is the mathematics - eight and a half thousand files of it, other people's work, and it is the reason formalizing a piece of mathematics is affordable at all. You are not proving anything from nothing; you are standing on a decade of somebody else's checked definitions.
+> Mathlib is the mathematics - nine thousand files of it, other people's work, and it is the reason formalizing a piece of mathematics is affordable at all. You are not proving anything from nothing; you are standing on a decade of somebody else's checked definitions.
 >
-> physlib is the physics equivalent, and you saw its front page a few frames ago. It exists, it is a real community project, and it is much earlier in its life.
+> physlib is the physics equivalent, and you saw its front page a few frames ago. Nine hundred files against nine thousand. It exists, it is a real community project, and it is an order of magnitude earlier in its life - the mathematics library lineage starts in 2017, physlib in 2024. Both counts are every .lean file on each project's own main branch, taken this morning; if somebody challenges a number, that is the definition to give them.
 >
 > Then the honest question, which is the one that decides whether any of this is practical for us. It is not 'can Lean express my physics' - the answer to that is almost always yes, eventually. It is: how much of what my paper stands on is already in a library, and how much does somebody have to build first? For a physics paper today, a great deal has to be built first, and that is where the time goes.
 >

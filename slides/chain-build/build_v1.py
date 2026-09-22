@@ -171,6 +171,8 @@ RENDER = """function render(){
  if(m){ m.textContent=METER[i]; m.classList.toggle('open', OPENM.has(i)); }
  const a=document.getElementById('act');
  if(a) a.textContent=ACTS[i];
+ const pg=document.getElementById('pg');
+ if(pg) pg.textContent=i+1;
  hint.style.display = (chain && !insp.classList.contains('on')) ? '' : 'none';
 }
 """
@@ -183,9 +185,15 @@ assert n==1, 'render() not replaced'
 # the ones whose whole point is that they are nearly empty. The METER and ACTS
 # arrays stay in the driver - they are how the speaking script and the frame
 # map are keyed - they simply are not painted any more.
-H=re.sub(r'<div class="meter" id="m"></div>\s*', '', H)
+H=re.sub(r'<div class="meter" id="m"></div>\s*',
+         '<div class="pageno" id="pg"></div>', H, count=1)
 H=re.sub(r'<div class="actline" id="act"></div>\s*', '', H)
 assert 'id="m"' not in H and 'id="act"' not in H, 'a running footnote survived'
+assert 'id="pg"' in H, 'the page number was not placed'
+if '.pageno{' not in H:
+    H=H.replace('.meter{',
+ '.pageno{position:absolute;left:58px;bottom:34px;font-family:var(--f-mono);'
+ 'font-size:17px;color:var(--light);opacity:.7}\n.meter{',1)
 
 open(OUT,'w',encoding='utf-8').write(H)
 json.dump({'order':[list(t) for t in ORDER],'meter':METER,'acts':ACTS,

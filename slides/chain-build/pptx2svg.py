@@ -187,6 +187,12 @@ def style_line(sp):
     ref=sp.find('p:style/a:lnRef', NS)
     return solid(ref) if ref is not None else None
 
+# All three context-window blocks are accent1 in the source, so "conversation
+# history" and "new prompt" came out as one continuous blue bar with no visible
+# partition. Only the fill is overridden - the text colours already contrast
+# correctly against both.
+BLOCK_FILL={'new prompt':'#203864'}
+
 def sp_svg(sp, box, o):
     x,y,w,h = box[:4]
     rot = box[6] if len(box)>6 else 0
@@ -196,6 +202,9 @@ def sp_svg(sp, box, o):
     kind=prst.get('prst') if prst is not None else None
     fill=solid(spPr)
     nofill = spPr is not None and spPr.find('a:noFill', NS) is not None
+    if fill:
+        _t=''.join(t.text or '' for t in sp.iter(f'{{{NS["a"]}}}t')).strip()
+        fill=BLOCK_FILL.get(_t, fill)
     ln=spPr.find('a:ln', NS) if spPr is not None else None
     stroke=(solid(ln) if ln is not None else None) or style_line(sp)
     lw = (float(ln.get('w'))/12700*2 if (ln is not None and ln.get('w')) else 1.5)

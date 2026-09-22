@@ -217,17 +217,22 @@ M.txt(0,150,200,1620,26,'Every proof stands on definitions somebody else already
 # PHYSICS DOES HAVE ONE. An earlier draft of this frame said it did not, which
 # the speaker's own formalization slide disproves - it carries a screenshot of
 # physlib. The interesting claim is not absence, it is scale.
-LIB=[('8,450','Mathlib','the mathematics. Groups, measure, linear algebra, polytopes.'),
-     ('','physlib','the physics. An open-source community project to digitalize'
-                   ' results from physics into Lean 4.')]
+# Both counted the same way on 2026-09-22: every .lean file on the project's
+# own main branch. An earlier draft used 8,450, which was the pinned revision
+# vendored into this repository - a different thing, and not comparable to a
+# number taken from physlib's main branch.
+LIB=[('9,146','Mathlib','the mathematics. Groups, measure, linear algebra, polytopes.'
+                        '  Begun 2017.'),
+     ('927','physlib','the physics. An open-source community project to digitalize'
+                      ' results from physics into Lean 4.  Begun 2024.')]
 for k,(n,name,d) in enumerate(LIB):
     y=300+k*150
-    if n: M.txt(0,150,y,260,52,n,color=LIGHT)
+    M.txt(0,150,y,280,52,n,color=INK if k==0 else LIGHT)
+    M.txt(0,150,y+64,280,20,'.lean files',color=LIGHT)
     M.txt(0,440,y+4,420,34,name,color=INK)
     M.txt(0,440,y+54,1330,22,d,color=LIGHT)
-M.txt(0,150,364,260,20,'.lean files',color=LIGHT)
 M.line(0,150,640,1770,640,color=LIGHT,lw=1.4)
-M.txt(0,150,674,1620,34,'Mathematics has a large one. Physics is still building its own.')
+M.txt(0,150,674,1620,34,'Ten times the size, and seven years of a head start.')
 M.txt(0,150,738,1620,26,'So the question for any paper is not "can Lean express this" \u2014'
                         ' it is how much of what the paper',color=LIGHT)
 M.txt(0,150,776,1620,26,'stands on already exists, and how much somebody has to build'
@@ -237,9 +242,9 @@ M.txt(0,150,838,1620,26,'For a physics paper today, the honest answer is: a grea
 M.dump(1,['THE LIBRARIES \u00b7 AND HOW MUCH IS ALREADY THERE'],[False],
  ["""THE FRAME FOR THIS AUDIENCE. Slow down; this is what a physicist should leave the room remembering.
 
-Mathlib is the mathematics - eight and a half thousand files of it, other people's work, and it is the reason formalizing a piece of mathematics is affordable at all. You are not proving anything from nothing; you are standing on a decade of somebody else's checked definitions.
+Mathlib is the mathematics - nine thousand files of it, other people's work, and it is the reason formalizing a piece of mathematics is affordable at all. You are not proving anything from nothing; you are standing on a decade of somebody else's checked definitions.
 
-physlib is the physics equivalent, and you saw its front page a few frames ago. It exists, it is a real community project, and it is much earlier in its life.
+physlib is the physics equivalent, and you saw its front page a few frames ago. Nine hundred files against nine thousand. It exists, it is a real community project, and it is an order of magnitude earlier in its life - the mathematics library lineage starts in 2017, physlib in 2024. Both counts are every .lean file on each project's own main branch, taken this morning; if somebody challenges a number, that is the definition to give them.
 
 Then the honest question, which is the one that decides whether any of this is practical for us. It is not 'can Lean express my physics' - the answer to that is almost always yes, eventually. It is: how much of what my paper stands on is already in a library, and how much does somebody have to build first? For a physics paper today, a great deal has to be built first, and that is where the time goes.
 
