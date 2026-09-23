@@ -83,7 +83,8 @@ function tx(s,f,o){
   s.addText(o.t,{x:X(f,x), y:Y(f,top), w:L(f,w), h:L(f,fs*1.7), isTextBox:true,
     margin:0, valign:'top',
     align: o.align==='c'?'center' : o.align==='r'?'right' : 'left',
-    fontFace:o.mono?CODE:MONO, fontSize:PT(f,fs), color:o.color||INK, bold:!!o.bold,
+    fontFace:o.mono?CODE:MONO, fontSize:PT(f,fs), color:o.color||INK,
+    bold:!!o.bold, italic:!!o.italic,
     charSpacing:o.track?PT(f,fs)*o.track:0});
 }
 function curve(s,f,pts,o){      // a freeform through cubic control points
@@ -120,7 +121,8 @@ function prims(s, FIGURE, step){
     else if (p.t==='dot')  oval(s,PIPE,{cx:p.cx,cy:p.cy,r:p.r,
         fill: hex6(p.fill)||WHITE,
         color: dim?blend(INK,.13):col, lw:p.lw});
-    else tx(s,PIPE,{x:p.x,y:p.y,w:p.w,size:p.size,t:p.text,color:col,align:'l',bold:p.bold});
+    else tx(s,PIPE,{x:p.x, cx:p.x+p.w/2, y:p.y, w:p.w, size:p.size, t:p.text,
+        color:col, align:p.align||'l', bold:p.bold, italic:p.italic, mono:p.mono});
   }
 }
 

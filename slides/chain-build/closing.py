@@ -77,15 +77,23 @@ def chain_nodes(step, weighted, labels=False):
             x = PX(n['x'])+(r+dx if dx>0 else dx)
             txt(step, x, PY(n['y'])+dy, 470, SS, f'{lab}  \u2014  {n["crit"]}')
 
+def edge(step, e, color, lw):
+    """ONE dependency, drawn the ONE way. Steps 4 and 5 used to draw these as
+    straight chords while every other frame drew them as beziers, so the two
+    frames that pick edges OUT of the graph drew lines that lay on top of no
+    edge at all - long diagonals cutting across the whole figure. Same data,
+    a completely different picture, and the reason those pages read as a mess."""
+    x1,y1,x2,y2 = PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2'])
+    ym=(y1+y2)/2
+    curve(step, x1,y1, x1,ym, x2,ym, x2,y2, color=color, lw=lw)
+
 def chain_edges(step, weighted=False, only_load=False):
     for e in SK['edges']:
         if only_load and e['loss']==0: continue
         f=e['loss']/MAXE
-        lw = (1.6 + 5.0*f) if weighted else 1.9
-        col = sh(0.24+0.76*f) if weighted else sh(0.46)
-        x1,y1,x2,y2 = PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2'])
-        ym=(y1+y2)/2
-        curve(step, x1,y1, x1,ym, x2,ym, x2,y2, color=col, lw=lw)
+        edge(step, e,
+             sh(0.24+0.76*f) if weighted else sh(0.46),
+             (1.6 + 5.0*f) if weighted else 1.9)
 
 def legend(step):
     txt(step,1290,236,560,SS,'claims lost if this one is removed',color=LIGHT)
@@ -207,10 +215,8 @@ chain_edges(3, weighted=True); chain_nodes(3, weighted=False); inset(3)
 # 4 - the trap: each of the 29 is free ON ITS OWN
 # =====================================================================
 for e in SK['edges']:
-    if e['free']:
-        line(4,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),color=sh(.88),lw=3.6)
-    else:
-        line(4,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),color=sh(.16),lw=1.2)
+    if e['free']: edge(4, e, sh(.86), 3.0)
+    else:         edge(4, e, sh(.22), 1.4)
 for n in SK['nodes']:
     gone=n['lost_together']
     mark(4,n['kind'],PX(n['x']),PY(n['y']),9,
@@ -222,8 +228,7 @@ inset(4, mark_zero=True)
 # =====================================================================
 for e in SK['edges']:
     if e['skel']:
-        line(5,PX(e['x1']),PY(e['y1']),PX(e['x2']),PY(e['y2']),
-             color=sh(0.30+0.70*e['loss']/MAXE), lw=1.9+4.6*e['loss']/MAXE)
+        edge(5, e, sh(0.30+0.70*e['loss']/MAXE), 1.9+4.6*e['loss']/MAXE)
 chain_nodes(5, weighted=False)
 
 # =====================================================================
