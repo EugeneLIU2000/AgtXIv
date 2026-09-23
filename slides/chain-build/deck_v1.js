@@ -19,6 +19,13 @@ const NATIVE={};                       // the nine frames written for v1
 NEWKEYS.forEach(k=>{ NATIVE[k]=JSON.parse(fs.readFileSync(`${k}.json`,'utf8')); });
 const BRIDGE=JSON.parse(fs.readFileSync('bridge.json','utf8'));
 
+/* Closing steps the SLIDE takes as a flat picture instead of native shapes.
+ * These frames kept coming out wrong in PowerPoint in a way neither the browser
+ * nor LibreOffice reproduced, so there was nothing to debug against; the slide
+ * now carries exactly what the browser draws. The page is unaffected and stays
+ * live. closing_png.py bakes them - keep the two lists in step. */
+const FLAT_CLOSING=new Set([1]);
+
 /* v1 frame -> what draws it, or null when the frame is one of the speaker's
    own slides and the merger will supply it from Slide_001.pptx. */
 function resolve(reg, step){
@@ -28,7 +35,9 @@ function resolve(reg, step){
     return {fig:NATIVE[NEWKEYS[step-28]], step:0};
   }
   if (reg==='p') return {fig:PP, step};
-  if (reg==='z') return {fig:CL, step};
+  if (reg==='z') return FLAT_CLOSING.has(step)
+      ? {flat:`frames/closing-step${step}.png`, note:(CL.note||[])[step]||''}
+      : {fig:CL, step};
   if (reg==='c') return {chain:step, note:CHAIN[step][1]};
   if (reg==='o') return {open:OPENING[step]};
   throw new Error('unknown region '+reg);
@@ -46,7 +55,12 @@ ORD.order.forEach(([reg,step],i)=>{
   const s=p.addSlide();
   s.background={color:WHITE};
   let note='';
-  if (r.open){
+  if (r.flat){
+    // the closing figure is authored on the full 1920x1080 stage, so it goes
+    // edge to edge rather than through the opening frames' letterboxing
+    s.addImage({path:r.flat, x:0, y:0, w:W, h:H});
+    note=r.note;
+  } else if (r.open){
     const o=r.open;
     if (o.img){
       const availH=H-0.86; let w=W, h=w/o.a;

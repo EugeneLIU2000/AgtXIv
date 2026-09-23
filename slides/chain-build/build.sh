@@ -35,5 +35,7 @@ python3 gen_script_v1.py
 # deck_v1.js draws the 43 frames this project owns; merge_pptx.py copies them
 # into Slide_001.pptx, which stays the base so the author's own 22 slides keep
 # their theme, layouts and media exactly as they were built.
+python3 closing_png.py 1     # closing steps the SLIDE takes as a flat picture;
+                             # keep in step with FLAT_CLOSING in deck_v1.js
 node deck_v1.js
 python3 merge_pptx.py
