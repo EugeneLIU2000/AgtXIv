@@ -32,6 +32,12 @@ async function route(){const raw=location.hash.slice(1);const values=new URLSear
 $('#paper-filter').oninput=paperList;
 $('#intake-form').onsubmit=async event=>{event.preventDefault();const button=event.submitter||$('#intake-form button');button.disabled=true;$('#intake-message').className='feedback';$('#intake-message').textContent='Creating a source analysis…';try{const job=await api('/api/v1/jobs',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({arxiv:$('#arxiv').value})});$('#intake-message').textContent='The server has accepted the paper. Progress below follows the real processing stages.';hash({job:job.id})}catch(e){$('#intake-message').className='feedback error';$('#intake-message').textContent=e.message}finally{button.disabled=false}};
 window.addEventListener('hashchange',route);
+// The v0.2 workspace opens this legacy service without submitting a job.
+const requestedArxiv = new URLSearchParams(location.search).get('arxiv');
+if (requestedArxiv && requestedArxiv.length <= 180) {
+  $('#arxiv').value = requestedArxiv;
+  $('#intake-message').textContent = 'Paper identifier filled in. Select Analyze paper to start the legacy source extractor; this is not a v0.2 model execution.';
+}
 try{state.library=await api('/api/v1/library');await route()}catch(e){$('#reader').innerHTML=`<p class="empty-state">${esc(e.message)} Reload to try again.</p>`}
 
 // The same explicit submission and read operations are available to supporting agents.

@@ -47,7 +47,7 @@ noncomputable def fractionalCliqueCoverValue {V : Type*} [Fintype V]
 
 /-- A finite graph is perfect when every induced subgraph has matching
 chromatic and clique numbers. -/
-def IsPerfect {V : Type*} (G : SimpleGraph V) : Prop :=
+def IsPerfect {V : Type*} [Fintype V] (G : SimpleGraph V) : Prop :=
   ∀ S : Set V,
     (G.induce S).chromaticNumber = (G.induce S).cliqueNum
 

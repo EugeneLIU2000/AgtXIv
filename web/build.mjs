@@ -3,8 +3,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openapi,jobSchema } from './api-spec.mjs';
 import { RETRIEVAL_TIMEOUT_MS } from './server.mjs';
+import { syncWorkspace } from './sync-workspace.mjs';
 const root=path.dirname(fileURLToPath(import.meta.url));
 const exists=async p=>stat(p).then(()=>true,()=>false);
+await syncWorkspace();
 await mkdir(path.join(root,'engine'),{recursive:true});
 const upstream=path.resolve(root,'../src/agtxiv_web/intake.mjs');
 if(await exists(upstream))await cp(upstream,path.join(root,'engine/intake.mjs'));
@@ -27,6 +29,9 @@ async function collect(folder,prefix=''){
  }
 }
 await collect(path.join(root,'public'));
+for (const required of ['/reader.html', '/workspace/app.js', '/workspace/styles.css', '/workspace/data.js', '/workspace/motion.js', '/workspace/data/paper-minimal.json', '/workspace/data/source.txt', '/workspace/vendor/gsap/gsap.min.js', '/workspace/vendor/canvas-ui/grid.js', '/workspace/vendor/canvas-ui/rect-cache.js']) {
+ if (!Object.hasOwn(assets, required)) throw Error('Required workspace resource missing: ' + required);
+}
 for(const required of ['/index.html','/app.js','/styles.css','/assets/logo.svg','/data/library.json','/data/robustness-records.json','/api/v1/openapi.json','/api/v1/job.schema.json','/api/v1/analysis.schema.json','/docs/technical-report.pdf','/docs/technical-report.tex','/docs/technical-report-source.zip']) {
  if(!Object.hasOwn(assets,required))throw Error('Required publication resource missing: '+required);
 }

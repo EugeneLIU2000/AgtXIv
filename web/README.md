@@ -1,9 +1,20 @@
 # AgtXIv research website
 
-This is the primary V3 reader and live arXiv source-analysis service. It contains
-a white, responsive paper reader, a source-linked argument example, searchable
-contract documentation, and the technical report. The earlier repository demos
-remain historical or research surfaces with their own contracts.
+The home page is now the **schema v0.2 research workspace**: a white, restrained
+reading interface with a claim map, sequential reading, source/normalization
+comparison, a small searchable collection, and a guide to the four research
+operations. GSAP 3.15.0 provides transitions; Canvas UI Grid adds an optional,
+subtle WebGL background. Both are served locally, with no runtime CDN dependency.
+
+The workspace reads the hand-authored v0.2 teaching example and the existing
+historical robustness candidates. It **does not implement the v0.2 host, call a
+model, create research Tasks, or establish scientific approval**. Historical
+records retain their original V3 identity. See [WORKSPACE.md](WORKSPACE.md) for
+the design, source mapping and implementation boundaries.
+
+The original V3 reader and live arXiv source-analysis service remain at
+`/reader.html`. Existing root hash links to papers, jobs, protocol and report
+redirect there. Earlier repository demos retain their own contracts.
 
 Submitting a new arXiv identifier actually retrieves the exact source version,
 extracts bounded claim/equation candidates and local references, and retains the
@@ -12,26 +23,32 @@ review; all six assessment questions remain unassessed.
 
 ## Local operation
 
-Use Node.js 26.7.0 (the tested version):
+Use Node.js 26.7.0 (the previously documented runtime; this redesign has not been
+tested). To serve the committed files from `web/`:
 
 ```sh
-npm ci --ignore-scripts
-npm run build
-npm test
 npm run dev
 ```
 
-The service listens on `http://127.0.0.1:8787`. Local jobs and source/result bytes
+Open `http://127.0.0.1:8787` for the new workspace or
+`http://127.0.0.1:8787/reader.html` for the legacy service.
+Serving the page does not itself submit an analysis. Local jobs and source/result bytes
 are stored under `.local/`; restarting the service preserves them. The local
 adapter applies committed SQL migrations. Production uses Cloudflare Workers,
 D1 (`DB`) and R2 (`ARTIFACTS`) configured through `.openai/hosting.json`.
 
-`npm ci` is needed for editing database migrations; building, running and testing
-the committed application use Node's standard library without runtime npm
-dependencies. Generate migrations with `npm run db:generate` after changing
+`npm ci --ignore-scripts` is needed for editing database migrations. The server
+uses Node's standard library; browser libraries are retained in
+`public/workspace/vendor/`. Generate migrations with `npm run db:generate` after changing
 `db/schema.ts`. Production never creates tables from request handlers.
 
 ## Source of truth and generated copies
+
+`sync-workspace.mjs` copies the v0.2 teaching Output, source text, contract/host/read
+documents and all five research schemas byte-for-byte into
+`public/workspace/data/`. The build calls it before collecting assets. Standalone
+website checkouts use the committed copies. Do not edit these copies independently.
+This sync does not execute an example, validate a schema, or start a model call.
 
 In the complete AgtXIv repository, run `tools/export_web_library.py` to regenerate
 the curated reader and the exact V3 schema copies. Its `--check` mode verifies
@@ -76,6 +93,13 @@ exposed by a download endpoint. Public results contain bounded excerpts and
 explicit extraction limitations, not a full-text redistribution service.
 
 ## Verification
+
+**Current project policy:** do not execute tests, builds for verification,
+validators, live replays, or browser checks without the user's explicit request.
+The redesign received static code/diff review only. All affected pending work is
+recorded in `../schema v0.1/PENDING_TESTS.md`, section 11 (`UI02-*`). The existing
+HTTP asset test was updated for the new root and retained reader, but not run.
+The commands below describe available checks, not authorization or new results.
 
 `npm test` checks real extraction against an explicitly synthetic TeX fixture,
 SQLite persistence, failed retrieval and retries, input limits, stale observation,

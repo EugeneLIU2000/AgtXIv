@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" role="img" aria-labelledby="title desc">
+<title id="title">Agent、Context、Skills、Tools、API、MCP 和 Schema 的关系</title>
+<desc id="desc">Skills 按需加入 Context；Agent 使用 Context 来决定行动。Agent 可通过直接 API 调用或 MCP 接入 Tools，工具结果返回 Context。Schema 描述工具输入输出的结构。</desc>
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10Z" fill="#587081"/></marker>
+<style>
+text{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif;fill:#213c49}
+.title{font-size:32px;font-weight:700}.name{font-size:28px;font-weight:650}.note{font-size:19px;fill:#54707b}.label{font-size:18px;fill:#54707b}.foot{font-size:17px;fill:#657a84}
+.line{fill:none;stroke:#587081;stroke-width:2.3;marker-end:url(#arrow)}
+.dash{fill:none;stroke:#95a5ae;stroke-width:2;stroke-dasharray:7 6}
+</style>
+</defs>
+<rect width="1400" height="800" fill="#fff"/>
+<text x="64" y="65" class="title">Agent 如何利用上下文与工具完成任务？</text>
+<text x="64" y="99" class="note">Skills 提供方法，Context 提供信息，Tools 执行操作。</text>
+
+<rect x="65" y="162" width="260" height="118" rx="20" fill="#f0f5ef" stroke="#93ae91" stroke-width="2"/>
+<text x="195" y="208" class="name" text-anchor="middle">Skills</text>
+<text x="195" y="244" class="note" text-anchor="middle">可复用的工作指令</text>
+
+<rect x="65" y="366" width="260" height="142" rx="20" fill="#eaf4f2" stroke="#79a59e" stroke-width="2"/>
+<text x="195" y="413" class="name" text-anchor="middle">Context</text>
+<text x="195" y="449" class="note" text-anchor="middle">当前任务、历史、指令</text>
+<text x="195" y="480" class="note" text-anchor="middle">以及工具结果</text>
+<path d="M195 280V366" class="line"/>
+<text x="212" y="331" class="label">按需加载</text>
+
+<rect x="451" y="365" width="265" height="145" rx="25" fill="#fff0df" stroke="#c69d71" stroke-width="2.4"/>
+<text x="584" y="414" class="name" text-anchor="middle">Agent</text>
+<text x="584" y="450" class="note" text-anchor="middle">模型 + 运行程序</text>
+<text x="584" y="482" class="note" text-anchor="middle">决定行动并组织执行</text>
+<path d="M325 437H451" class="line"/>
+<text x="388" y="419" class="label" text-anchor="middle">提供信息</text>
+
+<!-- Two alternative access paths, not successive stages -->
+<path d="M716 408H754V277H804" class="line"/>
+<rect x="804" y="226" width="224" height="102" rx="17" fill="#f0f4fa" stroke="#9baec4" stroke-width="2"/>
+<text x="916" y="267" class="name" text-anchor="middle">API</text>
+<text x="916" y="303" class="note" text-anchor="middle">直接调用软件接口</text>
+<path d="M1028 277H1067V408H1120" class="line"/>
+
+<path d="M716 470H754V568H804" class="line"/>
+<rect x="804" y="518" width="224" height="102" rx="17" fill="#e9f4f5" stroke="#88afb4" stroke-width="2"/>
+<text x="916" y="559" class="name" text-anchor="middle">MCP</text>
+<text x="916" y="595" class="note" text-anchor="middle">按统一协议接入工具</text>
+<path d="M1028 568H1067V470H1120" class="line"/>
+<text x="916" y="429" class="label" text-anchor="middle">可选的接入路径</text>
+<text x="916" y="458" class="foot" text-anchor="middle">MCP 背后也可调用 API</text>
+
+<rect x="1120" y="366" width="225" height="142" rx="20" fill="#edf4f8" stroke="#8eabbc" stroke-width="2"/>
+<text x="1233" y="415" class="name" text-anchor="middle">Tools</text>
+<text x="1233" y="452" class="note" text-anchor="middle">读文件、计算、检索</text>
+<text x="1233" y="482" class="note" text-anchor="middle">执行具体操作</text>
+
+<!-- Schema annotates tools rather than serving as a pipeline stage -->
+<rect x="1100" y="157" width="265" height="111" rx="17" fill="#faf7ed" stroke="#bcaf82" stroke-width="2"/>
+<text x="1233" y="199" class="name" text-anchor="middle">Schema</text>
+<text x="1233" y="236" class="note" text-anchor="middle">规定输入 / 输出结构</text>
+<path d="M1233 268V366" class="dash"/>
+<text x="1250" y="320" class="label">描述</text>
+
+<!-- Logical feedback, routed by the application -->
+<path d="M1233 508V679H195V508" class="line"/>
+<rect x="451" y="660" width="492" height="36" fill="#fff"/>
+<text x="697" y="685" class="label" text-anchor="middle">工具结果由 Agent 写回 Context，继续下一轮</text>
+<text x="700" y="759" class="foot" text-anchor="middle">概念示意：API 也用于调用模型；Schema 也可约束最终回答。虚线表示描述关系，实线表示信息或调用流。</text>
+</svg>

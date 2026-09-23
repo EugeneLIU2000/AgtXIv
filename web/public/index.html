@@ -3,32 +3,62 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Explore scientific claims with their sources, assumptions, reasoning and open questions. Submit an arXiv paper for traceable candidate analysis.">
+  <meta name="description" content="The AgtXIv research workspace: trace candidate claims to their sources, explore assumptions, and follow a single claim toward formalization.">
   <meta name="theme-color" content="#ffffff">
-  <title>AgtXIv · Follow the reasoning</title>
+  <title>AgtXIv — A little closer to understanding.</title>
   <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/app.js" type="module"></script>
+  <link rel="stylesheet" href="/workspace/styles.css?v=20260918-en">
+  <script src="/workspace/vendor/gsap/gsap.min.js" defer></script>
+  <script src="/workspace/app.js?v=20260918-en" type="module"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a href="#explore" class="brand" aria-label="AgtXIv home"><img src="/assets/logo.svg" alt="" width="74" height="31"><span>AgtXIv</span></a>
-    <nav aria-label="Main navigation"><a href="#explore">Explore</a><a href="#protocol">Protocol</a><a href="#report">Technical report</a><a href="https://github.com/EugeneLIU2000/AgtXIv" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></nav>
+  <a class="skip-link" href="#main">Skip to research content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="AgtXIv home">
+      <svg class="brand-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24 16 7l9 17M10 19h12"/><circle cx="7" cy="24" r="2.6"/><circle cx="16" cy="7" r="2.6"/><circle cx="25" cy="24" r="2.6"/></svg>
+      <span>AgtXIv<span class="brand-period">.</span></span>
+    </a>
+    <span class="header-divider"></span><span class="product-label">Research workspace</span>
+    <span class="version-label">SCHEMA <b>0.2</b></span>
+    <div class="topbar-actions"><a class="quiet-link legacy-link" href="/reader.html">Legacy reader <span aria-hidden="true">↗</span></a><button class="icon-button" id="motion-toggle" aria-label="Turn off motion" aria-pressed="false" title="Toggle motion"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h3l3-6 3 12 2-6h3"/></svg></button><button class="primary-button compact" id="add-paper"><span aria-hidden="true">＋</span> Open paper</button></div>
   </header>
-  <main id="main">
-    <section class="intro page-width" id="intro">
-      <div class="intro-copy"><p class="eyebrow"><span class="dot"></span> A living record of scientific reasoning</p><h1>Follow the reasoning.<br><em>Keep the evidence.</em></h1><p class="lede">Explore what a paper claims, the assumptions it uses, and what remains to be checked.</p></div>
-      <div class="submit-panel"><h2>Start with a paper</h2><form id="intake-form"><label for="arxiv">arXiv link or identifier</label><div class="input-row"><input id="arxiv" name="arxiv" placeholder="1609.07488v2" autocomplete="off" required maxlength="180"><button type="submit">Analyze paper <span aria-hidden="true">↗</span></button></div><p class="field-note">Fetches source archives up to 8 MiB and identifies claim candidates, equations and references. Mathematical and scientific review are not performed.</p></form><p id="intake-message" class="feedback" role="status" aria-live="polite"></p><div id="job-panel" hidden></div></div>
-    </section>
-    <section class="page-width explore-section" id="explore-surface">
-      <div class="section-heading"><div><p class="eyebrow">The research collection</p><h2>Ideas, with their dependencies.</h2></div><a href="#protocol" class="text-link">How to read the evidence <span aria-hidden="true">↗</span></a></div>
-      <div class="workspace"><aside class="paper-sidebar"><label class="search-label" for="paper-filter">Find a paper or claim</label><input id="paper-filter" type="search" placeholder="Search the collection…"><div id="paper-list" class="paper-list" aria-live="polite"></div></aside><div id="reader" class="reader" aria-live="polite"><article class="reading-intro"><p class="eyebrow">Featured reasoning</p><h2>Why trace-preserving free operations cannot increase robustness</h2><p>Pure stabilizer states can be redistributed into probability mixtures. The smallest total absolute weight needed to express a state can only stay the same or decrease.</p><p class="status-label">Source-linked candidate · Scientific review not performed</p></article></div></div>
-    </section>
-    <section id="protocol-surface" class="page-width document-surface" hidden></section>
-    <section id="report-surface" class="page-width document-surface" hidden></section>
-  </main>
-  <footer class="site-footer page-width"><span>AgtXIv · Traceable scientific knowledge</span><span>V3 architecture · Experimental contracts 0.0.0</span><a href="/api/v1/openapi.json">API specification</a></footer>
-  <noscript><p class="page-width">JavaScript is needed for the interactive reader. Download the <a href="/api/v1/library">structured collection</a> or the <a href="/docs/technical-report.pdf">technical report</a>.</p></noscript>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <div class="sidebar-label">YOUR RESEARCH</div>
+      <nav class="main-nav" aria-label="Main views">
+        <a href="#page=workspace" data-page="workspace" class="nav-item active" aria-current="page"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M3 8h14M8 8v9"/></svg>Workspace<span class="nav-dot"></span></a>
+        <a href="#page=library" data-page="library" class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h5v12H3zM10 4h3v12h-3zM15 4l2-1 3 12-2 1"/></svg>Library<span class="nav-count">02</span></a>
+        <a href="#page=protocol" data-page="protocol" class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="10" cy="15" r="2"/><path d="m6 7 3 6m5-6-3 6M7 5h6"/></svg>Schema guide</a>
+      </nav>
+      <div class="sidebar-section-title"><span class="sidebar-label">ON YOUR DESK</span><span class="tiny-mark">↙</span></div>
+      <button class="desk-item selected" data-dataset="minimal" aria-pressed="true"><span class="paper-mini">01</span><span><strong>A nonnegative square</strong><small>v0.2 · Teaching example</small></span></button>
+      <button class="desk-item" data-dataset="robustness" aria-pressed="false"><span class="paper-mini">02</span><span><strong>Robustness of magic</strong><small>Historical · Research paper</small></span></button>
+      <div class="sidebar-note"><svg viewBox="0 0 60 38" aria-hidden="true"><path d="M4 31c8-28 15 6 25-15S47 7 55 5"/><circle cx="4" cy="31" r="3"/><circle cx="29" cy="16" r="3"/><circle cx="55" cy="5" r="3"/></svg><p>One claim.<br>A thread to follow.</p><span>Keep the context close.</span></div>
+      <a class="sidebar-footer" href="https://github.com/EugeneLIU2000/AgtXIv" target="_blank" rel="noopener">About this open project <span aria-hidden="true">↗</span></a>
+    </aside>
+    <main id="main" tabindex="-1">
+      <section id="workspace-page" class="page" aria-labelledby="workspace-title">
+        <div class="welcome" data-reveal>
+          <div><p class="eyebrow"><span class="small-dot"></span> A PLACE FOR CONNECTED THINKING</p><h1 id="workspace-title">A little closer<br>to <em>understanding.</em></h1><p class="welcome-subtitle">Claims in context. Every step with a source.</p></div>
+          <div class="welcome-art" aria-hidden="true"><span class="art-word art-word-a">a paper</span><span class="art-word art-word-b">an idea</span><span class="art-word art-word-c">a connection</span><svg viewBox="0 0 360 170"><path class="art-trace" d="M25 116C70 116 52 35 123 49S182 165 234 99 299 37 332 63"/><path class="art-echo" d="M26 123C80 112 60 48 123 56S186 162 239 108 300 43 332 70"/><circle cx="25" cy="116" r="7"/><circle cx="123" cy="49" r="8"/><circle cx="234" cy="99" r="8"/><circle cx="332" cy="63" r="6"/></svg></div>
+        </div>
+        <section class="research-surface" aria-label="Current research material" data-reveal>
+          <div class="paper-heading"><div class="paper-heading-main"><div class="paper-monogram" aria-hidden="true">a<span>↗</span></div><div><p class="eyebrow" id="paper-origin">TEACHING EXAMPLE · RESEARCH / 0.2.0</p><h2 id="paper-title">A nonnegative square</h2><p id="paper-subtitle">One source statement, connected scientific and mathematical claims.</p></div></div><button class="text-button" id="switch-example">Switch example <span aria-hidden="true">⌄</span></button></div>
+          <div class="material-notice" id="material-notice"><span class="notice-dot"></span><span>Hand-authored example · No model call, proof, or review receipt.</span></div>
+          <div class="workspace-toolbar"><div class="view-tabs" role="tablist" aria-label="Reading views"><button role="tab" id="tab-map" data-view="map" aria-controls="reading-view" aria-selected="true" tabindex="0"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4" cy="10" r="2"/><circle cx="15" cy="4" r="2"/><circle cx="15" cy="16" r="2"/><path d="m6 9 7-4m-7 6 7 4"/></svg>Claim map</button><button role="tab" id="tab-list" data-view="list" aria-controls="reading-view" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5h10M7 10h10M7 15h10M3 5h.1M3 10h.1M3 15h.1"/></svg>List view</button><button role="tab" id="tab-record" data-view="record" aria-controls="reading-view" aria-selected="false" tabindex="-1">Raw record</button></div><button class="quiet-button" id="download-record" disabled>Export JSON <span aria-hidden="true">↓</span></button></div>
+          <div class="reading-layout"><div id="reading-view" role="tabpanel" aria-labelledby="tab-map" tabindex="0"><div class="load-message" role="status">Loading the repository example…</div></div><aside class="inspector" id="inspector" aria-label="Selected claim details"><p class="eyebrow">THE DETAIL THAT MATTERS</p><h3>Every claim, in context.</h3><p class="muted">Select an object to read its statement, source, and scope.</p></aside></div>
+          <div class="surface-footer"><span><span class="small-dot"></span><span id="record-count">3 example objects</span></span><span>A candidate is not a proven claim</span><button class="text-button" id="show-provenance">View provenance <span aria-hidden="true">↗</span></button></div>
+        </section>
+        <section class="next-step" data-reveal><div class="next-step-mark" aria-hidden="true">↳</div><div><p class="eyebrow">ONE CLAIM AT A TIME</p><h2>Choose one question. Take the next step.</h2><p>Explore dependencies, a Lamport proof draft, and Lean source for one mathematical claim.</p></div><button class="secondary-button" id="open-formalization">Explore formalization <span aria-hidden="true">↗</span></button></section>
+      </section>
+      <section id="library-page" class="page secondary-page" hidden aria-labelledby="library-title"></section>
+      <section id="protocol-page" class="page secondary-page" hidden aria-labelledby="protocol-title"></section>
+      <footer class="main-footer"><span>AgtXIv <span class="footer-separator">/</span> Ideas are better with context.</span><a href="/reader.html#report">Technical report ↗</a></footer>
+    </main>
+  </div>
+  <dialog id="paper-dialog" aria-labelledby="paper-dialog-title"><div class="dialog-top"><p class="eyebrow">START WITH A PAPER</p><button class="icon-button close-dialog" aria-label="Close">×</button></div><h2 id="paper-dialog-title">Where would you like to begin?</h2><p class="muted">Explore an example or open the legacy source reader.</p><div class="example-options"><button data-dataset="minimal"><span class="paper-mini">01</span><span><strong>A nonnegative square</strong><small>v0.2 hand-authored example · 3 objects</small></span><span>↗</span></button><button data-dataset="robustness"><span class="paper-mini">02</span><span><strong>Robustness of magic</strong><small>Historical research · 6 candidate interpretations</small></span><span>↗</span></button></div><div class="dialog-divider"><span>Have a paper in mind?</span></div><form id="paper-form"><label for="paper-input">arXiv link or identifier</label><div class="paper-input-row"><input id="paper-input" name="arxiv" placeholder="e.g. 1609.07488v2" maxlength="180" autocomplete="off" required><button class="primary-button" type="submit">Open <span aria-hidden="true">↗</span></button></div><p class="field-note">Opens the legacy source reader. The v0.2 execution service is not connected; no task starts here.</p><p id="paper-error" role="alert"></p></form></dialog>
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-dialog-title"><div class="dialog-top"><p class="eyebrow" id="detail-dialog-eyebrow">CONTEXT, KEPT CLOSE</p><button class="icon-button close-dialog" aria-label="Close">×</button></div><h2 id="detail-dialog-title">Material provenance</h2><div id="detail-dialog-body"></div></dialog>
+  <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+  <noscript><div class="noscript">This workspace requires JavaScript. You can still read the <a href="/workspace/data/paper-minimal.json">v0.2 teaching record</a>, <a href="/workspace/data/source.txt">source text</a>, and <a href="/docs/technical-report.pdf">Technical report</a>. </div></noscript>
 </body>
 </html>

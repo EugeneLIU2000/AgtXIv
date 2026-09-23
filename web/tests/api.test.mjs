@@ -54,6 +54,7 @@ test('library filtering and selected paper preserve the original record identiti
 });
 
 test('the root document is served as HTML with executable same-origin assets',async t=>{
- const f=await fixture(t);const page=await f.request('/');assert.equal(page.status,200);assert.equal(page.headers.get('content-type'),'text/html; charset=utf-8');assert.equal(page.headers.get('cache-control'),'no-cache');assert.match(await page.text(),/id="intake-form"/);
- for(const [url,type] of [['/app.js','text/javascript'],['/styles.css','text/css'],['/api/v1/openapi.json','application/json']]){const r=await f.request(url);assert.equal(r.status,200);assert.ok(r.headers.get('content-type').startsWith(type));}
+ const f=await fixture(t);const page=await f.request('/');assert.equal(page.status,200);assert.equal(page.headers.get('content-type'),'text/html; charset=utf-8');assert.equal(page.headers.get('cache-control'),'no-cache');assert.match(await page.text(),/id="workspace-page"/);
+ const legacy=await f.request('/reader.html');assert.equal(legacy.status,200);assert.match(await legacy.text(),/id="intake-form"/);
+ for(const [url,type] of [['/app.js','text/javascript'],['/styles.css','text/css'],['/workspace/app.js','text/javascript'],['/workspace/motion.js','text/javascript'],['/workspace/data.js','text/javascript'],['/workspace/styles.css','text/css'],['/workspace/vendor/gsap/gsap.min.js','text/javascript'],['/workspace/vendor/canvas-ui/grid.js','text/javascript'],['/workspace/vendor/canvas-ui/rect-cache.js','text/javascript'],['/workspace/data/paper-minimal.json','application/json'],['/workspace/data/source.txt','text/plain'],['/workspace/data/items.schema.json','application/json'],['/api/v1/openapi.json','application/json']]){const r=await f.request(url);assert.equal(r.status,200);assert.ok(r.headers.get('content-type').startsWith(type));}
 });

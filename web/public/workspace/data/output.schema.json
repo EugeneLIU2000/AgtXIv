@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.2.0/output.schema.json",
+  "title": "One bounded model output; never a host execution receipt",
+  "type": "object", "additionalProperties": false,
+  "required": ["contract_version", "operation", "items", "issues"],
+  "properties": {
+    "contract_version": {"const": "0.2.0"},
+    "operation": {"$ref": "common.schema.json#/$defs/Operation"},
+    "items": {"type": "array", "maxItems": 256},
+    "issues": {"type": "array", "maxItems": 128, "items": {"$ref": "common.schema.json#/$defs/Issue"}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operation": {"const": "paper.extract"}}},
+      "then": {"properties": {"items": {"items": {"oneOf": [
+        {"$ref": "items.schema.json#/$defs/Locator"}, {"$ref": "items.schema.json#/$defs/Definition"},
+        {"$ref": "items.schema.json#/$defs/ScientificClaim"}, {"$ref": "items.schema.json#/$defs/MathClaim"}
+      ]}}}}
+    },
+    {
+      "if": {"properties": {"operation": {"const": "dependency.search"}}},
+      "then": {"properties": {"items": {"items": {"oneOf": [
+        {"$ref": "items.schema.json#/$defs/Locator"},
+        {"$ref": "items.schema.json#/$defs/DependencyCandidate"}, {"$ref": "items.schema.json#/$defs/SearchRequest"}
+      ]}}}}
+    },
+    {
+      "if": {"properties": {"operation": {"const": "autoformalization.lamport"}}},
+      "then": {"properties": {"items": {"maxItems": 1, "items": {"$ref": "items.schema.json#/$defs/LamportProof"}}}}
+    },
+    {
+      "if": {"properties": {"operation": {"const": "autoformalization.lean"}}},
+      "then": {"properties": {"items": {"maxItems": 1, "items": {"$ref": "items.schema.json#/$defs/LeanSource"}}}}
+    }
+  ],
+  "anyOf": [
+    {"properties": {"items": {"minItems": 1}}},
+    {"properties": {"issues": {"minItems": 1}}}
+  ]
+}

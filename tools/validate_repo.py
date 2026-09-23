@@ -361,6 +361,14 @@ def validation_catalog() -> tuple[CheckSpec, ...]:
     )
     return (
         CheckSpec(
+            "schema-v03-case-integrity",
+            "Validate the registered schema v0.3 case artifacts; mathematical incompleteness is reported separately.",
+            every,
+            _python("schema v0.3/host/validate.py"),
+            requirements=(module("jsonschema"), module("referencing")),
+            required_repository_paths=("schema v0.3/runs/latest.json",),
+        ),
+        CheckSpec(
             "preflight-node",
             "Node.js is available for JavaScript-facing tests.",
             full,
