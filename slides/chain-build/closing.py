@@ -134,11 +134,15 @@ def cluster(seed,cx,cy,rx,ry,n):
         for _t in range(400):
             r=rnd.uniform(0,1)**0.5
             x=cx+rx*r*rnd.uniform(-1,1); y=cy+ry*r*rnd.uniform(-1,1)
-            if all((x-px)**2+(y-py)**2>52**2 for px,py in pts): pts.append((x,y)); break
+            if all((x-px)**2+(y-py)**2>76**2 for px,py in pts): pts.append((x,y)); break
     assert len(pts)==n, f'cluster {seed}: placed {len(pts)} of {n}'
     return pts
-CL=[(11,400,540,195,175,16),(23,1000,280,185,115,12),
-    (37,1060,790,185,110,11),(51,1610,510,170,150,12)]
+# FEWER, BIGGER MARKS. These points are invented filler - they carry no data,
+# they only have to read as "a paper is a small chain of claims". Fifty-one of
+# them across four boxes read as a hairball instead, and the shared claims that
+# are the whole point of the frame had to compete with the noise. Halved.
+CL=[(11,400,540,195,175,8),(23,1000,280,185,115,6),
+    (37,1060,790,185,110,6),(51,1610,510,170,150,6)]
 NET={i:cluster(*c) for i,c in enumerate(CL)}
 HUB=((0,0),(1,0),(2,0),(3,0))
 PAIRS=((0,1),(1,3),(0,2),(2,3))
@@ -148,7 +152,7 @@ def schematic(step, clusters, heavy=(), links=True):
         pts=NET[ci]
         for k in range(1,len(pts)):
             j=min(range(k), key=lambda q:(pts[q][0]-pts[k][0])**2+(pts[q][1]-pts[k][1])**2)
-            line(step,pts[k][0],pts[k][1],pts[j][0],pts[j][1],color=sh(.40),lw=2.0)
+            line(step,pts[k][0],pts[k][1],pts[j][0],pts[j][1],color=sh(.34),lw=2.0)
     for a,b in (PAIRS if links else ()):
         if a in clusters and b in clusters:
             pa,pb=NET[a][0],NET[b][len(NET[b])//2]
@@ -159,7 +163,7 @@ def schematic(step, clusters, heavy=(), links=True):
     for ci in clusters:
         for k,(x,y) in enumerate(NET[ci]):
             hv=(ci,k) in heavy
-            dot(step,x,y,15 if hv else 10,lw=4.2 if hv else 2.5)
+            dot(step,x,y,17 if hv else 12,lw=4.4 if hv else 2.8)
     txt(step,1560,980,320,20,'schematic',color=LIGHT)
 
 # WHAT THIS FRAME HAS TO SAY, and the old drawing did not: four anonymous
@@ -188,15 +192,15 @@ def shared(step, faint=False):
     for (a,b),(sx,sy) in SHARED.items():
         for ci in (a,b):
             for px,py in sorted(NET[ci], key=lambda p:(p[0]-sx)**2+(p[1]-sy)**2)[:2]:
-                line(step,sx,sy,px,py,color=sh(.30 if faint else .62),lw=1.8 if faint else 2.2)
-        dot(step,sx,sy,30,color=sh(.16 if faint else .30),lw=1.6)
-        dot(step,sx,sy,18,lw=2.6 if faint else 4.0,fill='#ffffff')
+                line(step,sx,sy,px,py,color=sh(.30 if faint else .70),lw=1.8 if faint else 2.8)
+        dot(step,sx,sy,34,color=sh(.16 if faint else .32),lw=1.8)
+        dot(step,sx,sy,21,lw=2.6 if faint else 4.6,fill='#ffffff')
 
 papers(1); schematic(1,[0,1,2,3],links=False); shared(1)
 
 # the key, in the band under the first paper - the only empty quarter left
-dot(1,186,806,26,color=sh(.30),lw=1.6)
-dot(1,186,806,15,lw=3.4,fill='#ffffff')
+dot(1,186,806,29,color=sh(.32),lw=1.8)
+dot(1,186,806,18,lw=4.0,fill='#ffffff')
 txt(1,240,782,550,26,'a claim both papers lean on')
 txt(1,240,832,550,21,'one node, not two \u2014 check it once and',color=LIGHT)
 txt(1,240,864,550,21,'everything above it inherits the check',color=LIGHT)
@@ -260,7 +264,7 @@ for k,(x,y) in enumerate(basepts):
     mark(7,KINDS[k%len(KINDS)],x,y,11,color=INK,lw=2.0,fill=INK)
 txt(7,150,BASE_Y+96,760,SS,'already checked — and it stays checked',color=LIGHT)
 
-NEWP=cluster(77,1330,360,230,180,12)
+NEWP=cluster(77,1330,360,230,180,8)
 for k in range(1,len(NEWP)):
     j=min(range(k), key=lambda q:(NEWP[q][0]-NEWP[k][0])**2+(NEWP[q][1]-NEWP[k][1])**2)
     line(7,NEWP[k][0],NEWP[k][1],NEWP[j][0],NEWP[j][1],color=LIGHT,lw=1.4)
@@ -268,7 +272,10 @@ for k,(x,y) in enumerate(NEWP):
     mark(7,KINDS[(k*5)%len(KINDS)],x,y,11,lw=2.0)
 txt(7,1120,150,760,SS,'a new paper')
 _order=sorted(range(len(NEWP)), key=lambda k: NEWP[k][0])
-NEWK={_order[1],_order[5],_order[9]}          # the only genuinely new claims
+# three, spread across the cluster by x so the junctions do not collide.
+# Indexed off the end rather than hard-coded, so thinning the cluster cannot
+# walk off it - which is exactly what 9 did once NEWP dropped to eight.
+NEWK={_order[1],_order[len(_order)//2],_order[-2]}
 # everything else already rests on something down there
 for k in range(len(NEWP)):
     if k in NEWK: continue
