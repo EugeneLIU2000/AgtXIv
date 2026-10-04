@@ -49,19 +49,28 @@ the prune sits just before the expensive step.
 ## The pipeline
 
 ```mermaid
-flowchart TD
-  F0["0 Freeze the plan<br/>query, versions, budgets"] --> F1["1 Acquire and parse<br/>(HOST)"]
-  F1 --> F2["2 Extract claims<br/>(LIGHT model)"]
-  F2 --> F3["3 Internal dependencies<br/>(HOST first, then model)"]
-  F3 --> F4["4 External citations<br/>(identifiers, terminal kinds)"]
-  F4 --> F5{"5 Is a cited paper<br/>load-bearing?"}
-  F5 -- "admit: acquire, extract,<br/>match requests" --> F1
-  F5 -- "no, or budget spent" --> F6["6 Prune to the query<br/>(HOST graph algorithms)"]
-  F6 --> F7["7 Root audit<br/>(Lean library search)"]
-  F7 --> F8["8 Premises<br/>(explicit Prop, junk-value lint)"]
-  F8 --> F9["9 Formalize bottom-up<br/>(HEAVY model + sandboxed Lean)"]
-  F9 --> F10["10 Composition check<br/>(from the elaborator)"]
-  F10 --> F11["11 Review and chain certificate"]
+flowchart LR
+  subgraph crawl["Forward crawl"]
+    direction TB
+    F0["0 Freeze the plan<br/>query, versions, budgets"] --> F1["1 Acquire and parse<br/>(HOST)"]
+    F1 --> F2["2 Extract claims<br/>(LIGHT model)"]
+    F2 --> F3["3 Internal dependencies<br/>(HOST first, then model)"]
+    F3 --> F4["4 External citations<br/>(identifiers, terminal kinds)"]
+    F4 --> F5{"5 Is a cited paper<br/>load-bearing?"}
+    F5 -- "yes: admit it, then<br/>match its requests" --> F1
+  end
+  subgraph prune["Backward prune"]
+    direction TB
+    F6["6 Prune to the query<br/>(HOST graph algorithms)"] --> F7["7 Root audit<br/>(Lean library search)"]
+  end
+  subgraph formal["Bottom-up formalization"]
+    direction TB
+    F8["8 Premises<br/>(explicit Prop, junk-value lint)"] --> F9["9 Formalize node by node<br/>(HEAVY model + sandboxed Lean)"]
+    F9 --> F10["10 Composition check<br/>(from the elaborator)"]
+    F10 --> F11["11 Review and<br/>chain certificate"]
+  end
+  crawl -- "no more load-bearing papers,<br/>or budget spent" --> prune
+  prune --> formal
 ```
 
 | # | Stage | Tier | What happens | Main code |
