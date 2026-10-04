@@ -1,0 +1,12 @@
+--- predecessor/AgtXIvRootMath/GottesmanCharacterDimension.lean
++++ adapted/AgtXIvRootMath/GottesmanCharacterDimension.lean
+@@ -36,6 +36,9 @@
+       V.character g = if g = 1 then (Fintype.card G : ℂ) else 0) :
+     Module.finrank ℂ (commonFixedSpace V.ρ) = 1 := by
+   classical
++  letI : Invertible (Nat.card G : ℂ) := by
++    simpa only [Nat.card_eq_fintype_card] using
++      (inferInstance : Invertible (Fintype.card G : ℂ))
+   have hCast :
+       (Module.finrank ℂ (commonFixedSpace V.ρ) : ℂ) = 1 := by
+     rw [← V.average_char_eq_finrank_invariants]

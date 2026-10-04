@@ -1,0 +1,11 @@
+--- predecessor/AgtXIvRootMath/GottesmanGeneralRankDimension.lean
++++ adapted/AgtXIvRootMath/GottesmanGeneralRankDimension.lean
+@@ -93,7 +93,7 @@
+           (Fintype.card (BinaryWord r) : ℂ) *
+             (⅟(Fintype.card (BinaryWord r) : ℂ) •
+               ∑ a : BinaryWord r, F.generalRankFDRep.character a) := by
+-                rw [hAverage]
++                rw [invOf_eq_inv, smul_eq_mul, ← Nat.card_eq_fintype_card, hAverage]
+       _ = ∑ a : BinaryWord r, F.generalRankFDRep.character a := by
+         rw [smul_eq_mul, ← mul_assoc, mul_invOf_self, one_mul]
+       _ = (2 ^ n : ℂ) := F.sum_generalRankFDRep_character

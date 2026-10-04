@@ -1,0 +1,16 @@
+{
+  "LIGHT": {"model": "gpt-5.6-luna", "effort": "medium", "tier_savings_measured": false},
+  "LIGHT_TERRA": {"model": "gpt-5.6-terra", "effort": "medium", "tier_savings_measured": false},
+  "DECISION": {"model": "gpt-5.6-terra", "effort": "medium", "calibration": null},
+  "CLASSIFICATION": {"model": "gpt-5.6-luna", "effort": "low", "calibration": null},
+  "HEAVY": {"model": "gpt-6-astra", "effort": "high", "tier_savings_measured": false},
+  "operations": {
+    "paper.extract": {"profile": "LIGHT", "engine_class": "LIGHT", "reason": "Repeated full-source claim extraction and normalization; retain exact quotations and unresolved scope."},
+    "dependency.match": {"profile": "DECISION", "engine_class": "DECISION", "reason": "Compare citation-localized semantic content, assumptions and mathematical support; a citation alone is not support."},
+    "autoformalization.failure_classify": {"profile": "CLASSIFICATION", "engine_class": "DECISION", "reason": "Classify an already recorded failure; cannot certify or rewrite proofs."},
+    "autoformalization.lean": {"profile": "HEAVY", "engine_class": "HEAVY", "reason": "Construct Lean statements and proof terms with structured Lamport reasoning."},
+    "autoformalization.lamport": {"profile": "HEAVY", "engine_class": "HEAVY", "reason": "Construct structured mathematical proofs for formalization."},
+    "autoformalization.premise": {"profile": "HEAVY", "engine_class": "HEAVY", "reason": "Construct Lean premise proof terms; this is proof generation, not citation classification."}
+  },
+  "note": "Frozen per new plan. No ambient default model or automatic expensive escalation. Costs and quality calibration remain unknown; reuse preserves original model identity."
+}

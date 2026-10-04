@@ -1,0 +1,10 @@
+--- before/MaximalContextPhysical.lean
++++ after/MaximalContextPhysical.lean
+@@ -52,7 +52,6 @@
+     have he := E.eval_mul_codeStateMatrix a
+     rw [ha] at he
+     have ht := congrArg (fun A => (Matrix.trace A).re) he
+-    dsimp only at ht
+     rw [E.codeStateMatrix_trace_one] at ht
+     rw [MaximalSignedContext.vector_of_mem W c hi]
+     cases hs : c.sign i

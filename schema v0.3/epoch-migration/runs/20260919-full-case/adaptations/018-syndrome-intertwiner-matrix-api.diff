@@ -1,0 +1,41 @@
+--- before/AgtXIvRootMath/PauliSyndromeIntertwiner.lean
++++ adapted/AgtXIvRootMath/PauliSyndromeIntertwiner.lean
+@@ -40,9 +40,9 @@
+     ext row col
+     let b := D.basisIndex.symm col
+     have hb := congrFun (h b) row
+-    simpa [Matrix.mul_apply, SyndromeBasisData.matrix, b] using hb
++    simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct, SyndromeBasisData.matrix, b] using hb
+   have hright : D.matrix * D.matrixᴴ = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff] using D.matrix_unitary
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using D.matrix_unitary
+   calc
+     M = M * (D.matrix * D.matrixᴴ) := by rw [hright]; simp
+     _ = (M * D.matrix) * D.matrixᴴ := by rw [Matrix.mul_assoc]
+@@ -81,7 +81,7 @@
+       F.syndromeBasisData.matrix *ᵥ e := by
+     exact F.syndromeBasisData.state_eq_matrix_mulVec_single b
+   have hleft : A.syndromeBasisData.matrixᴴ * A.syndromeBasisData.matrix = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff'] using
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose] using
+       A.syndromeBasisData.matrix_unitary
+   rw [hA, hF, frameChangeMatrix, Matrix.mulVec_mulVec]
+   congr 1
+@@ -122,7 +122,7 @@
+         (frameChangeMatrix A F)ᴴ =
+       (F.eval a).toCMatrix := by
+   have hright : frameChangeMatrix A F * (frameChangeMatrix A F)ᴴ = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff] using
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using
+       frameChangeMatrix_unitary A F
+   rw [frameChangeMatrix_read_intertwines]
+   calc
+@@ -174,7 +174,7 @@
+         (frameChangeMatrix A F)ᴴ =
+       (F.dualFrame.eval a).toCMatrix := by
+   have hright : frameChangeMatrix A F * (frameChangeMatrix A F)ᴴ = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff] using
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using
+       frameChangeMatrix_unitary A F
+   rw [frameChangeMatrix_flip_intertwines]
+   calc

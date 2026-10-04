@@ -1,0 +1,23 @@
+--- original/Quantumlib/Data/Gate/Pauli/Defs.lean
++++ adapted/Quantumlib/Data/Gate/Pauli/Defs.lean
+@@ -126,17 +126,17 @@
+ noncomputable section
+ 
+ def normalized (Pm : PauliMap n) : PauliMap n :=
+-  Finsupp.sum Pm f
++  Finsupp.sum Pm.coeff f
+ where
+   f P c := MonoidAlgebra.single P.zeroed (P.evalPhase * c)
+ 
+ @[coe]
+ def ofPauli (P : Pauli n) : PauliMap n :=
+-  Finsupp.single P 1 |> normalized
++  MonoidAlgebra.single P 1 |> normalized
+ 
+ instance : Coe (Pauli n) (PauliMap n) := ⟨ofPauli⟩
+ 
+ def toCMatrix (pm : PauliMap n) : CMatrix (2 ^ n) (2 ^ n) :=
+-  pm.sum (fun P c => (c • P.toCMatrix))
++  pm.coeff.sum (fun P c => (c • P.toCMatrix))
+ 
+ end

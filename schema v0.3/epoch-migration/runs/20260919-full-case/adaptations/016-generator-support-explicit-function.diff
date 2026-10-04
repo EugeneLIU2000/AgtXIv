@@ -1,0 +1,13 @@
+--- before/AgtXIvRootMath/PauliFrameSupportCompletion.lean
++++ adapted/AgtXIvRootMath/PauliFrameSupportCompletion.lean
+@@ -83,7 +83,9 @@
+     LinearMap.ker_eq_bot.mpr F.supportLinear_injective
+   have h := (Pi.basisFun F2 (Fin r)).linearIndependent.map'
+     F.supportLinear hker
+-  simpa only [generatorSupport, Function.comp_apply] using h
++  change LinearIndependent F2
++    (fun i => F.supportLinear (Pi.basisFun F2 (Fin r) i))
++  exact h
+ 
+ /-- All evaluated frame words commute because their label group is
+ commutative and evaluation is a homomorphism. -/

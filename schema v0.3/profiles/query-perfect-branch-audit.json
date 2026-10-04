@@ -1,0 +1,135 @@
+{
+  "kind": "CandidateDeclarationAuditPlan",
+  "paper_id": "arxiv:2607.26154v1",
+  "root_module": "QueryPerfectBranchCandidates",
+  "status": "UNREVIEWED_NOT_EXECUTED",
+  "source_alignment_accepted": false,
+  "all_query_claims_covered": false,
+  "candidate_assembly": {
+    "path": "schema v0.3/runs/research-doi-available-20260922/graphs/00033-7eb94ecd/assembly.json",
+    "sha256": "sha256:46f5178b4a45607b94ab0229f3fa21f5f93c6b6b6ed745315b14653eea335041"
+  },
+  "candidate_source_bindings": [
+    {
+      "claim_id": "claim:candidate:12649f3695466099141288ec",
+      "binding_status": "EXTRACTED_NODE_LOCATED_SEMANTICS_UNREVIEWED",
+      "source_span": {
+        "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+        "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+        "byte_start": 58175,
+        "byte_end": 58836,
+        "offset_unit": "BYTE",
+        "interval": "HALF_OPEN",
+        "span_sha256": "sha256:e162059670cbd0b7db9498bff45d63d23e927d81ced68591942deaf0d64846d6"
+      },
+      "unverified_clause": "Candidate uses the original minimal Pauli dependency definition, arbitrary product ordering and n>0; domain and source semantics require review."
+    },
+    {
+      "claim_id": "claim:candidate:e63f20587f624a1d472f6f83",
+      "binding_status": "EXTRACTED_NODE_LOCATED_SEMANTICS_UNREVIEWED",
+      "source_span": {
+        "path": "Stabilizerness/arXiv-2607.26154v1/draft.tex",
+        "sha256": "sha256:4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+        "byte_start": 54243,
+        "byte_end": 54730,
+        "offset_unit": "BYTE",
+        "interval": "HALF_OPEN",
+        "span_sha256": "sha256:7225fccfd5973c5d73d104ece52e45b0d51074212050e1d942778eda3b840203"
+      },
+      "unverified_clause": "Maximum anticommuting set equivalence now has a candidate target; kernel and source alignment remain unverified."
+    }
+  ],
+  "targets": [
+    {
+      "declaration": "AgtXIv.JordanWigner.window_unique_inactive_dependency",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "proof of prop:extremal / canonical JW unique inactive dependency",
+      "candidate_claim_ids": ["claim:candidate:d2e9e22029a00ff03ea9e78e"]
+    },
+    {
+      "declaration": "AgtXIv.PauliCliqueGram.maximum_clique_unique_inactive_dependency",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "proof of prop:extremal / unique nontrivial dependency supported on Q and its inactivity",
+      "candidate_claim_ids": ["claim:candidate:12649f3695466099141288ec"]
+    },
+    {
+      "declaration": "AgtXIv.PauliCliqueGram.maximum_clique_product_scalar_any_order",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "proof of prop:extremal / full Pauli product proportional to identity",
+      "candidate_claim_ids": ["claim:candidate:12649f3695466099141288ec"]
+    },
+    {
+      "declaration": "AgtXIv.PauliCliqueGram.maximum_clique_support_kernel",
+      "role": "AUXILIARY_REFORMULATION",
+      "source_locator": "proof of prop:extremal / binary kernel consists of zero and all-ones",
+      "candidate_claim_ids": []
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.witnessCapacity_eq_ceiling_iff_anticommutingSet",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "prop:extremal / capacity equality iff a size-2n+1 anticommuting set exists",
+      "candidate_claim_ids": ["claim:candidate:e63f20587f624a1d472f6f83"]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_eq_max_one_clique_weight",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "thm:solvable / closed-form clause",
+      "candidate_claim_ids": ["claim:candidate:6f4ac803e231732edaa22544", "claim:candidate:2f3f8724f6af60062d466ad9"]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_le_sqrt_cliqueNum",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "thm:solvable / square-root upper bound",
+      "candidate_claim_ids": ["claim:candidate:6f4ac803e231732edaa22544", "claim:candidate:2f3f8724f6af60062d466ad9"]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_eq_sqrt_of_maximum_clique_support",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "thm:solvable / every state supported on the positive eigenspace",
+      "candidate_claim_ids": ["claim:candidate:6f4ac803e231732edaa22544", "claim:candidate:2f3f8724f6af60062d466ad9"]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.exists_reducedRoM_sqrt_attainer",
+      "role": "AUXILIARY_ATTAINMENT",
+      "source_locator": "proof of thm:solvable / existence of a saturating density matrix",
+      "candidate_claim_ids": []
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_isGreatest_perfect_cover_dual",
+      "role": "AUXILIARY_REFORMULATION",
+      "source_locator": "perfect-graph cover-dual derivation; exact source binding pending",
+      "candidate_claim_ids": []
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.sqrt_dimension_isGreatest_solvableWindowCapacities",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "prop:extremal / outer maximum over solvable measurement sets",
+      "candidate_claim_ids": ["claim:candidate:e63f20587f624a1d472f6f83"]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.witnessCapacity_eq_ceiling_iff_cliqueNum",
+      "role": "QUERY_CLAUSE_CANDIDATE",
+      "source_locator": "prop:extremal / equality iff clique number is 2n+1",
+      "candidate_claim_ids": ["claim:candidate:e63f20587f624a1d472f6f83"]
+    },
+    {
+      "declaration": "AgtXIv.JordanWigner.window_witnessCapacity",
+      "role": "AUXILIARY_ATTAINMENT",
+      "source_locator": "proof of prop:extremal / JW realizes the ceiling",
+      "candidate_claim_ids": []
+    },
+    {
+      "declaration": "AgtXIv.JordanWigner.window_exists_attainer",
+      "role": "AUXILIARY_ATTAINMENT",
+      "source_locator": "proof of prop:extremal / state realizing JW capacity",
+      "candidate_claim_ids": []
+    }
+  ],
+  "open_obligations": [
+    "Exact source-span and declaration-type alignment, including nonempty windows and n>0",
+    "Semantic clause alignment for located prop:extremal node, including the maximum-anticommuting-set equivalence",
+    "Kernel verification and source alignment of the new unique-dependency candidates; exact even/odd Gram ranks remain without explicit candidate targets",
+    "Recursive source evidence for sarkar2021sets, brauer1935spinors and ipek2026phasespace",
+    "Remaining query claims outside this branch"
+  ]
+}

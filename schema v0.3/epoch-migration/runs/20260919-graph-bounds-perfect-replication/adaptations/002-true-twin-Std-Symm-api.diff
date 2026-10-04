@@ -1,0 +1,17 @@
+--- before/PerfectGraphTrueTwin.lean
++++ after/PerfectGraphTrueTwin.lean
+@@ -23,12 +23,13 @@
+     | some v, none => v = x ∨ G.Adj x v
+     | some v, some w => G.Adj v w
+   symm := by
++    constructor
+     intro a b h
+     cases a <;> cases b
+     · exact h
+     · exact h
+     · exact h
+-    · exact G.symm h
++    · exact G.adj_symm h
+   loopless := by
+     constructor
+     intro a h

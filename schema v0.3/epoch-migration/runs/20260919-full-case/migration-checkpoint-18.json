@@ -1,0 +1,1691 @@
+{
+  "scope": "FULL_ORIGINAL_CASE_LOCAL_MODULE_MIGRATION",
+  "status": "COMPATIBILITY_BLOCKED",
+  "query_chain_complete": false,
+  "full_case_migrated": false,
+  "toolchain": "leanprover/lean4:v4.33.0",
+  "resolved_manifest": {
+    "version": "1.2.0",
+    "packagesDir": ".lake/packages",
+    "packages": [
+      {
+        "url": "https://github.com/leanprover-community/mathlib4.git",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "db584cd6d46c92f209a44c0f1c829460d327499d",
+        "name": "mathlib",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "v4.33.0",
+        "inherited": false,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover/doc-gen4",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "aceca4eeb5a79092eabefaa75fcb72b701d02205",
+        "name": "«doc-gen4»",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "v4.33.0",
+        "inherited": false,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover-community/plausible",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "b7eb3304aeae834b12dda98993a37f6a41f6f0bb",
+        "name": "plausible",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/LeanSearchClient",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "5f4d51b81cbd3f6b32b156bfad9056621a040404",
+        "name": "LeanSearchClient",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/import-graph",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "16f02aa7642864af59f1ff0e384a015994db9118",
+        "name": "importGraph",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/ProofWidgets4",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "4be2e3d5087eeb272cf5a8853b8f9dd025ef5957",
+        "name": "proofwidgets",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover-community/aesop",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "3448c0bcc5ce01b2d1546e483ec3620e32df3d0e",
+        "name": "aesop",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "master",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/quote4",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "92c15be17b7caf78c2ad767ec40f89052d908d81",
+        "name": "Qq",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "master",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/batteries",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "4488d40d070b9700d4d5a6aa342f0d40c31b2a2d",
+        "name": "batteries",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover/leansqlite",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "6168b7549738a19bc837a1625c60c5d1e5dd8aeb",
+        "name": "leansqlite",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover/lean4-cli",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover",
+        "rev": "6130a47896ce867c6a4a55373441e59e565bad0f",
+        "name": "Cli",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "v4.33.0",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/fgdorais/lean4-unicode-basic",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "37e7d8cb7316a88cd3e91208385c9ec6ae780019",
+        "name": "UnicodeBasic",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/dupuisf/BibtexQuery",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "852edafa268eb038a7158551fd580ee8433847b0",
+        "name": "BibtexQuery",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "master",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/acmepjz/md4lean",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "31907cc18f48a95384f99cee5582c00fb39e0f67",
+        "name": "MD4Lean",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      }
+    ],
+    "name": "Physlib",
+    "lakeDir": ".lake",
+    "fixedToolchain": false
+  },
+  "catalog": {
+    "scope": "STATIC_ORIGINAL_CASE_MODULE_CLOSURE",
+    "modules": {
+      "AgtXIvRootMath.AtomPreservingMonotonicity": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+        "sha256": "7f457f1081d341c097d186e0f7ba40e531dfadfc92bb6a0ec914c33c9f707178",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomAttainment",
+          "AgtXIvRootMath.StochasticContraction"
+        ]
+      },
+      "AgtXIvRootMath.CanonicalStabilizerAtoms": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/CanonicalStabilizerAtoms.lean",
+        "sha256": "99f61d8bb2564120da043f280a6dfcb3821cb41166ea2dad1a58db6d7ab18a3c",
+        "imports": [
+          "AgtXIvRootMath.StabilizerRoMInstantiation"
+        ]
+      },
+      "AgtXIvRootMath.DensityStabilizerRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/DensityStabilizerRoM.lean",
+        "sha256": "0709698ea282d1406588d78d1c39fe088707c2ea5ad391ad9900838175cbcd6e",
+        "imports": [
+          "AgtXIvRootMath.CanonicalStabilizerAtoms"
+        ]
+      },
+      "AgtXIvRootMath.F2Coordinates": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/F2Coordinates.lean",
+        "sha256": "c0f6628b45fd9022adc30be5eb36c36cb7a724406d4ea7508e44a8f1796783cd",
+        "imports": [
+          "AgtXIvRootMath.PauliF2Support",
+          "Mathlib.LinearAlgebra.BilinearForm.Properties"
+        ]
+      },
+      "AgtXIvRootMath.F2SymplecticNondegenerate": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/F2SymplecticNondegenerate.lean",
+        "sha256": "94e8f8dc8f729d607b93163508b57dcfd2e15320592559c7aa5225482aa4d947",
+        "imports": [
+          "AgtXIvRootMath.PauliF2Support",
+          "Mathlib.LinearAlgebra.BilinearForm.Properties"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomAttainment": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+        "sha256": "b2f211eb10b67c5ceecedbb2ae2176afcef37f7881e7afd97934f2536305bbb0",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM",
+          "Mathlib.Topology.MetricSpace.Bounded"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomConvexHull": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomConvexHull.lean",
+        "sha256": "906e7b5edbbb8f761729c2a54f69188cda2d724d65f5525340eafb1059a97336",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM",
+          "Mathlib.Analysis.Convex.Combination"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+        "sha256": "046dbdb16ab0b4d1ab2bffd54f4f7eeb18568493fd211c409f1f823815fb6f19",
+        "imports": [
+          "Mathlib"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomTotalRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+        "sha256": "b6ae13b033d387b760c2a4e7c7bfb211537dafebf83b47b562afa85ea2444149",
+        "imports": [
+          "AgtXIvRootMath.AtomPreservingMonotonicity"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanCharacterDimension": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanCharacterDimension.lean",
+        "sha256": "a10bb7312476c2f01390e026b12c74eb74c657a8cc483f7fb9339df10030f812",
+        "imports": [
+          "AgtXIvRootMath.GottesmanGroupAverage",
+          "Mathlib.RepresentationTheory.Character"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanConcretePauliFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanConcretePauliFrame.lean",
+        "sha256": "58c49b36fa007aae0caafde5ccf13f7d6e55af2dbd52bebef483b99dc996dd4e",
+        "imports": [
+          "AgtXIvRootMath.PauliAdjoint",
+          "AgtXIvRootMath.GottesmanRankPauliFrame"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGeneralRankDimension": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+        "sha256": "9b80468de1145115280f20ab32a28b730681778c117aba31451e18a4d2db3cb9",
+        "imports": [
+          "AgtXIvRootMath.GottesmanPauliGenerators",
+          "Mathlib.RepresentationTheory.Character"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGeneralRankProjector": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+        "sha256": "5653a6716cb3395b6ea7e767cabb6e8d61dac87c54f18b78364d9047963e0164",
+        "imports": [
+          "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "AgtXIvRootMath.PauliAdjoint",
+          "Mathlib.Analysis.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.Rank"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGeneratorFixedSpace": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+        "sha256": "352c5e17e9bb91ec5e8151d401e9aaaa508eeb1f06b9e4d01b1a2618bde32ff3",
+        "imports": [
+          "AgtXIvRootMath.GottesmanUniqueRay",
+          "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "Mathlib.Algebra.Group.Submonoid.BigOperators"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGroupAverage": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+        "sha256": "9f7d906e0d073b11efaaa4c4a3f7db81df5c0d6a31d0b882b8a123b47d5439d6",
+        "imports": [
+          "Mathlib.RepresentationTheory.Invariants",
+          "Mathlib.Data.Complex.Basic"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanPauliGenerators": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+        "sha256": "824c7a8de96e632d9b3355c1a25c27db19525c1027db36f44efe4bfe5142edee",
+        "imports": [
+          "AgtXIvRootMath.GottesmanRankNProjector",
+          "Mathlib.Data.Finset.NoncommProd"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanRankNProjector": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+        "sha256": "55b5f59ed898d6873ebf424c31a72d9dd7aaf02aba59b0d75377aebeb2c5dedf",
+        "imports": [
+          "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "Mathlib.Analysis.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.Rank"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanRankPauliFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankPauliFrame.lean",
+        "sha256": "0c8aa3f56568fcbc2c1637dff50a3add880b8a162a73192d0edf91a21bf08302",
+        "imports": [
+          "AgtXIvRootMath.GottesmanCharacterDimension",
+          "Mathlib.Data.Fintype.BigOperators",
+          "Mathlib.Data.ZMod.Basic"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanUniqueRay": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+        "sha256": "217c8979953f993d8f144933ba38b74648f83743ac9cda991b738cbd49579565",
+        "imports": [
+          "AgtXIvRootMath.GottesmanPauliGenerators",
+          "Mathlib.Analysis.Complex.Norm",
+          "Mathlib.LinearAlgebra.FiniteDimensional.Basic"
+        ]
+      },
+      "AgtXIvRootMath.HermitianAffineFeasibility": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/HermitianAffineFeasibility.lean",
+        "sha256": "cbda7213e99eb175932577ac5046068f3a9884a7fc088efa94abc6f9e5ba99f3",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM",
+          "AgtXIvRootMath.GottesmanRankNProjector",
+          "Mathlib.Algebra.Star.Module",
+          "Mathlib.LinearAlgebra.AffineSpace.Combination"
+        ]
+      },
+      "AgtXIvRootMath.HermitianPauliBasis": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/HermitianPauliBasis.lean",
+        "sha256": "11949879d1a64d72a3c43b49647755c6b981b1f2d856ab973196cd426b2ce5a2",
+        "imports": [
+          "AgtXIvRootMath.HermitianAffineFeasibility",
+          "AgtXIvRootMath.PauliAdjoint",
+          "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
+          "Mathlib.LinearAlgebra.Basis.VectorSpace",
+          "Mathlib.LinearAlgebra.Matrix.StdBasis",
+          "Init.Data.BitVec.Lemmas"
+        ]
+      },
+      "AgtXIvRootMath.PauliAdjoint": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliAdjoint.lean",
+        "sha256": "54121fa9a48839d7ebcecf184107a7a45a094e80226c4cfc2c1b29f5b0503dd8",
+        "imports": [
+          "AgtXIvRootMath.PauliTrace",
+          "Quantumlib.ForMathlib.Data.Matrix.Unitary"
+        ]
+      },
+      "AgtXIvRootMath.PauliCliffordTransitivity": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+        "sha256": "fa9322dddf9b31d45fce91939dc2465e3c807a8ae9a3867b2fc06ae9259faed5",
+        "imports": [
+          "AgtXIvRootMath.PauliSyndromeIntertwiner",
+          "AgtXIvRootMath.SemanticCliffordFrames",
+          "AgtXIvRootMath.StandardZIndependentFrame"
+        ]
+      },
+      "AgtXIvRootMath.PauliDualFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliDualFrame.lean",
+        "sha256": "71dcf354ec9e95a3578678e36b6bca83030786aec39e82dd7720e0b1203be3d8",
+        "imports": [
+          "AgtXIvRootMath.PauliSupportWord"
+        ]
+      },
+      "AgtXIvRootMath.PauliF2Support": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliF2Support.lean",
+        "sha256": "33ed70898dadc2ac955d644e1597736752760237e4450b3c0503c3d1155321e8",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "Mathlib.LinearAlgebra.BilinearForm.Basic"
+        ]
+      },
+      "AgtXIvRootMath.PauliFaithful": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFaithful.lean",
+        "sha256": "916d785a0b9773ef7aafc396aaf7c2d422158e70a6ce01add2a383b080cd10b0",
+        "imports": [
+          "AgtXIvRootMath.PauliAdjoint"
+        ]
+      },
+      "AgtXIvRootMath.PauliFrameNormalForm": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameNormalForm.lean",
+        "sha256": "c4d7c24247f792ad4c086d0c80729668d4ed33ee399402b8c8cd4461a9f40470",
+        "imports": [
+          "AgtXIvRootMath.PauliDualFrame",
+          "AgtXIvRootMath.PauliFaithful"
+        ]
+      },
+      "AgtXIvRootMath.PauliFrameSupportCompletion": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSupportCompletion.lean",
+        "sha256": "e0deac67b16478ed4ad7c972bae3b0d27de59c43c77d65d70c281f2eadb63635",
+        "imports": [
+          "AgtXIvRootMath.F2SymplecticNondegenerate",
+          "AgtXIvRootMath.SymplecticCompletion",
+          "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "Mathlib.LinearAlgebra.StdBasis"
+        ]
+      },
+      "AgtXIvRootMath.PauliFrameSymplecticBasis": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSymplecticBasis.lean",
+        "sha256": "ba3ba6b2dc217d48ded4cfdbb742d4f4b1255a03c9007a1a4d82e5f4d3e9cbb4",
+        "imports": [
+          "AgtXIvRootMath.PauliFrameSupportCompletion",
+          "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas"
+        ]
+      },
+      "AgtXIvRootMath.PauliSupportWord": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliSupportWord.lean",
+        "sha256": "0d25d06c4aa966aca70d75f82204eb87e5f9b0f532bf9fc9b4236a4ea8154f2c",
+        "imports": [
+          "AgtXIvRootMath.PauliFrameSymplecticBasis",
+          "AgtXIvRootMath.HermitianPauliBasis",
+          "AgtXIvRootMath.GottesmanPauliGenerators"
+        ]
+      },
+      "AgtXIvRootMath.PauliSyndromeData": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeData.lean",
+        "sha256": "23d3f68dde6fc98dab12a2ef99c8248057e7cdf13496f3d976eafb1326be35e3",
+        "imports": [
+          "AgtXIvRootMath.GottesmanUniqueRay",
+          "AgtXIvRootMath.SyndromeBasis",
+          "AgtXIvRootMath.PauliFrameNormalForm"
+        ]
+      },
+      "AgtXIvRootMath.PauliSyndromeIntertwiner": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeIntertwiner.lean",
+        "sha256": "71a5a4f967dc2fd4b7e9cf703ddf21bdc2101ad7dc5246f62461e33a2a4f739c",
+        "imports": [
+          "AgtXIvRootMath.PauliSyndromeData"
+        ]
+      },
+      "AgtXIvRootMath.PauliTrace": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean",
+        "sha256": "6914299ba844c1e8905194a7627d674a23ef25b75e78316e33b2fcf7a522edf8",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "Mathlib.RepresentationTheory.Character"
+        ]
+      },
+      "AgtXIvRootMath.ProductStabilizerFrames": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/ProductStabilizerFrames.lean",
+        "sha256": "b7420476b77886d14967f10f5c75d9c0144ea41e62a211dc9c31e7e1b499f46d",
+        "imports": [
+          "AgtXIvRootMath.QubitStabilizerAffineComplete",
+          "AgtXIvRootMath.StandardZProjectorBridge",
+          "AgtXIvRootMath.PauliFrameSupportCompletion"
+        ]
+      },
+      "AgtXIvRootMath.QubitStabilizerAffineComplete": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/QubitStabilizerAffineComplete.lean",
+        "sha256": "7dee3f6d2d30c229f2016445189dcf22f29a90cf08f021cde7f6cb1b2fac2003",
+        "imports": [
+          "AgtXIvRootMath.HermitianAffineFeasibility",
+          "AgtXIvRootMath.PauliF2Support"
+        ]
+      },
+      "AgtXIvRootMath.RootMathCompletion": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+        "sha256": "5b78a6da4d6689257acfe1ed2c70060c6b7d4b324973a76a7944bf1c96eaba0c",
+        "imports": [
+          "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "AgtXIvRootMath.GottesmanGeneralRankProjector",
+          "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+          "AgtXIvRootMath.UnconditionalStabilizerRoM",
+          "AgtXIvRootMath.VeitchOrbitPolytope"
+        ]
+      },
+      "AgtXIvRootMath.SemanticClifford": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SemanticClifford.lean",
+        "sha256": "6d6508d287528377fc17f2cbca83bd26ca2fcba1f12b4544626b4b1d56a4b171",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "Quantumlib.ForMathlib.Data.Matrix.Unitary"
+        ]
+      },
+      "AgtXIvRootMath.SemanticCliffordFrames": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SemanticCliffordFrames.lean",
+        "sha256": "754d473ed57c9b359412e7b6217a68f8083c7fe65c7970f6ac81d93dd8bc270c",
+        "imports": [
+          "AgtXIvRootMath.PauliFaithful",
+          "AgtXIvRootMath.SemanticClifford",
+          "AgtXIvRootMath.GottesmanRankNProjector"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerAffineComplete": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+        "sha256": "384473e9da08e7f0c217c8562adfc550ed70a9d8bf2ac768d90bc348b390036e",
+        "imports": [
+          "AgtXIvRootMath.HermitianPauliBasis",
+          "AgtXIvRootMath.ProductStabilizerFrames",
+          "AgtXIvRootMath.StabilizerAtomMaps"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerAtomMaps": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAtomMaps.lean",
+        "sha256": "7ad7ea8da7817df0cc54ff6e93aac2c98eb6e609f45556e972712d18f734f538",
+        "imports": [
+          "AgtXIvRootMath.HermitianAffineFeasibility",
+          "AgtXIvRootMath.VeitchStabilizerPolytope",
+          "Mathlib.Analysis.CStarAlgebra.Matrix"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerFrameProjector": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerFrameProjector.lean",
+        "sha256": "167fff2fabc717776237f6815f99fdb274e511090199959fdcece34a430a6700",
+        "imports": [
+          "AgtXIvRootMath.PauliF2Support",
+          "AgtXIvRootMath.SemanticClifford",
+          "Mathlib.LinearAlgebra.Matrix.Hermitian"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerRoMInstantiation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerRoMInstantiation.lean",
+        "sha256": "5e2b8fc7a667ebd53194ba06d6d51549413724e7291c9452285ba575624a2943",
+        "imports": [
+          "AgtXIvRootMath.StabilizerAtomMaps"
+        ]
+      },
+      "AgtXIvRootMath.StandardZIndependentFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StandardZIndependentFrame.lean",
+        "sha256": "55f49c7073430b33cfac9e58ad7e8586c077760a6f5ddcd34621c82b3b284d83",
+        "imports": [
+          "AgtXIvRootMath.GottesmanConcretePauliFrame"
+        ]
+      },
+      "AgtXIvRootMath.StandardZProjectorBridge": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StandardZProjectorBridge.lean",
+        "sha256": "187da6383f4d4565a4551e55fac4d9ab5f91ac77d42b57a206c92fbb45e9d038",
+        "imports": [
+          "AgtXIvRootMath.StandardZIndependentFrame",
+          "AgtXIvRootMath.StabilizerFrameProjector",
+          "AgtXIvRootMath.GottesmanRankNProjector"
+        ]
+      },
+      "AgtXIvRootMath.StochasticContraction": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StochasticContraction.lean",
+        "sha256": "27e2aa3fa161719c73a159ad66ef033162cf7ad29c1814ab3e589dc622ca4e3d",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM"
+        ]
+      },
+      "AgtXIvRootMath.SymplecticCompletion": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SymplecticCompletion.lean",
+        "sha256": "bf31c1eae0437a8b2113af7bdb53acfde856d163e406a5603a7108467a6ccb05",
+        "imports": [
+          "AgtXIvRootMath.F2Coordinates",
+          "Mathlib.LinearAlgebra.Basis.VectorSpace",
+          "Mathlib.LinearAlgebra.BilinearForm.Properties"
+        ]
+      },
+      "AgtXIvRootMath.SyndromeBasis": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SyndromeBasis.lean",
+        "sha256": "4ccefcb6f4b0d9102cb7a7444827779ab404ece10c7b749fb46e69ddfe0ad713",
+        "imports": [
+          "AgtXIvRootMath.SemanticClifford",
+          "Mathlib.LinearAlgebra.Matrix.ConjTranspose"
+        ]
+      },
+      "AgtXIvRootMath.UnconditionalStabilizerRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+        "sha256": "4c972b934f94b1529a7d579c8c524c1e20b21ca40c6a2ad210eb2e8e484b7847",
+        "imports": [
+          "AgtXIvRootMath.StabilizerAffineComplete",
+          "AgtXIvRootMath.DensityStabilizerRoM"
+        ]
+      },
+      "AgtXIvRootMath.VeitchConvexHull": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchConvexHull.lean",
+        "sha256": "aceabfd0286bd21ba20caa331a66785ff7db99738fce2b82f0c7dbb395768a34",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomConvexHull",
+          "AgtXIvRootMath.VeitchStabilizerPolytope"
+        ]
+      },
+      "AgtXIvRootMath.VeitchOrbitBridge": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitBridge.lean",
+        "sha256": "55ebbd04ed2673f0c7276304fdf29d5d6eec8f3fc11c506ab90aa964cf7c2e73",
+        "imports": [
+          "AgtXIvRootMath.StandardZProjectorBridge",
+          "AgtXIvRootMath.SemanticCliffordFrames",
+          "AgtXIvRootMath.VeitchStabilizerPolytope"
+        ]
+      },
+      "AgtXIvRootMath.VeitchOrbitEquivalence": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+        "sha256": "d2089a0ab347c00400054991dc7dea23ed5c19b24d5ee802813a5eb8fb59f828",
+        "imports": [
+          "AgtXIvRootMath.PauliCliffordTransitivity",
+          "AgtXIvRootMath.VeitchOrbitBridge"
+        ]
+      },
+      "AgtXIvRootMath.VeitchOrbitPolytope": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+        "sha256": "89471b7b70fdec4e29c37aa10bfc1e2f2105ca88258b54a31c04f0c861d4d5e9",
+        "imports": [
+          "AgtXIvRootMath.VeitchConvexHull",
+          "AgtXIvRootMath.VeitchOrbitEquivalence"
+        ]
+      },
+      "AgtXIvRootMath.VeitchStabilizerPolytope": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchStabilizerPolytope.lean",
+        "sha256": "fd0f957e87984929c22e8ccce42168eb243f6e1a0d58e76b5093ea1f5341fde0",
+        "imports": [
+          "AgtXIvRootMath.GottesmanPauliGenerators",
+          "AgtXIvRootMath.FiniteAtomTotalRoM"
+        ]
+      },
+      "AgtXIvStabilizerness": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness/AgtXIvStabilizerness.lean",
+        "sha256": "ee90b474f3df03505714b18291ac01f83b9698492f88b0861f5cd9e1e63e9121",
+        "imports": [
+          "AgtXIvStabilizerness.LocalDelta",
+          "AgtXIvStabilizerness.AdmissibleSigns"
+        ]
+      },
+      "AgtXIvStabilizerness.AdmissibleSigns": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness/AgtXIvStabilizerness/AdmissibleSigns.lean",
+        "sha256": "c4ae939259075a080bd9d85586270e759cb39edc49365ce842cad93e3f8d197b",
+        "imports": [
+          "AgtXIvStabilizerness.LocalDelta"
+        ]
+      },
+      "AgtXIvStabilizerness.LocalDelta": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean",
+        "sha256": "17bb3964088083529ffa7553d6fc7b5f0e43a7f48cf995a5450bb1c7faeb1883",
+        "imports": [
+          "AgtXIvVarela",
+          "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+          "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs"
+        ]
+      },
+      "AgtXIvVarela": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela.lean",
+        "sha256": "05724966d2acc1f6a8cfb9f3609fa7e9ce54b15a147b6d9d65d98d0911e9c433",
+        "imports": [
+          "AgtXIvVarela.VRepConditional",
+          "AgtXIvVarela.ExternalPerfectGraphFoundation"
+        ]
+      },
+      "AgtXIvVarela.ContextReconstruction": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+        "sha256": "8b421813476f88c412873b1478966b6de14ffe60a10b72730ee0b2a43f381ddf",
+        "imports": [
+          "AgtXIvVarela.MaximalContext"
+        ]
+      },
+      "AgtXIvVarela.ExternalPerfectGraphFoundation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+        "sha256": "f011649e5ff37ba80f85f873c75d61d25360d2e738df1984df2401b4b6cfed50",
+        "imports": [
+          "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "Mathlib.Combinatorics.SimpleGraph.Coloring.VertexColoring",
+          "Mathlib.Data.Real.Archimedean"
+        ]
+      },
+      "AgtXIvVarela.MaximalContext": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+        "sha256": "400897508d5c2816185f18a90980a3e0009cf05a3e394a8ef450541984b0eaca",
+        "imports": [
+          "AgtXIvVarela.MeasurementProjection"
+        ]
+      },
+      "AgtXIvVarela.MeasurementProjection": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+        "sha256": "3268f79629d4f08a2f8584be64c2a1cfdf2040685571c37b17b0ecda62b984e8",
+        "imports": [
+          "AgtXIvRootMath.RootMathCompletion"
+        ]
+      },
+      "AgtXIvVarela.VRepConditional": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+        "sha256": "9cfcf580303831782d07dcb791ea1071f5964631f7ec04793372c66c0ddfaf6f",
+        "imports": [
+          "AgtXIvVarela.ContextReconstruction"
+        ]
+      },
+      "Quantumlib.Data.Basis.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Basis/Basic.lean",
+        "sha256": "5d2b4e586c5fb52d1faa937783533bd4cbeced579e714242e1aa2eb791e992fe",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.Tactic.Basic",
+          "Mathlib.Analysis.Complex.Exponential",
+          "Mathlib.Data.Complex.Basic",
+          "Mathlib.Data.Real.Sqrt",
+          "Mathlib.LinearAlgebra.Matrix.Kronecker"
+        ]
+      },
+      "Quantumlib.Data.Basis.Equivs": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Basis/Equivs.lean",
+        "sha256": "f95a9ba948e22d821fc21ddc5d5cce3c20f67520bb5b9ee85459716af0514faa",
+        "imports": [
+          "Quantumlib.Data.Basis.Notation",
+          "Quantumlib.Tactic.Basic"
+        ]
+      },
+      "Quantumlib.Data.Basis.Notation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Basis/Notation.lean",
+        "sha256": "410ceb68fa15e2b5b71400f1f5c95acc5a3ff4ab0f3b9cea97c72bfc87596a24",
+        "imports": [
+          "Quantumlib.Data.Basis.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.Tactic.Basic",
+          "Lean"
+        ]
+      },
+      "Quantumlib.Data.Gate.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Basic.lean",
+        "sha256": "35e8d26e5d7f799fa2e5b4a133d6d4c88b2b539bc01998a6bcba3a80efc2ed02",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+          "Quantumlib.ForMathlib.Data.Complex.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Equivs": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Equivs.lean",
+        "sha256": "9236daa109dcd0df79440017fefc2936e2e34737fb1503589daaf06d1d0164d3",
+        "imports": [
+          "Quantumlib.Data.Basis.Notation",
+          "Quantumlib.Data.Basis.Equivs",
+          "Quantumlib.Data.Gate.Basic",
+          "Quantumlib.Data.Gate.Pauli",
+          "Quantumlib.Data.Gate.PhaseShift",
+          "Quantumlib.Data.Gate.Rotate",
+          "Quantumlib.Tactic.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli.lean",
+        "sha256": "4adeaf71bee3f257ce5e84cba87d4e1bf26e35c46c3fb421a2d3411bff9e95f9",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Defs",
+          "Quantumlib.Data.Gate.Pauli.Notation"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli.Defs": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli/Defs.lean",
+        "sha256": "36873db7c2cffd14bf821749d2379b1c96c7eaa6b686b09854706468d8bc9243",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.BitVec.Basic",
+          "Quantumlib.ForMathlib.Data.Complex.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Mathlib.Data.ZMod.Basic",
+          "Mathlib.Data.Fintype.Basic",
+          "Mathlib.Algebra.MonoidAlgebra.Defs"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli.Lemmas": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli/Lemmas.lean",
+        "sha256": "5b71692748bad26b0a9c04ab0c887c14887f2826b3738b2ef515ddd00f569d5e",
+        "imports": [
+          "Quantumlib.Data.Gate.Equivs",
+          "Quantumlib.Data.Gate.Pauli.Defs",
+          "Mathlib.Data.ZMod.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli.Notation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli/Notation.lean",
+        "sha256": "a76f06fa179cb8709ac490fb708f70c9afbbf67a21331fccde21456953d0749c",
+        "imports": [
+          "Lean",
+          "Quantumlib.Data.Gate.Pauli.Defs"
+        ]
+      },
+      "Quantumlib.Data.Gate.PhaseShift": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/PhaseShift.lean",
+        "sha256": "152ce042b74bcd8c2a7003472fb0fd3f0a3cf3b526f88d8fb0b4d559fa9169a6",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.ForMathlib.Data.Complex.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Rotate": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Rotate.lean",
+        "sha256": "fe5b6c29399a2f45d6664cb149355280a2c589c6b215e81898864265c8d39296",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.ForMathlib.Data.Complex.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.BitVec.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/BitVec/Basic.lean",
+        "sha256": "92a073ee2a3792ad7e0831bf1dfb6adb5cc5284baa73e3a4a8f1a592bcc19e0e",
+        "imports": [
+          "Mathlib"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.BitVec.Lemmas": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/BitVec/Lemmas.lean",
+        "sha256": "5da75388ff53a6c6efad16d1e7432265715316cfe7c28bac542233a12a5b7c26",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.BitVec.Basic",
+          "Mathlib.Data.BitVec",
+          "Mathlib.Data.Fintype.Basic",
+          "Mathlib.Tactic.FieldSimp",
+          "Mathlib.Tactic.Ring"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Complex.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Complex/Basic.lean",
+        "sha256": "c1d41d29bd06289e437a0ab23bb73b6042672ce8c4c0f6ac512667e41eaabff2",
+        "imports": [
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+          "Mathlib.Data.Complex.Basic",
+          "Mathlib.Data.Real.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/Basic.lean",
+        "sha256": "e5c2830abded82f30bad03220f1f19f30f7683b3a0ee482f860cadde406bc74c",
+        "imports": [
+          "Mathlib.Data.Matrix.Basic",
+          "Mathlib.Data.Complex.Basic",
+          "Mathlib.LinearAlgebra.Matrix.Kronecker",
+          "Mathlib.LinearAlgebra.UnitaryGroup",
+          "Mathlib.Logic.Equiv.Fin.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.Kron": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/Kron.lean",
+        "sha256": "dac700c8b53b3a6090d279e618a327a6bcc1b4801c558428c4d30ec0d5398fad",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Mathlib.LinearAlgebra.Matrix.Kronecker"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.PowBitVec": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.lean",
+        "sha256": "2064c7c6ba24c0d23d1ab16f8d9da27b53976564d6fb48fff79f3c94c093422b",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.BitVec.Lemmas",
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.Tactic.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.Unitary": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/Unitary.lean",
+        "sha256": "f112fd7b07d8b497867399fe52a7927ff942c95a56340baf4b439b643cb72be2",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron"
+        ]
+      },
+      "Quantumlib.Tactic.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Tactic/Basic.lean",
+        "sha256": "bdb47a3ffcae142970644e59f35473d3e13dbf8ed95bd25200980689d4f70c10",
+        "imports": [
+          "Quantumlib.Tactic.SolveMatrix"
+        ]
+      },
+      "Quantumlib.Tactic.SolveMatrix": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Tactic/SolveMatrix.lean",
+        "sha256": "248bcbd27463df0a5adfe7cc23f47d711a815a33cab2efa4ecd5eecea822c381",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Mathlib.Tactic.FinCases",
+          "Mathlib.Data.Matrix.Basic",
+          "Lean.Parser.Tactic"
+        ]
+      }
+    },
+    "count": 82,
+    "status": "NOT_MIGRATED_AS_A_WHOLE",
+    "quantumlib_count": 20
+  },
+  "compile_order": [
+    "AgtXIvRootMath.FiniteAtomRoM",
+    "AgtXIvRootMath.FiniteAtomAttainment",
+    "AgtXIvRootMath.StochasticContraction",
+    "AgtXIvRootMath.AtomPreservingMonotonicity",
+    "Quantumlib.ForMathlib.Data.Matrix.Basic",
+    "Quantumlib.ForMathlib.Data.Matrix.Kron",
+    "Quantumlib.Tactic.SolveMatrix",
+    "Quantumlib.Tactic.Basic",
+    "Quantumlib.Data.Basis.Basic",
+    "Quantumlib.Data.Basis.Notation",
+    "Quantumlib.Data.Basis.Equivs",
+    "Quantumlib.ForMathlib.Data.BitVec.Basic",
+    "Quantumlib.ForMathlib.Data.BitVec.Lemmas",
+    "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+    "Quantumlib.ForMathlib.Data.Complex.Basic",
+    "Quantumlib.Data.Gate.Basic",
+    "Quantumlib.Data.Gate.Pauli.Defs",
+    "Quantumlib.Data.Gate.Pauli.Notation",
+    "Quantumlib.Data.Gate.Pauli",
+    "Quantumlib.Data.Gate.PhaseShift",
+    "Quantumlib.Data.Gate.Rotate",
+    "Quantumlib.Data.Gate.Equivs",
+    "Quantumlib.Data.Gate.Pauli.Lemmas",
+    "AgtXIvRootMath.PauliTrace",
+    "Quantumlib.ForMathlib.Data.Matrix.Unitary",
+    "AgtXIvRootMath.PauliAdjoint",
+    "AgtXIvRootMath.GottesmanGroupAverage",
+    "AgtXIvRootMath.GottesmanCharacterDimension",
+    "AgtXIvRootMath.GottesmanRankPauliFrame",
+    "AgtXIvRootMath.GottesmanConcretePauliFrame",
+    "AgtXIvRootMath.GottesmanRankNProjector",
+    "AgtXIvRootMath.HermitianAffineFeasibility",
+    "AgtXIvRootMath.GottesmanPauliGenerators",
+    "AgtXIvRootMath.FiniteAtomTotalRoM",
+    "AgtXIvRootMath.VeitchStabilizerPolytope",
+    "AgtXIvRootMath.StabilizerAtomMaps",
+    "AgtXIvRootMath.StabilizerRoMInstantiation",
+    "AgtXIvRootMath.CanonicalStabilizerAtoms",
+    "AgtXIvRootMath.DensityStabilizerRoM",
+    "AgtXIvRootMath.PauliF2Support",
+    "AgtXIvRootMath.F2Coordinates",
+    "AgtXIvRootMath.F2SymplecticNondegenerate",
+    "AgtXIvRootMath.FiniteAtomConvexHull",
+    "AgtXIvRootMath.GottesmanGeneralRankDimension",
+    "AgtXIvRootMath.GottesmanGeneralRankProjector",
+    "AgtXIvRootMath.GottesmanUniqueRay",
+    "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+    "AgtXIvRootMath.HermitianPauliBasis",
+    "AgtXIvRootMath.SemanticClifford",
+    "AgtXIvRootMath.SyndromeBasis",
+    "AgtXIvRootMath.SymplecticCompletion",
+    "AgtXIvRootMath.PauliFrameSupportCompletion",
+    "AgtXIvRootMath.PauliFrameSymplecticBasis",
+    "AgtXIvRootMath.PauliSupportWord",
+    "AgtXIvRootMath.PauliDualFrame",
+    "AgtXIvRootMath.PauliFaithful",
+    "AgtXIvRootMath.PauliFrameNormalForm",
+    "AgtXIvRootMath.PauliSyndromeData",
+    "AgtXIvRootMath.PauliSyndromeIntertwiner",
+    "AgtXIvRootMath.SemanticCliffordFrames",
+    "AgtXIvRootMath.StandardZIndependentFrame",
+    "AgtXIvRootMath.PauliCliffordTransitivity",
+    "AgtXIvRootMath.QubitStabilizerAffineComplete",
+    "AgtXIvRootMath.StabilizerFrameProjector",
+    "AgtXIvRootMath.StandardZProjectorBridge",
+    "AgtXIvRootMath.ProductStabilizerFrames",
+    "AgtXIvRootMath.StabilizerAffineComplete",
+    "AgtXIvRootMath.UnconditionalStabilizerRoM",
+    "AgtXIvRootMath.VeitchConvexHull",
+    "AgtXIvRootMath.VeitchOrbitBridge",
+    "AgtXIvRootMath.VeitchOrbitEquivalence",
+    "AgtXIvRootMath.VeitchOrbitPolytope",
+    "AgtXIvRootMath.RootMathCompletion",
+    "AgtXIvVarela.MeasurementProjection",
+    "AgtXIvVarela.MaximalContext",
+    "AgtXIvVarela.ContextReconstruction",
+    "AgtXIvVarela.VRepConditional",
+    "AgtXIvVarela.ExternalPerfectGraphFoundation",
+    "AgtXIvVarela",
+    "AgtXIvStabilizerness.LocalDelta",
+    "AgtXIvStabilizerness.AdmissibleSigns",
+    "AgtXIvStabilizerness"
+  ],
+  "compiled_modules": [
+    {
+      "module": "AgtXIvRootMath.FiniteAtomRoM",
+      "olean_sha256": "826e4c6229c39c11e91a12e086ebe6c2a1c03dd5b7af2b803ffec194741890e7"
+    },
+    {
+      "module": "AgtXIvRootMath.FiniteAtomAttainment",
+      "olean_sha256": "f9db9f4770ba0057757c28bce59c8e5ae0bbcba1732a8e93e9b9803dd18ef17e"
+    },
+    {
+      "module": "AgtXIvRootMath.StochasticContraction",
+      "olean_sha256": "569140ea2dd4dfac80a10783fc64779064ce6b32f44564674b9504e558328c72"
+    },
+    {
+      "module": "AgtXIvRootMath.AtomPreservingMonotonicity",
+      "olean_sha256": "63d60a5acb02b34936a92c17b18f90a5196bd7bb8a3dad86799c45a4e4fa0810"
+    },
+    {
+      "module": "Quantumlib.ForMathlib.Data.Matrix.Basic",
+      "olean_sha256": "59493da78d25455a200aac7e3e45a17209e09e86e3a260aaa7ab76168ca5c8d6"
+    },
+    {
+      "module": "Quantumlib.ForMathlib.Data.Matrix.Kron",
+      "olean_sha256": "0596f16ff378f30b6102b542546a1b83d3d8f6d54554a1bba54b0dc146f36127"
+    },
+    {
+      "module": "Quantumlib.Tactic.SolveMatrix",
+      "olean_sha256": "a1c39b323f7e4e6b5157f7b2a31037a6c179e5a2a76adf14a560df17ddb9052c"
+    },
+    {
+      "module": "Quantumlib.Tactic.Basic",
+      "olean_sha256": "2a5ff3e78c89c134eb2149f09c4f45b9f2703cc5555ffd2b44d32783554729e7"
+    },
+    {
+      "module": "Quantumlib.Data.Basis.Basic",
+      "olean_sha256": "1fad06c27d287a8c3f3d6c1235d077197945eac07550cc3ea78eddee97c4261b"
+    },
+    {
+      "module": "Quantumlib.Data.Basis.Notation",
+      "olean_sha256": "2425ad795d7fd77ad9798c08e2bbab017408112ba86145596827bb191dfeeff8"
+    },
+    {
+      "module": "Quantumlib.Data.Basis.Equivs",
+      "olean_sha256": "619b991fe4407dc55b027f28a5707a6f72fe8c5d7cebf9c3fc07c047367b1d6a"
+    },
+    {
+      "module": "Quantumlib.ForMathlib.Data.BitVec.Basic",
+      "olean_sha256": "490737d67eb91e6989781bc9a17ca764939e8abcda440aee6b9e65980851d734"
+    },
+    {
+      "module": "Quantumlib.ForMathlib.Data.BitVec.Lemmas",
+      "olean_sha256": "aedb546672bf2407e312fc808cb6ba5f8b67a0ab1a57fe2570a7ae731e8a3f8e"
+    },
+    {
+      "module": "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+      "olean_sha256": "b9864d2f9e38f7688651a4f88c2ece89673e207ccdd5e05f59f14b11ad4d1c21"
+    },
+    {
+      "module": "Quantumlib.ForMathlib.Data.Complex.Basic",
+      "olean_sha256": "2676337d66e83255e207ee0115793586db00dbf6d58839a3b99b3f4a151bd8ae"
+    },
+    {
+      "module": "Quantumlib.Data.Gate.Basic",
+      "olean_sha256": "4f76ad85a0ad76254aa0b1b426abae01dce655f8b5df72c8d46466dc5987bea5"
+    }
+  ],
+  "receipts": [
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-DautoImplicit=false",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/AgtXIvRootMath/FiniteAtomRoM.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/AgtXIvRootMath/FiniteAtomRoM.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:47:25.385561+00:00",
+      "finished_at": "2026-09-18T22:47:43.315162+00:00",
+      "duration_seconds": 17.929,
+      "elapsed_seconds": 17.929,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "046dbdb16ab0b4d1ab2bffd54f4f7eeb18568493fd211c409f1f823815fb6f19",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/AgtXIvRootMath.FiniteAtomRoM.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-DautoImplicit=false",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/AgtXIvRootMath/FiniteAtomAttainment.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/AgtXIvRootMath/FiniteAtomAttainment.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:47:43.316473+00:00",
+      "finished_at": "2026-09-18T22:47:52.255306+00:00",
+      "duration_seconds": 8.939,
+      "elapsed_seconds": 8.939,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "b2f211eb10b67c5ceecedbb2ae2176afcef37f7881e7afd97934f2536305bbb0",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/AgtXIvRootMath.FiniteAtomAttainment.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-DautoImplicit=false",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/AgtXIvRootMath/StochasticContraction.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/AgtXIvRootMath/StochasticContraction.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:47:52.257181+00:00",
+      "finished_at": "2026-09-18T22:48:01.535004+00:00",
+      "duration_seconds": 9.278,
+      "elapsed_seconds": 9.278,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "27e2aa3fa161719c73a159ad66ef033162cf7ad29c1814ab3e589dc622ca4e3d",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/AgtXIvRootMath.StochasticContraction.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-DautoImplicit=false",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/AgtXIvRootMath/AtomPreservingMonotonicity.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/AgtXIvRootMath/AtomPreservingMonotonicity.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:01.536090+00:00",
+      "finished_at": "2026-09-18T22:48:11.649440+00:00",
+      "duration_seconds": 10.113,
+      "elapsed_seconds": 10.113,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "7f457f1081d341c097d186e0f7ba40e531dfadfc92bb6a0ec914c33c9f707178",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/AgtXIvRootMath.AtomPreservingMonotonicity.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/Matrix/Basic.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/Matrix/Basic.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:11.651775+00:00",
+      "finished_at": "2026-09-18T22:48:20.723568+00:00",
+      "duration_seconds": 9.072,
+      "elapsed_seconds": 9.072,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "e5c2830abded82f30bad03220f1f19f30f7683b3a0ee482f860cadde406bc74c",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.Matrix.Basic.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/Matrix/Kron.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/Matrix/Kron.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:20.725116+00:00",
+      "finished_at": "2026-09-18T22:48:25.664410+00:00",
+      "duration_seconds": 4.939,
+      "elapsed_seconds": 4.939,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "dac700c8b53b3a6090d279e618a327a6bcc1b4801c558428c4d30ec0d5398fad",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.Matrix.Kron.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Tactic/SolveMatrix.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Tactic/SolveMatrix.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:25.665707+00:00",
+      "finished_at": "2026-09-18T22:48:30.188428+00:00",
+      "duration_seconds": 4.523,
+      "elapsed_seconds": 4.523,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "248bcbd27463df0a5adfe7cc23f47d711a815a33cab2efa4ecd5eecea822c381",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Tactic.SolveMatrix.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Tactic/Basic.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Tactic/Basic.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:30.189672+00:00",
+      "finished_at": "2026-09-18T22:48:34.519796+00:00",
+      "duration_seconds": 4.33,
+      "elapsed_seconds": 4.33,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "bdb47a3ffcae142970644e59f35473d3e13dbf8ed95bd25200980689d4f70c10",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Tactic.Basic.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Data/Basis/Basic.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Data/Basis/Basic.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:34.521540+00:00",
+      "finished_at": "2026-09-18T22:48:39.470638+00:00",
+      "duration_seconds": 4.949,
+      "elapsed_seconds": 4.949,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "5d2b4e586c5fb52d1faa937783533bd4cbeced579e714242e1aa2eb791e992fe",
+      "output_sha256": "c3a19ddbe05c61c9ce9846c137eb063fd4efd358639b784a891f0f86041eaff4",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Data.Basis.Basic.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Data/Basis/Notation.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Data/Basis/Notation.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:39.472003+00:00",
+      "finished_at": "2026-09-18T22:48:46.626964+00:00",
+      "duration_seconds": 7.155,
+      "elapsed_seconds": 7.155,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "410ceb68fa15e2b5b71400f1f5c95acc5a3ff4ab0f3b9cea97c72bfc87596a24",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Data.Basis.Notation.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Data/Basis/Equivs.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Data/Basis/Equivs.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:46.628531+00:00",
+      "finished_at": "2026-09-18T22:48:52.266189+00:00",
+      "duration_seconds": 5.638,
+      "elapsed_seconds": 5.638,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "f95a9ba948e22d821fc21ddc5d5cce3c20f67520bb5b9ee85459716af0514faa",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Data.Basis.Equivs.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/BitVec/Basic.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/BitVec/Basic.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:48:52.267545+00:00",
+      "finished_at": "2026-09-18T22:49:35.477669+00:00",
+      "duration_seconds": 43.21,
+      "elapsed_seconds": 43.21,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "92a073ee2a3792ad7e0831bf1dfb6adb5cc5284baa73e3a4a8f1a592bcc19e0e",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.BitVec.Basic.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/BitVec/Lemmas.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/BitVec/Lemmas.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:49:35.479429+00:00",
+      "finished_at": "2026-09-18T22:50:25.832576+00:00",
+      "duration_seconds": 50.353,
+      "elapsed_seconds": 50.353,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "5da75388ff53a6c6efad16d1e7432265715316cfe7c28bac542233a12a5b7c26",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.BitVec.Lemmas.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:50:25.834706+00:00",
+      "finished_at": "2026-09-18T22:51:14.736122+00:00",
+      "duration_seconds": 48.901,
+      "elapsed_seconds": 48.901,
+      "outcome": "FAILED",
+      "exit_code": 1,
+      "status": "FAILED",
+      "input_sha256": "2064c7c6ba24c0d23d1ab16f8d9da27b53976564d6fb48fff79f3c94c093422b",
+      "output_sha256": "1f0aae8c1bc1fb04aafe174e6443846910e74ff0ef2b722045ee1580188367ec",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.Matrix.PowBitVec.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:53:15.251311+00:00",
+      "finished_at": "2026-09-18T22:53:58.183545+00:00",
+      "duration_seconds": 42.935,
+      "elapsed_seconds": 42.935,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "1f4cd7a867c7be4fa398bacb19faf60f52964e24d5f17e8e4e8c8db0e966e2ca",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.Matrix.PowBitVec-attempt2.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/ForMathlib/Data/Complex/Basic.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/ForMathlib/Data/Complex/Basic.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:53:58.186501+00:00",
+      "finished_at": "2026-09-18T22:54:05.242471+00:00",
+      "duration_seconds": 7.057,
+      "elapsed_seconds": 7.057,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "c1d41d29bd06289e437a0ab23bb73b6042672ce8c4c0f6ac512667e41eaabff2",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.ForMathlib.Data.Complex.Basic-attempt1.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Data/Gate/Basic.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Data/Gate/Basic.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:54:05.244838+00:00",
+      "finished_at": "2026-09-18T22:54:33.636564+00:00",
+      "duration_seconds": 28.393,
+      "elapsed_seconds": 28.393,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "35e8d26e5d7f799fa2e5b4a133d6d4c88b2b539bc01998a6bcba3a80efc2ed02",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Data.Gate.Basic-attempt1.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.frozen_full_case_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib/Quantumlib/Data/Gate/Pauli/Defs.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adapted/Quantumlib/Data/Gate/Pauli/Defs.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:54:33.638883+00:00",
+      "finished_at": "2026-09-18T22:55:08.527859+00:00",
+      "duration_seconds": 34.889,
+      "elapsed_seconds": 34.889,
+      "outcome": "FAILED",
+      "exit_code": 1,
+      "status": "FAILED",
+      "input_sha256": "36873db7c2cffd14bf821749d2379b1c96c7eaa6b686b09854706468d8bc9243",
+      "output_sha256": "4e3f0a569517631f85ba84b7e5d352443475ef6a280858504755deeb94eb3c58",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Data.Gate.Pauli.Defs-attempt1.log"
+    }
+  ],
+  "compatibility_adaptations": [
+    {
+      "module": "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+      "before_sha256": "2064c7c6ba24c0d23d1ab16f8d9da27b53976564d6fb48fff79f3c94c093422b",
+      "after_sha256": "1f4cd7a867c7be4fa398bacb19faf60f52964e24d5f17e8e4e8c8db0e966e2ca",
+      "change_kind": "EXPLICIT_REFLEXIVITY_REPLACES_SIMPLIFIER_IN_TWO_BASE_CASES",
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/adaptations/001-powbitvec.diff",
+      "review": "AGENT_REVIEWED_UNACCEPTED"
+    }
+  ],
+  "mathematical_statements_changed": false,
+  "failed_module": "Quantumlib.Data.Gate.Pauli.Defs",
+  "failure_log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/logs/Quantumlib.Data.Gate.Pauli.Defs-attempt1.log",
+  "remaining_modules": [
+    "Quantumlib.Data.Gate.Pauli.Defs",
+    "Quantumlib.Data.Gate.Pauli.Notation",
+    "Quantumlib.Data.Gate.Pauli",
+    "Quantumlib.Data.Gate.PhaseShift",
+    "Quantumlib.Data.Gate.Rotate",
+    "Quantumlib.Data.Gate.Equivs",
+    "Quantumlib.Data.Gate.Pauli.Lemmas",
+    "AgtXIvRootMath.PauliTrace",
+    "Quantumlib.ForMathlib.Data.Matrix.Unitary",
+    "AgtXIvRootMath.PauliAdjoint",
+    "AgtXIvRootMath.GottesmanGroupAverage",
+    "AgtXIvRootMath.GottesmanCharacterDimension",
+    "AgtXIvRootMath.GottesmanRankPauliFrame",
+    "AgtXIvRootMath.GottesmanConcretePauliFrame",
+    "AgtXIvRootMath.GottesmanRankNProjector",
+    "AgtXIvRootMath.HermitianAffineFeasibility",
+    "AgtXIvRootMath.GottesmanPauliGenerators",
+    "AgtXIvRootMath.FiniteAtomTotalRoM",
+    "AgtXIvRootMath.VeitchStabilizerPolytope",
+    "AgtXIvRootMath.StabilizerAtomMaps",
+    "AgtXIvRootMath.StabilizerRoMInstantiation",
+    "AgtXIvRootMath.CanonicalStabilizerAtoms",
+    "AgtXIvRootMath.DensityStabilizerRoM",
+    "AgtXIvRootMath.PauliF2Support",
+    "AgtXIvRootMath.F2Coordinates",
+    "AgtXIvRootMath.F2SymplecticNondegenerate",
+    "AgtXIvRootMath.FiniteAtomConvexHull",
+    "AgtXIvRootMath.GottesmanGeneralRankDimension",
+    "AgtXIvRootMath.GottesmanGeneralRankProjector",
+    "AgtXIvRootMath.GottesmanUniqueRay",
+    "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+    "AgtXIvRootMath.HermitianPauliBasis",
+    "AgtXIvRootMath.SemanticClifford",
+    "AgtXIvRootMath.SyndromeBasis",
+    "AgtXIvRootMath.SymplecticCompletion",
+    "AgtXIvRootMath.PauliFrameSupportCompletion",
+    "AgtXIvRootMath.PauliFrameSymplecticBasis",
+    "AgtXIvRootMath.PauliSupportWord",
+    "AgtXIvRootMath.PauliDualFrame",
+    "AgtXIvRootMath.PauliFaithful",
+    "AgtXIvRootMath.PauliFrameNormalForm",
+    "AgtXIvRootMath.PauliSyndromeData",
+    "AgtXIvRootMath.PauliSyndromeIntertwiner",
+    "AgtXIvRootMath.SemanticCliffordFrames",
+    "AgtXIvRootMath.StandardZIndependentFrame",
+    "AgtXIvRootMath.PauliCliffordTransitivity",
+    "AgtXIvRootMath.QubitStabilizerAffineComplete",
+    "AgtXIvRootMath.StabilizerFrameProjector",
+    "AgtXIvRootMath.StandardZProjectorBridge",
+    "AgtXIvRootMath.ProductStabilizerFrames",
+    "AgtXIvRootMath.StabilizerAffineComplete",
+    "AgtXIvRootMath.UnconditionalStabilizerRoM",
+    "AgtXIvRootMath.VeitchConvexHull",
+    "AgtXIvRootMath.VeitchOrbitBridge",
+    "AgtXIvRootMath.VeitchOrbitEquivalence",
+    "AgtXIvRootMath.VeitchOrbitPolytope",
+    "AgtXIvRootMath.RootMathCompletion",
+    "AgtXIvVarela.MeasurementProjection",
+    "AgtXIvVarela.MaximalContext",
+    "AgtXIvVarela.ContextReconstruction",
+    "AgtXIvVarela.VRepConditional",
+    "AgtXIvVarela.ExternalPerfectGraphFoundation",
+    "AgtXIvVarela",
+    "AgtXIvStabilizerness.LocalDelta",
+    "AgtXIvStabilizerness.AdmissibleSigns",
+    "AgtXIvStabilizerness"
+  ]
+}

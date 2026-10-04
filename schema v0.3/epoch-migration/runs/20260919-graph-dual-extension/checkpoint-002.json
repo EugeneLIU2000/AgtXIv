@@ -1,0 +1,2141 @@
+{
+  "scope": "ADDITIONAL_ORIGINAL_EPOCH_MODULES_COMMON_EPOCH_MIGRATION",
+  "status": "COMPATIBILITY_BLOCKED",
+  "query_chain_complete": false,
+  "accepted": false,
+  "source_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+  "context": {
+    "base": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case",
+    "bridge": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-concrete-physlib-bridge",
+    "frozen_alpha": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/physlib-anticommuting-20260919",
+    "original_module_count": 82,
+    "base_modules": [
+      {
+        "module": "AgtXIvRootMath.FiniteAtomRoM",
+        "olean_sha256": "826e4c6229c39c11e91a12e086ebe6c2a1c03dd5b7af2b803ffec194741890e7"
+      },
+      {
+        "module": "AgtXIvRootMath.FiniteAtomAttainment",
+        "olean_sha256": "f9db9f4770ba0057757c28bce59c8e5ae0bbcba1732a8e93e9b9803dd18ef17e"
+      },
+      {
+        "module": "AgtXIvRootMath.StochasticContraction",
+        "olean_sha256": "569140ea2dd4dfac80a10783fc64779064ce6b32f44564674b9504e558328c72"
+      },
+      {
+        "module": "AgtXIvRootMath.AtomPreservingMonotonicity",
+        "olean_sha256": "63d60a5acb02b34936a92c17b18f90a5196bd7bb8a3dad86799c45a4e4fa0810"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.Basic",
+        "olean_sha256": "59493da78d25455a200aac7e3e45a17209e09e86e3a260aaa7ab76168ca5c8d6"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.Kron",
+        "olean_sha256": "0596f16ff378f30b6102b542546a1b83d3d8f6d54554a1bba54b0dc146f36127"
+      },
+      {
+        "module": "Quantumlib.Tactic.SolveMatrix",
+        "olean_sha256": "a1c39b323f7e4e6b5157f7b2a31037a6c179e5a2a76adf14a560df17ddb9052c"
+      },
+      {
+        "module": "Quantumlib.Tactic.Basic",
+        "olean_sha256": "2a5ff3e78c89c134eb2149f09c4f45b9f2703cc5555ffd2b44d32783554729e7"
+      },
+      {
+        "module": "Quantumlib.Data.Basis.Basic",
+        "olean_sha256": "1fad06c27d287a8c3f3d6c1235d077197945eac07550cc3ea78eddee97c4261b"
+      },
+      {
+        "module": "Quantumlib.Data.Basis.Notation",
+        "olean_sha256": "2425ad795d7fd77ad9798c08e2bbab017408112ba86145596827bb191dfeeff8"
+      },
+      {
+        "module": "Quantumlib.Data.Basis.Equivs",
+        "olean_sha256": "619b991fe4407dc55b027f28a5707a6f72fe8c5d7cebf9c3fc07c047367b1d6a"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.BitVec.Basic",
+        "olean_sha256": "490737d67eb91e6989781bc9a17ca764939e8abcda440aee6b9e65980851d734"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.BitVec.Lemmas",
+        "olean_sha256": "aedb546672bf2407e312fc808cb6ba5f8b67a0ab1a57fe2570a7ae731e8a3f8e"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+        "olean_sha256": "b9864d2f9e38f7688651a4f88c2ece89673e207ccdd5e05f59f14b11ad4d1c21"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Complex.Basic",
+        "olean_sha256": "2676337d66e83255e207ee0115793586db00dbf6d58839a3b99b3f4a151bd8ae"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Basic",
+        "olean_sha256": "4f76ad85a0ad76254aa0b1b426abae01dce655f8b5df72c8d46466dc5987bea5"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli.Defs",
+        "olean_sha256": "777b0198da23f734fc9b4a5ec4fd2ae26fffe4b768d460ceb2227fdbdc744c0c"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli.Notation",
+        "olean_sha256": "4e120629e3f9e7efc413fcff13aab6e97796633bbe7b0660311bf796b16204e3"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli",
+        "olean_sha256": "9100ad92acff1a45c0706e7d811d11fd1ce9917283c9eace47879bfaca669335"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.PhaseShift",
+        "olean_sha256": "4ec044f2d9344d3d4d1026f3219f494d1c691083fff2b1b876d627f81760181c"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Rotate",
+        "olean_sha256": "deaf2a1db234f31c27ec173caa0ee7583c7aecde755369d246718681f8d17276"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Equivs",
+        "olean_sha256": "a8ddc2aa6395517ffe32fab541d4318bc56d8aded381bacb494ab968d0787f6d"
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli.Lemmas",
+        "olean_sha256": "923e8224f8c8dcf17d423b9e89c548a28bca0e1c6bd92108ea9609a5ab814f81"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliTrace",
+        "olean_sha256": "fbd6ff378a9460587bdc199190225d7b887b00080903a18e447c166d4f45cdd5"
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.Unitary",
+        "olean_sha256": "65b350a5bafe7c6eb7f90d17bdd3808b2a66e8d507fc93cc830c337f022a36d1"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliAdjoint",
+        "olean_sha256": "dadf05dd5e7a20b211d46ef2de1ba66166e73a020edbc8ac0ae319bde42ebced"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGroupAverage",
+        "olean_sha256": "725c1685c9c0eaf8f401f9ea784505109e56cc98e135fc42f477908417bd2d4b"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanCharacterDimension",
+        "olean_sha256": "cf27a43b0be348cf80fab11b1f07759a4e737d6b7e6da9d10f26997fa7b5745c"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanRankPauliFrame",
+        "olean_sha256": "a035d9f767dc4a7422a9f42e6711a5dde5a229e2002882edc9dec8d107206da1"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "olean_sha256": "cdfc75d154d8ce08a755fdaad46fa1bc6716c8ebde1b25c2c4649ee86f03f763"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanRankNProjector",
+        "olean_sha256": "265daf9051c72164fd99f23a94ae021484b9d4c0e331b1610935682ec8f3239a"
+      },
+      {
+        "module": "AgtXIvRootMath.HermitianAffineFeasibility",
+        "olean_sha256": "1dd0923906fad164b12adc7f89473ea1715558db518e5ef5272f74994f617ed0"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanPauliGenerators",
+        "olean_sha256": "7f26f5ef950a6fccf77e9b886f5a26858805e1d7dfddfeacb0eb4ea4bdde8658"
+      },
+      {
+        "module": "AgtXIvRootMath.FiniteAtomTotalRoM",
+        "olean_sha256": "f88d1f624d0d08c5fd3b40b4fc9b86507e6352fead3146824d2a415e4236986b"
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchStabilizerPolytope",
+        "olean_sha256": "607d781eb9139b77e128937eb70ab2ba533af013b0434c111c26f886d7448b5f"
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerAtomMaps",
+        "olean_sha256": "209eb22ec54a051e53d10bb6f5b3932fc867f1f406cc20cc5327dcee73e763e3"
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerRoMInstantiation",
+        "olean_sha256": "2c62e92fddc0f6c1e42943894882975bb8405f54e812e72efad2c335f36aa219"
+      },
+      {
+        "module": "AgtXIvRootMath.CanonicalStabilizerAtoms",
+        "olean_sha256": "33efd1d7c0574c6b8dc2fa2b95a8fb0fb9aaae98f1328aa2f5cf6fb7ea5bfa15"
+      },
+      {
+        "module": "AgtXIvRootMath.DensityStabilizerRoM",
+        "olean_sha256": "8dfe5b21e80d726d71a742fb768041922c3067cb92b5bff33cad24d45a902bfc"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliF2Support",
+        "olean_sha256": "b86e555966c357fdcb83418d7411fafc85196df0355057a5e56bd05c93e3e4f5"
+      },
+      {
+        "module": "AgtXIvRootMath.F2Coordinates",
+        "olean_sha256": "b976becdca6ec2b4ac388352159a7e0ecf6aa534b5457c1a636500d6fa1a84d2"
+      },
+      {
+        "module": "AgtXIvRootMath.F2SymplecticNondegenerate",
+        "olean_sha256": "c63b968dabd98da339935f12463471aed53efc954fa90bef9243b612eff43e15"
+      },
+      {
+        "module": "AgtXIvRootMath.FiniteAtomConvexHull",
+        "olean_sha256": "17b53ecc76a4b40f8b7cd5402a6c8e86da5a3372afe8a68b38fc74bebc71a1b7"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "olean_sha256": "cbe414d08efb1d7ec1b8bd034bc87fa02d32428a3ed427345227d5457c78c3b5"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGeneralRankProjector",
+        "olean_sha256": "df6f2a812cdd5b981f1691e36babcdefd12144cbfe00e3083da33176af60ae76"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanUniqueRay",
+        "olean_sha256": "c966757faf4860d1b120ac43453d3d188ba422c7f1bbf3260d3d5a919515d59b"
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+        "olean_sha256": "6e335588f47b03664e1c78f1ca22b1791850163484ba086d9052084ac6b2401a"
+      },
+      {
+        "module": "AgtXIvRootMath.HermitianPauliBasis",
+        "olean_sha256": "7fad84af4d15e7389b9aff0b775b351445eb3e5c122776050c85dfe47679fefb"
+      },
+      {
+        "module": "AgtXIvRootMath.SemanticClifford",
+        "olean_sha256": "d8f16196e35fbe35a59498e7f0103a736dce6d4da05c94618070b3f342b1619f"
+      },
+      {
+        "module": "AgtXIvRootMath.SyndromeBasis",
+        "olean_sha256": "9bd43ad7173d69118fa314dcddad75e010bae8597d17af24e14fc08a781a67e8"
+      },
+      {
+        "module": "AgtXIvRootMath.SymplecticCompletion",
+        "olean_sha256": "1a37440ddcb61c298818217cedbd8b75da794ef20efab2377bbcc92143c5feeb"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFrameSupportCompletion",
+        "olean_sha256": "505f8e57dfb747eaf13dc4bd676390b440b2b0fbe2eac3bc7ccd43849ba2f91f"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFrameSymplecticBasis",
+        "olean_sha256": "decd8992e13947745d0610b3b75245a21b1def89b266465c9ed9a92d4a8caf6b"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliSupportWord",
+        "olean_sha256": "fb5e0ba556413321ee9a29eb2cf8a0535f2dc553dfcb60d5f518c3da8bd70dc3"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliDualFrame",
+        "olean_sha256": "7c040f6148b4a3168d5d46035c25868aed42a7f5faf76c9a47a810b917a9dfaa"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFaithful",
+        "olean_sha256": "77c384ad1ba6f9d19a1c51931f69d4e46db760f3b8a87defa1fa37a88869fe11"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFrameNormalForm",
+        "olean_sha256": "8b9474ccdb4d7c6410185145454f8c56865f656ad64cbe26e9dc6563a3810986"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliSyndromeData",
+        "olean_sha256": "169ebf96c52a73c36e2d9e79e25fbea7da3e638e97df2d708b56c5a4ff3b5b0e"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliSyndromeIntertwiner",
+        "olean_sha256": "33188298feaba316e39adcc7b6fdc511ec27a1eb893e90bef4f64f7c115ea253"
+      },
+      {
+        "module": "AgtXIvRootMath.SemanticCliffordFrames",
+        "olean_sha256": "12f7dfc41cea6159f0c7331177653625c1d8eefdebdd27e430e730da202d35ff"
+      },
+      {
+        "module": "AgtXIvRootMath.StandardZIndependentFrame",
+        "olean_sha256": "cc0673d383dc572886e92d96c5fddd4d7f818eb03c30e16549ea6e081a1dfc30"
+      },
+      {
+        "module": "AgtXIvRootMath.PauliCliffordTransitivity",
+        "olean_sha256": "faf25149b32cfb277b6da1ced2730f19353851b90280b1aa20fbd8363a472821"
+      },
+      {
+        "module": "AgtXIvRootMath.QubitStabilizerAffineComplete",
+        "olean_sha256": "56abeb7eec47834ab71f2ea9e52db954f73c759ac908a320defb6f50e767e06b"
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerFrameProjector",
+        "olean_sha256": "fefbd88c61b787b4cd05c85012864d65e79f771d9d17cc3b13d6c8174245165f"
+      },
+      {
+        "module": "AgtXIvRootMath.StandardZProjectorBridge",
+        "olean_sha256": "d0944f62bf7a2e94bb7255a53e9f4184156ec29218888ef2e3c532f7ef66c5c0"
+      },
+      {
+        "module": "AgtXIvRootMath.ProductStabilizerFrames",
+        "olean_sha256": "baa0a59d3071994aac2c98a593e6d9f767313193156c29ed8f9105e05c8b86b9"
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerAffineComplete",
+        "olean_sha256": "e23ec2f726f6c5f90336b34501f03271dee9f83b8d05296438adac09a8b2aa7f"
+      },
+      {
+        "module": "AgtXIvRootMath.UnconditionalStabilizerRoM",
+        "olean_sha256": "b06a5f6991ac68f078252cc8dd9f2c93a3323a8454de018f5f5e068e0151551e"
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchConvexHull",
+        "olean_sha256": "60c25c04ca695bfdf802513e696b948a219e1ab7b460778d9cd7a0d156a54700"
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchOrbitBridge",
+        "olean_sha256": "5b9a48ac0dc26131875f832cffab3b95819f7e82d1d02c4f7d34525a1c43c146"
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchOrbitEquivalence",
+        "olean_sha256": "3e05c8d2815cf86bd7ee47619a09aed54ae023557df9b327a87c750fc68d1954"
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchOrbitPolytope",
+        "olean_sha256": "b382b721f7e585becb60dace5438fcc52a2d031d92aee3838a1238d4210255a4"
+      },
+      {
+        "module": "AgtXIvRootMath.RootMathCompletion",
+        "olean_sha256": "789d553a39a93a3c842854097106ee98e7d989bbbf41d722f7f9e40b677a5a2b"
+      },
+      {
+        "module": "AgtXIvVarela.MeasurementProjection",
+        "olean_sha256": "672c8d6070e187f6ac9686d19dafc6e81ecb62ebef68628587a9bc4174d047ea"
+      },
+      {
+        "module": "AgtXIvVarela.MaximalContext",
+        "olean_sha256": "38668d2ad0d7457f57bdc99be486f102e61e55abb66298ad13ece1eaa6a29c10"
+      },
+      {
+        "module": "AgtXIvVarela.ContextReconstruction",
+        "olean_sha256": "db0ea5c20a1468da8320c02b083b9e08ccf657bb11625d82527080aab9d899e1"
+      },
+      {
+        "module": "AgtXIvVarela.VRepConditional",
+        "olean_sha256": "f932dab8e35aec875440b618faf2480c21b2658a07ac3cdf8b737c072d12f82c"
+      },
+      {
+        "module": "AgtXIvVarela.ExternalPerfectGraphFoundation",
+        "olean_sha256": "b40eeff2e19cdeb2d6215ffd898626c044d979453b4d98d2f79e2259738147ac"
+      },
+      {
+        "module": "AgtXIvVarela",
+        "olean_sha256": "b22f62e84132e1d1c1cb1fd93a27c6cedcccf43b22c7af902c200a9b019f5046"
+      },
+      {
+        "module": "AgtXIvStabilizerness.LocalDelta",
+        "olean_sha256": "f3282458d3f8059694ab588dd971126bf09a258e72890c28234b5b4e0d1e95c7"
+      },
+      {
+        "module": "AgtXIvStabilizerness.AdmissibleSigns",
+        "olean_sha256": "c02bf7ca8c7d39573494d10624f65d56019ed980084efef3f50217320082162a"
+      },
+      {
+        "module": "AgtXIvStabilizerness",
+        "olean_sha256": "1b901a178416b6bbc086cac7c3b8549fe7ff9b8e5dd9c2e7d131028239d78df0"
+      }
+    ],
+    "base_artifacts": [
+      {
+        "module": "AgtXIvRootMath.FiniteAtomRoM",
+        "artifacts": {
+          ".olean": "826e4c6229c39c11e91a12e086ebe6c2a1c03dd5b7af2b803ffec194741890e7",
+          ".olean.private": "bf6083d5f72d1bf3a9d0f6188cd29420c10f8f3a433320c7985d1b1ac3fdd522",
+          ".olean.server": "e86fdd63552cde1c5996cf13f7aee04a070ca2dba0fa397ba58e80dec528bf22",
+          ".ir": "d4f477c0a01953b2aa48e105bb195f5a0809cb77fbc36981933839ccfc884030",
+          ".ir.sig": "f62c929721b83155c0553440cd1a9775ef85f256b81310b931755b44e4751cbb"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.FiniteAtomAttainment",
+        "artifacts": {
+          ".olean": "f9db9f4770ba0057757c28bce59c8e5ae0bbcba1732a8e93e9b9803dd18ef17e",
+          ".olean.private": "6465f2662264d0797d2696742753245d3066f04064165b29111b829b67ae931b",
+          ".olean.server": "6a58cdab5e10cf7a946a686a431e87a2782b840136f5e67b31e84e189abcea3f",
+          ".ir": "97574d3a0cefbc57671e60a19fe01f6deb01df194aed09ee5c575ca657cdd742",
+          ".ir.sig": "960c9f5989a8011df6438a2b4fe9fc4185a1055c6fd7d50ce3ace45c961464ca"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StochasticContraction",
+        "artifacts": {
+          ".olean": "569140ea2dd4dfac80a10783fc64779064ce6b32f44564674b9504e558328c72",
+          ".olean.private": "feb7b2a63eec26fee11ceb43a9190c88cc4cf673911fca50d4459dfe33cf0ce1",
+          ".olean.server": "1598ac38c2e466515f510369e607237a83853ced064827d0c4877b00b5eb7afb",
+          ".ir": "651568b2a06bb68c971218e5f0e11325436f0331e631cd82494307cf9ba47088",
+          ".ir.sig": "bdf38e6cbe97f9eba8171e3dabb29a18f065eb53756d2f32504d57d3ae4abd73"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.AtomPreservingMonotonicity",
+        "artifacts": {
+          ".olean": "63d60a5acb02b34936a92c17b18f90a5196bd7bb8a3dad86799c45a4e4fa0810",
+          ".olean.private": "6abcb4455859c11d911a4cfbbca2b21d5b17a9da22cc5d37d0b635368ce0401d",
+          ".olean.server": "60fafe0a720b3ec19d14fb813999f56949c31342028acd1140d82eb56b79309e",
+          ".ir": "98dde45f4bda2a187146e9f77c7d8715f76fd64a54cdb8e91ff2fcc7ef88a3aa",
+          ".ir.sig": "b42a20986842382f8cb47c1a90662ebe67d36fa99d837a5c6de762e625c63d87"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.Basic",
+        "artifacts": {
+          ".olean": "59493da78d25455a200aac7e3e45a17209e09e86e3a260aaa7ab76168ca5c8d6"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.Kron",
+        "artifacts": {
+          ".olean": "0596f16ff378f30b6102b542546a1b83d3d8f6d54554a1bba54b0dc146f36127"
+        }
+      },
+      {
+        "module": "Quantumlib.Tactic.SolveMatrix",
+        "artifacts": {
+          ".olean": "a1c39b323f7e4e6b5157f7b2a31037a6c179e5a2a76adf14a560df17ddb9052c"
+        }
+      },
+      {
+        "module": "Quantumlib.Tactic.Basic",
+        "artifacts": {
+          ".olean": "2a5ff3e78c89c134eb2149f09c4f45b9f2703cc5555ffd2b44d32783554729e7"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Basis.Basic",
+        "artifacts": {
+          ".olean": "1fad06c27d287a8c3f3d6c1235d077197945eac07550cc3ea78eddee97c4261b"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Basis.Notation",
+        "artifacts": {
+          ".olean": "2425ad795d7fd77ad9798c08e2bbab017408112ba86145596827bb191dfeeff8"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Basis.Equivs",
+        "artifacts": {
+          ".olean": "619b991fe4407dc55b027f28a5707a6f72fe8c5d7cebf9c3fc07c047367b1d6a"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.BitVec.Basic",
+        "artifacts": {
+          ".olean": "490737d67eb91e6989781bc9a17ca764939e8abcda440aee6b9e65980851d734"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.BitVec.Lemmas",
+        "artifacts": {
+          ".olean": "aedb546672bf2407e312fc808cb6ba5f8b67a0ab1a57fe2570a7ae731e8a3f8e"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+        "artifacts": {
+          ".olean": "b9864d2f9e38f7688651a4f88c2ece89673e207ccdd5e05f59f14b11ad4d1c21"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Complex.Basic",
+        "artifacts": {
+          ".olean": "2676337d66e83255e207ee0115793586db00dbf6d58839a3b99b3f4a151bd8ae"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Basic",
+        "artifacts": {
+          ".olean": "4f76ad85a0ad76254aa0b1b426abae01dce655f8b5df72c8d46466dc5987bea5"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli.Defs",
+        "artifacts": {
+          ".olean": "777b0198da23f734fc9b4a5ec4fd2ae26fffe4b768d460ceb2227fdbdc744c0c"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli.Notation",
+        "artifacts": {
+          ".olean": "4e120629e3f9e7efc413fcff13aab6e97796633bbe7b0660311bf796b16204e3"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli",
+        "artifacts": {
+          ".olean": "9100ad92acff1a45c0706e7d811d11fd1ce9917283c9eace47879bfaca669335"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.PhaseShift",
+        "artifacts": {
+          ".olean": "4ec044f2d9344d3d4d1026f3219f494d1c691083fff2b1b876d627f81760181c"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Rotate",
+        "artifacts": {
+          ".olean": "deaf2a1db234f31c27ec173caa0ee7583c7aecde755369d246718681f8d17276"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Equivs",
+        "artifacts": {
+          ".olean": "a8ddc2aa6395517ffe32fab541d4318bc56d8aded381bacb494ab968d0787f6d"
+        }
+      },
+      {
+        "module": "Quantumlib.Data.Gate.Pauli.Lemmas",
+        "artifacts": {
+          ".olean": "923e8224f8c8dcf17d423b9e89c548a28bca0e1c6bd92108ea9609a5ab814f81"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliTrace",
+        "artifacts": {
+          ".olean": "fbd6ff378a9460587bdc199190225d7b887b00080903a18e447c166d4f45cdd5"
+        }
+      },
+      {
+        "module": "Quantumlib.ForMathlib.Data.Matrix.Unitary",
+        "artifacts": {
+          ".olean": "65b350a5bafe7c6eb7f90d17bdd3808b2a66e8d507fc93cc830c337f022a36d1"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliAdjoint",
+        "artifacts": {
+          ".olean": "dadf05dd5e7a20b211d46ef2de1ba66166e73a020edbc8ac0ae319bde42ebced"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGroupAverage",
+        "artifacts": {
+          ".olean": "725c1685c9c0eaf8f401f9ea784505109e56cc98e135fc42f477908417bd2d4b",
+          ".olean.private": "59f1f13bddfa3d8507a1a09a09aefb8a84f65eee7b6fef967646a92177b1cc26",
+          ".olean.server": "47aeb80ab39998ba15a54a07e5ea16d98afbe2347ee7b244745be97141d41f47",
+          ".ir": "54e8d7f8c2f2451367516b0731ce8c1b351b78147f344ed5aa34eacb14152803",
+          ".ir.sig": "fbfe698558bf823cf7014deed497fc6c519093c99b25f5c75e2304b7217c4669"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanCharacterDimension",
+        "artifacts": {
+          ".olean": "cf27a43b0be348cf80fab11b1f07759a4e737d6b7e6da9d10f26997fa7b5745c",
+          ".olean.private": "64c9190239c8655f115cf8f831ba96500baf8b417f558560abe37ece9eac2db1",
+          ".olean.server": "f121967fe403a415e6a7547e378b15b303eed4c78325b47cf19153be879bc751",
+          ".ir": "faaae926d57199b56ecb384ae70446ffdd682e3043072a4d60ff34cf4a853595",
+          ".ir.sig": "ffbace094919099240dc260d6c47154fced922893a62ca7cff88f304af673845"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanRankPauliFrame",
+        "artifacts": {
+          ".olean": "a035d9f767dc4a7422a9f42e6711a5dde5a229e2002882edc9dec8d107206da1",
+          ".olean.private": "f34bb29a974dee4f2607a0b3f590dce67fc38048d8281747fdf2379dc0e97e43",
+          ".olean.server": "57f409b11475ad2d8ad6609e167c7bbf5f0fd271862eb70e0c62fafb2c9e073f",
+          ".ir": "5593a8f21a4fea4e85894cf8474f14ffb5f67c9b8c1ac3d75258409e5bf1a29d",
+          ".ir.sig": "49625227542d28764b85fd686f893d69a69ef4e1d674d32dd457b01a0e97ed23"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanConcretePauliFrame",
+        "artifacts": {
+          ".olean": "cdfc75d154d8ce08a755fdaad46fa1bc6716c8ebde1b25c2c4649ee86f03f763"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanRankNProjector",
+        "artifacts": {
+          ".olean": "265daf9051c72164fd99f23a94ae021484b9d4c0e331b1610935682ec8f3239a"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.HermitianAffineFeasibility",
+        "artifacts": {
+          ".olean": "1dd0923906fad164b12adc7f89473ea1715558db518e5ef5272f74994f617ed0"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanPauliGenerators",
+        "artifacts": {
+          ".olean": "7f26f5ef950a6fccf77e9b886f5a26858805e1d7dfddfeacb0eb4ea4bdde8658"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.FiniteAtomTotalRoM",
+        "artifacts": {
+          ".olean": "f88d1f624d0d08c5fd3b40b4fc9b86507e6352fead3146824d2a415e4236986b",
+          ".olean.private": "42a7b4b17277b9b49c3b16a87e8e65f5da291549b1d1c6adfd7538e088ceff67",
+          ".olean.server": "76c41ac615caa50aa82227e82896ba79538821cb4bd0586de5d4ed65fe1b9e0a",
+          ".ir": "fd4d7f9a145244b2d1cc8b54f3d49d010f5122dd99991cc5f829f05639f92fb7",
+          ".ir.sig": "32050fc6d1415a09598d1d5233b10d808aa2710ba00c9b198021cbc8f0831f8e"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchStabilizerPolytope",
+        "artifacts": {
+          ".olean": "607d781eb9139b77e128937eb70ab2ba533af013b0434c111c26f886d7448b5f"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerAtomMaps",
+        "artifacts": {
+          ".olean": "209eb22ec54a051e53d10bb6f5b3932fc867f1f406cc20cc5327dcee73e763e3"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerRoMInstantiation",
+        "artifacts": {
+          ".olean": "2c62e92fddc0f6c1e42943894882975bb8405f54e812e72efad2c335f36aa219"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.CanonicalStabilizerAtoms",
+        "artifacts": {
+          ".olean": "33efd1d7c0574c6b8dc2fa2b95a8fb0fb9aaae98f1328aa2f5cf6fb7ea5bfa15"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.DensityStabilizerRoM",
+        "artifacts": {
+          ".olean": "8dfe5b21e80d726d71a742fb768041922c3067cb92b5bff33cad24d45a902bfc"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliF2Support",
+        "artifacts": {
+          ".olean": "b86e555966c357fdcb83418d7411fafc85196df0355057a5e56bd05c93e3e4f5"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.F2Coordinates",
+        "artifacts": {
+          ".olean": "b976becdca6ec2b4ac388352159a7e0ecf6aa534b5457c1a636500d6fa1a84d2"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.F2SymplecticNondegenerate",
+        "artifacts": {
+          ".olean": "c63b968dabd98da339935f12463471aed53efc954fa90bef9243b612eff43e15"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.FiniteAtomConvexHull",
+        "artifacts": {
+          ".olean": "17b53ecc76a4b40f8b7cd5402a6c8e86da5a3372afe8a68b38fc74bebc71a1b7"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGeneralRankDimension",
+        "artifacts": {
+          ".olean": "cbe414d08efb1d7ec1b8bd034bc87fa02d32428a3ed427345227d5457c78c3b5"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGeneralRankProjector",
+        "artifacts": {
+          ".olean": "df6f2a812cdd5b981f1691e36babcdefd12144cbfe00e3083da33176af60ae76"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanUniqueRay",
+        "artifacts": {
+          ".olean": "c966757faf4860d1b120ac43453d3d188ba422c7f1bbf3260d3d5a919515d59b"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+        "artifacts": {
+          ".olean": "6e335588f47b03664e1c78f1ca22b1791850163484ba086d9052084ac6b2401a"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.HermitianPauliBasis",
+        "artifacts": {
+          ".olean": "7fad84af4d15e7389b9aff0b775b351445eb3e5c122776050c85dfe47679fefb"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.SemanticClifford",
+        "artifacts": {
+          ".olean": "d8f16196e35fbe35a59498e7f0103a736dce6d4da05c94618070b3f342b1619f"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.SyndromeBasis",
+        "artifacts": {
+          ".olean": "9bd43ad7173d69118fa314dcddad75e010bae8597d17af24e14fc08a781a67e8"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.SymplecticCompletion",
+        "artifacts": {
+          ".olean": "1a37440ddcb61c298818217cedbd8b75da794ef20efab2377bbcc92143c5feeb"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFrameSupportCompletion",
+        "artifacts": {
+          ".olean": "505f8e57dfb747eaf13dc4bd676390b440b2b0fbe2eac3bc7ccd43849ba2f91f"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFrameSymplecticBasis",
+        "artifacts": {
+          ".olean": "decd8992e13947745d0610b3b75245a21b1def89b266465c9ed9a92d4a8caf6b"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliSupportWord",
+        "artifacts": {
+          ".olean": "fb5e0ba556413321ee9a29eb2cf8a0535f2dc553dfcb60d5f518c3da8bd70dc3"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliDualFrame",
+        "artifacts": {
+          ".olean": "7c040f6148b4a3168d5d46035c25868aed42a7f5faf76c9a47a810b917a9dfaa"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFaithful",
+        "artifacts": {
+          ".olean": "77c384ad1ba6f9d19a1c51931f69d4e46db760f3b8a87defa1fa37a88869fe11"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliFrameNormalForm",
+        "artifacts": {
+          ".olean": "8b9474ccdb4d7c6410185145454f8c56865f656ad64cbe26e9dc6563a3810986"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliSyndromeData",
+        "artifacts": {
+          ".olean": "169ebf96c52a73c36e2d9e79e25fbea7da3e638e97df2d708b56c5a4ff3b5b0e"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliSyndromeIntertwiner",
+        "artifacts": {
+          ".olean": "33188298feaba316e39adcc7b6fdc511ec27a1eb893e90bef4f64f7c115ea253"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.SemanticCliffordFrames",
+        "artifacts": {
+          ".olean": "12f7dfc41cea6159f0c7331177653625c1d8eefdebdd27e430e730da202d35ff"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StandardZIndependentFrame",
+        "artifacts": {
+          ".olean": "cc0673d383dc572886e92d96c5fddd4d7f818eb03c30e16549ea6e081a1dfc30"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.PauliCliffordTransitivity",
+        "artifacts": {
+          ".olean": "faf25149b32cfb277b6da1ced2730f19353851b90280b1aa20fbd8363a472821"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.QubitStabilizerAffineComplete",
+        "artifacts": {
+          ".olean": "56abeb7eec47834ab71f2ea9e52db954f73c759ac908a320defb6f50e767e06b"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerFrameProjector",
+        "artifacts": {
+          ".olean": "fefbd88c61b787b4cd05c85012864d65e79f771d9d17cc3b13d6c8174245165f"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StandardZProjectorBridge",
+        "artifacts": {
+          ".olean": "d0944f62bf7a2e94bb7255a53e9f4184156ec29218888ef2e3c532f7ef66c5c0"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.ProductStabilizerFrames",
+        "artifacts": {
+          ".olean": "baa0a59d3071994aac2c98a593e6d9f767313193156c29ed8f9105e05c8b86b9"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.StabilizerAffineComplete",
+        "artifacts": {
+          ".olean": "e23ec2f726f6c5f90336b34501f03271dee9f83b8d05296438adac09a8b2aa7f"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.UnconditionalStabilizerRoM",
+        "artifacts": {
+          ".olean": "b06a5f6991ac68f078252cc8dd9f2c93a3323a8454de018f5f5e068e0151551e"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchConvexHull",
+        "artifacts": {
+          ".olean": "60c25c04ca695bfdf802513e696b948a219e1ab7b460778d9cd7a0d156a54700"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchOrbitBridge",
+        "artifacts": {
+          ".olean": "5b9a48ac0dc26131875f832cffab3b95819f7e82d1d02c4f7d34525a1c43c146"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchOrbitEquivalence",
+        "artifacts": {
+          ".olean": "3e05c8d2815cf86bd7ee47619a09aed54ae023557df9b327a87c750fc68d1954"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.VeitchOrbitPolytope",
+        "artifacts": {
+          ".olean": "b382b721f7e585becb60dace5438fcc52a2d031d92aee3838a1238d4210255a4"
+        }
+      },
+      {
+        "module": "AgtXIvRootMath.RootMathCompletion",
+        "artifacts": {
+          ".olean": "789d553a39a93a3c842854097106ee98e7d989bbbf41d722f7f9e40b677a5a2b"
+        }
+      },
+      {
+        "module": "AgtXIvVarela.MeasurementProjection",
+        "artifacts": {
+          ".olean": "672c8d6070e187f6ac9686d19dafc6e81ecb62ebef68628587a9bc4174d047ea"
+        }
+      },
+      {
+        "module": "AgtXIvVarela.MaximalContext",
+        "artifacts": {
+          ".olean": "38668d2ad0d7457f57bdc99be486f102e61e55abb66298ad13ece1eaa6a29c10"
+        }
+      },
+      {
+        "module": "AgtXIvVarela.ContextReconstruction",
+        "artifacts": {
+          ".olean": "db0ea5c20a1468da8320c02b083b9e08ccf657bb11625d82527080aab9d899e1"
+        }
+      },
+      {
+        "module": "AgtXIvVarela.VRepConditional",
+        "artifacts": {
+          ".olean": "f932dab8e35aec875440b618faf2480c21b2658a07ac3cdf8b737c072d12f82c"
+        }
+      },
+      {
+        "module": "AgtXIvVarela.ExternalPerfectGraphFoundation",
+        "artifacts": {
+          ".olean": "b40eeff2e19cdeb2d6215ffd898626c044d979453b4d98d2f79e2259738147ac"
+        }
+      },
+      {
+        "module": "AgtXIvVarela",
+        "artifacts": {
+          ".olean": "b22f62e84132e1d1c1cb1fd93a27c6cedcccf43b22c7af902c200a9b019f5046"
+        }
+      },
+      {
+        "module": "AgtXIvStabilizerness.LocalDelta",
+        "artifacts": {
+          ".olean": "f3282458d3f8059694ab588dd971126bf09a258e72890c28234b5b4e0d1e95c7"
+        }
+      },
+      {
+        "module": "AgtXIvStabilizerness.AdmissibleSigns",
+        "artifacts": {
+          ".olean": "c02bf7ca8c7d39573494d10624f65d56019ed980084efef3f50217320082162a"
+        }
+      },
+      {
+        "module": "AgtXIvStabilizerness",
+        "artifacts": {
+          ".olean": "1b901a178416b6bbc086cac7c3b8549fe7ff9b8e5dd9c2e7d131028239d78df0"
+        }
+      }
+    ],
+    "bridge_artifacts": [
+      {
+        "module": "AnticommutingNonvacuity",
+        "artifacts": {
+          ".olean": "a62af2815e073bb46df213b62003b20cc4b9f34df2a7d1ed1019db1db277e5a5"
+        }
+      },
+      {
+        "module": "ConcretePhyslibBridge",
+        "artifacts": {
+          ".olean": "5f6dd1a9484e5a821a16c7daaf28ca553f42fd1aa9e114c7617d493099ed520b"
+        }
+      }
+    ],
+    "bridge_targets": [
+      "AgtXIv.ConcretePhyslib.adj_iff_matrix_anticomm",
+      "AgtXIv.ConcretePhyslib.concrete_window_nonvacuity",
+      "AgtXIv.ConcretePhyslib.densityToMState",
+      "AgtXIv.ConcretePhyslib.densityToMState_mat",
+      "AgtXIv.ConcretePhyslib.density_roundtrip",
+      "AgtXIv.ConcretePhyslib.expectation_preserved",
+      "AgtXIv.ConcretePhyslib.frustrationGraph",
+      "AgtXIv.ConcretePhyslib.mStateToDensity",
+      "AgtXIv.ConcretePhyslib.mStateToDensity_val",
+      "AgtXIv.ConcretePhyslib.mState_roundtrip",
+      "AgtXIv.ConcretePhyslib.matrix_anticomm_of_adj",
+      "AgtXIv.ConcretePhyslib.observable",
+      "AgtXIv.ConcretePhyslib.observable_mat",
+      "AgtXIv.ConcretePhyslib.observable_sq",
+      "AgtXIv.ConcretePhyslib.pauli_ne_neg",
+      "AgtXIv.ConcretePhyslib.singleZWindow",
+      "AgtXIv.ConcretePhyslib.trace_preserved",
+      "AgtXIv.ConcretePhyslib.window_cliqueNumber_bound",
+      "AgtXIv.ConcretePhyslib.window_clique_l1_bound",
+      "AgtXIv.ConcretePhyslib.window_clique_l2_bound",
+      "AgtXIv.PhyslibCandidate.expectation_eq_real_trace",
+      "AgtXIv.Stabilizer.DensityMatrix",
+      "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+      "AgtXIv.Stabilizer.pauli_toCMatrix_injective",
+      "AgtXIv.Stabilizer.pauli_toCMatrix_isHermitian_of_sq_eq_one",
+      "AgtXIv.Varela.MeasurementWindow",
+      "AgtXIv.Varela.MeasurementWindow.expectationCoordinate",
+      "MState",
+      "MState.exp_val",
+      "MState.sum_abs_exp_val_finset_le_sqrt_card_of_pairwise_anticommute",
+      "MState.sum_sq_exp_val_finset_le_one_of_pairwise_anticommute",
+      "Pauli.mul_anticomm_of_not_commutesWith",
+      "Pauli.mul_toCMatrix_eq_toCMatrix_mul_toCMatrix",
+      "Pauli.toCMatrix_neg"
+    ],
+    "frozen_alpha_olean_sha256": "3beb6707a766c1c691e814ce2ce5dd9104945d69acf8f7c054b2af1c6951d899",
+    "toolchain": "leanprover/lean4:v4.33.0",
+    "manifest": {
+      "version": "1.2.0",
+      "packagesDir": ".lake/packages",
+      "packages": [
+        {
+          "url": "https://github.com/leanprover-community/mathlib4.git",
+          "type": "git",
+          "subDir": null,
+          "scope": "",
+          "rev": "db584cd6d46c92f209a44c0f1c829460d327499d",
+          "name": "mathlib",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "v4.33.0",
+          "inherited": false,
+          "configFile": "lakefile.lean"
+        },
+        {
+          "url": "https://github.com/leanprover/doc-gen4",
+          "type": "git",
+          "subDir": null,
+          "scope": "",
+          "rev": "aceca4eeb5a79092eabefaa75fcb72b701d02205",
+          "name": "«doc-gen4»",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "v4.33.0",
+          "inherited": false,
+          "configFile": "lakefile.lean"
+        },
+        {
+          "url": "https://github.com/leanprover-community/plausible",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "b7eb3304aeae834b12dda98993a37f6a41f6f0bb",
+          "name": "plausible",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/leanprover-community/LeanSearchClient",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "5f4d51b81cbd3f6b32b156bfad9056621a040404",
+          "name": "LeanSearchClient",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/leanprover-community/import-graph",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "16f02aa7642864af59f1ff0e384a015994db9118",
+          "name": "importGraph",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/leanprover-community/ProofWidgets4",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "4be2e3d5087eeb272cf5a8853b8f9dd025ef5957",
+          "name": "proofwidgets",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.lean"
+        },
+        {
+          "url": "https://github.com/leanprover-community/aesop",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "3448c0bcc5ce01b2d1546e483ec3620e32df3d0e",
+          "name": "aesop",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "master",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/leanprover-community/quote4",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "92c15be17b7caf78c2ad767ec40f89052d908d81",
+          "name": "Qq",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "master",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/leanprover-community/batteries",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover-community",
+          "rev": "4488d40d070b9700d4d5a6aa342f0d40c31b2a2d",
+          "name": "batteries",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/leanprover/leansqlite",
+          "type": "git",
+          "subDir": null,
+          "scope": "",
+          "rev": "6168b7549738a19bc837a1625c60c5d1e5dd8aeb",
+          "name": "leansqlite",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.lean"
+        },
+        {
+          "url": "https://github.com/leanprover/lean4-cli",
+          "type": "git",
+          "subDir": null,
+          "scope": "leanprover",
+          "rev": "6130a47896ce867c6a4a55373441e59e565bad0f",
+          "name": "Cli",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "v4.33.0",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/fgdorais/lean4-unicode-basic",
+          "type": "git",
+          "subDir": null,
+          "scope": "",
+          "rev": "37e7d8cb7316a88cd3e91208385c9ec6ae780019",
+          "name": "UnicodeBasic",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.lean"
+        },
+        {
+          "url": "https://github.com/dupuisf/BibtexQuery",
+          "type": "git",
+          "subDir": null,
+          "scope": "",
+          "rev": "852edafa268eb038a7158551fd580ee8433847b0",
+          "name": "BibtexQuery",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "master",
+          "inherited": true,
+          "configFile": "lakefile.toml"
+        },
+        {
+          "url": "https://github.com/acmepjz/md4lean",
+          "type": "git",
+          "subDir": null,
+          "scope": "",
+          "rev": "31907cc18f48a95384f99cee5582c00fb39e0f67",
+          "name": "MD4Lean",
+          "manifestFile": "lake-manifest.json",
+          "inputRev": "main",
+          "inherited": true,
+          "configFile": "lakefile.lean"
+        }
+      ],
+      "name": "Physlib",
+      "lakeDir": ".lake",
+      "fixedToolchain": false
+    },
+    "baseline_audit_sha256": "31a19af75e9b2c05ecb2b596fd3ef273a468d147e34085cd22db780873c07885",
+    "bridge_audit_sha256": "f8cc647fd60ca5e6a00a9b51baf3f82d89b140c14c1b64ea48d461cc298079e4",
+    "additional_layers": [
+      {
+        "directory": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-additional-case-modules",
+        "modules": {
+          "ReducedRoMSemantics": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ReducedRoMSemantics.lean",
+            "source_sha256": "41a0daf6fd11320c9e4f38c9f11f1b26f42e1f8613006a35417924ada1f5e3c4",
+            "imports": [
+              "AgtXIvVarela.MeasurementProjection"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/reduced-rom-semantics-20260919/attempt-02/receipt.json",
+              "receipt_sha256": "ecc0e6fefb8c9141f075d3f54ae4198ef6259541b8a37d8fe3e0df47cb52c2be",
+              "source_sha256": "41a0daf6fd11320c9e4f38c9f11f1b26f42e1f8613006a35417924ada1f5e3c4",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/reduced-rom-semantics-20260919/attempt-02/declarations.json",
+              "records_sha256": "743a006d447e9ac863748ebb256833b3f418cccd83a4771fa92c88b9cd029d06",
+              "targets": {
+                "audited": [
+                  "AgtXIv.ReducedRoM.augmentedAtom",
+                  "AgtXIv.ReducedRoM.reconstruct_augmentedAtom",
+                  "AgtXIv.ReducedRoM.signedDecomp_augmentedAtom_iff",
+                  "AgtXIv.ReducedRoM.augmented_projected_feasible",
+                  "AgtXIv.ReducedRoM.reducedRoM",
+                  "AgtXIv.ReducedRoM.reducedRoM_attained",
+                  "AgtXIv.ReducedRoM.one_le_reducedRoM",
+                  "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom",
+                  "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+                  "AgtXIv.Stabilizer.traceOne_exists_normalized_stabilizer_signedDecomp",
+                  "AgtXIv.RoM.finiteRoM",
+                  "AgtXIv.RoM.optimalCoeffs_isL1Minimizer",
+                  "AgtXIv.RoM.normalized_l1"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "ConvexGeneratorInvariance": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ConvexGeneratorInvariance.lean",
+            "source_sha256": "a55400cbd3b71a3f5ed4b27adf80219d6d1669ff32fa4f5a6e9979adafd7ffa2",
+            "imports": [
+              "ReducedRoMSemantics"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/convex-generator-invariance-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "3513732a9bbb953dc6abfedca35db9a8a4ed561b65370d5717e084712963829f",
+              "source_sha256": "a55400cbd3b71a3f5ed4b27adf80219d6d1669ff32fa4f5a6e9979adafd7ffa2",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/convex-generator-invariance-20260919/attempt-01/declarations.json",
+              "records_sha256": "f83972074d988977806646438a8591be7668967fb455a2f55760661a670c1597",
+              "targets": {
+                "audited": [
+                  "AgtXIv.ReducedRoM.convexPush",
+                  "AgtXIv.ReducedRoM.normalized_decomposition_transport",
+                  "AgtXIv.ReducedRoM.augmented_feasible_of_convex_atoms",
+                  "AgtXIv.ReducedRoM.normalized_minimum_le_of_convex_atoms",
+                  "AgtXIv.ReducedRoM.normalized_minimum_eq_of_mutual_convex_atoms",
+                  "AgtXIv.ReducedRoM.reducedRoM_eq_of_mutual_convex_generators",
+                  "AgtXIv.ReducedRoM.signedDecomp_augmentedAtom_iff",
+                  "AgtXIv.ReducedRoM.augmented_projected_feasible",
+                  "AgtXIv.ReducedRoM.reducedRoM",
+                  "AgtXIv.RoM.kernelOfAtomImages",
+                  "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+                  "AgtXIv.RoM.FiniteStochasticKernel.sum_push",
+                  "AgtXIv.RoM.FiniteStochasticKernel.l1_push_le",
+                  "AgtXIv.RoM.optimalCoeffs_isL1Minimizer"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "FiniteRoMDuality": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/FiniteRoMDuality.lean",
+            "source_sha256": "0a0283f72ae508f5638e8e8af8ab06ae4036cec3ad2c357a97f67e1093fa757e",
+            "imports": [
+              "ReducedRoMSemantics",
+              "Mathlib.Analysis.Normed.Lp.PiLp",
+              "Mathlib.Analysis.Normed.Group.Quotient",
+              "Mathlib.Analysis.Normed.Module.HahnBanach",
+              "Mathlib.LinearAlgebra.Isomorphisms",
+              "Mathlib.LinearAlgebra.Basis.VectorSpace"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/finite-rom-duality-20260919/attempt-04/receipt.json",
+              "receipt_sha256": "27e65c38d78753eeb2490d041d10c8d8c9bce830f92f575349424e11df68409f",
+              "source_sha256": "0a0283f72ae508f5638e8e8af8ab06ae4036cec3ad2c357a97f67e1093fa757e",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/finite-rom-duality-20260919/attempt-04/audits.json",
+              "records_sha256": "e51edb31720fd21cc87e143ea7ec042ac764a08fae6fdfb3f124b941174c2dd6",
+              "targets": {
+                "new": [
+                  "AgtXIv.RoM.reconstructL1",
+                  "AgtXIv.RoM.reconstructL1_toLp",
+                  "AgtXIv.RoM.norm_toLp_eq_l1Cost",
+                  "AgtXIv.RoM.reconstructL1_single",
+                  "AgtXIv.RoM.quotient_eq_iff_reconstructL1",
+                  "AgtXIv.RoM.quotient_norm_eq_finiteRoM",
+                  "AgtXIv.RoM.dual_le_l1Cost",
+                  "AgtXIv.RoM.exists_finiteRoM_dual_optimizer",
+                  "AgtXIv.RoM.finiteRoM_isGreatest_dual",
+                  "AgtXIv.ReducedRoM.augmented_dualCoordinates",
+                  "AgtXIv.ReducedRoM.augmented_dualCoordinates_apply",
+                  "AgtXIv.ReducedRoM.linearFunctional_eq_augmented_dualCoordinates",
+                  "AgtXIv.ReducedRoM.normalized_finiteRoM_isGreatest_dual",
+                  "AgtXIv.ReducedRoM.reducedRoM_isGreatest_dual"
+                ],
+                "support": [
+                  "AgtXIv.RoM.optimalCoeffs_isL1Minimizer",
+                  "AgtXIv.RoM.finiteRoM",
+                  "exists_dual_vector''",
+                  "LinearMap.exists_extend",
+                  "LinearMap.quotKerEquivRange",
+                  "Submodule.Quotient.norm_mk_le",
+                  "Submodule.Quotient.norm_mk_lt",
+                  "PiLp.norm_single",
+                  "AgtXIv.ReducedRoM.augmentedAtom",
+                  "AgtXIv.ReducedRoM.augmented_projected_feasible",
+                  "AgtXIv.ReducedRoM.reducedRoM"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "ContextSignIndependence": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ContextSignIndependence.lean",
+            "source_sha256": "c8e9a7d6234effeb1ee62194e5ebcf18d5cee59ddabf0cc5096ac1bd3d162867",
+            "imports": [
+              "AgtXIvStabilizerness.AdmissibleSigns",
+              "AgtXIvRootMath.PauliSupportWord",
+              "AgtXIvRootMath.GottesmanGeneratorFixedSpace"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/context-sign-independence-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "05adbd6689645f63bea3a19c2a22714d5624b0fb256b241162ab48fb4742af5a",
+              "source_sha256": "c8e9a7d6234effeb1ee62194e5ebcf18d5cee59ddabf0cc5096ac1bd3d162867",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/context-sign-independence-20260919/attempt-01/audits.json",
+              "records_sha256": "450c7d81ef85475179c7a954577e12c01d8d19c61fa67f7761a7de96b1fffed9",
+              "targets": {
+                "new": [
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_injective_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_ne_minus_one_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.closure_generators_le_wordProduct_range",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.minus_one_not_mem_closure_of_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.support_signedObservable",
+                  "AgtXIv.Varela.MeasurementWindow.signedObservable_involutive",
+                  "AgtXIv.Varela.MeasurementWindow.signedObservable_commutesWith",
+                  "AgtXIv.Varela.MeasurementWindow.commute_signedObservable_of_context",
+                  "AgtXIv.Varela.MeasurementWindow.contextEnumeration",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextGenerators",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextGenerators_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextSet_eq_generator_range",
+                  "AgtXIv.Varela.MeasurementWindow.isAdmissibleSign_of_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns",
+                  "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns_eq_full_of_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.max_abs_context_signed_sum_of_support_independent"
+                ],
+                "support": [
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.support_wordProduct",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProductHom",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_basisWord",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_one",
+                  "AgtXIv.Stabilizer.F2Support.pauli_addPhase",
+                  "AgtXIv.Varela.MeasurementWindow.IsAdmissibleSign",
+                  "AgtXIv.Varela.MeasurementWindow.signedObservable",
+                  "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+                  "AgtXIv.Stabilizerness.max_abs_signed_sum"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "NoActiveDependencies": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/NoActiveDependencies.lean",
+            "source_sha256": "a76636d5a24eaac4ac4dd3d2e9ac1cece9779936b750341ba4de197e09f3c312",
+            "imports": [
+              "ContextSignIndependence"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/no-active-dependencies-20260919/attempt-02/receipt.json",
+              "receipt_sha256": "f43af63578785fc718679d0437988be753916eb9fd7b7cddd8142f0d8c6320ea",
+              "source_sha256": "a76636d5a24eaac4ac4dd3d2e9ac1cece9779936b750341ba4de197e09f3c312",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/no-active-dependencies-20260919/attempt-02/audits.json",
+              "records_sha256": "cfa83a7889709e0da5814e0495456bb82723134c91c1b022ffbfab8cd870c91f",
+              "targets": {
+                "new": [
+                  "AgtXIv.Stabilizer.IsScalarPauli",
+                  "AgtXIv.Stabilizer.support_eq_zero_iff_scalar",
+                  "AgtXIv.Stabilizer.scalarPauli_toCMatrix",
+                  "AgtXIv.Stabilizer.support_list_product",
+                  "AgtXIv.Stabilizer.exists_nonempty_zero_sum_of_not_linearIndependent",
+                  "AgtXIv.Stabilizer.exists_minimal_nonempty_zero_sum",
+                  "AgtXIv.Varela.MeasurementWindow.subsetProduct",
+                  "AgtXIv.Varela.MeasurementWindow.support_subsetProduct",
+                  "AgtXIv.Varela.MeasurementWindow.scalar_subsetProduct_iff_zero_sum",
+                  "AgtXIv.Varela.MeasurementWindow.scalar_product_iff_for_any_order",
+                  "AgtXIv.Varela.MeasurementWindow.IsPauliDependency",
+                  "AgtXIv.Varela.MeasurementWindow.IsBinaryDependency",
+                  "AgtXIv.Varela.MeasurementWindow.pauliDependency_iff_binaryDependency",
+                  "AgtXIv.Varela.MeasurementWindow.IsActiveDependency",
+                  "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.exists_binaryDependency_subset_of_not_independent",
+                  "AgtXIv.Varela.MeasurementWindow.context_support_independent_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.isAdmissibleSign_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns_eq_full_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.max_abs_context_signed_sum_of_noActiveDependencies"
+                ],
+                "support": [
+                  "AgtXIv.Varela.MeasurementWindow.IsCommutingContext",
+                  "AgtXIv.Varela.MeasurementWindow.IsAdmissibleSign",
+                  "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns",
+                  "AgtXIv.Varela.MeasurementWindow.isAdmissibleSign_of_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns_eq_full_of_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.max_abs_context_signed_sum_of_support_independent",
+                  "AgtXIv.Stabilizer.F2Bits.f2_eq_zero_or_one",
+                  "AgtXIv.Stabilizer.F2Support.pauli_mul",
+                  "AgtXIv.Stabilizer.F2Support.pauli_addPhase",
+                  "Pauli.addPhase_toCMatrix",
+                  "Fintype.not_linearIndependent_iff"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "ContextCodeState": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ContextCodeState.lean",
+            "source_sha256": "5b3e38252de83471b33607fddab768a86a0fd3127fe1cd91ec7b831bdb615606",
+            "imports": [
+              "NoActiveDependencies"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/context-code-state-20260919/attempt-04/receipt.json",
+              "receipt_sha256": "daba53eda0cf7aff7906e8b922455ffcbbf43704ba9e8ce3c9ff55a837cf7773",
+              "source_sha256": "5b3e38252de83471b33607fddab768a86a0fd3127fe1cd91ec7b831bdb615606",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/context-code-state-20260919/attempt-04/audits.json",
+              "records_sha256": "c06c30a886cae12399557014719d7ca31abbd671724b8d64ca51976b33bfb550",
+              "targets": {
+                "new": [
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_eq_scaled_projector",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_posSemidef",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_trace_one",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeState",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.eval_mul_codeStateMatrix",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_eval_zero_of_not_commutes",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_codeStateMatrix_zero_of_not_commutes",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeState_eq_completeFrameAtom_of_rank_eq",
+                  "AgtXIv.Varela.MeasurementWindow.maximalContextFrame",
+                  "AgtXIv.Varela.MeasurementWindow.signedObservable_mem_contextFrame",
+                  "AgtXIv.Varela.MeasurementWindow.exists_not_commutes_of_not_mem_maximal",
+                  "AgtXIv.Varela.MeasurementWindow.contextCodeState_expectation",
+                  "AgtXIv.Varela.MeasurementWindow.exists_density_projecting_to_maximalContext",
+                  "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_full_rank_context"
+                ],
+                "support": [
+                  "AgtXIv.Varela.MeasurementWindow.context_support_independent_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextGenerators",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextGenerators_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+                  "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector",
+                  "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+                  "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_eval_eq_zero_of_label_ne_one",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_injective_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_ne_minus_one_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_basisWord",
+                  "AgtXIv.Stabilizer.CanonicalAtomAux.atom_mem_freeByAtoms",
+                  "AgtXIv.Stabilizer.completeFrameHermitianAtom"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "PartialFrameExtension": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/PartialFrameExtension.lean",
+            "source_sha256": "e042a4bad5dbee47fbec43a292353b64790185ff8d814ae6f21329a7be2c5372",
+            "imports": [
+              "ContextCodeState",
+              "Mathlib.LinearAlgebra.BilinearForm.Orthogonal"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/partial-frame-extension-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "f50d0f0e3830263e39fcc53f7257bd7764d0b3446ec584fc15eb1e66d00356dd",
+              "source_sha256": "e042a4bad5dbee47fbec43a292353b64790185ff8d814ae6f21329a7be2c5372",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/partial-frame-extension-20260919/attempt-01/audits.json",
+              "records_sha256": "fcab8b27caba9426d06c58a6d586f473f705a779c02adda55c0583b43e045daf",
+              "targets": {
+                "new": [
+                  "AgtXIv.Stabilizer.F2Support.finrank_eq_twice",
+                  "AgtXIv.Stabilizer.F2Support.exists_orthogonal_outside_span",
+                  "AgtXIv.Stabilizer.F2Support.span_le_orthogonal_of_isotropic",
+                  "AgtXIv.Stabilizer.F2Support.isotropic_independent_card_le",
+                  "AgtXIv.Stabilizer.F2Support.hermitianRepresentative",
+                  "AgtXIv.Stabilizer.F2Support.support_hermitianRepresentative",
+                  "AgtXIv.Stabilizer.F2Support.hermitianRepresentative_sq",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.support_isotropic",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.rank_le_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_new_generator"
+                ],
+                "support": [
+                  "AgtXIv.Stabilizer.F2Support.coordinateEquiv",
+                  "AgtXIv.Stabilizer.F2Support.symplecticForm_nondegenerate",
+                  "AgtXIv.Stabilizer.F2Support.symplectic_alternating",
+                  "AgtXIv.Stabilizer.hermitianSupportPauli_sq",
+                  "LinearMap.BilinForm.finrank_orthogonal"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "SignedGeneratorCompletion": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/SignedGeneratorCompletion.lean",
+            "source_sha256": "c54ff45890046c079e24592194e30329f969f586bf9b6285111f58762e4bab6d",
+            "imports": [
+              "PartialFrameExtension"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/signed-generator-completion-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "414f4e2025e67da7029880b9efd6d05299d80caf27ff3a90bc9aafa4429b12d7",
+              "source_sha256": "c54ff45890046c079e24592194e30329f969f586bf9b6285111f58762e4bab6d",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/signed-generator-completion-20260919/attempt-01/audits.json",
+              "records_sha256": "9e3b0aa97cfdedae45660996c10efc5397818d6963d9231a7a1d0f7fd571cd10",
+              "targets": {
+                "new": [
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.prepend",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.prepend_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.generator_range_subset_prepend",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_complete_generators",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.frameOfSupportIndependent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_complete_frame",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.basisGenerators",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.basisGenerators_support_independent",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_complete_signed_extension"
+                ],
+                "support": [
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_new_generator",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.rank_le_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_basisWord",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_injective_of_support_independent",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_ne_minus_one_of_support_independent",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.generatorSupport_linearIndependent"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "MaximalContextPhysical": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/MaximalContextPhysical.lean",
+            "source_sha256": "b62dadf6e1ba2da5294fb3dab168d091e11584159e9bb4dd9b8da7b28d301686",
+            "imports": [
+              "SignedGeneratorCompletion"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/maximal-context-physical-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "036d500aedfb7923ca6e70c7e6ec9ca57481e52f6179634458d32faf06d11879",
+              "source_sha256": "b62dadf6e1ba2da5294fb3dab168d091e11584159e9bb4dd9b8da7b28d301686",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/maximal-context-physical-20260919/attempt-01/audits.json",
+              "records_sha256": "b44429ed920440f3bade4062dfaafa2f422399dbe48741f52e84e0201373b0fd",
+              "targets": {
+                "new": [
+                  "AgtXIv.Varela.MeasurementWindow.exists_completeFrame_realizing_maximalContext",
+                  "AgtXIv.Varela.MeasurementWindow.codeState_projection_eq_maximalContext",
+                  "AgtXIv.Varela.MeasurementWindow.exists_projectedFrameAtom_eq_maximalContext",
+                  "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_noActiveDependencies"
+                ],
+                "support": [
+                  "AgtXIv.Varela.MeasurementWindow.context_support_independent_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextGenerators_support_independent",
+                  "AgtXIv.Varela.MeasurementWindow.signedContextGenerators",
+                  "AgtXIv.Varela.MeasurementWindow.exists_not_commutes_of_not_mem_maximal",
+                  "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_complete_frame",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeState_eq_completeFrameAtom_of_rank_eq",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_trace_one",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.eval_mul_codeStateMatrix",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_codeStateMatrix_zero_of_not_commutes",
+                  "AgtXIv.Stabilizer.CanonicalAtomAux.atom_mem_freeByAtoms"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "ProjectedFrameCoordinates": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ProjectedFrameCoordinates.lean",
+            "source_sha256": "392ac5163b8880f78fadea8423847581928acc29fe4301194049eadd8c3f11bc",
+            "imports": [
+              "MaximalContextPhysical"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/projected-frame-coordinates-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "02389690432c77351ac780f4c410850772fc9a3d99bf7b72f9c16e1660c7562b",
+              "source_sha256": "392ac5163b8880f78fadea8423847581928acc29fe4301194049eadd8c3f11bc",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/projected-frame-coordinates-20260919/attempt-01/audits.json",
+              "records_sha256": "c5dec936ed938f88248e6f1164b67df77910314c937321dbef7481fd913c52e9",
+              "targets": {
+                "new": [
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_eval_zero_of_support_ne",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_codeStateMatrix_zero_of_support_outside",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_eq_stabilizerProjectorMatrix",
+                  "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_coordinate",
+                  "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_coordinate_cases",
+                  "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_ternary",
+                  "AgtXIv.Varela.MeasurementWindow.exists_frame_support_of_coordinate_ne_zero",
+                  "AgtXIv.Varela.MeasurementWindow.frameNonzeroSupport",
+                  "AgtXIv.Varela.MeasurementWindow.mem_frameNonzeroSupport",
+                  "AgtXIv.Varela.MeasurementWindow.frameNonzeroSupport_commuting"
+                ],
+                "support": [
+                  "AgtXIv.Stabilizer.pauli_eq_or_eq_neg_of_same_support_of_sq_one",
+                  "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.eval_mul_codeStateMatrix",
+                  "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_trace_one",
+                  "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom",
+                  "AgtXIv.Stabilizer.completeFrameHermitianAtom"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "ContextAtomRefinement": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ContextAtomRefinement.lean",
+            "source_sha256": "fa3fb006753169036b8fc092a57dc7519f7785e2f3a29f0be6b7f5c4fa2aeb7b",
+            "imports": [
+              "ProjectedFrameCoordinates",
+              "AgtXIvVarela.ContextReconstruction"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/context-atom-refinement-20260919/attempt-01/receipt.json",
+              "receipt_sha256": "0287b54a4c47cd9794dbc4ee0c32911c6e229303ee2a450fe4b09959180787a3",
+              "source_sha256": "fa3fb006753169036b8fc092a57dc7519f7785e2f3a29f0be6b7f5c4fa2aeb7b",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/context-atom-refinement-20260919/attempt-01/audits.json",
+              "records_sha256": "7b57c964e65558d7427c9dabfa616b87a5dd3468128b93576e000176d9953c48",
+              "targets": {
+                "new": [
+                  "AgtXIv.RoM.midpoint_freeByAtoms",
+                  "AgtXIv.Varela.MeasurementWindow.exists_maximal_context_containing",
+                  "AgtXIv.Varela.MeasurementWindow.completionSign",
+                  "AgtXIv.Varela.MeasurementWindow.completionCandidate",
+                  "AgtXIv.Varela.MeasurementWindow.midpoint_completionCandidates",
+                  "AgtXIv.Varela.MeasurementWindow.atomRefinement_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.vRepRepair_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.projected_eq_contextPolytope_of_noActiveDependencies"
+                ],
+                "support": [
+                  "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_ternary",
+                  "AgtXIv.Varela.MeasurementWindow.frameNonzeroSupport_commuting",
+                  "AgtXIv.Varela.MeasurementWindow.mem_frameNonzeroSupport",
+                  "AgtXIv.Varela.MeasurementWindow.isAdmissibleSign_of_noActiveDependencies",
+                  "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_noActiveDependencies",
+                  "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          },
+          "FiniteCliqueCoverAttainment": {
+            "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/FiniteCliqueCoverAttainment.lean",
+            "source_sha256": "36637428438fa16fc87914542a6771dea6d62dba1419db9091335bdb0b71a666",
+            "imports": [
+              "AgtXIvVarela.ExternalPerfectGraphFoundation",
+              "Mathlib"
+            ],
+            "predecessor": {
+              "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/finite-clique-cover-attainment-20260919/attempt-04/receipt.json",
+              "receipt_sha256": "5ca5ac49f79e5570f1361bb9ad6b5b260adf0b30f8c84ae69c3bbd3f121b47e2",
+              "source_sha256": "36637428438fa16fc87914542a6771dea6d62dba1419db9091335bdb0b71a666",
+              "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/finite-clique-cover-attainment-20260919/attempt-04/audits.json",
+              "records_sha256": "0be849d74f2776a56bed8e7b5497cc7bad164e612b6479d29c57968a3ff50835",
+              "targets": {
+                "new": [
+                  "AgtXIv.GraphFoundation.IsNonnegativeFiniteCover",
+                  "AgtXIv.GraphFoundation.exists_nonnegative_finite_cover_minimizer",
+                  "AgtXIv.GraphFoundation.singleton_mem_cliqueFinsets",
+                  "AgtXIv.GraphFoundation.fractionalCliqueCover_feasible",
+                  "AgtXIv.GraphFoundation.fractionalCliqueCover_cost_nonneg",
+                  "AgtXIv.GraphFoundation.exists_minimizing_fractionalCliqueCover",
+                  "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_attained",
+                  "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_nonneg"
+                ],
+                "support": [
+                  "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+                  "AgtXIv.GraphFoundation.fractionalCliqueCoverValue",
+                  "AgtXIv.GraphFoundation.cliqueFinsets",
+                  "IsCompact.exists_isMinOn"
+                ]
+              },
+              "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+              "original_epoch_status": "SUCCEEDED"
+            }
+          }
+        },
+        "compile_order": [
+          "ReducedRoMSemantics",
+          "ConvexGeneratorInvariance",
+          "FiniteRoMDuality",
+          "ContextSignIndependence",
+          "NoActiveDependencies",
+          "ContextCodeState",
+          "PartialFrameExtension",
+          "SignedGeneratorCompletion",
+          "MaximalContextPhysical",
+          "ProjectedFrameCoordinates",
+          "ContextAtomRefinement",
+          "FiniteCliqueCoverAttainment"
+        ],
+        "compiled_modules": [
+          {
+            "module": "ReducedRoMSemantics",
+            "olean_sha256": "29e33ea9f356895040e04783aedc6b6da86bdbe4e1931232296a2b4099a85f64"
+          },
+          {
+            "module": "ConvexGeneratorInvariance",
+            "olean_sha256": "7d08f04beff6f41dcc7e89a86703de0c2a92881955f792a4a52ed26b0f1c8e90"
+          },
+          {
+            "module": "FiniteRoMDuality",
+            "olean_sha256": "5e4ad71a2ae982dd4bb76d7b6424a12f7c00691aafda13050f4f1e90a3d6ad1e"
+          },
+          {
+            "module": "ContextSignIndependence",
+            "olean_sha256": "3aa3315c4fcdafc31b299857c6e528438011dd7b31b8ebccc18c4100e26b56ba"
+          },
+          {
+            "module": "NoActiveDependencies",
+            "olean_sha256": "a52b16086d071919c371fb6e4e71a3dac01b2f318efd4ee2e15bbbc0e2971473"
+          },
+          {
+            "module": "ContextCodeState",
+            "olean_sha256": "4f723cbbf024da20cb4587df579dea11cdc959e0020a9fa576c815f42b57489e"
+          },
+          {
+            "module": "PartialFrameExtension",
+            "olean_sha256": "8c6d1cd6bc3cf83a40febe305ea7a763f7bf4dc1fec30fa5fd1a55231383b4bb"
+          },
+          {
+            "module": "SignedGeneratorCompletion",
+            "olean_sha256": "1f395fd61e494361c5f1f73c080a64f10dd18e140d65274256e016f55e5ea91d"
+          },
+          {
+            "module": "MaximalContextPhysical",
+            "olean_sha256": "649d69f7fdc054c205f4bdac99c127696af194b29186f62990bf5f27c1c77025"
+          },
+          {
+            "module": "ProjectedFrameCoordinates",
+            "olean_sha256": "e10511fb681c332f43b23bba45da6e14d3c7241aaf8e36221eef45aa57883a7c"
+          },
+          {
+            "module": "ContextAtomRefinement",
+            "olean_sha256": "bc773edd13ed2a7e374a4e5c7f284172a36905dac17bee35421d9a7c0e1d15db"
+          },
+          {
+            "module": "FiniteCliqueCoverAttainment",
+            "olean_sha256": "59db4c070c7914befa69577030897b024f993e98c925ae28e6602429293b51e4"
+          }
+        ],
+        "artifacts": [
+          {
+            "module": "ReducedRoMSemantics",
+            "artifacts": {
+              ".olean": "29e33ea9f356895040e04783aedc6b6da86bdbe4e1931232296a2b4099a85f64"
+            }
+          },
+          {
+            "module": "ConvexGeneratorInvariance",
+            "artifacts": {
+              ".olean": "7d08f04beff6f41dcc7e89a86703de0c2a92881955f792a4a52ed26b0f1c8e90"
+            }
+          },
+          {
+            "module": "FiniteRoMDuality",
+            "artifacts": {
+              ".olean": "5e4ad71a2ae982dd4bb76d7b6424a12f7c00691aafda13050f4f1e90a3d6ad1e"
+            }
+          },
+          {
+            "module": "ContextSignIndependence",
+            "artifacts": {
+              ".olean": "3aa3315c4fcdafc31b299857c6e528438011dd7b31b8ebccc18c4100e26b56ba"
+            }
+          },
+          {
+            "module": "NoActiveDependencies",
+            "artifacts": {
+              ".olean": "a52b16086d071919c371fb6e4e71a3dac01b2f318efd4ee2e15bbbc0e2971473"
+            }
+          },
+          {
+            "module": "ContextCodeState",
+            "artifacts": {
+              ".olean": "4f723cbbf024da20cb4587df579dea11cdc959e0020a9fa576c815f42b57489e"
+            }
+          },
+          {
+            "module": "PartialFrameExtension",
+            "artifacts": {
+              ".olean": "8c6d1cd6bc3cf83a40febe305ea7a763f7bf4dc1fec30fa5fd1a55231383b4bb"
+            }
+          },
+          {
+            "module": "SignedGeneratorCompletion",
+            "artifacts": {
+              ".olean": "1f395fd61e494361c5f1f73c080a64f10dd18e140d65274256e016f55e5ea91d"
+            }
+          },
+          {
+            "module": "MaximalContextPhysical",
+            "artifacts": {
+              ".olean": "649d69f7fdc054c205f4bdac99c127696af194b29186f62990bf5f27c1c77025"
+            }
+          },
+          {
+            "module": "ProjectedFrameCoordinates",
+            "artifacts": {
+              ".olean": "e10511fb681c332f43b23bba45da6e14d3c7241aaf8e36221eef45aa57883a7c"
+            }
+          },
+          {
+            "module": "ContextAtomRefinement",
+            "artifacts": {
+              ".olean": "bc773edd13ed2a7e374a4e5c7f284172a36905dac17bee35421d9a7c0e1d15db"
+            }
+          },
+          {
+            "module": "FiniteCliqueCoverAttainment",
+            "artifacts": {
+              ".olean": "59db4c070c7914befa69577030897b024f993e98c925ae28e6602429293b51e4"
+            }
+          }
+        ],
+        "audit_sha256": "d639a76beb1130bb58418c319ada51d9c55f0a89f6fe88643acad6e607393ec0",
+        "targets": [
+          "AgtXIv.ConcretePhyslib.adj_iff_matrix_anticomm",
+          "AgtXIv.ConcretePhyslib.concrete_window_nonvacuity",
+          "AgtXIv.ConcretePhyslib.densityToMState",
+          "AgtXIv.ConcretePhyslib.densityToMState_mat",
+          "AgtXIv.ConcretePhyslib.density_roundtrip",
+          "AgtXIv.ConcretePhyslib.expectation_preserved",
+          "AgtXIv.ConcretePhyslib.frustrationGraph",
+          "AgtXIv.ConcretePhyslib.mStateToDensity",
+          "AgtXIv.ConcretePhyslib.mStateToDensity_val",
+          "AgtXIv.ConcretePhyslib.mState_roundtrip",
+          "AgtXIv.ConcretePhyslib.matrix_anticomm_of_adj",
+          "AgtXIv.ConcretePhyslib.observable",
+          "AgtXIv.ConcretePhyslib.observable_mat",
+          "AgtXIv.ConcretePhyslib.observable_sq",
+          "AgtXIv.ConcretePhyslib.pauli_ne_neg",
+          "AgtXIv.ConcretePhyslib.singleZWindow",
+          "AgtXIv.ConcretePhyslib.trace_preserved",
+          "AgtXIv.ConcretePhyslib.window_cliqueNumber_bound",
+          "AgtXIv.ConcretePhyslib.window_clique_l1_bound",
+          "AgtXIv.ConcretePhyslib.window_clique_l2_bound",
+          "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+          "AgtXIv.GraphFoundation.IsNonnegativeFiniteCover",
+          "AgtXIv.GraphFoundation.cliqueFinsets",
+          "AgtXIv.GraphFoundation.exists_minimizing_fractionalCliqueCover",
+          "AgtXIv.GraphFoundation.exists_nonnegative_finite_cover_minimizer",
+          "AgtXIv.GraphFoundation.fractionalCliqueCoverValue",
+          "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_attained",
+          "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_nonneg",
+          "AgtXIv.GraphFoundation.fractionalCliqueCover_cost_nonneg",
+          "AgtXIv.GraphFoundation.fractionalCliqueCover_feasible",
+          "AgtXIv.GraphFoundation.singleton_mem_cliqueFinsets",
+          "AgtXIv.PhyslibCandidate.expectation_eq_real_trace",
+          "AgtXIv.ReducedRoM.augmentedAtom",
+          "AgtXIv.ReducedRoM.augmented_dualCoordinates",
+          "AgtXIv.ReducedRoM.augmented_dualCoordinates_apply",
+          "AgtXIv.ReducedRoM.augmented_feasible_of_convex_atoms",
+          "AgtXIv.ReducedRoM.augmented_projected_feasible",
+          "AgtXIv.ReducedRoM.convexPush",
+          "AgtXIv.ReducedRoM.linearFunctional_eq_augmented_dualCoordinates",
+          "AgtXIv.ReducedRoM.normalized_decomposition_transport",
+          "AgtXIv.ReducedRoM.normalized_finiteRoM_isGreatest_dual",
+          "AgtXIv.ReducedRoM.normalized_minimum_eq_of_mutual_convex_atoms",
+          "AgtXIv.ReducedRoM.normalized_minimum_le_of_convex_atoms",
+          "AgtXIv.ReducedRoM.one_le_reducedRoM",
+          "AgtXIv.ReducedRoM.reconstruct_augmentedAtom",
+          "AgtXIv.ReducedRoM.reducedRoM",
+          "AgtXIv.ReducedRoM.reducedRoM_attained",
+          "AgtXIv.ReducedRoM.reducedRoM_eq_of_mutual_convex_generators",
+          "AgtXIv.ReducedRoM.reducedRoM_isGreatest_dual",
+          "AgtXIv.ReducedRoM.signedDecomp_augmentedAtom_iff",
+          "AgtXIv.RoM.FiniteStochasticKernel.l1_push_le",
+          "AgtXIv.RoM.FiniteStochasticKernel.sum_push",
+          "AgtXIv.RoM.dual_le_l1Cost",
+          "AgtXIv.RoM.exists_finiteRoM_dual_optimizer",
+          "AgtXIv.RoM.finiteRoM",
+          "AgtXIv.RoM.finiteRoM_isGreatest_dual",
+          "AgtXIv.RoM.kernelOfAtomImages",
+          "AgtXIv.RoM.midpoint_freeByAtoms",
+          "AgtXIv.RoM.norm_toLp_eq_l1Cost",
+          "AgtXIv.RoM.normalized_l1",
+          "AgtXIv.RoM.optimalCoeffs_isL1Minimizer",
+          "AgtXIv.RoM.quotient_eq_iff_reconstructL1",
+          "AgtXIv.RoM.quotient_norm_eq_finiteRoM",
+          "AgtXIv.RoM.reconstructL1",
+          "AgtXIv.RoM.reconstructL1_single",
+          "AgtXIv.RoM.reconstructL1_toLp",
+          "AgtXIv.RoM.reconstruct_push_kernelOfAtomImages",
+          "AgtXIv.Stabilizer.CanonicalAtomAux.atom_mem_freeByAtoms",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.closure_generators_le_wordProduct_range",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_complete_frame",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_complete_generators",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.exists_new_generator",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.frameOfSupportIndependent",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.generator_range_subset_prepend",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.minus_one_not_mem_closure_of_support_independent",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.prepend",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.prepend_support_independent",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.rank_le_of_support_independent",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.support_isotropic",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.support_wordProduct",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProductHom",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_basisWord",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_injective_of_support_independent",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_ne_minus_one_of_support_independent",
+          "AgtXIv.Stabilizer.CommutingInvolutivePauliGenerators.wordProduct_one",
+          "AgtXIv.Stabilizer.DensityMatrix",
+          "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+          "AgtXIv.Stabilizer.F2Bits.f2_eq_zero_or_one",
+          "AgtXIv.Stabilizer.F2Support.coordinateEquiv",
+          "AgtXIv.Stabilizer.F2Support.exists_orthogonal_outside_span",
+          "AgtXIv.Stabilizer.F2Support.finrank_eq_twice",
+          "AgtXIv.Stabilizer.F2Support.hermitianRepresentative",
+          "AgtXIv.Stabilizer.F2Support.hermitianRepresentative_sq",
+          "AgtXIv.Stabilizer.F2Support.isotropic_independent_card_le",
+          "AgtXIv.Stabilizer.F2Support.pauli_addPhase",
+          "AgtXIv.Stabilizer.F2Support.pauli_mul",
+          "AgtXIv.Stabilizer.F2Support.span_le_orthogonal_of_isotropic",
+          "AgtXIv.Stabilizer.F2Support.support_hermitianRepresentative",
+          "AgtXIv.Stabilizer.F2Support.symplecticForm_nondegenerate",
+          "AgtXIv.Stabilizer.F2Support.symplectic_alternating",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.basisGenerators",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.basisGenerators_support_independent",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeState",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_eq_scaled_projector",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_eq_stabilizerProjectorMatrix",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_posSemidef",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeStateMatrix_trace_one",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.codeState_eq_completeFrameAtom_of_rank_eq",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.eval_mul_codeStateMatrix",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.exists_complete_signed_extension",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.generatorSupport_linearIndependent",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_eval_eq_zero_of_label_ne_one",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_codeStateMatrix_zero_of_not_commutes",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_codeStateMatrix_zero_of_support_outside",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_eval_zero_of_not_commutes",
+          "AgtXIv.Stabilizer.IndependentSignedPauliFrame.trace_mul_eval_zero_of_support_ne",
+          "AgtXIv.Stabilizer.IsScalarPauli",
+          "AgtXIv.Stabilizer.completeFrameHermitianAtom",
+          "AgtXIv.Stabilizer.exists_minimal_nonempty_zero_sum",
+          "AgtXIv.Stabilizer.exists_nonempty_zero_sum_of_not_linearIndependent",
+          "AgtXIv.Stabilizer.hermitianSupportPauli_sq",
+          "AgtXIv.Stabilizer.pauli_eq_or_eq_neg_of_same_support_of_sq_one",
+          "AgtXIv.Stabilizer.pauli_toCMatrix_injective",
+          "AgtXIv.Stabilizer.pauli_toCMatrix_isHermitian_of_sq_eq_one",
+          "AgtXIv.Stabilizer.scalarPauli_toCMatrix",
+          "AgtXIv.Stabilizer.stabilizerCodeProjectorMatrix_posSemidef",
+          "AgtXIv.Stabilizer.support_eq_zero_iff_scalar",
+          "AgtXIv.Stabilizer.support_list_product",
+          "AgtXIv.Stabilizer.traceOne_exists_normalized_stabilizer_signedDecomp",
+          "AgtXIv.Stabilizer.trace_eval_eq_zero_of_support_ne_zero",
+          "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+          "AgtXIv.Stabilizerness.max_abs_signed_sum",
+          "AgtXIv.Varela.MeasurementWindow",
+          "AgtXIv.Varela.MeasurementWindow.IsActiveDependency",
+          "AgtXIv.Varela.MeasurementWindow.IsAdmissibleSign",
+          "AgtXIv.Varela.MeasurementWindow.IsBinaryDependency",
+          "AgtXIv.Varela.MeasurementWindow.IsCommutingContext",
+          "AgtXIv.Varela.MeasurementWindow.IsPauliDependency",
+          "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector",
+          "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.atomRefinement_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_full_rank_context",
+          "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.codeState_projection_eq_maximalContext",
+          "AgtXIv.Varela.MeasurementWindow.commute_signedObservable_of_context",
+          "AgtXIv.Varela.MeasurementWindow.completionCandidate",
+          "AgtXIv.Varela.MeasurementWindow.completionSign",
+          "AgtXIv.Varela.MeasurementWindow.contextCodeState_expectation",
+          "AgtXIv.Varela.MeasurementWindow.contextEnumeration",
+          "AgtXIv.Varela.MeasurementWindow.context_support_independent_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.exists_binaryDependency_subset_of_not_independent",
+          "AgtXIv.Varela.MeasurementWindow.exists_completeFrame_realizing_maximalContext",
+          "AgtXIv.Varela.MeasurementWindow.exists_density_projecting_to_maximalContext",
+          "AgtXIv.Varela.MeasurementWindow.exists_frame_support_of_coordinate_ne_zero",
+          "AgtXIv.Varela.MeasurementWindow.exists_maximal_context_containing",
+          "AgtXIv.Varela.MeasurementWindow.exists_not_commutes_of_not_mem_maximal",
+          "AgtXIv.Varela.MeasurementWindow.exists_projectedFrameAtom_eq_maximalContext",
+          "AgtXIv.Varela.MeasurementWindow.expectationCoordinate",
+          "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+          "AgtXIv.Varela.MeasurementWindow.expectationProjection_reconstruct",
+          "AgtXIv.Varela.MeasurementWindow.frameNonzeroSupport",
+          "AgtXIv.Varela.MeasurementWindow.frameNonzeroSupport_commuting",
+          "AgtXIv.Varela.MeasurementWindow.isAdmissibleSign_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.isAdmissibleSign_of_support_independent",
+          "AgtXIv.Varela.MeasurementWindow.max_abs_context_signed_sum_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.max_abs_context_signed_sum_of_support_independent",
+          "AgtXIv.Varela.MeasurementWindow.maximalContextFrame",
+          "AgtXIv.Varela.MeasurementWindow.mem_frameNonzeroSupport",
+          "AgtXIv.Varela.MeasurementWindow.midpoint_completionCandidates",
+          "AgtXIv.Varela.MeasurementWindow.pauliDependency_iff_binaryDependency",
+          "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom",
+          "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_coordinate",
+          "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_coordinate_cases",
+          "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom_ternary",
+          "AgtXIv.Varela.MeasurementWindow.projected_eq_contextPolytope_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns",
+          "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns_eq_full_of_noActiveDependencies",
+          "AgtXIv.Varela.MeasurementWindow.realAdmissibleSigns_eq_full_of_support_independent",
+          "AgtXIv.Varela.MeasurementWindow.scalar_product_iff_for_any_order",
+          "AgtXIv.Varela.MeasurementWindow.scalar_subsetProduct_iff_zero_sum",
+          "AgtXIv.Varela.MeasurementWindow.signedContextGenerators",
+          "AgtXIv.Varela.MeasurementWindow.signedContextGenerators_support_independent",
+          "AgtXIv.Varela.MeasurementWindow.signedContextSet_eq_generator_range",
+          "AgtXIv.Varela.MeasurementWindow.signedObservable",
+          "AgtXIv.Varela.MeasurementWindow.signedObservable_commutesWith",
+          "AgtXIv.Varela.MeasurementWindow.signedObservable_involutive",
+          "AgtXIv.Varela.MeasurementWindow.signedObservable_mem_contextFrame",
+          "AgtXIv.Varela.MeasurementWindow.subsetProduct",
+          "AgtXIv.Varela.MeasurementWindow.support_signedObservable",
+          "AgtXIv.Varela.MeasurementWindow.support_subsetProduct",
+          "AgtXIv.Varela.MeasurementWindow.vRepRepair_of_noActiveDependencies",
+          "AgtXIv.Varela.VRepRepairObligations.projected_eq_contextPolytope",
+          "Fintype.not_linearIndependent_iff",
+          "IsCompact.exists_isMinOn",
+          "LinearMap.BilinForm.finrank_orthogonal",
+          "LinearMap.exists_extend",
+          "LinearMap.quotKerEquivRange",
+          "MState",
+          "MState.exp_val",
+          "MState.sum_abs_exp_val_finset_le_sqrt_card_of_pairwise_anticommute",
+          "MState.sum_sq_exp_val_finset_le_one_of_pairwise_anticommute",
+          "Pauli.addPhase_toCMatrix",
+          "Pauli.mul_anticomm_of_not_commutesWith",
+          "Pauli.mul_toCMatrix_eq_toCMatrix_mul_toCMatrix",
+          "Pauli.toCMatrix_neg",
+          "PiLp.norm_single",
+          "Submodule.Quotient.norm_mk_le",
+          "Submodule.Quotient.norm_mk_lt",
+          "exists_dual_vector''"
+        ]
+      }
+    ]
+  },
+  "modules": {
+    "WeightedCliqueCoverWeakDuality": {
+      "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/WeightedCliqueCoverWeakDuality.lean",
+      "source_sha256": "05a78a3f8c3b3b944e5c44d0a2516105c7c537c4587334b02a5055aa1a20e283",
+      "imports": [
+        "FiniteCliqueCoverAttainment"
+      ],
+      "original_imports": [
+        "FiniteCliqueCoverAttainment"
+      ],
+      "predecessor": {
+        "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/weighted-clique-cover-weak-duality-20260919/attempt-02/receipt.json",
+        "receipt_sha256": "ce268597111d70e35467cbad5c54c3c57a0e7b7a3c763702414ec77b039bdfcb",
+        "source_sha256": "05a78a3f8c3b3b944e5c44d0a2516105c7c537c4587334b02a5055aa1a20e283",
+        "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/weighted-clique-cover-weak-duality-20260919/attempt-02/audits.json",
+        "records_sha256": "52a02dd62a95e63cad3e699c45473109fa59d3600896de0b08b47e58c0c8e5c5",
+        "targets": {
+          "new": [
+            "AgtXIv.GraphFoundation.indep_clique_inter_card_le_one",
+            "AgtXIv.GraphFoundation.clique_weight_on_independent_le",
+            "AgtXIv.GraphFoundation.independent_weight_le_cover_cost",
+            "AgtXIv.GraphFoundation.maxWeightIndependent_le_cover_cost",
+            "AgtXIv.GraphFoundation.maxWeightIndependent_le_fractionalCliqueCoverValue"
+          ],
+          "support": [
+            "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+            "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_attained",
+            "AgtXIv.GraphFoundation.maxWeightIndependent",
+            "AgtXIv.GraphFoundation.cliqueFinsets"
+          ]
+        },
+        "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+        "original_epoch_status": "SUCCEEDED"
+      }
+    },
+    "ReducedRoMGraphDual": {
+      "source": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/lean/ReducedRoMGraphDual.lean",
+      "source_sha256": "f379f94ccf2aa838dbd7cdf2ba7edcb4d874248978c4b9477bb8056082475fce",
+      "imports": [
+        "ReducedRoMSemantics",
+        "ConvexGeneratorInvariance",
+        "FiniteRoMDuality",
+        "ContextAtomRefinement",
+        "AgtXIvVarela.ExternalPerfectGraphFoundation"
+      ],
+      "original_imports": [
+        "RoMGraphDualFoundation",
+        "AgtXIvVarela.ExternalPerfectGraphFoundation"
+      ],
+      "predecessor": {
+        "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/reduced-rom-graph-dual-20260919/attempt-04/receipt.json",
+        "receipt_sha256": "42dbd66489776485470e03eab6ccbff7907f30adb30f191b4358479c5ceb0318",
+        "source_sha256": "f379f94ccf2aa838dbd7cdf2ba7edcb4d874248978c4b9477bb8056082475fce",
+        "records": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/reduced-rom-graph-dual-20260919/attempt-04/audits.json",
+        "records_sha256": "462eebdd52b32487a36c070782b15844ec7c8eaf6db0cfedc2efad7d9cfed8ac",
+        "targets": {
+          "new": [
+            "AgtXIv.Varela.MeasurementWindow.contextFrustrationGraph",
+            "AgtXIv.Varela.MeasurementWindow.independent_iff_commutingContext",
+            "AgtXIv.Varela.MeasurementWindow.maxWeightIndependent_le_iff_contexts",
+            "AgtXIv.Varela.MeasurementWindow.context_vector_dot",
+            "AgtXIv.Varela.MeasurementWindow.signedMaximalCandidate",
+            "AgtXIv.Varela.MeasurementWindow.signedMaximalCandidate_dot",
+            "AgtXIv.Varela.MeasurementWindow.context_dual_constraint_iff_maximal_weights",
+            "AgtXIv.Varela.MeasurementWindow.maximal_weights_iff_all_context_weights",
+            "AgtXIv.Varela.MeasurementWindow.context_dual_constraint_iff_graph",
+            "AgtXIv.ReducedRoM.augmented_context_feasible",
+            "AgtXIv.ReducedRoM.reducedRoM_eq_context_minimum",
+            "AgtXIv.ReducedRoM.reducedRoM_isGreatest_context_dual",
+            "AgtXIv.ReducedRoM.graphDualValues",
+            "AgtXIv.ReducedRoM.reducedRoM_isGreatest_graph_dual",
+            "AgtXIv.ReducedRoM.reducedRoM_eq_graph_dual_sup",
+            "AgtXIv.ReducedRoM.exists_graph_dual_optimizer"
+          ],
+          "support": [
+            "AgtXIv.Varela.MeasurementWindow.atomRefinement_of_noActiveDependencies",
+            "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_noActiveDependencies",
+            "AgtXIv.Varela.MeasurementWindow.max_abs_context_signed_sum_of_noActiveDependencies",
+            "AgtXIv.Varela.MeasurementWindow.exists_maximal_context_containing",
+            "AgtXIv.ReducedRoM.augmented_feasible_of_convex_atoms",
+            "AgtXIv.ReducedRoM.augmented_projected_feasible",
+            "AgtXIv.ReducedRoM.reducedRoM_eq_of_mutual_convex_generators",
+            "AgtXIv.ReducedRoM.normalized_finiteRoM_isGreatest_dual",
+            "AgtXIv.GraphFoundation.maxWeightIndependent"
+          ]
+        },
+        "original_epoch_cwd": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness",
+        "original_epoch_status": "SUCCEEDED"
+      }
+    }
+  },
+  "compile_order": [
+    "WeightedCliqueCoverWeakDuality",
+    "ReducedRoMGraphDual"
+  ],
+  "compiled_modules": [
+    {
+      "module": "WeightedCliqueCoverWeakDuality",
+      "olean_sha256": "a143f07c9a70edd12c7828304d6e7a9695806b1363a32a0d5417d3a5002330eb"
+    }
+  ],
+  "receipts": [
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.additional_case_module_migration",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-additional-case-modules/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-concrete-physlib-bridge/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/physlib-anticommuting-20260919",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/001-WeightedCliqueCoverWeakDuality",
+        "-DautoImplicit=false",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/lib/WeightedCliqueCoverWeakDuality.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/001-WeightedCliqueCoverWeakDuality/WeightedCliqueCoverWeakDuality.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-19T10:42:55.195953+00:00",
+      "finished_at": "2026-09-19T10:43:35.113724+00:00",
+      "duration_seconds": 39.917,
+      "elapsed_seconds": 39.917,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "05a78a3f8c3b3b944e5c44d0a2516105c7c537c4587334b02a5055aa1a20e283",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/001-WeightedCliqueCoverWeakDuality/compile.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.additional_case_module_migration",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-additional-case-modules/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-full-case/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-concrete-physlib-bridge/lib:/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/physlib-anticommuting-20260919",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/002-ReducedRoMGraphDual",
+        "-DautoImplicit=false",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/lib/ReducedRoMGraphDual.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/002-ReducedRoMGraphDual/ReducedRoMGraphDual.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-19T10:43:35.117496+00:00",
+      "finished_at": "2026-09-19T10:44:24.446268+00:00",
+      "duration_seconds": 49.328,
+      "elapsed_seconds": 49.328,
+      "outcome": "FAILED",
+      "exit_code": 1,
+      "status": "FAILED",
+      "input_sha256": "aebb87692609c666b44516b8dabdaf9ed5ec04a1de785e099862be4f50c1208f",
+      "output_sha256": "26cea5d5134d03ebd3753759a0e437a40d8531dfb52fdfb911bc7da9e6caf7f2",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/002-ReducedRoMGraphDual/compile.log"
+    }
+  ],
+  "compatibility_adaptations": [
+    {
+      "module": "ReducedRoMGraphDual",
+      "before_sha256": "f379f94ccf2aa838dbd7cdf2ba7edcb4d874248978c4b9477bb8056082475fce",
+      "after_sha256": "aebb87692609c666b44516b8dabdaf9ed5ec04a1de785e099862be4f50c1208f",
+      "change_kind": "EXPLICIT_IMPORT_ONLY_FOUNDATION_DEDUPLICATION",
+      "mathematical_body_unchanged": true,
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/adaptations/initial-ReducedRoMGraphDual-imports.diff",
+      "replacement_imports": {
+        "RoMGraphDualFoundation": [
+          "ReducedRoMSemantics",
+          "ConvexGeneratorInvariance",
+          "FiniteRoMDuality",
+          "ContextAtomRefinement"
+        ]
+      },
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    }
+  ],
+  "failed_module": "ReducedRoMGraphDual",
+  "failure_log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/attempts/002-ReducedRoMGraphDual/compile.log"
+}

@@ -1,0 +1,14 @@
+--- predecessor/Quantumlib.Data.Gate.Pauli.Notation
++++ adapted/Quantumlib.Data.Gate.Pauli.Notation
+@@ -74,9 +74,9 @@
+ 
+ macro_rules
+   | `( [PA| $p:pauli ] ) =>
+-      ``( PauliMap.normalized (Finsupp.single [P| $p ] 1) )
++      ``( PauliMap.normalized (MonoidAlgebra.single [P| $p ] 1) )
+   | `( [PA| #( $c:term ) • $p:pauli ] ) =>
+-      ``( PauliMap.normalized (Finsupp.single [P| $p ] $c) )
++      ``( PauliMap.normalized (MonoidAlgebra.single [P| $p ] $c) )
+   | `( [PA| $pa₁ + $pa₂ ] ) =>
+       ``( [PA| $pa₁] + [PA| $pa₂ ] )
+   | `( [PA| $pa₁ * $pa₂ ] ) =>

@@ -1,0 +1,10 @@
+--- before/ReducedRoMGraphDual.lean
++++ after/ReducedRoMGraphDual.lean
+@@ -40,6 +40,7 @@
+   simp only [SimpleGraph.isIndepSet_iff, contextFrustrationGraph, not_not,
+     IsCommutingContext]
+ 
++set_option backward.isDefEq.respectTransparency false in
+ theorem maxWeightIndependent_le_iff_contexts (w : Fin m → ℝ) (a : ℝ) :
+     maxWeightIndependent W.contextFrustrationGraph w ≤ a ↔
+       ∀ S : Finset (Fin m), W.IsCommutingContext S → (∑ i ∈ S, w i) ≤ a := by

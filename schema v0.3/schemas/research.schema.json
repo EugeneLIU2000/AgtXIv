@@ -1,0 +1,2274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.3.0/research.schema.json",
+  "title": "Research candidate contracts, schema contract ladder v0.3",
+  "$defs": {
+    "RetainedPDFSourceBinding": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "RetainedPDFSourceBinding"},
+        "paper_id": {"type": "string", "minLength": 1},
+        "pdf_run": {"$ref": "#/$defs/ContentArtifactReference"},
+        "requests": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "required": ["id", "downstream_node_id"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "downstream_node_id": {"type": "string", "minLength": 1}
+            },
+            "description": "Exact existing request snapshot; equality is checked when its query branch becomes active. Identity remains an unreviewed candidate."
+          }
+        }
+      },
+      "required": ["kind", "paper_id", "pdf_run", "requests"]
+    },
+    "PDFSupportMatchProposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "PDFSupportMatchProposal"},
+        "upstream_paper_id": {"type": "string", "minLength": 1},
+        "pdf_run": {"$ref": "#/$defs/ContentArtifactReference"},
+        "matches": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "target_request_id": {"type": "string", "minLength": 1},
+              "target_request": {
+                "type": "object", "required": ["id"],
+                "properties": {"id": {"type": "string", "minLength": 1}},
+                "description": "Exact host-owned request snapshot; additional fields preserve TeX and PDF request shapes. Host equality is mandatory."
+              },
+              "relation": {"const": "CANDIDATE_SUPPORT"},
+              "upstream_claim_ids": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {"type": "string", "minLength": 1}
+              },
+              "source_regions": {
+                "type": "array", "minItems": 1,
+                "items": {
+                  "type": "object", "additionalProperties": false,
+                  "properties": {
+                    "claim_id": {"type": "string", "minLength": 1},
+                    "source_spans": {
+                      "type": "array", "minItems": 1,
+                      "items": {"$ref": "#/$defs/PDFPageRegion"}
+                    }
+                  },
+                  "required": ["claim_id", "source_spans"]
+                }
+              },
+              "combination": {"enum": ["SINGLE_CLAIM", "JOINT_SUPPORT"]},
+              "route_semantics": {"enum": ["SINGLE_PROPOSED_ROUTE", "EXPLICIT_CANDIDATE_ALTERNATIVE"]},
+              "extra_conditions": {"type": "array", "items": {"type": "string"}},
+              "proof_issues": {"type": "array", "items": {"type": "string"}},
+              "reason": {"type": "string", "minLength": 1}
+            },
+            "required": ["target_request_id", "target_request", "relation", "upstream_claim_ids",
+                         "source_regions", "combination", "route_semantics", "extra_conditions", "proof_issues", "reason"]
+          }
+        }
+      },
+      "required": ["kind", "upstream_paper_id", "pdf_run", "matches"]
+    },
+    "SourceCorrectionTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paper_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_spans": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/CandidateEvidenceLocation"
+          }
+        }
+      },
+      "required": [
+        "node_id",
+        "paper_id",
+        "statement",
+        "conditions",
+        "source_spans"
+      ]
+    },
+    "SourceCorrectionNotice": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "SourceCorrectionNotice"
+        },
+        "relation": {
+          "const": "CORRECTS"
+        },
+        "original_work_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "correction_work_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impact": {
+          "const": "UNREVIEWED"
+        },
+        "source_alignment_accepted": {
+          "const": false
+        },
+        "discovery_evidence": {
+          "$ref": "#/$defs/ContentArtifactReference"
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/SourceCorrectionTarget"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "relation",
+        "original_work_id",
+        "correction_work_id",
+        "impact",
+        "source_alignment_accepted",
+        "discovery_evidence",
+        "targets"
+      ],
+      "description": "Discovery-only blocking notice. Host additionally requires distinct work IDs, unique targets, and exact paper, statement, conditions and source-span equality. Work aliases are not automatically equivalent. No impact acceptance or source closure is granted."
+    },
+    "Confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source": {
+          "enum": [
+            "SELF_REPORTED",
+            "CALIBRATED"
+          ]
+        },
+        "calibration_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "source",
+        "calibration_ref"
+      ]
+    },
+    "SourceSpan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "span_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_end": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "artifact",
+        "source_sha256",
+        "start_byte",
+        "end_byte",
+        "span_sha256",
+        "line_start",
+        "line_end"
+      ]
+    },
+    "ExternalIdentifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "arxiv_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution_basis": {
+          "enum": [
+            "SOURCE_EXPLICIT",
+            "CROSSREF_CANDIDATE",
+            "ADS_CANDIDATE",
+            "UNRESOLVED"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "arxiv_id",
+        "doi",
+        "resolution_basis",
+        "evidence"
+      ]
+    },
+    "DecisionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "DecisionReceipt"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "choices": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "engine_class": {
+          "const": "DECISION"
+        },
+        "model_receipt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gate": {
+          "enum": [
+            "AWAITING_REVIEW",
+            "ADVANCE_CANDIDATE"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "task_id",
+        "question",
+        "choices",
+        "answer",
+        "confidence",
+        "engine_class",
+        "model_receipt",
+        "gate"
+      ]
+    },
+    "SupportGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "route_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "members": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "relation": {
+          "enum": [
+            "DEFINITION_DEPENDENCY",
+            "SCIENTIFIC_CLAIM_DEPENDENCY",
+            "SCOPE_DEPENDENCY",
+            "PROOF_DEPENDENCY",
+            "BRIDGING_DEPENDENCY"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "CANDIDATE",
+            "UNREVIEWED",
+            "SOURCE_FROZEN_HUMAN_SIGNED"
+          ]
+        },
+        "grouping_basis": {
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "judgement_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_microusd": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_error_microusd": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mandatory_bridging_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "target",
+        "members",
+        "relation",
+        "disposition"
+      ]
+    },
+    "RootAudit": {
+      "description": "Root audit written by library.root_audits: lexically ranked declarations of a Lean-built library index. The candidates are neither a binding nor evidence of library absence.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {"const": "LIBRARY_SEARCHED"},
+        "searched_revisions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "candidates": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "method": {"type": "string", "minLength": 1},
+        "index": {"$ref": "#/$defs/ContentArtifactReference"},
+        "program_receipt": {"$ref": "#/$defs/ProgramReceipt"},
+        "binding_accepted": {"const": false}
+      },
+      "required": ["status", "searched_revisions", "candidates", "method", "index", "program_receipt", "binding_accepted"]
+    },
+    "TerminalRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "terminal_kind": {
+          "enum": [
+            "ARXIV_SOURCE_AVAILABLE",
+            "PREARXIV_DOI_NO_SOURCE",
+            "MONOGRAPH",
+            "FOLKLORE_NO_PRIMARY_SOURCE",
+            "FREE_TEXT_UNRESOLVED",
+            "IN_LIBRARY"
+          ]
+        },
+        "upstream_search": {
+          "enum": [
+            "ORIGIN",
+            "FRONTIER"
+          ]
+        },
+        "search_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "library_binding": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "library": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "revision": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "declaration": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "library",
+                "revision",
+                "declaration"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject_match_evidence": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "terminal_kind_basis": {
+          "enum": [
+            "FROZEN_PAPER_SOURCE_PRESENT",
+            "NO_AUDITED_TERMINAL_CLASSIFICATION"
+          ]
+        },
+        "source_manifest_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "root_coverage_status": {
+          "const": "ROOT_LIBRARY_AUDIT_NOT_RUN"
+        },
+        "blocked_by": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "node_id",
+        "terminal_kind",
+        "upstream_search",
+        "search_evidence",
+        "library_binding",
+        "subject_match_evidence"
+      ]
+    },
+    "PremiseClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "search_state": {
+          "enum": [
+            "SEARCH_EXHAUSTED",
+            "SEARCH_PARTIAL",
+            "SEARCH_NOT_RUN"
+          ]
+        },
+        "searched_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "unresolved_leads": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "node_id",
+        "search_state",
+        "searched_sources",
+        "unresolved_leads"
+      ]
+    },
+    "FrozenTextByteSpan": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Host UTF-8 byte span. End ordering, source hash and exact slice hash require host checks.",
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+        "byte_start": {"type": "integer", "minimum": 0},
+        "byte_end": {"type": "integer", "minimum": 0},
+        "span_sha256": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+        "offset_unit": {"const": "BYTE"},
+        "interval": {"const": "HALF_OPEN"}
+      },
+      "required": ["path", "sha256", "byte_start", "byte_end", "span_sha256", "offset_unit", "interval"]
+    },
+    "CandidateEvidenceLocation": {
+      "oneOf": [
+        {"$ref": "#/$defs/SourceSpan"},
+        {"$ref": "#/$defs/FrozenTextByteSpan"},
+        {"$ref": "#/$defs/PDFPageRegion"}
+      ],
+      "description": "Explicit alternatives preserve legacy spans without translating PDF regions into fictitious text offsets. A location never establishes semantic alignment."
+    },
+    "CandidateClauseCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "clause_id": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "source_spans": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/CandidateEvidenceLocation"}
+        },
+        "relation": {
+          "enum": ["CANDIDATE_EQUIVALENT", "PARTIAL", "STRONGER", "WEAKER", "UNRESOLVED"]
+        },
+        "remaining_obligations": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      },
+      "required": ["clause_id", "statement", "source_spans", "relation", "remaining_obligations"],
+      "description": "Candidate coverage of one source clause by this declaration. Clause IDs are local to the bound node. Neither an empty obligations list nor candidate equivalence establishes semantic acceptance or completeness of the node's clause inventory."
+    },
+    "DeclarationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "declaration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "STATEMENT",
+            "PROOF",
+            "DEFINITION",
+            "BRIDGE",
+            "NONVACUITY"
+          ]
+        },
+        "project": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_spans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceSpan"
+          }
+        },
+        "alignment": {
+          "enum": [
+            "SOURCE_FROZEN_HUMAN_SIGNED",
+            "AGENT_NORMALIZED_UNREVIEWED",
+            "DOMAIN_WIDENED",
+            "DOMAIN_NARROWED"
+          ]
+        },
+        "bridging_claims": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "clause_coverage": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/CandidateClauseCoverage"},
+          "description": "Optional clause-level candidate mapping. Missing legacy coverage is unknown, not whole-node coverage. Multiple successful declarations do not prove the source clause inventory is complete."
+        },
+        "premise_comparison": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourcePremiseComparison"
+          },
+          "description": "Optional candidate premise evidence, including structure fields. Does not establish source alignment or authorize proof composition; absence in legacy bindings means unrecorded, not equivalent."
+        }
+      },
+      "required": [
+        "node_id",
+        "declaration",
+        "role",
+        "project",
+        "environment_sha256",
+        "source_spans",
+        "alignment",
+        "bridging_claims"
+      ]
+    },
+    "NonvacuityWitness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "term": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "NONE",
+            "CANDIDATE",
+            "KERNEL_CHECKED_INSTANCE"
+          ]
+        },
+        "program_receipt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "covers_hypotheses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "node_id",
+        "term",
+        "status",
+        "program_receipt",
+        "covers_hypotheses"
+      ]
+    },
+    "CompositionWitness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "upstream_declaration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "downstream_declaration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "COMPOSED",
+            "NOT_COMPOSED"
+          ]
+        },
+        "basis": {
+          "enum": [
+            "LEAN_ELABORATED_TERM_CONSTANT",
+            "NO_DIRECT_TERM_WITNESS"
+          ]
+        },
+        "receipt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mathematical_necessity_established": {
+          "const": false
+        }
+      },
+      "required": [
+        "upstream_declaration",
+        "downstream_declaration",
+        "status",
+        "basis",
+        "receipt",
+        "mathematical_necessity_established"
+      ]
+    },
+    "CoverageLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "CoverageLedger"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "denominator_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "covered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "uncovered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completeness_asserted": {
+          "const": false
+        }
+      },
+      "required": [
+        "kind",
+        "scope",
+        "denominator_basis",
+        "total",
+        "covered",
+        "uncovered",
+        "completeness_asserted"
+      ]
+    },
+    "Issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {}
+      },
+      "required": [
+        "id",
+        "code",
+        "subject",
+        "detail"
+      ]
+    },
+    "DerivedState": {
+      "enum": [
+        "CANDIDATE",
+        "AWAITING_REVIEW",
+        "SOURCE_UNREACHABLE",
+        "SOURCE_READ_DEFECTIVE",
+        "ROUTE_UNDETERMINED",
+        "DEFINITION_ELABORATED",
+        "KERNEL_CHECKED_CANDIDATE",
+        "KERNEL_CHECKED_VACUITY_UNKNOWN",
+        "CONDITIONAL_ON_BLOCKED_ROOT",
+        "NOT_COMPOSED"
+      ]
+    },
+    "ProgramReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "ProgramReceipt"
+        },
+        "contract_version": {
+          "const": "0.3.0"
+        },
+        "program": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine_class": {
+          "const": "HOST"
+        },
+        "call": {
+          "type": "null"
+        },
+        "input_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "started_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "finished_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "elapsed_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "outcome": {
+          "enum": [
+            "RECORDED",
+            "FAILED"
+          ]
+        },
+        "command": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "cwd": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "SUCCEEDED",
+            "FAILED",
+            "TIMEOUT",
+            "UNAVAILABLE"
+          ]
+        },
+        "log": {
+          "type": "string",
+          "minLength": 1
+        },
+        "call_id": {
+          "type": "null"
+        },
+        "paper_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "error": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_input_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_manifest_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "execution_context": {
+          "type": "object",
+          "description": "Host-retained execution isolation and resource evidence; absence carries no isolation assertion."
+        }
+      },
+      "required": [
+        "kind",
+        "contract_version",
+        "program",
+        "operation",
+        "engine_class",
+        "call",
+        "input_sha256",
+        "output_sha256",
+        "started_at",
+        "finished_at",
+        "elapsed_seconds",
+        "outcome"
+      ]
+    },
+    "Plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "0.3.0"
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paper_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "query_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cost_mode": {
+          "enum": [
+            "ACCOUNT_QUOTA",
+            "METERED_USD"
+          ]
+        },
+        "decision_policy": {
+          "enum": [
+            "STRICT_CALIBRATED",
+            "CANDIDATE_EXPLORATION"
+          ],
+          "description": "Exploration may schedule unreviewed candidates but cannot promote their scientific status or complete a chain certificate. Omission is strict."
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_model_calls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_cost_microusd": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_papers": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "no_progress_limit": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_call_seconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_node_attempts": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_proof_attempts": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Frozen plan-wide reservation cap required before bottom-up proof or premise dispatch."
+            }
+          },
+          "required": [
+            "max_model_calls",
+            "max_cost_microusd",
+            "max_papers",
+            "no_progress_limit",
+            "max_call_seconds",
+            "max_node_attempts"
+          ]
+        },
+        "environment": {
+          "type": "object",
+          "properties": {
+            "model_routing": {
+              "$ref": "#/$defs/ModelRoutingPolicy"
+            },
+            "query_selector": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "ALL_EXTRACTED_MATH_CLAIMS",
+                    "SOURCE_LABELS"
+                  ]
+                },
+                "paper_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "labels": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "kind",
+                "paper_id"
+              ],
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "SOURCE_LABELS"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "labels"
+                ]
+              },
+              "else": {
+                "not": {
+                  "required": [
+                    "labels"
+                  ]
+                }
+              },
+              "description": "Frozen before extraction; the host binds query_ids once. SOURCE_LABELS selects claims located by the query paper's \\label occurrences; an unmatched label is a hard failure."
+            },
+            "claim_reference_policy": {
+              "enum": [
+                "CLAIM_REFERENCE_V1"
+              ],
+              "description": "Frozen in new plans; absence selects the legacy claim-reference assembly for historical reconstruction."
+            }
+          }
+        },
+        "source_sha256": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "contract_version",
+        "plan_id",
+        "paper_id",
+        "query_ids",
+        "created_at",
+        "cost_mode",
+        "limits",
+        "environment",
+        "source_sha256"
+      ]
+    },
+    "Task": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "Task"
+        },
+        "contract_version": {
+          "const": "0.3.0"
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine_class": {
+          "enum": [
+            "DECISION",
+            "LIGHT",
+            "HEAVY"
+          ]
+        },
+        "actual_model_requested": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_effort_requested": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prompt_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tier_savings_measured": {
+          "const": false
+        },
+        "input_byte_size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_input_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_accounting_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_selection": {
+          "$ref": "#/$defs/ModelSelection"
+        },
+        "input_character_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_input_characters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "image_inputs": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "original": {
+                "$ref": "#/$defs/ContentArtifactReference"
+              },
+              "snapshot": {
+                "$ref": "#/$defs/ContentArtifactReference"
+              }
+            },
+            "required": [
+              "index",
+              "original",
+              "snapshot"
+            ]
+          }
+        },
+        "image_input_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 33554432
+        },
+        "multimodal_input_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "kind",
+        "contract_version",
+        "task_id",
+        "plan_id",
+        "operation",
+        "engine_class",
+        "actual_model_requested",
+        "actual_effort_requested",
+        "prompt_sha256",
+        "schema_sha256",
+        "max_seconds",
+        "tier_savings_measured"
+      ]
+    },
+    "ChainCertificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "ChainCertificate"
+        },
+        "contract_version": {
+          "const": "0.3.0"
+        },
+        "plan_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "CHAIN_CERTIFICATE_EMITTED",
+            "CHAIN_INCOMPLETE"
+          ]
+        },
+        "query_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "query_declarations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "environment_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "premises_from_lean_environment": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "terminal_kind_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            },
+            "counts": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "required": [
+            "scope",
+            "counts"
+          ]
+        },
+        "coverage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "scope"
+            ],
+            "properties": {
+              "scope": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "not": {
+              "required": [
+                "proof_discharged",
+                "statement_discharged"
+              ]
+            }
+          }
+        },
+        "missing_obligations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_completeness_asserted": {
+          "const": false
+        },
+        "human_accepted": {
+          "type": "boolean"
+        },
+        "human_reviews": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/ContentArtifactReference"
+          }
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "premise_extraction_status": {
+          "enum": [
+            "QUERY_DECLARATION_ABSENT",
+            "LEAN_ENVIRONMENT_EXTRACTED"
+          ]
+        },
+        "stage_coverage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "phase": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 11
+              },
+              "status": {
+                "type": "string",
+                "minLength": 1
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "remaining": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "phase",
+              "status",
+              "artifact",
+              "remaining"
+            ]
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "contract_version",
+        "plan_id",
+        "state",
+        "query_ids",
+        "query_declarations",
+        "environment_sha256",
+        "premises_from_lean_environment",
+        "terminal_kind_counts",
+        "coverage",
+        "missing_obligations",
+        "source_completeness_asserted",
+        "human_accepted",
+        "headline",
+        "premise_extraction_status",
+        "stage_coverage"
+      ],
+      "if": {
+        "properties": {
+          "state": {
+            "const": "CHAIN_CERTIFICATE_EMITTED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "query_declarations": {
+            "minItems": 1
+          },
+          "environment_sha256": {
+            "type": "string"
+          },
+          "premise_extraction_status": {
+            "const": "LEAN_ENVIRONMENT_EXTRACTED"
+          },
+          "headline": {
+            "pattern": " holds CONDITIONAL ON \\{[\\s\\S]*\\}$"
+          }
+        },
+        "if": {
+          "properties": {
+            "human_accepted": {
+              "const": true
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "human_reviews"
+          ]
+        }
+      },
+      "else": {
+        "properties": {
+          "query_declarations": {
+            "maxItems": 0
+          },
+          "premises_from_lean_environment": {
+            "maxItems": 0
+          },
+          "premise_extraction_status": {
+            "const": "QUERY_DECLARATION_ABSENT"
+          },
+          "human_accepted": {
+            "const": false
+          },
+          "missing_obligations": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "HumanReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "HumanReview"
+        },
+        "subject_kind": {
+          "enum": [
+            "SUPPORT_GROUP",
+            "STATEMENT_ALIGNMENT",
+            "PREMISE_ALIGNMENT",
+            "FAILURE_CLASSIFICATION"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "content": {
+          "description": "The reviewed content as review.py template showed it; subject_sha256 is its canonical digest. Informational: the host recomputes the digest."
+        },
+        "decision": {
+          "enum": [
+            "ACCEPT",
+            "REJECT"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "basis": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "kind",
+        "subject_kind",
+        "subject_id",
+        "subject_sha256",
+        "decision",
+        "reviewer",
+        "basis",
+        "reviewed_at"
+      ]
+    },
+    "PlanLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "PlanLedger"
+        },
+        "contract_version": {
+          "const": "0.3.0"
+        },
+        "plan": {
+          "$ref": "#/$defs/Plan"
+        },
+        "calls": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "proof_attempts": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "cost": {
+          "type": "object"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Issue"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "contract_version",
+        "plan",
+        "calls",
+        "cost",
+        "events",
+        "issues"
+      ]
+    },
+    "IssueIndex": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Issue"
+          }
+        }
+      },
+      "required": [
+        "plan_id",
+        "issues"
+      ]
+    },
+    "ContentArtifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "byte_size"
+      ]
+    },
+    "PDFPageRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Binds document/page/image bytes and region geometry only; not exact text or accepted mathematics. Rectangle ordering and page-image correspondence are host obligations.",
+      "properties": {
+        "kind": {
+          "const": "PDF_PAGE_REGION"
+        },
+        "pdf": {
+          "$ref": "#/$defs/ContentArtifactReference"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "page_image": {
+          "$ref": "#/$defs/ContentArtifactReference"
+        },
+        "normalized_rectangle": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "coordinate_system": {
+          "const": "TOP_LEFT_UNIT_SQUARE"
+        },
+        "printed_page": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "binding_scope": {
+          "const": "DOCUMENT_BYTES_PAGE_NUMBER_IMAGE_BYTES_AND_REGION_GEOMETRY_ONLY"
+        }
+      },
+      "required": [
+        "kind",
+        "pdf",
+        "page",
+        "page_image",
+        "normalized_rectangle",
+        "coordinate_system",
+        "printed_page",
+        "binding_scope"
+      ]
+    },
+    "ModelRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine_class": {
+          "enum": [
+            "LIGHT",
+            "DECISION",
+            "HEAVY"
+          ]
+        },
+        "model": {
+          "enum": [
+            "gpt-5.6-luna",
+            "gpt-5.6-terra",
+            "gpt-6-astra"
+          ]
+        },
+        "effort": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "profile",
+        "engine_class",
+        "model",
+        "effort",
+        "reason"
+      ]
+    },
+    "ModelSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy_version": {
+          "const": "operation-routing-v1"
+        },
+        "policy_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "operation": {
+          "enum": [
+            "paper.extract",
+            "dependency.match",
+            "autoformalization.failure_classify",
+            "autoformalization.lean",
+            "autoformalization.lamport",
+            "autoformalization.premise"
+          ]
+        },
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine_class": {
+          "enum": [
+            "LIGHT",
+            "DECISION",
+            "HEAVY"
+          ]
+        },
+        "model": {
+          "enum": [
+            "gpt-5.6-luna",
+            "gpt-5.6-terra",
+            "gpt-6-astra"
+          ]
+        },
+        "effort": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "policy_version",
+        "policy_sha256",
+        "operation",
+        "profile",
+        "engine_class",
+        "model",
+        "effort",
+        "reason"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "paper.extract"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "engine_class": {
+                "const": "LIGHT"
+              },
+              "model": {
+                "enum": [
+                  "gpt-5.6-luna",
+                  "gpt-5.6-terra"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "dependency.match"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "engine_class": {
+                "const": "DECISION"
+              },
+              "model": {
+                "enum": [
+                  "gpt-5.6-luna",
+                  "gpt-5.6-terra"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "autoformalization.failure_classify"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "engine_class": {
+                "const": "DECISION"
+              },
+              "model": {
+                "enum": [
+                  "gpt-5.6-luna",
+                  "gpt-5.6-terra"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "autoformalization.lean"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "engine_class": {
+                "const": "HEAVY"
+              },
+              "model": {
+                "enum": [
+                  "gpt-6-astra"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "autoformalization.lamport"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "engine_class": {
+                "const": "HEAVY"
+              },
+              "model": {
+                "enum": [
+                  "gpt-6-astra"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "autoformalization.premise"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "engine_class": {
+                "const": "HEAVY"
+              },
+              "model": {
+                "enum": [
+                  "gpt-6-astra"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ModelRoutingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "operation-routing-v1"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "profile_source_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "selection_authority": {
+          "const": "HOST_OPERATION_POLICY"
+        },
+        "operations": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "paper.extract": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ModelRoute"
+                },
+                {
+                  "properties": {
+                    "engine_class": {
+                      "const": "LIGHT"
+                    },
+                    "model": {
+                      "enum": [
+                        "gpt-5.6-luna",
+                        "gpt-5.6-terra"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "dependency.match": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ModelRoute"
+                },
+                {
+                  "properties": {
+                    "engine_class": {
+                      "const": "DECISION"
+                    },
+                    "model": {
+                      "enum": [
+                        "gpt-5.6-luna",
+                        "gpt-5.6-terra"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "autoformalization.failure_classify": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ModelRoute"
+                },
+                {
+                  "properties": {
+                    "engine_class": {
+                      "const": "DECISION"
+                    },
+                    "model": {
+                      "enum": [
+                        "gpt-5.6-luna",
+                        "gpt-5.6-terra"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "autoformalization.lean": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ModelRoute"
+                },
+                {
+                  "properties": {
+                    "engine_class": {
+                      "const": "HEAVY"
+                    },
+                    "model": {
+                      "enum": [
+                        "gpt-6-astra"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "autoformalization.lamport": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ModelRoute"
+                },
+                {
+                  "properties": {
+                    "engine_class": {
+                      "const": "HEAVY"
+                    },
+                    "model": {
+                      "enum": [
+                        "gpt-6-astra"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "autoformalization.premise": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ModelRoute"
+                },
+                {
+                  "properties": {
+                    "engine_class": {
+                      "const": "HEAVY"
+                    },
+                    "model": {
+                      "enum": [
+                        "gpt-6-astra"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "required": [
+            "paper.extract",
+            "dependency.match",
+            "autoformalization.failure_classify",
+            "autoformalization.lean",
+            "autoformalization.lamport",
+            "autoformalization.premise"
+          ]
+        },
+        "automatic_escalation": {
+          "const": false
+        },
+        "tier_savings_measured": {
+          "const": false
+        },
+        "quality_calibration": {
+          "type": "null"
+        },
+        "reuse_policy": {
+          "const": "RETAIN_SUCCESSFUL_SOURCE_BOUND_EVIDENCE_WITH_ORIGINAL_MODEL_IDENTITY"
+        }
+      },
+      "required": [
+        "version",
+        "sha256",
+        "profile_source_sha256",
+        "selection_authority",
+        "operations",
+        "automatic_escalation",
+        "tier_savings_measured",
+        "quality_calibration",
+        "reuse_policy"
+      ]
+    },
+    "SourcePremiseComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lean_binder_or_structure_field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_role": {
+          "enum": [
+            "THEOREM_STATEMENT",
+            "PROOF_USED",
+            "GLOBAL_CONVENTION",
+            "NOT_LOCATED"
+          ]
+        },
+        "source_spans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceSpan"
+          }
+        },
+        "relation": {
+          "enum": [
+            "CANDIDATE_EQUIVALENT",
+            "CANDIDATE_STRONGER",
+            "CANDIDATE_WEAKER",
+            "UNRESOLVED"
+          ]
+        },
+        "review_basis": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "condition",
+        "lean_binder_or_structure_field",
+        "source_role",
+        "source_spans",
+        "relation",
+        "review_basis"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_role": {
+                "const": "NOT_LOCATED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_spans": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "source_spans": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

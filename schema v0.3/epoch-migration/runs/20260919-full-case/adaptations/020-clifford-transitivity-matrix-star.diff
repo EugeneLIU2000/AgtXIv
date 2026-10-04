@@ -1,0 +1,38 @@
+--- before/AgtXIvRootMath/PauliCliffordTransitivity.lean
++++ adapted/AgtXIvRootMath/PauliCliffordTransitivity.lean
+@@ -37,7 +37,7 @@
+ theorem frameConjugate_one (A F : IndependentSignedPauliFrame n n) :
+     frameConjugate A F 1 = 1 := by
+   have hright : frameChangeMatrix A F * (frameChangeMatrix A F)ᴴ = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff] using
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using
+       frameChangeMatrix_unitary A F
+   simpa [frameConjugate] using hright
+ 
+@@ -46,7 +46,7 @@
+     frameConjugate A F (M * N) =
+       frameConjugate A F M * frameConjugate A F N := by
+   have hleft : (frameChangeMatrix A F)ᴴ * frameChangeMatrix A F = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff'] using
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose] using
+       frameChangeMatrix_unitary A F
+   unfold frameConjugate
+   calc
+@@ -68,7 +68,7 @@
+   rw [centralPauli, Pauli.addPhase_toCMatrix]
+   unfold frameConjugate
+   have hright : frameChangeMatrix A F * (frameChangeMatrix A F)ᴴ = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff] using
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using
+       frameChangeMatrix_unitary A F
+   calc
+     frameChangeMatrix A F *
+@@ -147,7 +147,7 @@
+     rw [frameConjugates_transport, frameConjugates_transport, h]
+   let U := frameChangeMatrix A F
+   have hleft : Uᴴ * U = 1 := by
+-    simpa [U, Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff'] using
++    simpa [U, Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose] using
+       frameChangeMatrix_unitary A F
+   have hrecover (M : CMatrix (2 ^ n) (2 ^ n)) :
+       Uᴴ * frameConjugate A F M * U = M := by

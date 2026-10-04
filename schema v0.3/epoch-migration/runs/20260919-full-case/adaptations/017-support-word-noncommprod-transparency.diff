@@ -1,0 +1,10 @@
+--- before/AgtXIvRootMath/PauliSupportWord.lean
++++ adapted/AgtXIvRootMath/PauliSupportWord.lean
+@@ -30,6 +30,7 @@
+ 
+ variable {n r : ℕ}
+ 
++set_option backward.isDefEq.respectTransparency false in
+ /-- The support of a commuting binary word is its coefficient-weighted sum of
+ generator supports.  All exact phases are retained in `wordProduct`; only this
+ conclusion intentionally forgets them. -/

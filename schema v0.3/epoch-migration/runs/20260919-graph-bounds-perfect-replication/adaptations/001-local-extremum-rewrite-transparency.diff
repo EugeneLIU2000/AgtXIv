@@ -1,0 +1,30 @@
+--- before/GraphDualBounds.lean
++++ after/GraphDualBounds.lean
+@@ -43,11 +43,13 @@
+   classical
+   simp [cliqueFinsets]
+ 
++set_option backward.isDefEq.respectTransparency false in
+ theorem maxWeightClique_le_iff (w : V → ℝ) (a : ℝ) :
+     maxWeightClique G w ≤ a ↔
+       ∀ Q : Finset V, G.IsClique (Q : Set V) → (∑ v ∈ Q, w v) ≤ a := by
+   classical
+   unfold maxWeightClique
++  dsimp only
+   rw [Finset.sup'_le_iff]
+   simp only [cliqueFinsets, Finset.mem_filter, Finset.mem_powerset,
+     Finset.subset_univ, true_and]
+@@ -62,11 +64,13 @@
+ theorem independent_max_nonneg (w : V → ℝ) : 0 ≤ maxWeightIndependent G w := by
+   simpa using independent_weight_le_max G w ∅ (by simp)
+ 
++set_option backward.isDefEq.respectTransparency false in
+ theorem independent_max_le_iff (w : V → ℝ) (a : ℝ) :
+     maxWeightIndependent G w ≤ a ↔
+       ∀ S : Finset V, G.IsIndepSet (S : Set V) → (∑ v ∈ S, w v) ≤ a := by
+   classical
+   unfold maxWeightIndependent
++  dsimp only
+   rw [Finset.sup'_le_iff]
+   simp only [independentFinsets, Finset.mem_filter, Finset.mem_powerset,
+     Finset.subset_univ, true_and]

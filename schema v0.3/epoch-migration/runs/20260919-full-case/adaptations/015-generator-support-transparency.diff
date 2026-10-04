@@ -1,0 +1,10 @@
+--- before/AgtXIvRootMath/PauliFrameSupportCompletion.lean
++++ adapted/AgtXIvRootMath/PauliFrameSupportCompletion.lean
+@@ -73,6 +73,7 @@
+     F2Support n :=
+   F.supportLinear (Pi.basisFun F2 (Fin r) i)
+ 
++set_option backward.isDefEq.respectTransparency false in
+ /-- The individual generator supports are linearly independent.  This is a
+ conclusion from exact signed-frame independence, not an additional field. -/
+ theorem generatorSupport_linearIndependent

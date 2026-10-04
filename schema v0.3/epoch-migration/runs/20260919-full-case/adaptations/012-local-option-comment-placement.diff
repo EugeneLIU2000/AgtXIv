@@ -1,0 +1,13 @@
+--- predecessor/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean
++++ adapted/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean
+@@ -39,9 +39,9 @@
+     simp
+   · simp [powered, basisWord, hji]
+ 
++set_option backward.isDefEq.respectTransparency false in
+ /-- The subset product at a standard binary label is the corresponding
+ source generator. -/
+-set_option backward.isDefEq.respectTransparency false in
+ theorem wordProduct_basisWord
+     (G : CommutingInvolutivePauliGenerators n r) (i : Fin r) :
+     G.wordProduct (basisWord i) = G.generator i := by

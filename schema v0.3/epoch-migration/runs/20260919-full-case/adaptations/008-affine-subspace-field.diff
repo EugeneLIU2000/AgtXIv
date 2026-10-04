@@ -1,0 +1,11 @@
+--- predecessor/AgtXIvRootMath/HermitianAffineFeasibility.lean
++++ adapted/AgtXIvRootMath/HermitianAffineFeasibility.lean
+@@ -82,7 +82,7 @@
+ def traceOneHermitianAffine (d : ℕ) :
+     AffineSubspace ℝ (HermitianMatrixReal d) where
+   carrier := traceOneHermitianSet d
+-  smul_vsub_vadd_mem c p₁ p₂ p₃ hp₁ hp₂ hp₃ := by
++  smul_vsub_vadd_mem' c p₁ p₂ p₃ hp₁ hp₂ hp₃ := by
+     change Matrix.trace
+       (((c • (p₁ - p₂) + p₃ : HermitianMatrixReal d) : CMatrix d d)) = 1
+     change Matrix.trace

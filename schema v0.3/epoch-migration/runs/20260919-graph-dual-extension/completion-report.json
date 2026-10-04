@@ -1,0 +1,2222 @@
+{
+  "status": "ADDITIONAL_COMMON_EPOCH_AUDITED",
+  "accepted": false,
+  "query_chain_complete": false,
+  "scope": "TWO_GRAPH_DUAL_MODULES_APPENDED_AFTER_INITIAL_12",
+  "compiled_modules": [
+    {
+      "module": "WeightedCliqueCoverWeakDuality",
+      "olean_sha256": "a143f07c9a70edd12c7828304d6e7a9695806b1363a32a0d5417d3a5002330eb"
+    },
+    {
+      "module": "ReducedRoMGraphDual",
+      "olean_sha256": "3df00cd03355dddc3579dc2984d4c839d2025e656a6b1ed935fc0db34a740f39"
+    }
+  ],
+  "original_82_modules_reused": 82,
+  "concrete_bridge_modules_reused": 2,
+  "prior_extension_modules_reused": 12,
+  "requested_target_count": 232,
+  "actual_declaration_count": 232,
+  "declaration_kind_counts": {
+    "DEFINITION": 53,
+    "INDUCTIVE": 3,
+    "THEOREM": 176
+  },
+  "new_module_declared_targets_count": 21,
+  "additional_actual_target_names_count": 22,
+  "actual_direct_term_dependency_count": 510,
+  "receipt_status_counts": {
+    "SUCCEEDED": 2,
+    "FAILED": 2
+  },
+  "compatibility_adaptations": [
+    {
+      "module": "ReducedRoMGraphDual",
+      "before_sha256": "f379f94ccf2aa838dbd7cdf2ba7edcb4d874248978c4b9477bb8056082475fce",
+      "after_sha256": "aebb87692609c666b44516b8dabdaf9ed5ec04a1de785e099862be4f50c1208f",
+      "change_kind": "EXPLICIT_IMPORT_ONLY_FOUNDATION_DEDUPLICATION",
+      "mathematical_body_unchanged": true,
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/adaptations/initial-ReducedRoMGraphDual-imports.diff",
+      "replacement_imports": {
+        "RoMGraphDualFoundation": [
+          "ReducedRoMSemantics",
+          "ConvexGeneratorInvariance",
+          "FiniteRoMDuality",
+          "ContextAtomRefinement"
+        ]
+      },
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "module": "ReducedRoMGraphDual",
+      "before_sha256": "aebb87692609c666b44516b8dabdaf9ed5ec04a1de785e099862be4f50c1208f",
+      "after_sha256": "d3daab8131307e73077ecc1fe467cc8ade619a708fa5f2ab4f873a1c8df22ce3",
+      "change_kind": "STATEMENT_PRESERVING_PROOF_ROUTING",
+      "reason": "Introduce the new Std.Symm constructor; reduce let binders before the finset supremum rewrite; expose existing subtype membership to simp after unfolding the signed candidate. No graph adjacency or theorem statement changes.",
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/adaptations/001-graph-dual-proof-routing.diff",
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "module": "ReducedRoMGraphDual",
+      "before_sha256": "d3daab8131307e73077ecc1fe467cc8ade619a708fa5f2ab4f873a1c8df22ce3",
+      "after_sha256": "6f522b1a25248e4d6873842fa1da8e94e38552252146a20ad46c55e9ad29bf8f",
+      "change_kind": "LOCAL_ELABORATOR_TRANSPARENCY_COMPATIBILITY",
+      "reason": "The maxWeightIndependent proof witness elaborates as Exists while sup expects definitionally equal Finset.Nonempty. Permit definitional unfolding under the Lean 4.33 elaborator for this single theorem; kernel checking remains unchanged.",
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/adaptations/002-local-supremum-proof-transparency.diff",
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    }
+  ],
+  "audit_file": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-dual-extension/extension-audit.json",
+  "audit_sha256": "1faceb46740472882b790b3d7ede5a7c23a061eeaf1bdaf73b8313969e77a4cb",
+  "selected_endpoints": [
+    {
+      "declaration": "AgtXIv.GraphFoundation.maxWeightIndependent_le_fractionalCliqueCoverValue",
+      "kind": "THEOREM",
+      "type": "∀ {V : Type u_1} [inst : Fintype.{u_1} V] [inst_1 : DecidableEq.{u_1 + 1} V] (G : SimpleGraph.{u_1} V) (w : V → ℝ),\n  (∀ (v : V), LE.le.{0} 0 (w v)) →\n    LE.le.{0} (AgtXIv.GraphFoundation.maxWeightIndependent.{u_1} G w)\n      (AgtXIv.GraphFoundation.fractionalCliqueCoverValue.{u_1} G w)",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.WeightedCliqueCoverWeakDuality.1531415033._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.WeightedCliqueCoverWeakDuality.1531415033._hygCtx._hyg.6",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "w",
+          "type": "V → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hw",
+          "type": "∀ (v : V), LE.le.{0} 0 (w v)",
+          "type_constants": [
+            "LE.le",
+            "Real",
+            "Real.instLE",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Real.instZero"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hw",
+          "type": "∀ (v : V), LE.le.{0} 0 (w v)",
+          "type_constants": [
+            "LE.le",
+            "Real",
+            "Real.instLE",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Real.instZero"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Eq.mpr",
+        "Real.instLE",
+        "Real",
+        "congrArg",
+        "AgtXIv.GraphFoundation.maxWeightIndependent_le_cover_cost",
+        "Finset",
+        "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+        "id",
+        "AgtXIv.GraphFoundation.fractionalCliqueCoverValue",
+        "LE.le",
+        "And.casesOn",
+        "And",
+        "Exists.casesOn",
+        "AgtXIv.GraphFoundation.maxWeightIndependent",
+        "Real.instAddCommMonoid",
+        "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_attained",
+        "AgtXIv.GraphFoundation.cliqueFinsets",
+        "Eq",
+        "Finset.sum"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.augmented_context_feasible",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)),\n  W.NoActiveDependencies →\n    ∃ x,\n      AgtXIv.RoM.SignedDecomp.{0, 0}\n        (AgtXIv.ReducedRoM.augmentedAtom.{0, 0} (AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector W))\n        (Prod.mk.{0, 0} 1 (W.expectationProjection ↑ρ.toTraceOneHermitian)) x",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "instInnerProductSpaceRealComplex",
+        "AgtXIv.Stabilizer.frameFintype",
+        "Pi.Function.module",
+        "InnerProductSpace.toNormedSpace",
+        "NormedCommRing.toSeminormedCommRing",
+        "instTrivialStarReal",
+        "Real",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Semiring.toModule",
+        "instStarRingReal",
+        "Pi.addCommMonoid",
+        "CommRing.toNonUnitalCommRing",
+        "Matrix.module",
+        "Real.instRCLike",
+        "AddGroupWithOne.toAddGroup",
+        "AddCommGroup.toAddCommMonoid",
+        "CMatrix",
+        "Nat.instMonoid",
+        "NormedSpace.toModule",
+        "LinearMap.instFunLike",
+        "Matrix.addCommGroup",
+        "Membership.mem",
+        "CommCStarAlgebra.toNormedCommRing",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector",
+        "Real.semiring",
+        "Complex.addGroupWithOne",
+        "Subtype",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+        "Real.normedAddCommGroup",
+        "selfAdjoint.instModuleSubtypeMemAddSubgroupOfStarModule",
+        "instOfNatNat",
+        "Matrix.instStarModule",
+        "Complex.instNonUnitalCommRing",
+        "Real.commRing",
+        "StarAddMonoid.toInvolutiveStar",
+        "LinearMap",
+        "NPow.toPow",
+        "Complex.addCommGroup",
+        "AgtXIv.Stabilizer.IndependentSignedPauliFrame",
+        "Fin.fintype",
+        "Pi.normedAddCommGroup",
+        "AddSubgroup",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "StarRing.toStarAddMonoid",
+        "Complex.instStarModuleReal",
+        "AddGroup.toSubNegMonoid",
+        "HPow.hPow",
+        "Real.normedCommRing",
+        "Matrix.addGroup",
+        "AddSubgroup.instSetLike",
+        "NonUnitalSeminormedCommRing.toNonUnitalSeminormedRing",
+        "Nat",
+        "AgtXIv.Stabilizer.traceOneHermitianSet",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext",
+        "Complex.instStarRing",
+        "Semiring.toMonoid",
+        "Matrix.instStarAddMonoid",
+        "Monoid.toSemigroup",
+        "NonUnitalSeminormedRing.toSeminormedAddCommGroup",
+        "Real.instAddCommMonoid",
+        "Module.toDistribMulAction",
+        "InvolutiveStar.toStar",
+        "SemigroupAction.toSMul",
+        "AddCommMonoid.toAddMonoid",
+        "Real.normedField",
+        "instHPow",
+        "instCommCStarAlgebraComplex",
+        "AgtXIv.Varela.MeasurementWindow.atomRefinement_of_noActiveDependencies",
+        "SubNegMonoid.toAddMonoid",
+        "Complex",
+        "SeminormedCommRing.toNonUnitalSeminormedCommRing",
+        "Pi.normedSpace",
+        "MulAction.toSemigroupAction",
+        "OfNat.ofNat",
+        "AgtXIv.Stabilizer.HermitianMatrixReal",
+        "Fin",
+        "Subtype.val",
+        "RingHom.id",
+        "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+        "Semiring.toNonAssocSemiring",
+        "AddSubgroup.toAddCommGroup",
+        "Set.instMembership",
+        "DFunLike.coe",
+        "AgtXIv.Varela.MeasurementWindow.maximalSignedContextFintype",
+        "Complex.instAddCommMonoid",
+        "Monoid.toNPow",
+        "SetLike.instMembership",
+        "AgtXIv.ReducedRoM.augmented_projected_feasible",
+        "AgtXIv.Varela.MeasurementWindow.projectedFrameAtom",
+        "RCLike.toInnerProductSpaceReal",
+        "DistribMulAction.toMulAction",
+        "AgtXIv.ReducedRoM.augmented_feasible_of_convex_atoms",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.exists_graph_dual_optimizer",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)),\n  W.NoActiveDependencies →\n    ∃ y μ,\n      LE.le.{0}\n          (HAdd.hAdd.{0, 0, 0}\n            (AgtXIv.GraphFoundation.maxWeightIndependent.{0} W.contextFrustrationGraph fun i => abs.{0} (y i))\n            (abs.{0} μ))\n          1 ∧\n        Eq.{1} (AgtXIv.ReducedRoM.reducedRoM W ρ)\n          (HAdd.hAdd.{0, 0, 0} μ (∑ i, HMul.hMul.{0, 0, 0} (W.expectationProjection (↑ρ.toTraceOneHermitian) i) (y i)))",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Real.instLE",
+        "Real",
+        "AgtXIv.ReducedRoM.reducedRoM",
+        "AgtXIv.ReducedRoM.reducedRoM_isGreatest_graph_dual",
+        "Membership.mem",
+        "upperBounds",
+        "AgtXIv.ReducedRoM.graphDualValues",
+        "And.left",
+        "Set.instMembership",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.graphDualValues",
+      "kind": "DEFINITION",
+      "type": "{n m : ℕ} → AgtXIv.Varela.MeasurementWindow n m → AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n) → Set.{0} ℝ",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "instInnerProductSpaceRealComplex",
+        "Pi.Function.module",
+        "InnerProductSpace.toNormedSpace",
+        "NormedCommRing.toSeminormedCommRing",
+        "instTrivialStarReal",
+        "Real.instLE",
+        "Real",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Semiring.toModule",
+        "instStarRingReal",
+        "Pi.addCommMonoid",
+        "HMul.hMul",
+        "Real.lattice",
+        "CommRing.toNonUnitalCommRing",
+        "AgtXIv.ReducedRoM.graphDualValues._proof_1",
+        "Finset.univ",
+        "Matrix.module",
+        "AgtXIv.Varela.MeasurementWindow.contextFrustrationGraph",
+        "Real.instRCLike",
+        "AddGroupWithOne.toAddGroup",
+        "abs",
+        "Set.ofPred",
+        "AddCommGroup.toAddCommMonoid",
+        "CMatrix",
+        "Nat.instMonoid",
+        "NormedSpace.toModule",
+        "instDecidableEqFin",
+        "LinearMap.instFunLike",
+        "Matrix.addCommGroup",
+        "Membership.mem",
+        "Exists",
+        "CommCStarAlgebra.toNormedCommRing",
+        "Real.semiring",
+        "Complex.addGroupWithOne",
+        "Subtype",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+        "selfAdjoint.instModuleSubtypeMemAddSubgroupOfStarModule",
+        "Real.instAddGroup",
+        "instOfNatNat",
+        "LE.le",
+        "Complex.instNonUnitalCommRing",
+        "Real.commRing",
+        "StarAddMonoid.toInvolutiveStar",
+        "LinearMap",
+        "NPow.toPow",
+        "Complex.addCommGroup",
+        "Fin.fintype",
+        "Real.instAdd",
+        "AddSubgroup",
+        "Real.instOne",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "StarRing.toStarAddMonoid",
+        "instHAdd",
+        "And",
+        "AddGroup.toSubNegMonoid",
+        "HPow.hPow",
+        "HAdd.hAdd",
+        "Matrix.addGroup",
+        "AddSubgroup.instSetLike",
+        "NonUnitalSeminormedCommRing.toNonUnitalSeminormedRing",
+        "Nat",
+        "Real.instMul",
+        "AgtXIv.Stabilizer.traceOneHermitianSet",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "Complex.instStarRing",
+        "AgtXIv.GraphFoundation.maxWeightIndependent",
+        "Matrix.instStarAddMonoid",
+        "NonUnitalSeminormedRing.toSeminormedAddCommGroup",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "InvolutiveStar.toStar",
+        "AddCommMonoid.toAddMonoid",
+        "Real.normedField",
+        "instHPow",
+        "instCommCStarAlgebraComplex",
+        "SubNegMonoid.toAddMonoid",
+        "Complex",
+        "SeminormedCommRing.toNonUnitalSeminormedCommRing",
+        "OfNat.ofNat",
+        "AgtXIv.Stabilizer.HermitianMatrixReal",
+        "Fin",
+        "Subtype.val",
+        "RingHom.id",
+        "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+        "Semiring.toNonAssocSemiring",
+        "Eq",
+        "AddSubgroup.toAddCommGroup",
+        "Set.instMembership",
+        "DFunLike.coe",
+        "Complex.instAddCommMonoid",
+        "Monoid.toNPow",
+        "SetLike.instMembership",
+        "Finset.sum",
+        "instHMul",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_eq_context_minimum",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n))\n  (hNoActive : W.NoActiveDependencies),\n  Eq.{1} (AgtXIv.ReducedRoM.reducedRoM W ρ)\n    (AgtXIv.RoM.finiteRoM.{0, 0}\n      (AgtXIv.ReducedRoM.augmentedAtom.{0, 0} (AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector W))\n      (Prod.mk.{0, 0} 1 (W.expectationProjection ↑ρ.toTraceOneHermitian)) ⋯)",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "AgtXIv.Varela.MeasurementWindow.candidatePhysical_of_noActiveDependencies",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector",
+        "AgtXIv.ReducedRoM.reducedRoM_eq_of_mutual_convex_generators",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext",
+        "AgtXIv.Varela.MeasurementWindow.atomRefinement_of_noActiveDependencies",
+        "AgtXIv.Varela.MeasurementWindow.maximalSignedContextFintype"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_eq_graph_dual_sup",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)),\n  W.NoActiveDependencies → Eq.{1} (AgtXIv.ReducedRoM.reducedRoM W ρ) (sSup.{0} (AgtXIv.ReducedRoM.graphDualValues W ρ))",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Real",
+        "AgtXIv.ReducedRoM.reducedRoM",
+        "AgtXIv.ReducedRoM.reducedRoM_isGreatest_graph_dual",
+        "ConditionallyCompleteLinearOrder.toConditionallyCompleteLattice",
+        "AgtXIv.ReducedRoM.graphDualValues",
+        "Real.instConditionallyCompleteLinearOrder",
+        "ConditionallyCompleteLattice.toConditionallyCompletePartialOrder",
+        "ConditionallyCompletePartialOrder.toConditionallyCompletePartialOrderSup",
+        "Eq.symm",
+        "IsGreatest.csSup_eq",
+        "ConditionallyCompletePartialOrderSup.toSupSet",
+        "SupSet.sSup"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_isGreatest_context_dual",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)),\n  W.NoActiveDependencies →\n    IsGreatest.{0}\n      (Set.ofPred.{0} fun z =>\n        ∃ y μ,\n          (∀ (c : W.MaximalSignedContext),\n              LE.le.{0}\n                (abs.{0}\n                  (HAdd.hAdd.{0, 0, 0} μ\n                    (∑ i,\n                      HMul.hMul.{0, 0, 0} (AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector W c i) (y i))))\n                1) ∧\n            Eq.{1} z\n              (HAdd.hAdd.{0, 0, 0} μ\n                (∑ i, HMul.hMul.{0, 0, 0} (W.expectationProjection (↑ρ.toTraceOneHermitian) i) (y i))))\n      (AgtXIv.ReducedRoM.reducedRoM W ρ)",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "instInnerProductSpaceRealComplex",
+        "Eq.mpr",
+        "Pi.Function.module",
+        "InnerProductSpace.toNormedSpace",
+        "NormedCommRing.toSeminormedCommRing",
+        "instTrivialStarReal",
+        "Real.instLE",
+        "Real",
+        "Prod.normedSpace",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Semiring.toModule",
+        "instStarRingReal",
+        "Pi.addCommMonoid",
+        "HMul.hMul",
+        "AgtXIv.ReducedRoM.reducedRoM",
+        "Prod.normedAddCommGroup",
+        "CommRing.toNonUnitalCommRing",
+        "Finset.univ",
+        "Matrix.module",
+        "Real.instRCLike",
+        "AddGroupWithOne.toAddGroup",
+        "AgtXIv.ReducedRoM.reducedRoM_eq_context_minimum",
+        "congrArg",
+        "Set.ofPred",
+        "AddCommGroup.toAddCommMonoid",
+        "CMatrix",
+        "Nat.instMonoid",
+        "NormedSpace.toModule",
+        "AgtXIv.ReducedRoM.normalized_finiteRoM_isGreatest_dual",
+        "LinearMap.instFunLike",
+        "Matrix.addCommGroup",
+        "Membership.mem",
+        "Exists",
+        "CommCStarAlgebra.toNormedCommRing",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector",
+        "Real.semiring",
+        "Complex.addGroupWithOne",
+        "id",
+        "Subtype",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+        "Prod.mk",
+        "Real.normedAddCommGroup",
+        "selfAdjoint.instModuleSubtypeMemAddSubgroupOfStarModule",
+        "instOfNatNat",
+        "AgtXIv.ReducedRoM.augmentedAtom",
+        "Matrix.instStarModule",
+        "Complex.instNonUnitalCommRing",
+        "Real.commRing",
+        "StarAddMonoid.toInvolutiveStar",
+        "LinearMap",
+        "NPow.toPow",
+        "Complex.addCommGroup",
+        "Fin.fintype",
+        "Real.instAdd",
+        "Pi.normedAddCommGroup",
+        "AgtXIv.RoM.finiteRoM",
+        "AddSubgroup",
+        "Real.instOne",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "StarRing.toStarAddMonoid",
+        "instHAdd",
+        "Complex.instStarModuleReal",
+        "And",
+        "IsGreatest",
+        "AddGroup.toSubNegMonoid",
+        "HPow.hPow",
+        "Real.normedCommRing",
+        "HAdd.hAdd",
+        "Matrix.addGroup",
+        "AddSubgroup.instSetLike",
+        "NonUnitalSeminormedCommRing.toNonUnitalSeminormedRing",
+        "Nat",
+        "Real.instMul",
+        "AgtXIv.Stabilizer.traceOneHermitianSet",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "AgtXIv.Varela.MeasurementWindow.MaximalSignedContext",
+        "Complex.instStarRing",
+        "Semiring.toMonoid",
+        "Matrix.instStarAddMonoid",
+        "Monoid.toSemigroup",
+        "NonUnitalSeminormedRing.toSeminormedAddCommGroup",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "Module.toDistribMulAction",
+        "InvolutiveStar.toStar",
+        "SemigroupAction.toSMul",
+        "AddCommMonoid.toAddMonoid",
+        "Real.normedField",
+        "instHPow",
+        "instCommCStarAlgebraComplex",
+        "SubNegMonoid.toAddMonoid",
+        "Complex",
+        "SeminormedCommRing.toNonUnitalSeminormedCommRing",
+        "Prod",
+        "Pi.normedSpace",
+        "MulAction.toSemigroupAction",
+        "OfNat.ofNat",
+        "AgtXIv.Stabilizer.HermitianMatrixReal",
+        "Fin",
+        "Subtype.val",
+        "NormedAddCommGroup.toSeminormedAddCommGroup",
+        "RingHom.id",
+        "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+        "Semiring.toNonAssocSemiring",
+        "Eq",
+        "AddSubgroup.toAddCommGroup",
+        "Set.instMembership",
+        "DFunLike.coe",
+        "AgtXIv.Varela.MeasurementWindow.maximalSignedContextFintype",
+        "Complex.instAddCommMonoid",
+        "Monoid.toNPow",
+        "SetLike.instMembership",
+        "Finset.sum",
+        "RCLike.toInnerProductSpaceReal",
+        "AgtXIv.ReducedRoM.augmented_context_feasible",
+        "DistribMulAction.toMulAction",
+        "instHMul",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_isGreatest_graph_dual",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)),\n  W.NoActiveDependencies → IsGreatest.{0} (AgtXIv.ReducedRoM.graphDualValues W ρ) (AgtXIv.ReducedRoM.reducedRoM W ρ)",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "instInnerProductSpaceRealComplex",
+        "Pi.Function.module",
+        "InnerProductSpace.toNormedSpace",
+        "NormedCommRing.toSeminormedCommRing",
+        "instTrivialStarReal",
+        "Real.instLE",
+        "Real",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Semiring.toModule",
+        "instStarRingReal",
+        "Pi.addCommMonoid",
+        "HMul.hMul",
+        "AgtXIv.ReducedRoM.reducedRoM",
+        "Real.lattice",
+        "CommRing.toNonUnitalCommRing",
+        "Finset.univ",
+        "Matrix.module",
+        "AgtXIv.Varela.MeasurementWindow.contextFrustrationGraph",
+        "Real.instRCLike",
+        "AddGroupWithOne.toAddGroup",
+        "abs",
+        "congrArg",
+        "Set.ofPred",
+        "AddCommGroup.toAddCommMonoid",
+        "CMatrix",
+        "Nat.instMonoid",
+        "NormedSpace.toModule",
+        "instDecidableEqFin",
+        "AgtXIv.ReducedRoM.reducedRoM_isGreatest_context_dual",
+        "LinearMap.instFunLike",
+        "Matrix.addCommGroup",
+        "Membership.mem",
+        "Exists",
+        "CommCStarAlgebra.toNormedCommRing",
+        "Real.semiring",
+        "Complex.addGroupWithOne",
+        "Eq.mp",
+        "id",
+        "Subtype",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+        "selfAdjoint.instModuleSubtypeMemAddSubgroupOfStarModule",
+        "Real.instAddGroup",
+        "instOfNatNat",
+        "LE.le",
+        "Matrix.instStarModule",
+        "Complex.instNonUnitalCommRing",
+        "Real.commRing",
+        "StarAddMonoid.toInvolutiveStar",
+        "AgtXIv.ReducedRoM.graphDualValues",
+        "LinearMap",
+        "NPow.toPow",
+        "Complex.addCommGroup",
+        "Fin.fintype",
+        "Real.instAdd",
+        "AddSubgroup",
+        "Real.instOne",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "StarRing.toStarAddMonoid",
+        "funext",
+        "instHAdd",
+        "Complex.instStarModuleReal",
+        "And",
+        "IsGreatest",
+        "AddGroup.toSubNegMonoid",
+        "HPow.hPow",
+        "HAdd.hAdd",
+        "Matrix.addGroup",
+        "AddSubgroup.instSetLike",
+        "NonUnitalSeminormedCommRing.toNonUnitalSeminormedRing",
+        "Nat",
+        "Real.instMul",
+        "AgtXIv.Stabilizer.traceOneHermitianSet",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "Complex.instStarRing",
+        "Semiring.toMonoid",
+        "AgtXIv.GraphFoundation.maxWeightIndependent",
+        "propext",
+        "Matrix.instStarAddMonoid",
+        "Monoid.toSemigroup",
+        "NonUnitalSeminormedRing.toSeminormedAddCommGroup",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "Module.toDistribMulAction",
+        "InvolutiveStar.toStar",
+        "SemigroupAction.toSMul",
+        "congrFun'",
+        "AddCommMonoid.toAddMonoid",
+        "Real.normedField",
+        "instHPow",
+        "instCommCStarAlgebraComplex",
+        "SubNegMonoid.toAddMonoid",
+        "Complex",
+        "SeminormedCommRing.toNonUnitalSeminormedCommRing",
+        "AgtXIv.Varela.MeasurementWindow.context_dual_constraint_iff_graph",
+        "MulAction.toSemigroupAction",
+        "OfNat.ofNat",
+        "AgtXIv.Stabilizer.HermitianMatrixReal",
+        "Fin",
+        "Subtype.val",
+        "RingHom.id",
+        "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+        "Semiring.toNonAssocSemiring",
+        "Eq",
+        "AddSubgroup.toAddCommGroup",
+        "Set.instMembership",
+        "DFunLike.coe",
+        "Complex.instAddCommMonoid",
+        "Monoid.toNPow",
+        "SetLike.instMembership",
+        "Finset.sum",
+        "DistribMulAction.toMulAction",
+        "instHMul",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.Varela.MeasurementWindow.context_dual_constraint_iff_graph",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m),\n  W.NoActiveDependencies →\n    ∀ (y : Fin m → ℝ) (μ : ℝ),\n      (∀ (c : W.MaximalSignedContext),\n          LE.le.{0}\n            (abs.{0}\n              (HAdd.hAdd.{0, 0, 0} μ\n                (∑ i, HMul.hMul.{0, 0, 0} (AgtXIv.Varela.MeasurementWindow.MaximalSignedContext.vector W c i) (y i))))\n            1) ↔\n        LE.le.{0}\n          (HAdd.hAdd.{0, 0, 0}\n            (AgtXIv.GraphFoundation.maxWeightIndependent.{0} W.contextFrustrationGraph fun i => abs.{0} (y i))\n            (abs.{0} μ))\n          1",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "Fin m → ℝ",
+          "type_constants": [
+            "Fin",
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Eq.mpr",
+        "Real.instLE",
+        "Real",
+        "imp_congr_right",
+        "Real.lattice",
+        "AgtXIv.Varela.MeasurementWindow.maximal_weights_iff_all_context_weights",
+        "AgtXIv.Varela.MeasurementWindow.contextFrustrationGraph",
+        "abs",
+        "congrArg",
+        "Finset",
+        "AgtXIv.Varela.MeasurementWindow.context_dual_constraint_iff_maximal_weights",
+        "covariant_swap_add_of_covariant_add",
+        "AddMonoid.toAddZeroClass",
+        "instDecidableEqFin",
+        "HSub.hSub",
+        "AddZeroClass.toAddZero",
+        "id",
+        "Real.instAddGroup",
+        "LE.le",
+        "Real.instAddCommSemigroup",
+        "Fin.fintype",
+        "Real.instAdd",
+        "Real.instOne",
+        "SubNegMonoid.toSub",
+        "instHAdd",
+        "Iff",
+        "instHSub",
+        "AddGroup.toSubNegMonoid",
+        "HAdd.hAdd",
+        "AgtXIv.Varela.MeasurementWindow.IsCommutingContext",
+        "AgtXIv.Varela.MeasurementWindow.maxWeightIndependent_le_iff_contexts",
+        "AgtXIv.GraphFoundation.maxWeightIndependent",
+        "propext",
+        "forall_congr'",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "AddZero.toAdd",
+        "le_sub_iff_add_le",
+        "SubNegMonoid.toAddMonoid",
+        "Real.instIsOrderedAddMonoid",
+        "OfNat.ofNat",
+        "Eq.symm",
+        "Fin",
+        "Eq",
+        "Finset.sum",
+        "Iff.symm",
+        "Real.instPreorder",
+        "IsOrderedAddMonoid.toAddLeftMono"
+      ]
+    }
+  ],
+  "source_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+  "limits": [
+    "The graph-dual equality is conditional on the actual NoActiveDependencies predicate; MeasurementWindow and DensityMatrix retain their actual structure proof fields.",
+    "No independent hFeasible, hCollapse, VRepRepairObligations, or strong-duality premise is supplied to the graph-dual endpoint.",
+    "The graph-dual and concrete Physlib graph definitions have matching adjacency source but no new equality declaration is proved in this migration scope.",
+    "This layer does not assert source statement alignment or complete the final closed-form query.",
+    "The later GraphDualBounds module is not included."
+  ]
+}

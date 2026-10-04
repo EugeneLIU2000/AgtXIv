@@ -1,0 +1,223 @@
+{
+  "kind": "OriginDiscoveryNotes",
+  "date": "2026-09-22",
+  "evidence_level": "MIXED_LOCAL_SOURCE_ACQUISITIONS_AND_WEB_DISCOVERY_NOT_ACCEPTED_SUPPORTS",
+  "source_alignment_accepted": false,
+  "accepted_support_edges_added": 0,
+  "entries": [
+    {
+      "citation_key": "hrubes2016families",
+      "arxiv_candidate": "1412.5893v1",
+      "identity_status": "PREPRINT_LOCATED_JOURNAL_PROPOSITION_NUMBER_UNCONFIRMED",
+      "sources": [
+        "https://arxiv.org/abs/1412.5893v1"
+      ],
+      "local_acquisition": "schema v0.3/runs/capacity-origin-hrubes-source-20260922/source-acquisition.json",
+      "local_reading_notes": "schema v0.3/runs/capacity-origin-hrubes-source-20260922/reading-notes.md",
+      "earlier_source_leads": [
+        "Shapiro 2000: Chapter 1 Proposition 1.11 and Exercise 12",
+        "Newman 1932: scalar-square case"
+      ],
+      "next_obligation": "Align Sarkar's journal Proposition 9 with the preprint; inspect the two explicit prior-source pointers. Hurwitz speculation is not an established origin."
+    },
+    {
+      "citation_key": "sarkar2021sets",
+      "doi": "10.1007/s40687-020-00244-1",
+      "arxiv_candidate": "1909.08123v2",
+      "local_acquisition": "schema v0.3/runs/capacity-origin-sarkar-source-20260922/source-acquisition.json",
+      "local_reading_notes": "schema v0.3/runs/capacity-origin-sarkar-source-20260922/reading-notes.md",
+      "earlier_source_leads": [
+        "hrubes2016families: Proposition 9",
+        "arxiv:1908.05628: version and claim location unresolved"
+      ],
+      "identity_status": "AUTHOR_PUBLICATION_PAGE_LINKS_JOURNAL_AND_PREPRINT",
+      "sources": [
+        "https://web.stanford.edu/~rsarkar/publications.html",
+        "https://arxiv.org/abs/1909.08123"
+      ],
+      "observations": "The author's publication item links the cited Springer DOI and arXiv:1909.08123. arXiv lists v2 dated 2019-11-11 and supplies PDF/TeX links. Journal and preprint titles differ. The Springer page fetch failed.",
+      "next_obligation": "Source now acquired. Extract all claims once, compare the bound and version content, and follow the two explicitly cited prior treatments; do not promote these leads to accepted supports."
+    },
+    {
+      "citation_key": "ipek2026phasespace",
+      "doi": "10.1103/11f2-nqht",
+      "arxiv_candidate": "2506.04033v1",
+      "identity_status": "TITLE_AND_AUTHOR_DISCOVERY_JOURNAL_DOI_LINK_UNCONFIRMED",
+      "sources": [
+        "https://arxiv.org/abs/2506.04033"
+      ],
+      "observations": "arXiv lists the matching phase-space tableau title and Ipek et al., v1 dated 2025-06-04, with PDF/HTML/TeX links. The opened abstract page lists only its arXiv DOI. Fetching the cited journal DOI failed.",
+      "next_obligation": "Establish the journal/preprint correspondence before satisfying DOI-keyed requests; inspect versioned source statements separately."
+    },
+    {
+      "citation_key": "brauer1935spinors",
+      "doi": "10.2307/2371218",
+      "identity_status": "PRIMARY_LANDING_PAGE_LOCATED_FULL_TEXT_NOT_RETRIEVED",
+      "sources": [
+        "https://www.jstor.org/stable/2371218"
+      ],
+      "observations": "The primary landing page was located, but the web tool returned no usable article body. No full text or theorem content is accepted from secondary search snippets.",
+      "next_obligation": "Acquire an authorized readable primary text and retain its pages before claim extraction and recursive citation tracing."
+    },
+    {
+      "citation_key": "newman1932eddington",
+      "doi": "10.1112/jlms/s1-7.2.93",
+      "identity_status": "PUBLISHER_METADATA_CONFIRMED_ORIGINAL_FULL_TEXT_NOT_RETRIEVED",
+      "sources": [
+        "https://academic.oup.com/jlms/article/s1-7/2/93/884382"
+      ],
+      "observations": "Publisher identifies M. H. A. Newman, April 1932, pages 93–99, and links a correction. The available page requires access for the original PDF; no original theorem text has been retained.",
+      "corrections": [
+        {
+          "doi": "10.1112/jlms/s1-7.4.272-s",
+          "source": "https://academic.oup.com/jlms/article/s1-7/4/272/828803",
+          "publication_date": "1932-10-01",
+          "page": "272",
+          "evidence_status": "PUBLISHER_HTML_ABSTRACT_READ_NOT_FROZEN_PDF",
+          "affected_locator": "Theorem 2; error at foot of original page 96",
+          "summary": "The restriction on the difference between real and imaginary member counts is replaced by congruence to minus one modulo eight; the correction also discusses realization.",
+          "impact_on_query_bound": "UNREVIEWED",
+          "support_edge_accepted": false
+        }
+      ],
+      "earliest_origin_established": false,
+      "next_obligation": "Acquire the original primary text and correction page, identify the exact cardinality theorem and its premises, assess correction impact clause by clause, and follow the original references. Do not infer that the cardinality bound is false or that Newman is the earliest source.",
+      "access_observations": [
+        {
+          "date": "2026-09-22",
+          "source": "https://www.cdpa.co.uk/Newman/MHAN/publications.php",
+          "result": "Bibliography entry 21 confirms title and pages; no usable article scan linked by returned page."
+        },
+        {
+          "date": "2026-09-22",
+          "source": "https://academic.oup.com/jlms/article/s1-7/2/93/884382",
+          "result": "Publisher again exposes metadata only; first-page preview fetch failed. Original full text remains unavailable in this acquisition attempt."
+        }
+      ]
+    },
+    {
+      "citation_key": "shapiro2000compositions",
+      "doi": "10.1515/9783110824834",
+      "identity_status": "BOOK_METADATA_AND_CITED_PREVIEW_LOCATIONS_LOCATED",
+      "sources": [
+        "https://www.degruyterbrill.com/document/doi/10.1515/9783110824834/html",
+        "https://api.pageplace.de/preview/DT0400.9783110824834_A19982926/preview-9783110824834_A19982926.pdf"
+      ],
+      "evidence_status": "WEB_PDF_TEXT_READ_NOT_LOCALLY_FROZEN_PAGE_IMAGES_UNAVAILABLE",
+      "preview_pages": 44,
+      "locations": [
+        {
+          "locator": "Proposition 1.11",
+          "pdf_pages_zero_based": [
+            33,
+            34
+          ],
+          "printed_pages": [
+            20,
+            21
+          ]
+        },
+        {
+          "locator": "Exercise 1.12",
+          "pdf_pages_zero_based": [
+            41,
+            42
+          ],
+          "printed_pages": [
+            28,
+            29
+          ]
+        },
+        {
+          "locator": "Historical notes on Proposition 1.11",
+          "pdf_pages_zero_based": [
+            22,
+            23
+          ],
+          "printed_pages": [
+            9,
+            10
+          ]
+        }
+      ],
+      "observations": "The preview contains the two Hrubes-cited locations. Proposition 1.11 treats linear independence of products of an even number of invertible anticommuting elements. Exercise 1.12 treats matrix-size restrictions and maximal systems. Historical notes attribute the general independence result to Robert (1912), also Hurwitz (1923).",
+      "earlier_source_leads": [
+        "Eugène Robert (1912), doi:10.3929/ethz-a-000091948; primary PDF now acquired, claims not extracted",
+        "Hurwitz, doi:10.1007/BF01448439; cited year 1923 versus publisher year 1922, full text pending"
+      ],
+      "next_obligation": "Retain preview bytes and inspect page images before accepting mathematical transcription; OCR distorts inequalities and exponents. Obtain missing chapter notes and bibliography; trace the two historical leads. The 44-page preview is not the full book and does not establish earliest origin.",
+      "source_alignment_accepted": false,
+      "earliest_origin_established": false,
+      "bibliography_source": "https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/c/5162/files/2018/02/bibl-178xqg2.pdf"
+    },
+    {
+      "citation_key": "robert1912composition",
+      "doi": "10.3929/ethz-a-000091948",
+      "author": "Eugène Robert",
+      "title": "Composition des formes quadratiques de quatre et de huit variables indépendantes",
+      "year": 1912,
+      "identity_status": "ETH_LIBRARY_METADATA_AND_PRIMARY_PDF_ACQUIRED",
+      "sources": [
+        "https://doi.org/10.3929/ethz-a-000091948",
+        "https://www.research-collection.ethz.ch/bitstreams/3f4cb5bf-fc02-417b-a0fb-6cf01ce59a96/download"
+      ],
+      "local_acquisition": "schema v0.3/runs/capacity-origin-robert-source-20260922/source-acquisition.json",
+      "evidence_status": "PDF_ACQUIRED_PARTIAL_PAGE_READING_NO_FULL_CLAIM_EXTRACTION",
+      "source_alignment_accepted": false,
+      "earliest_origin_established": false,
+      "next_obligation": "Read Sections 1–2 completely, compare the restricted summary with the general proof attributed by Shapiro, preserve matrix-size and field assumptions, and trace Hurwitz 1898. No historical attribution is accepted solely from this partial reading.",
+      "local_reading_notes": "schema v0.3/runs/capacity-origin-robert-source-20260922/reading-notes.md",
+      "local_reading_provenance": "schema v0.3/runs/capacity-origin-robert-source-20260922/reading-provenance.json",
+      "earlier_source_leads": [
+        "Hurwitz 1898, Ueber die Composition der quadratischen Formen von beliebig vielen Variabeln; printed p.2 footnote"
+      ]
+    },
+    {
+      "citation_key": "hurwitz1923composition",
+      "doi": "10.1007/BF01448439",
+      "title": "Über die Komposition der quadratischen Formen",
+      "identity_status": "PUBLISHER_METADATA_CONFIRMED_FULL_TEXT_NOT_RETRIEVED",
+      "sources": [
+        "https://link.springer.com/article/10.1007/BF01448439"
+      ],
+      "publication_year_observations": [
+        {
+          "year": 1923,
+          "source": "Shapiro historical notes and prior citation lead"
+        },
+        {
+          "year": 1922,
+          "source": "Springer publisher page: March 1922; volume 88, pages 1–25"
+        }
+      ],
+      "observations": "Publisher reference 1 explicitly names E. Robert and the 1912 Zurich thesis. The editorial note describes publication from Hurwitz’s surviving manuscripts with Dickson’s review and footnotes. Article body requires access. Preserve the citation-year discrepancy instead of silently overwriting it.",
+      "earlier_source_leads": [
+        "Robert thesis 1912",
+        "Hurwitz 1898 paper mentioned in reference 1; exact dependency scope unreviewed"
+      ],
+      "source_alignment_accepted": false,
+      "earliest_origin_established": false,
+      "next_obligation": "Acquire a readable original article; reconcile publication-year metadata and identify exact propositions and their antecedents."
+    },
+    {
+      "citation_key": "hurwitz1898composition",
+      "title": "Ueber die Composition der quadratischen Formen von beliebig vielen Variabeln",
+      "year": 1898,
+      "identity_status": "ORIGINAL_PRINTING_LIBRARY_PDF_ACQUIRED_AND_READ",
+      "sources": [
+        "https://www.cs.toronto.edu/~yuvalf/Hurwitz%20Ueber%20die%20Komposition%20der%20quadratischen%20Formen.pdf",
+        "https://gdz.sub.uni-goettingen.de/download/pdf/PPN252457811_1898/LOG_0034.pdf"
+      ],
+      "local_acquisition": "schema v0.3/runs/capacity-origin-hurwitz1898-transcription-20260922/source-acquisition.json",
+      "local_reading_notes": "schema v0.3/runs/capacity-origin-hurwitz1898-transcription-20260922/reading-notes.md",
+      "source_alignment_accepted": false,
+      "earliest_origin_established": false,
+      "next_obligation": "Create page-bound standardized claims without treating the cover-only text extraction as article text; distinguish cited rejected arguments, historical mentions and mathematical premises; align the general anticommuting bound with the source domain.",
+      "facsimile_acquisition": "schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source-acquisition.json",
+      "facsimile_reading_notes": "schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/reading-notes.md",
+      "pdf_reading_input": "schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/reading-input.json",
+      "pdf_input_preparation": "schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/page-input-preparation.json",
+      "model_extraction_status": "NOT_DISPATCHED"
+    }
+  ]
+}

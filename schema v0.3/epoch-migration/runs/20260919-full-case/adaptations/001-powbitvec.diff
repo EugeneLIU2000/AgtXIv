@@ -1,0 +1,20 @@
+--- originals/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.lean
++++ adapted/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.lean
+@@ -23,7 +23,7 @@
+ theorem powBitVec_zero (M : CMatrix n n) m :
+   M ^ᵥ 0#m = 1 := by 
+     induction m
+-    case zero => simp [powBitVec]
++    case zero => rfl
+     case succ m' ih =>
+       simp_rw [
+         powBitVec,
+@@ -39,7 +39,7 @@
+   (1 : CMatrix n n) ^ᵥ x = 1 := by 
+     rename_i w
+     induction w
+-    case zero => simp [powBitVec]
++    case zero => rfl
+     case succ m' ih =>
+       simp_rw [
+         powBitVec,

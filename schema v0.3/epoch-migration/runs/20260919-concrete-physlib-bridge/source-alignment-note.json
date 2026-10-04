@@ -1,0 +1,68 @@
+{
+  "scope": "AGENT_SOURCE_ALIGNMENT_NOTE_FOR_CONCRETE_QUANTUM_CLIQUE_BOUND",
+  "status": "AGENT_NORMALIZED_UNREVIEWED",
+  "accepted": false,
+  "evidence_path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-concrete-physlib-bridge/bridge-evidence.json",
+  "evidence_sha256": "f8cc647fd60ca5e6a00a9b51baf3f82d89b140c14c1b64ea48d461cc298079e4",
+  "compiled_source_sha256": "5b39914c33cc90a48efc70fbe58662b4e19aa50956f3b4d35968c1d0d607ae62",
+  "source_spans": [
+    {
+      "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Stabilizerness/arXiv-2607.26154v1/draft.tex",
+      "source_sha256": "4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "byte_start": 8269,
+      "byte_end": 8465,
+      "span_sha256": "9c93e56aaa01ff70a74d3e92fe55714b8d6281db9b36faabb983b2a35f427882",
+      "start_line": 113,
+      "end_line": 113,
+      "text": "\tEvaluating the robustness of magic over $2^n\\prod_{j=1}^{n}(2^j+1)\\approx2^{\\Theta(n^2)}$ vertices of $\\STAB_n$ requires tomographically complete data and a classically intractable optimization.\n"
+    },
+    {
+      "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Stabilizerness/arXiv-2607.26154v1/draft.tex",
+      "source_sha256": "4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "byte_start": 9460,
+      "byte_end": 9772,
+      "span_sha256": "fe208523d0c603e226c319c3b6a21c957fdf44b688211edf855bb2f63d3ea6c8",
+      "start_line": 134,
+      "end_line": 135,
+      "text": "\tThe frustration graph $G_\\Mcal=(\\Mcal,E_\\Mcal)$ has node set $\\Mcal$ and an edge $\\{P_i,P_j\\}$ for anticommuting pairs $P_iP_j=-P_jP_i$~\\cite{chapman2020characterization,xu2024bounding}.\n\tAn independent set contains no adjacent nodes and therefore corresponds to a pairwise commuting context $S\\subseteq\\Mcal$.\n"
+    },
+    {
+      "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Stabilizerness/arXiv-2607.26154v1/draft.tex",
+      "source_sha256": "4a84425a4d56efe5b5bee4814a09c99996ab7a6bd279574d567979c248f81c1d",
+      "byte_start": 50336,
+      "byte_end": 52631,
+      "span_sha256": "87c0f1eb043c02aa6c6b6840811c73fd74ac32d2ff4efd82d63248d9c1c9a7df",
+      "start_line": 725,
+      "end_line": 763,
+      "text": "\t\t\tFor each clique $Q=\\{P_1,\\dots,P_{|Q|}\\}$, take the restricted expectation vector $\\mathbm{b}_Q=(b_{P_1},\\dots,b_{P_{|Q|}})^\\top\\in\\mathbb{R}^{|Q|}$. If $\\mathbm{b}_Q=\\mathbm{0}$, then $\\|\\mathbm{b}_Q\\|_2\\le1$ is immediate. Otherwise, denote the normalized vector $\\bar{\\mathbm{b}}_Q=\\mathbm{b}_Q/\\|\\mathbm{b}_Q\\|_2$, whose components are $\\bar b_P=b_P/\\|\\mathbm{b}_Q\\|_2$. We define a Hermitian operator\n\t\t\t\\begin{equation}\n\t\t\t\t\\displaystyle\n\t\t\t\tA_Q(\\bar{\\mathbm{b}}_Q):=\\sum_{P\\in Q}\\bar b_P P.\n\t\t\t\\end{equation}\n\t\t\tThe normalized coefficients satisfy $\\sum_{P\\in Q}\\bar b_P^2=1$. Since $P^2=\\mathbb{1}$ for every $P\\in Q$ and distinct operators in $Q$ anticommute, we obtain\n\t\t\t\\begin{equation}\n\t\t\t\t\\displaystyle\n\t\t\t\tA_Q(\\bar{\\mathbm{b}}_Q)^2\n\t\t\t\t=\\sum_{P\\in Q}\\bar b_P^2P^2\n\t\t\t\t+\\sum_{\\{P,R\\}\\subseteq Q}\\bar b_P\\bar b_R(PR+RP)\n\t\t\t\t=\\left(\\sum_{P\\in Q}\\bar b_P^2\\right)\\mathbb{1}\n\t\t\t\t=\\mathbb{1}.\n\t\t\t\\end{equation}\n\t\t\tBy construction, the expectation value of this Hermitian operator is\n\t\t\t\\begin{equation}\n\t\t\t\t\\displaystyle\n\t\t\t\t\\tr\\!\\big(A_Q(\\bar{\\mathbm{b}}_Q)\\rho\\big)\n\t\t\t\t=\\sum_{P\\in Q}\\bar b_P\\tr(P\\rho)\n\t\t\t\t=\\sum_{P\\in Q}\\frac{b_P^2}{\\|\\mathbm{b}_Q\\|_2}\n\t\t\t\t=\\|\\mathbm{b}_Q\\|_2.\n\t\t\t\\end{equation}\n\t\t\tThe variance of a Hermitian operator in a quantum state is nonnegative. Using $A_Q(\\bar{\\mathbm{b}}_Q)^2=\\mathbb{1}$ and $\\tr(\\rho)=1$, we obtain\n\t\t\t\\begin{equation}\n\t\t\t\t\\displaystyle\n\t\t\t\t\\operatorname{Var}_{\\rho}\\!\\big[A_Q(\\bar{\\mathbm{b}}_Q)\\big]\n\t\t\t\t=\\tr\\!\\big(A_Q(\\bar{\\mathbm{b}}_Q)^2\\rho\\big)\n\t\t\t\t-\\Big[\\tr\\!\\big(A_Q(\\bar{\\mathbm{b}}_Q)\\rho\\big)\\Big]^2\n\t\t\t\t=1-\\|\\mathbm{b}_Q\\|_2^2\\geq 0.\n\t\t\t\\end{equation}\n\t\t\tTherefore $\\sum_{P\\in Q}b_P^2=\\|\\mathbm{b}_Q\\|_2^2\\le1$~\\cite{cabello2014graph,xu2024bounding}. The Cauchy--Schwarz inequality gives\n\t\t\t\\begin{equation}\n\t\t\t\t\\displaystyle\n\t\t\t\t\\sum_{P\\in Q}|\\tr(P\\rho)|\n\t\t\t\t=\\sum_{P\\in Q}|b_P|\n\t\t\t\t\\le\\sqrt{|Q|}\\,\\|\\mathbm{b}_Q\\|_2\n\t\t\t\t\\le\\sqrt{|Q|}.\n\t\t\t\\end{equation}\n\t\t\tThis holds for all cliques, so the clique term in Eq.~\\eqref{eq:closed-form-app} is at most $\\sqrt{\\clnum(G_\\Mcal)}$. The remaining term $1$ obeys the same bound since a nonempty measurement set gives $G_\\Mcal$ at least one vertex and hence $\\clnum(G_\\Mcal)\\ge1$. Substitution into Eq.~\\eqref{eq:closed-form-app} gives $\\RoM_\\Mcal(\\rho)\\le\\sqrt{\\clnum(G_\\Mcal)}$.\n"
+    }
+  ],
+  "matching_domain": {
+    "MeasurementWindow": "Finite nonempty family of involutive Paulis, with nonidentity support and distinct phase classes.",
+    "DensityMatrix": "Concrete complex matrix, positive semidefinite and trace one.",
+    "frustrationGraph": "Boolean noncommutation proved equivalent in both directions to matrix anticommutation.",
+    "expectationCoordinate": "Real part of the same trace(P*rho), equal to Physlib MState.exp_val after a matrix-preserving conversion."
+  },
+  "bound_declarations": [
+    "AgtXIv.ConcretePhyslib.window_clique_l2_bound",
+    "AgtXIv.ConcretePhyslib.window_clique_l1_bound",
+    "AgtXIv.ConcretePhyslib.window_cliqueNumber_bound"
+  ],
+  "discharged_adapter_obligations": [
+    "MATRIX_AND_TRACE_PRESERVATION",
+    "EXPECTATION_PRESERVATION",
+    "PAULI_HERMITICITY_FROM_WINDOW_INVOLUTION",
+    "PAULI_INVOLUTION_TO_HERMITIANMAT_INVOLUTION",
+    "GRAPH_ADJACENCY_IFF_MATRIX_ANTICOMMUTATION"
+  ],
+  "remaining_scope": [
+    "Link the reduced RoM closed form to the clique expression.",
+    "Prove perfect-graph duality and paper-specific sign/vertex conditions in a common audited environment.",
+    "Review source alignment before accepting any paper-claim binding."
+  ],
+  "does_not_claim": [
+    "A proof of the complete target query or its attainability statement.",
+    "That the frozen user-authored Alpha source is a pinned upstream Physlib theorem.",
+    "That this extension changes the original 82-module migration count."
+  ]
+}

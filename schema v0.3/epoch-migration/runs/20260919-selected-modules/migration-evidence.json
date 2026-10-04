@@ -1,0 +1,3507 @@
+{
+  "scope": "SELECTED_MODULES_PHYSLIB_COMMON_EPOCH_PROBE",
+  "status": "SELECTED_MODULES_COMMON_EPOCH_AUDITED",
+  "full_case_migrated": false,
+  "query_chain_complete": false,
+  "toolchain": "leanprover/lean4:v4.33.0",
+  "resolved_manifest": {
+    "version": "1.2.0",
+    "packagesDir": ".lake/packages",
+    "packages": [
+      {
+        "url": "https://github.com/leanprover-community/mathlib4.git",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "db584cd6d46c92f209a44c0f1c829460d327499d",
+        "name": "mathlib",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "v4.33.0",
+        "inherited": false,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover/doc-gen4",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "aceca4eeb5a79092eabefaa75fcb72b701d02205",
+        "name": "«doc-gen4»",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "v4.33.0",
+        "inherited": false,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover-community/plausible",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "b7eb3304aeae834b12dda98993a37f6a41f6f0bb",
+        "name": "plausible",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/LeanSearchClient",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "5f4d51b81cbd3f6b32b156bfad9056621a040404",
+        "name": "LeanSearchClient",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/import-graph",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "16f02aa7642864af59f1ff0e384a015994db9118",
+        "name": "importGraph",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/ProofWidgets4",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "4be2e3d5087eeb272cf5a8853b8f9dd025ef5957",
+        "name": "proofwidgets",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover-community/aesop",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "3448c0bcc5ce01b2d1546e483ec3620e32df3d0e",
+        "name": "aesop",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "master",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/quote4",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "92c15be17b7caf78c2ad767ec40f89052d908d81",
+        "name": "Qq",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "master",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover-community/batteries",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover-community",
+        "rev": "4488d40d070b9700d4d5a6aa342f0d40c31b2a2d",
+        "name": "batteries",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/leanprover/leansqlite",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "6168b7549738a19bc837a1625c60c5d1e5dd8aeb",
+        "name": "leansqlite",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/leanprover/lean4-cli",
+        "type": "git",
+        "subDir": null,
+        "scope": "leanprover",
+        "rev": "6130a47896ce867c6a4a55373441e59e565bad0f",
+        "name": "Cli",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "v4.33.0",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/fgdorais/lean4-unicode-basic",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "37e7d8cb7316a88cd3e91208385c9ec6ae780019",
+        "name": "UnicodeBasic",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      },
+      {
+        "url": "https://github.com/dupuisf/BibtexQuery",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "852edafa268eb038a7158551fd580ee8433847b0",
+        "name": "BibtexQuery",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "master",
+        "inherited": true,
+        "configFile": "lakefile.toml"
+      },
+      {
+        "url": "https://github.com/acmepjz/md4lean",
+        "type": "git",
+        "subDir": null,
+        "scope": "",
+        "rev": "31907cc18f48a95384f99cee5582c00fb39e0f67",
+        "name": "MD4Lean",
+        "manifestFile": "lake-manifest.json",
+        "inputRev": "main",
+        "inherited": true,
+        "configFile": "lakefile.lean"
+      }
+    ],
+    "name": "Physlib",
+    "lakeDir": ".lake",
+    "fixedToolchain": false
+  },
+  "sources": [
+    {
+      "module": "EpochGraphFoundation",
+      "original_path": "formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+      "original_sha256": "f011649e5ff37ba80f85f873c75d61d25360d2e738df1984df2401b4b6cfed50",
+      "adapted_sha256": "f011649e5ff37ba80f85f873c75d61d25360d2e738df1984df2401b4b6cfed50",
+      "adaptations": [],
+      "mathematical_body_unchanged": true
+    },
+    {
+      "module": "EpochLocalDelta",
+      "original_path": "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean",
+      "original_sha256": "17bb3964088083529ffa7553d6fc7b5f0e43a7f48cf995a5450bb1c7faeb1883",
+      "adapted_sha256": "ba2d02dacc48b7da8b028795ec69289b35a40533a487b1bb4580940c96b0e143",
+      "adaptations": [
+        "Replace unused whole Varela-package import with the graph foundation; import Ring explicitly"
+      ],
+      "mathematical_body_unchanged": true
+    },
+    {
+      "module": "EpochAdmissibleSigns",
+      "original_path": "formal/AgtXIvStabilizerness/AgtXIvStabilizerness/AdmissibleSigns.lean",
+      "original_sha256": "c4ae939259075a080bd9d85586270e759cb39edc49365ce842cad93e3f8d197b",
+      "adapted_sha256": "60bf3ef5b0fb429678ebec4094b6d02b0e5675ac4aca72881acecc513bef47f1",
+      "adaptations": [
+        "Point at the isolated LocalDelta copy"
+      ],
+      "mathematical_body_unchanged": true
+    },
+    {
+      "module": "CommonEpochBridge",
+      "kind": "NEW_PARTIAL_QUANTUM_BRIDGE",
+      "sha256": "18a30a719e9ee0eea40808b14abc478ef149cbe817f15aaf7aef4840a0bdc6bd",
+      "source_alignment": "AGENT_NORMALIZED_UNREVIEWED"
+    }
+  ],
+  "receipts": [
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.isolated_epoch_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/EpochGraphFoundation.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted/EpochGraphFoundation.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:43:14.299124+00:00",
+      "finished_at": "2026-09-18T22:43:22.502407+00:00",
+      "duration_seconds": 8.203,
+      "elapsed_seconds": 8.203,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "f011649e5ff37ba80f85f873c75d61d25360d2e738df1984df2401b4b6cfed50",
+      "output_sha256": "efe8220ea59bf8adfeb91ad30147c6bee37c39258a877b5932b64dacd8231b85",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/EpochGraphFoundation.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.isolated_epoch_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/EpochLocalDelta.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted/EpochLocalDelta.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:43:22.502849+00:00",
+      "finished_at": "2026-09-18T22:43:26.564770+00:00",
+      "duration_seconds": 4.062,
+      "elapsed_seconds": 4.062,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "ba2d02dacc48b7da8b028795ec69289b35a40533a487b1bb4580940c96b0e143",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/EpochLocalDelta.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.isolated_epoch_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/EpochAdmissibleSigns.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted/EpochAdmissibleSigns.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:43:26.565152+00:00",
+      "finished_at": "2026-09-18T22:43:30.293994+00:00",
+      "duration_seconds": 3.729,
+      "elapsed_seconds": 3.729,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "60bf3ef5b0fb429678ebec4094b6d02b0e5675ac4aca72881acecc513bef47f1",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/EpochAdmissibleSigns.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.isolated_epoch_module_compile",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules",
+        "lake",
+        "env",
+        "lean",
+        "-R",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted",
+        "-o",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/CommonEpochBridge.olean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/adapted/CommonEpochBridge.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:43:30.294380+00:00",
+      "finished_at": "2026-09-18T22:44:04.786617+00:00",
+      "duration_seconds": 34.492,
+      "elapsed_seconds": 34.492,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "18a30a719e9ee0eea40808b14abc478ef149cbe817f15aaf7aef4840a0bdc6bd",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/CommonEpochBridge.log"
+    },
+    {
+      "kind": "ProgramReceipt",
+      "contract_version": "0.3.0",
+      "program": "agtxiv.lean-audit/0.3.0",
+      "engine_class": "HOST",
+      "call": null,
+      "operation": "lean.common_epoch_environment_audit",
+      "command": [
+        "env",
+        "LEAN_PATH=/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules",
+        "lake",
+        "env",
+        "lean",
+        "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/CommonEpochAudit.lean"
+      ],
+      "cwd": "/Users/Yingjian/Documents/GitHub/physlib",
+      "started_at": "2026-09-18T22:44:04.787547+00:00",
+      "finished_at": "2026-09-18T22:44:47.272344+00:00",
+      "duration_seconds": 42.485,
+      "elapsed_seconds": 42.485,
+      "outcome": "RECORDED",
+      "exit_code": 0,
+      "status": "SUCCEEDED",
+      "input_sha256": "6a08efe65312eebe0550383a643ee49ad8644aa2f815fa9468a87bddf8916e24",
+      "output_sha256": "142b467a799cd0b4a94d63bc42696b987e35a33fc34ea83e31ac749eb179faba",
+      "log": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log"
+    }
+  ],
+  "records": [
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "Prop",
+      "declaration": "AgtXIv.GraphFoundation.IsPerfect",
+      "has_value": true,
+      "kind": "DEFINITION",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.1961647293._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "term_constants": [],
+      "type": "{V : Type u_1} → [Fintype.{u_1} V] → SimpleGraph.{u_1} V → Prop",
+      "type_constants": [
+        "Fintype",
+        "SimpleGraph"
+      ],
+      "value_constants": [
+        "Fintype",
+        "SimpleGraph",
+        "Set",
+        "Eq",
+        "ENat",
+        "SimpleGraph.chromaticNumber",
+        "Set.Elem",
+        "SimpleGraph.induce",
+        "Nat.cast",
+        "ENat.instNatCast",
+        "SimpleGraph.cliqueNum"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "ℝ",
+      "declaration": "AgtXIv.GraphFoundation.maxWeightIndependent",
+      "has_value": true,
+      "kind": "DEFINITION",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.3419022768._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.3419022768._hygCtx._hyg.6",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "w",
+          "type": "V → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "term_constants": [
+        "AgtXIv.GraphFoundation.maxWeightIndependent._proof_1",
+        "Real",
+        "Finset",
+        "Real.instSemilatticeSup",
+        "Real.instAddCommMonoid",
+        "Finset.sup'",
+        "Finset.sum",
+        "AgtXIv.GraphFoundation.independentFinsets"
+      ],
+      "type": "{V : Type u_1} → [Fintype.{u_1} V] → [DecidableEq.{u_1 + 1} V] → SimpleGraph.{u_1} V → (V → ℝ) → ℝ",
+      "type_constants": [
+        "Fintype",
+        "DecidableEq",
+        "SimpleGraph",
+        "Real"
+      ],
+      "value_constants": [
+        "Fintype",
+        "DecidableEq",
+        "SimpleGraph",
+        "Real",
+        "Finset",
+        "AgtXIv.GraphFoundation.independentFinsets",
+        "Finset.Nonempty",
+        "AgtXIv.GraphFoundation.maxWeightIndependent._proof_1",
+        "Finset.sup'",
+        "Real.instSemilatticeSup",
+        "Finset.sum",
+        "Real.instAddCommMonoid"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "ℝ",
+      "declaration": "AgtXIv.GraphFoundation.fractionalCliqueCoverValue",
+      "has_value": true,
+      "kind": "DEFINITION",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.292009842._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.292009842._hygCtx._hyg.6",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "w",
+          "type": "V → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "term_constants": [
+        "Real",
+        "Set.ofPred",
+        "Finset",
+        "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+        "Exists",
+        "Real.instInfSet",
+        "And",
+        "Real.instAddCommMonoid",
+        "AgtXIv.GraphFoundation.cliqueFinsets",
+        "Eq",
+        "Finset.sum",
+        "InfSet.sInf"
+      ],
+      "type": "{V : Type u_1} → [Fintype.{u_1} V] → [DecidableEq.{u_1 + 1} V] → SimpleGraph.{u_1} V → (V → ℝ) → ℝ",
+      "type_constants": [
+        "Fintype",
+        "DecidableEq",
+        "SimpleGraph",
+        "Real"
+      ],
+      "value_constants": [
+        "Fintype",
+        "DecidableEq",
+        "SimpleGraph",
+        "Real",
+        "InfSet.sInf",
+        "Real.instInfSet",
+        "Set.ofPred",
+        "Exists",
+        "Finset",
+        "And",
+        "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+        "Eq",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "AgtXIv.GraphFoundation.cliqueFinsets"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "Eq.{1} (AgtXIv.GraphFoundation.maxWeightIndependent.{u} G w) (AgtXIv.GraphFoundation.fractionalCliqueCoverValue.{u} G w)",
+      "declaration": "AgtXIv.GraphFoundation.weighted_duality_of_foundation",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "foundation",
+          "type": "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation.{u}",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hw",
+          "type": "∀ (v : V), LE.le.{0} 0 (w v)",
+          "type_constants": [
+            "LE.le",
+            "Real",
+            "Real.instLE",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Real.instZero"
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "foundation",
+          "type": "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation.{u}",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.3047512053._hygCtx._hyg.4",
+          "type": "Fintype.{u} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochGraphFoundation.3047512053._hygCtx._hyg.7",
+          "type": "DecidableEq.{u + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "w",
+          "type": "V → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hw",
+          "type": "∀ (v : V), LE.le.{0} 0 (w v)",
+          "type_constants": [
+            "LE.le",
+            "Real",
+            "Real.instLE",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Real.instZero"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u + 1} (SimpleGraph.Adj.{u} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u + 1} (SimpleGraph.Adj.{u} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "term_constants": [],
+      "type": "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation.{u} →\n  ∀ {V : Type u} [inst : Fintype.{u} V] [inst_1 : DecidableEq.{u + 1} V] (G : SimpleGraph.{u} V),\n    AgtXIv.GraphFoundation.IsPerfect.{u} G →\n      ∀ (w : V → ℝ),\n        (∀ (v : V), LE.le.{0} 0 (w v)) →\n          Eq.{1} (AgtXIv.GraphFoundation.maxWeightIndependent.{u} G w)\n            (AgtXIv.GraphFoundation.fractionalCliqueCoverValue.{u} G w)",
+      "type_constants": [
+        "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation",
+        "Fintype",
+        "DecidableEq",
+        "SimpleGraph",
+        "AgtXIv.GraphFoundation.IsPerfect",
+        "Real",
+        "LE.le",
+        "Real.instLE",
+        "OfNat.ofNat",
+        "Zero.toOfNat0",
+        "Real.instZero",
+        "Eq",
+        "AgtXIv.GraphFoundation.maxWeightIndependent",
+        "AgtXIv.GraphFoundation.fractionalCliqueCoverValue"
+      ],
+      "value_constants": [
+        "AgtXIv.GraphFoundation.WeightedPerfectGraphFoundation",
+        "Fintype",
+        "DecidableEq",
+        "SimpleGraph",
+        "AgtXIv.GraphFoundation.IsPerfect",
+        "Real",
+        "LE.le",
+        "Real.instLE",
+        "OfNat.ofNat",
+        "Zero.toOfNat0",
+        "Real.instZero"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "LE.le.{0} (abs.{0} (HAdd.hAdd.{0, 0, 0} (∑ i, HMul.hMul.{0, 0, 0} (f i) (y i)) μ))\n  (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "declaration": "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hf",
+          "type": "∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)",
+          "type_constants": [
+            "AgtXIv.Stabilizerness.IsSign"
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "ι",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochLocalDelta.4253363948._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} ι",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "ι → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "f",
+          "type": "ι → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hf",
+          "type": "∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)",
+          "type_constants": [
+            "AgtXIv.Stabilizerness.IsSign"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [],
+      "term_constants": [
+        "Real.instIsOrderedRing",
+        "Eq.mpr",
+        "abs_neg",
+        "Real.partialOrder",
+        "Real.instLE",
+        "Real",
+        "Trans.trans",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "add_le_add_iff_left._simp_1",
+        "HMul.hMul",
+        "Real.lattice",
+        "CommRing.toNonUnitalCommRing",
+        "Finset.univ",
+        "AddGroupWithOne.toAddGroup",
+        "abs",
+        "congrArg",
+        "AddCommGroup.toAddCommMonoid",
+        "instIsLeftCancelAddOfAddLeftReflectLE",
+        "Finset",
+        "PartialOrder.toPreorder",
+        "Finset.abs_sum_le_sum_abs",
+        "abs_mul",
+        "Preorder.toLE",
+        "AddCommGroup.toAddGroup",
+        "SemilatticeInf.toPartialOrder",
+        "Eq.rec",
+        "Real.semiring",
+        "Eq.mp",
+        "DistribLattice.toLattice",
+        "id",
+        "AddGroup.addLeftReflectLE_of_addLeftMono",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "Real.instAddGroup",
+        "Real.instRing",
+        "add_le_add_right",
+        "contravariant_lt_of_covariant_le",
+        "LE.le",
+        "Real.commRing",
+        "Real.instAddCommGroup",
+        "Real.instAddCommSemigroup",
+        "add_comm",
+        "Or.casesOn",
+        "MulZeroOneClass.toMulOneClass",
+        "instDistribOfSemiring",
+        "Real.instAdd",
+        "NonUnitalNonAssocRing.toHasDistribNeg",
+        "instMulZeroOneClassOfSemiring",
+        "Real.instOne",
+        "instHAdd",
+        "Distrib.toMul",
+        "HAdd.hAdd",
+        "Real.instMul",
+        "instTransLE",
+        "congr",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "True",
+        "Real.instNeg",
+        "eq_self",
+        "of_eq_true",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "NonUnitalNonAssocSemiring.toDistrib",
+        "Eq.refl",
+        "neg_mul",
+        "congrFun'",
+        "AddCommSemigroup.toAddCommMagma",
+        "instTransEq_1",
+        "abs_add_le",
+        "HasDistribNeg.toInvolutiveNeg",
+        "Real.instIsOrderedAddMonoid",
+        "InvolutiveNeg.toNeg",
+        "OfNat.ofNat",
+        "Ring.toSemiring",
+        "Eq",
+        "Ring.toAddGroupWithOne",
+        "Finset.sum_congr",
+        "Finset.sum",
+        "instDistribLatticeOfLinearOrder",
+        "Neg.neg",
+        "Real.instPreorder",
+        "one_mul",
+        "rfl",
+        "IsLeftCancelAdd.addLeftReflectLE_of_addLeftReflectLT",
+        "Real.linearOrder",
+        "Eq.trans",
+        "AddCommMagma.toAdd",
+        "Lattice.toSemilatticeInf",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "instHMul"
+      ],
+      "type": "∀ {ι : Type u_1} [inst : Fintype.{u_1} ι] (y f : ι → ℝ) (μ : ℝ),\n  (∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) →\n    LE.le.{0} (abs.{0} (HAdd.hAdd.{0, 0, 0} (∑ i, HMul.hMul.{0, 0, 0} (f i) (y i)) μ))\n      (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "type_constants": [
+        "Fintype",
+        "Real",
+        "AgtXIv.Stabilizerness.IsSign",
+        "LE.le",
+        "Real.instLE",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul"
+      ],
+      "value_constants": [
+        "Fintype",
+        "Real",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Trans.trans",
+        "LE.le",
+        "Preorder.toLE",
+        "Real.instPreorder",
+        "Eq",
+        "instTransEq_1",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul",
+        "Real.instLE",
+        "instTransLE",
+        "abs_add_le",
+        "Real.instAddCommGroup",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "Real.instIsOrderedAddMonoid",
+        "Eq.mpr",
+        "Distrib.toMul",
+        "instDistribOfSemiring",
+        "Ring.toSemiring",
+        "Real.instRing",
+        "DistribLattice.toLattice",
+        "instDistribLatticeOfLinearOrder",
+        "Real.linearOrder",
+        "AddGroupWithOne.toAddGroup",
+        "Ring.toAddGroupWithOne",
+        "id",
+        "Eq.trans",
+        "AddCommMagma.toAdd",
+        "AddCommSemigroup.toAddCommMagma",
+        "Real.instAddCommSemigroup",
+        "congr",
+        "congrArg",
+        "add_comm",
+        "congrFun'",
+        "Finset.sum_congr",
+        "Eq.refl",
+        "Finset",
+        "Membership.mem",
+        "SetLike.instMembership",
+        "Finset.instSetLike",
+        "abs_mul",
+        "Real.instIsOrderedRing",
+        "add_le_add_iff_left._simp_1",
+        "IsLeftCancelAdd.addLeftReflectLE_of_addLeftReflectLT",
+        "instIsLeftCancelAddOfAddLeftReflectLE",
+        "Real.partialOrder",
+        "AddGroup.addLeftReflectLE_of_addLeftMono",
+        "PartialOrder.toPreorder",
+        "contravariant_lt_of_covariant_le",
+        "Eq.mp",
+        "SemilatticeInf.toPartialOrder",
+        "Lattice.toSemilatticeInf",
+        "AddCommGroup.toAddGroup",
+        "AddCommGroup.toAddCommMonoid",
+        "add_le_add_right",
+        "Finset.abs_sum_le_sum_abs",
+        "HAdd",
+        "Eq.rec",
+        "rfl",
+        "Or.casesOn",
+        "OfNat.ofNat",
+        "One.toOfNat1",
+        "Real.instOne",
+        "Neg.neg",
+        "Real.instNeg",
+        "of_eq_true",
+        "True",
+        "one_mul",
+        "MulZeroOneClass.toMulOneClass",
+        "instMulZeroOneClassOfSemiring",
+        "Real.semiring",
+        "eq_self",
+        "InvolutiveNeg.toNeg",
+        "HasDistribNeg.toInvolutiveNeg",
+        "NonUnitalNonAssocSemiring.toDistrib",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "CommRing.toNonUnitalCommRing",
+        "Real.commRing",
+        "NonUnitalNonAssocRing.toHasDistribNeg",
+        "neg_mul",
+        "abs_neg"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "∃ f,\n  (∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) ∧\n    Eq.{1} (abs.{0} (HAdd.hAdd.{0, 0, 0} (∑ i, HMul.hMul.{0, 0, 0} (f i) (y i)) μ))\n      (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "declaration": "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "ι",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochLocalDelta.3327498609._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} ι",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "ι → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [],
+      "term_constants": [
+        "Iff.mpr",
+        "AddGroup.toSubtractionMonoid",
+        "Mathlib.Tactic.Ring.Common.neg_zero",
+        "Eq.mpr",
+        "NegZeroClass.toNeg",
+        "NonAssocSemiring.toAddCommMonoidWithOne",
+        "Mathlib.Tactic.Ring.Common.neg_mul",
+        "abs_neg",
+        "Real.instLE",
+        "Real",
+        "Mathlib.Meta.NormNum.instAddMonoidWithOne",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Mathlib.Tactic.Ring.Common.neg_add",
+        "HMul.hMul",
+        "Real.lattice",
+        "CommRing.toNonUnitalCommRing",
+        "Nat.rawCast",
+        "Finset.univ",
+        "eq_false",
+        "Real.instZero",
+        "Real.instAddMonoid",
+        "abs",
+        "abs_of_neg",
+        "congrArg",
+        "CommSemiring.toSemiring",
+        "true_or",
+        "Finset",
+        "covariant_swap_add_of_covariant_add",
+        "Mathlib.Tactic.Ring.Common.neg_congr",
+        "lt_of_not_ge",
+        "AddMonoid.toAddZeroClass",
+        "Int.rawCast",
+        "PartialOrder.toPreorder",
+        "Mathlib.Meta.NormNum.IsNat.of_raw",
+        "Preorder.toLE",
+        "Exists",
+        "SemilatticeInf.toPartialOrder",
+        "AddZeroClass.toAddZero",
+        "inferInstance",
+        "Real.semiring",
+        "Mathlib.Tactic.Ring.Common.add_congr",
+        "neg_neg",
+        "id",
+        "Distrib.toAdd",
+        "LT.lt.le",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "add_nonneg",
+        "Int.ofNat",
+        "Real.instAddGroup",
+        "SubtractionMonoid.toSubNegZeroMonoid",
+        "Int",
+        "AddCommMonoidWithOne.toAddMonoidWithOne",
+        "Finset.sum_nonneg",
+        "LE.le",
+        "Mathlib.Meta.NormNum.isInt_neg",
+        "ite_cond_eq_true",
+        "Real.commRing",
+        "SubNegZeroMonoid.toNegZeroClass",
+        "Mathlib.Tactic.Ring.of_eq",
+        "Real.instAddCommGroup",
+        "SubtractionCommMonoid.toSubtractionMonoid",
+        "Real.instAddCommSemigroup",
+        "NPow.toPow",
+        "dite",
+        "MulZeroOneClass.toMulOneClass",
+        "instDistribOfSemiring",
+        "SubtractionCommMonoid.toAddCommMonoid",
+        "Real.instAdd",
+        "NonUnitalNonAssocRing.toHasDistribNeg",
+        "instMulZeroOneClassOfSemiring",
+        "Real.instOne",
+        "neg_nonneg",
+        "instHAdd",
+        "And",
+        "Mathlib.Meta.NormNum.IsInt.to_raw_eq",
+        "HPow.hPow",
+        "Distrib.toMul",
+        "HAdd.hAdd",
+        "Mathlib.Meta.NormNum.IsInt.to_isNat",
+        "Ring.toAddCommGroup",
+        "Nat",
+        "Real.instMul",
+        "And.intro",
+        "congr",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "Nat.instCommSemiring",
+        "True",
+        "Real.instNeg",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Mathlib.Tactic.Ring.Common.atom_pf",
+        "eq_self",
+        "Semiring.toMonoid",
+        "Exists.intro",
+        "eq_true",
+        "abs_of_nonneg",
+        "of_eq_true",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "NonUnitalNonAssocSemiring.toDistrib",
+        "Mathlib.Tactic.Ring.Common.add_pf_add_lt",
+        "AddZero.toAdd",
+        "Zero.toOfNat0",
+        "Eq.refl",
+        "Real.decidableLE",
+        "Mathlib.Meta.NormNum.IsInt.of_raw",
+        "neg_mul",
+        "congrFun'",
+        "AddCommMonoid.toAddMonoid",
+        "Or",
+        "instHPow",
+        "HasDistribNeg.toInvolutiveNeg",
+        "Mathlib.Tactic.Ring.Common.add_pf_zero_add",
+        "CommRing.toRing",
+        "Real.instIsOrderedAddMonoid",
+        "AddCommGroup.toDivisionAddCommMonoid",
+        "InvolutiveNeg.toNeg",
+        "OfNat.ofNat",
+        "Eq.symm",
+        "ite_cond_eq_false",
+        "Finset.sum_neg_distrib",
+        "or_true",
+        "NegZeroClass.toZero",
+        "Semiring.toNonAssocSemiring",
+        "Eq",
+        "abs_nonneg",
+        "Ring",
+        "Monoid.toNPow",
+        "Finset.sum_congr",
+        "Finset.sum",
+        "Neg.neg",
+        "Real.instPreorder",
+        "one_mul",
+        "rfl",
+        "Mathlib.Meta.NormNum.IsNat.to_raw_eq",
+        "Real.linearOrder",
+        "Eq.trans",
+        "Int.negOfNat",
+        "MulZeroClass.toZero",
+        "Lattice.toSemilatticeInf",
+        "Real.instCommSemiring",
+        "Mathlib.Meta.NormNum.IsNat.to_isInt",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "instMulZeroClassOfSemiring",
+        "instHMul",
+        "ite"
+      ],
+      "type": "∀ {ι : Type u_1} [inst : Fintype.{u_1} ι] (y : ι → ℝ) (μ : ℝ),\n  ∃ f,\n    (∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) ∧\n      Eq.{1} (abs.{0} (HAdd.hAdd.{0, 0, 0} (∑ i, HMul.hMul.{0, 0, 0} (f i) (y i)) μ))\n        (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "type_constants": [
+        "Fintype",
+        "Real",
+        "Exists",
+        "And",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Eq",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul"
+      ],
+      "value_constants": [
+        "Fintype",
+        "Real",
+        "dite",
+        "Exists",
+        "And",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Eq",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul",
+        "LE.le",
+        "Real.instLE",
+        "OfNat.ofNat",
+        "Zero.toOfNat0",
+        "Real.instZero",
+        "Real.decidableLE",
+        "ite",
+        "One.toOfNat1",
+        "Real.instOne",
+        "Neg.neg",
+        "Real.instNeg",
+        "of_eq_true",
+        "Or",
+        "Eq.trans",
+        "True",
+        "congr",
+        "congrArg",
+        "congrFun'",
+        "ite_cond_eq_true",
+        "eq_true",
+        "eq_self",
+        "true_or",
+        "Not",
+        "ite_cond_eq_false",
+        "eq_false",
+        "or_true",
+        "one_mul",
+        "MulZeroOneClass.toMulOneClass",
+        "instMulZeroOneClassOfSemiring",
+        "Real.semiring",
+        "abs_of_nonneg",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "Real.instPreorder",
+        "Real.instIsOrderedAddMonoid",
+        "LT.lt",
+        "Real.instLT",
+        "lt_of_not_ge",
+        "Real.linearOrder",
+        "InvolutiveNeg.toNeg",
+        "HasDistribNeg.toInvolutiveNeg",
+        "Distrib.toMul",
+        "NonUnitalNonAssocSemiring.toDistrib",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "CommRing.toNonUnitalCommRing",
+        "Real.commRing",
+        "NonUnitalNonAssocRing.toHasDistribNeg",
+        "NegZeroClass.toNeg",
+        "SubNegZeroMonoid.toNegZeroClass",
+        "SubtractionMonoid.toSubNegZeroMonoid",
+        "AddGroup.toSubtractionMonoid",
+        "neg_mul",
+        "abs_of_neg",
+        "Exists.intro",
+        "And.intro",
+        "Eq.mpr",
+        "id",
+        "Finset.sum_congr",
+        "Eq.refl",
+        "Finset",
+        "Membership.mem",
+        "SetLike.instMembership",
+        "Finset.instSetLike",
+        "AddZero.toAdd",
+        "AddZeroClass.toAddZero",
+        "AddMonoid.toAddZeroClass",
+        "AddCommMonoid.toAddMonoid",
+        "add_nonneg",
+        "Finset.sum_nonneg",
+        "abs_nonneg",
+        "covariant_swap_add_of_covariant_add",
+        "Preorder.toLE",
+        "PartialOrder.toPreorder",
+        "SemilatticeInf.toPartialOrder",
+        "Lattice.toSemilatticeInf",
+        "Real.instAddCommSemigroup",
+        "neg_neg",
+        "SubtractionCommMonoid.toSubtractionMonoid",
+        "AddCommGroup.toDivisionAddCommMonoid",
+        "Real.instAddCommGroup",
+        "SubtractionCommMonoid.toAddCommMonoid",
+        "Finset.sum_neg_distrib",
+        "Real.instAddMonoid",
+        "Iff.mpr",
+        "NegZeroClass.toZero",
+        "neg_nonneg",
+        "LT.lt.le",
+        "Mathlib.Tactic.Ring.of_eq",
+        "Distrib.toAdd",
+        "instDistribOfSemiring",
+        "CommSemiring.toSemiring",
+        "Real.instCommSemiring",
+        "HPow.hPow",
+        "Nat",
+        "instHPow",
+        "NPow.toPow",
+        "Monoid.toNPow",
+        "Semiring.toMonoid",
+        "Nat.rawCast",
+        "AddCommMonoidWithOne.toAddMonoidWithOne",
+        "NonAssocSemiring.toAddCommMonoidWithOne",
+        "Semiring.toNonAssocSemiring",
+        "Nat.instCommSemiring",
+        "Int.rawCast",
+        "inferInstance",
+        "Ring",
+        "CommRing.toRing",
+        "Int.negOfNat",
+        "MulZeroClass.toZero",
+        "instMulZeroClassOfSemiring",
+        "Mathlib.Tactic.Ring.Common.add_congr",
+        "Mathlib.Tactic.Ring.Common.neg_congr",
+        "Mathlib.Tactic.Ring.Common.atom_pf",
+        "rfl",
+        "Eq.symm",
+        "Mathlib.Tactic.Ring.Common.neg_add",
+        "Mathlib.Tactic.Ring.Common.neg_mul",
+        "Mathlib.Meta.NormNum.IsInt.to_raw_eq",
+        "Ring.toAddCommGroup",
+        "Mathlib.Meta.NormNum.isInt_neg",
+        "Int.ofNat",
+        "Mathlib.Meta.NormNum.IsNat.to_isInt",
+        "Mathlib.Meta.NormNum.IsNat.of_raw",
+        "Int",
+        "Mathlib.Tactic.Ring.Common.neg_zero",
+        "Mathlib.Tactic.Ring.Common.add_pf_add_lt",
+        "Mathlib.Tactic.Ring.Common.add_pf_zero_add",
+        "Mathlib.Meta.NormNum.instAddMonoidWithOne",
+        "Mathlib.Meta.NormNum.IsNat.to_raw_eq",
+        "Mathlib.Meta.NormNum.IsInt.to_isNat",
+        "Mathlib.Meta.NormNum.IsInt.of_raw",
+        "abs_neg"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "IsGreatest.{0}\n  (Set.ofPred.{0} fun z =>\n    ∃ f,\n      (∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) ∧\n        Eq.{1} z (abs.{0} (HAdd.hAdd.{0, 0, 0} (∑ i, HMul.hMul.{0, 0, 0} (f i) (y i)) μ)))\n  (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "declaration": "AgtXIv.Stabilizerness.max_abs_signed_sum",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "ι",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochLocalDelta.950548780._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} ι",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "ι → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [],
+      "term_constants": [
+        "Real.instLE",
+        "Real",
+        "HMul.hMul",
+        "Real.lattice",
+        "Finset.univ",
+        "abs",
+        "Set.ofPred",
+        "Membership.mem",
+        "Exists",
+        "upperBounds",
+        "Real.instAddGroup",
+        "LE.le",
+        "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+        "Real.instAdd",
+        "And.casesOn",
+        "instHAdd",
+        "And",
+        "IsGreatest",
+        "Exists.casesOn",
+        "HAdd.hAdd",
+        "Real.instMul",
+        "And.intro",
+        "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+        "Exists.intro",
+        "Eq.ndrec",
+        "Real.instAddCommMonoid",
+        "Eq.symm",
+        "Eq",
+        "Set.instMembership",
+        "Finset.sum",
+        "instHMul",
+        "Set"
+      ],
+      "type": "∀ {ι : Type u_1} [inst : Fintype.{u_1} ι] (y : ι → ℝ) (μ : ℝ),\n  IsGreatest.{0}\n    (Set.ofPred.{0} fun z =>\n      ∃ f,\n        (∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) ∧\n          Eq.{1} z (abs.{0} (HAdd.hAdd.{0, 0, 0} (∑ i, HMul.hMul.{0, 0, 0} (f i) (y i)) μ)))\n    (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "type_constants": [
+        "Fintype",
+        "Real",
+        "IsGreatest",
+        "Real.instLE",
+        "Set.ofPred",
+        "Exists",
+        "And",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Eq",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul"
+      ],
+      "value_constants": [
+        "Fintype",
+        "Real",
+        "Exists.casesOn",
+        "And",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Eq",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul",
+        "Exists",
+        "IsGreatest",
+        "Real.instLE",
+        "Set.ofPred",
+        "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+        "And.casesOn",
+        "And.intro",
+        "Membership.mem",
+        "Set",
+        "Set.instMembership",
+        "upperBounds",
+        "Exists.intro",
+        "Eq.symm",
+        "LE.le",
+        "Eq.ndrec",
+        "AgtXIv.Stabilizerness.abs_signed_sum_add_le"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "Eq.{u_1 + 1} (affineSpan.{0, u_1, u_1} ℝ s) Top.top.{u_1}",
+      "declaration": "AgtXIv.Stabilizerness.affineSpan_eq_top_of_vectorSpan_eq_top",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hs",
+          "type": "Set.Nonempty.{u_1} s",
+          "type_constants": [
+            "Set.Nonempty"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hspan",
+          "type": "Eq.{u_1 + 1} (vectorSpan.{0, u_1, u_1} ℝ s) Top.top.{u_1}",
+          "type_constants": [
+            "Eq",
+            "Submodule",
+            "Real",
+            "Ring.toSemiring",
+            "Real.instRing",
+            "AddCommGroup.toAddCommMonoid",
+            "vectorSpan",
+            "AddGroup.instAddTorsor",
+            "AddCommGroup.toAddGroup",
+            "Top.top",
+            "Submodule.instTop"
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "E",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochLocalDelta.900565682._hygCtx._hyg.3",
+          "type": "AddCommGroup.{u_1} E",
+          "type_constants": [
+            "AddCommGroup"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochLocalDelta.900565682._hygCtx._hyg.6",
+          "type": "_root_.Module.{0, u_1} ℝ E",
+          "type_constants": [
+            "Module",
+            "Real",
+            "Real.semiring",
+            "AddCommGroup.toAddCommMonoid"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "s",
+          "type": "Set.{u_1} E",
+          "type_constants": [
+            "Set"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hs",
+          "type": "Set.Nonempty.{u_1} s",
+          "type_constants": [
+            "Set.Nonempty"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hspan",
+          "type": "Eq.{u_1 + 1} (vectorSpan.{0, u_1, u_1} ℝ s) Top.top.{u_1}",
+          "type_constants": [
+            "Eq",
+            "Submodule",
+            "Real",
+            "Ring.toSemiring",
+            "Real.instRing",
+            "AddCommGroup.toAddCommMonoid",
+            "vectorSpan",
+            "AddGroup.instAddTorsor",
+            "AddCommGroup.toAddGroup",
+            "Top.top",
+            "Submodule.instTop"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [],
+      "term_constants": [
+        "Iff.mpr",
+        "Submodule",
+        "Real",
+        "Lattice.toSemilatticeSup",
+        "vectorSpan",
+        "CompleteLattice.toLattice",
+        "AddCommGroup.toAddCommMonoid",
+        "PartialOrder.toPreorder",
+        "Preorder.toLE",
+        "AddCommGroup.toAddGroup",
+        "CompleteLattice.toBoundedOrder",
+        "AddGroup.instAddTorsor",
+        "Real.instRing",
+        "Submodule.instTop",
+        "AffineSubspace.instCompleteLattice",
+        "AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty",
+        "affineSpan",
+        "OrderTop.toTop",
+        "BoundedOrder.toOrderTop",
+        "SemilatticeSup.toPartialOrder",
+        "Top.top",
+        "Ring.toSemiring",
+        "Eq",
+        "AffineSubspace"
+      ],
+      "type": "∀ {E : Type u_1} [inst : AddCommGroup.{u_1} E] [inst_1 : _root_.Module.{0, u_1} ℝ E] {s : Set.{u_1} E},\n  Set.Nonempty.{u_1} s →\n    Eq.{u_1 + 1} (vectorSpan.{0, u_1, u_1} ℝ s) Top.top.{u_1} →\n      Eq.{u_1 + 1} (affineSpan.{0, u_1, u_1} ℝ s) Top.top.{u_1}",
+      "type_constants": [
+        "AddCommGroup",
+        "Module",
+        "Real",
+        "Real.semiring",
+        "AddCommGroup.toAddCommMonoid",
+        "Set",
+        "Set.Nonempty",
+        "Eq",
+        "Submodule",
+        "Ring.toSemiring",
+        "Real.instRing",
+        "vectorSpan",
+        "AddGroup.instAddTorsor",
+        "AddCommGroup.toAddGroup",
+        "Top.top",
+        "Submodule.instTop",
+        "AffineSubspace",
+        "affineSpan",
+        "OrderTop.toTop",
+        "Preorder.toLE",
+        "PartialOrder.toPreorder",
+        "SemilatticeSup.toPartialOrder",
+        "Lattice.toSemilatticeSup",
+        "CompleteLattice.toLattice",
+        "AffineSubspace.instCompleteLattice",
+        "BoundedOrder.toOrderTop",
+        "CompleteLattice.toBoundedOrder"
+      ],
+      "value_constants": [
+        "AddCommGroup",
+        "Module",
+        "Real",
+        "Real.semiring",
+        "AddCommGroup.toAddCommMonoid",
+        "Set",
+        "Set.Nonempty",
+        "Eq",
+        "Submodule",
+        "Ring.toSemiring",
+        "Real.instRing",
+        "vectorSpan",
+        "AddGroup.instAddTorsor",
+        "AddCommGroup.toAddGroup",
+        "Top.top",
+        "Submodule.instTop",
+        "Iff.mpr",
+        "AffineSubspace",
+        "affineSpan",
+        "OrderTop.toTop",
+        "Preorder.toLE",
+        "PartialOrder.toPreorder",
+        "SemilatticeSup.toPartialOrder",
+        "Lattice.toSemilatticeSup",
+        "CompleteLattice.toLattice",
+        "AffineSubspace.instCompleteLattice",
+        "BoundedOrder.toOrderTop",
+        "CompleteLattice.toBoundedOrder",
+        "AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "Set.{0} ℝ",
+      "declaration": "AgtXIv.Stabilizerness.admissibleSignedValues",
+      "has_value": true,
+      "kind": "DEFINITION",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "ι",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochAdmissibleSigns.615707226._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} ι",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "admissible",
+          "type": "Set.{u_1} (ι → ℝ)",
+          "type_constants": [
+            "Set",
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "ι → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [],
+      "term_constants": [
+        "Real",
+        "HMul.hMul",
+        "Real.lattice",
+        "Finset.univ",
+        "abs",
+        "Set.ofPred",
+        "Membership.mem",
+        "Exists",
+        "Real.instAddGroup",
+        "Real.instAdd",
+        "instHAdd",
+        "And",
+        "HAdd.hAdd",
+        "Real.instMul",
+        "Real.instAddCommMonoid",
+        "Eq",
+        "Set.instMembership",
+        "Finset.sum",
+        "instHMul",
+        "Set"
+      ],
+      "type": "{ι : Type u_1} → [Fintype.{u_1} ι] → Set.{u_1} (ι → ℝ) → (ι → ℝ) → ℝ → Set.{0} ℝ",
+      "type_constants": [
+        "Fintype",
+        "Set",
+        "Real"
+      ],
+      "value_constants": [
+        "Fintype",
+        "Set",
+        "Real",
+        "Set.ofPred",
+        "Exists",
+        "And",
+        "Membership.mem",
+        "Set.instMembership",
+        "Eq",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "IsGreatest.{0} (AgtXIv.Stabilizerness.admissibleSignedValues.{u_1} admissible y μ)\n  (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "declaration": "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hCollapse",
+          "type": "Eq.{u_1 + 1} admissible (Set.ofPred.{u_1} fun f => ∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i))",
+          "type_constants": [
+            "Eq",
+            "Set",
+            "Real",
+            "Set.ofPred",
+            "AgtXIv.Stabilizerness.IsSign"
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "ι",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.EpochAdmissibleSigns.1672384317._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} ι",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "admissible",
+          "type": "Set.{u_1} (ι → ℝ)",
+          "type_constants": [
+            "Set",
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "ι → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hCollapse",
+          "type": "Eq.{u_1 + 1} admissible (Set.ofPred.{u_1} fun f => ∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i))",
+          "type_constants": [
+            "Eq",
+            "Set",
+            "Real",
+            "Set.ofPred",
+            "AgtXIv.Stabilizerness.IsSign"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [],
+      "term_constants": [
+        "Eq.mpr",
+        "Real.instLE",
+        "Real",
+        "HMul.hMul",
+        "Real.lattice",
+        "Finset.univ",
+        "abs",
+        "congrArg",
+        "Set.ofPred",
+        "AgtXIv.Stabilizerness.admissibleSignedValues",
+        "Membership.mem",
+        "Exists",
+        "id",
+        "Real.instAddGroup",
+        "Real.instAdd",
+        "funext",
+        "instHAdd",
+        "And",
+        "IsGreatest",
+        "HAdd.hAdd",
+        "Real.instMul",
+        "AgtXIv.Stabilizerness.max_abs_signed_sum",
+        "Real.instAddCommMonoid",
+        "congrFun'",
+        "Eq",
+        "Set.instMembership",
+        "Finset.sum",
+        "instHMul",
+        "Set"
+      ],
+      "type": "∀ {ι : Type u_1} [inst : Fintype.{u_1} ι] (admissible : Set.{u_1} (ι → ℝ)) (y : ι → ℝ) (μ : ℝ),\n  Eq.{u_1 + 1} admissible (Set.ofPred.{u_1} fun f => ∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) →\n    IsGreatest.{0} (AgtXIv.Stabilizerness.admissibleSignedValues.{u_1} admissible y μ)\n      (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (y i)) (abs.{0} μ))",
+      "type_constants": [
+        "Fintype",
+        "Set",
+        "Real",
+        "Eq",
+        "Set.ofPred",
+        "AgtXIv.Stabilizerness.IsSign",
+        "IsGreatest",
+        "Real.instLE",
+        "AgtXIv.Stabilizerness.admissibleSignedValues",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup"
+      ],
+      "value_constants": [
+        "Fintype",
+        "Set",
+        "Real",
+        "Eq",
+        "Set.ofPred",
+        "AgtXIv.Stabilizerness.IsSign",
+        "Eq.mpr",
+        "IsGreatest",
+        "Real.instLE",
+        "AgtXIv.Stabilizerness.admissibleSignedValues",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup",
+        "Exists",
+        "And",
+        "HMul.hMul",
+        "instHMul",
+        "Real.instMul",
+        "id",
+        "congrFun'",
+        "congrArg",
+        "Membership.mem",
+        "Set.instMembership",
+        "funext",
+        "AgtXIv.Stabilizerness.max_abs_signed_sum"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "ℝ",
+      "declaration": "MState.exp_val",
+      "has_value": true,
+      "kind": "DEFINITION",
+      "non_instance_prop_hypotheses": [],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "d",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.QuantumInfo.States.Mixed.MState.1515082324._hygCtx._hyg.6",
+          "type": "Fintype.{u_1} d",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.QuantumInfo.States.Mixed.MState.1515082324._hygCtx._hyg.18",
+          "type": "DecidableEq.{u_1 + 1} d",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "MState.{u_1} d",
+          "type_constants": [
+            "MState"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "T",
+          "type": "HermitianMat.{u_1, 0} d ℂ",
+          "type_constants": [
+            "HermitianMat",
+            "Complex",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "StarRing.toStarAddMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "ρ.nonneg",
+          "parent_binder": "ρ",
+          "structure": "MState",
+          "type": "LE.le.{u_1} 0 ↑ρ",
+          "type_constants": [
+            "LE.le",
+            "HermitianMat",
+            "Complex",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "StarRing.toStarAddMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing",
+            "Preorder.toLE",
+            "PartialOrder.toPreorder",
+            "HermitianMat.instPartialOrder",
+            "Complex.instRCLike",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "NegZeroClass.toZero",
+            "SubNegZeroMonoid.toNegZeroClass",
+            "SubtractionMonoid.toSubNegZeroMonoid",
+            "SubtractionCommMonoid.toSubtractionMonoid",
+            "AddCommGroup.toDivisionAddCommMonoid",
+            "HermitianMat.instAddCommGroup",
+            "Complex.addCommGroup",
+            "MState.M"
+          ]
+        },
+        {
+          "name": "ρ.tr",
+          "parent_binder": "ρ",
+          "structure": "MState",
+          "type": "Eq.{1} (HermitianMat.trace.{0, u_1, 0} ↑ρ) 1",
+          "type_constants": [
+            "Eq",
+            "Real",
+            "HermitianMat.trace",
+            "Complex",
+            "InvolutiveStar.toStar",
+            "StarAddMonoid.toInvolutiveStar",
+            "AddCommMonoid.toAddMonoid",
+            "NonUnitalNonAssocSemiring.toAddCommMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "CommRing.toNonUnitalCommRing",
+            "Real.commRing",
+            "StarRing.toStarAddMonoid",
+            "instStarRingReal",
+            "instTrivialStarReal",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing",
+            "Real.instCommSemiring",
+            "Complex.instSemiring",
+            "NormedAlgebra.toAlgebra",
+            "Real.normedField",
+            "SeminormedCommRing.toSeminormedRing",
+            "NormedCommRing.toSeminormedCommRing",
+            "NormedField.toNormedCommRing",
+            "DenselyNormedField.toNormedField",
+            "RCLike.toDenselyNormedField",
+            "Complex.instRCLike",
+            "RCLike.toNormedAlgebra",
+            "instRCLikeIsMaximalSelfAdjoint",
+            "MState.M",
+            "OfNat.ofNat",
+            "One.toOfNat1",
+            "Real.instOne"
+          ]
+        },
+        {
+          "name": "T.property",
+          "parent_binder": "T",
+          "structure": "Subtype",
+          "type": "Membership.mem.{u_1, u_1} (selfAdjoint.{u_1} (Matrix.{u_1, u_1, 0} d d ℂ)) ↑T",
+          "type_constants": [
+            "Membership.mem",
+            "Matrix",
+            "Complex",
+            "AddSubgroup",
+            "Matrix.addGroup",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "SetLike.instMembership",
+            "AddSubgroup.instSetLike",
+            "selfAdjoint",
+            "Matrix.instStarAddMonoid",
+            "SubNegMonoid.toAddMonoid",
+            "AddGroup.toSubNegMonoid",
+            "StarRing.toStarAddMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing",
+            "Subtype.val"
+          ]
+        }
+      ],
+      "term_constants": [
+        "NormedCommRing.toSeminormedCommRing",
+        "instTrivialStarReal",
+        "Real",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "instStarRingReal",
+        "RCLike.toNormedAlgebra",
+        "CommRing.toNonUnitalCommRing",
+        "MState.M",
+        "Inner.inner",
+        "AddGroupWithOne.toAddGroup",
+        "CommCStarAlgebra.toNormedCommRing",
+        "Complex.addGroupWithOne",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "Complex.instRCLike",
+        "Complex.instNonUnitalCommRing",
+        "Real.commRing",
+        "StarAddMonoid.toInvolutiveStar",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "StarRing.toStarAddMonoid",
+        "HermitianMat.instInner",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "Complex.instStarRing",
+        "SeminormedCommRing.toSeminormedRing",
+        "InvolutiveStar.toStar",
+        "AddCommMonoid.toAddMonoid",
+        "Real.normedField",
+        "instCommCStarAlgebraComplex",
+        "Complex",
+        "instRCLikeIsMaximalSelfAdjoint",
+        "Complex.instRing",
+        "HermitianMat",
+        "NormedAlgebra.toAlgebra",
+        "Real.instCommSemiring"
+      ],
+      "type": "{d : Type u_1} →\n  [inst : Fintype.{u_1} d] → [inst_1 : DecidableEq.{u_1 + 1} d] → MState.{u_1} d → HermitianMat.{u_1, 0} d ℂ → ℝ",
+      "type_constants": [
+        "Fintype",
+        "DecidableEq",
+        "MState",
+        "HermitianMat",
+        "Complex",
+        "AddGroupWithOne.toAddGroup",
+        "Complex.addGroupWithOne",
+        "StarRing.toStarAddMonoid",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Complex.instNonUnitalCommRing",
+        "Complex.instStarRing",
+        "Real"
+      ],
+      "value_constants": [
+        "Fintype",
+        "DecidableEq",
+        "MState",
+        "HermitianMat",
+        "Complex",
+        "AddGroupWithOne.toAddGroup",
+        "Complex.addGroupWithOne",
+        "StarRing.toStarAddMonoid",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Complex.instNonUnitalCommRing",
+        "Complex.instStarRing",
+        "Inner.inner",
+        "Real",
+        "HermitianMat.instInner",
+        "InvolutiveStar.toStar",
+        "StarAddMonoid.toInvolutiveStar",
+        "AddCommMonoid.toAddMonoid",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "CommRing.toNonUnitalCommRing",
+        "Real.commRing",
+        "instStarRingReal",
+        "instTrivialStarReal",
+        "Complex.instRing",
+        "Real.instCommSemiring",
+        "NormedAlgebra.toAlgebra",
+        "Real.normedField",
+        "SeminormedCommRing.toSeminormedRing",
+        "NormedCommRing.toSeminormedCommRing",
+        "CommCStarAlgebra.toNormedCommRing",
+        "instCommCStarAlgebraComplex",
+        "RCLike.toNormedAlgebra",
+        "Complex.instRCLike",
+        "instRCLikeIsMaximalSelfAdjoint",
+        "MState.M"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "conclusion": "IsGreatest.{0} (AgtXIv.Stabilizerness.admissibleSignedValues.{u_2} admissible (fun i => MState.exp_val.{u_1} ρ (A i)) μ)\n  (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (MState.exp_val.{u_1} ρ (A i))) (abs.{0} μ))",
+      "declaration": "AgtXIv.CommonEpoch.quantum_admissible_sign_maximum",
+      "has_value": true,
+      "kind": "THEOREM",
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hCollapse",
+          "type": "Eq.{u_2 + 1} admissible (Set.ofPred.{u_2} fun f => ∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i))",
+          "type_constants": [
+            "Eq",
+            "Set",
+            "Real",
+            "Set.ofPred",
+            "AgtXIv.Stabilizerness.IsSign"
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "d",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "ι",
+          "type": "Type u_2",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.CommonEpochBridge.4059671174._hygCtx._hyg.4",
+          "type": "Fintype.{u_1} d",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.CommonEpochBridge.4059671174._hygCtx._hyg.7",
+          "type": "DecidableEq.{u_1 + 1} d",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.CommonEpochBridge.4059671174._hygCtx._hyg.10",
+          "type": "Fintype.{u_2} ι",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "MState.{u_1} d",
+          "type_constants": [
+            "MState"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "A",
+          "type": "ι → HermitianMat.{u_1, 0} d ℂ",
+          "type_constants": [
+            "HermitianMat",
+            "Complex",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "StarRing.toStarAddMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "admissible",
+          "type": "Set.{u_2} (ι → ℝ)",
+          "type_constants": [
+            "Set",
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hCollapse",
+          "type": "Eq.{u_2 + 1} admissible (Set.ofPred.{u_2} fun f => ∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i))",
+          "type_constants": [
+            "Eq",
+            "Set",
+            "Real",
+            "Set.ofPred",
+            "AgtXIv.Stabilizerness.IsSign"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "ρ.nonneg",
+          "parent_binder": "ρ",
+          "structure": "MState",
+          "type": "LE.le.{u_1} 0 ↑ρ",
+          "type_constants": [
+            "LE.le",
+            "HermitianMat",
+            "Complex",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "StarRing.toStarAddMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing",
+            "Preorder.toLE",
+            "PartialOrder.toPreorder",
+            "HermitianMat.instPartialOrder",
+            "Complex.instRCLike",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "NegZeroClass.toZero",
+            "SubNegZeroMonoid.toNegZeroClass",
+            "SubtractionMonoid.toSubNegZeroMonoid",
+            "SubtractionCommMonoid.toSubtractionMonoid",
+            "AddCommGroup.toDivisionAddCommMonoid",
+            "HermitianMat.instAddCommGroup",
+            "Complex.addCommGroup",
+            "MState.M"
+          ]
+        },
+        {
+          "name": "ρ.tr",
+          "parent_binder": "ρ",
+          "structure": "MState",
+          "type": "Eq.{1} (HermitianMat.trace.{0, u_1, 0} ↑ρ) 1",
+          "type_constants": [
+            "Eq",
+            "Real",
+            "HermitianMat.trace",
+            "Complex",
+            "InvolutiveStar.toStar",
+            "StarAddMonoid.toInvolutiveStar",
+            "AddCommMonoid.toAddMonoid",
+            "NonUnitalNonAssocSemiring.toAddCommMonoid",
+            "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+            "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+            "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+            "CommRing.toNonUnitalCommRing",
+            "Real.commRing",
+            "StarRing.toStarAddMonoid",
+            "instStarRingReal",
+            "instTrivialStarReal",
+            "AddGroupWithOne.toAddGroup",
+            "Complex.addGroupWithOne",
+            "Complex.instNonUnitalCommRing",
+            "Complex.instStarRing",
+            "Real.instCommSemiring",
+            "Complex.instSemiring",
+            "NormedAlgebra.toAlgebra",
+            "Real.normedField",
+            "SeminormedCommRing.toSeminormedRing",
+            "NormedCommRing.toSeminormedCommRing",
+            "NormedField.toNormedCommRing",
+            "DenselyNormedField.toNormedField",
+            "RCLike.toDenselyNormedField",
+            "Complex.instRCLike",
+            "RCLike.toNormedAlgebra",
+            "instRCLikeIsMaximalSelfAdjoint",
+            "MState.M",
+            "OfNat.ofNat",
+            "One.toOfNat1",
+            "Real.instOne"
+          ]
+        }
+      ],
+      "term_constants": [
+        "MState.exp_val",
+        "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq"
+      ],
+      "type": "∀ {d : Type u_1} {ι : Type u_2} [inst : Fintype.{u_1} d] [inst_1 : DecidableEq.{u_1 + 1} d] [inst_2 : Fintype.{u_2} ι]\n  (ρ : MState.{u_1} d) (A : ι → HermitianMat.{u_1, 0} d ℂ) (admissible : Set.{u_2} (ι → ℝ)) (μ : ℝ),\n  Eq.{u_2 + 1} admissible (Set.ofPred.{u_2} fun f => ∀ (i : ι), AgtXIv.Stabilizerness.IsSign (f i)) →\n    IsGreatest.{0}\n      (AgtXIv.Stabilizerness.admissibleSignedValues.{u_2} admissible (fun i => MState.exp_val.{u_1} ρ (A i)) μ)\n      (HAdd.hAdd.{0, 0, 0} (∑ i, abs.{0} (MState.exp_val.{u_1} ρ (A i))) (abs.{0} μ))",
+      "type_constants": [
+        "Fintype",
+        "DecidableEq",
+        "MState",
+        "HermitianMat",
+        "Complex",
+        "AddGroupWithOne.toAddGroup",
+        "Complex.addGroupWithOne",
+        "StarRing.toStarAddMonoid",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Complex.instNonUnitalCommRing",
+        "Complex.instStarRing",
+        "Set",
+        "Real",
+        "Eq",
+        "Set.ofPred",
+        "AgtXIv.Stabilizerness.IsSign",
+        "IsGreatest",
+        "Real.instLE",
+        "AgtXIv.Stabilizerness.admissibleSignedValues",
+        "MState.exp_val",
+        "HAdd.hAdd",
+        "instHAdd",
+        "Real.instAdd",
+        "Finset.sum",
+        "Real.instAddCommMonoid",
+        "Finset.univ",
+        "abs",
+        "Real.lattice",
+        "Real.instAddGroup"
+      ],
+      "value_constants": [
+        "Fintype",
+        "DecidableEq",
+        "MState",
+        "HermitianMat",
+        "Complex",
+        "AddGroupWithOne.toAddGroup",
+        "Complex.addGroupWithOne",
+        "StarRing.toStarAddMonoid",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Complex.instNonUnitalCommRing",
+        "Complex.instStarRing",
+        "Set",
+        "Real",
+        "Eq",
+        "Set.ofPred",
+        "AgtXIv.Stabilizerness.IsSign",
+        "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+        "MState.exp_val"
+      ],
+      "kernel_checked": true,
+      "forbidden_axioms": [],
+      "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "statement_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    }
+  ],
+  "composition_witnesses": [
+    {
+      "upstream_declaration": "AgtXIv.Stabilizerness.exists_sign_attaining_abs_sum",
+      "downstream_declaration": "AgtXIv.Stabilizerness.max_abs_signed_sum",
+      "status": "COMPOSED",
+      "basis": "LEAN_ELABORATED_TERM_CONSTANT",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "same_environment": true,
+      "mathematical_necessity_established": false
+    },
+    {
+      "upstream_declaration": "AgtXIv.Stabilizerness.abs_signed_sum_add_le",
+      "downstream_declaration": "AgtXIv.Stabilizerness.max_abs_signed_sum",
+      "status": "COMPOSED",
+      "basis": "LEAN_ELABORATED_TERM_CONSTANT",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "same_environment": true,
+      "mathematical_necessity_established": false
+    },
+    {
+      "upstream_declaration": "AgtXIv.Stabilizerness.admissibleSignedValues",
+      "downstream_declaration": "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+      "status": "COMPOSED",
+      "basis": "LEAN_ELABORATED_TERM_CONSTANT",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "same_environment": true,
+      "mathematical_necessity_established": false
+    },
+    {
+      "upstream_declaration": "AgtXIv.Stabilizerness.max_abs_signed_sum",
+      "downstream_declaration": "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+      "status": "COMPOSED",
+      "basis": "LEAN_ELABORATED_TERM_CONSTANT",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "same_environment": true,
+      "mathematical_necessity_established": false
+    },
+    {
+      "upstream_declaration": "MState.exp_val",
+      "downstream_declaration": "AgtXIv.CommonEpoch.quantum_admissible_sign_maximum",
+      "status": "COMPOSED",
+      "basis": "LEAN_ELABORATED_TERM_CONSTANT",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "same_environment": true,
+      "mathematical_necessity_established": false
+    },
+    {
+      "upstream_declaration": "AgtXIv.Stabilizerness.max_abs_admissible_signed_sum_of_sign_set_eq",
+      "downstream_declaration": "AgtXIv.CommonEpoch.quantum_admissible_sign_maximum",
+      "status": "COMPOSED",
+      "basis": "LEAN_ELABORATED_TERM_CONSTANT",
+      "receipt": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-selected-modules/common-epoch-audit.log",
+      "same_environment": true,
+      "mathematical_necessity_established": false
+    }
+  ],
+  "full_case_catalog": {
+    "scope": "STATIC_ORIGINAL_CASE_MODULE_CLOSURE",
+    "modules": {
+      "AgtXIvRootMath.AtomPreservingMonotonicity": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/AtomPreservingMonotonicity.lean",
+        "sha256": "7f457f1081d341c097d186e0f7ba40e531dfadfc92bb6a0ec914c33c9f707178",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomAttainment",
+          "AgtXIvRootMath.StochasticContraction"
+        ]
+      },
+      "AgtXIvRootMath.CanonicalStabilizerAtoms": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/CanonicalStabilizerAtoms.lean",
+        "sha256": "99f61d8bb2564120da043f280a6dfcb3821cb41166ea2dad1a58db6d7ab18a3c",
+        "imports": [
+          "AgtXIvRootMath.StabilizerRoMInstantiation"
+        ]
+      },
+      "AgtXIvRootMath.DensityStabilizerRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/DensityStabilizerRoM.lean",
+        "sha256": "0709698ea282d1406588d78d1c39fe088707c2ea5ad391ad9900838175cbcd6e",
+        "imports": [
+          "AgtXIvRootMath.CanonicalStabilizerAtoms"
+        ]
+      },
+      "AgtXIvRootMath.F2Coordinates": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/F2Coordinates.lean",
+        "sha256": "c0f6628b45fd9022adc30be5eb36c36cb7a724406d4ea7508e44a8f1796783cd",
+        "imports": [
+          "AgtXIvRootMath.PauliF2Support",
+          "Mathlib.LinearAlgebra.BilinearForm.Properties"
+        ]
+      },
+      "AgtXIvRootMath.F2SymplecticNondegenerate": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/F2SymplecticNondegenerate.lean",
+        "sha256": "94e8f8dc8f729d607b93163508b57dcfd2e15320592559c7aa5225482aa4d947",
+        "imports": [
+          "AgtXIvRootMath.PauliF2Support",
+          "Mathlib.LinearAlgebra.BilinearForm.Properties"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomAttainment": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomAttainment.lean",
+        "sha256": "b2f211eb10b67c5ceecedbb2ae2176afcef37f7881e7afd97934f2536305bbb0",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM",
+          "Mathlib.Topology.MetricSpace.Bounded"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomConvexHull": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomConvexHull.lean",
+        "sha256": "906e7b5edbbb8f761729c2a54f69188cda2d724d65f5525340eafb1059a97336",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM",
+          "Mathlib.Analysis.Convex.Combination"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomRoM.lean",
+        "sha256": "046dbdb16ab0b4d1ab2bffd54f4f7eeb18568493fd211c409f1f823815fb6f19",
+        "imports": [
+          "Mathlib"
+        ]
+      },
+      "AgtXIvRootMath.FiniteAtomTotalRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/FiniteAtomTotalRoM.lean",
+        "sha256": "b6ae13b033d387b760c2a4e7c7bfb211537dafebf83b47b562afa85ea2444149",
+        "imports": [
+          "AgtXIvRootMath.AtomPreservingMonotonicity"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanCharacterDimension": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanCharacterDimension.lean",
+        "sha256": "a10bb7312476c2f01390e026b12c74eb74c657a8cc483f7fb9339df10030f812",
+        "imports": [
+          "AgtXIvRootMath.GottesmanGroupAverage",
+          "Mathlib.RepresentationTheory.Character"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanConcretePauliFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanConcretePauliFrame.lean",
+        "sha256": "58c49b36fa007aae0caafde5ccf13f7d6e55af2dbd52bebef483b99dc996dd4e",
+        "imports": [
+          "AgtXIvRootMath.PauliAdjoint",
+          "AgtXIvRootMath.GottesmanRankPauliFrame"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGeneralRankDimension": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankDimension.lean",
+        "sha256": "9b80468de1145115280f20ab32a28b730681778c117aba31451e18a4d2db3cb9",
+        "imports": [
+          "AgtXIvRootMath.GottesmanPauliGenerators",
+          "Mathlib.RepresentationTheory.Character"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGeneralRankProjector": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneralRankProjector.lean",
+        "sha256": "5653a6716cb3395b6ea7e767cabb6e8d61dac87c54f18b78364d9047963e0164",
+        "imports": [
+          "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "AgtXIvRootMath.PauliAdjoint",
+          "Mathlib.Analysis.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.Rank"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGeneratorFixedSpace": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGeneratorFixedSpace.lean",
+        "sha256": "352c5e17e9bb91ec5e8151d401e9aaaa508eeb1f06b9e4d01b1a2618bde32ff3",
+        "imports": [
+          "AgtXIvRootMath.GottesmanUniqueRay",
+          "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "Mathlib.Algebra.Group.Submonoid.BigOperators"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanGroupAverage": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanGroupAverage.lean",
+        "sha256": "9f7d906e0d073b11efaaa4c4a3f7db81df5c0d6a31d0b882b8a123b47d5439d6",
+        "imports": [
+          "Mathlib.RepresentationTheory.Invariants",
+          "Mathlib.Data.Complex.Basic"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanPauliGenerators": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanPauliGenerators.lean",
+        "sha256": "824c7a8de96e632d9b3355c1a25c27db19525c1027db36f44efe4bfe5142edee",
+        "imports": [
+          "AgtXIvRootMath.GottesmanRankNProjector",
+          "Mathlib.Data.Finset.NoncommProd"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanRankNProjector": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankNProjector.lean",
+        "sha256": "55b5f59ed898d6873ebf424c31a72d9dd7aaf02aba59b0d75377aebeb2c5dedf",
+        "imports": [
+          "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "Mathlib.Analysis.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.Rank"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanRankPauliFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanRankPauliFrame.lean",
+        "sha256": "0c8aa3f56568fcbc2c1637dff50a3add880b8a162a73192d0edf91a21bf08302",
+        "imports": [
+          "AgtXIvRootMath.GottesmanCharacterDimension",
+          "Mathlib.Data.Fintype.BigOperators",
+          "Mathlib.Data.ZMod.Basic"
+        ]
+      },
+      "AgtXIvRootMath.GottesmanUniqueRay": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/GottesmanUniqueRay.lean",
+        "sha256": "217c8979953f993d8f144933ba38b74648f83743ac9cda991b738cbd49579565",
+        "imports": [
+          "AgtXIvRootMath.GottesmanPauliGenerators",
+          "Mathlib.Analysis.Complex.Norm",
+          "Mathlib.LinearAlgebra.FiniteDimensional.Basic"
+        ]
+      },
+      "AgtXIvRootMath.HermitianAffineFeasibility": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/HermitianAffineFeasibility.lean",
+        "sha256": "cbda7213e99eb175932577ac5046068f3a9884a7fc088efa94abc6f9e5ba99f3",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM",
+          "AgtXIvRootMath.GottesmanRankNProjector",
+          "Mathlib.Algebra.Star.Module",
+          "Mathlib.LinearAlgebra.AffineSpace.Combination"
+        ]
+      },
+      "AgtXIvRootMath.HermitianPauliBasis": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/HermitianPauliBasis.lean",
+        "sha256": "11949879d1a64d72a3c43b49647755c6b981b1f2d856ab973196cd426b2ce5a2",
+        "imports": [
+          "AgtXIvRootMath.HermitianAffineFeasibility",
+          "AgtXIvRootMath.PauliAdjoint",
+          "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
+          "Mathlib.LinearAlgebra.Basis.VectorSpace",
+          "Mathlib.LinearAlgebra.Matrix.StdBasis",
+          "Init.Data.BitVec.Lemmas"
+        ]
+      },
+      "AgtXIvRootMath.PauliAdjoint": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliAdjoint.lean",
+        "sha256": "54121fa9a48839d7ebcecf184107a7a45a094e80226c4cfc2c1b29f5b0503dd8",
+        "imports": [
+          "AgtXIvRootMath.PauliTrace",
+          "Quantumlib.ForMathlib.Data.Matrix.Unitary"
+        ]
+      },
+      "AgtXIvRootMath.PauliCliffordTransitivity": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliCliffordTransitivity.lean",
+        "sha256": "fa9322dddf9b31d45fce91939dc2465e3c807a8ae9a3867b2fc06ae9259faed5",
+        "imports": [
+          "AgtXIvRootMath.PauliSyndromeIntertwiner",
+          "AgtXIvRootMath.SemanticCliffordFrames",
+          "AgtXIvRootMath.StandardZIndependentFrame"
+        ]
+      },
+      "AgtXIvRootMath.PauliDualFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliDualFrame.lean",
+        "sha256": "71dcf354ec9e95a3578678e36b6bca83030786aec39e82dd7720e0b1203be3d8",
+        "imports": [
+          "AgtXIvRootMath.PauliSupportWord"
+        ]
+      },
+      "AgtXIvRootMath.PauliF2Support": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliF2Support.lean",
+        "sha256": "33ed70898dadc2ac955d644e1597736752760237e4450b3c0503c3d1155321e8",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "Mathlib.LinearAlgebra.BilinearForm.Basic"
+        ]
+      },
+      "AgtXIvRootMath.PauliFaithful": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFaithful.lean",
+        "sha256": "916d785a0b9773ef7aafc396aaf7c2d422158e70a6ce01add2a383b080cd10b0",
+        "imports": [
+          "AgtXIvRootMath.PauliAdjoint"
+        ]
+      },
+      "AgtXIvRootMath.PauliFrameNormalForm": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameNormalForm.lean",
+        "sha256": "c4d7c24247f792ad4c086d0c80729668d4ed33ee399402b8c8cd4461a9f40470",
+        "imports": [
+          "AgtXIvRootMath.PauliDualFrame",
+          "AgtXIvRootMath.PauliFaithful"
+        ]
+      },
+      "AgtXIvRootMath.PauliFrameSupportCompletion": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSupportCompletion.lean",
+        "sha256": "e0deac67b16478ed4ad7c972bae3b0d27de59c43c77d65d70c281f2eadb63635",
+        "imports": [
+          "AgtXIvRootMath.F2SymplecticNondegenerate",
+          "AgtXIvRootMath.SymplecticCompletion",
+          "AgtXIvRootMath.GottesmanConcretePauliFrame",
+          "Mathlib.LinearAlgebra.StdBasis"
+        ]
+      },
+      "AgtXIvRootMath.PauliFrameSymplecticBasis": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliFrameSymplecticBasis.lean",
+        "sha256": "ba3ba6b2dc217d48ded4cfdbb742d4f4b1255a03c9007a1a4d82e5f4d3e9cbb4",
+        "imports": [
+          "AgtXIvRootMath.PauliFrameSupportCompletion",
+          "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas"
+        ]
+      },
+      "AgtXIvRootMath.PauliSupportWord": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliSupportWord.lean",
+        "sha256": "0d25d06c4aa966aca70d75f82204eb87e5f9b0f532bf9fc9b4236a4ea8154f2c",
+        "imports": [
+          "AgtXIvRootMath.PauliFrameSymplecticBasis",
+          "AgtXIvRootMath.HermitianPauliBasis",
+          "AgtXIvRootMath.GottesmanPauliGenerators"
+        ]
+      },
+      "AgtXIvRootMath.PauliSyndromeData": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeData.lean",
+        "sha256": "23d3f68dde6fc98dab12a2ef99c8248057e7cdf13496f3d976eafb1326be35e3",
+        "imports": [
+          "AgtXIvRootMath.GottesmanUniqueRay",
+          "AgtXIvRootMath.SyndromeBasis",
+          "AgtXIvRootMath.PauliFrameNormalForm"
+        ]
+      },
+      "AgtXIvRootMath.PauliSyndromeIntertwiner": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliSyndromeIntertwiner.lean",
+        "sha256": "71a5a4f967dc2fd4b7e9cf703ddf21bdc2101ad7dc5246f62461e33a2a4f739c",
+        "imports": [
+          "AgtXIvRootMath.PauliSyndromeData"
+        ]
+      },
+      "AgtXIvRootMath.PauliTrace": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/PauliTrace.lean",
+        "sha256": "6914299ba844c1e8905194a7627d674a23ef25b75e78316e33b2fcf7a522edf8",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "Mathlib.RepresentationTheory.Character"
+        ]
+      },
+      "AgtXIvRootMath.ProductStabilizerFrames": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/ProductStabilizerFrames.lean",
+        "sha256": "b7420476b77886d14967f10f5c75d9c0144ea41e62a211dc9c31e7e1b499f46d",
+        "imports": [
+          "AgtXIvRootMath.QubitStabilizerAffineComplete",
+          "AgtXIvRootMath.StandardZProjectorBridge",
+          "AgtXIvRootMath.PauliFrameSupportCompletion"
+        ]
+      },
+      "AgtXIvRootMath.QubitStabilizerAffineComplete": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/QubitStabilizerAffineComplete.lean",
+        "sha256": "7dee3f6d2d30c229f2016445189dcf22f29a90cf08f021cde7f6cb1b2fac2003",
+        "imports": [
+          "AgtXIvRootMath.HermitianAffineFeasibility",
+          "AgtXIvRootMath.PauliF2Support"
+        ]
+      },
+      "AgtXIvRootMath.RootMathCompletion": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/RootMathCompletion.lean",
+        "sha256": "5b78a6da4d6689257acfe1ed2c70060c6b7d4b324973a76a7944bf1c96eaba0c",
+        "imports": [
+          "AgtXIvRootMath.GottesmanGeneralRankDimension",
+          "AgtXIvRootMath.GottesmanGeneralRankProjector",
+          "AgtXIvRootMath.GottesmanGeneratorFixedSpace",
+          "AgtXIvRootMath.UnconditionalStabilizerRoM",
+          "AgtXIvRootMath.VeitchOrbitPolytope"
+        ]
+      },
+      "AgtXIvRootMath.SemanticClifford": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SemanticClifford.lean",
+        "sha256": "6d6508d287528377fc17f2cbca83bd26ca2fcba1f12b4544626b4b1d56a4b171",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Lemmas",
+          "Quantumlib.ForMathlib.Data.Matrix.Unitary"
+        ]
+      },
+      "AgtXIvRootMath.SemanticCliffordFrames": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SemanticCliffordFrames.lean",
+        "sha256": "754d473ed57c9b359412e7b6217a68f8083c7fe65c7970f6ac81d93dd8bc270c",
+        "imports": [
+          "AgtXIvRootMath.PauliFaithful",
+          "AgtXIvRootMath.SemanticClifford",
+          "AgtXIvRootMath.GottesmanRankNProjector"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerAffineComplete": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAffineComplete.lean",
+        "sha256": "384473e9da08e7f0c217c8562adfc550ed70a9d8bf2ac768d90bc348b390036e",
+        "imports": [
+          "AgtXIvRootMath.HermitianPauliBasis",
+          "AgtXIvRootMath.ProductStabilizerFrames",
+          "AgtXIvRootMath.StabilizerAtomMaps"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerAtomMaps": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerAtomMaps.lean",
+        "sha256": "7ad7ea8da7817df0cc54ff6e93aac2c98eb6e609f45556e972712d18f734f538",
+        "imports": [
+          "AgtXIvRootMath.HermitianAffineFeasibility",
+          "AgtXIvRootMath.VeitchStabilizerPolytope",
+          "Mathlib.Analysis.CStarAlgebra.Matrix"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerFrameProjector": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerFrameProjector.lean",
+        "sha256": "167fff2fabc717776237f6815f99fdb274e511090199959fdcece34a430a6700",
+        "imports": [
+          "AgtXIvRootMath.PauliF2Support",
+          "AgtXIvRootMath.SemanticClifford",
+          "Mathlib.LinearAlgebra.Matrix.Hermitian"
+        ]
+      },
+      "AgtXIvRootMath.StabilizerRoMInstantiation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StabilizerRoMInstantiation.lean",
+        "sha256": "5e2b8fc7a667ebd53194ba06d6d51549413724e7291c9452285ba575624a2943",
+        "imports": [
+          "AgtXIvRootMath.StabilizerAtomMaps"
+        ]
+      },
+      "AgtXIvRootMath.StandardZIndependentFrame": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StandardZIndependentFrame.lean",
+        "sha256": "55f49c7073430b33cfac9e58ad7e8586c077760a6f5ddcd34621c82b3b284d83",
+        "imports": [
+          "AgtXIvRootMath.GottesmanConcretePauliFrame"
+        ]
+      },
+      "AgtXIvRootMath.StandardZProjectorBridge": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StandardZProjectorBridge.lean",
+        "sha256": "187da6383f4d4565a4551e55fac4d9ab5f91ac77d42b57a206c92fbb45e9d038",
+        "imports": [
+          "AgtXIvRootMath.StandardZIndependentFrame",
+          "AgtXIvRootMath.StabilizerFrameProjector",
+          "AgtXIvRootMath.GottesmanRankNProjector"
+        ]
+      },
+      "AgtXIvRootMath.StochasticContraction": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/StochasticContraction.lean",
+        "sha256": "27e2aa3fa161719c73a159ad66ef033162cf7ad29c1814ab3e589dc622ca4e3d",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomRoM"
+        ]
+      },
+      "AgtXIvRootMath.SymplecticCompletion": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SymplecticCompletion.lean",
+        "sha256": "bf31c1eae0437a8b2113af7bdb53acfde856d163e406a5603a7108467a6ccb05",
+        "imports": [
+          "AgtXIvRootMath.F2Coordinates",
+          "Mathlib.LinearAlgebra.Basis.VectorSpace",
+          "Mathlib.LinearAlgebra.BilinearForm.Properties"
+        ]
+      },
+      "AgtXIvRootMath.SyndromeBasis": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/SyndromeBasis.lean",
+        "sha256": "4ccefcb6f4b0d9102cb7a7444827779ab404ece10c7b749fb46e69ddfe0ad713",
+        "imports": [
+          "AgtXIvRootMath.SemanticClifford",
+          "Mathlib.LinearAlgebra.Matrix.ConjTranspose"
+        ]
+      },
+      "AgtXIvRootMath.UnconditionalStabilizerRoM": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/UnconditionalStabilizerRoM.lean",
+        "sha256": "4c972b934f94b1529a7d579c8c524c1e20b21ca40c6a2ad210eb2e8e484b7847",
+        "imports": [
+          "AgtXIvRootMath.StabilizerAffineComplete",
+          "AgtXIvRootMath.DensityStabilizerRoM"
+        ]
+      },
+      "AgtXIvRootMath.VeitchConvexHull": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchConvexHull.lean",
+        "sha256": "aceabfd0286bd21ba20caa331a66785ff7db99738fce2b82f0c7dbb395768a34",
+        "imports": [
+          "AgtXIvRootMath.FiniteAtomConvexHull",
+          "AgtXIvRootMath.VeitchStabilizerPolytope"
+        ]
+      },
+      "AgtXIvRootMath.VeitchOrbitBridge": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitBridge.lean",
+        "sha256": "55ebbd04ed2673f0c7276304fdf29d5d6eec8f3fc11c506ab90aa964cf7c2e73",
+        "imports": [
+          "AgtXIvRootMath.StandardZProjectorBridge",
+          "AgtXIvRootMath.SemanticCliffordFrames",
+          "AgtXIvRootMath.VeitchStabilizerPolytope"
+        ]
+      },
+      "AgtXIvRootMath.VeitchOrbitEquivalence": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitEquivalence.lean",
+        "sha256": "d2089a0ab347c00400054991dc7dea23ed5c19b24d5ee802813a5eb8fb59f828",
+        "imports": [
+          "AgtXIvRootMath.PauliCliffordTransitivity",
+          "AgtXIvRootMath.VeitchOrbitBridge"
+        ]
+      },
+      "AgtXIvRootMath.VeitchOrbitPolytope": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchOrbitPolytope.lean",
+        "sha256": "89471b7b70fdec4e29c37aa10bfc1e2f2105ca88258b54a31c04f0c861d4d5e9",
+        "imports": [
+          "AgtXIvRootMath.VeitchConvexHull",
+          "AgtXIvRootMath.VeitchOrbitEquivalence"
+        ]
+      },
+      "AgtXIvRootMath.VeitchStabilizerPolytope": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvRootMath/AgtXIvRootMath/VeitchStabilizerPolytope.lean",
+        "sha256": "fd0f957e87984929c22e8ccce42168eb243f6e1a0d58e76b5093ea1f5341fde0",
+        "imports": [
+          "AgtXIvRootMath.GottesmanPauliGenerators",
+          "AgtXIvRootMath.FiniteAtomTotalRoM"
+        ]
+      },
+      "AgtXIvStabilizerness": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness/AgtXIvStabilizerness.lean",
+        "sha256": "ee90b474f3df03505714b18291ac01f83b9698492f88b0861f5cd9e1e63e9121",
+        "imports": [
+          "AgtXIvStabilizerness.LocalDelta",
+          "AgtXIvStabilizerness.AdmissibleSigns"
+        ]
+      },
+      "AgtXIvStabilizerness.AdmissibleSigns": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness/AgtXIvStabilizerness/AdmissibleSigns.lean",
+        "sha256": "c4ae939259075a080bd9d85586270e759cb39edc49365ce842cad93e3f8d197b",
+        "imports": [
+          "AgtXIvStabilizerness.LocalDelta"
+        ]
+      },
+      "AgtXIvStabilizerness.LocalDelta": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvStabilizerness/AgtXIvStabilizerness/LocalDelta.lean",
+        "sha256": "17bb3964088083529ffa7553d6fc7b5f0e43a7f48cf995a5450bb1c7faeb1883",
+        "imports": [
+          "AgtXIvVarela",
+          "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+          "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs"
+        ]
+      },
+      "AgtXIvVarela": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela.lean",
+        "sha256": "05724966d2acc1f6a8cfb9f3609fa7e9ce54b15a147b6d9d65d98d0911e9c433",
+        "imports": [
+          "AgtXIvVarela.VRepConditional",
+          "AgtXIvVarela.ExternalPerfectGraphFoundation"
+        ]
+      },
+      "AgtXIvVarela.ContextReconstruction": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/ContextReconstruction.lean",
+        "sha256": "8b421813476f88c412873b1478966b6de14ffe60a10b72730ee0b2a43f381ddf",
+        "imports": [
+          "AgtXIvVarela.MaximalContext"
+        ]
+      },
+      "AgtXIvVarela.ExternalPerfectGraphFoundation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/ExternalPerfectGraphFoundation.lean",
+        "sha256": "f011649e5ff37ba80f85f873c75d61d25360d2e738df1984df2401b4b6cfed50",
+        "imports": [
+          "Mathlib.Combinatorics.SimpleGraph.Clique",
+          "Mathlib.Combinatorics.SimpleGraph.Coloring.VertexColoring",
+          "Mathlib.Data.Real.Archimedean"
+        ]
+      },
+      "AgtXIvVarela.MaximalContext": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/MaximalContext.lean",
+        "sha256": "400897508d5c2816185f18a90980a3e0009cf05a3e394a8ef450541984b0eaca",
+        "imports": [
+          "AgtXIvVarela.MeasurementProjection"
+        ]
+      },
+      "AgtXIvVarela.MeasurementProjection": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/MeasurementProjection.lean",
+        "sha256": "3268f79629d4f08a2f8584be64c2a1cfdf2040685571c37b17b0ecda62b984e8",
+        "imports": [
+          "AgtXIvRootMath.RootMathCompletion"
+        ]
+      },
+      "AgtXIvVarela.VRepConditional": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/formal/AgtXIvVarela/AgtXIvVarela/VRepConditional.lean",
+        "sha256": "9cfcf580303831782d07dcb791ea1071f5964631f7ec04793372c66c0ddfaf6f",
+        "imports": [
+          "AgtXIvVarela.ContextReconstruction"
+        ]
+      },
+      "Quantumlib.Data.Basis.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Basis/Basic.lean",
+        "sha256": "5d2b4e586c5fb52d1faa937783533bd4cbeced579e714242e1aa2eb791e992fe",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.Tactic.Basic",
+          "Mathlib.Analysis.Complex.Exponential",
+          "Mathlib.Data.Complex.Basic",
+          "Mathlib.Data.Real.Sqrt",
+          "Mathlib.LinearAlgebra.Matrix.Kronecker"
+        ]
+      },
+      "Quantumlib.Data.Basis.Equivs": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Basis/Equivs.lean",
+        "sha256": "f95a9ba948e22d821fc21ddc5d5cce3c20f67520bb5b9ee85459716af0514faa",
+        "imports": [
+          "Quantumlib.Data.Basis.Notation",
+          "Quantumlib.Tactic.Basic"
+        ]
+      },
+      "Quantumlib.Data.Basis.Notation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Basis/Notation.lean",
+        "sha256": "410ceb68fa15e2b5b71400f1f5c95acc5a3ff4ab0f3b9cea97c72bfc87596a24",
+        "imports": [
+          "Quantumlib.Data.Basis.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.Tactic.Basic",
+          "Lean"
+        ]
+      },
+      "Quantumlib.Data.Gate.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Basic.lean",
+        "sha256": "35e8d26e5d7f799fa2e5b4a133d6d4c88b2b539bc01998a6bcba3a80efc2ed02",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.ForMathlib.Data.Matrix.PowBitVec",
+          "Quantumlib.ForMathlib.Data.Complex.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Equivs": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Equivs.lean",
+        "sha256": "9236daa109dcd0df79440017fefc2936e2e34737fb1503589daaf06d1d0164d3",
+        "imports": [
+          "Quantumlib.Data.Basis.Notation",
+          "Quantumlib.Data.Basis.Equivs",
+          "Quantumlib.Data.Gate.Basic",
+          "Quantumlib.Data.Gate.Pauli",
+          "Quantumlib.Data.Gate.PhaseShift",
+          "Quantumlib.Data.Gate.Rotate",
+          "Quantumlib.Tactic.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli.lean",
+        "sha256": "4adeaf71bee3f257ce5e84cba87d4e1bf26e35c46c3fb421a2d3411bff9e95f9",
+        "imports": [
+          "Quantumlib.Data.Gate.Pauli.Defs",
+          "Quantumlib.Data.Gate.Pauli.Notation"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli.Defs": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli/Defs.lean",
+        "sha256": "36873db7c2cffd14bf821749d2379b1c96c7eaa6b686b09854706468d8bc9243",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.BitVec.Basic",
+          "Quantumlib.ForMathlib.Data.Complex.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Mathlib.Data.ZMod.Basic",
+          "Mathlib.Data.Fintype.Basic",
+          "Mathlib.Algebra.MonoidAlgebra.Defs"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli.Lemmas": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli/Lemmas.lean",
+        "sha256": "5b71692748bad26b0a9c04ab0c887c14887f2826b3738b2ef515ddd00f569d5e",
+        "imports": [
+          "Quantumlib.Data.Gate.Equivs",
+          "Quantumlib.Data.Gate.Pauli.Defs",
+          "Mathlib.Data.ZMod.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Pauli.Notation": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Pauli/Notation.lean",
+        "sha256": "a76f06fa179cb8709ac490fb708f70c9afbbf67a21331fccde21456953d0749c",
+        "imports": [
+          "Lean",
+          "Quantumlib.Data.Gate.Pauli.Defs"
+        ]
+      },
+      "Quantumlib.Data.Gate.PhaseShift": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/PhaseShift.lean",
+        "sha256": "152ce042b74bcd8c2a7003472fb0fd3f0a3cf3b526f88d8fb0b4d559fa9169a6",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.ForMathlib.Data.Complex.Basic"
+        ]
+      },
+      "Quantumlib.Data.Gate.Rotate": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Data/Gate/Rotate.lean",
+        "sha256": "fe5b6c29399a2f45d6664cb149355280a2c589c6b215e81898864265c8d39296",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.ForMathlib.Data.Complex.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.BitVec.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/BitVec/Basic.lean",
+        "sha256": "92a073ee2a3792ad7e0831bf1dfb6adb5cc5284baa73e3a4a8f1a592bcc19e0e",
+        "imports": [
+          "Mathlib"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.BitVec.Lemmas": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/BitVec/Lemmas.lean",
+        "sha256": "5da75388ff53a6c6efad16d1e7432265715316cfe7c28bac542233a12a5b7c26",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.BitVec.Basic",
+          "Mathlib.Data.BitVec",
+          "Mathlib.Data.Fintype.Basic",
+          "Mathlib.Tactic.FieldSimp",
+          "Mathlib.Tactic.Ring"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Complex.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Complex/Basic.lean",
+        "sha256": "c1d41d29bd06289e437a0ab23bb73b6042672ce8c4c0f6ac512667e41eaabff2",
+        "imports": [
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+          "Mathlib.Data.Complex.Basic",
+          "Mathlib.Data.Real.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/Basic.lean",
+        "sha256": "e5c2830abded82f30bad03220f1f19f30f7683b3a0ee482f860cadde406bc74c",
+        "imports": [
+          "Mathlib.Data.Matrix.Basic",
+          "Mathlib.Data.Complex.Basic",
+          "Mathlib.LinearAlgebra.Matrix.Kronecker",
+          "Mathlib.LinearAlgebra.UnitaryGroup",
+          "Mathlib.Logic.Equiv.Fin.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.Kron": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/Kron.lean",
+        "sha256": "dac700c8b53b3a6090d279e618a327a6bcc1b4801c558428c4d30ec0d5398fad",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Mathlib.LinearAlgebra.Matrix.Kronecker"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.PowBitVec": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/PowBitVec.lean",
+        "sha256": "2064c7c6ba24c0d23d1ab16f8d9da27b53976564d6fb48fff79f3c94c093422b",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.BitVec.Lemmas",
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Quantumlib.Tactic.Basic"
+        ]
+      },
+      "Quantumlib.ForMathlib.Data.Matrix.Unitary": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/ForMathlib/Data/Matrix/Unitary.lean",
+        "sha256": "f112fd7b07d8b497867399fe52a7927ff942c95a56340baf4b439b643cb72be2",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Basic",
+          "Quantumlib.ForMathlib.Data.Matrix.Kron"
+        ]
+      },
+      "Quantumlib.Tactic.Basic": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Tactic/Basic.lean",
+        "sha256": "bdb47a3ffcae142970644e59f35473d3e13dbf8ed95bd25200980689d4f70c10",
+        "imports": [
+          "Quantumlib.Tactic.SolveMatrix"
+        ]
+      },
+      "Quantumlib.Tactic.SolveMatrix": {
+        "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/Reference/LeanQuantum/Quantumlib/Tactic/SolveMatrix.lean",
+        "sha256": "248bcbd27463df0a5adfe7cc23f47d711a815a33cab2efa4ecd5eecea822c381",
+        "imports": [
+          "Quantumlib.ForMathlib.Data.Matrix.Kron",
+          "Mathlib.Tactic.FinCases",
+          "Mathlib.Data.Matrix.Basic",
+          "Lean.Parser.Tactic"
+        ]
+      }
+    },
+    "count": 82,
+    "status": "NOT_MIGRATED_AS_A_WHOLE",
+    "quantumlib_count": 20
+  },
+  "environment_sha256": "4ad619991da337ab6462b5867c4b508ba1afbd69213db69e54d16cb9de35baf8",
+  "remaining_migration_blockers": [
+    "Quantumlib and the complete RootMath/Varela module closure have not been compiled at this epoch.",
+    "No entire-package compatibility conclusion follows from the selected source modules.",
+    "The paper-specific Pauli sign-collapse and reduced-RoM proof still need mathematical formalization."
+  ]
+}

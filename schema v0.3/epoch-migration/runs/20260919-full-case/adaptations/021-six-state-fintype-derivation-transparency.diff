@@ -1,0 +1,10 @@
+--- before/AgtXIvRootMath/QubitStabilizerAffineComplete.lean
++++ adapted/AgtXIvRootMath/QubitStabilizerAffineComplete.lean
+@@ -16,6 +16,7 @@
+ 
+ open scoped BigOperators
+ 
++set_option backward.isDefEq.respectTransparency false in
+ /-- The six pure one-qubit Pauli eigenstates.  The sign names the eigenvalue
+ of the unsigned Pauli; the signed frame generator always has eigenvalue `+1`.
+ -/

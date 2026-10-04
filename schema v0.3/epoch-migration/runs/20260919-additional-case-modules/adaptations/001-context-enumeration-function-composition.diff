@@ -1,0 +1,11 @@
+--- before/ContextSignIndependence.lean
++++ adapted/ContextSignIndependence.lean
+@@ -126,7 +126,7 @@
+     (f : Fin m → Bool) :
+     LinearIndependent F2
+       (fun i => F2Support.pauli ((W.signedContextGenerators S hContext f).generator i)) := by
+-  simpa [signedContextGenerators, W.support_signedObservable] using
++  simpa [signedContextGenerators, W.support_signedObservable, Function.comp_def] using
+     hIndependent.comp (contextEnumeration S) (contextEnumeration S).injective
+ 
+ theorem signedContextSet_eq_generator_range

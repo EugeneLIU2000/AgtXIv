@@ -1,0 +1,11 @@
+--- predecessor/AgtXIvRootMath/SyndromeBasis.lean
++++ adapted/AgtXIvRootMath/SyndromeBasis.lean
+@@ -58,7 +58,7 @@
+   rw [ketInner_mulVec_left]
+   rw [Matrix.mulVec_mulVec]
+   have hLeft : Uᴴ * U = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff'] using hU
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose] using hU
+   rw [hLeft, Matrix.one_mulVec]
+ 
+ /-- Exact input required to generate an orthonormal syndrome basis.  Character

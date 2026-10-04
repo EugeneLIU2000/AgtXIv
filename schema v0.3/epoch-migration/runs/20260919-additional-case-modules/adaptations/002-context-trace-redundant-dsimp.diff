@@ -1,0 +1,10 @@
+--- before/ContextCodeState.lean
++++ adapted/ContextCodeState.lean
+@@ -201,7 +201,6 @@
+     have he := (W.maximalContextFrame hNoActive c).eval_mul_codeStateMatrix a
+     rw [ha] at he
+     have ht := congrArg (fun A => (Matrix.trace A).re) he
+-    dsimp only at ht
+     rw [(W.maximalContextFrame hNoActive c).codeStateMatrix_trace_one] at ht
+     rw [MaximalSignedContext.vector_of_mem W c hi]
+     cases hs : c.sign i

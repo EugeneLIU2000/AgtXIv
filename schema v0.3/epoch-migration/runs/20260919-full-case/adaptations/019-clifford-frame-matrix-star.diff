@@ -1,0 +1,11 @@
+--- before/AgtXIvRootMath/SemanticCliffordFrames.lean
++++ adapted/AgtXIvRootMath/SemanticCliffordFrames.lean
+@@ -41,7 +41,7 @@
+     C.action (-(1 : Pauli n)) = -(1 : Pauli n) := by
+   apply pauli_toCMatrix_injective
+   have hUnitary : C.matrix * C.matrixᴴ = 1 := by
+-    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff] using C.isUnitary
++    simpa [Matrix.IsUnitary, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using C.isUnitary
+   calc
+     (C.action (-(1 : Pauli n))).toCMatrix =
+         C.matrix * (-(1 : Pauli n)).toCMatrix * C.matrixᴴ :=

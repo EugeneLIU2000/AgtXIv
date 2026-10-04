@@ -1,0 +1,1369 @@
+{
+  "status": "ADDITIONAL_COMMON_EPOCH_AUDITED",
+  "accepted": false,
+  "query_chain_complete": false,
+  "scope": "FIVE_GRAPH_BOUNDS_AND_PERFECT_REPLICATION_MODULES_APPENDED_AFTER_INITIAL_14",
+  "compiled_modules": [
+    {
+      "module": "GraphDualBounds",
+      "olean_sha256": "4fb0b668b33a9e8049e384e9e22505b24a8233d3aa31641f5ecef2809edfcbf1"
+    },
+    {
+      "module": "PerfectGraphColorClass",
+      "olean_sha256": "f77fb85541ecfd132ed42bd9bad4e8d92121457392e113927b22f9526bb50e05"
+    },
+    {
+      "module": "PerfectGraphTransport",
+      "olean_sha256": "96f4e781c7923eab75f2a73ea4d8f81945ca1af40eee60e8b83e3e28fbb7be9c"
+    },
+    {
+      "module": "PerfectGraphTrueTwin",
+      "olean_sha256": "9a43d98e6dc7875a512f2a99a673ffd4af96d51b8a37b96e3a7216924a7e07d9"
+    },
+    {
+      "module": "PerfectGraphReplication",
+      "olean_sha256": "fb0abc0a8d3cf6d176023b4ef7b3e7038bab84ae826b4a4696ca3dc965ffc8bb"
+    }
+  ],
+  "original_82_modules_reused": 82,
+  "concrete_bridge_modules_reused": 2,
+  "prior_extension_modules_reused": 14,
+  "new_module_count": 5,
+  "requested_target_count": 302,
+  "actual_declaration_count": 302,
+  "declaration_kind_counts": {
+    "DEFINITION": 69,
+    "INDUCTIVE": 3,
+    "THEOREM": 230
+  },
+  "new_module_declaration_count": 60,
+  "new_module_declaration_kind_counts": {
+    "THEOREM": 47,
+    "DEFINITION": 13
+  },
+  "newly_included_audit_names_count": 70,
+  "old_support_names_newly_included": [
+    "AgtXIv.GraphFoundation.IsPerfect",
+    "Equiv.ofInjective",
+    "SimpleGraph.Coloring.surjOn_of_card_le_isClique",
+    "SimpleGraph.IsClique.card_le_cliqueNum",
+    "SimpleGraph.IsClique.card_le_of_coloring",
+    "SimpleGraph.chromaticNumber_le_iff_colorable",
+    "SimpleGraph.chromaticNumber_mono_of_hom",
+    "SimpleGraph.cliqueNum_le_chromaticNumber",
+    "SimpleGraph.exists_isNClique_cliqueNum",
+    "SimpleGraph.induceUnivIso"
+  ],
+  "actual_direct_term_dependency_count": 662,
+  "receipt_status_counts": {
+    "FAILED": 2,
+    "SUCCEEDED": 5
+  },
+  "compatibility_adaptations": [
+    {
+      "module": "GraphDualBounds",
+      "before_sha256": "6d65f7656357ba9814360fa45c097562e5957f75114bcc82c90ecc84e48d491b",
+      "after_sha256": "2e61d57cc2374957ca8129710e0f463ad3b0f603172b4e9c39d41c5b0aca0a09",
+      "change_kind": "EXPLICIT_IMPORT_ONLY_FOUNDATION_DEDUPLICATION",
+      "mathematical_body_unchanged": true,
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-bounds-perfect-replication/adaptations/initial-GraphDualBounds-imports.diff",
+      "replacement_imports": {
+        "GraphDualCoverFoundation": [
+          "FiniteCliqueCoverAttainment",
+          "WeightedCliqueCoverWeakDuality",
+          "ReducedRoMGraphDual"
+        ]
+      },
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "module": "GraphDualBounds",
+      "before_sha256": "2e61d57cc2374957ca8129710e0f463ad3b0f603172b4e9c39d41c5b0aca0a09",
+      "after_sha256": "17f226048e343cfa897bb55891b6a22d4efe843d7fdb693d195a55a65f9a835c",
+      "change_kind": "LOCAL_ELABORATOR_TRANSPARENCY_COMPATIBILITY",
+      "reason": "Reduce let/have binders and allow definitional equality of finite nonemptiness with its existential form at exactly the two supremum rewrite theorems. Their types and kernel checking are unchanged.",
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-bounds-perfect-replication/adaptations/001-local-extremum-rewrite-transparency.diff",
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    },
+    {
+      "module": "PerfectGraphTrueTwin",
+      "before_sha256": "f6065f061504d600d976c02359a23399aef142a02ba1928068f83916a60b7025",
+      "after_sha256": "4389068165a1ba91c2bbcb92fe5acceee25d22682b276f2841dc12e98457b988",
+      "change_kind": "GRAPH_SYMMETRY_PROOF_API_ROUTING",
+      "reason": "SimpleGraph.symm is now Std.Symm rather than a function. Construct its proof field explicitly and use the existing adj_symm theorem for old-vertex adjacency. Every adjacency case, graph domain and theorem type stays identical.",
+      "statement_changed": false,
+      "new_assumptions": [],
+      "patch": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-bounds-perfect-replication/adaptations/002-true-twin-Std-Symm-api.diff",
+      "review": "AGENT_NORMALIZED_UNREVIEWED",
+      "accepted": false
+    }
+  ],
+  "audit_file": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/epoch-migration/runs/20260919-graph-bounds-perfect-replication/extension-audit.json",
+  "audit_sha256": "3a98ef2663af85f7377be250ebcb833e0eaf6d0aa8e2afe8398a0a7d111a271f",
+  "new_declarations": [
+    "AgtXIv.GraphDual.abs_signedCliqueVector",
+    "AgtXIv.GraphDual.clique_weight_mem_objectiveValues",
+    "AgtXIv.GraphDual.independentFinsets_complement",
+    "AgtXIv.GraphDual.independent_max_le_iff",
+    "AgtXIv.GraphDual.independent_max_nonneg",
+    "AgtXIv.GraphDual.independent_max_zero",
+    "AgtXIv.GraphDual.independent_weight_le_max",
+    "AgtXIv.GraphDual.maxWeightClique",
+    "AgtXIv.GraphDual.maxWeightClique_eq_complement_independent",
+    "AgtXIv.GraphDual.maxWeightClique_le_iff",
+    "AgtXIv.GraphDual.mem_cliqueFinsets_iff",
+    "AgtXIv.GraphDual.objectiveValues",
+    "AgtXIv.GraphDual.objective_le_complement_cover",
+    "AgtXIv.GraphDual.objective_le_fractional_complement_cover",
+    "AgtXIv.GraphDual.one_mem_objectiveValues",
+    "AgtXIv.GraphDual.pairing_le_clique_max_mul_cover_cost",
+    "AgtXIv.GraphDual.pairing_le_complement_cover_cost_mul",
+    "AgtXIv.GraphDual.signedCliqueVector",
+    "AgtXIv.GraphDual.signedCliqueVector_pairing",
+    "AgtXIv.PerfectGraph.bothCopiesIso",
+    "AgtXIv.PerfectGraph.chromaticNumber_eq_cliqueNum_of_perfect",
+    "AgtXIv.PerfectGraph.chromaticNumber_eq_of_iso",
+    "AgtXIv.PerfectGraph.cliqueNum_eq_of_iso",
+    "AgtXIv.PerfectGraph.cliqueNum_le_of_embedding",
+    "AgtXIv.PerfectGraph.cliqueNum_succ_le_trueTwin_of_mem_maximum",
+    "AgtXIv.PerfectGraph.clique_meets_each_color",
+    "AgtXIv.PerfectGraph.clique_with_twin",
+    "AgtXIv.PerfectGraph.collapseVertex",
+    "AgtXIv.PerfectGraph.colorable_cliqueNum_of_perfect",
+    "AgtXIv.PerfectGraph.colorable_with_independent_block",
+    "AgtXIv.PerfectGraph.coloringWithFreshTwin",
+    "AgtXIv.PerfectGraph.coloringWithIndependentBlock",
+    "AgtXIv.PerfectGraph.embeddingRangeIso",
+    "AgtXIv.PerfectGraph.induced_clique_lift",
+    "AgtXIv.PerfectGraph.mem_retainedVertices",
+    "AgtXIv.PerfectGraph.none_not_mem_oldSubset_range",
+    "AgtXIv.PerfectGraph.oldEmbedding",
+    "AgtXIv.PerfectGraph.oldSubsetEmbedding",
+    "AgtXIv.PerfectGraph.old_clique_lift",
+    "AgtXIv.PerfectGraph.perfect_iff_of_iso",
+    "AgtXIv.PerfectGraph.perfect_induce",
+    "AgtXIv.PerfectGraph.perfect_of_embedding",
+    "AgtXIv.PerfectGraph.perfect_retained_colorable",
+    "AgtXIv.PerfectGraph.removed_color_class_independent",
+    "AgtXIv.PerfectGraph.removed_with_twin_independent",
+    "AgtXIv.PerfectGraph.retainedVertices",
+    "AgtXIv.PerfectGraph.retained_cliqueNum_lt",
+    "AgtXIv.PerfectGraph.retained_clique_card_lt",
+    "AgtXIv.PerfectGraph.singleCopyEmbedding",
+    "AgtXIv.PerfectGraph.some_mem_oldSubset_range",
+    "AgtXIv.PerfectGraph.trueTwin",
+    "AgtXIv.PerfectGraph.trueTwin_adj_none",
+    "AgtXIv.PerfectGraph.trueTwin_adj_some",
+    "AgtXIv.PerfectGraph.trueTwin_chromatic_eq_cliqueNum",
+    "AgtXIv.PerfectGraph.trueTwin_colorable_of_no_maximum_clique",
+    "AgtXIv.PerfectGraph.trueTwin_isPerfect",
+    "AgtXIv.ReducedRoM.graphDualValues_eq_objectiveValues",
+    "AgtXIv.ReducedRoM.maxWeightClique_le_reducedRoM",
+    "AgtXIv.ReducedRoM.reducedRoM_clique_cover_sandwich",
+    "AgtXIv.ReducedRoM.reducedRoM_le_fractional_complement_cover"
+  ],
+  "selected_endpoints": [
+    {
+      "declaration": "AgtXIv.GraphDual.objective_le_fractional_complement_cover",
+      "kind": "THEOREM",
+      "type": "∀ {V : Type u_1} [inst : Fintype.{u_1} V] [inst_1 : DecidableEq.{u_1 + 1} V] (G : SimpleGraph.{u_1} V) (b y : V → ℝ)\n  (μ : ℝ),\n  LE.le.{0}\n      (HAdd.hAdd.{0, 0, 0} (AgtXIv.GraphFoundation.maxWeightIndependent.{u_1} G fun v => abs.{0} (y v)) (abs.{0} μ)) 1 →\n    LE.le.{0} (HAdd.hAdd.{0, 0, 0} μ (∑ v, HMul.hMul.{0, 0, 0} (b v) (y v)))\n      (max.{0} 1 (AgtXIv.GraphFoundation.fractionalCliqueCoverValue.{u_1} (compl.{u_1} G) fun v => abs.{0} (b v)))",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.GraphDualBounds.3301547865._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.GraphDualBounds.3301547865._hygCtx._hyg.6",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "b",
+          "type": "V → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "y",
+          "type": "V → ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "μ",
+          "type": "ℝ",
+          "type_constants": [
+            "Real"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hFeasible",
+          "type": "LE.le.{0} (HAdd.hAdd.{0, 0, 0} (AgtXIv.GraphFoundation.maxWeightIndependent.{u_1} G fun v => abs.{0} (y v)) (abs.{0} μ))\n  1",
+          "type_constants": [
+            "LE.le",
+            "Real",
+            "Real.instLE",
+            "HAdd.hAdd",
+            "instHAdd",
+            "Real.instAdd",
+            "AgtXIv.GraphFoundation.maxWeightIndependent",
+            "abs",
+            "Real.lattice",
+            "Real.instAddGroup",
+            "OfNat.ofNat",
+            "One.toOfNat1",
+            "Real.instOne"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hFeasible",
+          "type": "LE.le.{0} (HAdd.hAdd.{0, 0, 0} (AgtXIv.GraphFoundation.maxWeightIndependent.{u_1} G fun v => abs.{0} (y v)) (abs.{0} μ))\n  1",
+          "type_constants": [
+            "LE.le",
+            "Real",
+            "Real.instLE",
+            "HAdd.hAdd",
+            "instHAdd",
+            "Real.instAdd",
+            "AgtXIv.GraphFoundation.maxWeightIndependent",
+            "abs",
+            "Real.lattice",
+            "Real.instAddGroup",
+            "OfNat.ofNat",
+            "One.toOfNat1",
+            "Real.instOne"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Eq.mpr",
+        "Real.instLE",
+        "Real",
+        "HMul.hMul",
+        "Real.lattice",
+        "Finset.univ",
+        "abs",
+        "congrArg",
+        "Compl.compl",
+        "Finset",
+        "AgtXIv.GraphFoundation.IsFractionalCliqueCover",
+        "covariant_swap_add_of_covariant_add",
+        "PartialOrder.toPreorder",
+        "Preorder.toLE",
+        "SemilatticeInf.toPartialOrder",
+        "id",
+        "AgtXIv.GraphFoundation.fractionalCliqueCoverValue",
+        "Real.instAddGroup",
+        "LE.le",
+        "Real.instAddCommSemigroup",
+        "Real.instAdd",
+        "And.casesOn",
+        "SimpleGraph",
+        "Real.instOne",
+        "instHAdd",
+        "And",
+        "Real.instMax",
+        "SimpleGraph.instCompl",
+        "Exists.casesOn",
+        "HAdd.hAdd",
+        "Max.max",
+        "Real.instMul",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "AgtXIv.GraphFoundation.fractionalCliqueCoverValue_attained",
+        "AgtXIv.GraphFoundation.cliqueFinsets",
+        "Real.instIsOrderedAddMonoid",
+        "OfNat.ofNat",
+        "Eq",
+        "abs_nonneg",
+        "Finset.sum",
+        "AgtXIv.GraphDual.objective_le_complement_cover",
+        "Real.instPreorder",
+        "Lattice.toSemilatticeInf",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "instHMul"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.PerfectGraph.perfect_of_embedding",
+      "kind": "THEOREM",
+      "type": "∀ {V : Type u_1} {W : Type u_2} [inst : Fintype.{u_1} V] [inst_1 : Fintype.{u_2} W] {G : SimpleGraph.{u_1} V}\n  {H : SimpleGraph.{u_2} W} (e : SimpleGraph.Embedding.{u_1, u_2} G H),\n  AgtXIv.GraphFoundation.IsPerfect.{u_2} H → AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "Type u_2",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphTransport.2679220013._hygCtx._hyg.4",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphTransport.2679220013._hygCtx._hyg.7",
+          "type": "Fintype.{u_2} W",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "H",
+          "type": "SimpleGraph.{u_2} W",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "e",
+          "type": "SimpleGraph.Embedding.{u_1, u_2} G H",
+          "type_constants": [
+            "SimpleGraph.Embedding"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_2} H",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_2} H",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "H.symm",
+          "parent_binder": "H",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_2 + 1} (SimpleGraph.Adj.{u_2} H)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "H.loopless",
+          "parent_binder": "H",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_2 + 1} (SimpleGraph.Adj.{u_2} H)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "e.map_rel_iff'",
+          "parent_binder": "e",
+          "structure": "RelEmbedding",
+          "type": "∀ {a b : V},\n  SimpleGraph.Adj.{u_2} H ((RelEmbedding.toEmbedding.{u_1, u_2} e) a) ((RelEmbedding.toEmbedding.{u_1, u_2} e) b) ↔\n    SimpleGraph.Adj.{u_1} G a b",
+          "type_constants": [
+            "Iff",
+            "SimpleGraph.Adj",
+            "DFunLike.coe",
+            "Function.Embedding",
+            "Function.instFunLikeEmbedding",
+            "RelEmbedding.toEmbedding"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Eq.mpr",
+        "ENat.instNatCast",
+        "congrArg",
+        "PLift.fintype",
+        "SimpleGraph.Adj",
+        "AgtXIv.PerfectGraph.chromaticNumber_eq_of_iso",
+        "Classical.propDecidable",
+        "Membership.mem",
+        "Subtype.fintype",
+        "Set.Elem",
+        "id",
+        "SimpleGraph.Embedding",
+        "AgtXIv.PerfectGraph.cliqueNum_eq_of_iso",
+        "Nat.cast",
+        "Nat",
+        "ENat",
+        "AgtXIv.PerfectGraph.embeddingRangeIso",
+        "Set.fintypeRange",
+        "SimpleGraph.induce",
+        "Set.range",
+        "SimpleGraph.chromaticNumber",
+        "SimpleGraph.cliqueNum",
+        "Eq",
+        "Set.instMembership",
+        "DFunLike.coe",
+        "SimpleGraph.Embedding.induce",
+        "RelEmbedding.instFunLike",
+        "SimpleGraph.Embedding.comp",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.PerfectGraph.perfect_retained_colorable",
+      "kind": "THEOREM",
+      "type": "∀ {V : Type u_1} [inst : Fintype.{u_1} V] [DecidableEq.{u_1 + 1} V] {G : SimpleGraph.{u_1} V} {k : ℕ},\n  AgtXIv.GraphFoundation.IsPerfect.{u_1} G →\n    ∀ (C : SimpleGraph.Coloring.{u_1, 0} G (Fin k)) (x : V),\n      (∀ (Q : Finset.{u_1} V), SimpleGraph.IsClique.{u_1} G ↑Q → Eq.{1} (Finset.card.{u_1} Q) k → x ∉ Q) →\n        SimpleGraph.Colorable.{u_1} (SimpleGraph.induce.{u_1} (AgtXIv.PerfectGraph.retainedVertices.{u_1} C x) G)\n          (HSub.hSub.{0, 0, 0} k 1)",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphColorClass.2500515671._hygCtx._hyg.3",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphColorClass.2500515671._hygCtx._hyg.6",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "k",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "C",
+          "type": "SimpleGraph.Coloring.{u_1, 0} G (Fin k)",
+          "type_constants": [
+            "SimpleGraph.Coloring",
+            "Fin"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "x",
+          "type": "V",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoMax",
+          "type": "∀ (Q : Finset.{u_1} V), SimpleGraph.IsClique.{u_1} G ↑Q → Eq.{1} (Finset.card.{u_1} Q) k → x ∉ Q",
+          "type_constants": [
+            "Finset",
+            "SimpleGraph.IsClique",
+            "SetLike.coe",
+            "Finset.instSetLike",
+            "Eq",
+            "Nat",
+            "Finset.card",
+            "Not",
+            "Membership.mem",
+            "SetLike.instMembership"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoMax",
+          "type": "∀ (Q : Finset.{u_1} V), SimpleGraph.IsClique.{u_1} G ↑Q → Eq.{1} (Finset.card.{u_1} Q) k → x ∉ Q",
+          "type_constants": [
+            "Finset",
+            "SimpleGraph.IsClique",
+            "SetLike.coe",
+            "Finset.instSetLike",
+            "Eq",
+            "Nat",
+            "Finset.card",
+            "Not",
+            "Membership.mem",
+            "SetLike.instMembership"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "C.map_rel'",
+          "parent_binder": "C",
+          "structure": "RelHom",
+          "type": "∀ {a b : V},\n  SimpleGraph.Adj.{u_1} G a b →\n    SimpleGraph.Adj.{0} (SimpleGraph.completeGraph.{0} (Fin k)) (RelHom.toFun.{u_1, 0} C a) (RelHom.toFun.{u_1, 0} C b)",
+          "type_constants": [
+            "SimpleGraph.Adj",
+            "Fin",
+            "SimpleGraph.completeGraph",
+            "RelHom.toFun"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Eq.mpr",
+        "instCompleteLinearOrderENat",
+        "instCharZeroENat",
+        "instAddMonoidWithOneENat",
+        "ENat.instNatCast",
+        "congrArg",
+        "CommSemiring.toSemiring",
+        "CompletelyDistribLattice.toCompleteLattice",
+        "PartialOrder.toPreorder",
+        "HSub.hSub",
+        "Preorder.toLE",
+        "cast",
+        "AgtXIv.PerfectGraph.retainedVertices",
+        "SimpleGraph.chromaticNumber_le_iff_colorable",
+        "Set.Elem",
+        "instPreorderENat",
+        "id",
+        "CompleteLattice.toCompletePartialOrder",
+        "AddMonoidWithOne.toNatCast",
+        "instSubNat",
+        "instOfNatNat",
+        "Nat.cast_le._simp_1",
+        "LE.le",
+        "instLENat",
+        "AgtXIv.PerfectGraph.perfect_retained_colorable._proof_1_1",
+        "Nat.cast",
+        "instLEENat",
+        "instHSub",
+        "Nat",
+        "ENat",
+        "instCommSemiringENat",
+        "Iff.mp",
+        "Decidable.byContradiction",
+        "AgtXIv.PerfectGraph.retained_cliqueNum_lt",
+        "IsOrderedRing.toIsOrderedAddMonoid",
+        "SimpleGraph.induce",
+        "CompleteLinearOrder.toCompletelyDistribLattice",
+        "instZeroLEOneClassENat",
+        "SimpleGraph.Colorable",
+        "OfNat.ofNat",
+        "Eq.symm",
+        "SimpleGraph.chromaticNumber",
+        "SimpleGraph.cliqueNum",
+        "Eq",
+        "CompletePartialOrder.toPartialOrder",
+        "LinearOrderedAddCommMonoidWithTop.toAddCommMonoid",
+        "Nat.decLe",
+        "instIsOrderedRingENat",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "instLinearOrderedAddCommMonoidWithTopENat"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.PerfectGraph.trueTwin_chromatic_eq_cliqueNum",
+      "kind": "THEOREM",
+      "type": "∀ {V : Type u_1} (G : SimpleGraph.{u_1} V) (x : V) [inst : Fintype.{u_1} V] [DecidableEq.{u_1 + 1} V],\n  AgtXIv.GraphFoundation.IsPerfect.{u_1} G →\n    Eq.{1} (SimpleGraph.chromaticNumber.{u_1} (AgtXIv.PerfectGraph.trueTwin.{u_1} G x))\n      ↑(SimpleGraph.cliqueNum.{u_1} (AgtXIv.PerfectGraph.trueTwin.{u_1} G x))",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "x",
+          "type": "V",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphTrueTwin.3465341393._hygCtx._hyg.6",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphTrueTwin.3465341393._hygCtx._hyg.9",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Finset.fintype",
+        "instCompleteLinearOrderENat",
+        "instCharZeroENat",
+        "instAddMonoidWithOneENat",
+        "ENat.instNatCast",
+        "CommSemiring.toSemiring",
+        "Finset",
+        "AgtXIv.PerfectGraph.cliqueNum_le_of_embedding",
+        "CompletelyDistribLattice.toCompleteLattice",
+        "SimpleGraph.Adj",
+        "PartialOrder.toPreorder",
+        "Classical.propDecidable",
+        "Preorder.toLE",
+        "cast",
+        "Membership.mem",
+        "Exists",
+        "instPreorderENat",
+        "AgtXIv.PerfectGraph.coloringWithFreshTwin",
+        "CompleteLattice.toCompletePartialOrder",
+        "AddMonoidWithOne.toNatCast",
+        "instOfNatNat",
+        "Nat.cast_le._simp_1",
+        "LE.le",
+        "instLENat",
+        "SimpleGraph.Colorable.chromaticNumber_le",
+        "Nonempty.intro",
+        "AgtXIv.PerfectGraph.trueTwin_colorable_of_no_maximum_clique",
+        "Nat.cast",
+        "dite",
+        "SimpleGraph.Coloring",
+        "And.casesOn",
+        "SimpleGraph.cliqueNum_le_chromaticNumber",
+        "AgtXIv.PerfectGraph.colorable_cliqueNum_of_perfect",
+        "le_antisymm",
+        "Fintype.decidableExistsFintype",
+        "instHAdd",
+        "And",
+        "Exists.casesOn",
+        "AgtXIv.PerfectGraph.trueTwin",
+        "SetLike.coe",
+        "Finset.instSetLike",
+        "HAdd.hAdd",
+        "Nat",
+        "ENat",
+        "Nonempty.casesOn",
+        "And.intro",
+        "AgtXIv.PerfectGraph.cliqueNum_succ_le_trueTwin_of_mem_maximum",
+        "instCommSemiringENat",
+        "Exists.intro",
+        "Finset.card",
+        "instFintypeOption",
+        "SimpleGraph.instDecidableIsCliqueCoeFinsetOfDecidableEqOfDecidableRelAdj",
+        "instAddNat",
+        "IsOrderedRing.toIsOrderedAddMonoid",
+        "CompleteLinearOrder.toCompletelyDistribLattice",
+        "instDecidableEqNat",
+        "instZeroLEOneClassENat",
+        "LE.le.trans",
+        "instDecidableAnd",
+        "Finset.decidableMem",
+        "OfNat.ofNat",
+        "Eq.symm",
+        "SimpleGraph.chromaticNumber",
+        "Fin",
+        "SimpleGraph.cliqueNum",
+        "Eq",
+        "CompletePartialOrder.toPartialOrder",
+        "SetLike.instMembership",
+        "LinearOrderedAddCommMonoidWithTop.toAddCommMonoid",
+        "instIsOrderedRingENat",
+        "SimpleGraph.IsClique",
+        "AgtXIv.PerfectGraph.oldEmbedding",
+        "IsOrderedAddMonoid.toAddLeftMono",
+        "instLinearOrderedAddCommMonoidWithTopENat",
+        "Option"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.PerfectGraph.trueTwin_isPerfect",
+      "kind": "THEOREM",
+      "type": "∀ {V : Type u_1} (G : SimpleGraph.{u_1} V) (x : V) [inst : Fintype.{u_1} V] [DecidableEq.{u_1 + 1} V],\n  AgtXIv.GraphFoundation.IsPerfect.{u_1} G →\n    AgtXIv.GraphFoundation.IsPerfect.{u_1} (AgtXIv.PerfectGraph.trueTwin.{u_1} G x)",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "V",
+          "type": "Type u_1",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "G",
+          "type": "SimpleGraph.{u_1} V",
+          "type_constants": [
+            "SimpleGraph"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "x",
+          "type": "V",
+          "type_constants": []
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphReplication.3329527891._hygCtx._hyg.6",
+          "type": "Fintype.{u_1} V",
+          "type_constants": [
+            "Fintype"
+          ]
+        },
+        {
+          "binder_kind": "INSTANCE",
+          "is_prop": false,
+          "name": "inst._@.PerfectGraphReplication.3329527891._hygCtx._hyg.9",
+          "type": "DecidableEq.{u_1 + 1} V",
+          "type_constants": [
+            "DecidableEq"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hPerfect",
+          "type": "AgtXIv.GraphFoundation.IsPerfect.{u_1} G",
+          "type_constants": [
+            "AgtXIv.GraphFoundation.IsPerfect"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "G.symm",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Symm.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Symm",
+            "SimpleGraph.Adj"
+          ]
+        },
+        {
+          "name": "G.loopless",
+          "parent_binder": "G",
+          "structure": "SimpleGraph",
+          "type": "Std.Irrefl.{u_1 + 1} (SimpleGraph.Adj.{u_1} G)",
+          "type_constants": [
+            "Std.Irrefl",
+            "SimpleGraph.Adj"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "Eq.mpr",
+        "AgtXIv.PerfectGraph.perfect_induce",
+        "ENat.instNatCast",
+        "congrArg",
+        "Set.ofPred",
+        "AgtXIv.PerfectGraph.trueTwin_chromatic_eq_cliqueNum",
+        "AgtXIv.PerfectGraph.chromaticNumber_eq_of_iso",
+        "Classical.propDecidable",
+        "Option.some",
+        "Membership.mem",
+        "Subtype.fintype",
+        "Set.Elem",
+        "id",
+        "AgtXIv.PerfectGraph.cliqueNum_eq_of_iso",
+        "Nat.cast",
+        "dite",
+        "Subtype.mk",
+        "Set.decidableSetOf",
+        "Option.none",
+        "And",
+        "AgtXIv.PerfectGraph.trueTwin",
+        "And.right",
+        "And.left",
+        "AgtXIv.PerfectGraph.singleCopyEmbedding",
+        "Nat",
+        "ENat",
+        "instFintypeOption",
+        "SimpleGraph.induce",
+        "AgtXIv.PerfectGraph.chromaticNumber_eq_cliqueNum_of_perfect",
+        "instDecidableAnd",
+        "AgtXIv.PerfectGraph.perfect_of_embedding",
+        "Eq.symm",
+        "SimpleGraph.chromaticNumber",
+        "SimpleGraph.cliqueNum",
+        "Eq",
+        "Set.instMembership",
+        "Subtype.instDecidableEq",
+        "AgtXIv.PerfectGraph.bothCopiesIso",
+        "Option",
+        "Set"
+      ]
+    },
+    {
+      "declaration": "AgtXIv.ReducedRoM.reducedRoM_clique_cover_sandwich",
+      "kind": "THEOREM",
+      "type": "∀ {n m : ℕ} (W : AgtXIv.Varela.MeasurementWindow n m) (ρ : AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)),\n  W.NoActiveDependencies →\n    LE.le.{0}\n        (max.{0} 1\n          (AgtXIv.GraphDual.maxWeightClique.{0} W.contextFrustrationGraph fun i =>\n            abs.{0} (W.expectationProjection (↑ρ.toTraceOneHermitian) i)))\n        (AgtXIv.ReducedRoM.reducedRoM W ρ) ∧\n      LE.le.{0} (AgtXIv.ReducedRoM.reducedRoM W ρ)\n        (max.{0} 1\n          (AgtXIv.GraphFoundation.fractionalCliqueCoverValue.{0} (compl.{0} W.contextFrustrationGraph) fun i =>\n            abs.{0} (W.expectationProjection (↑ρ.toTraceOneHermitian) i)))",
+      "parameters": [
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "n",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "IMPLICIT",
+          "is_prop": false,
+          "name": "m",
+          "type": "ℕ",
+          "type_constants": [
+            "Nat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "W",
+          "type": "AgtXIv.Varela.MeasurementWindow n m",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": false,
+          "name": "ρ",
+          "type": "AgtXIv.Stabilizer.DensityMatrix (HPow.hPow.{0, 0, 0} 2 n)",
+          "type_constants": [
+            "AgtXIv.Stabilizer.DensityMatrix",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "non_instance_prop_hypotheses": [
+        {
+          "binder_kind": "EXPLICIT",
+          "is_prop": true,
+          "name": "hNoActive",
+          "type": "W.NoActiveDependencies",
+          "type_constants": [
+            "AgtXIv.Varela.MeasurementWindow.NoActiveDependencies"
+          ]
+        }
+      ],
+      "structure_prop_hypotheses": [
+        {
+          "name": "W.nonempty",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "LT.lt.{0} 0 m",
+          "type_constants": [
+            "LT.lt",
+            "Nat",
+            "instLTNat",
+            "OfNat.ofNat",
+            "instOfNatNat"
+          ]
+        },
+        {
+          "name": "W.involutive",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Eq.{1} (HPow.hPow.{0, 0, 0} (W.observable i) 2) 1",
+          "type_constants": [
+            "Fin",
+            "Eq",
+            "Pauli",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "DivInvMonoid.toMonoid",
+            "Group.toDivInvMonoid",
+            "Pauli.instGroup",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "One.toOfNat1",
+            "Pauli.instOne"
+          ]
+        },
+        {
+          "name": "W.nonidentitySupport",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "∀ (i : Fin m), Ne.{1} (AgtXIv.Stabilizer.F2Support.pauli (W.observable i)) 0",
+          "type_constants": [
+            "Fin",
+            "Ne",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable",
+            "OfNat.ofNat",
+            "Zero.toOfNat0",
+            "Prod.instZero",
+            "AgtXIv.Stabilizer.F2Bits",
+            "AgtXIv.Stabilizer.F2Bits.instZero"
+          ]
+        },
+        {
+          "name": "W.distinctPhaseClass",
+          "parent_binder": "W",
+          "structure": "AgtXIv.Varela.MeasurementWindow",
+          "type": "Function.Injective.{1, 1} fun i => AgtXIv.Stabilizer.F2Support.pauli (W.observable i)",
+          "type_constants": [
+            "Function.Injective",
+            "Fin",
+            "AgtXIv.Stabilizer.F2Support",
+            "AgtXIv.Stabilizer.F2Support.pauli",
+            "AgtXIv.Varela.MeasurementWindow.observable"
+          ]
+        },
+        {
+          "name": "ρ.posSemidef",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Matrix.PosSemidef.{0, 0} ρ.val",
+          "type_constants": [
+            "Matrix.PosSemidef",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Complex",
+            "Complex.instRing",
+            "Complex.partialOrder",
+            "Complex.instStarRing",
+            "AgtXIv.Stabilizer.DensityMatrix.val"
+          ]
+        },
+        {
+          "name": "ρ.trace_one",
+          "parent_binder": "ρ",
+          "structure": "AgtXIv.Stabilizer.DensityMatrix",
+          "type": "Eq.{1} (Matrix.trace.{0, 0} ρ.val) 1",
+          "type_constants": [
+            "Eq",
+            "Complex",
+            "Matrix.trace",
+            "Fin",
+            "HPow.hPow",
+            "Nat",
+            "instHPow",
+            "NPow.toPow",
+            "Monoid.toNPow",
+            "Nat.instMonoid",
+            "OfNat.ofNat",
+            "instOfNatNat",
+            "Fin.fintype",
+            "Complex.instAddCommMonoid",
+            "AgtXIv.Stabilizer.DensityMatrix.val",
+            "One.toOfNat1",
+            "Complex.instOne"
+          ]
+        }
+      ],
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "term_constants": [
+        "instInnerProductSpaceRealComplex",
+        "Pi.Function.module",
+        "InnerProductSpace.toNormedSpace",
+        "NormedCommRing.toSeminormedCommRing",
+        "instTrivialStarReal",
+        "Real.instLE",
+        "Real",
+        "NonUnitalCommRing.toNonUnitalNonAssocCommRing",
+        "Semiring.toModule",
+        "instStarRingReal",
+        "Pi.addCommMonoid",
+        "AgtXIv.ReducedRoM.reducedRoM",
+        "Real.lattice",
+        "CommRing.toNonUnitalCommRing",
+        "Matrix.module",
+        "AgtXIv.Varela.MeasurementWindow.contextFrustrationGraph",
+        "Real.instRCLike",
+        "AddGroupWithOne.toAddGroup",
+        "abs",
+        "AgtXIv.GraphDual.maxWeightClique",
+        "AddCommGroup.toAddCommMonoid",
+        "CMatrix",
+        "Compl.compl",
+        "AgtXIv.ReducedRoM.one_le_reducedRoM",
+        "Nat.instMonoid",
+        "NormedSpace.toModule",
+        "instDecidableEqFin",
+        "LinearMap.instFunLike",
+        "Matrix.addCommGroup",
+        "Membership.mem",
+        "CommCStarAlgebra.toNormedCommRing",
+        "Real.semiring",
+        "Complex.addGroupWithOne",
+        "Subtype",
+        "AgtXIv.GraphFoundation.fractionalCliqueCoverValue",
+        "NonUnitalNonAssocRing.toNonUnitalNonAssocSemiring",
+        "AgtXIv.Stabilizer.DensityMatrix.toTraceOneHermitian",
+        "selfAdjoint.instModuleSubtypeMemAddSubgroupOfStarModule",
+        "Real.instAddGroup",
+        "instOfNatNat",
+        "LE.le",
+        "Matrix.instStarModule",
+        "Complex.instNonUnitalCommRing",
+        "Real.commRing",
+        "StarAddMonoid.toInvolutiveStar",
+        "LinearMap",
+        "NPow.toPow",
+        "Complex.addCommGroup",
+        "Fin.fintype",
+        "SimpleGraph",
+        "AddSubgroup",
+        "Real.instOne",
+        "NonUnitalNonAssocSemiring.toAddCommMonoid",
+        "StarRing.toStarAddMonoid",
+        "Complex.instStarModuleReal",
+        "Real.instMax",
+        "SimpleGraph.instCompl",
+        "AddGroup.toSubNegMonoid",
+        "HPow.hPow",
+        "Max.max",
+        "Matrix.addGroup",
+        "AddSubgroup.instSetLike",
+        "NonUnitalSeminormedCommRing.toNonUnitalSeminormedRing",
+        "Nat",
+        "AgtXIv.Stabilizer.traceOneHermitianSet",
+        "And.intro",
+        "NonUnitalNonAssocCommRing.toNonUnitalNonAssocRing",
+        "max_le",
+        "Complex.instStarRing",
+        "Semiring.toMonoid",
+        "Matrix.instStarAddMonoid",
+        "Monoid.toSemigroup",
+        "NonUnitalSeminormedRing.toSeminormedAddCommGroup",
+        "Real.instAddCommMonoid",
+        "One.toOfNat1",
+        "Module.toDistribMulAction",
+        "InvolutiveStar.toStar",
+        "SemigroupAction.toSMul",
+        "AddCommMonoid.toAddMonoid",
+        "Real.normedField",
+        "instHPow",
+        "instCommCStarAlgebraComplex",
+        "SubNegMonoid.toAddMonoid",
+        "Complex",
+        "SeminormedCommRing.toNonUnitalSeminormedCommRing",
+        "MulAction.toSemigroupAction",
+        "OfNat.ofNat",
+        "AgtXIv.Stabilizer.HermitianMatrixReal",
+        "Fin",
+        "Subtype.val",
+        "RingHom.id",
+        "AgtXIv.Varela.MeasurementWindow.expectationProjection",
+        "Semiring.toNonAssocSemiring",
+        "AddSubgroup.toAddCommGroup",
+        "Set.instMembership",
+        "DFunLike.coe",
+        "Complex.instAddCommMonoid",
+        "Monoid.toNPow",
+        "SetLike.instMembership",
+        "AgtXIv.ReducedRoM.reducedRoM_le_fractional_complement_cover",
+        "Real.linearOrder",
+        "AgtXIv.ReducedRoM.maxWeightClique_le_reducedRoM",
+        "DistribMulAction.toMulAction",
+        "Set"
+      ]
+    }
+  ],
+  "source_alignment": "AGENT_NORMALIZED_UNREVIEWED",
+  "limits": [
+    "Source statements and dependency alignment remain unreviewed; no paper-level acceptance is inferred.",
+    "The reduced RoM sandwich endpoint retains NoActiveDependencies and actual MeasurementWindow/DensityMatrix structure fields.",
+    "The full hereditary true-twin replication endpoint retains only IsPerfect G as its explicit proposition premise.",
+    "This scope does not include later clique-fibre, clique-transversal, weak-perfectness, weighted-duality modules, or a final closed-form query proof.",
+    "No original source, previous epoch evidence, baseline object, or sibling Physlib file was changed."
+  ]
+}

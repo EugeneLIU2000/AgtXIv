@@ -1,0 +1,28 @@
+--- before/ReducedRoMGraphDual.lean
++++ after/ReducedRoMGraphDual.lean
+@@ -26,6 +26,7 @@
+ def contextFrustrationGraph : SimpleGraph (Fin m) where
+   Adj i j := ¬(W.observable i).commutesWith (W.observable j)
+   symm := by
++    constructor
+     intro i j hij hji
+     exact hij ((Pauli.commutesWith_iff _ _).mpr ((Pauli.commutesWith_iff _ _).mp hji).symm)
+   loopless := by
+@@ -44,6 +45,7 @@
+       ∀ S : Finset (Fin m), W.IsCommutingContext S → (∑ i ∈ S, w i) ≤ a := by
+   classical
+   unfold maxWeightIndependent
++  dsimp only
+   rw [Finset.sup'_le_iff]
+   simp only [independentFinsets, Finset.mem_filter, Finset.mem_powerset,
+     Finset.subset_univ, true_and, W.independent_iff_commutingContext]
+@@ -73,7 +75,8 @@
+   rw [W.context_vector_dot]
+   apply Finset.sum_congr rfl
+   intro i _
+-  simp [signedMaximalCandidate]
++  have hi : (i : Fin m) ∈ S := i.property
++  simp [signedMaximalCandidate, hi]
+ 
+ /-- Exact elimination of the actual admissible signs, using the proved
+ no-active implication and the attained sign maximum for each context. -/

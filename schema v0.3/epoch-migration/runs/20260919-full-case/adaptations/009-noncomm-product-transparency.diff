@@ -1,0 +1,16 @@
+--- predecessor/AgtXIvRootMath/GottesmanPauliGenerators.lean
++++ adapted/AgtXIvRootMath/GottesmanPauliGenerators.lean
+@@ -62,11 +62,11 @@
+ 
+ theorem wordProduct_one (G : CommutingInvolutivePauliGenerators n r) :
+     G.wordProduct 1 = 1 := by
+-  unfold wordProduct powered
++  unfold wordProduct
+   rw [Finset.noncommProd_eq_pow_card (Finset.univ) _ _ 1]
+   · simp
+   · intro i _
+-    simp
++    simp [powered]
+ 
+ /-- Multiplying binary labels multiplies their Pauli subset products. -/
+ theorem wordProduct_mul (G : CommutingInvolutivePauliGenerators n r)

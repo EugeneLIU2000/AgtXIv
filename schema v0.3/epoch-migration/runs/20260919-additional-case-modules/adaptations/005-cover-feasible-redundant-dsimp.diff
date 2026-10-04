@@ -1,0 +1,11 @@
+--- before/FiniteCliqueCoverAttainment.lean
++++ after/FiniteCliqueCoverAttainment.lean
+@@ -78,7 +78,7 @@
+   have hterm : (if v ∈ ({v} : Finset V) then lam {v} else 0) = w v := by simp [lam]
+   rw [← hterm]
+   exact Finset.single_le_sum (f := fun Q => if v ∈ Q then lam Q else 0)
+-    (fun Q _ => by dsimp only; split_ifs; exact hlam Q; exact le_rfl)
++    (fun Q _ => by split_ifs; exact hlam Q; exact le_rfl)
+     (singleton_mem_cliqueFinsets G v)
+ 
+ theorem fractionalCliqueCover_cost_nonneg {V : Type*} [Fintype V] [DecidableEq V]

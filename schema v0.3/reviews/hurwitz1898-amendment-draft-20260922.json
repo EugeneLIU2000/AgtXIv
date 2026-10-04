@@ -1,0 +1,1252 @@
+{
+  "kind": "PDFReadingAmendmentDraft",
+  "status": "AWAITING_RECOVERED_CANDIDATE_BINDING_AND_REVIEW",
+  "source_response_path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/hurwitz1898-luna-pdf-extraction-authorized-20260922/model/call-6c293c2e88ef44d6975bd35ba2a966a0/response.json",
+  "recorded_response_sha256": "sha256:f716b59987ecfe5a5c4d09c1c49d369cb58ed0359d9b1135460b7fa33ee3a9dd",
+  "recorded_hash_reverified": false,
+  "review_basis": [
+    "hurwitz1898-response-review-20260922.md",
+    "hurwitz1898-amendment-draft-20260922.md"
+  ],
+  "boundary": "Not an importable proposal or an executed amendment. original=null intentionally; no recovered artifact exists yet.",
+  "proposal_template": {
+    "kind": "PDFReadingAmendmentProposal",
+    "original": null,
+    "replacements": [
+      {
+        "old_id": "c02",
+        "reason": "Retain original assertion with an explicit domain objection, not a silently repaired theorem.",
+        "claims": [
+          {
+            "conditions": [],
+            "external": [],
+            "id": "d02",
+            "internal": [
+              "c01"
+            ],
+            "role": "CLAIM",
+            "statement": "After linear transformations of variables, the general composition problem may be reduced to the identity (x_1²+⋯+x_n²)(y_1²+⋯+y_n²)=z_1²+⋯+z_n², where each z_i is bilinear in the 2n independent variables x_1,…,x_n,y_1,…,y_n.",
+            "unresolved_dependencies": [
+              "Reduction to sums of positive squares over the original field is not justified for arbitrary nondegenerate quadratic forms. Field, form class and permitted extension remain unresolved.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 2,
+              "region": [
+                0.14,
+                0.47,
+                0.84,
+                0.58
+              ],
+              "printed_page": null
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c03",
+        "reason": "Record the n=1 objection and explicitly migrate its reference to the disputed reduction.",
+        "claims": [
+          {
+            "conditions": [],
+            "external": [],
+            "id": "d03",
+            "internal": [
+              "d02"
+            ],
+            "role": "CLAIM",
+            "statement": "The reduced composition identity can hold only for n=2, 4, or 8; consequently, composition theories exist only for binary, quaternary, and octonary quadratic forms.",
+            "unresolved_dependencies": [
+              "The detailed proof is given on later pages; the exact scope of the coefficient field is not stated in the excerpt.",
+              "As written, the exclusion of n=1 is false for the reduced identity: z_1=x_1 y_1 works. Source convention and proposed n>=2 restriction require review.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 2,
+              "region": [
+                0.15,
+                0.58,
+                0.84,
+                0.85
+              ],
+              "printed_page": null
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c07",
+        "reason": "Modernize distinct-index notation and make matrix identities explicit.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "n>=2",
+              "The normalized identity in c06 holds."
+            ],
+            "external": [],
+            "id": "d07",
+            "internal": [
+              "c06"
+            ],
+            "role": "CLAIM",
+            "statement": "Coefficient comparison in c06 yields B_i^2=-I and B_i^T=-B_i for 1<=i<=n-1, and B_i B_k=-B_k B_i for 1<=i,k<=n-1 with i!=k.",
+            "unresolved_dependencies": [
+              "The displayed index condition appears as i≥k, while the preceding coefficient comparison is stated with a different ordering; the intended range/order is not fully explicit.",
+              "The original i>=k transcription is superseded by a distinct-index interpretation; source-symbol interpretation and equivalence direction remain subject to review.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 4,
+              "region": [
+                0.08,
+                0.67,
+                0.9,
+                0.93
+              ],
+              "printed_page": "311"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c08",
+        "reason": "Separate temporary existence assumption, determinant contradiction and asserted exclusion; do not exclude n=1.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "S(n) means that n-1 matrices in Mat_n(K) satisfy B_i^2=-I, B_i^T=-B_i and B_i B_k=-B_k B_i for distinct indices.",
+              "n>=2 is odd."
+            ],
+            "external": [],
+            "id": "d08a",
+            "internal": [],
+            "role": "CONTRADICTION_CONTEXT",
+            "statement": "Temporarily assume S(n) for odd n>=2 and choose B_1.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 5,
+              "region": [
+                0.08,
+                0.08,
+                0.91,
+                0.28
+              ],
+              "printed_page": "312"
+            }
+          },
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "Inside the temporary assumption d08a."
+            ],
+            "external": [],
+            "id": "d08b",
+            "internal": [
+              "d08a"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "Inside the assumption d08a, odd-order skew symmetry implies det(B_1)=0, whereas B_1^2=-I implies B_1 is invertible, a contradiction.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 5,
+              "region": [
+                0.08,
+                0.08,
+                0.91,
+                0.28
+              ],
+              "printed_page": "312"
+            }
+          },
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "S(n) means that n-1 matrices in Mat_n(K) satisfy B_i^2=-I, B_i^T=-B_i and B_i B_k=-B_k B_i for distinct indices.",
+              "n>=2 is odd."
+            ],
+            "external": [],
+            "id": "d08c",
+            "internal": [],
+            "role": "CLAIM",
+            "statement": "For odd n>=2, S(n) does not exist.",
+            "unresolved_dependencies": [
+              "The discharge of the existence assumption in d08a is not verified.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 5,
+              "region": [
+                0.08,
+                0.08,
+                0.91,
+                0.28
+              ],
+              "printed_page": "312"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c09",
+        "reason": "Explicitly carry the corrected generator system into the ordered-product inventory.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "n is positive and even.",
+              "The relations stated in d07 hold."
+            ],
+            "external": [],
+            "id": "d09",
+            "internal": [
+              "d07"
+            ],
+            "role": "CLAIM",
+            "statement": "Every product of distinct B_i is represented among the 2^{n−1} transformations 1, B_i, B_{i_1}B_{i_2}, …, B_1B_2⋯B_{n−1}, with indices taken in increasing order.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 5,
+              "region": [
+                0.08,
+                0.26,
+                0.91,
+                0.52
+              ],
+              "printed_page": "312"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c10",
+        "reason": "Explicitly migrate the ordered-product reference; retain transpose-parity scope.",
+        "claims": [
+          {
+            "conditions": [
+              "Indices i_1<⋯<i_r",
+              "r is the number of factors"
+            ],
+            "external": [],
+            "id": "d10",
+            "internal": [
+              "d09"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "The transpose of a product satisfies (B_{i_1}⋯B_{i_r})'=(-1)^{r(r+1)/2}B_{i_1}⋯B_{i_r}; consequently the product is symmetric or skew-symmetric according to whether r is congruent to 0 or 3, or to 1 or 2, modulo 4, respectively.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 5,
+              "region": [
+                0.11,
+                0.45,
+                0.88,
+                0.62
+              ],
+              "printed_page": "312"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c11",
+        "reason": "Explicitly migrate the product and transpose references; retain the irreducibility terminology issue.",
+        "claims": [
+          {
+            "conditions": [
+              "A linear relation among the transformations in d09 is chosen irreducible"
+            ],
+            "external": [],
+            "id": "d11",
+            "internal": [
+              "d09",
+              "d10"
+            ],
+            "role": "DEFINITION",
+            "statement": "A relation R=0 among the transformations is called irreducible when it cannot be written as R=R_1+R_2 with R_1=0 and R_2=0 two mutually unrelated relations; two relations are unrelated when no transformation participates in both.",
+            "unresolved_dependencies": [
+              "The source uses terminology involving participation of transformations; the exact formal meaning of 'unrelated' is inferred from the surrounding definition.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 5,
+              "region": [
+                0.09,
+                0.61,
+                0.92,
+                0.94
+              ],
+              "printed_page": "312"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c12",
+        "reason": "Replace the incorrect universal contains-i elimination with degree-sensitive clauses and an unresolved general step.",
+        "claims": [
+          {
+            "conditions": [
+              "An irreducible relation is normalized so that the identity transformation 1 occurs with nonzero coefficient"
+            ],
+            "external": [],
+            "id": "d12a",
+            "internal": [
+              "d09",
+              "d10",
+              "d11"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "All participating terms of an irreducible relation have the same transpose type.",
+            "unresolved_dependencies": [
+              "The symmetric/skew decomposition and support-based irreducibility argument require expansion.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 6,
+              "region": [
+                0.08,
+                0.07,
+                0.9,
+                0.55
+              ],
+              "printed_page": "313"
+            }
+          },
+          {
+            "conditions": [
+              "An irreducible relation is normalized so that the identity transformation 1 occurs with nonzero coefficient"
+            ],
+            "external": [],
+            "id": "d12b",
+            "internal": [
+              "d12a"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "After normalization to a nonzero identity coefficient, a three-factor term is excluded when the chosen index i is absent from its index set.",
+            "unresolved_dependencies": [
+              "Multiplication, normalization and the coefficient-elimination step remain to be reconstructed.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 6,
+              "region": [
+                0.08,
+                0.07,
+                0.9,
+                0.55
+              ],
+              "printed_page": "313"
+            }
+          },
+          {
+            "conditions": [
+              "An irreducible relation is normalized so that the identity transformation 1 occurs with nonzero coefficient"
+            ],
+            "external": [],
+            "id": "d12c",
+            "internal": [
+              "d12a"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "In the same normalized argument, a four-factor term is excluded when the chosen index i belongs to its index set.",
+            "unresolved_dependencies": [
+              "This is a degree-specific step, not a universal contains-i elimination rule.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 6,
+              "region": [
+                0.08,
+                0.07,
+                0.9,
+                0.55
+              ],
+              "printed_page": "313"
+            }
+          },
+          {
+            "conditions": [
+              "An irreducible relation is normalized so that the identity transformation 1 occurs with nonzero coefficient"
+            ],
+            "external": [],
+            "id": "d12d",
+            "internal": [
+              "d12a"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "The source concludes that a normalized irreducible relation can only have the form I=c B_1 ... B_(n-1).",
+            "unresolved_dependencies": [
+              "The general-degree iteration, boundary cases and invariance of irreducibility under invertible monomial multiplication are missing. The two displayed degree cases are not sufficient proof.",
+              "The full conclusion requires a source region extending into the remainder of PDF page 6; the inherited region has not been corrected.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 6,
+              "region": [
+                0.08,
+                0.07,
+                0.9,
+                0.55
+              ],
+              "printed_page": "313"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c13",
+        "reason": "Explicitly migrate the relation-classification reference and retain its incomplete derivation.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "n is positive and even.",
+              "The relation in d12d exists."
+            ],
+            "external": [],
+            "id": "d13",
+            "internal": [
+              "d12d"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "The relation 1=c B_1B_2⋯B_{n−1} requires n≡0 (mod 4), because otherwise B_1⋯B_{n−1} is skew-symmetric; squaring both sides gives c=±1.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 6,
+              "region": [
+                0.54,
+                0.52,
+                0.91,
+                0.76
+              ],
+              "printed_page": "313"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c14",
+        "reason": "Explicitly migrate both relation arguments and expose earlier even-order/transpose hypotheses.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "n is positive and even.",
+              "The full system of square, transpose and distinct-index anticommutation relations in d07 holds."
+            ],
+            "external": [],
+            "id": "d14",
+            "internal": [
+              "d12d",
+              "d13"
+            ],
+            "role": "CLAIM",
+            "statement": "The 2^{n−1} transformations in d09 are linearly independent when n≡2 (mod 4). When n≡0 (mod 4), their only possible irreducible relation is generated by B_1B_2⋯B_{n−1}=±I.",
+            "unresolved_dependencies": [
+              "The inherited relation-classification derivation is incomplete; this is not yet a general invertible anticommuting-family theorem.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 6,
+              "region": [
+                0.08,
+                0.68,
+                0.91,
+                0.95
+              ],
+              "printed_page": "313"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c15",
+        "reason": "Separate the independent-family bridge, matrix-space dimension and resulting inequality.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "n is positive and even.",
+              "The system and classification in d14 apply."
+            ],
+            "external": [],
+            "id": "d15a",
+            "internal": [
+              "d14"
+            ],
+            "role": "CLAIM",
+            "statement": "Under the preceding even-order system and relation classification, the source identifies 2^(n-2) linearly independent transformations.",
+            "unresolved_dependencies": [
+              "The exact indexed family and the implication from d14 require reconstruction; arbitrary subsets of this size cannot be substituted.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.07,
+                0.52,
+                0.53
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "K is a field.",
+              "n is a positive integer."
+            ],
+            "external": [],
+            "id": "d15b",
+            "internal": [],
+            "role": "CLAIM",
+            "statement": "The K-vector space Mat_n(K) has dimension n^2, distinct from the n-dimensional space K^n on which its matrices act.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.07,
+                0.52,
+                0.53
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "n is positive and even.",
+              "The system and independent family in d15a exist."
+            ],
+            "external": [],
+            "id": "d15c",
+            "internal": [
+              "d15a",
+              "d15b"
+            ],
+            "role": "CLAIM",
+            "statement": "The independent family in d15a and the matrix-space dimension in d15b imply 2^(n-2)<=n^2.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.07,
+                0.52,
+                0.53
+              ],
+              "printed_page": "314"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c16",
+        "reason": "Explicitly use the revised inequality and retain the positive-even domain.",
+        "claims": [
+          {
+            "conditions": [
+              "n is a positive even integer.",
+              "2^(n-2)<=n^2."
+            ],
+            "external": [],
+            "id": "d16",
+            "internal": [
+              "d15c"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "The inequality 2^{n−2}≤n² fails for n≥10, leaving only n=2,4,6,8 as possible even dimensions.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.46,
+                0.91,
+                0.67
+              ],
+              "printed_page": "314"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c17",
+        "reason": "Separate the temporary system, independent skew subfamily, dimension fact and final exclusion.",
+        "claims": [
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "S(n) means that n-1 matrices in Mat_n(K) satisfy B_i^2=-I, B_i^T=-B_i and B_i B_k=-B_k B_i for distinct indices.",
+              "n=6."
+            ],
+            "external": [],
+            "id": "d17a",
+            "internal": [],
+            "role": "CONTRADICTION_CONTEXT",
+            "statement": "Temporarily assume S(6).",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.58,
+                0.91,
+                0.81
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "Inside the temporary assumption d17a."
+            ],
+            "external": [],
+            "id": "d17b",
+            "internal": [
+              "d17a",
+              "d14",
+              "d10"
+            ],
+            "role": "PROOF_LOCAL_CLAIM",
+            "statement": "Inside d17a, d14 gives 32 independent ordered square-free products. By d10, degrees 1,2,5 give 5+10+1=16 skew-symmetric members; this subfamily remains independent.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.58,
+                0.91,
+                0.81
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose."
+            ],
+            "external": [],
+            "id": "d17c",
+            "internal": [],
+            "role": "CLAIM",
+            "statement": "The K-vector space of skew-symmetric 6x6 matrices has dimension 15.",
+            "unresolved_dependencies": [
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.58,
+                0.91,
+                0.81
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "Proposed modernization, not verbatim source scope: K is a field of characteristic different from 2.",
+              "Matrices act on K^n; transpose means ordinary transpose, not conjugate transpose.",
+              "S(n) means that n-1 matrices in Mat_n(K) satisfy B_i^2=-I, B_i^T=-B_i and B_i B_k=-B_k B_i for distinct indices."
+            ],
+            "external": [],
+            "id": "d17d",
+            "internal": [
+              "d17c"
+            ],
+            "role": "CLAIM",
+            "statement": "S(6) does not exist.",
+            "unresolved_dependencies": [
+              "The contradiction using d17b and the discharge of d17a remain unverified; d14 itself has unresolved proof steps.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.58,
+                0.91,
+                0.81
+              ],
+              "printed_page": "314"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c18",
+        "reason": "Replace exclusion arguments as existence support with separately transcribed source constructions and three still-unproved identity obligations. All matrix entries were visually read from retained PDF page 7; no execution or proof acceptance occurred.",
+        "claims": [
+          {
+            "conditions": [
+              "n=2.",
+              "The variables x_1,...,x_n are commuting scalars."
+            ],
+            "external": [],
+            "id": "d18matrix2",
+            "internal": [],
+            "role": "DEFINITION",
+            "statement": "The source displays A_0 for n=2 with signed variable indices [[1, -2], [2, 1]]; integer k>0 denotes x_k and -k denotes -x_k.",
+            "unresolved_dependencies": [
+              "Manual transcription of the retained page image; matrix entries have not been independently checked by another reader or by execution.",
+              "The page rectangle was assigned visually in this review; it is not a verified exact quotation."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.18,
+                0.66,
+                0.44,
+                0.706
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "n=2.",
+              "The variables x_1,...,x_n are commuting scalars."
+            ],
+            "external": [],
+            "id": "d18witness2",
+            "internal": [
+              "d18matrix2"
+            ],
+            "role": "CLAIM",
+            "statement": "The displayed matrix A_0 for n=2 satisfies A_0 A_0^T=(x_1^2+...+x_2^2)I_2, providing a bilinear sum-of-squares composition in this dimension.",
+            "unresolved_dependencies": [
+              "This source-attributed identity requires an explicit polynomial or matrix proof; no matrix multiplication, validator or Lean build has been executed.",
+              "The source assertion paragraph is above the matrix; this matrix-region anchor alone does not bind the assertion text."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.18,
+                0.66,
+                0.44,
+                0.706
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "n=4.",
+              "The variables x_1,...,x_n are commuting scalars."
+            ],
+            "external": [],
+            "id": "d18matrix4",
+            "internal": [],
+            "role": "DEFINITION",
+            "statement": "The source displays A_0 for n=4 with signed variable indices [[1, -2, -3, -4], [2, 1, -4, 3], [3, 4, 1, -2], [4, -3, 2, 1]]; integer k>0 denotes x_k and -k denotes -x_k.",
+            "unresolved_dependencies": [
+              "Manual transcription of the retained page image; matrix entries have not been independently checked by another reader or by execution.",
+              "The page rectangle was assigned visually in this review; it is not a verified exact quotation."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.18,
+                0.707,
+                0.57,
+                0.794
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "n=4.",
+              "The variables x_1,...,x_n are commuting scalars."
+            ],
+            "external": [],
+            "id": "d18witness4",
+            "internal": [
+              "d18matrix4"
+            ],
+            "role": "CLAIM",
+            "statement": "The displayed matrix A_0 for n=4 satisfies A_0 A_0^T=(x_1^2+...+x_4^2)I_4, providing a bilinear sum-of-squares composition in this dimension.",
+            "unresolved_dependencies": [
+              "This source-attributed identity requires an explicit polynomial or matrix proof; no matrix multiplication, validator or Lean build has been executed.",
+              "The source assertion paragraph is above the matrix; this matrix-region anchor alone does not bind the assertion text."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.18,
+                0.707,
+                0.57,
+                0.794
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "n=8.",
+              "The variables x_1,...,x_n are commuting scalars."
+            ],
+            "external": [],
+            "id": "d18matrix8",
+            "internal": [],
+            "role": "DEFINITION",
+            "statement": "The source displays A_0 for n=8 with signed variable indices [[1, -2, -3, -4, -5, -6, -7, -8], [2, 1, -4, 3, -6, 5, -8, 7], [3, 4, 1, -2, -7, 8, 5, -6], [4, -3, 2, 1, 8, 7, -6, -5], [5, 6, 7, -8, 1, -2, -3, 4], [6, -5, -8, -7, 2, 1, 4, 3], [7, 8, -5, 6, 3, -4, 1, -2], [8, -7, 6, 5, -4, -3, 2, 1]]; integer k>0 denotes x_k and -k denotes -x_k.",
+            "unresolved_dependencies": [
+              "Manual transcription of the retained page image; matrix entries have not been independently checked by another reader or by execution.",
+              "The page rectangle was assigned visually in this review; it is not a verified exact quotation."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.18,
+                0.793,
+                0.85,
+                0.971
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "n=8.",
+              "The variables x_1,...,x_n are commuting scalars."
+            ],
+            "external": [],
+            "id": "d18witness8",
+            "internal": [
+              "d18matrix8"
+            ],
+            "role": "CLAIM",
+            "statement": "The displayed matrix A_0 for n=8 satisfies A_0 A_0^T=(x_1^2+...+x_8^2)I_8, providing a bilinear sum-of-squares composition in this dimension.",
+            "unresolved_dependencies": [
+              "This source-attributed identity requires an explicit polynomial or matrix proof; no matrix multiplication, validator or Lean build has been executed.",
+              "The source assertion paragraph is above the matrix; this matrix-region anchor alone does not bind the assertion text."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.18,
+                0.793,
+                0.85,
+                0.971
+              ],
+              "printed_page": "314"
+            }
+          },
+          {
+            "conditions": [
+              "n=2,4,8"
+            ],
+            "external": [],
+            "id": "d18",
+            "internal": [
+              "d18witness2",
+              "d18witness4",
+              "d18witness8"
+            ],
+            "role": "THEOREM",
+            "statement": "The displayed constructions in dimensions 2,4,8 provide matrices A satisfying A A^T=(x_1^2+...+x_n^2)I_n in each corresponding dimension.",
+            "unresolved_dependencies": [
+              "The three source-attributed matrix identities remain unproved and require exact source/statement alignment.",
+              "Modern coefficient-field scope and the equivalence with the full normalized B-system still require review.",
+              "The source assertion paragraph needs a separate precise anchor; the original region is retained only as a provisional locator."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 7,
+              "region": [
+                0.08,
+                0.79,
+                0.91,
+                0.99
+              ],
+              "printed_page": "314"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c19",
+        "reason": "Explicitly migrate existence reference while preserving unresolved classification and matrix-entry reading.",
+        "claims": [
+          {
+            "conditions": [
+              "n=2,4,8",
+              "A_0 is the displayed standard transformation for the corresponding dimension",
+              "P and Q are arbitrary constant-coefficient orthogonal transformations"
+            ],
+            "external": [],
+            "id": "d19",
+            "internal": [
+              "c04",
+              "d18"
+            ],
+            "role": "THEOREM",
+            "statement": "Every transformation A satisfying A A'=x_1²+⋯+x_n² has the form A=P A_0 Q, where P and Q are arbitrary orthogonal transformations with constant coefficients and A_0 is the displayed transformation for n=2,4, or 8.",
+            "unresolved_dependencies": [
+              "The displayed A_0 matrices are partially difficult to read at image resolution; the exact entries are not transcribed here.",
+              "The classification of all solutions is not proved by the revised existence statement; its own argument remains unreviewed.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 8,
+              "region": [
+                0.09,
+                0.07,
+                0.92,
+                0.88
+              ],
+              "printed_page": "315"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c24",
+        "reason": "Retain the source bound while exposing the variable-count/generator-count and Pauli applicability gap.",
+        "claims": [
+          {
+            "conditions": [
+              "n is even",
+              "n≡2 (mod 4)"
+            ],
+            "external": [],
+            "id": "d24",
+            "internal": [
+              "c22"
+            ],
+            "role": "CLAIM",
+            "statement": "For even n with n≡2 (mod 4), the maximal p is constrained by 2^{p−1}≤n².",
+            "unresolved_dependencies": [
+              "The source presents this as an upper-bound condition; it does not state equality.",
+              "p counts first-factor variables, not anticommuting generators. The applicable r=p-1 normalization and ordinary-transpose versus Pauli-adjoint bridge remain unproved.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 9,
+              "region": [
+                0.08,
+                0.14,
+                0.91,
+                0.42
+              ],
+              "printed_page": "316"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c25",
+        "reason": "Retain the source bound while exposing the variable-count/generator-count and Pauli applicability gap.",
+        "claims": [
+          {
+            "conditions": [
+              "n is even",
+              "n≡0 (mod 4)"
+            ],
+            "external": [],
+            "id": "d25",
+            "internal": [
+              "c22"
+            ],
+            "role": "CLAIM",
+            "statement": "For even n with n≡0 (mod 4), the maximal p is constrained by 2^{p−2}≤n².",
+            "unresolved_dependencies": [
+              "The source presents this as an upper-bound condition; it does not state equality.",
+              "p counts first-factor variables, not anticommuting generators. The applicable r=p-1 normalization and ordinary-transpose versus Pauli-adjoint bridge remain unproved.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 9,
+              "region": [
+                0.08,
+                0.2,
+                0.91,
+                0.47
+              ],
+              "printed_page": "316"
+            }
+          }
+        ]
+      },
+      {
+        "old_id": "c26",
+        "reason": "Retain the source bound while exposing the variable-count/generator-count and Pauli applicability gap.",
+        "claims": [
+          {
+            "conditions": [
+              "n is even"
+            ],
+            "external": [],
+            "id": "d26",
+            "internal": [
+              "d24",
+              "d25"
+            ],
+            "role": "CLAIM",
+            "statement": "The preceding inequalities imply that the maximal p is at most 2 log(n)/log(2)+1 when n≡2 (mod 4), and at most 2 log(n)/log(2)+2 when n≡0 (mod 4).",
+            "unresolved_dependencies": [
+              "The logarithm notation is reproduced in modernized form; the source writes lg.",
+              "p counts first-factor variables, not anticommuting generators. The applicable r=p-1 normalization and ordinary-transpose versus Pauli-adjoint bridge remain unproved.",
+              "Draft revision; inherited page region has not been localized separately for this clause."
+            ],
+            "source": {
+              "pdf": {
+                "byte_size": 599885,
+                "path": "/Users/Yingjian/Documents/GitHub/AgtXIv/schema v0.3/runs/capacity-origin-hurwitz1898-facsimile-20260922/source.pdf",
+                "sha256": "sha256:ecad36c4cccf71b71a54ed0023d85bfade2f3bd2f5330db65a7cea7fb7b282e8"
+              },
+              "page": 9,
+              "region": [
+                0.08,
+                0.31,
+                0.91,
+                0.51
+              ],
+              "printed_page": "316"
+            }
+          }
+        ]
+      }
+    ],
+    "proof_contexts": [
+      {
+        "conclusion_id": "d08c",
+        "context_ids": [
+          "d08a",
+          "d08b"
+        ],
+        "reason": "Source-attributed odd-order contradiction; local assumption discharge is not verified."
+      },
+      {
+        "conclusion_id": "d17d",
+        "context_ids": [
+          "d17a",
+          "d17b"
+        ],
+        "reason": "Source-attributed n=6 contradiction; dimension fact d17c is a permanent premise, S(6) is not."
+      }
+    ]
+  },
+  "unchanged_reading_ids": [
+    "c01",
+    "c04",
+    "c05",
+    "c06",
+    "c20",
+    "c21",
+    "c22",
+    "c23"
+  ],
+  "source_alignment_accepted": false,
+  "proof_discharge_verified": false,
+  "required_review": [
+    "Bind the exact recovered candidate report only after authorized recovery; do not fabricate its digest.",
+    "Review each explicit dependency migration and inherited region before importing.",
+    "Review added modern field assumptions separately from historical claims.",
+    "Unchanged rows are not thereby accepted or complete.",
+    "Check the newly transcribed 2x2, 4x4 and 8x8 matrices against the image and prove each polynomial matrix identity; the definition itself is not proof of existence."
+  ]
+}

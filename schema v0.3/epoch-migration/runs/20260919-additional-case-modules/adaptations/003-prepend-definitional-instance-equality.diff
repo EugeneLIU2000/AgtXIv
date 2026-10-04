@@ -1,0 +1,10 @@
+--- before/SignedGeneratorCompletion.lean
++++ adapted/SignedGeneratorCompletion.lean
+@@ -35,6 +35,7 @@
+   convert hg.finCons hNew using 1
+   funext i
+   exact Fin.cases rfl (fun _ => rfl) i
++  all_goals rfl
+ 
+ theorem generator_range_subset_prepend
+     (G : CommutingInvolutivePauliGenerators n r)

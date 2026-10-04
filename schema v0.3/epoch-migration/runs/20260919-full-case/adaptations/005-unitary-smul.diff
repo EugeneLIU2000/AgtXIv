@@ -1,0 +1,12 @@
+--- predecessor/Quantumlib/ForMathlib/Data/Matrix/Unitary.lean
++++ adapted/Quantumlib/ForMathlib/Data/Matrix/Unitary.lean
+@@ -41,8 +41,7 @@
+     intros c M hM hc
+     simp_rw [mem_unitaryGroup_iff'] at hM ⊢
+     rw [Unitary.mem_iff_self_mul_star] at hc
+-    rw [star_smul, mul_smul, smul_mul, ←smul_assoc, smul_eq_mul, hc, hM]
+-    simp
++    rw [star_smul, smul_mul_smul, mul_comm (star c) c, hc, one_smul, hM]
+ 
+ 
+ end Matrix
