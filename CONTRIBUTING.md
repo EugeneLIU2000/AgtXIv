@@ -11,18 +11,50 @@ to the Knowledge Base.
 
 ## Before contributing
 
-The repository does not yet have a root license or a decided contributor
-attestation mechanism. The copyright holder or holders have also not been
-recorded. Until the repository owner resolves those questions and chooses a
-Developer Certificate of Origin (DCO), a Contributor License Agreement (CLA),
-or an explicitly documented alternative, external contributions may be
-discussed and reviewed but must not be merged. Opening an issue does not grant
-the project a license to incorporate attached code or other copyrighted
-material.
+AgtXIv's code is licensed under MIT and its documentation, figures, slides and
+data under CC BY 4.0; [LICENSING.md](LICENSING.md) gives the scope and the
+third-party exceptions. Contributions are accepted on the terms in
+[Licensing of contributions](#licensing-of-contributions). The remaining open
+governance decisions are listed in
+[`GOVERNANCE.md`](GOVERNANCE.md#open-governance-blockers).
 
-This is an explicit release blocker, not template text. See
-[`GOVERNANCE.md`](GOVERNANCE.md#open-governance-blockers) for the complete list
-of unresolved governance decisions.
+Read [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md) first: it says what the
+project has measured, what it has not established, and what is planned.
+
+### Licensing of contributions
+
+By contributing you agree that your contribution is licensed under the same
+terms as the files it changes: MIT for code, CC BY 4.0 for documentation,
+figures, slides and data (inbound = outbound). Do not contribute material you
+cannot license on those terms; third-party material needs its own terms
+recorded as described in [Source material and rights](#source-material-and-rights).
+
+Every commit must carry a sign-off certifying the
+[Developer Certificate of Origin 1.1](https://developercertificate.org/): that
+you wrote the change or otherwise have the right to submit it under these
+licences. Add it with `git commit -s`, which appends a line such as
+
+```text
+Signed-off-by: Your Name <you@example.org>
+```
+
+using the name and email in your Git configuration. Commits made by an AI
+assistant at your direction carry your sign-off; keep the assistant's
+`Co-Authored-By` line as well.
+
+### Working together
+
+- Discuss substantial work in an issue first. Planned work is tracked as
+  issues; [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md#plan) lists it.
+- Work on a branch named `<your-name>/<topic>` and open a pull request into
+  `main`. `main` is the public line; do not push to it directly.
+- Pull requests and pushes to `main` or `codex/**` start the repository's CI,
+  which runs tests on GitHub. Under the [repository policy](AGENTS.md) a test
+  run needs an explicit decision, so say in the pull request whether CI may
+  run, or put `[skip ci]` in the commit message.
+- Paper sources, PDFs and run records holding verbatim text stay in the
+  Git-ignored `local-archive/`. Share how to rebuild them (arXiv ids, pinned
+  snapshots, seeds and scripts), not the files.
 
 Do not use a public issue for a suspected vulnerability. Follow
 [`SECURITY.md`](SECURITY.md) instead.
@@ -147,7 +179,9 @@ artifact:
 - pin the exact source version and byte hash;
 - record origin and the observed license or terms;
 - record an explicit redistribution disposition and its evidence;
-- keep restricted or unresolved bytes out of the public Git tree; and
+- keep restricted or unresolved bytes out of the public Git tree (they belong in
+  the Git-ignored `local-archive/`; [docs/REFERENCES.md](docs/REFERENCES.md) shows how
+  removed papers are listed instead); and
 - expose only policy-permitted metadata, hashes, and stable locators when bytes
   cannot be served.
 

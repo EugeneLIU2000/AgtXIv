@@ -8,8 +8,9 @@ it becomes the highest-level normative authority only when the qualifying
 ratification commit defined by ADR 0007 is integrated on canonical authoritative
 `main`. From that point, version specifications and governance are subordinate
 to it, followed by ADRs, contracts, schemas, and plans, and then implementation.
-This document does not grant a copyright license and does not replace the
-applicable normative scientific and machine-contract specifications.
+This document does not itself grant a copyright license (the licences are in
+[LICENSING.md](LICENSING.md)) and does not replace the applicable normative
+scientific and machine-contract specifications.
 
 The remote repository is administered by `@EugeneLIU2000`, who is therefore the
 default code-review route in `CODEOWNERS`. Repository administration does not by
@@ -134,13 +135,12 @@ frontier item, or relabeling a code review as a scientific review.
 ## Open governance blockers
 
 The following are real unresolved decisions as of 2026-08-31. They have no
-placeholder defaults.
+placeholder defaults. The root license, copyright ownership and inbound-contribution
+rows were resolved on 2026-10-07 and moved to
+[Resolved governance decisions](#resolved-governance-decisions).
 
 | Blocker | Decision still required | Blocked outcome |
 |---|---|---|
-| Root license | Select and add the actual repository license after rights review. | The repository must not call itself open source or claim that the public may reuse, modify, or redistribute the code. A stable public software release is blocked. |
-| Copyright ownership | Identify the copyright holder or holders and the treatment of existing contributions. | Copyright notices and relicensing authority cannot be asserted. |
-| DCO, CLA, or alternative | Choose the Developer Certificate of Origin, Contributor License Agreement, or another explicit inbound-contribution policy. | External contributions may be reviewed but must not be merged without a documented lawful acceptance path. |
 | Independent code-review capacity | Appoint at least one additional qualified code owner and the required specialist reviewers, then test the resulting ruleset. | The full target branch-protection rules cannot be enabled without deadlocking owner-authored changes or silently waiving independent specialist review. |
 | Verified private security intake | Enable and verify private vulnerability reporting, or publish and verify another confidential channel controlled by the project. | `SECURITY.md` cannot promise confidential intake; undisclosed vulnerabilities may have no safe project contact. |
 | Scientific reviewer policy | Name or define the qualified reviewer pool, identity verification, conflicts, quorum, evidence standard, appeal, and attestation. | Production scientific admission and claims of reviewed Knowledge Base content are blocked. |
@@ -153,6 +153,18 @@ rights holder or holders, or their documented authorized representative, must
 supply the required authority. Every closing change must contain the actual
 decision, evidence, and effective version. Removing the table without resolving
 the decision does not unblock anything.
+
+## Resolved governance decisions
+
+| Former blocker | Decision | Evidence | Effective version |
+|---|---|---|---|
+| Root license | Code under the MIT License ([LICENSE](LICENSE)); documentation, figures, slides and data under CC BY 4.0 ([LICENSE-docs](LICENSE-docs)); third-party material keeps its own terms. [LICENSING.md](LICENSING.md) gives the scope. | The repository owner and rights holder, @EugeneLIU2000, chose this in answer to an explicit question in a Claude Code session on 2026-10-07. | The commit that adds `LICENSE`, `LICENSE-docs` and `LICENSING.md` to `main` (2026-10-07). |
+| Copyright ownership | The holder of AgtXIv's own work is @EugeneLIU2000. Commits by the `texra-ai` account were made by the owner with the TeXRA tool; commits co-authored with Claude or Codex were directed by the owner. | The owner confirmed both in the same session on 2026-10-07. | The same commit. |
+| DCO, CLA, or alternative | Inbound = outbound: contributions are licensed under the same terms, and every commit carries a Developer Certificate of Origin 1.1 sign-off ([CONTRIBUTING.md](CONTRIBUTING.md#licensing-of-contributions)). | The owner chose this in the same session on 2026-10-07. | The same commit. |
+
+These decisions were integrated by a fast-forward of `main` at the owner's explicit instruction, without the pull
+request and review that [Amendments and disputes](#amendments-and-disputes) describes for governance changes; the
+owner is the sole code owner and rights holder. Earlier commits keep their history unchanged.
 
 ## Amendments and disputes
 

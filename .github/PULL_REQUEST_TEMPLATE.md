@@ -85,6 +85,12 @@ Opening a PR triggers CI; include that execution in publication authorization. -
 ## Open blockers
 
 <!-- Name anything preventing merge, software release, package archive, or
-Knowledge Base admission. The unresolved root license, copyright ownership,
-DCO/CLA alternative, scientific-reviewer policy, and signature mechanism must
-not be represented as completed by this template. -->
+Knowledge Base admission. The unresolved scientific-reviewer policy and
+signature mechanism must not be represented as completed by this template. -->
+
+## Licensing
+
+- [ ] Every commit carries a Developer Certificate of Origin sign-off
+      (`git commit -s`; see CONTRIBUTING.md)
+- [ ] No third-party paper source, PDF or verbatim excerpt is added outside the
+      exceptions recorded in LICENSING.md
