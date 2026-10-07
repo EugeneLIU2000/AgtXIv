@@ -1,0 +1,25 @@
+{
+  "LIGHT": {"model": "gpt-5.6-luna", "effort": "medium", "tier_savings_measured": false},
+  "DECISION": {"model": "gpt-5.6-terra", "effort": "medium", "calibration": null},
+  "CLASSIFICATION": {"model": "gpt-5.6-luna", "effort": "low", "calibration": null},
+  "HEAVY": {"model": "gpt-6-astra", "effort": "high", "tier_savings_measured": false},
+  "MIMO_LIGHT": {"model": "mimo-v2.6-flash", "effort": "thinking-enabled", "tier_savings_measured": false,
+                 "training_cutoff": {"value": "UNKNOWN", "source": "mimo.mi.com model pages state no training cutoff (read 2026-09-25)"}},
+  "MIMO_DECISION": {"model": "mimo-v2.6-pro", "effort": "thinking-enabled", "calibration": null,
+                    "training_cutoff": {"value": "UNKNOWN", "source": "mimo.mi.com model pages state no training cutoff (read 2026-09-25)"}},
+  "operations": {
+    "paper.extract": {"profile": "LIGHT", "engine_class": "LIGHT", "reason": "v0.3 operation, unchanged: its schema admits only the v0.3 models."},
+    "paper.extract_local": {"profile": "MIMO_LIGHT", "engine_class": "LIGHT", "reason": "Claim-batch extraction from local context only (v0.4 S6) on the metered MiMo API."},
+    "paper.extract_focus": {"profile": "MIMO_LIGHT", "engine_class": "LIGHT", "reason": "Whole-paper cache-stable prefix, one focus span per call (v0.4 S6) on the metered MiMo API; the prefix is billed at the cache-hit price after the first call of a paper."},
+    "dependency.match": {"profile": "DECISION", "engine_class": "DECISION", "reason": "v0.3 operation, unchanged: its schema admits only the v0.3 models."},
+    "dependency.match_retrieved": {"profile": "MIMO_DECISION", "engine_class": "DECISION", "reason": "Match one request pool against retrieved upstream claim readings (v0.4 S7); a citation alone is not support."},
+    "leg.judge": {"profile": "MIMO_DECISION", "engine_class": "DECISION", "reason": "One judge of the AUTO_EVAL_V1 panel: a model other than the extraction model, blinded to method and control status."},
+    "match.judge": {"profile": "MIMO_DECISION", "engine_class": "DECISION", "reason": "One judge of the AUTO_EVAL_V1 panel for S7 matches, blinded to method and control status."},
+    "corpus.discover": {"profile": "MIMO_LIGHT", "engine_class": "LIGHT", "reason": "Propose arXiv ids for a DISCOVERY round (v0.4 §6.3); the host examines every proposal."},
+    "autoformalization.failure_classify": {"profile": "CLASSIFICATION", "engine_class": "DECISION", "reason": "v0.3 operation, unchanged."},
+    "autoformalization.lean": {"profile": "HEAVY", "engine_class": "HEAVY", "reason": "v0.3 operation, unchanged."},
+    "autoformalization.lamport": {"profile": "HEAVY", "engine_class": "HEAVY", "reason": "v0.3 operation, unchanged."},
+    "autoformalization.premise": {"profile": "HEAVY", "engine_class": "HEAVY", "reason": "v0.3 operation, unchanged."}
+  },
+  "note": "operation-routing-v2 candidate profile for a metered MiMo run (schema v0.4 §5.4), prices in pricing-mimo-20260922.json. Not frozen into any plan; no MiMo call has been made. An AUTO_EVAL_V1 panel takes one leg.judge route from this profile and one from engines-v2.json, so the two judges differ in model family."
+}

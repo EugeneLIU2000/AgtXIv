@@ -1,0 +1,17 @@
+# Example local target for the schema v0.4 projection (spec §9). Not started by any test or host code.
+# Neo4j is a rebuildable projection of one delta-set manifest plus one review set (I-12): to rebuild from
+# empty, run `docker compose -f compose.example.yaml down -v` and load again.
+# Community Edition: only uniqueness constraints (neo4j/schema.cypher). The Query API
+# (POST /db/{db}/query/v2) is served on the HTTP port.
+services:
+  neo4j:
+    image: neo4j:5.26-community  # or a neo4j:2026.x-community tag; pin the exact tag you verified
+    ports:
+      - "127.0.0.1:7474:7474"  # HTTP: Browser and Query API; bound to localhost only
+      - "127.0.0.1:7687:7687"  # Bolt: Browser and cypher-shell
+    environment:
+      NEO4J_AUTH: "neo4j/${NEO4J_PASSWORD:?set NEO4J_PASSWORD in the environment}"
+    volumes:
+      - agtxiv-v04-neo4j-data:/data
+volumes:
+  agtxiv-v04-neo4j-data: {}

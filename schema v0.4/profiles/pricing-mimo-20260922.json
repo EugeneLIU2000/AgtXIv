@@ -1,0 +1,29 @@
+{
+  "kind": "PricingProfile",
+  "provider": "Xiaomi MiMo Open Platform (overseas account, pay-as-you-go API)",
+  "source_url": "https://mimo.mi.com/docs/en-US/price/pay-as-you-go",
+  "page_updated": "2026-09-22",
+  "retrieved": "2026-09-25",
+  "currency": "USD",
+  "unit": "PER_MILLION_TOKENS",
+  "models": {
+    "mimo-v2.6-flash": {
+      "realtime": {"cache_hit": 0.0028, "cache_miss": 0.14, "output": 0.28},
+      "batch": {"cache_hit": 0.0014, "cache_miss": 0.07, "output": 0.14},
+      "limits": {"rpm": 100, "tpm": 10000000, "context_window": 1000000, "max_output": 131072, "batch_completion_minutes": 1440}
+    },
+    "mimo-v2.6-pro": {
+      "realtime": {"cache_hit": 0.0036, "cache_miss": 0.435, "output": 0.87},
+      "batch": {"cache_hit": 0.0018, "cache_miss": 0.2175, "output": 0.435},
+      "limits": {"rpm": 100, "tpm": 10000000, "context_window": 1000000, "max_output": 131072, "batch_completion_minutes": 1440}
+    }
+  },
+  "notes": [
+    "Prices copied from the API Pricing page (update time 2026-09-22); limits from the Models and Rate Limit pages (update times 2026-09-22 and 2026-09-21). Re-read the pages before any run.",
+    "Cache hit: a request prefix that hits the prompt cache is billed at cache_hit. Cache write: free for a limited time. The pages state no cache lifetime and no minimum prefix length.",
+    "Batch API: 50% of the real-time price, cache hits billed at the batch cache_hit price, completion window 24 h through the API (1-14 days in the console), at most 128 MB per JSONL file, only successful requests billed, no in-job retry. Needs real-name verification and a prepaid balance.",
+    "Thinking is enabled by default for both models; reasoning tokens are billed as output (max_completion_tokens counts them). With thinking enabled, temperature and top_p are fixed at 1.0 and 0.95.",
+    "RPM and TPM are per account and model, summed over all API keys of the account.",
+    "The Token Plan subscription is a separate quota for AI programming tools; it cannot pay for the Batch API and is not modelled here."
+  ]
+}

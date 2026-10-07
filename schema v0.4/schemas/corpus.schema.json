@@ -1,0 +1,1062 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agtxiv.org/schema/research/0.4.0/corpus.schema.json",
+  "title": "Corpus dependency graph and foundation analysis contracts, schema contract ladder v0.4",
+  "description": "Design: docs/superpowers/specs/2026-09-25-schema-v04-design.md §14 and Appendix A. Reused v0.3 defs are referenced by $id; no field here carries a verification state, and analysis records are nominations, never status (I-1, I-10).",
+  "$defs": {
+    "Sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "HexKey": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "IsoDate": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "PartialDate": {"type": "string", "pattern": "^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$"},
+    "ArxivBaseId": {"type": "string", "pattern": "^(?:[0-9]{4}\\.[0-9]{4,5}|[a-z][a-z-]*(?:\\.[A-Z]{2})?/[0-9]{7})$"},
+    "PaperVersionId": {"type": "string", "pattern": "^arxiv:(?:[0-9]{4}\\.[0-9]{4,5}|[a-z][a-z-]*(?:\\.[A-Z]{2})?/[0-9]{7})v[1-9][0-9]*$"},
+    "WorkId": {"type": "string", "pattern": "^work:[0-9a-f]{64}$"},
+    "BibEntryId": {"type": "string", "pattern": "^bib:[0-9a-f]{64}$"},
+    "OccurrenceId": {"type": "string", "pattern": "^occ:[0-9a-f]{64}$"},
+    "ClaimId": {"type": "string", "pattern": "^claim:[0-9a-f]{64}$"},
+    "ReadingId": {"type": "string", "pattern": "^reading:[0-9a-f]{64}$"},
+    "JunctionId": {"type": "string", "pattern": "^junction:[0-9a-f]{64}$"},
+    "PlaceholderId": {"type": "string", "pattern": "^placeholder:[0-9a-f]{64}$"},
+    "PrimitiveId": {"type": "string", "pattern": "^primitive:[0-9a-f]{64}$"},
+    "RelId": {"type": "string", "pattern": "^rel:[0-9a-f]{64}$"},
+    "DeltaId": {"type": "string", "pattern": "^delta:[0-9a-f]{64}$"},
+    "ManifestId": {"type": "string", "pattern": "^manifest:[0-9a-f]{64}$"},
+    "CorpusId": {"type": "string", "pattern": "^corpus:[0-9a-f]{64}$"},
+    "ProjectionId": {"type": "string", "pattern": "^projection:[0-9a-f]{64}$"},
+    "PolicyId": {"type": "string", "pattern": "^policy:[0-9a-f]{64}$"},
+    "SamplingRecordId": {"type": "string", "pattern": "^sampling:[0-9a-f]{64}$"},
+    "NominationId": {"type": "string", "pattern": "^nomination:[0-9a-f]{64}$"},
+    "ReviewSampleId": {"type": "string", "pattern": "^review-sample:[0-9a-f]{64}$"},
+    "EvaluationPlanId": {"type": "string", "pattern": "^eval-plan:[0-9a-f]{64}$"},
+    "JudgementId": {"type": "string", "pattern": "^judgement:[0-9a-f]{64}$"},
+    "CardId": {"type": "string", "pattern": "^card:[0-9a-f]{64}$"},
+    "EvaluationReportId": {"type": "string", "pattern": "^eval-report:[0-9a-f]{64}$"},
+    "GateId": {"type": "string", "pattern": "^gate:[0-9a-f]{64}$"},
+    "CostProjectionId": {"type": "string", "pattern": "^cost:[0-9a-f]{64}$"},
+    "LogicalId": {"anyOf": [{"$ref": "#/$defs/ClaimId"}, {"$ref": "#/$defs/PlaceholderId"}]},
+    "DerivationId": {
+      "type": "string",
+      "description": "§3.3: statement | proof:<digest> | unlocated:<method>:<k> | source:<paper_version_id>:<match_key>; digests are core.digest values (sha256:<hex>).",
+      "pattern": "^(?:statement|proof:sha256:[0-9a-f]{64}|unlocated:(?:DETERMINISTIC_ANCHOR|HOST_RULE|MODEL_EXTRACTION|MODEL_MATCH|HUMAN|LIBRARY):[0-9]+|source:arxiv:(?:[0-9]{4}\\.[0-9]{4,5}|[a-z][a-z-]*(?:\\.[A-Z]{2})?/[0-9]{7})v[1-9][0-9]*:sha256:[0-9a-f]{64})$"
+    },
+    "Method": {"enum": ["DETERMINISTIC_ANCHOR", "HOST_RULE", "MODEL_EXTRACTION", "MODEL_MATCH", "HUMAN", "LIBRARY"]},
+    "LegRole": {"enum": ["DEFINITION_DEPENDENCY", "SCIENTIFIC_CLAIM_DEPENDENCY", "SCOPE_DEPENDENCY", "PROOF_DEPENDENCY", "BRIDGING_DEPENDENCY", "UNCLASSIFIED"]},
+    "UseSite": {"enum": ["STATEMENT", "PROOF", "UNKNOWN"]},
+    "Stratum": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11.2 a sampling stratum: the method and method_version that produced the item and, for a leg, its role and use site. Items of different method versions are never pooled.",
+      "properties": {"method": {"$ref": "#/$defs/Method"}, "method_version": {"type": "string", "minLength": 1},
+                     "role": {"$ref": "#/$defs/LegRole"}, "use_site": {"$ref": "#/$defs/UseSite"}},
+      "required": ["method", "method_version"],
+      "dependentRequired": {"role": ["use_site"], "use_site": ["role"]}
+    },
+    "Admission": {"description": "§6: how a paper entered the corpus. Only SAMPLE papers are in the estimand population P.", "enum": ["SAMPLE", "EXPANSION", "DISCOVERY"]},
+    "CountBasis": {"description": "I-14: which admitted papers count as dependents; statistics of the two bases are never pooled. Traversal may pass through every admitted paper under either basis.", "enum": ["SAMPLE_ONLY", "ALL_ADMITTED"]},
+    "Rate": {
+      "type": "object", "additionalProperties": false,
+      "description": "A proportion (counts may be effective, non-integer sizes) with its Wilson score interval at z; estimate is null when n = 0.",
+      "properties": {
+        "successes": {"type": "number", "minimum": 0}, "n": {"type": "number", "minimum": 0},
+        "estimate": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]},
+        "lower": {"type": "number", "minimum": 0, "maximum": 1}, "upper": {"type": "number", "minimum": 0, "maximum": 1},
+        "z": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "required": ["successes", "n", "estimate", "lower", "upper", "z"]
+    },
+    "TokenPrices": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"cache_hit": {"type": "number", "minimum": 0}, "cache_miss": {"type": "number", "minimum": 0}, "output": {"type": "number", "minimum": 0}},
+      "required": ["cache_hit", "cache_miss", "output"]
+    },
+    "RootClass": {
+      "description": "§8.2 root classes plus the IN_LIBRARY and work-level-claim (WORK_LOCATOR) roots that §8.4 admits in layer_basis.",
+      "enum": ["PRIMITIVE", "DEFINITION_NO_SUPPORT_PROPOSED", "NO_SUPPORT_PROPOSED", "EXTERNAL_REQUEST", "UNRESOLVED_OCCURRENCE", "IN_LIBRARY", "WORK_LOCATOR"]
+    },
+    "Layer": {"description": "§4.1 value in N ∪ {∞}; UNRESOLVED only for a pooled work (§8.3).", "anyOf": [{"type": "integer", "minimum": 0}, {"enum": ["INFINITY", "UNRESOLVED"]}]},
+    "Bracket": {
+      "type": "object", "additionalProperties": false,
+      "description": "Importance bracket (§8.1): lower from legs proposed by >= 2 admitted readings (or the only reading), upper from the union.",
+      "properties": {"lower": {"type": "integer", "minimum": 0}, "upper": {"type": "integer", "minimum": 0}},
+      "required": ["lower", "upper"]
+    },
+    "EdgeType": {"enum": ["STATES", "STATED_BY", "READS", "PART_OF", "HAS_ENTRY", "RESOLVES_TO", "REQUESTS_FROM", "MENTIONS", "RESTATES_RESULT_OF", "VERSION_OF", "SAME_WORK", "CORRECTS", "SUPERSEDES", "ASSERTS_PRIMITIVE", "INCLUDES", "PREMISE_OF", "CONCLUDES"]},
+    "DateValue": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "value": {"anyOf": [{"$ref": "#/$defs/PartialDate"}, {"type": "null"}]},
+        "kind": {"enum": ["ARXIV_V1", "ARXIV_VERSION", "JOURNAL_PUBLISHED", "BIB_YEAR", "UNKNOWN"]},
+        "precision": {"enum": ["DAY", "MONTH", "YEAR", "UNKNOWN"]},
+        "source": {"type": "string", "minLength": 1}
+      },
+      "required": ["value", "kind", "precision", "source"],
+      "allOf": [
+        {"if": {"properties": {"kind": {"const": "UNKNOWN"}}},
+         "then": {"properties": {"value": {"type": "null"}, "precision": {"const": "UNKNOWN"}}},
+         "else": {"properties": {"value": {"type": "string"}, "precision": {"enum": ["DAY", "MONTH", "YEAR"]}}}},
+        {"if": {"properties": {"kind": {"const": "BIB_YEAR"}}}, "then": {"properties": {"precision": {"const": "YEAR"}}}}
+      ]
+    },
+    "ExternalIdentifierV4": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "arxiv_id": {"$ref": "../0.3.0/research.schema.json#/$defs/ExternalIdentifier/properties/arxiv_id"},
+        "doi": {"$ref": "../0.3.0/research.schema.json#/$defs/ExternalIdentifier/properties/doi"},
+        "openalex_id": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]},
+        "resolution_basis": {"anyOf": [{"$ref": "../0.3.0/research.schema.json#/$defs/ExternalIdentifier/properties/resolution_basis"}, {"enum": ["OPENALEX_CANDIDATE", "HOST_RULE_ARXIV_DOI"]}]},
+        "evidence": {"$ref": "../0.3.0/research.schema.json#/$defs/ExternalIdentifier/properties/evidence"}
+      },
+      "required": ["arxiv_id", "doi", "openalex_id", "resolution_basis", "evidence"]
+    },
+    "ModelSelectionV4": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "policy_version": {"const": "operation-routing-v2"},
+        "policy_sha256": {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/policy_sha256"},
+        "operation": {"anyOf": [{"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/operation"},
+                                {"enum": ["paper.extract_local", "paper.extract_focus", "dependency.match_retrieved", "leg.judge", "match.judge", "corpus.discover"]}]},
+        "profile": {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/profile"},
+        "engine_class": {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/engine_class"},
+        "model": {"anyOf": [{"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/model"}, {"enum": ["mimo-v2.6-flash", "mimo-v2.6-pro"]}]},
+        "effort": {"anyOf": [{"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/effort"}, {"enum": ["thinking-disabled", "thinking-enabled"]}],
+                   "description": "GPT routes name a reasoning effort; MiMo routes name the thinking mode (thinking-enabled fixes temperature at 1.0)."},
+        "reason": {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/properties/reason"},
+        "training_cutoff": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"value": {"anyOf": [{"$ref": "#/$defs/PartialDate"}, {"const": "UNKNOWN"}]}, "source": {"type": "string", "minLength": 1}},
+          "required": ["value", "source"]
+        }
+      },
+      "required": ["policy_version", "policy_sha256", "operation", "profile", "engine_class", "model", "effort", "reason", "training_cutoff"],
+      "allOf": [
+        {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/allOf/0"},
+        {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/allOf/1"},
+        {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/allOf/2"},
+        {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/allOf/3"},
+        {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/allOf/4"},
+        {"$ref": "../0.3.0/research.schema.json#/$defs/ModelSelection/allOf/5"},
+        {"if": {"properties": {"model": {"enum": ["mimo-v2.6-flash", "mimo-v2.6-pro"]}}},
+         "then": {"properties": {"effort": {"enum": ["thinking-disabled", "thinking-enabled"]}}},
+         "else": {"properties": {"effort": {"enum": ["low", "medium", "high"]}}}},
+        {"if": {"properties": {"operation": {"enum": ["paper.extract_local", "paper.extract_focus", "corpus.discover"]}}},
+         "then": {"properties": {"engine_class": {"const": "LIGHT"}, "model": {"enum": ["gpt-5.6-luna", "gpt-5.6-terra", "mimo-v2.6-flash", "mimo-v2.6-pro"]}}}},
+        {"if": {"properties": {"operation": {"enum": ["dependency.match_retrieved", "leg.judge", "match.judge"]}}},
+         "then": {"properties": {"engine_class": {"const": "DECISION"}, "model": {"enum": ["gpt-5.6-luna", "gpt-5.6-terra", "mimo-v2.6-flash", "mimo-v2.6-pro"]}}}}
+      ]
+    },
+    "PaperVersionNode": {
+      "type": "object", "additionalProperties": false,
+      "description": "Asserted only by the S1 acquisition delta, from the frozen metadata and the corpus manifest (parser_sha256 = eligibility.parser_sha256); measured yields are GraphDelta.measurements, never row content.",
+      "properties": {
+        "id": {"$ref": "#/$defs/PaperVersionId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "arxiv_base_id": {"$ref": "#/$defs/ArxivBaseId"},
+        "version": {"type": "integer", "minimum": 1},
+        "title": {"type": "string", "minLength": 1},
+        "primary_category": {"type": "string", "minLength": 1},
+        "categories": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "license": {"type": "string", "minLength": 1},
+        "redistribution": {"enum": ["OPEN", "RESTRICTED", "UNKNOWN"]},
+        "date_v1": {"$ref": "#/$defs/DateValue"},
+        "date_version": {"$ref": "#/$defs/DateValue"},
+        "source_sha256": {"$ref": "#/$defs/Sha256"},
+        "parser_sha256": {"$ref": "#/$defs/Sha256"}
+      },
+      "required": ["id", "content_sha256", "arxiv_base_id", "version", "primary_category", "categories", "redistribution", "date_v1", "date_version", "source_sha256", "parser_sha256"]
+    },
+    "WorkNode": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/WorkId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "identity_basis": {"enum": ["ARXIV_BASE", "DOI", "OPENALEX", "BIB_DIGEST"]},
+        "arxiv_base_id": {"$ref": "#/$defs/ArxivBaseId"},
+        "doi": {"type": "string", "pattern": "^10\\.[0-9]+/[^A-Z\\s]+$", "description": "Lowercased DOI (§5.2)."},
+        "openalex_id": {"type": "string", "pattern": "^W[0-9]+$"},
+        "bib_digest": {"$ref": "#/$defs/Sha256", "description": "digest(normalized title, year, first-author surname) of a BIB_DIGEST work (§5.2), so G6 can recompute its id."},
+        "title": {"type": "string", "minLength": 1},
+        "year": {"type": "integer"},
+        "work_kind": {"enum": ["ARTICLE", "BOOK", "THESIS", "PROCEEDINGS", "UNKNOWN"]},
+        "terminal_kind": {"$ref": "../0.3.0/research.schema.json#/$defs/TerminalRecord/properties/terminal_kind"}
+      },
+      "required": ["id", "content_sha256", "identity_basis", "work_kind", "terminal_kind"],
+      "allOf": [
+        {"if": {"properties": {"identity_basis": {"const": "ARXIV_BASE"}}}, "then": {"required": ["arxiv_base_id"]}},
+        {"if": {"properties": {"identity_basis": {"const": "DOI"}}}, "then": {"required": ["doi"]}},
+        {"if": {"properties": {"identity_basis": {"const": "OPENALEX"}}}, "then": {"required": ["openalex_id"]}},
+        {"if": {"properties": {"identity_basis": {"const": "BIB_DIGEST"}}}, "then": {"required": ["bib_digest"]}}
+      ]
+    },
+    "BibEntryNode": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/BibEntryId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "paper_version_id": {"$ref": "#/$defs/PaperVersionId"},
+        "citation_key": {"type": "string", "minLength": 1},
+        "locator": {"$ref": "../0.3.0/research.schema.json#/$defs/SourceSpan"},
+        "identifiers": {"$ref": "#/$defs/ExternalIdentifierV4"},
+        "title": {"type": "string", "minLength": 1},
+        "year": {"type": "integer"},
+        "entry_type": {"type": "string", "minLength": 1},
+        "v03_id": {"type": "string", "minLength": 1}
+      },
+      "required": ["id", "content_sha256", "paper_version_id", "citation_key", "locator", "identifiers"]
+    },
+    "ClaimNode": {
+      "type": "object", "additionalProperties": false,
+      "description": "Identity carries no method-written text (§5.2).",
+      "properties": {
+        "id": {"$ref": "#/$defs/ClaimId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "origin": {"enum": ["PAPER_VERSION", "WORK_LOCATOR"]},
+        "paper_version_id": {"$ref": "#/$defs/PaperVersionId"},
+        "work_id": {"$ref": "#/$defs/WorkId"},
+        "occurrence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/OccurrenceId"}},
+        "part": {"type": "string", "pattern": "^(?:whole|part:[0-9]+)$"},
+        "locator": {"$ref": "../0.3.0/research.schema.json#/$defs/SourceSpan"},
+        "work_locator_text": {"type": "string", "minLength": 1},
+        "occurrence_kind": {"type": "string", "minLength": 1}
+      },
+      "required": ["id", "content_sha256", "origin", "occurrence_ids", "part"],
+      "allOf": [
+        {"if": {"properties": {"origin": {"const": "PAPER_VERSION"}}},
+         "then": {"required": ["paper_version_id"], "properties": {"occurrence_ids": {"minItems": 1}},
+                  "not": {"anyOf": [{"required": ["work_id"]}, {"required": ["work_locator_text"]}]}}},
+        {"if": {"properties": {"origin": {"const": "WORK_LOCATOR"}}},
+         "then": {"required": ["work_id", "work_locator_text"], "properties": {"occurrence_ids": {"maxItems": 0}},
+                  "not": {"anyOf": [{"required": ["paper_version_id"]}, {"required": ["locator"]}]}}}
+      ]
+    },
+    "ClaimReadingNode": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/ReadingId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "claim_id": {"$ref": "#/$defs/ClaimId"},
+        "method": {"$ref": "#/$defs/Method"},
+        "method_version": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["definition", "theorem", "lemma", "proposition", "corollary", "equation", "claim", "remark", "UNKNOWN"]},
+        "statement_sha256": {"$ref": "#/$defs/Sha256"},
+        "conditions_sha256": {"$ref": "#/$defs/Sha256"},
+        "display_text": {"type": "string", "minLength": 1},
+        "display_text_class": {"enum": ["VERBATIM", "PARAPHRASE", "NONE"]},
+        "confidence": {"$ref": "../0.3.0/research.schema.json#/$defs/Confidence"}
+      },
+      "required": ["id", "content_sha256", "claim_id", "method", "method_version", "kind", "statement_sha256", "conditions_sha256", "display_text_class"],
+      "if": {"properties": {"display_text_class": {"const": "NONE"}}},
+      "then": {"not": {"required": ["display_text"]}},
+      "else": {"required": ["display_text"]}
+    },
+    "JunctionNode": {
+      "type": "object", "additionalProperties": false,
+      "description": "AND over ordered legs; position is the leg's index. OR only across distinct derivation_id values (§3.3). STATEMENT legs only in a statement junction, and at most one statement junction per (conclusion, reading_method, method_version) (G13, host); analysis joins the admitted readings' statement junctions by the establishment reading policy.",
+      "properties": {
+        "id": {"$ref": "#/$defs/JunctionId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "conclusion_id": {"$ref": "#/$defs/LogicalId"},
+        "derivation_id": {"$ref": "#/$defs/DerivationId"},
+        "reading_method": {"$ref": "#/$defs/Method"},
+        "method_version": {"type": "string", "minLength": 1},
+        "legs": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "premise_id": {"$ref": "#/$defs/LogicalId"},
+              "role": {"$ref": "#/$defs/LegRole"},
+              "use_site": {"$ref": "#/$defs/UseSite"},
+              "flags": {"type": "array", "uniqueItems": true, "items": {"enum": ["EXPANDED_TO_PARTS"]}}
+            },
+            "required": ["premise_id", "role", "use_site", "flags"]
+          }
+        },
+        "grouping_basis": {"type": "string", "minLength": 1},
+        "citation_groups": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "required": ["id", "content_sha256", "conclusion_id", "derivation_id", "reading_method", "method_version", "legs", "grouping_basis"],
+      "allOf": [
+        {"if": {"properties": {"derivation_id": {"const": "statement"}}},
+         "then": {"properties": {"legs": {"items": {"properties": {"use_site": {"const": "STATEMENT"}}}}}},
+         "else": {"properties": {"legs": {"items": {"properties": {"use_site": {"not": {"const": "STATEMENT"}}}}}}}},
+        {"if": {"properties": {"derivation_id": {"pattern": "^source:"}}},
+         "then": {"properties": {"conclusion_id": {"$ref": "#/$defs/PlaceholderId"}}},
+         "else": {"properties": {"conclusion_id": {"$ref": "#/$defs/ClaimId"}}}}
+      ]
+    },
+    "PlaceholderNode": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/PlaceholderId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "kind": {"enum": ["EXTERNAL_REQUEST", "UNRESOLVED_OCCURRENCE"]},
+        "paper_version_id": {"$ref": "#/$defs/PaperVersionId"},
+        "created_by_claim_id": {"$ref": "#/$defs/ClaimId"},
+        "citing_derivation_id": {"$ref": "#/$defs/DerivationId"},
+        "bib_entry_id": {"$ref": "#/$defs/BibEntryId"},
+        "citation_group": {"type": "string", "minLength": 1},
+        "locator_text": {"type": "string", "minLength": 1},
+        "occurrence_id": {"$ref": "#/$defs/OccurrenceId"},
+        "reason": {"enum": ["AMBIGUOUS_OR_SELF_CLAIM", "NOT_YET_EXTRACTED", "SHARED_OCCURRENCE_EXPANSION_CYCLIC", "NON_ENVIRONMENT_TARGET"]}
+      },
+      "required": ["id", "content_sha256", "kind", "paper_version_id", "created_by_claim_id", "citing_derivation_id"],
+      "if": {"properties": {"kind": {"const": "EXTERNAL_REQUEST"}}},
+      "then": {"required": ["bib_entry_id"], "not": {"anyOf": [{"required": ["occurrence_id"]}, {"required": ["reason"]}]}},
+      "else": {"required": ["occurrence_id", "reason"], "not": {"anyOf": [{"required": ["bib_entry_id"]}, {"required": ["citation_group"]}, {"required": ["locator_text"]}]}}
+    },
+    "PrimitiveAssertionNode": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/PrimitiveId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "claim_id": {"$ref": "#/$defs/ClaimId"},
+        "method": {"$ref": "#/$defs/Method"},
+        "basis": {"enum": ["AXIOM", "ASSUMPTION", "STANDARD_NOTION", "HUMAN"]}
+      },
+      "required": ["id", "content_sha256", "claim_id", "method", "basis"]
+    },
+    "Edge": {
+      "type": "object", "additionalProperties": false,
+      "description": "Non-logical relationships of §3.6, plus the PREMISE_OF and CONCLUDES rows the projection derives from junctions.",
+      "properties": {
+        "id": {"$ref": "#/$defs/RelId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "type": {"$ref": "#/$defs/EdgeType"},
+        "start_id": {"type": "string", "minLength": 1},
+        "end_id": {"type": "string", "minLength": 1},
+        "props": {"type": "object"}
+      },
+      "required": ["id", "content_sha256", "type", "start_id", "end_id", "props"],
+      "allOf": [
+        {"if": {"properties": {"type": {"const": "PREMISE_OF"}}},
+         "then": {"properties": {"end_id": {"$ref": "#/$defs/JunctionId"}, "props": {"required": ["position", "role", "use_site"],
+                  "properties": {"position": {"type": "integer", "minimum": 0}, "role": {"$ref": "#/$defs/LegRole"}, "use_site": {"$ref": "#/$defs/UseSite"}}}}}},
+        {"if": {"properties": {"type": {"const": "CONCLUDES"}}}, "then": {"properties": {"start_id": {"$ref": "#/$defs/JunctionId"}}}},
+        {"if": {"properties": {"type": {"const": "RESOLVES_TO"}}},
+         "then": {"properties": {"props": {"required": ["method", "basis"], "properties": {"method": {"$ref": "#/$defs/Method"}, "basis": {"type": "string", "minLength": 1}}}}}},
+        {"if": {"properties": {"type": {"const": "SAME_WORK"}}},
+         "then": {"properties": {"props": {"required": ["basis"], "properties": {"basis": {"enum": ["HOST_RULE_ARXIV_DOI", "HOST_RULE_ARXIV_METADATA_DOI", "MODEL_MATCH", "HUMAN"]}}}}}},
+        {"if": {"properties": {"type": {"const": "INCLUDES"}}},
+         "then": {"properties": {"props": {"required": ["admission", "round", "sampling_record_id"],
+                  "properties": {"admission": {"$ref": "#/$defs/Admission"}, "round": {"type": "integer", "minimum": 0}, "sampling_record_id": {"$ref": "#/$defs/SamplingRecordId"}}}}}}
+      ]
+    },
+    "GraphDelta": {
+      "type": "object", "additionalProperties": false,
+      "description": "Immutable, content-addressed; delta_id = digest of the body without delta_id. PREMISE_OF and CONCLUDES are derived from junction legs, never asserted as edges. An id asserted by several deltas carries identical rows; method-dependent data lives only in method-scoped rows (readings, junctions) or in measurements. HUMAN_ENTRY (method HUMAN) and LIBRARY_AUDIT (method LIBRARY) carry primitive assertions, work-level claims and entered edges. Only S1 asserts PaperVersion.",
+      "properties": {
+        "kind": {"const": "GraphDelta"},
+        "contract_version": {"const": "0.4.0"},
+        "delta_id": {"$ref": "#/$defs/DeltaId"},
+        "stage": {"enum": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "HUMAN_ENTRY", "LIBRARY_AUDIT"]},
+        "method": {"$ref": "#/$defs/Method"},
+        "method_version": {"type": "string", "minLength": 1},
+        "subject": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"kind": {"enum": ["PAPER_VERSION", "CLAIM_BATCH", "REQUEST_POOL", "MANIFEST"]}, "id": {"type": "string", "minLength": 1}},
+          "required": ["kind", "id"]
+        },
+        "parents": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/DeltaId"}},
+        "produced_by": {"type": "array", "items": {"$ref": "../0.3.0/research.schema.json#/$defs/ContentArtifactReference"}},
+        "nodes": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "PaperVersion": {"type": "array", "items": {"$ref": "#/$defs/PaperVersionNode"}},
+            "Work": {"type": "array", "items": {"$ref": "#/$defs/WorkNode"}},
+            "BibEntry": {"type": "array", "items": {"$ref": "#/$defs/BibEntryNode"}},
+            "Claim": {"type": "array", "items": {"$ref": "#/$defs/ClaimNode"}},
+            "ClaimReading": {"type": "array", "items": {"$ref": "#/$defs/ClaimReadingNode"}},
+            "Junction": {"type": "array", "items": {"$ref": "#/$defs/JunctionNode"}},
+            "Placeholder": {"type": "array", "items": {"$ref": "#/$defs/PlaceholderNode"}},
+            "PrimitiveAssertion": {"type": "array", "items": {"$ref": "#/$defs/PrimitiveAssertionNode"}}
+          }
+        },
+        "edges": {"type": "array", "items": {"$ref": "#/$defs/Edge", "properties": {"type": {"not": {"enum": ["PREMISE_OF", "CONCLUDES"]}}}}},
+        "issues": {"type": "array", "items": {"$ref": "../0.3.0/research.schema.json#/$defs/Issue"}},
+        "measurements": {
+          "type": "object", "additionalProperties": false,
+          "description": "Host measurements about the delta subject, never graph content.",
+          "properties": {
+            "deterministic_yield": {
+              "type": "object", "additionalProperties": false,
+              "description": "§7 S3 yield of one paper version.",
+              "properties": {
+                "theorem_like_environments": {"type": "integer", "minimum": 0},
+                "owned_proofs": {"type": "integer", "minimum": 0},
+                "proof_owned_anchors": {"type": "integer", "minimum": 0},
+                "junction_bearing_conclusions": {"type": "integer", "minimum": 0}
+              },
+              "required": ["theorem_like_environments", "owned_proofs", "proof_owned_anchors", "junction_bearing_conclusions"]
+            }
+          }
+        }
+      },
+      "required": ["kind", "contract_version", "delta_id", "stage", "method", "method_version", "subject", "parents", "produced_by", "nodes", "edges", "issues"],
+      "allOf": [
+        {"if": {"properties": {"stage": {"not": {"const": "S1"}}}}, "then": {"properties": {"nodes": {"not": {"required": ["PaperVersion"]}}}}},
+        {"if": {"properties": {"stage": {"const": "HUMAN_ENTRY"}}}, "then": {"properties": {"method": {"const": "HUMAN"}}}},
+        {"if": {"properties": {"stage": {"const": "LIBRARY_AUDIT"}}}, "then": {"properties": {"method": {"const": "LIBRARY"}}}}
+      ]
+    },
+    "DeltaSetManifest": {
+      "type": "object", "additionalProperties": false,
+      "description": "Valid only if closed under parents and every edge endpoint is asserted by an included delta (host check). A correction is a new manifest.",
+      "properties": {
+        "kind": {"const": "DeltaSetManifest"},
+        "manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "corpus_id": {"$ref": "#/$defs/CorpusId"},
+        "parent_manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "deltas": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/DeltaId"}},
+        "excluded": {
+          "type": "array",
+          "items": {"type": "object", "additionalProperties": false,
+                    "properties": {"delta_id": {"$ref": "#/$defs/DeltaId"}, "reason": {"type": "string", "minLength": 1}},
+                    "required": ["delta_id", "reason"]}
+        },
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "manifest_id", "corpus_id", "deltas", "excluded", "created_at"]
+    },
+    "ProjectionManifest": {
+      "type": "object", "additionalProperties": false,
+      "description": "Names what Neo4j holds (I-12); readers require READY.",
+      "properties": {
+        "id": {"$ref": "#/$defs/ProjectionId"},
+        "content_sha256": {"$ref": "#/$defs/Sha256"},
+        "delta_set_digest": {"$ref": "#/$defs/Sha256"},
+        "review_set_digest": {"$ref": "#/$defs/Sha256"},
+        "state": {"enum": ["BUILDING", "READY", "FAILED"]},
+        "loader_version": {"type": "string", "minLength": 1},
+        "audit_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
+      },
+      "required": ["id", "content_sha256", "delta_set_digest", "review_set_digest", "state", "loader_version", "audit_counts"]
+    },
+    "AnalysisPolicy": {
+      "type": "object", "additionalProperties": false,
+      "description": "§8.1, frozen per run and digested into every output.",
+      "properties": {
+        "kind": {"const": "AnalysisPolicy"},
+        "contract_version": {"const": "0.4.0"},
+        "policy_id": {"$ref": "#/$defs/PolicyId"},
+        "status": {"enum": ["PRIMARY", "EXPLORATORY"]},
+        "establishment_reading": {
+          "oneOf": [
+            {"type": "object", "additionalProperties": false, "properties": {"mode": {"const": "UNION"}}, "required": ["mode"]},
+            {"type": "object", "additionalProperties": false,
+             "properties": {"mode": {"const": "ONLY"}, "methods": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/Method"}}},
+             "required": ["mode", "methods"]}
+          ]
+        },
+        "importance_methods": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/Method"}},
+        "work_identity": {"enum": ["EXPLICIT_IDS_ONLY", "PLUS_REVIEWED_SAME_WORK", "PLUS_CANDIDATE_SAME_WORK"]},
+        "citation_group_semantics": {"enum": ["AND", "OR"]},
+        "cycle_policy": {"enum": ["FIXPOINT", "CONDENSE_V03"]},
+        "base_set": {"enum": ["ALL_ROOTS", "PRIMITIVE_ASSERTED"]},
+        "include_part_expansions": {"type": "boolean"},
+        "traverse": {"enum": ["SAMPLE_ONLY", "ALL_ADMITTED"], "description": "Whose claims enter the graph: SAMPLE papers only, or also EXPANSION and DISCOVERY papers (§6.3)."},
+        "count_basis": {"$ref": "#/$defs/CountBasis"},
+        "admission_gate": {"anyOf": [{"$ref": "#/$defs/GateId"}, {"type": "null"}],
+                           "description": "The P0 GateDecision whose admitted methods bound importance_methods (§11.3); a PRIMARY run requires one."},
+        "nomination": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"rule": {"const": "FOUNDATION_V1"}, "threshold": {"type": "integer", "minimum": 1}, "top_k": {"type": "integer", "minimum": 1}},
+          "required": ["rule", "threshold", "top_k"]
+        },
+        "bootstrap": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"scheme": {"const": "PAPER_REWEIGHT_V1"}, "replicates": {"type": "integer", "minimum": 1}, "seed": {"type": "string", "minLength": 1}},
+          "required": ["scheme", "replicates", "seed"]
+        },
+        "edge_precision": {
+          "anyOf": [
+            {"type": "null"},
+            {"type": "object", "additionalProperties": false,
+             "properties": {"scheme": {"const": "EDGE_PRECISION_V1"}, "estimates": {"$ref": "../0.3.0/research.schema.json#/$defs/ContentArtifactReference"}},
+             "required": ["scheme", "estimates"]}
+          ]
+        }
+      },
+      "required": ["kind", "contract_version", "policy_id", "status", "establishment_reading", "importance_methods", "work_identity", "citation_group_semantics", "cycle_policy", "base_set", "include_part_expansions", "traverse", "count_basis", "admission_gate", "nomination", "bootstrap", "edge_precision"],
+      "if": {"properties": {"traverse": {"const": "SAMPLE_ONLY"}}},
+      "then": {"properties": {"count_basis": {"const": "SAMPLE_ONLY"}}}
+    },
+    "CorpusManifest": {
+      "type": "object", "additionalProperties": false,
+      "description": "§6.1 (S0, HOST).",
+      "properties": {
+        "kind": {"const": "CorpusManifest"},
+        "contract_version": {"const": "0.4.0"},
+        "corpus_id": {"$ref": "#/$defs/CorpusId"},
+        "field": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "primary_categories": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+            "date_window": {"type": "object", "additionalProperties": false,
+                            "properties": {"start": {"$ref": "#/$defs/IsoDate"}, "end": {"$ref": "#/$defs/IsoDate"}}, "required": ["start", "end"]}
+          },
+          "required": ["primary_categories", "date_window"]
+        },
+        "sampling_frame": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"kind": {"enum": ["OAI_PMH_ARXIVRAW", "METADATA_SNAPSHOT"]}, "sha256": {"$ref": "#/$defs/Sha256"}, "snapshot_date": {"$ref": "#/$defs/IsoDate"}},
+          "required": ["kind", "sha256", "snapshot_date"]
+        },
+        "eligibility": {
+          "type": "object", "additionalProperties": false,
+          "description": "§6.2 THEOREM_OR_DERIVATION_V1 (host/eligibility.py): eligible iff the S2 parse has at least min_theorem_like theorem-like or definition environments, or at least min_display_equations display equations, so derivation papers without theorem environments are inside P.",
+          "properties": {
+            "rule": {"const": "THEOREM_OR_DERIVATION_V1"},
+            "params": {"type": "object", "additionalProperties": false,
+                       "properties": {"min_theorem_like": {"type": "integer", "minimum": 1}, "min_display_equations": {"type": "integer", "minimum": 1}},
+                       "required": ["min_theorem_like", "min_display_equations"]},
+            "program_sha256": {"$ref": "#/$defs/Sha256"}, "parser_sha256": {"$ref": "#/$defs/Sha256"}
+          },
+          "required": ["rule", "params", "program_sha256", "parser_sha256"]
+        },
+        "size_limits": {"type": "object", "description": "v0.3 fetch_arxiv_source limits, frozen."},
+        "version_rule": {"const": "LATEST_ON_OR_BEFORE_SNAPSHOT"},
+        "seed": {"type": "string", "minLength": 1},
+        "target_size": {"type": "integer", "minimum": 1},
+        "transient_retry_limit": {"type": "integer", "minimum": 0},
+        "coverage": {"const": "EQUAL_FULL",
+                     "description": "§6.4: every accepted paper of every admission receives S6 under `extraction`, and every request whose upstream paper version is in the corpus receives S7; there is no prioritized arm."},
+        "extraction": {
+          "type": "object", "additionalProperties": false,
+          "description": "The one S6 policy of the corpus; every S6 delta carries its method_version (§7.2).",
+          "properties": {
+            "operation": {"enum": ["paper.extract_focus", "paper.extract_local"]},
+            "method_version": {"type": "string", "minLength": 1},
+            "focus_bytes": {"type": "integer", "minimum": 256},
+            "prose_bytes": {"type": "integer", "minimum": 0}
+          },
+          "required": ["operation", "method_version"],
+          "if": {"properties": {"operation": {"const": "paper.extract_focus"}}},
+          "then": {"required": ["focus_bytes"], "not": {"required": ["prose_bytes"]}},
+          "else": {"required": ["prose_bytes"], "not": {"required": ["focus_bytes"]}}
+        },
+        "gates": {
+          "type": "object", "additionalProperties": false,
+          "description": "§11 automatic gates, pre-registered at S0 before anything is measured; host/gates.py applies them.",
+          "properties": {
+            "P_MINUS_1": {
+              "type": "object", "additionalProperties": false,
+              "properties": {
+                "min_eligible_fraction": {"type": "number", "minimum": 0, "maximum": 1},
+                "max_undetermined_fraction": {"type": "number", "minimum": 0, "maximum": 1},
+                "claim_level": {"type": "object", "additionalProperties": false,
+                                "description": "GO without expansion needs at least min_works works each cited by at least min_citing_papers sample papers (bibliography citations; the in-proof counts are reported beside them).",
+                                "properties": {"min_works": {"type": "integer", "minimum": 1}, "min_citing_papers": {"type": "integer", "minimum": 2}},
+                                "required": ["min_works", "min_citing_papers"]}
+              },
+              "required": ["min_eligible_fraction", "max_undetermined_fraction", "claim_level"]
+            },
+            "P0": {
+              "type": "object", "additionalProperties": false,
+              "properties": {
+                "admission_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+                "fpr_inflation": {"type": "number", "minimum": 1},
+                "alpha": {"type": "number", "exclusiveMinimum": 0, "maximum": 0.5},
+                "max_unresolved_fraction": {"type": "number", "minimum": 0, "maximum": 1},
+                "min_items": {"type": "integer", "minimum": 1},
+                "require_projection_under_ceiling": {"const": true}
+              },
+              "required": ["admission_threshold", "fpr_inflation", "alpha", "max_unresolved_fraction", "min_items", "require_projection_under_ceiling"]
+            }
+          },
+          "required": ["P_MINUS_1", "P0"]
+        },
+        "primary_analysis_policy": {"$ref": "#/$defs/AnalysisPolicy", "properties": {"status": {"const": "PRIMARY"}, "admission_gate": {"type": "null"}}},
+        "budget_ceiling": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"unit": {"type": "string", "minLength": 1}, "value": {"type": "number", "minimum": 0},
+                         "pricing_profile_sha256": {"$ref": "#/$defs/Sha256"}},
+          "required": ["unit", "value"],
+          "if": {"properties": {"unit": {"enum": ["USD", "CNY"]}}}, "then": {"required": ["pricing_profile_sha256"]}
+        },
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "corpus_id", "field", "sampling_frame", "eligibility", "size_limits", "version_rule", "seed", "target_size", "transient_retry_limit", "coverage", "extraction", "gates", "primary_analysis_policy", "budget_ceiling", "created_at"]
+    },
+    "SamplingRecord": {
+      "type": "object", "additionalProperties": false,
+      "description": "§6.2-6.3: one record per sampling round; every examined candidate has exactly one outcome and accepted papers are never replaced.",
+      "properties": {
+        "kind": {"const": "SamplingRecord"},
+        "contract_version": {"const": "0.4.0"},
+        "sampling_record_id": {"$ref": "#/$defs/SamplingRecordId"},
+        "corpus_id": {"$ref": "#/$defs/CorpusId"},
+        "round": {"type": "integer", "minimum": 0},
+        "admission": {"$ref": "#/$defs/Admission"},
+        "discovery": {
+          "type": "object", "additionalProperties": false,
+          "description": "§6.3 DISCOVERY round: arXiv ids proposed by a model search (corpus.discover), deduplicated against earlier rounds and examined in order_key(seed, id) order up to M; never in the estimand population P.",
+          "properties": {
+            "operation": {"const": "corpus.discover"},
+            "queries_sha256": {"$ref": "#/$defs/Sha256"},
+            "receipts": {"type": "array", "items": {"$ref": "../0.3.0/research.schema.json#/$defs/ContentArtifactReference"}},
+            "proposed": {"type": "integer", "minimum": 0, "description": "= dropped_invalid + duplicates + dropped_seen + not_selected + the candidates of the round."},
+            "dropped_invalid": {"type": "integer", "minimum": 0},
+            "duplicates": {"type": "integer", "minimum": 0},
+            "dropped_seen": {"type": "integer", "minimum": 0},
+            "not_selected": {"type": "integer", "minimum": 0},
+            "M": {"type": "integer", "minimum": 1},
+            "seed": {"type": "string", "minLength": 1, "description": "Derived by the host from the manifest seed and the round (corpus.discovery_seed), never chosen after the proposals are seen."}
+          },
+          "required": ["operation", "queries_sha256", "receipts", "proposed", "dropped_invalid", "duplicates", "dropped_seen", "not_selected", "M", "seed"]
+        },
+        "expansion": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "source_manifest_id": {"$ref": "#/$defs/ManifestId"},
+            "analysis_run": {"type": "object", "additionalProperties": false,
+                             "properties": {"policy_id": {"$ref": "#/$defs/PolicyId"}, "manifest_id": {"$ref": "#/$defs/ManifestId"}},
+                             "required": ["policy_id", "manifest_id"]},
+            "selection_rule": {"type": "string", "minLength": 1},
+            "M": {"type": "integer", "minimum": 1}
+          },
+          "required": ["source_manifest_id", "analysis_run", "selection_rule", "M"]
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "arxiv_base_id": {"$ref": "#/$defs/ArxivBaseId"},
+              "order_key": {"$ref": "#/$defs/HexKey", "description": "sha256(seed_utf8 || 0x00 || arxiv_base_id), hex."},
+              "outcome": {"enum": ["ACCEPTED", "INELIGIBLE", "UNDETERMINED"]},
+              "attempts": {"type": "integer", "minimum": 1},
+              "paper_version_id": {"$ref": "#/$defs/PaperVersionId"},
+              "reason": {"type": "string", "minLength": 1},
+              "undetermined_class": {"enum": ["TRANSIENT_NETWORK", "NO_TEX_SOURCE", "SIZE_LIMIT", "MAIN_AMBIGUOUS", "WITHDRAWN", "PARSE_FAILED", "ID_NOT_FOUND"]}
+            },
+            "required": ["arxiv_base_id", "outcome", "attempts"],
+            "allOf": [
+              {"if": {"properties": {"outcome": {"const": "ACCEPTED"}}}, "then": {"required": ["paper_version_id"]}, "else": {"not": {"required": ["paper_version_id"]}}},
+              {"if": {"properties": {"outcome": {"const": "INELIGIBLE"}}}, "then": {"required": ["reason"]}, "else": {"not": {"required": ["reason"]}}},
+              {"if": {"properties": {"outcome": {"const": "UNDETERMINED"}}}, "then": {"required": ["undetermined_class"]}, "else": {"not": {"required": ["undetermined_class"]}}}
+            ]
+          }
+        },
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "sampling_record_id", "corpus_id", "round", "admission", "candidates", "created_at"],
+      "allOf": [
+        {"if": {"properties": {"admission": {"const": "SAMPLE"}}},
+         "then": {"properties": {"round": {"const": 0}, "candidates": {"items": {"required": ["order_key"]}}},
+                  "not": {"anyOf": [{"required": ["expansion"]}, {"required": ["discovery"]}]}}},
+        {"if": {"properties": {"admission": {"const": "EXPANSION"}}},
+         "then": {"required": ["expansion"], "not": {"required": ["discovery"]},
+                  "properties": {"round": {"minimum": 1}, "candidates": {"items": {"not": {"required": ["order_key"]}}}}}},
+        {"if": {"properties": {"admission": {"const": "DISCOVERY"}}},
+         "then": {"required": ["discovery"], "not": {"required": ["expansion"]},
+                  "properties": {"round": {"minimum": 1}, "candidates": {"items": {"required": ["order_key"]}}}}}
+      ]
+    },
+    "NodeMetrics": {
+      "type": "object", "additionalProperties": false,
+      "description": "§8.2 metric vector (never one score) for one subject under one (policy, manifest); JSON Lines rows. Not a status (I-10).",
+      "properties": {
+        "kind": {"const": "NodeMetrics"},
+        "contract_version": {"const": "0.4.0"},
+        "policy_id": {"$ref": "#/$defs/PolicyId"},
+        "manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "subject_kind": {"enum": ["CLAIM", "PLACEHOLDER", "WORK"]},
+        "subject_id": {"anyOf": [{"$ref": "#/$defs/LogicalId"}, {"$ref": "#/$defs/WorkId"}]},
+        "count_basis": {"$ref": "#/$defs/CountBasis"},
+        "layer": {"$ref": "#/$defs/Layer"},
+        "layer_basis": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/RootClass"}},
+        "route_status": {"enum": ["FINITE", "ROUTE_UNDETERMINED"]},
+        "in_cycle": {"type": "boolean"},
+        "dependent_papers": {"$ref": "#/$defs/Bracket"},
+        "dependent_topics": {"$ref": "#/$defs/Bracket", "description": "Distinct arXiv categories (primary and cross-lists, ARXIV_CATEGORIES_V1) of the counted dependent papers: breadth across topics, reported and never ranked; present for nominated subjects."},
+        "dependent_papers_by_depth": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"1": {"$ref": "#/$defs/Bracket"}, "2": {"$ref": "#/$defs/Bracket"}, "3": {"$ref": "#/$defs/Bracket"}},
+          "required": ["1", "2", "3"]
+        },
+        "dependents": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"lower": {"type": "integer", "minimum": 0}, "upper": {"type": "integer", "minimum": 0}, "exactness": {"enum": ["EXACT", "ESTIMATED"]}},
+          "required": ["lower", "upper", "exactness"]
+        },
+        "necessary_dependents": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"ALL_ROOTS": {"anyOf": [{"$ref": "#/$defs/Bracket"}, {"type": "null"}]}, "PRIMITIVE_ASSERTED": {"anyOf": [{"$ref": "#/$defs/Bracket"}, {"type": "null"}]}},
+          "required": ["ALL_ROOTS", "PRIMITIVE_ASSERTED"]
+        },
+        "direct_uses": {"type": "integer", "minimum": 0},
+        "date": {"$ref": "#/$defs/DateValue"},
+        "root_class": {"anyOf": [{"$ref": "#/$defs/RootClass"}, {"type": "null"}]},
+        "root_examined_by": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/Method"}},
+        "uncertainty": {
+          "type": "array",
+          "items": {"type": "object", "additionalProperties": false,
+                    "properties": {"method": {"$ref": "#/$defs/Method"}, "role": {"$ref": "#/$defs/LegRole"}, "disposition": {"type": "string", "minLength": 1}, "legs": {"type": "integer", "minimum": 0}},
+                    "required": ["method", "role", "disposition", "legs"]}
+        },
+        "citing_claims": {"type": "integer", "minimum": 0},
+        "citing_papers": {"type": "integer", "minimum": 0}
+      },
+      "required": ["kind", "contract_version", "policy_id", "manifest_id", "subject_kind", "subject_id", "count_basis", "layer", "layer_basis", "dependent_papers", "dependent_papers_by_depth", "dependents", "date"],
+      "allOf": [
+        {"if": {"properties": {"subject_kind": {"const": "WORK"}}},
+         "then": {"required": ["citing_claims", "citing_papers"], "properties": {"subject_id": {"$ref": "#/$defs/WorkId"}, "layer": {"not": {"const": "INFINITY"}}}},
+         "else": {"required": ["route_status", "in_cycle", "necessary_dependents", "direct_uses", "root_class", "root_examined_by", "uncertainty"],
+                  "properties": {"subject_id": {"$ref": "#/$defs/LogicalId"}, "layer": {"not": {"const": "UNRESOLVED"}}}}},
+        {"if": {"required": ["route_status"], "properties": {"route_status": {"const": "ROUTE_UNDETERMINED"}}},
+         "then": {"properties": {"layer": {"const": "INFINITY"}}}},
+        {"if": {"required": ["route_status"], "properties": {"route_status": {"const": "FINITE"}}},
+         "then": {"properties": {"layer": {"type": "integer"}}}}
+      ]
+    },
+    "FoundationNomination": {
+      "type": "object", "additionalProperties": false,
+      "description": "§8.4: a nomination for Stage 3 work, never a status (I-10).",
+      "properties": {
+        "kind": {"const": "FoundationNomination"},
+        "contract_version": {"const": "0.4.0"},
+        "nomination_id": {"$ref": "#/$defs/NominationId"},
+        "policy_id": {"$ref": "#/$defs/PolicyId"},
+        "manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "rule": {"const": "FOUNDATION_V1"},
+        "list": {"enum": ["DEFINITIONS", "THEOREM_LIKE", "WORKS", "LOW_LAYER_BY_OPEN_PREMISES"]},
+        "subject_kind": {"enum": ["CLAIM", "WORK"]},
+        "subject_id": {"anyOf": [{"$ref": "#/$defs/ClaimId"}, {"$ref": "#/$defs/WorkId"}]},
+        "count_basis": {"$ref": "#/$defs/CountBasis"},
+        "rank_interval": {
+          "type": "object", "additionalProperties": false,
+          "properties": {"lower": {"type": "integer", "minimum": 1}, "upper": {"type": "integer", "minimum": 1}},
+          "required": ["lower", "upper"]
+        },
+        "dependent_papers": {"$ref": "#/$defs/Bracket"},
+        "dependent_topics": {"$ref": "#/$defs/Bracket"},
+        "date": {"$ref": "#/$defs/DateValue"},
+        "layer": {"$ref": "#/$defs/Layer"},
+        "layer_basis": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/RootClass"}},
+        "witness_paths": {"type": "array", "items": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}},
+        "blockers": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "next_action": {"enum": ["ACQUIRE_SOURCE", "EXTRACT", "MATCH_REQUESTS", "LIBRARY_AUDIT", "HUMAN_REVIEW", "FORMALIZE"]},
+        "match_coverage": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]},
+        "bootstrap_top_k_fraction": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]},
+        "edge_precision_top_k_survival": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]}
+      },
+      "required": ["kind", "contract_version", "nomination_id", "policy_id", "manifest_id", "rule", "list", "subject_kind", "subject_id", "count_basis", "rank_interval", "dependent_papers", "dependent_topics", "date", "layer", "layer_basis", "witness_paths", "blockers", "next_action", "match_coverage", "bootstrap_top_k_fraction", "edge_precision_top_k_survival"],
+      "allOf": [
+        {"if": {"properties": {"list": {"const": "WORKS"}}}, "then": {"properties": {"subject_kind": {"const": "WORK"}}}},
+        {"if": {"properties": {"list": {"enum": ["DEFINITIONS", "THEOREM_LIKE"]}}}, "then": {"properties": {"subject_kind": {"const": "CLAIM"}}}},
+        {"if": {"properties": {"subject_kind": {"const": "WORK"}}},
+         "then": {"properties": {"subject_id": {"$ref": "#/$defs/WorkId"}}},
+         "else": {"properties": {"subject_id": {"$ref": "#/$defs/ClaimId"}, "layer": {"not": {"const": "UNRESOLVED"}}}}}
+      ]
+    },
+    "ReviewSample": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11 P0 labelling sample; inclusion probabilities allow inverse-inclusion weighting. Labels come from an AUTO_PANEL of judges under one EvaluationPlan (the default) or from humans (an optional audit of the panel).",
+      "properties": {
+        "kind": {"const": "ReviewSample"},
+        "contract_version": {"const": "0.4.0"},
+        "sample_id": {"$ref": "#/$defs/ReviewSampleId"},
+        "manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "estimand": {"enum": ["LEG_PRECISION", "LEG_RECALL", "MATCH_PRECISION", "LOCAL_VS_WHOLE_RECALL"]},
+        "arm": {"enum": ["RANDOM", "CITATION_CLOSED"]},
+        "seed": {"type": "string", "minLength": 1},
+        "label_source": {"enum": ["AUTO_PANEL", "HUMAN"]},
+        "evaluation_plan_id": {"anyOf": [{"$ref": "#/$defs/EvaluationPlanId"}, {"type": "null"}]},
+        "labelling_guide": {"$ref": "../0.3.0/research.schema.json#/$defs/ContentArtifactReference"},
+        "labeller_count": {"type": "integer", "minimum": 1},
+        "relabel_of": {"anyOf": [{"$ref": "#/$defs/ReviewSampleId"}, {"type": "null"}]},
+        "items": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+              "subject_kind": {"enum": ["LEG", "JUNCTION", "CLAIM"]},
+              "subject_id": {"type": "string", "minLength": 1},
+              "inclusion_probability": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+              "stratum": {"$ref": "#/$defs/Stratum"}
+            },
+            "required": ["subject_kind", "subject_id", "inclusion_probability"],
+            "if": {"properties": {"subject_kind": {"const": "LEG"}}},
+            "then": {"required": ["stratum"], "properties": {"stratum": {"required": ["role", "use_site"]}}}
+          }
+        },
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "sample_id", "manifest_id", "estimand", "arm", "seed", "label_source", "evaluation_plan_id", "labelling_guide", "labeller_count", "relabel_of", "items", "created_at"],
+      "if": {"properties": {"label_source": {"const": "AUTO_PANEL"}}},
+      "then": {"properties": {"evaluation_plan_id": {"$ref": "#/$defs/EvaluationPlanId"}, "labeller_count": {"minimum": 2}}},
+      "else": {"properties": {"evaluation_plan_id": {"type": "null"}}}
+    },
+    "HumanReviewV4": {
+      "type": "object", "additionalProperties": false,
+      "description": "The v0.3 HumanReview shape with the v0.4 subject kinds added.",
+      "properties": {
+        "kind": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/kind"},
+        "subject_kind": {"anyOf": [{"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/subject_kind"},
+                                   {"enum": ["JUNCTION", "LEG", "WORK_IDENTITY", "PRIMITIVE_ASSERTION", "FOUNDATION_NOMINATION"]}]},
+        "subject_id": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/subject_id"},
+        "subject_sha256": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/subject_sha256"},
+        "content": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/content"},
+        "decision": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/decision"},
+        "reviewer": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/reviewer"},
+        "basis": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/basis"},
+        "reviewed_at": {"$ref": "../0.3.0/research.schema.json#/$defs/HumanReview/properties/reviewed_at"}
+      },
+      "required": ["kind", "subject_kind", "subject_id", "subject_sha256", "decision", "reviewer", "basis", "reviewed_at"]
+    },
+    "EvaluationPlan": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11.2 AUTO_EVAL_V1, frozen before any judge call: the sample, the controls that calibrate the panel, the judges and how their verdicts combine. The thresholds live in CorpusManifest.gates.P0, fixed at S0.",
+      "properties": {
+        "kind": {"const": "EvaluationPlan"},
+        "contract_version": {"const": "0.4.0"},
+        "plan_id": {"$ref": "#/$defs/EvaluationPlanId"},
+        "corpus_id": {"$ref": "#/$defs/CorpusId"},
+        "manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "scheme": {"const": "AUTO_EVAL_V1"},
+        "estimands": {"type": "array", "minItems": 1, "uniqueItems": true,
+                      "items": {"enum": ["LEG_PRECISION", "MATCH_PRECISION", "LEG_RECALL", "LOCAL_VS_WHOLE_RECALL"]}},
+        "sample": {"type": "object", "additionalProperties": false,
+                   "properties": {"per_stratum": {"type": "integer", "minimum": 1}, "seed": {"type": "string", "minLength": 1}},
+                   "required": ["per_stratum", "seed"]},
+        "controls": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "positive": {"type": "object", "additionalProperties": false,
+                         "properties": {"rule": {"const": "ANCHOR_IN_OWNED_PROOF_V1"}, "count": {"type": "integer", "minimum": 0}},
+                         "required": ["rule", "count"]},
+            "negative": {"type": "object", "additionalProperties": false,
+                         "description": "count_per_rule decoys of every rule for each precision estimand; the false-positive rate is taken per rule and the largest upper bound is used.",
+                         "properties": {"rules": {"type": "array", "minItems": 1, "uniqueItems": true,
+                                                  "items": {"enum": ["SAME_PAPER_NEAR_MISS_V1", "OTHER_PAPER_DECOY_V1"]}},
+                                        "count_per_rule": {"type": "integer", "minimum": 1}},
+                         "required": ["rules", "count_per_rule"]},
+            "seed": {"type": "string", "minLength": 1}
+          },
+          "required": ["positive", "negative", "seed"]
+        },
+        "panel": {
+          "type": "array", "minItems": 2,
+          "items": {"type": "object", "additionalProperties": false,
+                    "properties": {"judge_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}, "route": {"$ref": "#/$defs/ModelSelectionV4"},
+                                   "instruction_sha256": {"$ref": "#/$defs/Sha256"}},
+                    "required": ["judge_id", "route", "instruction_sha256"]}
+        },
+        "decision_rule": {"const": "UNANIMOUS_VALID_USED", "description": "A card is panel-positive iff every judge returns a VALID USED verdict; anything else is not positive."},
+        "blinding": {"const": "METHOD_AND_CONTROL_HIDDEN"},
+        "producers": {"type": "object", "minProperties": 1, "propertyNames": {"enum": ["leg.judge", "match.judge"]}, "additionalProperties": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "description": "Per judge operation, the models that produced the judged items (leg.judge: the S6 extraction models; match.judge: the S7 match models)."},
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "plan_id", "corpus_id", "manifest_id", "scheme", "estimands", "sample", "controls", "panel",
+                   "decision_rule", "blinding", "producers", "created_at"]
+    },
+    "Judgement": {
+      "type": "object", "additionalProperties": false,
+      "description": "One judge's verdict on one blinded card (§11.2): a measurement by a declared instrument, never a disposition (I-0, I-15). USED counts only with a quotation the host bound inside the card's evidence text (I-7).",
+      "properties": {
+        "kind": {"const": "Judgement"},
+        "contract_version": {"const": "0.4.0"},
+        "judgement_id": {"$ref": "#/$defs/JudgementId"},
+        "plan_id": {"$ref": "#/$defs/EvaluationPlanId"},
+        "judge_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "card_id": {"$ref": "#/$defs/CardId"},
+        "card_sha256": {"$ref": "#/$defs/Sha256"},
+        "verdict": {"enum": ["USED", "NOT_USED", "CANNOT_TELL"]},
+        "validity": {"enum": ["VALID", "EVIDENCE_UNBOUND", "RESPONSE_INVALID"]},
+        "evidence": {"anyOf": [{"type": "null"},
+                               {"type": "object", "additionalProperties": false,
+                                "properties": {"byte_start": {"type": "integer", "minimum": 0}, "byte_end": {"type": "integer", "minimum": 0},
+                                               "span_sha256": {"$ref": "#/$defs/Sha256"}, "extended": {"type": "boolean"}},
+                                "required": ["byte_start", "byte_end", "span_sha256", "extended"]}]},
+        "receipt": {"$ref": "../0.3.0/research.schema.json#/$defs/ContentArtifactReference", "description": "The receipt of the judge call that produced the response."}
+      },
+      "required": ["kind", "contract_version", "judgement_id", "plan_id", "judge_id", "card_id", "card_sha256", "verdict", "validity", "evidence", "receipt"],
+      "allOf": [
+        {"if": {"properties": {"validity": {"const": "RESPONSE_INVALID"}}}, "then": {"properties": {"verdict": {"const": "CANNOT_TELL"}, "evidence": {"type": "null"}}}},
+        {"if": {"properties": {"validity": {"const": "EVIDENCE_UNBOUND"}}}, "then": {"properties": {"verdict": {"const": "USED"}, "evidence": {"type": "null"}}}},
+        {"if": {"properties": {"validity": {"const": "VALID"}, "verdict": {"const": "USED"}}}, "then": {"properties": {"evidence": {"type": "object"}}}},
+        {"if": {"properties": {"verdict": {"enum": ["NOT_USED", "CANNOT_TELL"]}}}, "then": {"properties": {"evidence": {"type": "null"}}}}
+      ]
+    },
+    "PrecisionEstimate": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11.2 one stratum. lower_bound = (lower(panel_positive) - fpr_inflation * upper(false_positive)) / (1 - fpr_inflation * upper(false_positive)), which holds for any panel sensitivity <= 1: a one-sided 1 - alpha bound (Bonferroni over two one-sided Wilson bounds). false_positive is the decoy rule of false_positive_by_rule with the largest upper bound. point is the Rogan-Gladen estimate with the control sensitivity and no inflation.",
+      "properties": {
+        "estimand": {"enum": ["LEG_PRECISION", "MATCH_PRECISION"]},
+        "sample_id": {"$ref": "#/$defs/ReviewSampleId"},
+        "stratum": {"$ref": "#/$defs/Stratum"},
+        "items": {"type": "integer", "minimum": 0},
+        "unresolved": {"type": "integer", "minimum": 0},
+        "panel_positive": {"$ref": "#/$defs/Rate"},
+        "false_positive": {"$ref": "#/$defs/Rate"},
+        "false_positive_by_rule": {"type": "object", "minProperties": 1, "propertyNames": {"enum": ["SAME_PAPER_NEAR_MISS_V1", "OTHER_PAPER_DECOY_V1"]},
+                                   "additionalProperties": {"$ref": "#/$defs/Rate"}},
+        "sensitivity": {"anyOf": [{"$ref": "#/$defs/Rate"}, {"type": "null"}]},
+        "fpr_inflation": {"type": "number", "minimum": 1},
+        "lower_bound": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]},
+        "point": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]},
+        "gate": {"type": "object", "additionalProperties": false,
+                 "properties": {"threshold": {"type": "number", "minimum": 0, "maximum": 1}, "decision": {"enum": ["ADMIT", "REJECT", "NOT_ESTIMABLE"]},
+                                "reason": {"type": "string", "minLength": 1}},
+                 "required": ["threshold", "decision", "reason"]}
+      },
+      "required": ["estimand", "sample_id", "stratum", "items", "unresolved", "panel_positive", "false_positive", "false_positive_by_rule", "sensitivity", "fpr_inflation", "lower_bound", "point", "gate"],
+      "if": {"properties": {"gate": {"properties": {"decision": {"const": "NOT_ESTIMABLE"}}}}},
+      "then": {"properties": {"lower_bound": {"type": "null"}}},
+      "else": {"properties": {"lower_bound": {"type": "number"}}}
+    },
+    "RecallEstimate": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11.2 recall without a gold proof set, each under its stated assumption: ANCHOR_REFERENCED_V1 (explicitly referenced premises only), UNION_OF_TWO_METHODS_V1 (within the panel-confirmed union of two methods), CAPTURE_RECAPTURE_CHAPMAN_V1 (assumes independent detection; optimistic when misses correlate).",
+      "properties": {
+        "estimand": {"enum": ["LEG_RECALL", "LOCAL_VS_WHOLE_RECALL"]},
+        "basis": {"enum": ["ANCHOR_REFERENCED_V1", "UNION_OF_TWO_METHODS_V1", "CAPTURE_RECAPTURE_CHAPMAN_V1"]},
+        "method": {"type": "string", "minLength": 1},
+        "versus": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]},
+        "rate": {"anyOf": [{"$ref": "#/$defs/Rate"}, {"type": "null"}]},
+        "estimate": {"anyOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}]},
+        "counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "assumption": {"type": "string", "minLength": 1}
+      },
+      "required": ["estimand", "basis", "method", "versus", "rate", "estimate", "counts", "assumption"]
+    },
+    "EvaluationReport": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11.2 AUTO_EVAL_V1 estimates from one plan's judgements: an automatic measurement labelled AUTO_PANEL, with its assumptions listed; never a human label and never a status.",
+      "properties": {
+        "kind": {"const": "EvaluationReport"},
+        "contract_version": {"const": "0.4.0"},
+        "report_id": {"$ref": "#/$defs/EvaluationReportId"},
+        "plan_id": {"$ref": "#/$defs/EvaluationPlanId"},
+        "manifest_id": {"$ref": "#/$defs/ManifestId"},
+        "label_source": {"const": "AUTO_PANEL"},
+        "independence": {"type": "object", "additionalProperties": false,
+                         "properties": {"judge_models": {"type": "object", "minProperties": 1, "propertyNames": {"enum": ["leg.judge", "match.judge"]}, "additionalProperties": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}}, "producers": {"type": "object", "minProperties": 1, "propertyNames": {"enum": ["leg.judge", "match.judge"]}, "additionalProperties": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}},
+                                        "distinct_model_present": {"type": "boolean", "description": "true iff every judged operation has a judge whose model produced none of the judged items."}},
+                         "required": ["judge_models", "producers", "distinct_model_present"]},
+        "inputs": {
+          "type": "object", "additionalProperties": false,
+          "description": "What the estimates were computed from: the samples, digests of the cards and judgements, and per precision estimand the control composition (positive controls, decoys per rule, base legs or junctions skipped for want of a decoy).",
+          "properties": {
+            "samples": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/ReviewSampleId"}},
+            "cards_sha256": {"$ref": "#/$defs/Sha256"},
+            "judgements_sha256": {"$ref": "#/$defs/Sha256"},
+            "controls": {"type": "object", "propertyNames": {"enum": ["LEG_PRECISION", "MATCH_PRECISION"]},
+                         "additionalProperties": {"type": "object", "additionalProperties": false,
+                                                  "properties": {"positive": {"type": "integer", "minimum": 0},
+                                                                 "negative_by_rule": {"type": "object", "propertyNames": {"enum": ["SAME_PAPER_NEAR_MISS_V1", "OTHER_PAPER_DECOY_V1"]},
+                                                                                      "additionalProperties": {"type": "integer", "minimum": 0}},
+                                                                 "skipped": {"type": "integer", "minimum": 0}},
+                                                  "required": ["positive", "negative_by_rule", "skipped"]}}
+          },
+          "required": ["samples", "cards_sha256", "judgements_sha256", "controls"]
+        },
+        "precision": {"type": "array", "items": {"$ref": "#/$defs/PrecisionEstimate"}},
+        "recall": {"type": "array", "items": {"$ref": "#/$defs/RecallEstimate"}},
+        "assumptions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "human_audit": {"anyOf": [{"type": "null"},
+                                  {"type": "object", "additionalProperties": false,
+                                   "properties": {"sample_id": {"$ref": "#/$defs/ReviewSampleId"}, "agreement": {"$ref": "#/$defs/Rate"}},
+                                   "required": ["sample_id", "agreement"]}]},
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "report_id", "plan_id", "manifest_id", "label_source", "independence", "inputs", "precision", "recall", "assumptions", "human_audit", "created_at"]
+    },
+    "GateDecision": {
+      "type": "object", "additionalProperties": false,
+      "description": "§11 automatic gate: the rule pre-registered in CorpusManifest.gates applied to recorded measurements. A decision about what runs next, never a status of any claim (I-10).",
+      "properties": {
+        "kind": {"const": "GateDecision"},
+        "contract_version": {"const": "0.4.0"},
+        "gate_id": {"$ref": "#/$defs/GateId"},
+        "gate": {"enum": ["P_MINUS_1", "P0"]},
+        "corpus_id": {"$ref": "#/$defs/CorpusId"},
+        "inputs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "measured": {"type": "object", "additionalProperties": {"type": ["number", "boolean", "null"]}},
+        "rule": {"type": "object"},
+        "decision": {"enum": ["GO", "GO_WITH_EXPANSION", "NO_GO"]},
+        "reasons": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "admitted_methods": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/Method"}},
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "gate_id", "gate", "corpus_id", "inputs", "measured", "rule", "decision", "reasons", "admitted_methods", "created_at"],
+      "if": {"properties": {"gate": {"const": "P0"}}},
+      "then": {"properties": {"decision": {"enum": ["GO", "NO_GO"]}}},
+      "else": {"properties": {"admitted_methods": {"maxItems": 0}}}
+    },
+    "PricingProfile": {
+      "type": "object", "additionalProperties": false,
+      "description": "Provider prices and limits as published on a dated page (§1.1); read by host/cost.py, never by a model. Prices are per million tokens.",
+      "properties": {
+        "kind": {"const": "PricingProfile"},
+        "provider": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "pattern": "^https://"},
+        "page_updated": {"$ref": "#/$defs/IsoDate"},
+        "retrieved": {"$ref": "#/$defs/IsoDate"},
+        "currency": {"enum": ["USD", "CNY"]},
+        "unit": {"const": "PER_MILLION_TOKENS"},
+        "models": {"type": "object", "minProperties": 1,
+                   "additionalProperties": {"type": "object", "additionalProperties": false,
+                                            "properties": {"realtime": {"$ref": "#/$defs/TokenPrices"},
+                                                           "batch": {"anyOf": [{"$ref": "#/$defs/TokenPrices"}, {"type": "null"}]},
+                                                           "limits": {"type": "object", "additionalProperties": false,
+                                                                      "properties": {"rpm": {"type": "integer", "minimum": 1}, "tpm": {"type": "integer", "minimum": 1},
+                                                                                     "context_window": {"type": "integer", "minimum": 1}, "max_output": {"type": "integer", "minimum": 1},
+                                                                                     "batch_completion_minutes": {"type": "integer", "minimum": 1}},
+                                                                      "required": ["rpm", "tpm", "context_window", "max_output"]}},
+                                            "required": ["realtime", "batch", "limits"]}},
+        "notes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "required": ["kind", "provider", "source_url", "page_updated", "retrieved", "currency", "unit", "models", "notes"]
+    },
+    "CostProjection": {
+      "type": "object", "additionalProperties": false,
+      "description": "§1.1 host projection of S6 cost and wall-clock time for planned papers; every parameter carries its provenance label. A plan, not a measurement.",
+      "properties": {
+        "kind": {"const": "CostProjection"},
+        "contract_version": {"const": "0.4.0"},
+        "projection_id": {"$ref": "#/$defs/CostProjectionId"},
+        "corpus_id": {"$ref": "#/$defs/CorpusId"},
+        "pricing_profile_sha256": {"$ref": "#/$defs/Sha256"},
+        "model": {"type": "string", "minLength": 1},
+        "mode": {"enum": ["realtime", "batch"]},
+        "operation": {"enum": ["paper.extract_focus", "paper.extract_local"]},
+        "papers": {"type": "integer", "minimum": 0},
+        "source_bytes": {"type": "object", "additionalProperties": false,
+                         "properties": {"mean": {"type": "number", "minimum": 0}, "rms": {"type": "number", "minimum": 0}, "max": {"type": "integer", "minimum": 0},
+                                        "label": {"enum": ["MEASURED", "ESTIMATED"]}},
+                         "required": ["mean", "rms", "max", "label"]},
+        "parameters": {"type": "object",
+                       "additionalProperties": {"type": "object", "additionalProperties": false,
+                                                "properties": {"value": {"type": "number"}, "label": {"enum": ["MEASURED", "OFFICIAL", "POLICY", "ESTIMATED"]},
+                                                               "source": {"type": "string", "minLength": 1}},
+                                                "required": ["value", "label", "source"]}},
+        "paper_plans": {"enum": ["MEASURED", "MODELLED"],
+                        "description": "MEASURED: every paper's calls, focus bytes and prefix bytes came from the host's prompt builder; MODELLED: from source bytes and the parameters. parameters lists only the parameters the formulas used."},
+        "totals": {"type": "object", "additionalProperties": false,
+                   "properties": {"calls": {"type": "number", "minimum": 0}, "input_tokens": {"type": "number", "minimum": 0},
+                                  "cached_input_tokens": {"type": "number", "minimum": 0}, "output_tokens": {"type": "number", "minimum": 0},
+                                  "cost": {"type": "number", "minimum": 0}},
+                   "required": ["calls", "input_tokens", "cached_input_tokens", "output_tokens", "cost"]},
+        "currency": {"enum": ["USD", "CNY"]},
+        "wallclock_minutes": {"type": "number", "minimum": 0},
+        "wallclock_basis": {"enum": ["REALTIME_RATE_LIMITS", "BATCH_COMPLETION_WINDOW"],
+                            "description": "Real time: max(calls / rpm, tokens / tpm). Batch: the provider's stated completion window for jobs submitted together (the pages state no job concurrency limit)."},
+        "largest_prompt_tokens": {"type": "number", "minimum": 0},
+        "fits_context": {"type": "boolean"},
+        "ceiling": {"type": "object", "additionalProperties": false,
+                    "description": "under_ceiling iff projected + other_stages + already_spent <= value, all in the ceiling's unit.",
+                    "properties": {"unit": {"type": "string", "minLength": 1}, "value": {"type": "number", "minimum": 0},
+                                   "projected": {"type": "number", "minimum": 0},
+                                   "other_stages": {"type": "number", "minimum": 0, "description": "Reserve for S7, AUTO_EVAL_V1 and DISCOVERY calls of the run."},
+                                   "already_spent": {"type": "number", "minimum": 0, "description": "The ledger's spent() at projection time."},
+                                   "basis": {"type": "string", "minLength": 1}},
+                    "required": ["unit", "value", "projected", "other_stages", "already_spent", "basis"]},
+        "under_ceiling": {"type": "boolean"},
+        "created_at": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "contract_version", "projection_id", "corpus_id", "pricing_profile_sha256", "model", "mode", "operation", "papers", "source_bytes",
+                   "paper_plans", "parameters", "totals", "currency", "wallclock_minutes", "wallclock_basis", "largest_prompt_tokens", "fits_context",
+                   "ceiling", "under_ceiling", "created_at"]
+    }
+  }
+}

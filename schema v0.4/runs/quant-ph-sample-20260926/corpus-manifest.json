@@ -1,0 +1,102 @@
+{
+  "budget_ceiling": {
+    "unit": "calls",
+    "value": 0
+  },
+  "contract_version": "0.4.0",
+  "corpus_id": "corpus:24d8c5ea1898c14975fdd7122297dd1cccdd5585534a31ff0fb0d63d5563a9a7",
+  "coverage": "EQUAL_FULL",
+  "created_at": "2026-09-25T23:23:51Z",
+  "eligibility": {
+    "params": {
+      "min_display_equations": 10,
+      "min_theorem_like": 1
+    },
+    "parser_sha256": "sha256:22ac0063b01fa78ee0953ff1900af268d33f088962eef83ce312ee79e19378ab",
+    "program_sha256": "sha256:fca4421d90fd21e68e8aff13baf551789c32c67109b4e826ac546c8a3f2d9557",
+    "rule": "THEOREM_OR_DERIVATION_V1"
+  },
+  "extraction": {
+    "focus_bytes": 8192,
+    "method_version": "focus-1",
+    "operation": "paper.extract_focus"
+  },
+  "field": {
+    "date_window": {
+      "end": "2025-12-31",
+      "start": "2015-01-01"
+    },
+    "primary_categories": [
+      "quant-ph"
+    ]
+  },
+  "gates": {
+    "P0": {
+      "admission_threshold": 0.85,
+      "alpha": 0.05,
+      "fpr_inflation": 2.0,
+      "max_unresolved_fraction": 0.2,
+      "min_items": 100,
+      "require_projection_under_ceiling": true
+    },
+    "P_MINUS_1": {
+      "claim_level": {
+        "min_citing_papers": 3,
+        "min_works": 20
+      },
+      "max_undetermined_fraction": 0.2,
+      "min_eligible_fraction": 0.3
+    }
+  },
+  "kind": "CorpusManifest",
+  "primary_analysis_policy": {
+    "admission_gate": null,
+    "base_set": "ALL_ROOTS",
+    "bootstrap": {
+      "replicates": 200,
+      "scheme": "PAPER_REWEIGHT_V1",
+      "seed": "quant-ph-sample-bootstrap"
+    },
+    "citation_group_semantics": "AND",
+    "contract_version": "0.4.0",
+    "count_basis": "SAMPLE_ONLY",
+    "cycle_policy": "FIXPOINT",
+    "edge_precision": null,
+    "establishment_reading": {
+      "mode": "UNION"
+    },
+    "importance_methods": [
+      "DETERMINISTIC_ANCHOR",
+      "MODEL_EXTRACTION",
+      "MODEL_MATCH"
+    ],
+    "include_part_expansions": false,
+    "kind": "AnalysisPolicy",
+    "nomination": {
+      "rule": "FOUNDATION_V1",
+      "threshold": 3,
+      "top_k": 50
+    },
+    "policy_id": "policy:0000000000000000000000000000000000000000000000000000000000000000",
+    "status": "PRIMARY",
+    "traverse": "ALL_ADMITTED",
+    "work_identity": "EXPLICIT_IDS_ONLY"
+  },
+  "sampling_frame": {
+    "kind": "METADATA_SNAPSHOT",
+    "sha256": "sha256:2609efdf0a17e50340a6b62b5a07fbaac9c17e06d074a9a07fdafb6d94d0478c",
+    "snapshot_date": "2026-09-19"
+  },
+  "seed": "agtxiv-v04-quant-ph-test-2026-09-26",
+  "size_limits": {
+    "max_archive_bytes": 67108864,
+    "max_expanded_bytes": 268435456,
+    "max_file_bytes": 33554432,
+    "max_files": 5000,
+    "min_request_interval_seconds": 3,
+    "timeout_seconds": 120
+  },
+  "target_size": 50,
+  "transient_retry_limit": 2,
+  "version_rule": "LATEST_ON_OR_BEFORE_SNAPSHOT"
+}

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claim Chain View</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&display=swap">
+<!--
+One claim's backward closure, read live from the schema v0.4 Neo4j projection (Query API, spec §9) and drawn in the
+chain-build frontend's encoding (slides/chain-build/gen_chain.py, shapes.py):
+  SHAPE  = node kind, area-normalised: definition circle, lemma square, proposition triangle, theorem diamond,
+           external request hexagon; added here: corollary inverted triangle, equation reference small grey dot;
+  COLOUR = source: hollow ink = the claim's own paper, a hue = another corpus paper, warm dashed = a cited work that
+           no source junction (S7) resolves to a claim yet;
+  ⊕      = one junction: all its legs together give the claim its arrow enters. Solid ⊕ = found from \ref or \cite
+           (DETERMINISTIC_ANCHOR); dashed ⊕ = a model reading; a source junction takes the upstream paper's hue.
+The claim's paper is the dashed box; everything outside it is another work, so a curve crossing the box edge is a
+cross-paper leg. Layers follow spec §4.1 on the closure (ALL_ROOTS base set; the structural rules are not applied).
+RESTATES_RESULT_OF and MENTIONS (a \cite in a theorem header or elsewhere in a statement) are not dependencies
+(spec §5); they appear only in the inspector. Statement text reaches Neo4j only for open-licence papers (I-13).
+Usage: serve over http and open claim-view.html[?neo4j=http://127.0.0.1:7474&db=neo4j][#<claim id>].
+-->
+<style>
+:root{--paper:#fff;--ink:#1A1A16;--light:#8A8A80;--open:#8C4A2F;--junc:#1F6F78;--stage:#EDEDEA;--rule:#D9D9D3}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{display:flex;flex-direction:column;background:var(--stage);color:var(--ink);font-family:Calibri,Carlito,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 18px;background:var(--paper);border-bottom:1px solid var(--rule)}
+header h1{font-size:20px;font-weight:700;letter-spacing:.02em;margin-right:6px}
+header select,header input{font:inherit;font-size:15px;padding:5px 8px;border:1px solid var(--rule);background:#fff;color:var(--ink);border-radius:3px}
+header select{max-width:620px}
+header input[type=text]{width:300px}
+header label{font-size:15px;display:flex;gap:6px;align-items:center}
+header button{font:inherit;font-size:15px;padding:5px 12px;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:3px;cursor:pointer}
+#status{font-size:14px;color:var(--light);flex-basis:100%}
+main{flex:1;min-height:0;display:flex}
+#wrap{flex:1;min-width:0;overflow:auto;background:var(--paper);margin:12px 0 12px 12px;border:1px solid var(--rule)}
+#fig{display:block}
+#fig.fit{max-width:100%;height:auto}
+#legend{position:sticky;top:0;left:0;z-index:1;background:rgba(255,255,255,.96);border-bottom:1px solid var(--rule);padding:8px 14px;font-size:14px;display:flex;flex-direction:column;gap:3px}
+#legend div{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:center}
+#legend .lh{font-size:12px;letter-spacing:.12em;color:var(--light);width:124px}
+#legend .li{display:inline-flex;gap:5px;align-items:center}
+aside{width:min(370px,38vw);flex:none;overflow:auto;background:var(--paper);margin:12px;border:1px solid var(--rule);padding:16px 18px;font-size:15px;line-height:1.45}
+aside h2{font-size:17px;margin-bottom:8px}
+aside dl{display:grid;grid-template-columns:104px 1fr;gap:5px 10px}
+aside dt{color:var(--light);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+aside dd{word-break:break-word}
+aside .text{margin-top:10px;padding:10px;border-left:3px solid var(--rule);font-size:14px;white-space:pre-wrap;max-height:280px;overflow:auto}
+aside .muted{color:var(--light)}
+aside a{color:var(--junc)}
+.guide{stroke:var(--ink);stroke-width:1;opacity:.085}
+.lay{font-size:15px;letter-spacing:.14em;fill:var(--light)}
+.box{fill:none;stroke:var(--ink);stroke-width:1.2;stroke-dasharray:7 6;opacity:.45}
+.boxlab{font-size:15px;letter-spacing:.1em;fill:var(--light)}
+.gcurve{fill:none;stroke-width:1.3;opacity:.45}
+.gcurve.eqleg{opacity:.3}
+.gstem{fill:none;stroke-width:2.2;opacity:.9}
+.gjunc{fill:var(--paper);stroke-width:2;cursor:pointer}
+.gjunc.model{stroke-dasharray:4 3}
+.gplus{stroke-width:1.8;fill:none;pointer-events:none}
+.badge{font-size:12px;fill:var(--light);pointer-events:none}
+.nmark{fill:var(--paper);stroke-width:2.1;cursor:pointer}
+.req .nmark{stroke-dasharray:5 4}
+.eq .nmark{fill:var(--light);stroke:none}
+.root .nmark{stroke-width:3.4}
+.nring{fill:none;stroke-width:2.6;opacity:0;pointer-events:none}
+.trunc .nring{opacity:.6;stroke-dasharray:3 4}
+.lab{font-size:13px;fill:var(--light);pointer-events:none}
+.rootlab{font-size:17px;fill:var(--ink);pointer-events:none}
+#fig.has-sel .grp:not(.sel) .gcurve{opacity:.08}
+#fig.has-sel .grp:not(.sel) .gstem,#fig.has-sel .grp:not(.sel) .gjunc{opacity:.18}
+#fig.has-sel .node:not(.memb):not(.tgt){opacity:.25}
+.grp.sel .gcurve{opacity:1;stroke-width:3}
+.grp.sel .gstem{stroke-width:3.2}
+.grp.sel .gjunc{stroke-width:3.4}
+.node.memb .nmark,.node.tgt .nmark{stroke-width:4}
+.node.picked .nring{opacity:.55;stroke-dasharray:none}
+.empty{font-size:18px;fill:var(--light)}
+</style></head>
+<body>
+<header>
+  <h1>Claim chain</h1>
+  <select id="pick" aria-label="Claim"><option>loading claims…</option></select>
+  <input id="free" type="text" placeholder="or paste an id (claim:…)" aria-label="Claim id">
+  <button id="go">Show</button>
+  <label><input id="eqs" type="checkbox"> equation references</label>
+  <label><input id="fit" type="checkbox" checked> fit to window</label>
+  <div id="status">connecting…</div>
+</header>
+<main>
+  <div id="wrap"><div id="legend"></div><svg id="fig" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <aside id="insp"><h2>Select a claim</h2><p class="muted">Pick a claim above. Click a node or a ⊕ junction for its record.</p></aside>
+</main>
+<script>
+"use strict";
+const Q = new URLSearchParams(location.search);
+const BASE = (Q.get("neo4j") || "http://127.0.0.1:7474").replace(/\/$/, "");
+const DB = Q.get("db") || "neo4j";
+const NS = "http://www.w3.org/2000/svg";
+const INK = "#1A1A16", LIGHT = "#8A8A80", OPEN = "#8C4A2F";
+const HUES = ["#2a78d6", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7"];  // gen_chain.py source palette
+const SHAPE = {definition: "circle", lemma: "square", proposition: "triangle", corollary: "itriangle", theorem: "diamond",
+               request: "hexagon", equation: "dot"};
+const $ = id => document.getElementById(id);
+
+async function cypher(statement, parameters = {}) {
+  const r = await fetch(`${BASE}/db/${encodeURIComponent(DB)}/query/v2`, {method: "POST",
+    headers: {"Content-Type": "application/json", "Accept": "application/json"}, body: JSON.stringify({statement, parameters})});
+  const out = await r.json();
+  if (out.errors && out.errors.length) throw new Error(out.errors.map(e => e.message).join("; "));
+  const {fields, values} = out.data;
+  return values.map(v => Object.fromEntries(fields.map((f, i) => [f, v[i]])));
+}
+
+// Every query starts from a READY manifest and walks only junctions (spec §9.5); the depth bound matches browse.cypher.
+const Q_CLAIMS = `
+MATCH (:ProjectionManifest {state: 'READY'})
+MATCH (c:Claim) (()<-[:CONCLUDES]-(js:Junction)<-[:PREMISE_OF]-()){1,8} ()
+UNWIND js AS j
+WITH c, count(DISTINCT j) AS junctions
+OPTIONAL MATCH (pv:PaperVersion {id: c.paper_version_id})
+RETURN c.id AS id, c.paper_version_id AS paper, pv.title AS title, [(r:ClaimReading)-[:READS]->(c) | r.kind][0] AS kind,
+       c.locator_line_start AS line, junctions
+ORDER BY junctions DESC, id`;
+const Q_CLOSURE = `
+MATCH (:ProjectionManifest {state: 'READY'})
+MATCH (root:Entity {id: $id}) (()<-[:CONCLUDES]-(js:Junction)<-[:PREMISE_OF]-()){1,8} ()
+UNWIND js AS j
+WITH DISTINCT j
+MATCH (j)-[:CONCLUDES]->(t)
+MATCH (p)-[l:PREMISE_OF]->(j)
+WITH j, t, p, l ORDER BY l.position
+RETURN j.id AS id, j.derivation_id AS derivation, j.reading_method AS method, j.method_version AS version, t.id AS target,
+       collect({premise: p.id, position: l.position, role: l.role, use_site: l.use_site}) AS legs`;
+const Q_NODES = `
+MATCH (n:Entity) WHERE n.id IN $ids
+OPTIONAL MATCH (pv:PaperVersion {id: n.paper_version_id})
+OPTIONAL MATCH (n)-[:REQUESTS_FROM]->(b:BibEntry)
+OPTIONAL MATCH (b)-[:RESOLVES_TO]->(w:Work)
+RETURN n.id AS id, labels(n) AS labels, properties(n) AS props,
+       pv {.id, .title, .primary_category, .redistribution, .license} AS paper,
+       [(r:ClaimReading)-[:READS]->(n) | r {.kind, .method, .method_version, .display_text}] AS readings,
+       b {.citation_key, .title, .year, .identifiers_doi} AS bib,
+       w {.id, .identity_basis, .doi, .arxiv_base_id, .bib_digest} AS work,
+       [(w)<-[:RESOLVES_TO]-(:BibEntry)<-[:HAS_ENTRY]-(cp:PaperVersion) | cp.id] AS cited_by,
+       [(n)-[:RESTATES_RESULT_OF]->(x:BibEntry) | x.citation_key] AS restates,
+       [(n)-[:MENTIONS]->(x:BibEntry) | x.citation_key] AS mentions,
+       COUNT { (n)<-[:CONCLUDES]-(:Junction) } AS junctions_in_db`;
+
+// ---- geometry (shapes.py, area-normalised) ---------------------------------------------------------------------
+function poly(cx, cy, r, n, rot) {
+  const pts = [];
+  for (let i = 0; i < n; i++) { const a = rot * Math.PI / 180 + i * 2 * Math.PI / n; pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`); }
+  return pts.join(" ");
+}
+const norm = (r, n) => r * Math.sqrt(Math.PI / ((n / 2) * Math.sin(2 * Math.PI / n)));
+function shapeOf(kind, cx, cy, r) {
+  switch (SHAPE[kind] || "circle") {
+    case "square": return ["polygon", {points: poly(cx, cy, norm(r, 4), 4, 45)}];
+    case "triangle": return ["polygon", {points: poly(cx, cy, norm(r, 3), 3, -90)}];
+    case "itriangle": return ["polygon", {points: poly(cx, cy, norm(r, 3), 3, 90)}];
+    case "diamond": return ["polygon", {points: poly(cx, cy, norm(r, 4), 4, -90)}];
+    case "hexagon": return ["polygon", {points: poly(cx, cy, norm(r, 6), 6, -90)}];
+    case "dot": return ["circle", {cx, cy, r: 5}];
+    default: return ["circle", {cx, cy, r}];
+  }
+}
+function el(tag, attrs = {}, parent = null, text = null) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) if (v !== null && v !== undefined) e.setAttribute(k, v);
+  if (text !== null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+// ---- model ---------------------------------------------------------------------------------------------------
+let state = null;
+function kindOf(n) {
+  if (n.labels.includes("ExternalRequest")) return "request";
+  if (n.labels.includes("UnresolvedOccurrence")) return "equation";
+  const kinds = n.readings.map(r => r.kind).filter(Boolean);
+  if (kinds.length) {
+    const count = k => kinds.filter(x => x === k).length;
+    return [...new Set(kinds)].sort((a, b) => count(b) - count(a) || a.localeCompare(b))[0];
+  }
+  return (n.props.occurrence_kind || "").startsWith("DEFINITION") ? "definition" : "claim";
+}
+const sourcePaper = j => { const s = j.derivation.slice("source:".length), k = s.lastIndexOf(":sha256:"); return k < 0 ? s : s.slice(0, k); };
+function layersOf(ids, byTarget, nodes) {
+  // spec §4.1 on the closure: roots 0; a junction is the max over its legs; a claim is 1 + max(statement junction,
+  // min over its derivation junctions); an external request is transparent (min over its source junctions).
+  const memo = new Map(), busy = new Set();
+  const jv = j => Math.max(0, ...j.legs.map(l => value(l.premise)));
+  function value(id) {
+    if (memo.has(id)) return memo.get(id);
+    if (busy.has(id)) return Infinity;
+    busy.add(id);
+    const js = byTarget.get(id) || [], n = nodes.get(id);
+    let v = 0;
+    if (js.length && n && !n.labels.includes("Claim")) v = Math.min(...js.map(jv));
+    else if (js.length) {
+      const st = js.filter(j => j.derivation === "statement"), dv = js.filter(j => j.derivation !== "statement");
+      v = 1 + Math.max(st.length ? Math.max(...st.map(jv)) : 0, dv.length ? Math.min(...dv.map(jv)) : 0);
+    }
+    busy.delete(id); memo.set(id, v); return v;
+  }
+  ids.forEach(value);
+  return memo;
+}
+
+async function load(rootId) {
+  $("status").textContent = "loading " + rootId + " …";
+  try {
+    const junctions = await cypher(Q_CLOSURE, {id: rootId});
+    const ids = new Set([rootId]);
+    for (const j of junctions) { ids.add(j.target); j.legs.forEach(l => ids.add(l.premise)); }
+    const rows = await cypher(Q_NODES, {ids: [...ids]});
+    state = {rootId, junctions, nodes: new Map(rows.map(r => [r.id, r]))};
+    render();
+  } catch (e) {
+    $("status").textContent = `Query failed: ${e.message}`;
+  }
+}
+
+// ---- layout and drawing ----------------------------------------------------------------------------------------
+function render() {
+  const svg = $("fig"); svg.innerHTML = ""; svg.classList.remove("has-sel");
+  const {rootId, nodes} = state;
+  const showEq = $("eqs").checked;
+  const root = nodes.get(rootId);
+  if (!root) {
+    svg.setAttribute("width", 700); svg.setAttribute("height", 120); svg.setAttribute("viewBox", "0 0 700 120");
+    el("text", {x: 40, y: 60, class: "empty"}, svg, "No node with this id in the READY projection.");
+    $("status").textContent = rootId + " not found"; return;
+  }
+  const rootPaper = root.props.paper_version_id || null;
+  const isEq = id => { const n = nodes.get(id); return !!n && kindOf(n) === "equation"; };
+  const junctions = state.junctions.map(j => ({...j, hidden: showEq ? 0 : j.legs.filter(l => isEq(l.premise)).length,
+                                              legs: showEq ? j.legs : j.legs.filter(l => !isEq(l.premise))}));
+  const byTarget = new Map();
+  junctions.forEach(j => { if (!byTarget.has(j.target)) byTarget.set(j.target, []); byTarget.get(j.target).push(j); });
+  const shown = new Set([rootId]);
+  junctions.forEach(j => { shown.add(j.target); j.legs.forEach(l => shown.add(l.premise)); });
+  const layer = layersOf([...shown], byTarget, nodes);
+  const finite = [...shown].map(id => layer.get(id)).filter(Number.isFinite);
+  let cyclic = false;
+  for (const id of shown) if (!Number.isFinite(layer.get(id))) { layer.set(id, Math.max(0, ...finite) + 1); cyclic = true; }
+  const maxL = Math.max(1, ...[...shown].map(id => layer.get(id)));
+  // colour = source: the claim's own paper hollow ink, each other paper the next hue, an unresolved request warm
+  const hue = new Map(); let next = 0;
+  const paperHue = p => { if (!p || p === rootPaper) return INK; if (!hue.has(p)) hue.set(p, HUES[next++ % HUES.length]); return hue.get(p); };
+  const colourOf = n => {
+    const k = kindOf(n);
+    if (k === "equation") return LIGHT;
+    if (k === "request") { const s = (byTarget.get(n.id) || []).find(j => j.derivation.startsWith("source:")); return s ? paperHue(sourcePaper(s)) : OPEN; }
+    return paperHue(n.props.paper_version_id || (n.props.work_id ? "work:" + n.props.work_id : null));
+  };
+  const inside = id => { const n = nodes.get(id), k = n && kindOf(n);
+    return !!n && k !== "request" && (k === "equation" || (n.props.paper_version_id || null) === rootPaper); };
+  // order: breadth-first from the claim in leg order, then barycentre sweeps within each layer (gen_chain.py)
+  const order = new Map(), queue = [rootId], seen = new Set([rootId]);
+  while (queue.length) {
+    const id = queue.shift(); order.set(id, order.size);
+    for (const j of (byTarget.get(id) || [])) for (const l of j.legs) if (!seen.has(l.premise)) { seen.add(l.premise); queue.push(l.premise); }
+  }
+  const rows = new Map();
+  for (const id of shown) { const L = layer.get(id); if (!rows.has(L)) rows.set(L, []); rows.get(L).push(id); }
+  for (const ids of rows.values()) ids.sort((a, b) => (order.get(a) ?? 1e9) - (order.get(b) ?? 1e9));
+  const nbr = new Map([...shown].map(id => [id, []]));
+  junctions.forEach(j => j.legs.forEach(l => { nbr.get(l.premise).push(j.target); nbr.get(j.target).push(l.premise); }));
+  const slot = id => isEq(id) ? 24 : 100;
+  const rowW = ids => ids.reduce((s, id) => s + slot(id), 0);
+  const innerW = Math.max(320, ...[...rows.values()].map(ids => rowW(ids.filter(inside)))) + 40;
+  const outerW = Math.max(0, ...[...rows.values()].map(ids => rowW(ids.filter(id => !inside(id)))));
+  const LEFT = 110, CX = LEFT + innerW / 2, outerX0 = LEFT + innerW + 100;
+  const W = outerX0 + (outerW ? outerW + 60 : 0);
+  const TOP = 100, GAP = maxL > 7 ? 104 : 132, BOT = TOP + maxL * GAP, H = BOT + 104;
+  const ly = L => BOT - L * GAP;
+  const pos = new Map();
+  const place = () => {
+    for (const [L, ids] of rows) {
+      const inn = ids.filter(inside), out = ids.filter(id => !inside(id));
+      let x = CX - rowW(inn) / 2;
+      for (const id of inn) { pos.set(id, [x + slot(id) / 2, ly(L)]); x += slot(id); }
+      x = outerX0;
+      for (const id of out) { pos.set(id, [x + slot(id) / 2, ly(L)]); x += slot(id); }
+    }
+  };
+  place();
+  for (let it = 0; it < 8; it++) {
+    for (const ids of rows.values()) {
+      const bary = new Map(ids.map(id => { const xs = nbr.get(id).map(x => pos.get(x)[0]); return [id, xs.length ? xs.reduce((a, b) => a + b) / xs.length : pos.get(id)[0]]; }));
+      ids.sort((a, b) => bary.get(a) - bary.get(b));
+    }
+    place();
+  }
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("width", W); svg.setAttribute("height", H);
+  svg.classList.toggle("fit", $("fit").checked);
+  const mk = el("marker", {id: "dep", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6.5, markerHeight: 6.5, orient: "auto-start-reverse"}, el("defs", {}, svg));
+  el("path", {d: "M 0 0 L 10 5 L 0 10 z", fill: INK}, mk);
+  const others = [...new Set([...shown].map(id => nodes.get(id)).filter(n => n && !inside(n.id) && kindOf(n) !== "request").map(n => n.props.paper_version_id))];
+  drawLegend(rootPaper, others, paperHue);
+  // layer guides
+  const g0 = el("g", {}, svg);
+  for (let L = 0; L <= maxL; L++) {
+    el("line", {class: "guide", x1: 84, y1: ly(L), x2: W - 30, y2: ly(L)}, g0);
+    el("text", {class: "lay", x: 70, y: ly(L) + 5, "text-anchor": "end"}, g0, "L" + L);
+  }
+  // the paper boundary: everything outside is another work
+  const inX = [...pos].filter(([id]) => inside(id)).map(([, p]) => p[0]);
+  if (inX.length) {
+    const bx0 = Math.min(...inX) - 58, bx1 = Math.max(...inX) + 58;
+    el("rect", {class: "box", x: bx0, y: TOP - 72, width: bx1 - bx0, height: BOT - TOP + 152, rx: 14}, svg);
+    el("text", {class: "boxlab", x: bx0 + 14, y: BOT + 66}, svg, "THIS PAPER · " + (rootPaper || "").replace(/^arxiv:/, "arXiv "));
+  }
+  if (outerW) el("text", {class: "boxlab", x: outerX0, y: BOT + 66}, svg, "OTHER WORKS");
+  // junctions: legs as curves into the ⊕ under the claim, one stem out of it (gen_chain.py)
+  const JR = 11, OFF = Math.min(52, GAP * 0.4), ring = id => id === rootId ? 24 : 15;
+  const groups = el("g", {}, svg);
+  for (const [t, js] of byTarget) {
+    if (!pos.has(t)) continue;
+    const [tx, ty] = pos.get(t);
+    js.forEach((j, i) => {
+      const jx = tx + (i - (js.length - 1) / 2) * 30, jy = ty + OFF;
+      const jc = j.derivation.startsWith("source:") ? paperHue(sourcePaper(j)) : INK;
+      const g = el("g", {class: "grp", "data-j": j.id}, groups);
+      for (const l of j.legs) {
+        const [mx, my] = pos.get(l.premise), ym = (my + jy) / 2;
+        el("path", {class: "gcurve" + (isEq(l.premise) ? " eqleg" : ""), d: `M ${mx} ${my} C ${mx} ${ym}, ${jx} ${ym}, ${jx} ${jy}`, stroke: colourOf(nodes.get(l.premise))}, g);
+      }
+      el("line", {class: "gstem", x1: jx, y1: jy - JR, x2: tx, y2: ty + ring(t) + 3, stroke: jc, "marker-end": "url(#dep)"}, g);
+      const c = el("circle", {class: "gjunc" + (j.method === "MODEL_EXTRACTION" ? " model" : ""), cx: jx, cy: jy, r: JR, stroke: jc}, g);
+      el("line", {class: "gplus", x1: jx - 6, y1: jy, x2: jx + 6, y2: jy, stroke: jc}, g);
+      el("line", {class: "gplus", x1: jx, y1: jy - 6, x2: jx, y2: jy + 6, stroke: jc}, g);
+      if (j.hidden) el("text", {class: "badge", x: jx + 15, y: jy + 4}, g, "+" + j.hidden + " eq");
+      el("title", {}, c, `${j.derivation.split(":")[0]} junction · ${j.method} · ${j.legs.length + j.hidden} legs`);
+      c.addEventListener("click", ev => { ev.stopPropagation(); pickJunction(j, g); });
+    });
+  }
+  // nodes
+  const ng = el("g", {}, svg);
+  for (const id of shown) {
+    const n = nodes.get(id); if (!n) continue;
+    const [x, y] = pos.get(id), k = kindOf(n), colour = colourOf(n), r = ring(id);
+    const cls = ["node", k === "request" ? "req" : "", k === "equation" ? "eq" : "", id === rootId ? "root" : "",
+                 n.junctions_in_db > (byTarget.get(id) || []).length ? "trunc" : ""].join(" ");
+    const g = el("g", {class: cls, "data-id": id}, ng);
+    el("circle", {class: "nring", cx: x, cy: y, r: r + 9, stroke: colour}, g);
+    const [tag, a] = shapeOf(k, x, y, k === "request" ? 16 : r);
+    const m = el(tag, {...a, class: "nmark", stroke: k === "equation" ? null : colour}, g);
+    el("title", {}, m, label(n, k));
+    m.addEventListener("click", ev => { ev.stopPropagation(); pickNode(n, g); });
+    if (id === rootId) el("text", {class: "rootlab", x, y: y - r - 16, "text-anchor": "middle"}, ng, label(n, k));
+    else if (k === "request" && !(byTarget.get(id) || []).length) el("text", {class: "lab", x, y: y + 34, "text-anchor": "middle"}, ng, shortLabel(n, k));
+    else if (k !== "equation") el("text", {class: "lab", x: x + (k === "request" ? 20 : r) + 6, y: y + 4.5}, ng, shortLabel(n, k));
+  }
+  svg.onclick = () => { svg.classList.remove("has-sel"); svg.querySelectorAll(".sel,.memb,.tgt").forEach(e => e.classList.remove("sel", "memb", "tgt")); };
+  // status: which legs stay inside the paper and which cross its boundary
+  const legs = junctions.flatMap(j => j.legs.map(l => l.premise));
+  const cross = legs.filter(id => !inside(id)).length;
+  const resolved = junctions.filter(j => j.derivation.startsWith("source:")).length;
+  const eqLegs = state.junctions.flatMap(j => j.legs).filter(l => isEq(l.premise)).length;
+  $("status").textContent = `${junctions.length} junctions · top layer L${maxL}${cyclic ? " (cycle: nodes on it drawn above the rest)" : ""} · legs inside the paper: ${legs.length - cross}` +
+    `${showEq ? ` (${eqLegs} of them equation references)` : ` (+${eqLegs} equation references hidden)`} · legs crossing the paper boundary: ${cross}, resolved to an upstream claim: ${resolved} · live from ${BASE}`;
+  pickNode(root, ng.querySelector(`[data-id="${CSS.escape(rootId)}"]`));
+}
+
+function icon(kind, stroke, dashed) {
+  const [tag, a] = shapeOf(kind, 10, 10, 7);
+  const attrs = Object.entries(a).map(([k, v]) => `${k}="${v}"`).join(" ");
+  const paint = kind === "equation" ? `fill="${LIGHT}" stroke="none"` : `fill="#fff" stroke="${stroke}" stroke-width="1.6"${dashed ? ' stroke-dasharray="3 2"' : ""}`;
+  return `<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><${tag} ${attrs} ${paint}/></svg>`;
+}
+function drawLegend(rootPaper, others, paperHue) {
+  const item = (svg, text) => `<span class="li">${svg}${esc(text)}</span>`;
+  const fmt = p => (p || "a work").replace(/^arxiv:/, "arXiv ");
+  $("legend").innerHTML =
+    `<div><span class="lh">COLOUR = SOURCE</span>${item(icon("definition", INK), "this paper, " + fmt(rootPaper))}` +
+    others.map(p => item(icon("definition", paperHue(p)), fmt(p))).join("") +
+    `${item(icon("request", OPEN, true), "cited work, not yet resolved to a claim")}</div>` +
+    `<div><span class="lh">SHAPE = KIND</span>` + ["definition", "lemma", "proposition", "corollary", "theorem", "request", "equation"]
+      .map(k => item(icon(k, INK), k === "request" ? "external request" : k === "equation" ? "equation reference" : k)).join("") + "</div>" +
+    `<div><span class="lh">⊕ JUNCTION</span><span class="li">all its legs together give the claim its arrow enters · solid ⊕ from \\ref or \\cite (no model) · dashed ⊕ a model reading</span></div>`;
+}
+const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
+function label(n, k) {
+  if (k === "request") return "cites " + ((n.bib || {}).citation_key || "a work") + workName(n);
+  if (k === "equation") return "equation reference (\\eqref to a display equation)";
+  const line = n.props.locator_line_start ? `, line ${n.props.locator_line_start}` : "";
+  return `${cap(k)}${line} · ${(n.props.paper_version_id || "work").replace(/^arxiv:/, "arXiv ")}`;
+}
+function shortLabel(n, k) {  // the shape already says the kind
+  if (k === "request") return (n.bib || {}).citation_key || "cited work";
+  return n.props.locator_line_start ? "l." + n.props.locator_line_start : k;
+}
+function workName(n) {
+  const w = n.work; if (!w) return " (no work identity)";
+  return w.doi ? ` (doi ${w.doi})` : w.arxiv_base_id ? ` (arXiv ${w.arxiv_base_id})` : ` (${w.identity_basis})`;
+}
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c])); }
+function dl(rows) { return "<dl>" + rows.filter(r => r[1]).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${v}</dd>`).join("") + "</dl>"; }
+const abs = id => id ? `<a href="https://arxiv.org/abs/${esc(id.replace(/^arxiv:/, ""))}" target="_blank" rel="noopener">${esc(id)}</a>` : "";
+
+function pickNode(n, g) {
+  $("fig").querySelectorAll(".picked").forEach(e => e.classList.remove("picked"));
+  if (g) g.classList.add("picked");
+  const k = kindOf(n), p = n.props, paper = n.paper;
+  let html = `<h2>${esc(label(n, k))}</h2>`;
+  if (k === "request") {
+    const w = n.work, b = n.bib || {};
+    const link = w && w.doi ? `<a href="https://doi.org/${esc(w.doi)}" target="_blank" rel="noopener">doi ${esc(w.doi)}</a>`
+               : w && w.arxiv_base_id ? `<a href="https://arxiv.org/abs/${esc(w.arxiv_base_id)}" target="_blank" rel="noopener">arXiv ${esc(w.arxiv_base_id)}</a>`
+               : w ? esc(w.identity_basis) + " (title, year and first author)" : "none: the entry's DOI, arXiv id, title, year or author could not be read";
+    const citers = [...new Set(n.cited_by || [])];
+    const source = state.junctions.find(j => j.target === n.id && j.derivation.startsWith("source:"));
+    html += dl([["what", "EXTERNAL_REQUEST: a proof in this paper uses a result of the cited work"], ["cited as", esc(b.citation_key)],
+                ["entry", esc([b.title, b.year].filter(Boolean).join(", "))], ["work", link],
+                ["sample papers citing it", w ? `${citers.length}: ${citers.map(abs).join(", ")}` : ""],
+                ["resolved", source ? "yes: a source junction (S7) names the upstream claim" : "not yet: S7 matching has not run, so the cited result is not a claim in the graph"],
+                ["citing paper", abs(p.paper_version_id)], ["id", esc(p.id)]]);
+  } else if (k === "equation") {
+    html += dl([["what", "UNRESOLVED_OCCURRENCE: the proof points at a numbered equation or other non-theorem target of the same paper"],
+                ["reason", esc(p.reason)], ["occurrence", esc(p.occurrence_id)], ["paper", abs(p.paper_version_id)], ["id", esc(p.id)]]);
+  } else {
+    const text = n.readings.map(r => r.display_text).find(Boolean);
+    const inClosure = state.junctions.filter(j => j.target === n.id).length;
+    html += dl([["reading", esc(n.readings.map(r => `${r.kind}, ${r.method}`).join("; ") || p.occurrence_kind)],
+                ["paper", paper ? `${abs(paper.id)}<br><span class="muted">${esc(paper.title)}</span>` : abs(p.paper_version_id)],
+                ["category", esc(paper && paper.primary_category)], ["licence", esc(paper && paper.redistribution)],
+                ["source lines", esc(p.locator_artifact ? `${p.locator_artifact}, ${p.locator_line_start}–${p.locator_line_end}` : "")],
+                ["junctions", `${n.junctions_in_db} concluding it` + (n.junctions_in_db > inClosure ? ` (${inClosure} drawn; the closure stops after 8 junctions)` : "")],
+                ["restates", esc((n.restates || []).join(", ")) + ((n.restates || []).length ? `<br><span class="muted">a \\cite in the theorem header: the result is quoted from that work (RESTATES_RESULT_OF, not a dependency)</span>` : "")],
+                ["mentions", esc([...new Set(n.mentions || [])].join(", ")) + ((n.mentions || []).length ? `<br><span class="muted">a \\cite elsewhere in the statement (MENTIONS, not a dependency)</span>` : "")],
+                ["id", esc(p.id)]]);
+    html += text ? `<div class="text">${esc(text)}</div>` : `<p class="muted" style="margin-top:10px">Statement text is stored only for papers with an open licence (I-13); read this one on arXiv.</p>`;
+  }
+  $("insp").innerHTML = html;
+}
+function pickJunction(j, g) {
+  const svg = $("fig");
+  svg.querySelectorAll(".sel,.memb,.tgt").forEach(e => e.classList.remove("sel", "memb", "tgt"));
+  svg.classList.add("has-sel"); g.classList.add("sel");
+  const q = id => svg.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+  j.legs.forEach(l => q(l.premise) && q(l.premise).classList.add("memb"));
+  if (q(j.target)) q(j.target).classList.add("tgt");
+  const t = state.nodes.get(j.target);
+  const legs = j.legs.map(l => { const n = state.nodes.get(l.premise); return `${l.position}. ${esc(n ? kindOf(n) + " " + shortLabel(n, kindOf(n)) : l.premise)} <span class="muted">${esc(l.role)}, ${esc(l.use_site)}</span>`; });
+  const kind = j.derivation.split(":")[0];
+  $("insp").innerHTML = `<h2>⊕ ${esc(kind)} junction</h2>` + dl([
+    ["means", kind === "statement" ? "what the statement itself refers to" : kind === "proof" ? "what one proof of the claim uses, all together" : kind === "source" ? "the upstream claim that answers an external request" : "a derivation without a located proof"],
+    ["method", esc(`${j.method} ${j.version || ""}`)], ["concludes", esc(t ? kindOf(t) + " " + shortLabel(t, kindOf(t)) : j.target)],
+    ["legs", legs.join("<br>") + (j.hidden ? `<br><span class="muted">+${j.hidden} equation references hidden</span>` : "")],
+    ["derivation", esc(j.derivation)], ["id", esc(j.id)]]);
+}
+
+async function start() {
+  try {
+    const [m] = await cypher("MATCH (m:ProjectionManifest) RETURN m.id AS id, m.state AS state LIMIT 1");
+    const claims = await cypher(Q_CLAIMS);
+    const byPaper = new Map();  // claims arrive largest closure first, so papers do too
+    for (const c of claims) { if (!byPaper.has(c.paper)) byPaper.set(c.paper, {title: c.title || "", rows: []}); byPaper.get(c.paper).rows.push(c); }
+    $("pick").innerHTML = [...byPaper].map(([p, g]) => `<optgroup label="${esc((p || "").replace(/^arxiv:/, ""))} · ${esc(g.title.length > 72 ? g.title.slice(0, 70) + "…" : g.title)}">` +
+      g.rows.map(c => `<option value="${esc(c.id)}">${esc(c.kind || "claim")} l.${esc(c.line)} · ${c.junctions} junction${c.junctions === 1 ? "" : "s"}</option>`).join("") + "</optgroup>").join("");
+    $("status").textContent = `projection ${m ? m.id.slice(0, 22) + "… " + m.state : "missing"} · ${claims.length} claims in ${byPaper.size} papers have recorded premises`;
+    const first = decodeURIComponent(location.hash.slice(1)) || (claims[0] && claims[0].id);
+    if (first) { $("pick").value = first; await load(first); }
+  } catch (e) {
+    $("status").textContent = `Cannot read ${BASE}/db/${DB}: ${e.message}. Start Neo4j (runs/quant-ph-sample-20260926/INDEX.md).`;
+  }
+}
+$("pick").addEventListener("change", () => { location.hash = encodeURIComponent($("pick").value); load($("pick").value); });
+$("go").addEventListener("click", () => { const v = $("free").value.trim(); if (v) { location.hash = encodeURIComponent(v); load(v); } });
+$("eqs").addEventListener("change", () => state && render());
+$("fit").addEventListener("change", () => $("fig").classList.toggle("fit", $("fit").checked));
+start();
+</script>
+</body></html>

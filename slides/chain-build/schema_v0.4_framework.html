@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schema v0.4 Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&display=swap">
+<style>
+:root{--paper:#fff;--ink:#1A1A16;--light:#8A8A80;--open:#8C4A2F;--junc:#1F6F78;--stage:#DEDEDA;
+--hueB:#2a78d6;--hueE:#1baf7a;--hueD:#4a3aa7;
+--f-mono:Calibri,Carlito,sans-serif;--f-body:Calibri,Carlito,sans-serif;
+--f-code:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--stage)}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:var(--stage)}
+.deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--paper)}
+#frame{position:absolute;left:0;top:0;width:1920px;height:1080px;font-family:var(--f-body)}
+#frame text{font-family:var(--f-body)}
+#frame .code{font-family:var(--f-code)}
+.hit{cursor:pointer}
+.hit:hover .hl{stroke-width:3.4}
+.hit.sel .hl{stroke-width:4.2}
+.fade{opacity:.18;transition:opacity .35s var(--ease)}
+/* inspector: the chain-build deck's panel */
+.insp{position:absolute;right:40px;top:40px;width:680px;max-height:980px;overflow:auto;background:var(--paper);
+border:1px solid var(--ink);padding:26px 30px;display:none;font-family:var(--f-mono);z-index:20;box-shadow:0 2px 0 rgba(26,26,22,.08)}
+.insp.on{display:block}
+.insp h3{font-size:24px;font-weight:400;letter-spacing:-.01em;color:var(--ink);margin-bottom:4px;word-break:break-word;padding-right:48px}
+.insp .sub{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--light);margin-bottom:18px}
+.insp .contract{font-family:var(--f-body);font-size:18px;line-height:1.5;color:var(--ink);border-top:1px solid var(--ink);
+border-bottom:1px solid var(--ink);padding:16px 0;margin:16px 0}
+.insp dl{display:grid;grid-template-columns:150px 1fr;gap:9px 16px;font-size:16px;line-height:1.45}
+.insp dt{color:var(--light);text-transform:uppercase;letter-spacing:.1em;font-size:12.5px;padding-top:3px}
+.insp dd{color:var(--ink);word-break:break-word}
+.insp code{font-family:var(--f-code);font-size:13.5px;background:#F4F4F1;padding:0 4px}
+.insp .warm{color:var(--open)}
+.insp .close{position:absolute;right:22px;top:20px;font-size:15px;color:var(--light);cursor:pointer;letter-spacing:.1em}
+.insp .lab{display:inline-block;font-size:11px;letter-spacing:.12em;border:1px solid var(--light);color:var(--light);padding:0 5px;margin-left:6px;vertical-align:1px}
+.hint{position:absolute;left:58px;bottom:66px;font-family:var(--f-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--light);opacity:.8}
+.pageno{position:absolute;left:58px;bottom:34px;font-family:var(--f-mono);font-size:17px;color:var(--light);opacity:.8;cursor:pointer}
+.actline{position:absolute;right:58px;top:48px;font-family:var(--f-mono);font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--light)}
+/* widgets drawn in HTML on top of the frame */
+#overlay{position:absolute;inset:0;pointer-events:none}
+#overlay .w{position:absolute;pointer-events:auto;font-family:var(--f-body);color:var(--ink)}
+.calc label{display:grid;grid-template-columns:330px 150px;align-items:center;font-size:20px;margin:7px 0}
+.calc input{font-family:var(--f-body);font-size:20px;width:140px;padding:3px 8px;border:1px solid var(--ink);background:#fff}
+.calc .out{font-size:21px;line-height:1.55;margin-top:14px;border-top:1px solid var(--ink);padding-top:12px}
+.calc .big{font-size:34px}
+.calc .verdict{letter-spacing:.14em;text-transform:uppercase;font-size:20px}
+.toggle{display:flex;gap:0}
+.toggle button{font-family:var(--f-body);font-size:19px;padding:7px 16px;border:1px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;margin-right:-1px}
+.toggle button.on{background:var(--ink);color:#fff}
+.index{position:absolute;left:58px;bottom:100px;width:760px;max-height:880px;overflow:auto;background:#fff;border:1px solid var(--ink);
+padding:18px 24px;display:none;z-index:30;font-family:var(--f-body)}
+.index.on{display:block}
+.index div{font-size:18px;padding:3px 0;cursor:pointer}
+.index div:hover{text-decoration:underline}
+.index .a{font-size:13px;letter-spacing:.14em;color:var(--light);text-transform:uppercase;margin-top:10px;cursor:default;text-decoration:none!important}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="deck-viewport"><main class="deck-stage" id="stage">
+  <svg id="frame" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schema v0.4 framework frame"></svg>
+  <div id="overlay"></div>
+  <div class="insp" id="insp"><span class="close" id="ix">ESC</span>
+    <h3 id="ih"></h3><div class="sub" id="isub"></div><div class="contract" id="ic"></div><dl id="idl"></dl></div>
+  <div class="hint" id="hint">click a box, node or ⊕ for its record · ← → to move · i for the index</div>
+  <div class="actline" id="act"></div>
+  <div class="pageno" id="pg" title="index"></div>
+  <div class="index" id="index"></div>
+</main></div>
+<script>
+"use strict";
+/* Schema v0.4 framework deck. Every frame is drawn from the data below; every clickable mark names a record in REC.
+   Numbers carry their label: MEASURED (run artifacts), OFFICIAL (a provider's dated page), ESTIMATED, CITED.
+   Source of truth: docs/superpowers/specs/2026-09-25-schema-v04-design.md and schema v0.4/ (host, schemas, tests). */
+const INK="#1A1A16", LIGHT="#8A8A80", OPEN="#8C4A2F", JUNC="#1F6F78", HUE={A:INK,B:"#2a78d6",E:"#1baf7a",D:"#4a3aa7"};
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("frame"), overlay=document.getElementById("overlay");
+function E(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)if(attrs[k]!==undefined&&attrs[k]!==null)e.setAttribute(k,attrs[k]);
+  if(text!==undefined)e.textContent=text;(parent||svg).appendChild(e);return e}
+function defs(){const d=E("defs",{});
+  for(const [id,c] of [["ah",INK],["aw",OPEN],["al",LIGHT],["aj",JUNC]]){const m=E("marker",{id,viewBox:"0 0 10 10",refX:9,refY:5,markerWidth:7,markerHeight:7,orient:"auto-start-reverse"},d);
+    E("path",{d:"M 0 0 L 10 5 L 0 10 z",fill:c},m)}}
+function T(g,x,y,s,o={}){return E("text",{x,y,"font-size":o.size||20,fill:o.fill||INK,"text-anchor":o.anchor||"start","font-weight":o.bold?700:null,
+  "letter-spacing":o.spacing||null,class:o.code?"code":null,"font-style":o.italic?"italic":null},g,s)}
+function title(f){const g=E("g",{});T(g,80,98,f.title,{size:46,bold:true});if(f.sub)T(g,80,140,f.sub,{size:23,fill:LIGHT});return g}
+function hitGroup(id,parent){const g=E("g",{class:id?"hit":null,"data-id":id||null},parent||svg);return g}
+/* a box: title lines (ink, 25px) then grey lines with dash bullets (18px) */
+function box(o){const g=hitGroup(o.id);const c=o.tone==="open"?OPEN:(o.tone==="junc"?JUNC:INK);
+  E("rect",{x:o.x,y:o.y,width:o.w,height:o.h,fill:o.fill||"#fff",stroke:c,"stroke-width":2,"stroke-dasharray":o.dash?"9 7":null,class:"hl"},g);
+  let y=o.y+(o.pad||38);const ts=o.ts||25;
+  for(const t of [].concat(o.title||[])){T(g,o.x+20,y,t,{size:ts,fill:c,bold:o.bold});y+=ts+6}
+  if(o.tag)T(g,o.x+o.w-14,o.y+24,o.tag,{size:14,fill:LIGHT,anchor:"end",spacing:"0.12em"});
+  y+=4;for(const l of o.lines||[]){E("line",{x1:o.x+20,y1:y-6,x2:o.x+31,y2:y-6,stroke:LIGHT,"stroke-width":1.5},g);T(g,o.x+38,y,l,{size:o.ls||18,fill:LIGHT,code:o.code});y+=(o.ls||18)+7}
+  return g}
+function diamond(o){const g=hitGroup(o.id);const {x,y,w,h}=o;const c=o.tone==="open"?OPEN:INK;
+  E("path",{d:`M ${x+w/2} ${y} L ${x+w} ${y+h/2} L ${x+w/2} ${y+h} L ${x} ${y+h/2} Z`,fill:"#fff",stroke:c,"stroke-width":2,class:"hl"},g);
+  let ty=y+h/2-(o.lines?10:-8);T(g,x+w/2,ty,o.title,{size:24,anchor:"middle",bold:true,fill:c});
+  (o.lines||[]).forEach((l,i)=>T(g,x+w/2,ty+26+i*21,l,{size:17,anchor:"middle",fill:LIGHT}));return g}
+function arrow(pts,o={}){const c=o.tone==="open"?OPEN:(o.tone==="light"?LIGHT:(o.tone==="junc"?JUNC:INK));
+  const m=o.tone==="open"?"aw":(o.tone==="light"?"al":(o.tone==="junc"?"aj":"ah"));
+  const p=E("polyline",{points:pts.map(q=>q.join(",")).join(" "),fill:"none",stroke:c,"stroke-width":o.w||2,"stroke-dasharray":o.dash?"9 7":null,
+    "marker-end":o.nohead?null:`url(#${m})`},o.parent||svg);
+  if(o.label){const [a,b]=o.at||pts[Math.floor(pts.length/2)-(pts.length%2?0:1)];T(o.parent||svg,a+(o.dx||8),b+(o.dy||-8),o.label,{size:16,fill:c,spacing:"0.08em"})}return p}
+function rule(x1,y1,x2,y2,o={}){return E("line",{x1,y1,x2,y2,stroke:o.c||INK,"stroke-width":o.w||1,opacity:o.op||null,"stroke-dasharray":o.dash||null},o.parent||svg)}
+/* graph marks: shape = kind, colour = source paper, dashed warm = open placeholder */
+function shape(g,kind,x,y,r,c,o={}){const a={fill:o.fill||"#fff",stroke:c,"stroke-width":o.sw||2.4,class:"hl","stroke-dasharray":o.dash?"6 4":null};
+  if(kind==="definition")return E("rect",{...a,x:x-r,y:y-r,width:2*r,height:2*r},g);
+  if(kind==="lemma")return E("path",{...a,d:`M ${x} ${y-r*1.15} L ${x+r*1.1} ${y+r*.8} L ${x-r*1.1} ${y+r*.8} Z`},g);
+  if(kind==="theorem")return E("path",{...a,d:`M ${x} ${y-r*1.25} L ${x+r*1.25} ${y} L ${x} ${y+r*1.25} L ${x-r*1.25} ${y} Z`},g);
+  if(kind==="work"){const p=[];for(let k=0;k<6;k++){const t=Math.PI/6+k*Math.PI/3;p.push(`${x+r*1.1*Math.cos(t)},${y+r*1.1*Math.sin(t)}`)}return E("polygon",{...a,points:p.join(" ")},g)}
+  if(kind==="request")return E("circle",{...a,cx:x,cy:y,r,stroke:OPEN,"stroke-dasharray":"6 4"},g);
+  if(kind==="unresolved")return E("rect",{...a,x:x-r,y:y-r,width:2*r,height:2*r,stroke:OPEN,"stroke-dasharray":"6 4"},g);
+  return E("circle",{...a,cx:x,cy:y,r},g)}
+function gnode(o){const g=hitGroup(o.id);g.classList.add("gn");shape(g,o.kind,o.x,o.y,o.r||19,HUE[o.paper]||INK,o);
+  if(o.label)T(g,o.x+(o.lx||30),o.y+(o.ly||7),o.label,{size:o.ls||20,fill:o.lc||INK});return g}
+/* a junction: ⊕ at (x,y), curves from premises, a stem with an arrow to the conclusion */
+function junction(o){const g=hitGroup(o.id);g.classList.add("gj");const c=o.c||INK;
+  for(const [px,py] of o.from){const my=(py+o.y)/2;E("path",{d:`M ${px} ${py} C ${px} ${my}, ${o.x} ${my}, ${o.x} ${o.y+11}`,fill:"none",stroke:c,"stroke-width":1.6,opacity:.55,class:"hl","stroke-dasharray":o.dash?"6 4":null},g)}
+  E("line",{x1:o.x,y1:o.y-11,x2:o.to[0],y2:o.to[1],stroke:c,"stroke-width":2.2,"marker-end":`url(#${c===OPEN?"aw":c===JUNC?"aj":"ah"})`},g);
+  E("circle",{cx:o.x,cy:o.y,r:11,fill:"#fff",stroke:c,"stroke-width":2,class:"hl"},g);
+  E("path",{d:`M ${o.x-6} ${o.y} H ${o.x+6} M ${o.x} ${o.y-6} V ${o.y+6}`,stroke:c,"stroke-width":1.8,fill:"none"},g);
+  if(o.label)T(g,o.x+16,o.y+6,o.label,{size:15,fill:LIGHT,spacing:"0.06em"});return g}
+function legend(x,y,items){let cx=x;for(const [kind,c,txt,o] of items){const g=E("g",{});shape(g,kind,cx+10,y-6,9,c,{sw:2,...(o||{})});T(g,cx+26,y,txt,{size:17,fill:INK});cx+=52+txt.length*8.2}}
+function small(x,y,s,o={}){return T(o.parent||svg,x,y,s,{size:o.size||16,fill:o.fill||LIGHT,spacing:o.spacing||"0.12em",anchor:o.anchor,code:o.code})}
+function para(x,y,lines,o={}){lines.forEach((l,i)=>T(o.parent||svg,x,y+i*(o.lh||30),l,{size:o.size||21,fill:o.fill||INK,code:o.code}));return y+lines.length*(o.lh||30)}
+</script>
+<script>
+"use strict";
+/* ---- records shown by the inspector: {t: title, s: sub, c: plain sentence, r: [[label, value(html)], ...]} ---- */
+const c=x=>`<code>${x}</code>`, L=x=>`<span class="lab">${x}</span>`;
+const REC={
+/* overview */
+"S0":{t:"S0 · Corpus manifest",s:"host · corpus.freeze_corpus_manifest",c:"Everything the run may not change is frozen first and named by its own digest: field, frame, eligibility program, the one extraction policy, the gate rules, the analysis template and the budget ceiling.",
+ r:[["contract",c("CorpusManifest")+" (closed; id = "+c("corpus:&lt;sha256&gt;")+")"],["coverage",c("EQUAL_FULL")+" — the only value: every accepted paper gets the same S6"],
+ ["extraction",c("{operation: paper.extract_focus | paper.extract_local, method_version, focus_bytes | prose_bytes}")],
+ ["gates",c("P_MINUS_1")+" and "+c("P0")+" thresholds, pre-registered before anything is measured"],["template",c("primary_analysis_policy")+" with status PRIMARY and "+c("admission_gate = null")],
+ ["budget",c("budget_ceiling {unit, value, pricing_profile_sha256}")+" — a money ceiling names the price file it is in"],["refuses","host fields supplied by the caller; any later edit ("+c("CORPUS_ID_IS_NOT_THE_MANIFEST_DIGEST")+")"]]},
+"S1":{t:"S1 · Acquire and admit",s:"host · corpus.sample_record / expansion_record / discovery_record / includes_delta",c:"Candidates are examined in a seeded hash order until the target is accepted; every examined id gets exactly one outcome, and accepted papers are never replaced.",
+ r:[["order",c("order_key = sha256(seed ‖ 0x00 ‖ arxiv_base_id)")],["outcomes",c("ACCEPTED")+", "+c("INELIGIBLE(reason)")+", "+c("UNDETERMINED(class)")+" — classes incl. "+c("ID_NOT_FOUND")],
+ ["rounds","round 0 "+c("SAMPLE")+" (in P); rounds ≥ 1 "+c("EXPANSION")+" or "+c("DISCOVERY")+" (never in P)"],["delta","S1 "+c("HOST_RULE")+" delta: the "+c("PaperVersion")+" row of every accepted paper + "+c("INCLUDES {admission, round, sampling_record_id}")],
+ ["rate","one shared arXiv rate token, ≥ 3 s between requests (v0.3 fetch limits)"],["status",'<span class="warm">not run: network access is not authorized</span>']]},
+"S2":{t:"S2 · Parse",s:"host · v0.3 ingest.extract_paper",c:"The frozen source becomes occurrences (theorem-like and definition environments, display equations, equation bundles, prose paragraphs), labels, anchors and bibliography, each with byte spans and digests.",
+ r:[["reuses","v0.3 "+c("ingest.extract_paper")+", "+c("bibtex.parse_bibtex")+" (unchanged)"],["adds",c("\\cite")+" optional argument ("+c("locator_text")+"), proof-header ownership"],["identity",c("occ:&lt;sha256 of {pv, path, byte_start, byte_end, span_sha256}&gt;")]]},
+"S3":{t:"S3 · Deterministic anchor graph",s:"host · anchors.build_anchor_delta",c:"Label references that already sit in the TeX become typed legs without a model: a \\ref inside an owned proof is a PROOF leg, inside a statement a STATEMENT leg.",
+ r:[["method",c("DETERMINISTIC_ANCHOR")+" / "+c("anchors-0.4.0")],["premises","environment claims; "+c("\\eqref")+" and prose targets → "+c("UNRESOLVED_OCCURRENCE")],["\\cite","in an owned proof → "+c("EXTERNAL_REQUEST")+"; in a theorem header → "+c("RESTATES_RESULT_OF")+"; elsewhere → "+c("MENTIONS")],
+ ["measured","4 retained papers: 953 anchors, 324 resolve to an occurrence (224 equations, 69 environments); 56 \\ref + 27 \\cite inside owned proofs "+L("MEASURED")],["yield",c("measurements.deterministic_yield")+" per paper"]]},
+"S4":{t:"S4 · Works",s:"host · works.py",c:"Bibliography entries resolve to Work nodes by explicit identifiers only (arXiv id, DOI); host-rule SAME_WORK joins an arXiv work and its DOI.",
+ r:[["rows",c("Work")+", "+c("RESOLVES_TO {method, basis}")+", "+c("SAME_WORK {basis}")],["identity",c("ARXIV_BASE | DOI | OPENALEX | BIB_DIGEST")],["adapters","Crossref, OpenAlex snapshot: only with network authorization "+'<span class="warm">(not implemented)</span>']]},
+"P-1":{t:"S5 · P-1 gate (no model)",s:"host · gates.p_minus_1",c:"Before any model is paid, the host measures whether the sample is eligible and whether its papers share cited works; the rule was fixed at S0.",
+ r:[["NO_GO","eligible fraction < "+c("min_eligible_fraction")+" or undetermined fraction > "+c("max_undetermined_fraction")],["GO","≥ "+c("min_works")+" works each cited by ≥ "+c("min_citing_papers")+" sample papers"],
+ ["GO_WITH_EXPANSION","otherwise: acquire cited works (EXPANSION) or related papers (DISCOVERY) first"],["also measured","in-proof citing counts, in-sample citation share, summed deterministic yield, the eligibility grid"],["record",c("GateDecision {gate: P_MINUS_1, measured, rule, decision, reasons}")]]},
+"PILOT":{t:"Pilot S6 + S7",s:"stage 1 · a small random set, both extraction modes",c:"The pilot runs the corpus extraction (and, for comparison, the other mode) on a few hundred papers so that quality, cost and throughput are measured before the full run.",
+ r:[["measures","legs to judge; cached-token share; reasoning tokens; validation rate; calls per paper; achieved parallelism"],["modes",c("paper.extract_focus")+" vs "+c("paper.extract_local")+" on the same papers ("+c("LOCAL_VS_WHOLE_RECALL")+")"],["status",'<span class="warm">not run: model calls are not authorized</span>']]},
+"S6":{t:"S6 · Extract (every paper, one policy)",s:"light model · paper.extract_focus | paper.extract_local",c:"A model lists each claim of the paper and what it rests on; the host binds every quotation to bytes and refuses anything it cannot bind.",
+ r:[["response","v0.3 "+c("CLAIM_RESPONSE_SCHEMA")+" + "+c("CLAIM_REFERENCE_V1")+" (unchanged)"],["legs",c("UNCLASSIFIED")+" / "+c("UNKNOWN")+" (the schema records neither role nor use site)"],["refusal","any rejected claim makes the whole response an issues-only delta — never a guess"],["coverage",c("corpus.coverage_report")+" accounts every accepted paper from the ledger's terminal states: DONE, FAILED, INCOMPLETE, MISSING"],["retry","a response the host checks refuse ("+c("RESPONSE_REJECTED")+") is tried again while attempts remain"]]},
+"S7":{t:"S7 · Retrieved matching",s:"decision model · dependency.match_retrieved",c:"For a request to an upstream paper in the corpus, the model sees the citing claim and a few retrieved candidate statements of that paper, not two whole sources.",
+ r:[["pool","requests pooled per upstream paper version"],["retrieval","locator kind (\"Theorem 3.2\"), then token overlap with the citing reading; top k; ties by claim id"],["output","one "+c("source:&lt;pv&gt;:&lt;digest(sorted upstream ids)&gt;")+" junction per accepted CANDIDATE_SUPPORT row"],["quotes","bound within the retrieved statement; repeated → "+c("SHORTEST_UNIQUE_ENCLOSING_SPAN_EARLIEST_START")]]},
+"AUTOEVAL":{t:"AUTO_EVAL_V1 · automatic judgement",s:"host · autoeval.py; judges · leg.judge, match.judge",c:"Instead of people labelling legs, a frozen panel of other models judges blinded cards, and decoys measure how often the panel is fooled.",
+ r:[["plan",c("EvaluationPlan")+" frozen before any judge call"],["labels",c("UNANIMOUS_VALID_USED")],["output",c("EvaluationReport {label_source: AUTO_PANEL, inputs, precision[], recall[], assumptions[]}")],["humans","optional audit only ("+c("autoeval.human_audit")+")"]]},
+"COST":{t:"Cost projection",s:"host · cost.project",c:"The host projects calls, tokens, money and wall-clock time of the manifest's one S6 policy over the planned papers, each parameter labelled with where it came from. It reads the price file itself, can use per-paper plans measured by the prompt builder, and reserves budget for the other stages.",
+ r:[["record",c("CostProjection {paper_plans, parameters, totals, wallclock_minutes, wallclock_basis, fits_context, ceiling {projected, other_stages, already_spent}, under_ceiling}")],["prices",c("profiles/pricing-mimo-20260922.json")+" "+L("OFFICIAL")],["10,000 papers","WHOLE_PAPER_FOCUS: $638 real-time, $319 Batch ($2,038 / $1,019 without cache hits) "+L("ESTIMATED")]]},
+"P0":{t:"P0 gate",s:"host · gates.p0 → gates.primary_policy",c:"The full run starts only if the corpus extraction version passed the automatic precision bound, recomputed by the gate itself, and a projection built on measured inputs fits the ceiling and the context window.",
+ r:[["refuses","an input whose id is not the digest of its content; rows that do not recompute ("+c("autoeval.recheck")+"); rows that miss a stratum"],["GO iff","every "+c("MODEL_EXTRACTION")+" stratum of the corpus "+c("method_version")+" ADMIT ∧ projection over ≥ target_size papers, MEASURED sizes, no ESTIMATED parameter ∧ "+c("under_ceiling")+" ∧ "+c("fits_context")],["admitted","methods whose every counted stratum is ADMIT, plus HUMAN and LIBRARY"],["then",c("primary_policy")+": template ∩ admitted methods, "+c("admission_gate = gate_id")+", new "+c("policy_id")],["note","MODEL_MATCH not admitted → S7 legs stay out of importance counts (a reason, not a stop)"]]},
+"FULL":{t:"Full run · EQUAL_FULL",s:"stage 1 · every accepted paper of every round",c:"The same S6 policy runs on every accepted paper — sample, cited and discovered alike — and S7 on every request whose upstream paper is in the corpus.",
+ r:[["no ranking","no prioritized arm, no audit arm (withdrawn in Revision 3)"],["accounting",c("coverage_report")+" → "+c("gates.require_equal_coverage")+" before a PRIMARY analysis"],["failed papers","keep their rows and count in every denominator with missing data"]]},
+"STORE":{t:"Deltas and manifests",s:"host · ids.make_delta, delta.DeltaStore, delta.make_manifest, delta.check_manifest",c:"Every stage writes an immutable, content-addressed delta; a manifest names a parent-closed set of deltas, and merging it gives the one view everything else reads.",
+ r:[["delta id",c("delta:&lt;digest of body&gt;")+"; equal content ⇒ equal id"],["merge","an id asserted by several deltas must carry identical rows"],["checks",c("invariants.check")+" G1–G15 before any load"]]},
+"S8":{t:"S8 · Load Neo4j",s:"host · projection.py; neo4j/*.cypher",c:"Neo4j is a rebuildable projection of one manifest and one review set; it is never the authority and never writes back.",
+ r:[["protocol",c("ProjectionManifest BUILDING → READY")+" after 14 zero-row audits"],["edition","Community: uniqueness constraints only, the rest host-checked"],["status",'<span class="warm">no Neo4j server has been started; Cypher checked statically only</span>']]},
+"S9":{t:"S9 · Analyze",s:"host · analysis.analyze",c:"Layers, importance brackets and nominations are computed from the edge set; nothing a model wrote is read as a layer or a rank.",
+ r:[["layers","AND = max, OR = min, +1 per claim step, requests transparent"],["importance","bracket [lower: legs agreed by ≥ 2 readings, upper: union]"],["count basis",c("SAMPLE_ONLY")+" or "+c("ALL_ADMITTED")+" (I-14)"],["PRIMARY","needs its P0 GateDecision"]]},
+"NOM":{t:"Foundation nominations",s:"FOUNDATION_V1 · I-10",c:"A claim or work whose layer is at most 1, which rests only on primitive, library or work-level roots, and which at least T counted papers depend on, is nominated — a proposal for Stage 3, never a status.",
+ r:[["lists","DEFINITIONS, THEOREM_LIKE, WORKS, LOW_LAYER_BY_OPEN_PREMISES"],["order",c("dependent_papers.lower")+" desc, date asc, layer asc; rank intervals for ties"],["carries","witness paths, blockers, count basis, "+c("dependent_topics")+", bootstrap top-K fraction, next action"]]},
+"ST3":{t:"Stage 3 hand-off",s:"host · export_v03 → v0.3 library audit, proof_walk, certify",c:"A nomination's backward closure is exported to the v0.3 machinery, which audits the library, walks proofs and certifies conditionally.",
+ r:[["strongest sentence","“q holds CONDITIONAL ON {P₁…Pₖ}” (I-1: never VERIFIED)"],["tower","L0–L3 assigned relative to a named library commit; L0 only after a library audit and a human review"],["export",c("V03Export")+" record keeps dropped leg fields in "+c("losses")]]},
+/* corpus frame */
+"SAMPLE":{t:"SAMPLE round (round 0)",s:"the estimand population P",c:"The only papers whose counts estimate the field: drawn at random, in seeded hash order, from a frozen metadata snapshot.",
+ r:[["P","frame ∩ determinable by this pipeline ∩ eligible"],["denominators","an accepted paper that later fails keeps its node and INCLUDES edge and counts everywhere"],["report","every statistic with its UNDETERMINED counts ("+c("corpus.estimand_counts")+")"]]},
+"EXPANSION":{t:"EXPANSION rounds",s:"cited works with an arXiv source",c:"Works the sample cites (or nominations point to) are acquired in bounded rounds so that upstream chains can be followed.",
+ r:[["record",c("{source_manifest_id, analysis_run, selection_rule, M}")],["only",c("terminal_kind = ARXIV_SOURCE_AVAILABLE")+"; others go to LIBRARY_AUDIT or HUMAN_REVIEW"],["never","re-examines an id of an earlier round; never in P; no order_key"]]},
+"DISCOVERY":{t:"DISCOVERY rounds",s:"host · corpus.discovery_selection / discovery_record",c:"A model search proposes arXiv ids of related same-field papers; the host checks and examines each one like a sampled candidate and admits nothing by itself.",
+ r:[["record",c("{operation: corpus.discover, queries_sha256, receipts, proposed, dropped_invalid, duplicates, dropped_seen, not_selected, M, seed}")],["order",c("order_key(<manifest seed>/discovery/<round>, id)")+", cut to M — the host derives the seed"],["unknown ids",c("UNDETERMINED(ID_NOT_FOUND)")],["cost","web search $5 per 1,000 calls "+L("OFFICIAL")]]},
+"ELIG":{t:"THEOREM_OR_DERIVATION_V1",s:"host · eligibility.decide / grid",c:"A paper is eligible if it states theorems or definitions, or if it derives results in display equations — so physics papers with derivations, including experiment-plus-theory ones, are inside P.",
+ r:[["rule","theorem-like + definition environments ≥ "+c("min_theorem_like")+" OR display equations ≥ "+c("min_display_equations")],["program",c("program_sha256")+" = digest of eligibility.py, frozen in the manifest"],["P-1",c("eligibility.grid")+" reports the eligible fraction on a (k, m) grid before the parameters are relied on"],["unreadable","no source, or a blocking parse issue → "+c("UNDETERMINED")+" ("+c("NO_TEX_SOURCE")+", "+c("MAIN_AMBIGUOUS")+"); a partly skipped source short of the rule → "+c("PARSE_FAILED")+", never INELIGIBLE"],["example",c("quant-ph/9705052v1")+" has no theorem environment "+L("MEASURED")]]},
+"INCLUDES":{t:"INCLUDES edges and the count basis",s:"I-14",c:"Each accepted paper carries how it entered; the analysis policy decides whose claims enter the graph and whose count as dependents.",
+ r:[["traverse",c("SAMPLE_ONLY | ALL_ADMITTED")],["count_basis",c("SAMPLE_ONLY | ALL_ADMITTED")+"; traverse SAMPLE_ONLY forces count SAMPLE_ONLY"],["recommended","traverse ALL_ADMITTED, count SAMPLE_ONLY: chains pass through cited papers, counts stay an estimate over P"]]},
+"OUTCOMES":{t:"One outcome per examined candidate",s:"SamplingRecord.candidates",c:"Nothing is silently skipped: an examined id is accepted, ineligible with a reason, or undetermined with a class.",
+ r:[["UNDETERMINED",c("TRANSIENT_NETWORK")+" (retried to a frozen limit), "+c("NO_TEX_SOURCE")+", "+c("SIZE_LIMIT")+", "+c("MAIN_AMBIGUOUS")+", "+c("WITHDRAWN")+", "+c("PARSE_FAILED")+", "+c("ID_NOT_FOUND")],["fields",c("reason")+" only on INELIGIBLE, "+c("paper_version_id")+" only on ACCEPTED"]]},
+/* graph model frame: nodes and junctions */
+"g-d1":{t:"d1 · definition",s:"paper A (sample) · layer 0 · root",c:"A definition with no proposed support is a root: layer 0, root class DEFINITION_NO_SUPPORT_PROPOSED.",r:[["claim id",c("claim:&lt;digest of {origin, pv, occurrence_ids, part}&gt;")+" — no model text in the identity"],["readings","one "+c("ClaimReading")+" per method (kind, statement digest, display text)"]]},
+"g-l1":{t:"l1 · lemma",s:"paper A · layer 1",c:"Its statement uses d1, so its statement junction has one STATEMENT leg: layer = 0 + 1.",r:[["junction","J1 (statement)"],["rule","STATEMENT legs only in the statement junction; at most one per (conclusion, method, version) — G13"]]},
+"g-m1":{t:"m1 · lemma",s:"paper A · layer 2",c:"Its proof uses l1 and an equation the local mode could not resolve, which stays an open placeholder.",r:[["junction","J4: {l1, u1} → max(1, 0) + 1 = 2"]]},
+"g-u1":{t:"u1 · UNRESOLVED_OCCURRENCE",s:"placeholder · open · layer 0",c:"An \\eqref target or a prose target in the deterministic tier or the local mode: kept as an open placeholder, never guessed. WHOLE_PAPER_FOCUS resolves it to the equation's own claim.",r:[["reason",c("NON_ENVIRONMENT_TARGET")],["focus mode","premise = the occurrence claim of any kind; the derivation stays connected"]]},
+"g-t1":{t:"t1 · theorem with two proofs",s:"paper A · layer 2 = min(2, 3)",c:"Two derivations are alternatives (OR = min): the first needs l1 and a cited result (AND = max), the second needs m1.",r:[["J2","proof:A {l1, R} → max(1, 0) + 1 = 2 (MODEL_EXTRACTION)"],["J3","proof:B {m1} → 2 + 1 = 3 (DETERMINISTIC_ANCHOR)"],["layer","min(2, 3) = 2"]]},
+"g-R":{t:"R · EXTERNAL_REQUEST",s:"placeholder · paper A cites paper E · layer 0",c:"A \\cite used in t1's proof becomes a request to the cited work; a request is transparent to layers (+0) and is resolved by a source junction.",r:[["identity",c("{kind, created_by_claim_id, bib_entry_id, citing_derivation_id}")],["resolved by","J5 source junction from e1 (S7)"]]},
+"g-e1":{t:"e1 · theorem of a cited paper",s:"paper E (EXPANSION) · layer 0",c:"A result of an expansion paper: traversed so that paper A's chain continues, but paper E does not count as a dependent under SAMPLE_ONLY.",r:[["admission",c("EXPANSION")+" (not in P)"]]},
+"g-RB":{t:"R_B · request of paper B",s:"placeholder · resolved to t1 · layer 2",c:"Paper B's theorem cites paper A; S7 matched the request to t1, so R_B takes t1's layer.",r:[["resolved by","J6 source junction (MODEL_MATCH)"]]},
+"g-b1":{t:"b1 · theorem of paper B",s:"paper B (sample) · layer 3",c:"Depends on t1 through its request: this is what makes paper B a dependent of t1 and of everything under it.",r:[["J7","{R_B} → 2 + 1 = 3"]]},
+"g-RD":{t:"R_D · request of paper D",s:"placeholder · resolved to e1",c:"A discovered paper also rests on e1.",r:[["resolved by","J8 source junction"]]},
+"g-g1":{t:"g1 · claim of a discovered paper",s:"paper D (DISCOVERY) · layer 1",c:"Traversed under traverse ALL_ADMITTED; counted as a dependent only under ALL_ADMITTED.",r:[["admission",c("DISCOVERY")+" (not in P)"]]},
+"J1":{t:"J1 · statement junction",s:"DETERMINISTIC_ANCHOR · derivation statement",c:"A \\ref inside l1's statement.",r:[["legs",c("[{premise: d1, role: UNCLASSIFIED, use_site: STATEMENT}]")]]},
+"J2":{t:"J2 · proof junction (AND)",s:"MODEL_EXTRACTION · proof:A",c:"All premises of one junction are jointly required: layer = max of premises + 1.",r:[["legs",c("[l1: UNCLASSIFIED/UNKNOWN, R: UNCLASSIFIED/UNKNOWN]")],["derivation id",c("proof:&lt;digest of sorted owned-proof occurrence ids&gt;")]]},
+"J3":{t:"J3 · second proof (OR)",s:"DETERMINISTIC_ANCHOR · proof:B",c:"OR exists only across distinct derivations of one conclusion; readings of the same derivation are joined, never alternatives.",r:[["legs",c("[m1: UNCLASSIFIED/PROOF]")]]},
+"J4":{t:"J4 · proof junction",s:"DETERMINISTIC_ANCHOR",c:"l1 and an unresolved equation reference.",r:[["legs",c("[l1/PROOF, u1/PROOF]")]]},
+"J5":{t:"J5 · source junction",s:"MODEL_MATCH · source:E:&lt;key&gt;",c:"S7 resolved request R to e1: the conclusion of a source junction is always a placeholder (G7).",r:[["derivation",c("source:arxiv:&lt;E&gt;v1:sha256:&lt;digest(sorted upstream claim ids)&gt;")],["checks","G7: the upstream paper's work is in the request's work-identity class"]]},
+"J6":{t:"J6 · source junction",s:"MODEL_MATCH",c:"Paper B's request resolved to paper A's theorem t1.",r:[]},
+"J7":{t:"J7 · proof junction",s:"paper B",c:"b1 rests on the resolved request.",r:[]},
+"J8":{t:"J8 · source junction",s:"MODEL_MATCH",c:"Paper D's request resolved to e1.",r:[]},
+"J9":{t:"J9 · junction",s:"paper D",c:"g1 rests on its resolved request.",r:[]},
+/* deterministic tier rules */
+"r-proofref":{t:"\\ref inside an owned proof",s:"→ leg · use_site PROOF",c:"The proof that a theorem owns (adjacent, or claimed by its header) references another environment: that environment is a premise of the theorem's proof derivation.",r:[["conclusion","the theorem-like or definition occurrence owning the proof"],["derivation",c("proof:&lt;digest&gt;")]]},
+"r-stmtref":{t:"\\ref inside a statement",s:"→ leg · use_site STATEMENT",c:"A statement that names another environment depends on it in its statement junction.",r:[]},
+"r-eqref":{t:"\\eqref and prose targets",s:"→ UNRESOLVED_OCCURRENCE",c:"The deterministic tier does not know whether an equation is a claim, so it keeps an open placeholder with reason NON_ENVIRONMENT_TARGET.",r:[["measured","224 of 324 resolved anchors are display equations "+L("MEASURED")]]},
+"r-citeproof":{t:"\\cite inside an owned proof",s:"→ EXTERNAL_REQUEST",c:"A citation used in a proof is a request for a result of the cited work, with the \\cite optional argument kept as locator text (\"Theorem 3.2\").",r:[["group","keys of one \\cite command share a citation_group (AND or OR by policy)"]]},
+"r-citehead":{t:"\\cite in a theorem-like header",s:"→ RESTATES_RESULT_OF (host rule)",c:"\"Theorem [Folklore \\cite{Old}]\": the statement restates a cited result. Its own method, never merged with proof use.",r:[]},
+"r-citeother":{t:"any other \\cite",s:"→ MENTIONS",c:"Citation is not dependency (I-3): a citation outside proofs and headers is recorded as a mention and never traversed.",r:[]},
+"r-header":{t:"\\ref in a proof header",s:"PROOF_HEADER_OWNERSHIP",c:"\"\\begin{proof}[Proof of Theorem~\\ref{thm:d}]\" makes the proof belong to thm:d, overriding adjacency; that anchor is not a premise.",r:[]},
+/* focus mode */
+"f-prefix":{t:"The shared prefix",s:"byte-identical for every call of one paper",c:"Instruction, every source file, an alias inventory (o1, o2, … with kind and byte span, no repeated text) and the bibliography keys. A provider prompt cache bills it at the cache-hit price after the paper's first call.",
+ r:[["digest",c("prefix_sha256")+" recorded in every call's context"],["price","cache hit $0.0028 vs miss $0.14 per M tokens (1/50) "+L("OFFICIAL")],["checked","test: every prompt's first prefix_bytes are equal and hash to prefix_sha256 "+L("synthetic")]]},
+"f-focus":{t:"FOCUS blocks",s:"extraction.plan_foci",c:"Occurrences in source order, cut per file into foci of about focus_bytes; a cut falls only where a new occurrence begins after every earlier member ends, so nested occurrences stay together; a file's focus scopes are disjoint, start at byte 0 and cover it.",
+ r:[["why disjoint","a quoted new claim can belong to one call only, so two calls never assert different rows for one id"],["size","a few hundred bytes per call; only this part differs"],["gap","a file with no environment or equation gets no focus; claims only in its prose are not extracted"]]},
+"f-alias":{t:"Aliases",s:"o1, o2, … ↔ occurrence ids",c:"Short aliases replace 64-hex ids in prompt and answer; the host maps them back. An unknown alias stays as written and is rejected as an unknown occurrence.",r:[["saves","input and output tokens (ids are ~30 tokens each)"]]},
+"f-premise":{t:"Premise rule in focus mode",s:"any occurrence → its claim",c:"Because the whole paper was supplied, a premise that names an occurrence is that occurrence's claim, whatever its kind: \"(12) ← (10), (11)\" stays a chain of claims instead of ending in placeholders.",
+ r:[["merge","two calls naming the same occurrence assert the identical Claim row"],["checked","test: a 3-equation derivation across two foci merges with zero G1–G15 findings "+L("synthetic")]]},
+"f-local":{t:"LOCAL_BATCH (the alternative)",s:"paper.extract_local",c:"A batch of environments with its owned proofs, referenced statements, cited bibliography entries and up to B bytes of preceding prose. Cheaper input, but a premise outside the supplied context cannot be listed.",
+ r:[["cost","$534 real-time / $267 Batch for 10,000 papers "+L("ESTIMATED")],["measured in P0",c("LOCAL_VS_WHOLE_RECALL")]]},
+"f-bill":{t:"What the cache changes, and what it does not",s:"cost.paper_tokens",c:"The token count grows as S², as in v0.3: about βS/focus_bytes calls, each carrying the whole τS-token prefix. The price is what changes: from a paper's second call the prefix is billed at the cache-hit price, 1/50 of a miss. With the cache working the money is dominated by the terms linear in S; without it, it grows as S² at the miss price.",
+ r:[["focus",c("n = max(1, βS/focus_bytes); input = n(τS(1+inv) + w); cached = (n−1)·τS(1+inv)·cache_eff")],["output",c("βS·v + n·r")+" — about half the money"],["scheduling","send one paper's foci back to back: the pages state no cache lifetime "+L("ESTIMATED")]]},
+/* S7 */
+"m-pool":{t:"Request pool",s:"one upstream paper version",c:"All external requests from the corpus to one upstream paper version are matched in one call.",r:[["id",c("pool:&lt;digest of {pv, request ids}&gt;")]]},
+"m-retrieve":{t:"Deterministic retrieval",s:"matching.retrieve_candidates",c:"Candidates are the upstream paper's claim readings, ranked by the reading kind the locator names, then token overlap with the citing reading.",r:[["not","two full sources (v0.3 used 233 k input tokens per match "+L("MEASURED")+")"]]},
+"m-rows":{t:"Match rows",s:"v0.3 MATCH_RESPONSE_SCHEMA",c:"One row per request: CANDIDATE_SUPPORT with upstream claim ids and an exact quotation of each, or MISMATCH / UNCERTAIN with a reason.",r:[["joint","several upstream claims → JOINT_SUPPORT; one → SINGLE_CLAIM"]]},
+"m-junction":{t:"Source junction",s:"source:<pv>:<match_key>",c:"Each accepted row becomes its own derivation of the request: several rows are alternatives (OR).",r:[["match_key",c("digest(sorted upstream claim ids)")]]},
+"m-quote":{t:"Quote rule",s:"SHORTEST_UNIQUE_ENCLOSING_SPAN_EARLIEST_START",c:"A quotation that occurs several times is extended to the shortest enclosing span that is unique, the earliest on a tie, and the extension is recorded as a HOST_RULE issue.",r:[["measured","8 of v0.3's 22 validation failures were non-unique quotations "+L("MEASURED")]]},
+/* records frame */
+"R-delta":{t:"GraphDelta",s:"immutable · content-addressed",c:"One stage's rows for one subject (paper, batch, pool, manifest), with parents, producers, issues and host measurements.",r:[["stages","S1–S9, HUMAN_ENTRY (method HUMAN), LIBRARY_AUDIT (method LIBRARY)"],["rule","only S1 asserts PaperVersion; PREMISE_OF and CONCLUDES are derived from legs, never asserted"]]},
+"R-store":{t:"DeltaStore",s:"<root>/<hex[:2]>/<hex>.json",c:"Canonical bytes written once with an atomic link; different bytes under one id are refused.",r:[]},
+"R-manifest":{t:"DeltaSetManifest",s:"parent-closed set of deltas",c:"Names exactly which deltas an analysis or projection reads; a correction is a new manifest with a parent.",r:[["check","every parent included; every edge and leg endpoint asserted by an included delta"]]},
+"R-merge":{t:"Merge",s:"delta.merge",c:"One view: an id asserted by several deltas must carry identical rows; the view adds only asserted_by and methods.",r:[]},
+"R-proj":{t:"ProjectionManifest",s:"BUILDING → READY",c:"Names what Neo4j holds: the delta-set digest, the review-set digest, the loader version and the audit counts.",r:[]},
+/* auto eval frame */
+"a-plan":{t:"EvaluationPlan",s:"autoeval.freeze_plan",c:"Frozen before any judge call: estimands, per-stratum sample size and seed, controls, the panel, the producers of what each judge operation judges, and the instruction digests.",
+ r:[["panel","≥ 2 judges per judge operation; members differ in model or thinking mode; at least one judge model is not among that operation's "+c("producers")],["example","mimo-v2.6-pro (thinking) + gpt-5.6-terra judging mimo-v2.6-flash extractions"],["floors","per_stratum ≥ min_items; ≥ 12 decoys per rule at α 0.05, κ 2 (with none judged USED, 2 × z²/(n + z²) < 0.5 needs n ≥ 12)"],["refuses",c("JUDGE_PANEL_TOO_SMALL")+", "+c("…NOT_INDEPENDENT_OF_PRODUCERS")+", "+c("…MEMBERS_IDENTICAL")+", "+c("TOO_FEW_DECOYS_PER_RULE")+", "+c("PER_STRATUM_BELOW_MIN_ITEMS")]]},
+"a-sample":{t:"Stratified sample",s:"autoeval.draw_leg_sample · review_sample.draw",c:"Every leg of a non-source junction of the plan's own view, stratified by (reading method, method version, role, use site), per_stratum of each in seeded order, each with its inclusion probability π. Two method versions are never pooled.",r:[["record",c("ReviewSample {label_source: AUTO_PANEL, evaluation_plan_id}")],["weights","Hájek, 1/π; Wilson at the Kish effective n"],["refuses","a view not merged from the plan's DeltaSetManifest"]]},
+"a-card":{t:"Blinded card",s:"autoeval.leg_card",c:"The judge sees only texts: the conclusion, the candidate premise, and the evidence — exactly the owned proofs the derivation names (one for an anchor junction, all for an extraction junction), the statement for the statement derivation, else a window around the conclusion.",
+ r:[["hidden","method, reading, any id, whether the card is a control"],["match cards","upstream statements from the frozen source, never from a model reading; a source junction is judged only by a match card"],["id",c("card:&lt;digest of the shown body&gt;")],["checked","test: no method name, junction id or reading id appears in any card "+L("synthetic")]]},
+"a-pos":{t:"Positive controls",s:"ANCHOR_IN_OWNED_PROOF_V1",c:"Legs the conclusion's own proof references by \\ref: almost surely used. They measure the panel's sensitivity; because they are easy, the point estimate that uses them is optimistic.",r:[]},
+"a-neg":{t:"Negative controls (decoys)",s:"SAME_PAPER_NEAR_MISS_V1 · OTHER_PAPER_DECOY_V1",c:"The same card with the premise replaced by one of the same kind that the conclusion cannot use — a bibliography entry for a cited work, an equation for an equation, else an environment: later in the same file and never referenced inside the evidence, or from another paper with no citation link to it. Match decoys are hard negatives: the most similar unused statement of the upstream paper.",
+ r:[["measures","the panel's false-positive rate f, per rule; the worst rule is used"],["balanced",c("count_per_rule")+" decoys of every rule; each card made once"],["excluded","anything a label or citation inside the evidence targets, what encloses it, what references the conclusion, any premise of the conclusion"],["assumption","on real unused premises the panel errs at most fpr_inflation × f (decoys may be easier)"]]},
+"a-judge":{t:"Judges",s:"leg.judge · match.judge",c:"Each judge answers USED, NOT_USED or CANNOT_TELL; USED needs an exact quotation of the evidence showing where the premise is invoked.",r:[["routes","one from profiles/engines-v2-mimo.json, one from engines-v2.json: different model families"],["cost","≈ 3–6 k tokens per judge call "+L("ESTIMATED")]]},
+"a-jmt":{t:"Judgement",s:"autoeval.judgement",c:"The host binds the quotation inside the card's evidence; a quotation shorter than 12 characters, one it cannot find, or a repeated one that would need more than 80 characters of extension makes the verdict EVIDENCE_UNBOUND, an answer off the schema RESPONSE_INVALID. A card's question must be its judge's operation.",r:[["record",c("Judgement {verdict, validity, evidence {byte_start, byte_end, span_sha256, extended}, receipt}")],["I-7","byte binding proves location, not meaning"]]},
+"a-panel":{t:"Panel label",s:"UNANIMOUS_VALID_USED",c:"A card is panel-positive only if every judge gave a VALID USED; everything else counts as not positive. Cards that are neither unanimous USED nor unanimous NOT_USED are counted as unresolved.",r:[["refuses","a card missing a judge, a judge answering twice, a judgement of another plan"]]},
+"a-est":{t:"Estimates",s:"PrecisionEstimate · RecallEstimate",c:"Per stratum: panel-positive rate, the false-positive rate of each decoy rule and the worst of them, control sensitivity, the conservative lower bound, the optimistic point estimate and the gate decision.",r:[["NOT_ESTIMABLE","items < min_items; no judged decoy; inflated FPR bound ≥ 0.5 (also when a rule made no decoy); unresolved share > max"],["recheck",c("autoeval.recheck")+" recomputes a stored row from its counts; P0 uses only that"]]},
+"a-report":{t:"EvaluationReport",s:"label_source AUTO_PANEL",c:"Every estimate with the independence of the judges from the producers of each judge operation, the inputs (samples, digests of every card and judgement, the control composition) and the list of assumptions; a human audit, if one exists, is reported beside the panel, never instead of it.",r:[]},
+"a-hidden":{t:"What the host keeps and the judge never sees",s:"blinding: METHOD_AND_CONTROL_HIDDEN",c:"The mapping from card to leg, reading method and control status stays on the host side; judges cannot favour a method or recognise a decoy by its label.",r:[]},
+/* recall frame */
+"rc-anchor":{t:"ANCHOR_REFERENCED_V1",s:"autoeval.anchor_recall · deterministic",c:"Of the proof legs the deterministic tier found to environment premises, whose conclusion the extraction examined, the share the extraction also proposed. Recall on explicitly referenced premises only.",r:[["checked","synthetic paper: 1 of 1 anchored leg recovered "+L("synthetic")]]},
+"rc-union":{t:"UNION_OF_TWO_METHODS_V1",s:"autoeval.union_recall",c:"On papers run in both S6 modes, over the conclusions both examined (read or proposed a junction for): each mode's share of the panel-confirmed union of their legs. Legs both modes missed are invisible to it.",r:[["one premise","an unresolved occurrence and the whole claim of the same occurrence count once"]]},
+"rc-chapman":{t:"CAPTURE_RECAPTURE_CHAPMAN_V1",s:"N = (n₁+1)(n₂+1)/(m+1) − 1",c:"The ecologist's estimate of the total from two independent catches: n₁ and n₂ confirmed legs found by each mode, m by both. Correlated misses make it optimistic.",r:[["example","n₁ = 4, n₂ = 2, m = 2 → N = 4; recall(local) = 2/4 "+L("synthetic")]]},
+/* gates frame */
+"gP1":{t:"P-1 inputs",s:"SAMPLE round + merged S1–S4 view + S3 deltas",c:"Only host measurements: no model output is read.",r:[]},
+"gP1a":{t:"Eligible enough?",s:"min_eligible_fraction · max_undetermined_fraction",c:"If the frame yields too few eligible papers, or too many undetermined ones, the field or the window is wrong: NO_GO.",r:[]},
+"gP1b":{t:"Shared cited works?",s:"claim_level {min_works, min_citing_papers}",c:"Claim-level foundations need works that several sample papers cite. Too few → acquire them first (GO_WITH_EXPANSION), which loops back to S1 with EXPANSION or DISCOVERY rounds.",r:[]},
+"gP0a":{t:"Extraction admitted?",s:"every MODEL_EXTRACTION stratum of the corpus version ADMIT",c:"The gate recomputes each row from its counts; the conservative precision bound of every stratum of the corpus extraction version must reach the admission threshold (0.85 in the example). A comparison version admits nothing and blocks nothing.",r:[]},
+"gP0b":{t:"Measured, covers the run, affordable?",s:"CostProjection",c:"The projection is of the evaluated model, over at least target_size papers of measured size, with no ESTIMATED parameter; the projected money (or calls, or tokens) plus the reserve for the other stages and what is already spent is under the ceiling, and the largest prompt plus an output reserve fits the context window (1 M tokens for MiMo-V2.6-Flash).",r:[]},
+"gPOL":{t:"PRIMARY policy",s:"gates.primary_policy",c:"The manifest's frozen template with importance_methods cut to the admitted methods and admission_gate naming the P0 decision; analysis refuses a PRIMARY run without that unedited GO, the corpus manifest and a complete coverage report.",r:[]},
+/* cost frame */
+"c-f8":{t:"WHOLE_PAPER_FOCUS · 8 KB foci",s:"139 k calls · ≈ 23 h at 100 RPM",c:"The recommended mode: whole-paper context for every call at close to local-mode cost, if the prompt cache hits.",r:[["real-time","$638 with 90% cache efficiency; $2,038 with no cache hit"],["Batch API","$319 / $1,019"],["3,000 reasoning tokens","+ about $100 real-time"]]},
+"c-f2":{t:"WHOLE_PAPER_FOCUS · 2 KB foci",s:"557 k calls · ≈ 93 h",c:"v0.3's focus size in the new layout: four times the calls.",r:[["real-time","$1,414 cached; $7,302 uncached"],["Batch","$707 / $3,651"]]},
+"c-local":{t:"LOCAL_BATCH",s:"139 k calls",c:"Cheapest input, no cache needed; loses premises outside the local context.",r:[["real-time","$534"],["Batch","$267"]]},
+"c-v03":{t:"v0.3 layout",s:"not a v0.4 mode",c:"Whole source + inventory + anchors re-sent at full price for each 2 KB scope: grows as S².",r:[["real-time","≈ $23,400"],["Batch","≈ $11,700"],["time","≈ 12 days, bound by 10 M tokens per minute"]]},
+"c-price":{t:"MiMo-V2.6-Flash prices",s:"mimo.mi.com · pages dated 2026-09-21/22",c:"Overseas pay-as-you-go, per million tokens.",r:[["real-time","cache hit $0.0028 · miss $0.14 · output $0.28"],["Batch API","half of each; 24 h window; 128 MB per file"],["limits","1 M context, 128 K output, 100 RPM, 10 M TPM"],["thinking","on by default; reasoning billed as output"]]},
+"c-param":{t:"Parameters and their labels",s:"cost.PARAMETERS",c:"Every number of the projection says where it came from, and the projection lists only the ones its formulas used. P0 accepts none labelled ESTIMATED: the pilot's measurements replace them.",r:[["MEASURED","0.40 tokens/byte; focus fraction 0.621; 0.887 visible output tokens per focus byte; retry × 1.2 (GPT receipts)"],["POLICY","output reserve 32,768 tokens; local batch 8,192 bytes (host choices)"],["ESTIMATED","500 reasoning tokens per call; cache efficiency 0.9; 2,000 instruction tokens per call; inventory 5%"],["sizes","8 v0.3 papers, mean 153 KB, repeated to 10,000 (chain-selected, not random)"]]},
+/* analysis frame */
+"x-f":{t:"f · the foundation",s:"paper E (EXPANSION)",c:"e and g use f directly; a and b use f through e.",r:[]},
+"x-e":{t:"e",s:"paper E (EXPANSION)",c:"Traversed under ALL_ADMITTED; its own paper is f's paper, so it never counts for f.",r:[]},
+"x-a":{t:"a",s:"paper A (SAMPLE, quant-ph)",c:"A sampled dependent: always counted.",r:[]},
+"x-b":{t:"b",s:"paper B (SAMPLE, cond-mat.str-el + quant-ph)",c:"A sampled dependent: always counted; its cross-list adds a second topic.",r:[]},
+"x-g":{t:"g",s:"paper D (DISCOVERY, hep-th)",c:"Counted only under ALL_ADMITTED.",r:[]},
+/* neo4j frame */
+"n-labels":{t:"Labels",s:"projection.GROUPS",c:"Corpus, PaperVersion, Work, BibEntry, Claim, ClaimReading, Junction, Placeholder (+ :ExternalRequest / :UnresolvedOccurrence), PrimitiveAssertion, ProjectionManifest; every node :Entity, logical nodes :Logical.",r:[]},
+"n-rels":{t:"Relationships",s:"PREMISE_OF · CONCLUDES · and §3.6",c:"(premise)-[:PREMISE_OF {id, position, role, use_site}]->(:Junction)-[:CONCLUDES]->(conclusion), derived from junction legs; plus STATES, READS, PART_OF, HAS_ENTRY, RESOLVES_TO, REQUESTS_FROM, MENTIONS, RESTATES_RESULT_OF, VERSION_OF, SAME_WORK, CORRECTS, SUPERSEDES, ASSERTS_PRIMITIVE, INCLUDES.",r:[]},
+"n-audit":{t:"Zero-row audits",s:"neo4j/audits.cypher · 14 queries",c:"After loading, each audit must return zero rows before the manifest turns READY; Community edition has only uniqueness constraints, so the rest is host-checked.",r:[]},
+"n-gds":{t:"GDS",s:"a mirror, never the reference",c:"Graph Data Science may reproduce metrics for browsing; the reference computation is analysis.py.",r:[]},
+/* status frame */
+"st-done":{t:"Built and checked offline",s:"2026-09-26 · synthetic data only",c:"Contracts, host code, Neo4j files and tests, corrected after two independent static reviews; 313 unit tests pass on synthetic papers; v0.3 is unchanged (77 passed, 1 skipped).",r:[["not done","no real paper processed, no model called, no network used, no Neo4j started"]]},
+"st-pend":{t:"Pending measurements",s:"schema v0.1/PENDING_TESTS.md §13",c:"P-1 on a frozen sample; the P0 pilot with real judges; MiMo's tokenizer, cache hits, thinking length and validation rate; Neo4j loading.",r:[]},
+"st-open":{t:"Decisions for the owner",s:"spec §15",c:"Field, window and eligibility parameters; network sources; a metered MiMo account, the budget ceiling and the provider's terms for full text; Neo4j edition; whether to stratify judges by training cutoff.",r:[]},
+};
+</script>
+<script>
+"use strict";
+/* ---- frames ---- */
+const FR=[];
+const F=(act,title,sub,draw,widget)=>FR.push({act,title,sub,draw,widget});
+
+/* 1 · title */
+F("I · OVERVIEW","","",()=>{
+  T(svg,120,330,"Schema v0.4",{size:88,bold:true});
+  T(svg,120,410,"corpus dependency graph · automatic judgement · foundation analysis",{size:38});
+  rule(120,450,1180,450,{c:INK,w:1});
+  para(120,510,["Many same-field papers → one typed claim dependency graph → the early, widely depended-upon",
+    "claims that a knowledge base should formalize first. Every paper is extracted the same way; every",
+    "stage gate is a rule fixed before measuring; quality is measured by a blinded panel of model judges."],{size:25,lh:38,fill:INK});
+  small(120,690,"STATUS 2026-09-25",{size:16});
+  para(120,725,["Design, contracts, host code and Neo4j files exist; 313 unit tests pass on synthetic papers.",
+    "No real paper has been processed, no model called, no network used, no Neo4j server started."],{size:22,lh:33,fill:LIGHT});
+  small(120,870,"HOW TO READ",{size:16});
+  legend(120,910,[["claim",INK,"claim"],["definition",INK,"definition"],["lemma",INK,"lemma"],["theorem",INK,"theorem"],["work",INK,"work-level result"],["request",OPEN,"open placeholder",{dash:true}]]);
+  T(svg,120,950,"shape = node kind · colour = which paper a node came from · warm dashed = open, unresolved or outside",{size:19,fill:LIGHT});
+  const g=E("g",{});E("circle",{cx:1500,cy:420,r:150,fill:"none",stroke:INK,"stroke-width":1,opacity:.2},g);
+  junction({id:"J2",x:1500,y:470,to:[1500,330],from:[[1400,620],[1600,620]]});
+  gnode({id:"g-t1",kind:"theorem",x:1500,y:300,r:24,paper:"A"});gnode({id:"g-l1",kind:"lemma",x:1400,y:640,r:20,paper:"A"});
+  gnode({id:"g-R",kind:"request",x:1600,y:640,r:18});
+  small(1500,760,"⊕ = all premises jointly required (AND)",{size:15,anchor:"middle"});
+});
+
+/* 2 · overview map */
+F("I · OVERVIEW","The framework","Three stages; two automatic gates; every arrow is a recorded artifact",()=>{
+  small(80,205,"1 · BUILD THE CHEAP GRAPH — NO MODEL",{size:15});
+  small(80,475,"2 · PILOT, AUTOMATIC JUDGEMENT, COST",{size:15});
+  small(80,745,"3 · FULL RUN AND ANALYSIS",{size:15});
+  const W=230,H=150,Y1=225,Y2=495,Y3=765;
+  const r1=[["S0",["S0 · manifest"],["field, frame, rules","gates, ceiling"]],["S1",["S1 · acquire"],["seeded order","SAMPLE / EXP. / DISC."]],
+    ["S2",["S2 · parse"],["occurrences, labels","anchors, bibliography"]],["S3",["S3 · anchors"],["\\ref / \\cite → legs","no model"]],["S4",["S4 · works"],["explicit ids only","SAME_WORK host rule"]]];
+  r1.forEach(([id,t,l],k)=>{box({id,x:80+k*270,y:Y1,w:W,h:H,title:t,lines:l});if(k)arrow([[80+k*270-40,Y1+75],[80+k*270-6,Y1+75]])});
+  diamond({id:"P-1",x:1435,y:Y1-5,w:220,h:160,title:"P-1",lines:["S5 · gate"]});arrow([[1390,Y1+75],[1431,Y1+75]]);
+  arrow([[1655,Y1+75],[1760,Y1+75]],{tone:"open",label:"NO_GO",dx:-10,dy:-12});T(svg,1768,Y1+81,"stop",{size:19,fill:OPEN});
+  arrow([[1545,Y1-5],[1545,165],[350+115,165],[350+115,Y1-4]],{tone:"open",dash:true});
+  T(svg,700,156,"GO_WITH_EXPANSION → EXPANSION / DISCOVERY rounds",{size:16,fill:OPEN,spacing:"0.06em"});
+  arrow([[1545,Y1+155],[1545,Y1+205],[195,Y1+205],[195,Y2-4]],{label:"GO",at:[1552,Y1+192]});
+  const r2=[["PILOT",["pilot S6 + S7"],["a few hundred papers","both extraction modes"]],["AUTOEVAL",["AUTO_EVAL_V1"],["blinded judges","decoys, bounds"]],["COST",["cost projection"],["dated price file","calls, tokens, time"]]];
+  r2.forEach(([id,t,l],k)=>{box({id,x:80+k*300,y:Y2,w:260,h:H,title:t,lines:l,tone:id==="AUTOEVAL"?"junc":null});if(k)arrow([[80+k*300-40,Y2+75],[80+k*300-6,Y2+75]])});
+  diamond({id:"P0",x:1010,y:Y2-5,w:220,h:160,title:"P0",lines:["gate"]});arrow([[980,Y2+75],[1006,Y2+75]]);
+  arrow([[1230,Y2+75],[1330,Y2+75]],{tone:"open",label:"NO_GO",dx:-10,dy:-12});T(svg,1338,Y2+81,"revise the policy, rerun the pilot",{size:19,fill:OPEN});
+  arrow([[1120,Y2+155],[1120,Y2+205],[195,Y2+205],[195,Y3-4]],{label:"GO → PRIMARY policy",at:[1128,Y2+192]});
+  const r3=[["FULL",["full run S6 + S7"],["EQUAL_FULL","every accepted paper"]],["STORE",["deltas, manifest"],["content-addressed","G1–G15 checks"]],
+    ["S8",["S8 · Neo4j"],["rebuildable projection","14 zero-row audits"]],["S9",["S9 · analyze"],["layers, brackets","count basis"]],["NOM",["nominations"],["FOUNDATION_V1","never a status"]]];
+  r3.forEach(([id,t,l],k)=>{box({id,x:80+k*270,y:Y3,w:W,h:H,title:t,lines:l});if(k)arrow([[80+k*270-40,Y3+75],[80+k*270-6,Y3+75]])});
+  arrow([[1390,Y3+75],[1431,Y3+75]]);
+  box({id:"ST3",x:1435,y:Y3,w:260,h:H,title:["stage 3 hand-off"],lines:["export to v0.3","library audit, Lean"]});
+  box({id:"S6",x:1735,y:Y2+10,w:120,h:60,title:["S6"],ts:22,pad:38});box({id:"S7",x:1735,y:Y2+85,w:120,h:60,title:["S7"],ts:22,pad:38});
+  small(1735,Y2-8,"THE TWO",{size:13});small(1735,Y2+168,"MODEL STAGES",{size:13});
+});
+
+/* 3 · corpus */
+F("II · STAGE 1","Who is in the corpus","S0–S2 · one random sample, two kinds of added rounds, one eligibility program",()=>{
+  box({id:"S0",x:80,y:200,w:360,h:260,title:["CorpusManifest"],tag:"S0",lines:["field, frame snapshot","eligibility program digest","coverage EQUAL_FULL","one extraction policy","gate rules, budget ceiling"]});
+  box({id:"SAMPLE",x:560,y:200,w:390,h:200,title:["SAMPLE · round 0"],tag:"IN P",lines:["seeded hash order","examined until target accepted","never replaced"]});
+  box({id:"EXPANSION",x:560,y:430,w:390,h:170,title:["EXPANSION · round ≥ 1"],tag:"NOT IN P",lines:["cited or nominated works","arXiv source only, M per round"]});
+  box({id:"DISCOVERY",x:560,y:630,w:390,h:200,title:["DISCOVERY · round ≥ 1"],tag:"NOT IN P",lines:["ids proposed by a model search","host drops invalid and seen ids","examined like sampled ones"],tone:null});
+  arrow([[440,330],[556,300]]);arrow([[440,330],[556,515]]);arrow([[440,330],[556,730]]);
+  box({id:"OUTCOMES",x:1060,y:200,w:360,h:230,title:["one outcome each"],lines:["ACCEPTED","INELIGIBLE (reason)","UNDETERMINED (class)","  incl. ID_NOT_FOUND"]});
+  box({id:"ELIG",x:1060,y:470,w:360,h:250,title:["THEOREM_OR_","DERIVATION_V1"],lines:["theorem-like ≥ k","  OR display equations ≥ m","derivation papers are inside P","grid reported at P-1"]});
+  arrow([[950,300],[1056,300]]);arrow([[950,515],[1056,340]]);arrow([[950,730],[1056,380]]);arrow([[1240,466],[1240,434]],{tone:"light"});
+  box({id:"INCLUDES",x:1520,y:200,w:330,h:300,title:["INCLUDES edge"],lines:["admission, round,","sampling record","traverse: whose claims","  enter the graph","count_basis: whose","  claims count"]});
+  arrow([[1420,300],[1516,300]],{label:"ACCEPTED",dy:-10});
+  box({id:"S1",x:1520,y:560,w:330,h:150,title:["S1 delta"],lines:["PaperVersion rows","only S1 asserts them"]});
+  arrow([[1685,500],[1685,556]],{tone:"light"});
+  para(80,905,["The random sample is the only population the counts estimate. Cited and discovered papers are there so that chains can be followed",
+    "upstream; under count_basis SAMPLE_ONLY they carry chains but never count as dependents."],{size:21,lh:31,fill:LIGHT});
+});
+
+/* 4 · logical graph */
+F("II · STAGE 1","The logical graph","junctions (AND), derivations (OR), typed legs, placeholders, computed layers",()=>{
+  const X0=190,LY={0:880,1:720,2:560,3:400};
+  for(const k of [0,1,2,3]){rule(X0,LY[k],1400,LY[k],{op:.09});small(110,LY[k]+6,"L"+k,{size:17})}
+  small(1440,215,"COLOUR = SOURCE PAPER",{size:14});
+  legend(1440,250,[["claim",HUE.A,"A · sample"]]);legend(1440,284,[["claim",HUE.B,"B · sample"]]);
+  legend(1440,318,[["claim",HUE.E,"E · expansion"]]);legend(1440,352,[["claim",HUE.D,"D · discovery"]]);
+  small(1440,410,"SHAPE = KIND",{size:14});
+  legend(1440,445,[["definition",INK,"definition"],["lemma",INK,"lemma"]]);legend(1440,479,[["theorem",INK,"theorem"],["claim",INK,"claim"]]);
+  legend(1440,513,[["request",OPEN,"external request"]]);legend(1440,547,[["unresolved",OPEN,"unresolved occurrence"]]);
+  para(1440,620,["layer(claim) = min over its","derivations of max over the","junction's premises, + 1;","requests add 0; roots are 0."],{size:19,lh:28,fill:LIGHT});
+  para(1440,770,["Click a node or a ⊕.","Layers are derived from the","edge set, never written by","a model (I-5)."],{size:19,lh:28,fill:LIGHT});
+  const P={d1:[330,LY[0]],u1:[560,LY[0]],R:[790,LY[0]],e1:[1010,LY[0]],RD:[1230,LY[0]],l1:[330,LY[1]],g1:[1230,LY[1]],m1:[450,LY[2]],t1:[790,LY[2]],RB:[1010,LY[2]+70],b1:[1010,LY[3]]};
+  junction({id:"J1",x:330,y:LY[1]+75,to:[330,LY[1]+22],from:[[330,LY[0]-19]]});
+  junction({id:"J4",x:450,y:LY[2]+80,to:[450,LY[2]+26],from:[[330,LY[1]-22],[560,LY[0]-19]]});
+  junction({id:"J2",x:720,y:LY[2]+85,to:[775,LY[2]+22],from:[[330,LY[1]-22],[790,LY[0]-19]],label:"proof:A"});
+  junction({id:"J3",x:600,y:LY[2]+30,to:[762,LY[2]+6],from:[[470,LY[2]-8]],label:"proof:B"});
+  junction({id:"J5",x:900,y:LY[0]-60,to:[808,LY[0]-8],from:[[1010,LY[0]-22]],c:JUNC,label:"source:E"});
+  junction({id:"J6",x:900,y:LY[2]+100,to:[990,LY[2]+70],from:[[790,LY[2]+26]],c:JUNC});
+  junction({id:"J7",x:1010,y:LY[3]+80,to:[1010,LY[3]+26],from:[[1010,LY[2]+52]]});
+  junction({id:"J8",x:1120,y:LY[0]-60,to:[1212,LY[0]-8],from:[[1030,LY[0]-14]],c:JUNC});
+  junction({id:"J9",x:1230,y:LY[1]+75,to:[1230,LY[1]+22],from:[[1230,LY[0]-19]]});
+  gnode({id:"g-d1",kind:"definition",x:P.d1[0],y:P.d1[1],paper:"A",label:"d1"});
+  gnode({id:"g-u1",kind:"unresolved",x:P.u1[0],y:P.u1[1],label:"u1 (eq. 7)",lc:OPEN});
+  gnode({id:"g-R",kind:"request",x:P.R[0],y:P.R[1],label:"R",lc:OPEN});
+  gnode({id:"g-e1",kind:"theorem",x:P.e1[0],y:P.e1[1],paper:"E",label:"e1",r:18});
+  gnode({id:"g-RD",kind:"request",x:P.RD[0],y:P.RD[1],label:"R_D",lc:OPEN});
+  gnode({id:"g-l1",kind:"lemma",x:P.l1[0],y:P.l1[1],paper:"A",label:"l1"});
+  gnode({id:"g-g1",kind:"claim",x:P.g1[0],y:P.g1[1],paper:"D",label:"g1"});
+  gnode({id:"g-m1",kind:"lemma",x:P.m1[0],y:P.m1[1],paper:"A",label:"m1",lx:-58});
+  gnode({id:"g-t1",kind:"theorem",x:P.t1[0],y:P.t1[1],paper:"A",label:"t1",r:21,ly:-24,lx:20});
+  gnode({id:"g-RB",kind:"request",x:P.RB[0],y:P.RB[1],label:"R_B",lc:OPEN});
+  gnode({id:"g-b1",kind:"theorem",x:P.b1[0],y:P.b1[1],paper:"B",label:"b1",r:21});
+});
+
+/* 5 · deterministic tier */
+F("II · STAGE 1","The deterministic tier","S3 · what the TeX already says, turned into legs without a model",()=>{
+  const rows=[["r-proofref","\\ref{L} inside the proof a theorem owns","leg to L · use_site PROOF"],["r-stmtref","\\ref{L} inside a statement","leg to L · use_site STATEMENT"],
+    ["r-eqref","\\eqref{e}, a prose target","UNRESOLVED_OCCURRENCE (open)"],["r-citeproof","\\cite[Thm 3.2]{K} inside an owned proof","EXTERNAL_REQUEST + locator text"],
+    ["r-citehead","\\cite{K} in a theorem-like header","RESTATES_RESULT_OF (host rule)"],["r-citeother","any other \\cite{K}","MENTIONS — never traversed (I-3)"],
+    ["r-header","\\begin{proof}[Proof of \\ref{T}]","the proof belongs to T"]];
+  small(120,220,"WHERE THE ANCHOR IS",{size:15});small(900,220,"WHAT IT BECOMES",{size:15});
+  rows.forEach(([id,a,b],k)=>{const y=250+k*92;const g=hitGroup(id);E("rect",{x:110,y,width:1450,height:80,fill:"#fff",stroke:INK,"stroke-width":1,opacity:1,class:"hl"},g);
+    T(g,135,y+50,a,{size:23,code:true});arrow([[820,y+40],[880,y+40]],{parent:g,tone:b.includes("open")||b.includes("MENTIONS")?"light":null});
+    T(g,900,y+50,b,{size:23,fill:b.includes("open")?OPEN:INK})});
+  box({id:"S3",x:1600,y:250,w:260,h:250,title:["measured"],lines:["953 anchors","324 resolve","224 are equations","69 environments","83 inside proofs"],tag:"4 PAPERS"});
+  para(120,930,["Each paper's S3 delta records measurements.deterministic_yield {theorem_like_environments, owned_proofs, proof_owned_anchors,",
+    "junction_bearing_conclusions}; the P-1 gate sums them. The tier is thin — 224 of 324 resolved anchors point at equations."],{size:20,lh:30,fill:LIGHT});
+});
+
+/* 6 · focus mode */
+F("II · STAGE 1","S6 · WHOLE_PAPER_FOCUS","the whole paper as one cache-stable prefix, one focus span per call",()=>{
+  const Y=250;
+  const g=hitGroup("f-prefix");E("rect",{x:80,y:Y,width:1220,height:120,fill:"#fff",stroke:INK,"stroke-width":2,class:"hl"},g);
+  [["instruction",80,170],["every source file (main.tex, appendix.tex, main.bbl …)",250,560],["alias inventory o1 … oN",810,300],["bib keys",1110,190]].forEach(([s,x,w])=>{
+    rule(x+w,Y,x+w,Y+120,{op:.4,parent:g});T(g,x+16,Y+68,s,{size:21})});
+  small(80,Y-18,"SHARED PREFIX · BYTE-IDENTICAL FOR EVERY CALL OF THE PAPER",{size:15});
+  for(let k=0;k<5;k++){const x=1330+k*108;const b=hitGroup("f-focus");E("rect",{x,y:Y,width:92,height:120,fill:"#fff",stroke:k===0?INK:LIGHT,"stroke-width":2,class:"hl"},b);
+    T(b,x+46,Y+55,"FOCUS",{size:15,anchor:"middle",spacing:"0.1em",fill:LIGHT});T(b,x+46,Y+85,k+1+"",{size:24,anchor:"middle"})}
+  small(1330,Y-18,"FOCUS BLOCKS · ONE PER CALL",{size:15});
+  const bill=hitGroup("f-bill");
+  T(bill,80,Y+190,"call 1",{size:21});E("rect",{x:200,y:Y+168,width:1100,height:28,fill:INK},bill);E("rect",{x:1330,y:Y+168,width:92,height:28,fill:INK},bill);
+  for(let k=2;k<=5;k++){const y=Y+168+(k-1)*44;T(bill,80,y+22,"call "+k,{size:21});E("rect",{x:200,y,width:1100,height:28,fill:"#fff",stroke:LIGHT,"stroke-width":1.5,"stroke-dasharray":"5 4"},bill);
+    E("rect",{x:1330+(k-1)*108,y,width:92,height:28,fill:INK},bill)}
+  E("rect",{x:200,y:Y+372,width:40,height:18,fill:INK},bill);T(bill,252,Y+387,"billed at the full price",{size:18});
+  E("rect",{x:520,y:Y+372,width:40,height:18,fill:"#fff",stroke:LIGHT,"stroke-width":1.5,"stroke-dasharray":"5 4"},bill);
+  T(bill,572,Y+387,"the same prefix, billed at the cache-hit price (1/50) after the paper's first call",{size:18,fill:LIGHT});
+  box({id:"f-alias",x:80,y:670,w:400,h:190,title:["aliases"],lines:["o17 ↔ occ:9f3c…","64-hex ids never in prompts","unknown alias → rejected"]});
+  box({id:"f-premise",x:540,y:670,w:470,h:190,title:["premise rule"],lines:["any occurrence → its claim","(12) ← (10), (11) stays a chain","two calls, identical rows → merge"]});
+  box({id:"f-local",x:1070,y:670,w:420,h:190,title:["LOCAL_BATCH"],lines:["environments + local context","cheaper input, no cache","loses far-away premises"],tone:null});
+  box({id:"S6",x:1550,y:670,w:300,h:190,title:["response"],lines:["v0.3 claim schema","bound quotations","issues-only if any fails"]});
+  para(80,925,["The v0.3 layout re-sent the source and its inventory at full price for every 2 KB scope, so its cost grew as the square of the paper;",
+    "here only the first call of a paper pays for the paper."],{size:21,lh:31,fill:LIGHT});
+});
+
+/* 7 · matching */
+F("II · STAGE 1","S7 · retrieved matching","which result of the cited paper does the citing proof use?",()=>{
+  box({id:"m-pool",x:80,y:230,w:330,h:200,title:["request pool"],lines:["all requests to one","upstream paper version"]});
+  box({id:"m-retrieve",x:470,y:230,w:360,h:200,title:["retrieve candidates"],lines:["locator kind (\"Thm 3.2\")","token overlap","top k per request"]});
+  box({id:"m-rows",x:890,y:230,w:360,h:200,title:["match rows"],lines:["CANDIDATE_SUPPORT","MISMATCH / UNCERTAIN","exact quotation each"]});
+  box({id:"m-junction",x:1310,y:230,w:360,h:200,title:["source junction"],lines:["source:<pv>:<key>","one per accepted row (OR)"],tone:"junc"});
+  arrow([[410,330],[466,330]]);arrow([[830,330],[886,330]]);arrow([[1250,330],[1306,330]]);
+  box({id:"m-quote",x:890,y:500,w:780,h:170,title:["quote rule"],lines:["repeated quotation → shortest unique enclosing span, earliest on a tie","recorded as a HOST_RULE issue; unbound quotation → the row is dropped with an issue"]});
+  arrow([[1070,430],[1070,496]],{tone:"light"});
+  box({id:"S7",x:80,y:500,w:750,h:170,title:["why retrieval"],lines:["v0.3 sent two whole sources per match: 233 k input tokens median (MEASURED)","v0.4 sends one request, its citing reading and k candidate statements"]});
+  para(80,905,["MISMATCH and UNCERTAIN rows become issues, not edges; a citation alone is never support (I-3). Match precision is measured by the",
+    "match.judge panel with decoys from the same upstream paper (§11.2)."],{size:21,lh:31,fill:LIGHT});
+});
+
+/* 8 · records */
+F("II · STAGE 1","Records and invariants","what is written, how it is named, what is checked before anything is loaded",()=>{
+  const b=[["R-delta","GraphDelta",["one stage, one subject","content-addressed"]],["R-store","DeltaStore",["write once","refuse different bytes"]],
+    ["R-manifest","DeltaSetManifest",["parent-closed set","corrections = new manifest"]],["R-merge","merged view",["identical rows per id","+ asserted_by, methods"]],["R-proj","ProjectionManifest",["BUILDING → READY","after audits"]]];
+  b.forEach(([id,t,l],k)=>{box({id,x:80+k*360,y:220,w:320,h:170,title:[t],lines:l});if(k)arrow([[80+k*360-40,305],[80+k*360-6,305]])});
+  const G=[["G1","a junction has ≥ 1 leg; CONCLUDES derived"],["G2","conclusions: claims or requests; premises: logical"],["G3","edge endpoint labels as specified"],["G4","no junction concludes one of its premises"],
+    ["G5","every row valid under its contract"],["G6","every id recomputes from its identity fields"],["G7","source junction: upstream in the request's work class"],["G8","a request has one REQUESTS_FROM and its junction"],
+    ["G9","every row asserted by an included delta"],["G10","one STATES (or STATED_BY) per claim"],["G11","no row carries a disposition"],["G12","proof premises from the conclusion's paper"],
+    ["G13","≤ 1 statement junction per conclusion, method, version"],["G14","no superseded reading in a junction; no SUPERSEDES cycle"],["G15","one id, one row (merge refuses otherwise)"]];
+  small(80,470,"G1–G15 · invariants.check · an empty list means every check passed",{size:15});
+  G.forEach(([g,t],k)=>{const x=80+(k%5)*360,y=495+Math.floor(k/5)*120;const h=hitGroup("inv-"+g);
+    E("rect",{x,y,width:320,height:100,fill:"#fff",stroke:INK,"stroke-width":1.2,class:"hl"},h);T(h,x+16,y+36,g,{size:24,bold:true});
+    const words=t.split(" ");let line="",ly=y+64;for(const w of words){if((line+" "+w).length>36){T(h,x+16,ly,line.trim(),{size:16,fill:LIGHT});ly+=20;line=""}line+=" "+w}T(h,x+16,ly,line.trim(),{size:16,fill:LIGHT});
+    REC["inv-"+g]=REC["inv-"+g]||{t:g,s:"strict invariant · §3.7",c:t.charAt(0).toUpperCase()+t.slice(1)+".",r:[["checked by",c("invariants.check(view)")+" before any load; findings are {invariant, id, detail}"]]}});
+  para(80,905,["A cycle is not a violation: it is an analysis diagnostic. Neo4j Community edition enforces only uniqueness, so G1–G15 are host checks,",
+    "mirrored by 14 zero-row Cypher audits after loading."],{size:21,lh:31,fill:LIGHT});
+});
+
+/* 9 · auto eval pipeline */
+F("III · AUTOMATIC JUDGEMENT","AUTO_EVAL_V1","how extraction quality is measured without people labelling legs",()=>{
+  const row=[["a-plan","plan",["frozen first"]],["a-sample","sample",["per version, π"]],["a-card","blinded cards",["texts only"]],["a-judge","2+ judges",["other models"]],
+    ["a-jmt","judgements",["quote ≥ 12 chars"]],["a-panel","panel label",["unanimous USED"]],["a-est","estimates",["bound, recall"]],["a-report","report",["AUTO_PANEL"]]];
+  row.forEach(([id,t,l],k)=>{box({id,x:70+k*228,y:210,w:200,h:130,title:[t],lines:l,ts:23,tone:id==="a-judge"?"junc":null});if(k)arrow([[70+k*228-26,275],[70+k*228-4,275]])});
+  box({id:"a-pos",x:300,y:400,w:410,h:140,title:["+ positive controls"],lines:["\\ref'd in the owned proof","→ panel sensitivity"]});
+  box({id:"a-neg",x:760,y:400,w:470,h:140,title:["− decoys"],lines:["same kind, later, unreferenced,","or unrelated paper's → f per rule"],tone:"open",dash:true});
+  arrow([[505,400],[600,344]],{tone:"light"});arrow([[995,400],[660,344]],{tone:"open",dash:true});
+  const cy=600;small(80,cy-14,"WHAT A JUDGE SEES",{size:15});
+  const cd=hitGroup("a-card");E("rect",{x:80,y:cy,width:1080,height:300,fill:"#fff",stroke:INK,"stroke-width":2,class:"hl"},cd);
+  [["CONCLUSION","\\begin{theorem}\\label{thm:c} Tiny objects exist. \\end{theorem}"],["PREMISE","\\begin{lemma}\\label{lem:b} Every nice object is tiny. …"],
+   ["EVIDENCE","\\begin{proof} Immediate from Lemma~\\ref{lem:b}; compare … \\end{proof}"],["ANSWER","{verdict: USED | NOT_USED | CANNOT_TELL, quote, reason}"]].forEach(([k,v],i)=>{
+    small(104,cy+48+i*66,k,{size:14,parent:cd});T(cd,280,cy+50+i*66,v,{size:19,code:true})});
+  const hd=hitGroup("a-hidden");E("rect",{x:1220,y:cy,width:630,height:300,fill:"#fff",stroke:OPEN,"stroke-width":2,"stroke-dasharray":"9 7",class:"hl"},hd);
+  small(1244,cy-14,"KEPT BY THE HOST, NEVER SHOWN",{size:15,fill:OPEN});
+  ["which method proposed the leg","which reading, which junction","whether the card is a control","the card ↔ leg mapping"].forEach((s,i)=>T(hd,1250,cy+60+i*52,"— "+s,{size:21,fill:OPEN}));
+  para(80,965,["A verdict is a measurement by a declared instrument (I-15): it never signs, promotes or sets a status."],{size:21,fill:LIGHT});
+});
+
+/* 10 · the bound (interactive) */
+F("III · AUTOMATIC JUDGEMENT","The precision bound","a lower bound that needs no knowledge of how sensitive the judges are",()=>{
+  const g=hitGroup("a-est");
+  T(g,80,250,"p = Se·q + f·(1 − q)  ≤  q + f·(1 − q)",{size:40});
+  T(g,80,320,"⇒  q  ≥  (p − f) / (1 − f)      for every sensitivity Se ≤ 1",{size:40});
+  para(80,400,["q  true precision of the method's legs","p  share of sampled real legs the panel calls USED (all judges)","f  share of unused premises the panel calls USED — per decoy rule; the worst rule is used",
+    "use:  Wilson lower end of p,  fpr_inflation × Wilson upper end of f,","each one-sided at 1 − α/2, so the bound holds at 1 − α (Bonferroni)."],{size:23,lh:38,fill:LIGHT});
+  small(80,640,"WORKED EXAMPLE FROM THE TESTS",{size:15});
+  para(80,680,["114 of 120 legs USED → Wilson lower 0.895","worst decoy rule: 3 of its 300 USED → Wilson upper 0.029; × 2 = 0.058","bound = (0.895 − 0.058) / (1 − 0.058) = 0.889  ≥ 0.85  → ADMIT"],{size:23,lh:38});
+},()=>{
+  const w=document.createElement("div");w.className="w calc";w.style.left="1080px";w.style.top="215px";w.style.width="780px";
+  w.innerHTML=`<div style="font-size:15px;letter-spacing:.12em;color:#8A8A80;margin-bottom:10px">TRY IT · THE SAME ARITHMETIC AS autoeval.precision_estimates</div>
+  <label>sampled legs n<input id="cn" type="number" value="120" min="1"></label>
+  <label>panel-positive among them<input id="cp" type="number" value="114" min="0"></label>
+  <label>decoys of the worst rule judged<input id="cd" type="number" value="300" min="0"></label>
+  <label>of them, called USED by the panel<input id="cf" type="number" value="3" min="0"></label>
+  <label>fpr_inflation κ<input id="ck" type="number" value="2" step="0.5" min="1"></label>
+  <label>α<input id="ca" type="number" value="0.05" step="0.01" min="0.001" max="0.5"></label>
+  <label>admission threshold<input id="ct" type="number" value="0.85" step="0.01" min="0" max="1"></label>
+  <div class="out" id="cout"></div>`;
+  overlay.appendChild(w);
+  const inv=p=>{/* inverse normal CDF, Acklam */const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239],
+    b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],cc=[-.007784894002430293,-.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],
+    d=[.007784695709041462,.3224671290700398,2.445134137142996,3.754408661907416],pl=.02425;let q,r;
+    if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((cc[0]*q+cc[1])*q+cc[2])*q+cc[3])*q+cc[4])*q+cc[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}
+    if(p<=1-pl){q=p-.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+    q=Math.sqrt(-2*Math.log(1-p));return-(((((cc[0]*q+cc[1])*q+cc[2])*q+cc[3])*q+cc[4])*q+cc[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)};
+  const wil=(s,n,z)=>{if(n<=0)return[0,1];const p=s/n,z2=z*z,ce=p+z2/(2*n),h=z*Math.sqrt(p*(1-p)/n+z2/(4*n*n));return[Math.max(0,(ce-h)/(1+z2/n)),Math.min(1,(ce+h)/(1+z2/n))]};
+  const go=()=>{const v=id=>parseFloat(document.getElementById(id).value);const n=v("cn"),p=Math.min(v("cp"),n),dn=v("cd"),f=Math.min(v("cf"),dn),k=v("ck"),al=v("ca"),th=v("ct");
+    const z=inv(1-al/2),P=wil(p,n,z),Fb=wil(f,dn,z),kf=k*Fb[1];let verdict,bound=null;
+    if(!(dn>0))verdict="NOT_ESTIMABLE · no decoy judged";else if(kf>=.5)verdict="NOT_ESTIMABLE · inflated FPR bound ≥ 0.5";
+    else{bound=Math.max(0,(P[0]-kf)/(1-kf));verdict=bound>=th?"ADMIT":"REJECT"}
+    document.getElementById("cout").innerHTML=`z = ${z.toFixed(3)} &nbsp;·&nbsp; p ∈ [${P[0].toFixed(3)}, ${P[1].toFixed(3)}] &nbsp;·&nbsp; f ≤ ${Fb[1].toFixed(4)} &nbsp;·&nbsp; κf ≤ ${kf.toFixed(4)}<br>
+      <span class="big">${bound===null?"—":bound.toFixed(3)}</span> &nbsp; lower bound on precision<br>
+      <span class="verdict" style="color:${verdict==="ADMIT"?"#1A1A16":"#8C4A2F"}">${verdict}</span>`};
+  w.querySelectorAll("input").forEach(i=>i.addEventListener("input",go));go();
+});
+
+/* 11 · recall */
+F("III · AUTOMATIC JUDGEMENT","Recall without a gold proof set","three estimates, each under its own stated assumption",()=>{
+  const g1=hitGroup("rc-anchor");E("circle",{cx:330,cy:520,r:210,fill:"none",stroke:INK,"stroke-width":2,class:"hl"},g1);E("circle",{cx:330,cy:590,r:110,fill:"none",stroke:INK,"stroke-width":2,"stroke-dasharray":"8 6"},g1);
+  T(g1,330,380,"all true legs",{size:21,anchor:"middle",fill:LIGHT});T(g1,330,585,"referenced",{size:21,anchor:"middle"});T(g1,330,612,"by \\ref",{size:21,anchor:"middle"});
+  small(90,800,"ANCHOR_REFERENCED_V1",{size:16});para(90,835,["share of the \\ref'd legs the model","also proposed — deterministic,","no judge; only explicit premises"],{size:20,lh:28,fill:LIGHT});
+  const g2=hitGroup("rc-union");E("circle",{cx:900,cy:520,r:170,fill:"none",stroke:INK,"stroke-width":2,class:"hl"},g2);E("circle",{cx:1060,cy:520,r:170,fill:"none",stroke:HUE.B,"stroke-width":2},g2);
+  T(g2,820,525,"focus",{size:22,anchor:"middle"});T(g2,1140,525,"local",{size:22,anchor:"middle",fill:HUE.B});T(g2,980,525,"both",{size:22,anchor:"middle"});
+  small(760,800,"UNION_OF_TWO_METHODS_V1",{size:16});para(760,835,["each mode's share of the panel-","confirmed union of both modes' legs","(legs both missed are invisible)"],{size:20,lh:28,fill:LIGHT});
+  const g3=hitGroup("rc-chapman");T(g3,1360,470,"N = (n₁+1)(n₂+1)/(m+1) − 1",{size:34});
+  para(1360,540,["n₁ = 4 found by focus","n₂ = 2 found by local","m = 2 found by both","N = 5·3/3 − 1 = 4 (estimated total)","recall: focus 4/4, local 2/4"],{size:23,lh:36});
+  small(1360,800,"CAPTURE_RECAPTURE_CHAPMAN_V1",{size:16});para(1360,835,["assumes the two modes miss","independently; correlated misses","make it optimistic"],{size:20,lh:28,fill:LIGHT});
+});
+
+/* 12 · gates */
+F("IV · GATES AND COST","Automatic gates","rules frozen at S0, applied by the host, output a GateDecision",()=>{
+  small(80,215,"P-1 · BEFORE ANY MODEL CALL",{size:15});
+  box({id:"gP1",x:80,y:240,w:300,h:150,title:["inputs"],lines:["SAMPLE round","S1–S4 view, S3 yields"]});
+  diamond({id:"gP1a",x:430,y:230,w:300,h:170,title:"eligible?",lines:["fraction ≥ min","undetermined ≤ max"]});
+  diamond({id:"gP1b",x:800,y:230,w:320,h:170,title:"shared works?",lines:["≥ min_works cited by","≥ min_citing_papers"]});
+  arrow([[380,315],[426,315]]);arrow([[730,315],[796,315]],{label:"yes",dy:-10});arrow([[580,400],[580,470]],{tone:"open",label:"no → NO_GO",at:[590,450]});
+  arrow([[1120,315],[1196,315]],{label:"yes",dy:-10});
+  arrow([[960,400],[960,480],[1196,480]],{tone:"open",dash:true,label:"no → GO_WITH_EXPANSION",at:[970,452]});
+  box({id:"EXPANSION",x:1200,y:420,w:330,h:120,title:["EXPANSION / DISCOVERY"],lines:["then back to S1"],tone:"open",dash:true});
+  box({id:"PILOT",x:1200,y:250,w:330,h:130,title:["GO → pilot"],lines:["S6 + S7 on a few hundred"]});
+  small(80,625,"P0 · BEFORE THE FULL RUN",{size:15});
+  box({id:"AUTOEVAL",x:80,y:650,w:300,h:150,title:["EvaluationReport"],lines:["AUTO_PANEL estimates"],tone:"junc"});
+  box({id:"COST",x:80,y:830,w:300,h:130,title:["CostProjection"],lines:["dated price file"]});
+  diamond({id:"gP0a",x:440,y:640,w:320,h:170,title:"extraction",lines:["recomputed bound","≥ 0.85, corpus version"]});
+  diamond({id:"gP0b",x:830,y:640,w:320,h:170,title:"affordable?",lines:["measured inputs,","under the ceiling"]});
+  arrow([[380,725],[436,725]]);arrow([[380,895],[990,895],[990,814]]);arrow([[760,725],[826,725]],{label:"yes",dy:-10});
+  arrow([[600,810],[600,870]],{tone:"open",label:"no → NO_GO",at:[610,858]});
+  arrow([[1150,725],[1216,725]],{label:"yes",dy:-10});
+  box({id:"gPOL",x:1220,y:650,w:330,h:150,title:["GO → PRIMARY policy"],lines:["importance ∩ admitted","admission_gate = P0 id"]});
+  arrow([[1550,725],[1606,725]]);box({id:"FULL",x:1610,y:650,w:250,h:150,title:["full run"],lines:["EQUAL_FULL"]});
+});
+
+/* 13 · cost */
+F("IV · GATES AND COST","Cost of 10,000 papers","MiMo-V2.6-Flash · S6 only · log scale · click a bar",()=>{
+  const X0=560,X1=1760,lo=Math.log10(100),hi=Math.log10(40000),x=v=>X0+(Math.log10(v)-lo)/(hi-lo)*(X1-X0);
+  for(const v of [100,300,1000,3000,10000,30000]){rule(x(v),195,x(v),760,{op:.12});small(x(v),790,"$"+v.toLocaleString("en-US"),{anchor:"middle",size:15})}
+  const rows=[["c-f8","focus · 8 KB · cache",638,319,false],["c-f8","focus · 8 KB · no cache hit",2038,1019,true],["c-f2","focus · 2 KB · cache",1414,707,false],
+    ["c-f2","focus · 2 KB · no cache hit",7302,3651,true],["c-local","local batches",534,267,false],["c-v03","v0.3 layout",23400,11700,true]];
+  rows.forEach(([id,lab,rt,bt,warm],k)=>{const y=205+k*92;const g=hitGroup(id);
+    T(g,540,y+34,lab,{size:21,anchor:"end",fill:warm&&id==="c-v03"?OPEN:INK});
+    E("rect",{x:X0,y:y+8,width:x(rt)-X0,height:26,fill:"#fff",stroke:warm?OPEN:INK,"stroke-width":2,"stroke-dasharray":warm?"7 5":null,class:"hl"},g);
+    E("rect",{x:X0,y:y+44,width:x(bt)-X0,height:26,fill:warm?"#fff":INK,stroke:warm?OPEN:INK,"stroke-width":2,"stroke-dasharray":warm?"7 5":null},g);
+    T(g,x(rt)+12,y+29,"$"+rt.toLocaleString("en-US")+" real-time",{size:17,fill:LIGHT});T(g,x(bt)+12,y+65,"$"+bt.toLocaleString("en-US")+" Batch",{size:17,fill:LIGHT})});
+  box({id:"c-price",x:80,y:820,w:560,h:120,title:["prices (OFFICIAL, dated)"],lines:["hit $0.0028 · miss $0.14 · out $0.28 per M"],ts:22,pad:34});
+  box({id:"c-param",x:680,y:820,w:560,h:120,title:["parameters (labelled)"],lines:["P0 accepts no ESTIMATED one"],ts:22,pad:34});
+  box({id:"COST",x:1280,y:820,w:580,h:120,title:["+ S7, discovery, pilot"],lines:["≈ $100–400 · tens of $ · ≈ $20 (ESTIMATED)"],ts:22,pad:34});
+});
+
+/* 14 · analysis */
+F("V · ANALYSIS","Who counts as a dependent","count_basis · the same graph, two answers",()=>{
+  const P={f:[520,820],e:[520,600],a:[330,380],b:[710,380],g:[820,600]};
+  junction({id:"J-e",x:520,y:700,to:[520,622],from:[[520,801]]});junction({id:"J-a",x:410,y:480,to:[342,402],from:[[520,580]]});
+  junction({id:"J-b",x:630,y:480,to:[698,402],from:[[520,580]]});junction({id:"J-g",x:700,y:720,to:[804,618],from:[[540,810]]});
+  ["J-e","J-a","J-b","J-g"].forEach(j=>REC[j]={t:"junction",s:"DETERMINISTIC_ANCHOR",c:"One leg: the conclusion rests on the premise.",r:[]});
+  const n=(id,k,p,l,paper)=>gnode({id:"x-"+id,kind:k,x:P[id][0],y:P[id][1],paper,label:l,r:22});
+  n("f","theorem","f","f · E (expansion)","E");n("e","lemma","e","e · E","E");n("a","claim","a","a · A (sample)","A");
+  n("b","claim","b","b · B (sample)","B");n("g","claim","g","g · D (discovery)","D");
+  small(1100,250,"METRICS OF f",{size:15});
+  T(svg,1100,300,"",{size:24});
+},()=>{
+  const w=document.createElement("div");w.className="w";w.style.left="1100px";w.style.top="270px";w.style.width="760px";
+  w.innerHTML=`<div class="toggle"><button data-m="SS">traverse SAMPLE_ONLY</button><button data-m="AS" class="on">traverse ALL · count SAMPLE_ONLY</button><button data-m="AA">count ALL_ADMITTED</button></div>
+  <div id="xout" style="font-size:24px;line-height:1.6;margin-top:26px"></div>
+  <div style="font-size:19px;line-height:1.5;color:#8A8A80;margin-top:22px;border-top:1px solid #1A1A16;padding-top:14px">
+  The chain f → e → a, b passes through the cited paper E. Under count SAMPLE_ONLY only the random sample counts, so the number estimates the field;
+  paper D's claim g is still in the graph. dependent_topics counts arXiv categories, primary and cross-lists, of the counted dependents.
+  The bootstrap resamples the counted papers only. (Numbers from analysis tests on this exact graph.)</div>`;
+  overlay.appendChild(w);
+  const S={SS:{t:"f is outside the graph: papers E and D are not traversed",fade:["f","e","g"]},AS:{t:"dependent_papers = [2, 2]  ·  dependent_topics = [2, 2]<br>papers A, B counted; E is f's own paper; D not counted",fade:[]},
+    AA:{t:"dependent_papers = [3, 3]  ·  dependent_topics = [3, 3]<br>papers A, B and D counted",fade:[]}};
+  const set=m=>{w.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));document.getElementById("xout").innerHTML=S[m].t;
+    ["f","e","a","b","g"].forEach(k=>{const el=svg.querySelector(`[data-id="x-${k}"]`);if(el)el.classList.toggle("fade",S[m].fade.includes(k))});
+    const gg=svg.querySelector('[data-id="x-g"]');if(gg&&m==="AS")gg.style.opacity=".45";else if(gg)gg.style.opacity=""};
+  w.querySelectorAll("button").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();set(b.dataset.m)}));set("AS");
+});
+
+/* 15 · layers and nominations */
+F("V · ANALYSIS","Layers, brackets, nominations","S9 · computed from the edge set, published as nominations",()=>{
+  box({id:"S9",x:80,y:220,w:560,h:300,title:["layers (§4.1)"],lines:["roots in the base set B: 0","a junction fires on its last finished premise","claim = min over derivations of","  max over premises + 1; requests + 0","never finalized → ∞ (ROUTE_UNDETERMINED)"]});
+  box({id:"S9",x:680,y:220,w:560,h:300,title:["importance brackets"],lines:["lower: legs agreed by ≥ 2 readings","  (or a derivation's only reading)","upper: the union of admitted readings","ranking uses the lower bound","dependents exact for nominees, else a sketch"]});
+  box({id:"NOM",x:1280,y:220,w:570,h:300,title:["FOUNDATION_V1"],lines:["layer ≤ 1 (a work: UNRESOLVED)","basis only PRIMITIVE, IN_LIBRARY,","  WORK_LOCATOR roots","dependent_papers.lower ≥ T","next action: EXTRACT … FORMALIZE"]});
+  box({id:"NOM",x:80,y:580,w:860,h:250,title:["stability, reported per nomination"],lines:["PAPER_REWEIGHT_V1 bootstrap: share of resamples in the top K","EDGE_PRECISION_V1: drop each leg with 1 − p̂(method, role, premise kind)","top-K overlap across reading and edge-filter policies"]});
+  box({id:"NOM",x:990,y:580,w:860,h:250,title:["reported distortions"],lines:["under-extraction: layers are lower bounds","infrastructure bias: generic results rank high","definition importance under-measured by the cheap tier","method mix (I-11)"],tone:"open",dash:true});
+  para(80,905,["A nomination is a proposal for Stage 3 work — library audit, human review, formalization — never a status (I-10)."],{size:21,fill:LIGHT});
+});
+
+/* 16 · Neo4j and stage 3 */
+F("V · ANALYSIS","Neo4j projection and the Stage 3 hand-off","a view to browse, and the door back to the v0.3 machinery",()=>{
+  box({id:"n-labels",x:80,y:220,w:420,h:230,title:["labels"],lines:["Claim, Junction, Placeholder","ClaimReading, PaperVersion","Work, BibEntry, Corpus",":Entity, :Logical"]});
+  box({id:"n-rels",x:540,y:220,w:420,h:230,title:["relationships"],lines:["(p)-[:PREMISE_OF]->(:Junction)","  -[:CONCLUDES]->(c)","+ 15 non-logical types"],code:false});
+  box({id:"n-audit",x:1000,y:220,w:420,h:230,title:["loading"],lines:["BUILDING → 14 audits → READY","rebuild-only; never writes back","uniqueness constraints only"]});
+  box({id:"n-gds",x:1460,y:220,w:390,h:230,title:["GDS"],lines:["a mirror for browsing","never the reference"],tone:"open",dash:true});
+  const st=[["NOM","nomination",["a claim to start from"]],["ST3","export_v03",["backward closure","v0.3 support groups"]],["ST3","library audit",["Mathlib / Physlib first"]],["ST3","proof walk, Lean",["v0.3 machinery"]],["ST3","certify",["CONDITIONAL ON {P₁…Pₖ}"]]];
+  st.forEach(([id,t,l],k)=>{box({id,x:80+k*360,y:580,w:320,h:170,title:[t],lines:l});if(k)arrow([[80+k*360-40,665],[80+k*360-6,665]])});
+  para(80,860,["The strongest sentence Stage 3 may write stays “q holds CONDITIONAL ON {P₁…Pₖ}” (I-1). The tower layers L0–L3 of the",
+    "theory-level paper are assigned there, relative to a named library commit; L0 only after a library audit and a human review."],{size:21,lh:31,fill:LIGHT});
+});
+
+/* 17 · status */
+F("VI · STATUS","Where it stands","2026-09-26 · what exists, what waits, what the owner decides",()=>{
+  box({id:"st-done",x:80,y:220,w:560,h:330,title:["built, checked offline"],lines:["contracts: 73 $defs, 16 wrapper files","host: 20 modules, v0.3 unchanged","Neo4j: schema, 14 audits, 5 browse","313 unit tests pass (synthetic)","corrected after two static reviews","no real paper, model, network, Neo4j"]});
+  box({id:"st-pend",x:680,y:220,w:560,h:330,title:["waiting for authorization"],lines:["P-1 on a frozen sample (network)","P0 pilot with real judges (models)","MiMo tokenizer, cache, thinking","  length, validation rate","Neo4j load and audits","S1 wiring, Crossref/OpenAlex adapters"],tone:"open",dash:true});
+  box({id:"st-open",x:1280,y:220,w:570,h:330,title:["owner decisions"],lines:["field, window, eligibility k and m","network sources","MiMo account, budget ceiling","  (≈ $1,000 Batch with cache;","  $2,500 without relying on it)","full-text terms; Neo4j; judge cutoffs"]});
+  para(80,640,["Human work is no longer on the critical path: labelling is automatic (AUTO_EVAL_V1) and gates are rules.",
+    "People remain where the design requires a judgement bound to a digest: promotion to signed, and the L0 tower layer in Stage 3."],{size:24,lh:38});
+});
+
+/* ---- driver ---- */
+const stage=document.getElementById("stage"),insp=document.getElementById("insp"),hint=document.getElementById("hint"),idx=document.getElementById("index");
+function scale(){const f=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(${(innerWidth-1920*f)/2}px,${(innerHeight-1080*f)/2}px) scale(${f})`}
+scale();addEventListener("resize",scale);
+let i=0;
+function render(){hideNode();svg.innerHTML="";overlay.innerHTML="";defs();const f=FR[i];if(f.title)title(f);f.draw();if(f.widget)f.widget();
+  document.getElementById("act").textContent=f.act;document.getElementById("pg").textContent=(i+1)+" / "+FR.length;
+  try{history.replaceState(null,"","#"+(i+1))}catch(e){}}
+function go(n){i=Math.max(0,Math.min(n,FR.length-1));render()}
+function esc(s){return String(s).replace(/&(?!(lt|gt|amp);)/g,"&amp;")}
+function showNode(id){const r=REC[id];if(!r)return;svg.querySelectorAll(".sel").forEach(e=>e.classList.remove("sel"));svg.querySelectorAll(`[data-id="${CSS.escape(id)}"]`).forEach(e=>e.classList.add("sel"));
+  document.getElementById("ih").textContent=r.t;document.getElementById("isub").innerHTML=r.s||"";document.getElementById("ic").innerHTML=r.c||"";
+  document.getElementById("idl").innerHTML=(r.r||[]).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("");insp.classList.add("on");hint.style.display="none"}
+function hideNode(){insp.classList.remove("on");hint.style.display="";svg.querySelectorAll(".sel").forEach(e=>e.classList.remove("sel"))}
+document.getElementById("ix").addEventListener("click",e=>{e.stopPropagation();hideNode()});
+addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;
+  if(["ArrowRight"," ","PageDown"].includes(e.key)){e.preventDefault();go(i+1)}
+  if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();go(i-1)}
+  if(e.key==="Home")go(0);if(e.key==="End")go(FR.length-1);if(e.key==="Escape"){hideNode();idx.classList.remove("on")}
+  if(e.key==="i"||e.key==="I")toggleIndex()});
+function toggleIndex(){if(idx.classList.toggle("on")){let last="",h="";FR.forEach((f,k)=>{if(f.act!==last){h+=`<div class="a">${f.act}</div>`;last=f.act}h+=`<div data-k="${k}">${k+1}. ${f.title||"Title"}</div>`});
+  idx.innerHTML=h;idx.querySelectorAll("[data-k]").forEach(d=>d.addEventListener("click",e=>{e.stopPropagation();idx.classList.remove("on");go(+d.dataset.k)}))}}
+document.getElementById("pg").addEventListener("click",e=>{e.stopPropagation();toggleIndex()});
+addEventListener("click",e=>{
+  if(e.target.closest(".insp")||e.target.closest("#overlay .w")||e.target.closest(".index"))return;
+  const h=e.target.closest(".hit");if(h){showNode(h.dataset.id);return}
+  if(insp.classList.contains("on")){hideNode();return}
+  if(idx.classList.contains("on")){idx.classList.remove("on");return}
+  go(i+1)});
+window.goto=n=>{go(n);return i};
+const fromHash=()=>{const n=parseInt((location.hash||"").slice(1),10);return Number.isFinite(n)?n-1:0};
+addEventListener("hashchange",()=>{if(fromHash()!==i)go(fromHash())});go(fromHash());
+</script>
+</body>
+</html>

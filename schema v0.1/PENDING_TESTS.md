@@ -1764,3 +1764,479 @@ V03-175 真实执行收尾：授权运行 session 47725 已退出 2。Luna 进�
 - 预期结果：新调用提示要求分开假设/断言、区分维数和参数、保留未明范围；不得通过改提示声称旧响应已修复。局部修订需独立记录旧行→新行对应与来源依据。
 - 当前状态：只读原始 26 行并实际复看已有 PDF 第 2、3、4、5、6、7、9 页图像；发现 c07、c08/c17、c12、c15 及 c02/c03 范围问题。新提示已改，未调用模型、运行校验或 Lean。来源阅读不是测试通过。
 - 前置阻塞：结构恢复仍待授权；审阅尚未作为程序化 review block 入图；局部修订、一般矩阵定理到历史受限系统/Pauli 的桥接仍未完成。
+
+## 13. Schema v0.4 语料依赖图框架（V04-*，2026-09-25）
+
+用户本轮只授权**离线检查**：JSON / Cypher 文件语法、Draft 2020-12 元模式校验、合成小数据上的单元测试。没有处理真实论文或真实运行产物，没有调用模型，没有使用网络，没有启动或连接 Neo4j，没有运行 Lean。v0.3 目录未改动。设计：[v0.4 spec](../docs/superpowers/specs/2026-09-25-schema-v04-design.md)；说明：[README](../schema%20v0.4/README.md)、[STATUS](../schema%20v0.4/STATUS.md)。
+
+证据目录：[offline-checks-20260925](../schema%20v0.4/runs/offline-checks-20260925/)。其中 `pytest-v04-suite.txt` 是最近一次重跑的完整输出（249 通过，2026-09-25T00:34Z，commit 155e35d 上的未提交工作树），`pytest-v03-regression.txt` 是同时重跑的 v0.3 回归输出，`static-checks.txt` 是 JSON、元模式和 Cypher 静态检查的输出。D1–D13 指负责人对实现时报告的规格空缺所做的 13 项决定，已写入 spec 与代码；下面带字母后缀的条目（如 V04-02a）是为这些决定新增的待测项。V04-01 至 V04-08 的“已执行”只说明代码在合成数据上的行为符合预期，不说明方法在真实论文上的精度、召回或成本。
+
+### V04-01 / 合同（已执行，合成数据）
+
+- 对象：`schema v0.4/schemas/corpus.schema.json` 和 10 个包装文件；`host/contracts.py`。
+- 准备条件：无；不需要网络，v0.3 的 `$ref` 通过离线注册表解析。
+- 操作情景：`pytest 'schema v0.4/tests/test_contracts.py'`。检查每个文件的元模式；所有 `$ref` 离线可解析；55 个 `$def` 各有合法与非法的合成行；枚举与 spec 一致；合同中不出现 VERIFIED。
+- 预期结果：全部通过。
+- 当前状态：116 通过（2026-09-25T00:34Z，见 `pytest-v04-suite.txt`）。
+- 前置阻塞：无。`WorkNode.bib_digest` 与人工/库审计增量的 stage 值已由 D1–D13 决定并实现。
+
+#### V04-01a / GraphDelta 的 stage 内容与 SamplingRecord 字段规则（D3、D4、D11）
+
+- 对象：`corpus.schema.json` 的 `GraphDelta`（stage 含 `HUMAN_ENTRY` / `LIBRARY_AUDIT`；只有 S1 可以带 PaperVersion；可选 `measurements.deterministic_yield`）与 `SamplingRecord`。
+- 准备条件：`test_contracts.py` 的合成行。
+- 操作情景：合法行为 HUMAN_ENTRY/HUMAN 带 PrimitiveAssertion、LIBRARY_AUDIT/LIBRARY 带 WORK_LOCATOR 声明、带 deterministic_yield 的增量；非法行为 HUMAN_ENTRY 配非 HUMAN 方法、LIBRARY_AUDIT 配 HUMAN、measurements 带未知键或缺字段、S3 增量带 PaperVersion；SamplingRecord 中 ACCEPTED 带 reason、UNDETERMINED 带 paper_version_id、EXPANSION 候选带 order_key。
+- 预期结果：合法行通过，每条非法行被拒。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_valid_examples` / `test_invalid_examples` 的 GraphDelta、SamplingRecord 参数）。“S3 带 PaperVersion”一行为复核修正新增。
+
+### V04-02 / S3、S4、S6、S7 构建器（已执行，合成数据）
+
+- 对象：`host/ids.py`、`anchors.py`、`works.py`、`extraction.py`、`matching.py`。
+- 准备条件：两篇手写的合成 TeX，由 v0.3 `ingest.extract_paper` 在临时目录 `tests/.tmp-builders-*` 中读取，读完即删。
+- 操作情景：`pytest 'schema v0.4/tests/test_builders.py'`，其中包括 8 个增量经过 DeltaStore、`check_manifest` 和 `invariants.check` 的一次往返。
+- 预期结果：全部通过；S3 与 S6 断言的同一占位符字节一致。
+- 当前状态：11 通过（2026-09-25T00:34Z）。
+- 前置阻塞：真实论文、真实模型响应、多文件或非 UTF-8 源文都未覆盖。S7 引语并列裁决已由 D1–D13 决定并实现（D7，见 V04-02a）。
+
+#### V04-02a / S7 引语延伸的并列裁决（D7）
+
+- 对象：`matching.bind_quote`、`matching.QUOTE_RULE`，以及 `match_rows_to_delta` 写出的 HOST_RULE 问题记录。
+- 准备条件：合成字符串；`test_builders.py` 的合成论文。
+- 操作情景：引语在源文中出现多次，且有多个同样最短的唯一包围片段（`"x ab ab x"` 中的 `"ab"`）；引语不出现。
+- 预期结果：取起点最早的最短唯一片段 (0, 4)；问题记录的 rule 为 `SHORTEST_UNIQUE_ENCLOSING_SPAN_EARLIEST_START`；不出现时返回 None。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_bind_quote_extends_to_shortest_unique_span`、`test_match_rows_to_delta`）。
+
+#### V04-02b / PaperVersion 只由 S1 断言（D4）
+
+- 对象：`corpus.includes_delta`（S1 HOST_RULE 增量：每篇 ACCEPTED 论文的 PaperVersion 行与 `INCLUDES`）；`anchors.build_anchor_delta`（S3 以 S1 为父，不再断言 PaperVersion，deterministic_yield 写入 `measurements`）。
+- 准备条件：合成 SamplingRecord、冻结元数据与 CorpusManifest；V04-07 的合成语料。
+- 操作情景：生成 S1 增量；元数据缺一篇或自带宿主字段；记录属于另一语料；只含 S1 的清单做合并与检查。
+- 预期结果：parser_sha256 取自清单的 `eligibility.parser_sha256`；三种错误各被拒；S3 增量不含 PaperVersion；只含 S1 的清单通过 `invariants.check`，没有悬空的 `INCLUDES`。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_includes_delta_asserts_every_accepted_paper_version_from_frozen_metadata`、`test_anchor_delta_rules`、`test_stage1_deltas_merge_into_one_closed_manifest_with_zero_violations`）。
+
+### V04-03 / 增量存储、载入前检查与审阅（已执行，合成数据）
+
+- 对象：`host/delta.py`、`invariants.py`、`reviews.py`。
+- 准备条件：合成增量按 stage 分层（复核修正）：S1 增量断言两个 PaperVersion 与 `INCLUDES`，S3、S2 以它为父，PrimitiveAssertion 由 HUMAN_ENTRY 增量断言。
+- 操作情景：`pytest 'schema v0.4/tests/test_store.py'`。未改动的视图应无任何检查发现；20 个命名篡改各自只触发预期的（不变式，id）集合；另测 G14 成环、G7 的三种 work_identity 策略、G6 复算、审阅加载的返回形状。
+- 预期结果：全部通过，`invariants.check(good_view()) == []`。
+- 当前状态：44 通过（2026-09-25T00:34Z）。
+- 前置阻塞：原先三处已由 D1–D13 决定并实现：G13 见 V04-03a；G14 的读法基础（同一结论、同方法同版本的全部 ClaimReading，任一被取代即违反）按 D2 写入 spec，沿用严格检查；同一 id 多行必须一致按 D5 写入 spec，而 PaperVersion 只由 S1 断言（D4），所以一篇论文版本可以有多条 S3 来源链。
+
+#### V04-03a / G13 按 (结论, reading_method, method_version)（D1）
+
+- 对象：`invariants.check` 的 G13。
+- 准备条件：`test_store.py` 的合成视图。
+- 操作情景：同一 (结论, 方法, 版本) 再加一个 statement junction；另一方法、另一版本各加一个；proof junction 带 STATEMENT 腿。
+- 预期结果：第一种只报 (G13, 结论 id)；第二种无任何发现；第三种按单行合同报 G5。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_each_invariant_catches_its_violation[G13]`、`[G5 carries G13 per junction]`、`test_g13_allows_one_statement_junction_per_reading`）。
+
+### V04-04 / Neo4j 投影行与载入协议（已执行，仅静态和假客户端）
+
+- 对象：`host/projection.py`；`neo4j/schema.cypher`、`audits.cypher`、`browse.cypher`。
+- 准备条件：合成视图；假 `QueryClient`，不连接任何服务器。
+- 操作情景：`pytest 'schema v0.4/tests/test_projection.py'`。另运行 `runs/offline-checks-20260925/static_checks.py`，检查括号和引号配对、语句切分、模板字段与参数名。
+- 预期结果：投影拒绝伪造的边属性和不一致的增量集；BUILDING 写入之后的失败以 FAILED 结束，之前的客户端错误包装为 LoadError 且不写清单；每条审计只收到它引用的参数；Cypher 文本配对无误。
+- 当前状态：29 通过（2026-09-25T00:34Z）；静态检查共 102 条语句全部配对（schema 36、audits 14、browse 5、代码内模板 47），见 `static-checks.txt`。**这不是 Neo4j 解析**（D13：Cypher 只做静态检查，从未被 Neo4j 解析或执行）。
+- 前置阻塞：见 V04-11 至 V04-13。
+
+#### V04-04a / 载入前两步的错误与投影范围（D10、D11）
+
+- 对象：`projection.load` 的步骤 1–2（应用 schema、拒绝另一投影）；`neo4j/schema.cypher` 与投影的标签、关系类型集合。
+- 准备条件：假 `QueryClient`，在 schema 语句或已有投影查询处返回 HTTP 400，或返回另一投影 id。
+- 操作情景：分别在步骤 1、2 注入客户端错误；库中已有另一投影；读取约束与关系类型。
+- 预期结果：抛 LoadError 并链接原 RuntimeError，不写 BUILDING 或 FAILED；另一投影时拒绝，只发出 schema 与 existing 两类请求；约束中没有 Review、AnalysisRun、Nomination，关系类型中没有 REVIEWS、IN_RUN、NOMINATES。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_load_wraps_a_client_error_before_building_without_a_manifest`、`test_load_refuses_another_projection_or_mismatched_rows`、`test_schema_cypher_covers_labels_types_and_indexes`）。
+
+### V04-05 / 基础分析与审阅抽样（已执行，合成数据）
+
+- 对象：`host/analysis.py`、`review_sample.py`。
+- 准备条件：手工构造的合成视图。
+- 操作情景：`pytest 'schema v0.4/tests/test_analysis.py'`。覆盖层级、E/L/U 三图区间、FOUNDATION_V1 各列表、CORRECTS 阻断、策略化 work 合并、自助法总体、边精度键、再标注的种子与间隔。
+- 预期结果：全部通过；分析不写任何状态。
+- 当前状态：27 通过（2026-09-25T00:34Z）。
+- 前置阻塞：没有在真实视图或 §8.6 规模（约 32 万声明，spec §8.6 估计值）上跑过，也没有做性能测量；`match_coverage`、`missed_nomination_rate` 恒为 null（D13：需要账本中的 S7 尝试记录和审计臂比较数据）。边精度键已由 D1–D13 决定并实现（D8，见 V04-05a）。
+
+#### V04-05a / 边精度键 p̂(方法, 角色, 前提种类)（D8）
+
+- 对象：`analysis.py` 的 EDGE_PRECISION_V1 扰动。
+- 准备条件：合成视图：一个读法一致为 definition 的前提、一个两种读法 kind 不同的前提、一个外部请求占位符。
+- 操作情景：以空估计表运行 EDGE_PRECISION_V1。
+- 预期结果：报错列出缺少的三个键，前提种类依次为 definition、UNKNOWN、EXTERNAL_REQUEST。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_edge_precision_key_uses_the_agreed_premise_kind`）。Claim 前提没有任何读法时也取 UNKNOWN（代码与 spec §8.5 一致），但没有专门测试。
+
+#### V04-05b / 依赖计数不含主体自身（D9）
+
+- 对象：`analysis.py` 的 `dependents` 与 `dependent_papers`。
+- 准备条件：a ↔ b 成环，a 另有一条经 r 的推导；b 分别放在 a 的论文和另一篇论文。
+- 操作情景：运行分析。
+- 预期结果：a 的 dependents 为 {1, 1}（只有 b），b 的为 1（只有 a）；估计分支（同一篇，a 未被提名）与精确分支（不同篇，a 被提名）一致；dependent_papers 不含 a 自己的论文。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_dependents_never_count_the_subject_inside_a_cycle`）。
+
+#### V04-05c / 两种读法的 statement junction 按 establishment_reading 合并（D1 分析部分）
+
+- 对象：`analysis.py` 的 `_evaluate` / `_graph`。
+- 准备条件：结论 c 有两个 statement junction：c←[x]（DETERMINISTIC_ANCHOR）与 c←[y]（MODEL_EXTRACTION），y 在 y←y1←y0 链上。
+- 操作情景：establishment_reading 取 UNION 与 ONLY([DETERMINISTIC_ANCHOR]) 各运行一次。
+- 预期结果：UNION 下 layer(c) = 1 + layer(y) = 3；ONLY 下 layer(c) = 1 + layer(x) = 1。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_statement_junctions_of_two_readings_combine_by_the_establishment_reading`，复核修正新增）。
+
+### V04-06 / 语料抽样、工作账本、路由与 v0.3 导出（已执行，合成数据）
+
+- 对象：`host/corpus.py`、`ledger.py`、`routing.py`、`export_v03.py`；`profiles/engines-v2.json`。
+- 准备条件：只用合成 id。
+- 操作情景：`pytest 'schema v0.4/tests/test_corpus.py'`。覆盖清单篡改拒绝、结果字段注入拒绝、审计臂、路由越权、模型预留必须带窗口和正额度、非供应商错误必须分类、导出遵循策略范围与 OR 引用组拒绝，并用 v0.3 `graph.prune_graph` 接受导出结果。
+- 预期结果：全部通过。
+- 当前状态：17 通过（2026-09-25T00:34Z）。
+- 前置阻塞：真实抽样框架、多个 worker 并发写账本、真实路由回执、真实提名的导出都未运行。
+
+#### V04-06a / export_v03 必须给出 dispositions（D11）
+
+- 对象：`export_v03.export_v03`。
+- 准备条件：合成提名与视图。
+- 操作情景：不传 dispositions 调用。
+- 预期结果：TypeError；已签名的闭包不会被静默导出为未签名。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_export_keeps_cycles_for_v03_and_refuses_works_and_other_runs`）。
+
+### V04-07 / 端到端合成语料（已执行，合成数据，假 Neo4j 客户端）
+
+- 对象：从 S1（PaperVersion 与 `INCLUDES`）到 v0.3 导出的整条链。
+- 准备条件：三篇手写合成 TeX（含跨论文引用、一本书、一个经第二证明仍有限的环），由 v0.3 `ingest.extract_paper` 在临时目录 `tests/.tmp-e2e-*` 中读取；S6、S7 各用合成响应。
+- 操作情景：`pytest 'schema v0.4/tests/test_end_to_end.py'`。
+- 预期结果：`invariants.check` 为空；层级、区间、7 个提名及其秩区间、证据路径与断言值一致；投影载入以 READY 结束且审计计数为 0；只有 OPEN 许可的论文带逐字文本（I-13）；导出被 v0.3 `prune_graph` 接受。
+- 当前状态：5 通过（2026-09-25T00:34Z）。
+- 前置阻塞：原先两处已由 D1–D13 决定并实现：PrimitiveAssertion 经 HUMAN_ENTRY 增量进入端到端（D3，见 V04-07a）；PaperVersion 只由 S1 断言，S3 失败的论文不会让 `INCLUDES` 悬空（D4，见 V04-02b）。
+
+#### V04-07a / HUMAN_ENTRY → PRIMITIVE 基底的 THEOREM_LIKE 提名（D3）
+
+- 对象：端到端链加一个 HUMAN_ENTRY 增量。
+- 准备条件：V04-07 的合成语料；一个 HUMAN_ENTRY/HUMAN 增量断言 def:tiny 的 PrimitiveAssertion（basis STANDARD_NOTION）和 ASSERTS_PRIMITIVE 边，父为 A 的 S3，不在第一份清单中。
+- 操作情景：以第一份清单为 parent 做修正清单并加入该增量；检查并分析。
+- 预期结果：`invariants.check` 为空；def:tiny 成为 PRIMITIVE 根；thm:small（层级 1）从 LOW_LAYER_BY_OPEN_PREMISES 变为 THEOREM_LIKE 提名。
+- 当前状态：已执行 2026-09-25T00:34Z，`pytest-v04-suite.txt`（`test_human_entry_primitive_assertion_gives_a_primitive_basis_theorem_like_nomination`）。
+
+### V04-08 / 全套离线回归（已执行）
+
+- 对象：`schema v0.4/tests` 全部 7 个测试文件；v0.3 回归（`schema v0.3/tests` 与 `schema v0.3/host/test_clause_evidence.py`）。
+- 准备条件：无。
+- 操作情景：`PYTHONDONTWRITEBYTECODE=1 /Users/Yingjian/Documents/GitHub/AgtXIv/.venv/bin/python -m pytest 'schema v0.4/tests' -v -p no:cacheprovider`；v0.3 回归用同一解释器 `-m pytest 'schema v0.3/tests' 'schema v0.3/host/test_clause_evidence.py' -q -p no:cacheprovider`。
+- 预期结果：全部通过；不留下 `__pycache__` 或临时目录；`schema v0.3/` 无改动。
+- 当前状态：v0.4 249 通过，用时 1.40 s（2026-09-25T00:34Z，D1–D13 与复核修正之后重跑，见 `pytest-v04-suite.txt`；首次运行 241 通过）；v0.3 回归 77 通过、1 跳过，`schema v0.3/` 的 git status 为空（见 `pytest-v03-regression.txt`）。事后用 find 确认无遗留 `__pycache__` 或临时目录（该输出未保存）。
+- 前置阻塞：无。
+
+### V04-09 / P-1 关口：冻结样本上的 S1–S4（未执行）
+
+- 对象：S1 获取、S2 解析（v0.3 ingest）、S3 `anchors`、S4 `works`、S5 go/no-go。
+- 准备条件：用户先决定领域、时间窗和纳入规则（spec §15.1）；授权 arXiv OAI-PMH 快照与 e-print 获取（§15.2）；冻结 CorpusManifest；在测量**之前**写定 go/no-go 规则。v0.4 的 S1 获取与元数据冻结（S1 增量构造 `corpus.includes_delta` 已有）、Crossref / OpenAlex 适配器和 S5 关口代码目前都还没有。
+- 操作情景：按 §11 P-1 测量样本内互引比例、每个 work 的引用论文数（全部与仅证明内）、各候选规则下的合格比例、确定性产出。
+- 预期结果：得到有来源的测量值和一条 go/no-go 决定；若密度不足，声明级分析标为 `NOT_ESTIMABLE_AT_THIS_SAMPLING_FRACTION`。
+- 当前状态：未执行。
+- 前置阻塞：§15.1、§15.2 的用户决定；S1 获取与 S5 代码。
+
+### V04-10 / P0 试点：随机臂与引用闭包臂（未执行）
+
+- 对象：S6 `paper.extract_local`、S7 `dependency.match_retrieved`、`review_sample`、人工标注。
+- 准备条件：P-1 通过；模型访问方式已定（§15.3）；标注人已定（§15.4，估计 20–35 人时）；书面标注指南；阈值在标注前写定。
+- 操作情景：按 §11 P0 估计腿精度、腿召回、匹配精度和局部与整篇召回的差异；每层至少 100 条已标注腿；至少 7 天后按种子抽取 10% 再标注；记录吞吐与额度。
+- 预期结果：带 Wilson 区间的分层估计；确定哪些方法进入 `importance_methods`；给出全量运行的墙钟时间和额度窗口预测。
+- 当前状态：未执行。
+- 前置阻塞：V04-09；§15.3、§15.4；模型派发代码尚未编写。
+
+### V04-11 / 在真实 Neo4j 服务器上载入并运行审计（未执行）
+
+- 对象：`neo4j/schema.cypher`、`audits.cypher`、`browse.cypher`、`projection.load`。
+- 准备条件：用户授权启动本地 Neo4j 5.26 或 2026.x Community（`neo4j/compose.example.yaml`）；一个合成增量集。
+- 操作情景：应用约束并载入；运行每条审计和浏览模板；再载入一次；篡改一个枚举字段和一条腿的位置后载入；载入中途停止服务器。
+- 预期结果：每条语句都能被解析（包括 G5 的动态属性分支）；合法集合上所有审计返回 0 行，G5 能标出被篡改的元素；第二次载入幂等；BUILDING 写入之后的不一致或服务器错误以 FAILED 结束并抛出 LoadError（服务器在载入中途停止时 FAILED 写不进去，停在 BUILDING）；BUILDING 之前的错误不写清单：客户端错误包装为 LoadError 并链接原异常（HTTP 错误为 RuntimeError，连接失败为 urllib 的 URLError），库中已有另一投影时也抛出 LoadError。
+- 当前状态：未执行；目前只有 V04-04 的静态检查。
+- 前置阻塞：用户授权启动服务器（§15.5 发行版选择）。
+
+### V04-12 / Query API 客户端对接真实服务器（未执行）
+
+- 对象：`projection.QueryClient`（`POST /db/{db}/query/v2`）。
+- 准备条件：同 V04-11。
+- 操作情景：用真实服务器执行参数化模板、批量 MERGE 与事务元数据。
+- 预期结果：请求与响应格式被服务器接受；`txMetadata` 字段名与服务器文档一致（离线时未核对）。
+- 当前状态：未执行。
+- 前置阻塞：同 V04-11。
+
+### V04-13 / neo4j-admin CSV 导入（未执行）
+
+- 对象：`projection.export_csv`。
+- 准备条件：同 V04-11，另需 `neo4j-admin`。
+- 操作情景：用 CSV 导入同一投影，再运行 `load()` 和全部审计，与直接载入的图比较。
+- 预期结果：两条路径得到同一个图（空列表和 None 都被省略）；审计返回 0 行。
+- 当前状态：未执行。
+- 前置阻塞：同 V04-11。
+
+### V04-14 / 真实模型的 S6 / S7 运行（未执行）
+
+- 对象：`extraction.build_local_prompt` / `response_to_delta`；`matching.retrieve_candidates` / `build_match_prompt` / `match_rows_to_delta`；`ledger`、`routing`。
+- 准备条件：§15.3 模型访问方式已定并获授权；P0 方案已批准；账本预算上限已写入 CorpusManifest。
+- 操作情景：在少量试点论文上真实派发，按“预留、派发、结算”记账；记录模型 `training_cutoff`，并按它与论文日期的关系分层精度。
+- 预期结果：响应要么转换为合法增量，要么整批拒绝并记录问题；额度错误关闭窗口；与 S3 合并后的清单通过 `invariants.check`。
+- 当前状态：未执行；目前只有合成响应。
+- 前置阻塞：§15.3；模型派发代码尚未编写。
+
+### V04-15 / v0.4.1 跨论文陈述聚类（未实现、未执行）
+
+- 对象：spec §12 的聚类（SAME_STATEMENT、SPECIALIZES、GENERALIZES、CONCEPT_SAME_DEFINITION）。
+- 准备条件：P-1 的跨论文密度结果；契约与代码都尚未编写。
+- 操作情景：以星形中心比较候选对，设冻结上限；商图分析分开已审阅与候选的聚类。
+- 预期结果：不按字符串或嵌入合并；每个判断记录 `equivalence_threshold`；丢弃自结论的 junction 并标记 `SELF_SUPPORT_VIA_RESTATEMENT`。
+- 当前状态：已按 spec 推迟到 v0.4.1，未实现。
+- 前置阻塞：V04-09。
+
+### 13b. Revision 3：同等完整抽取、全自动判断与成本预测（V04-16 起，2026-09-25/26）
+
+负责人本轮的决定：所有论文同等完整抽取（EQUAL_FULL，撤销优先抽取与审计臂）；带推导的物理论文（含实验结合理论的论文）纳入；引用论文（EXPANSION）与 LLM 检索发现的论文（DISCOVERY）纳入，按计数基准与随机样本分开；判断全自动：抽取质量由盲评的模型评审面板加诱饵对照测量（AUTO_EVAL_V1），各阶段关口是 S0 冻结的规则、由宿主执行；新增整篇上下文抽取模式（WHOLE_PAPER_FOCUS）与按官方价格文件的成本预测。随后两份独立的静态审阅指出了漏洞，已在代码、合同与 spec 中修正（2026-09-26，spec Revision 3 末尾的 “Review corrections”）。设计见 spec 的 Revision 3、§1.1、§6.2–§6.4、§7.2、§7.4、§8.1、§11。
+
+执行授权：沿用本节开头用户对 v0.4 框架构建给出的“允许离线检查”范围（JSON / Cypher 语法、元模式、合成小数据上的单元测试；不处理真实论文，不调用模型，不联网，不启动 Neo4j，不运行 Lean）。V04-09 条目写的“S5 关口代码还没有”已不再成立：`gates.p_minus_1` 已写成并在 V04-20 中测试，V04-09 原条目保留不改，它的其余前置条件（S1 获取、网络授权、用户决定）仍然成立。V04-10 中“人工标注”的部分由 V04-24 的自动评判取代，V04-10 原条目保留不改。
+
+证据目录：[offline-checks-20260925-rev3](../schema%20v0.4/runs/offline-checks-20260925-rev3/)（时间为 UTC；2026-09-25T22:16Z–22:26Z 即本地 2026-09-26 00:16–00:26；commit 155e35d 上的未提交工作树）。当前结果是 `pytest-v04-suite-final.txt`（313 通过）；`pytest-v04-suite.txt`（306 通过）是补测之前的一次，保留不改。下面“已执行”只说明代码在合成数据上的行为符合预期，不说明方法在真实论文上的精度、召回或成本。
+
+### V04-16 / Revision 3 合同（已执行，合成数据）
+
+- 对象：`corpus.schema.json` 的新增与改动：`Admission`、`CountBasis`、`Rate`、`TokenPrices`、`Stratum`、`EvaluationPlan`（含 `producers`、`controls.negative.count_per_rule`）、`Judgement`（`receipt` 必填）、`PrecisionEstimate`（`stratum` 含 `method_version`，`false_positive_by_rule`）、`RecallEstimate`、`EvaluationReport`（按评审操作的 `independence`、`inputs`）、`GateDecision`、`PricingProfile`（可选 `batch_completion_minutes`）、`CostProjection`（`paper_plans`、`wallclock_basis`、上限中的 `projected` / `other_stages` / `already_spent`、参数标签 POLICY）与 6 个新 id；`CorpusManifest`（`coverage`、`extraction`、`eligibility.params`、`gates`、`budget_ceiling.pricing_profile_sha256`）；`SamplingRecord`（DISCOVERY 轮次及其计数 `duplicates`、`not_selected`，宿主派生的 seed）；`AnalysisPolicy`（`traverse`、`count_basis`、`admission_gate`）；`NodeMetrics` / `FoundationNomination`（`count_basis`、`dependent_topics`，删除 `missed_nomination_rate`）；`ReviewSample.label_source` 与带版本的层；`ModelSelectionV4` 的 MiMo 规则；6 个新包装文件（共 73 个 `$def`、16 个包装文件）。
+- 准备条件：`test_contracts.py` 的合成行。
+- 操作情景：每个 `$def` 一组合法与非法行。非法行包括：带审计臂或优先覆盖的清单；焦点模式缺 `focus_bytes`；美元上限不写价格文件摘要；模板策略带 `admission_gate`；SAMPLE 轮次号不为 0；DISCOVERY 候选缺 `order_key`；`traverse = SAMPLE_ONLY` 配 `count_basis = ALL_ADMITTED`；MiMo 路由写 GPT 的 effort；评审面板只有一名评委；VALID 的 USED 判断没有证据；判断没有 receipt；层缺 `method_version`、腿的层缺 `role`；计划仍用 `extraction_models`、`producers` 为空或写了非评审操作、`count_per_rule` 为 0；精度行的层为 null 或按规则的误判率为空、含未知规则；报告缺 `inputs` 或 `judge_models` 仍是列表；成本预测缺 `paper_plans`、上限缺预留字段、`wallclock_basis` 非法；P0 关口写 GO_WITH_EXPANSION；http 价格来源。
+- 预期结果：合法行通过，非法行被拒；合同中不出现 VERIFIED。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_contracts.py` 152 项全部通过（`pytest-v04-suite-final.txt`）。
+- 前置阻塞：无。
+
+### V04-17 / 纳入规则 THEOREM_OR_DERIVATION_V1（已执行，合成数据）
+
+- 对象：`host/eligibility.py`（`counts`、`decide`、`candidate_outcome`、`grid`、`program_sha256`）。
+- 准备条件：三篇合成 TeX（定理论文、其上游论文、一篇只有三个公式推导的论文），由 v0.3 `ingest.extract_paper` 在临时目录中读取；在其记录上改写 `source_files` 与 `issues` 得到读不到源文件的情形。
+- 操作情景：统计定理类环境与陈列公式；在不同参数下判定；网格 k ∈ {1, 5}、m ∈ {3, 10}；没有源文件、`SOURCE_MAIN_AMBIGUOUS`、`SOURCE_ACQUISITION_FAILED`、部分源文件未读（`SOURCE_INCLUDE_MISSING`）且达标或不达标。
+- 预期结果：推导论文因公式数达标而被接受；严格参数下给出可读的拒绝理由；网格比例为 1、2/3、1/3、0；读不到源文件记为 UNDETERMINED（`NO_TEX_SOURCE` / `MAIN_AMBIGUOUS`），部分未读而不达标记为 UNDETERMINED(`PARSE_FAILED`)，达标仍接受；含部分未读论文的网格按同一规则计算（1、2/3、1/2、0）；程序摘要等于文件摘要。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_theorem_or_derivation_keeps_derivation_papers_and_unread_sources_undetermined` 通过。
+- 前置阻塞：真实论文上的合格比例属于 P-1（V04-09）。
+
+### V04-18 / WHOLE_PAPER_FOCUS 抽取（已执行，合成数据）
+
+- 对象：`extraction.plan_foci`、`build_focus_prompts`、`focus_response_to_delta`，以及共享的 `response_to_delta` 中的 FOCUS 范围、“任何出现都解析为其声明”的前提规则、注释内引文的拒绝和引文归属规则；`anchors.index` 的规范出现；部分声明按引用位置命名（`ids`）。
+- 准备条件：三公式推导论文；一篇带嵌套公式（公式在一个超过焦点预算的引理之内）和 TeX 注释的合成论文；256 字节焦点；在源文件字典中另加一个 `.bib`、一个非 UTF-8 的 `.tex` 和一个 `.sty` 文件；一个手写的两条 S2 声明共用一个区间的记录。
+- 操作情景：切分焦点；比较同一论文所有提示的前缀字节；用别名写两次调用的合成响应（一次的前提在另一个焦点里）；合并 S1、S3 与两份 S6 增量并运行 `invariants.check`；未知别名、焦点外的出现、错误的上下文；引用注释里的文字；两条声明都指明引理、其中一条的引文落在嵌套公式里；不指明出现的声明引用嵌套公式；同一出现的两条声明在不同位置引用；读取提示里的文件列表。
+- 预期结果：每个出现恰属一个焦点，同一文件的焦点范围首尾相接不重叠，第一个从字节 0 开始；嵌套公式与引理在同一焦点（该焦点超出预算）；所有提示前缀逐字节相同且摘要一致，差异不超过 1 KB；提示里没有 64 位十六进制出现 id；跨焦点的公式前提是那个公式的声明而非占位符；合并后 G1–G15 无发现；三种错误各被拒；注释内引文记为 `MODEL_LOCATOR_IN_COMMENT`；两条引理声明成为 part:0、part:1 而非 `AMBIGUOUS_PART`；不指明出现的声明归入最内层的公式；`.tex` 原样发送，`.bib` 与非 UTF-8 文件标 `context_only`，`.sty` 不发送；共用区间时规范声明是环境那条；不同位置的部分声明是两个 id，整体声明的 id 与引用位置无关。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_foci_partition_the_occurrences_and_prompts_share_one_prefix`、`test_focus_response_connects_a_derivation_through_equations`、`test_focus_cuts_keep_nested_occurrences_and_quotes_bind_to_their_occurrence`、`test_focus_prompts_send_body_files_byte_exact_and_other_files_as_context_only`、`test_two_s2_claims_of_one_span_are_one_occurrence_named_by_the_environment`、`test_a_part_claim_is_named_by_where_it_was_quoted` 通过。
+- 前置阻塞：多文件论文的真实源文、真实模型响应、真实缓存命中率未覆盖（见 V04-25）。已知缺口：没有任何环境或公式的源文件不单独成焦点，只写在其散文里的结论不会被抽取（spec §7.2）。
+
+### V04-19 / AUTO_EVAL_V1 宿主部分（已执行，合成数据）
+
+- 对象：`host/autoeval.py`：`min_decoys`、`freeze_plan`、`draw_leg_sample`、`draw_match_sample`、`leg_card`、`match_card`、`evidence`、`positive_controls`、`near_miss_decoy`、`other_paper_decoy`、`negative_controls`、`match_decoys`、`build_judge_prompt`、`judgement`、`panel_labels`、`precision_estimates`、`recheck`、`anchor_recall`、`union_legs`、`union_recall`、`human_audit`、`report_inputs`、`report`。
+- 准备条件：定理论文与上游论文的 S1、S3、一份局部模式 S6 和一条 S7 匹配（定理论文对上游论文的请求）；推导论文与嵌套论文作为“另一篇论文”；合成评审回答（带 receipt）；合成标签。
+- 操作情景：面板少于两人、评委都是被评方法的产生模型、两名评委相同、评委 id 重复、非评审路由、缺 `producers`、每条规则的诱饵少于 12、每层样本少于 min_items；样本视图不是计划的清单；卡片是否泄露方法、阅读、id 或对照身份；证明推导找不到对应证明集合（单个证明或全部证明）时拒绝；正对照是否取自证明内 `\ref`；诱饵与被替换前提同类（环境、文献条目、公式）；排除证明与结论中引用到的目标及其外层环境、引用结论的环境、与结论论文有引用关系的论文；诱饵卡片只做一次；匹配卡片的上游文字只取自源文件，匹配诱饵取上游论文中重叠最大的未用陈述；来源 junction 不做腿卡片；引语绑定（唯一、重复延伸、延伸超过 80 字符、短于 12 字符、找不到、格式错误）、卡片问题与评委操作不符、缺 receipt；面板一致性、未决、缺评、重复评、跨计划；下界的手算核对（114/120，最差诱饵规则 3/300，κ = 2 → 0.889，ADMIT；阈值 0.9 → REJECT）；五种 NOT_ESTIMABLE（含某条规则没有诱饵）；两个方法版本分层；`recheck` 拒绝被改动的决定、下界、误判率与计数，以及另一套规则；锚点召回；两方法并集份额与 Chapman 估计（4、2、2 → N = 4；只读过而未提出前提的结论计入）；未解析出现与同一出现的整体声明算作同一前提。
+- 预期结果：全部符合；报告标 AUTO_PANEL，按评审操作列出评委模型与产生模型，记录 `inputs` 与对照构成，列出假设、无人工审计时写明。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_autoeval.py` 中的计划、卡片与诱饵、证明证据、诱饵不引用结论、匹配卡片、判断与面板、精度下界、召回八个测试通过。
+- 前置阻塞：真实评委的误判率、诱饵难度、未决比例属于 V04-24。
+
+### V04-20 / 自动关口 P-1、P0 与 PRIMARY 策略派生（已执行，合成数据）
+
+- 对象：`host/gates.py`（`works_cited`、`p_minus_1`、`p0`、`primary_policy`、`require_equal_coverage`）；`analysis.analyze` 的 PRIMARY 准入检查。
+- 准备条件：手写的 S1–S4 视图（三篇样本论文，共同引用一个 work）；合成 S3 测量；合成评估报告（含对照版本的层）与成本预测（试点实测参数的覆盖）；一个真实冻结的语料清单和由 `gates._decision` 生成的关口决定。
+- 操作情景：GO、GO_WITH_EXPANSION、NO_GO 三种决定；视图外的 S3 增量不计入、同一论文两份锚点增量报错、模型提出的请求不算证明内引用、资格网格写入测量；P0：参数仍有 ESTIMATED、论文数少于目标、大小为 ESTIMATED、超出上限（含预留）、被改动的预测或报告、另一模型的预测、存档行不能重算、缺层、样本不是报告输入、对照版本 REJECT、语料版本 REJECT；从 GO 派生 PRIMARY 策略；被改动或不是 GO 的关口；分析时缺关口、缺语料清单或覆盖报告、清单属于另一语料、策略不是派生出的那一条、覆盖不完整或属于另一抽取策略、视图混入另一抽取版本。
+- 预期结果：决定与理由符合预注册规则；合格比例 0.75、样本内引用份额 1/5；P0 只在全部条件成立时 GO，被改动或不一致的输入直接拒绝；派生策略只保留准入方法并写入关口 id；分析拒绝不受约束的 PRIMARY 运行。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_p_minus_1_decides_go_expand_or_stop_from_pre_registered_rules`、`test_p0_gate_recomputes_the_report_ties_the_cost_to_the_run_and_derives_the_primary_policy`、`test_analysis.py::test_a_primary_run_needs_its_p0_go_the_corpus_and_complete_coverage` 通过。
+- 前置阻塞：真实测量属于 V04-09 与 V04-24。
+
+### V04-21 / 成本预测与单次调用计价（已执行，合成数据）
+
+- 对象：`host/cost.py`（`load_pricing`、`call_cost`、`focus_plan`、`paper_tokens`、`project`）；`profiles/pricing-mimo-20260922.json`。
+- 准备条件：官方价格文件（2026-09-22 页面）；8 篇 v0.3 论文的实测源文件大小，重复到 10,000 篇；推导论文由提示构造器实测的焦点计划。
+- 操作情景：按公式核对一次调用与一篇论文的 token（建模计划与实测计划）；Batch 恰为实时的一半、墙钟取 24 小时完成窗口；只列出公式用到的参数；预留其他阶段与已花费用后超出上限；超上下文；清单中的价格文件摘要不符；不可预测的单位；非法覆盖参数；负的预留；非法的论文列表或计划；局部模式用实测计划；思考长度加大。
+- 预期结果：焦点模式实时费用在 $400–900 之间（实算 $638），Batch 为其一半；实测计划的调用数与最大提示按计划计算；各种错误被拒。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_call_cost_and_paper_tokens_follow_the_documented_formulas`、`test_projection_totals_reserves_ceiling_and_context` 通过。
+- 前置阻塞：参数中的 MiMo 实测值见 V04-25。
+
+### V04-22 / 语料：DISCOVERY 轮次、同等覆盖核对、计数基准（已执行，合成数据）
+
+- 对象：`corpus.discovery_seed`、`discovery_selection`、`discovery_record`、`coverage_report`；`analysis` 的 `traverse` / `count_basis` / `dependent_topics` / 只计计数论文的依赖数与敲除 / 只重抽计数论文的自助法 / 两条结构规则；`review_sample.draw` 的完整层键。
+- 准备条件：合成框架与候选；一个五声明的合成图（抽样论文 A、B，扩展论文 E，发现论文 D）；一个含占位符与部分声明的合成图。
+- 操作情景：模型提议中含非法 id、重复、已见 id；调用方自带 seed；轮次编号跨 EXPANSION 与 DISCOVERY；覆盖状态（已用完重试的 QUOTA_WAIT、ABANDONED、一项 SKIPPED 一项 DONE、仍在 RUNNING、没有计划项）；三种遍历与计数组合；未解析出现占位符与同一出现的整体声明；只有部分、自身无推导的整体声明；两个方法版本的抽样。
+- 预期结果：计数为 8 条提议、2 条非法、1 条重复、1 条已见、1 条未选中，与所选 3 条合计 8；seed 为 `<清单 seed>/discovery/<轮次>`，自带 seed 被拒；覆盖报告 54 DONE、3 FAILED、2 INCOMPLETE、1 MISSING，补齐后完成且失败论文仍在分母中；只计抽样论文时 f 的依赖论文为 [2, 2]、主题为 [2, 2]、依赖声明与必要依赖为 2，全计时为 [3, 3] 与 4；占位符取整体声明的值（层 2 而非 1）；整体声明取各部分的最大值（层 1，使用它的声明层 2）；不同方法版本各成一层。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_corpus.py::test_discovery_round_examines_model_proposals_in_seeded_order`、`test_coverage_report_accounts_every_accepted_paper_of_every_round`，`test_analysis.py` 的计数基准、依赖与敲除、结构规则、自助法、审阅抽样测试通过。
+- 前置阻塞：真实检索见 V04-27。
+
+### V04-23 / MiMo 路由配置与账本新工作项（已执行，合成数据）
+
+- 对象：`routing.freeze_model_routing_v2(routing.MIMO_PROFILE)`、`profiles/engines-v2-mimo.json`、`engines-v2.json` 的新操作；`ledger` 的 EVAL / JUDGE_CARD / MODEL_JUDGE 与 DISCOVERY_QUERY / MODEL_SEARCH；`RESPONSE_REJECTED` 重试与 `dispatchable`。
+- 准备条件：两个路由配置文件；临时 SQLite 账本（每项最多 3 次尝试，上限 3 次调用）。
+- 操作情景：冻结两个配置；每个 v0.4 操作的路由通过合同；MiMo 路由写 GPT effort；评审与检索工作项的预留与结算；模型回答连续三次被宿主拒绝；宿主工作项报告 `RESPONSE_REJECTED`；额度等待项的重试用完后 `dispatchable`。
+- 预期结果：v0.4 操作用 MiMo，v0.3 操作保持 GPT；篡改被拒；评审项需要指明供应商窗口；前两次拒绝回到 READY，第三次 FAILED，共花费 3 次调用；宿主工作项不能记为 `RESPONSE_REJECTED`；用完重试的项 `dispatchable` 为假。
+- 当前状态：已执行 2026-09-25T22:25Z：`test_corpus.py` 中的 MiMo 路由、评审与检索工作项、`test_ledger_retries_a_rejected_response_while_attempts_remain` 与两个额度测试通过。
+- 前置阻塞：真实 MiMo 调用未授权（V04-24、V04-25）。
+
+### V04-24 / 真实评审面板的 P0 试点（未执行）
+
+- 对象：AUTO_EVAL_V1 全流程，真实的 `leg.judge` / `match.judge` 调用。
+- 准备条件：P-1 通过；模型调用授权（MiMo 计量账户，或其他）；EvaluationPlan 冻结；试点论文的 S6（两种模式）与 S7 已运行。
+- 操作情景：抽样、建卡、建对照、两名以上评委作答（每次调用保存 receipt）、面板合并、出报告；可选：抽 50–100 条做人工审计。
+- 预期结果：每个方法、每个版本、每一层给出下界、点估计与准入决定；记录每条诱饵规则的误判率、正对照灵敏度、未决比例；报告列出假设；若有人工审计，报告一致率。
+- 当前状态：未执行。
+- 前置阻塞：V04-09；模型调用授权；模型派发代码尚未编写。
+
+### V04-25 / MiMo 实测成本参数（未执行）
+
+- 对象：`cost.PARAMETERS` 中标为 ESTIMATED 或只在 GPT 上测过的参数。
+- 准备条件：MiMo 计量账户；试点论文。
+- 操作情景：记录每次调用的 `prompt_tokens`、`cached_tokens`、`completion_tokens`、`reasoning_tokens`；测每字节 token 数、缓存命中份额（实时与 Batch，同一论文的焦点连续发送时）、思考长度、一次通过率、实际并发；用 `cost.focus_plan` 实测全部论文的焦点计划。
+- 预期结果：用实测值替换 §1.1 的估计（P0 不接受 ESTIMATED 参数），重新预测后再过 P0。
+- 当前状态：未执行。
+- 前置阻塞：模型调用授权。
+
+### V04-26 / 整篇上下文与局部上下文的召回对比（未执行）
+
+- 对象：同一批试点论文上的 `paper.extract_focus` 与 `paper.extract_local`；`autoeval.union_legs`、`union_recall`。
+- 准备条件：V04-24 的面板；两种模式都已运行。
+- 操作情景：评审两种模式腿的并集，报告各自份额与 Chapman 估计。
+- 预期结果：据此在两种模式间选定语料的抽取策略（写入下一份 CorpusManifest）。
+- 当前状态：未执行。
+- 前置阻塞：V04-24。
+
+### V04-27 / DISCOVERY 真实检索（未执行）
+
+- 对象：`corpus.discover` 调用与 `discovery_record`。
+- 准备条件：模型与网络搜索授权。
+- 操作情景：按领域提问，记录提议数、非法 id、重复、已见 id、`ID_NOT_FOUND` 比例与搜索费用（$5 / 1,000 次，官方）。
+- 预期结果：虚构 id 被记为 UNDETERMINED(ID_NOT_FOUND)，不会进入语料。
+- 当前状态：未执行。
+- 前置阻塞：模型与网络授权。
+
+### V04-28 / 规模性能（未执行）
+
+- 对象：`analysis.analyze`（含 `dependent_topics`）、`autoeval` 的卡片与诱饵构造、`cost.project`。
+- 准备条件：合成的大图（例如 10,000 篇论文量级）。
+- 操作情景：测墙钟时间与内存。
+- 预期结果：在单机可接受的时间内完成；否则记录瓶颈（诱饵构造要遍历论文的全部声明，并对每个诱饵检查证明中的锚点；`dependent_topics` 只对被提名者计算）。
+- 当前状态：未执行；目前只有小规模合成数据。
+- 前置阻塞：用户要求执行时。
+
+### V04-29 / 可视化说明页（已执行，浏览器检查）
+
+- 对象：`slides/chain-build/schema_v0.4_framework.html`（17 页，按 chain-build-v1.html 的格式）。
+- 准备条件：本地静态服务器（`.claude/launch.json` 的 `static-slides`）与内置浏览器。
+- 操作情景：逐页绘制；点击方框、节点、⊕ 打开详情面板；精度下界计算器默认值；计数基准切换；控制台错误；第 9、12、17 页截图检查文字是否超出方框。
+- 预期结果：17 页全部绘制，无控制台错误；每个可点击元素都有详情；计算器默认值给出 0.889 与 ADMIT，与测试一致；切换给出 [2, 2] / [3, 3]。
+- 当前状态：已执行（本地 2026-09-26，审阅修正后的版本）：17 页全部绘制，无报错；124 个可点击元素都有详情；计算器给出 0.889 与 ADMIT；切换给出“f 不在图中”、[2, 2]、[3, 3]；第 9、12、17 页文字都在方框内。
+- 前置阻塞：无。
+
+### V04-30 / Revision 3 全套离线回归（已执行）
+
+- 对象：`schema v0.4/tests` 全部 8 个测试文件；v0.3 回归；JSON、元模式与 Cypher 静态检查。
+- 准备条件：无。
+- 操作情景：同 V04-08 的命令；静态检查脚本 `runs/offline-checks-20260925-rev3/static_checks.py`。
+- 预期结果：全部通过；`schema v0.3/` 无改动；不留下 `__pycache__` 或临时目录。
+- 当前状态：已执行。v0.4 313 通过（2026-09-25T22:25Z，`pytest-v04-suite-final.txt`；补测前一次 306 通过，`pytest-v04-suite.txt`）；v0.3 回归在审阅修正前后各一次，都是 77 通过、1 跳过，`schema v0.3/` 的 git status 为空（`pytest-v03-regression.txt`、`pytest-v03-regression-after-review.txt`）；静态检查 20 个 JSON、17 个 schema、102 条 Cypher 通过（`static-checks.txt`，这不是 Neo4j 解析）；事后用 find 确认无遗留 `__pycache__`（该输出未保存）。
+- 前置阻塞：无。
+
+### V04-31 / 按两份静态审阅所做修正的回归（已执行，合成数据）
+
+- 对象：审阅指出并已修正的每一项：P0 重算存档行并校验输入摘要（`autoeval.recheck`、`gates._addressed`）；层带方法版本且只有语料版本能准入；诱饵同类、按规则计算误判率并取最差、排除污染、只做一次；引文至少 12 字符、延伸不超过 80 字符、卡片问题与评委操作一致、receipt 必填；计划冻结时的评审独立性（`producers`）与样本、诱饵下限；成本预测与本次运行挂钩（自读价格文件、实测计划、预留、POLICY 标签、Batch 墙钟）；读不到的源文件记为 UNDETERMINED；覆盖核对使用账本的终止状态；`RESPONSE_REJECTED` 重试；DISCOVERY 计数与宿主派生 seed；P-1 只计视图内的锚点增量；分析的两条结构规则、只计计数论文的依赖与敲除；焦点切分不拆开嵌套出现、注释内引文、`context_only` 文件、引文归属、规范出现、部分声明按位置命名。
+- 准备条件：同 V04-16 至 V04-23。
+- 操作情景：每一项至少一个会在修正前失败的测试断言（见各条目的测试名）。
+- 预期结果：全部通过。
+- 当前状态：已执行 2026-09-25T22:25Z，包含在 313 项中（`pytest-v04-suite-final.txt`）。这只说明代码行为符合修正后的规格；审阅本身是静态阅读，不是测试。
+- 前置阻塞：无。
+
+### V04-32 / 按评委训练截止日期分层（未决定、未实现）
+
+- 对象：AUTO_EVAL_V1 的精度估计；`ModelSelectionV4.training_cutoff`。
+- 准备条件：服务商给出评委模型的训练截止日期（两个 MiMo 配置目前都记为 `UNKNOWN`）；负责人决定是否分层（spec §15.5）。
+- 操作情景：把试点论文按“论文日期早于或晚于评委训练截止”分组，分别估计精度。
+- 预期结果：两组的下界没有显著差别，否则报告记忆带来的偏差。
+- 当前状态：未决定、未实现；报告的假设中已写明未分层。
+- 前置阻塞：截止日期来源；V04-24。
+
+### 13c. quant-ph 50 篇测试运行：确定性依赖图与 Neo4j 可视化（V04-33 起，2026-09-26）
+
+用户 2026-09-26 的要求：“按照你的建议下载 hugging face 的副本，然后从 quant-ph 中随机提取 50 篇理论论文进行 schema v0.4 中 dependency 的建立测试，先不需要形式化任何定理，以及 neo4j 可视化”；随后在问答中同意三项下载（所抽论文的 arXiv 源文件、DuckDB 1.5.5、便携 Java 21 JRE 与 Neo4j Community 2026.09.0，均放在 git 忽略的 `local-archive/`）。执行范围只限于此：没有调用任何模型（S6 抽取、S7 匹配、自动评审都未运行），没有形式化，没有运行 Lean。运行记录：[runs/quant-ph-sample-20260926](../schema%20v0.4/runs/quant-ph-sample-20260926/)；论文源文件、解析记录和含原文的增量只存放在主目录的 `local-archive/`（I-13），运行目录里只有不含原文的记录。
+
+### V04-33 / S1 获取模块 `host/acquire.py` 的单元测试（未执行）
+
+- 对象：`acquire.snapshot_frame`、`choose_version`、`redistribution`、`paper_metadata`、`RateToken`、`fetch_source`、`examine`。
+- 准备条件：用 DuckDB 生成的合成 Parquet；返回预设响应的假 opener（404；429 或 503 后 200；PDF；tar.gz；单文件 gzip TeX；超过大小上限；重定向到 arxiv.org 以外）；合成 TeX。
+- 操作情景：帧筛选（主分类取 `categories` 第一个、v1 日期窗口、非法 id）；版本规则（快照日之后的版本不选，没有合格版本时报错）；许可证映射（CC BY、CC BY-SA、CC0 为 OPEN，arXiv 默认许可与 NC/ND 为 RESTRICTED，空为 UNKNOWN）；速率令牌的请求间隔；404 → `ID_NOT_FOUND`；可重试错误重试后成功，或用尽后 `TRANSIENT_NETWORK` 且 attempts = 1 + 上限；PDF → `NO_TEX_SOURCE`；超过上限 → `SIZE_LIMIT`；没有主文件或多个主文件；中断后重跑复用已有的获取结果而不重下；残留的 `source/` 目录不影响重跑；解析抛出异常 → `PARSE_FAILED`。
+- 预期结果：每种情形给出对应的结果和 SamplingRecord 候选行；无网络。
+- 当前状态：未执行（测试尚未编写）。本次真实运行只覆盖了实际出现的路径，见 V04-34。
+- 前置阻塞：用户要求执行时。
+
+### V04-34 / quant-ph 50 篇：抽样、确定性依赖图与 P-1（已执行，真实数据）
+
+- 对象：`runs/quant-ph-sample-20260926/run.py` 的 `sample` 与 `build` 两步：`acquire.snapshot_frame`、`examine`；`corpus.freeze_corpus_manifest`、`order_frame`、`sample_record`、`includes_delta`；`anchors.build_anchor_delta`、`build_restates_delta`；`works.build_work_delta`；`delta.DeltaStore`、`make_manifest`、`check_manifest`；`invariants.check`；`analysis.analyze`（EXPLORATORY，只用 DETERMINISTIC_ANCHOR）；`eligibility.grid`；`gates.p_minus_1`；`projection.project`。
+- 准备条件：元数据快照（Hugging Face `librarian-bots/arxiv-metadata-snapshot` 提交 `90c265d5`，即 Kaggle v304，2026-09-19；10 个文件 SHA-256 全部与公布值一致）；领域 quant-ph（主分类取 `categories` 第一个），v1 日期 2015–2025；纳入规则 THEOREM_OR_DERIVATION_V1（定理类环境 ≥ 1 或陈列公式 ≥ 10）；种子 `agtxiv-v04-quant-ph-test-2026-09-26`；目标 50 篇；每 3 秒最多一次 export.arxiv.org 请求。
+- 操作情景：按种子顺序逐篇获取、解析、判定，直到 50 篇合格；对 50 篇合格论文建 S1、S3、S4 增量；合并清单，运行主机不变量检查、探索性分析和 P-1 关口；一次 arXiv API 请求核对 50 篇的主分类。
+- 预期结果：每篇被考察的论文恰有一个结果；不变量检查无发现；关口按预注册规则给出决定。
+- 当前状态：已执行（抽样 2026-09-25T23:23:51Z–23:28:37Z，构建 23:30:56Z，即本地 2026-09-26 01:23–01:31）。样本框 76,946 篇；考察 80 篇：50 合格、17 不合格、13 无法判定（7 个主文件不唯一、3 个只有 PDF、3 个主文件不是 UTF-8）；下载 e-print 211.4 MB；主分类 50/50 一致。151 个增量；G1–G15 主机检查 0 项发现；P-1 为 GO_WITH_EXPANSION（合格比例 0.746，无法判定比例 0.1625，被 ≥ 3 篇样本论文引用的 work 为 0，被 2 篇引用的 46 个，样本内互引为 0）。确定性层很薄：50 篇中只有 14 篇有定理类环境，11 篇产生依赖，共 135 个 junction、502 条腿；探索性分析无提名。证据：`runs/quant-ph-sample-20260926/`（`INDEX.md` 汇总）。这些结果只来自确定性层，没有 S6/S7，不能说明方法的精度或召回。
+- 前置阻塞：无。后续：S6 抽取（需模型授权）、EXPANSION 或 DISCOVERY 轮次。
+
+### V04-35 / 真实 Neo4j 2026.09.0 上的载入与审计（已执行，部分覆盖 V04-11）
+
+- 对象：`neo4j/schema.cypher`、`audits.cypher`、`projection.load` 与 `QueryClient`（Query API `POST /db/neo4j/query/v2`）；Neo4j Browser 中的查看（`runs/quant-ph-sample-20260926/views.cypher`）。
+- 准备条件：便携 Neo4j Community 2026.09.0 与 Temurin JRE 21.0.12.1（`local-archive/tools/`，两个压缩包 SHA-256 与公布值一致）；只监听 127.0.0.1，关闭登录；V04-34 的清单与投影行。
+- 操作情景：应用约束，载入 50 篇论文的投影，运行全部审计，设为 READY；在 Neo4j Browser 中查看单篇依赖图、全语料依赖骨架和共享 work。
+- 预期结果：所有语句被真实服务器接受；审计 0 行；状态 READY；可视化中的数量与主机计数一致。
+- 当前状态：已执行（2026-09-25T23:31:15Z）：投影 `projection:1fa9c298…` 为 READY，14 个审计（G1–G5、G7–G15）全部 0 行，各标签与关系的数量与主机计数一致（例如 PREMISE_OF 502、CONCLUDES 135、Claim 187）。这是 v0.4 的 Cypher 第一次由真实 Neo4j 解析和执行。`browse.cypher` 的 5 个浏览模板也各执行一次，全部被接受（`browse-check.json`）。V04-11 中的其余情景（再载入一次的幂等性、篡改枚举与腿位置、载入中途停止服务器）以及 V04-12、V04-13 仍未执行。
+- 前置阻塞：无；其余情景待用户要求。
+
+### V04-36 / 主文件不唯一与非 UTF-8 源文件的处理（未决定、未实现）
+
+- 对象：S1 的主文件选择（目前沿用 v0.3 规则：`00README.json` 的 toplevel，或唯一含 `\begin{document}` 的 `.tex`）与 v0.3 解析器对非 UTF-8 文件的跳过。
+- 准备条件：V04-34 中 7 篇 MAIN_AMBIGUOUS 与 3 篇非 UTF-8 论文（占考察的 12.5%）。
+- 操作情景：评估新规则，例如按 arXiv 编译顺序或文件名选主文件、按声明的编码或 Latin-1 回退解码；比较规则前后的无法判定比例。
+- 预期结果：无法判定比例下降，且没有论文被错判为合格或不合格。
+- 当前状态：未决定、未实现。
+- 前置阻塞：负责人决定是否改规则；改动需要新的解析器摘要（`parser_sha256`）。
+
+### V04-37 / 单个 claim 的依赖链页面 `viewer/claim-view.html`（未测试，只展示过）
+
+- 对象：`schema v0.4/viewer/claim-view.html`：从本地 Neo4j（Query API，无登录）实时读取一个 claim 的向后闭包（最多 8 层 junction），用 chain-build 前端的编码画出：形状表示种类，颜色表示来源（本文空心墨色、其他语料论文各一种色相、尚未解析的被引文献为暖色虚线六边形），⊕ 表示 junction，论文边界画成虚线框，层按规范 §4.1 在闭包上计算；右侧详情栏显示节点或 junction 的记录，以及 `RESTATES_RESULT_OF`、`MENTIONS`（不是依赖）。
+- 准备条件：READY 的投影（V04-35）；页面经 http 提供（例如仓库根目录上的静态服务器），浏览器能访问 `http://127.0.0.1:7474`。
+- 操作情景：（1）同一 claim 的层数与 S9 探索性分析（`analysis-summary.json`）对照；闭包截断和两条结构规则未实现时，允许的差异要写清楚。（2）每个 ⊕ 的腿数、顺序、角色与 `browse.cypher` 的 `junctions` 模板一致。（3）状态栏里的计数：论文内腿数、跨边界腿数与收起的公式引用数之和等于闭包内全部腿数；跨边界腿数等于外部引用腿数。（4）受限许可（RESTRICTED）论文的节点在任何情况下都不显示陈述原文（I-13）。（5）S7 运行后，source junction 与被解析的请求取上游论文的色相，上游 claim 画在框外。（6）含环的合成投影：环上节点画在最上层，状态栏提示有环。（7）id 不存在、Neo4j 未启动时给出提示而不是空白。（8）最大闭包（`2505.18701v1`，29 个 junction、130 个公式引用）的载入时间与可读性。
+- 预期结果：各项数字与主机和 Cypher 模板的结果一致；原文只在开放许可论文中出现；异常情况有提示。
+- 当前状态：未测试。2026-09-26 应用户要求，只在应用内浏览器中打开作为可视化展示：`2505.18701v1` 第 602 行的定理（29 个 junction，最高 L6，没有跨论文腿）与 `2107.06411v1` 第 1688 行的定理（7 个 junction，最高 L4，5 条腿指向 5 篇外部文献，都尚未解析）。看到图形正常显示，不等于上述情景通过。
+- 前置阻塞：无；情景（5）要等 S7 运行后才有真实数据。
+
+### 13d. S6、EXPANSION、S7：由当前 Claude 模型的子 agent 阅读（V04-38 起，2026-09-26）
+
+用户 2026-09-26 的要求：“依次做S6、EXPANSION、S7，先不调用外部模型而是用目前的模型单独一个agent”。做法：冻结一份后继语料清单（同一样本框、种子与纳入规则；S6 的 method_version 写明传输方式 `focus-1/claude-opus-5-5-subagent`；额度单位改为 agent 调用次数，上限 1500），第 0 轮沿用第一轮的考察结果（同样的 50 篇，不联网）；每次只运行一个 Claude Code 子 agent，每篇论文（S6）或每批请求池（S7）各启动一个新的子 agent，相当于一次独立的模型调用；不调用任何外部模型接口。运行记录：[runs/quant-ph-claude-agent-20260926](../schema%20v0.4/runs/quant-ph-claude-agent-20260926/)；文件包、回答、收据、增量和账本只存放在主目录的 `local-archive/`（I-13）。
+
+### V04-38 / `acquire.snapshot_rows` 与 `acquire.snapshot_dois`（未执行）
+
+- 对象：按 arXiv 编号读取快照元数据（不限分类与日期）；按规范化 DOI 反查声明它的 arXiv 记录（一条记录的 doi 字段可含多个 DOI）。
+- 准备条件：DuckDB 生成的合成 Parquet。
+- 操作情景：编号不在快照中；版本排序；空输入；doi 字段含多个 DOI、大小写与 `https://doi.org/` 前缀；同一 DOI 被多条记录声明。
+- 预期结果：返回形状与 `snapshot_frame` 一致；DOI 反查结果完整且有序；无网络。
+- 当前状态：未执行（测试尚未编写）。
+- 前置阻塞：用户要求执行时。
+
+### V04-39 / `works.build_metadata_doi_delta`（未执行）
+
+- 对象：DOI 文献与声明该 DOI 的唯一 arXiv 记录之间的 `SAME_WORK {basis: HOST_RULE_ARXIV_METADATA_DOI}`。
+- 准备条件：合成 Work 行与 DOI 索引。
+- 操作情景：arXiv DOI（`10.48550/…`）不重复处理；一个 DOI 对应多条记录时只记 `WORK_METADATA_DOI_AMBIGUOUS`，不建边；新 arXiv Work 的 terminal_kind 为 ARXIV_SOURCE_AVAILABLE；合并视图后 G1–G15 无发现；EXPLICIT_IDS_ONLY 的文献分量把两者连在一起。
+- 预期结果：边与问题各得其所；同一输入给出同一 delta_id。
+- 当前状态：未执行。
+- 前置阻塞：用户要求执行时。
+
+### V04-40 / 运行脚本 `runs/quant-ph-claude-agent-20260926/run.py` 的各步（未测试）
+
+- 对象：`manifest`（后继清单只改 extraction.method_version、budget_ceiling、created_at，并核对解析器与纳入程序摘要不变）、`sample`、`base`、`s6-plan`（文件包是否完整、如实地呈现 `build_focus_prompts` 的提示：说明原文、全部源文件、别名目录、文献键、聚焦块；行号换算）、`s6-next` / `s6-ingest`（预留与结清、收据字段、回答缺失或 JSON 损坏、被拒回答与“该段无结论”的区分、失败增量也入库、重试只派被拒的窗口）、`expand-select`（DOI 元数据增量、选择规则与排序、已考察编号排除）、`expand-acquire`（快照中缺失的编号记为 ID_NOT_FOUND）、`s7-plan`（请求到上游论文版本的对应、候选检索 k = 10、无候选的请求单独计数）、`s7-next` / `s7-ingest`、`build`、`load`。
+- 准备条件：合成的小语料与伪造的 agent 回答（正确、schema 不合、别名未知、引文不唯一、引文在注释里、窗口外引文、空窗口）。
+- 预期结果：账本状态与规范 §7.4 一致；每个窗口恰有一张收据；拒绝后最多再派一次；增量编号可重现。
+- 当前状态：未测试。真实运行（V04-41）只会走到实际出现的路径。
+- 前置阻塞：用户要求执行时。
+
+### V04-41 / 真实运行：S6（50 篇）→ EXPANSION → S7（进行中）
+
+- 当前状态：已中断（用户 2026-09-26：“先中断一下，我觉得我需要再优化一下流程”）。已完成：后继清单 `corpus:8db77fb1…`；第 0 轮 `sampling:ca8800b8…`（考察 80、合格 50，与第一轮一致）；确定性层 151 个增量；S6 计划 50 篇、511 个窗口（8,874 个出处，其中文字段落 4,190、陈列公式 3,013、定理与定义环境 187）。S6 只做了第 1 篇 `arxiv:1501.02403v1`：一个子 agent 用 32 分钟答完 3 个窗口、47 条结论；宿主接受 1 个窗口（9 条读法、9 个 junction、5 个外部请求），2 个窗口因 `AMBIGUOUS_PART` 被整段拒绝。原因是 focus-1 指令只写了“共用出处”规则的一半；用户选择把宿主的全部检查写进任务说明并重新开始，脚本已改为文件包 V2，重新开始时要冻结新清单、重新生成文件包、重做第 1 篇。按第 1 篇的速度，一次一个 agent 做完 50 篇约需 90–110 小时。记录：`runs/quant-ph-claude-agent-20260926/INDEX.md`。
+- 前置阻塞：用户优化流程后决定如何继续（运行方式、S6 的范围与模式）。
+
+### V04-42 / 锁定版本的元数据快照下载脚本 `schema v0.4/snapshot/fetch_arxiv_metadata.py`（未执行）
+
+- 对象：按记录的 Hugging Face 提交号（默认 `90c265d5…`）下载 10 个 Parquet 文件到 `local-archive/arxiv-metadata/2026-09-21/`，逐个与 Hugging Face 公布的 SHA-256 核对，并与 `snapshot/arxiv-metadata-2026-09-21/MANIFEST.json` 比较。
+- 准备条件：网络；约 3 GB 空间。
+- 操作情景：默认提交号的完整下载；中断后重跑（已下载且大小正确的文件只重新计算摘要）；指定其他提交号（不与记录比较）；摘要或大小不符。
+- 预期结果：默认提交号下 `manifest_sha256` 等于记录值 `2609efdf…`，退出码 0；任何不符时退出码 1。
+- 当前状态：未执行（脚本 2026-10-07 新写）。原脚本（取最新提交）2026-09-25 的实际运行记录见同目录的 `fetch.log`。
+- 前置阻塞：用户要求执行时。
+
