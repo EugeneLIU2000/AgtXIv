@@ -1410,6 +1410,33 @@ V03-175 真实执行收尾：授权运行 session 47725 已退出 2。Luna 进�
 - 当前状态：代码已连接，仅静态阅读；未执行审计、测试或案例，没有新增 PASS。原先无条件拒绝 PDF 的代码门已替换为以上核对，失败/中断审计不支持的边界仍保留。
 - 前置阻塞：实际执行授权仍未获得；失败和中断的完整重建、大篇幅来源、自动发现、PDF→TeX 和 Lean 全链验证仍未完成。完整性 PASS 不证明来源语义、前提充分性、全文覆盖或最早出处。
 
+### V03-223 / Public framework content and publication boundary (2026-10-05)
+
+- Object: the proposed schema v0.3 release commit, branch ignore rules, release notes, and any future downloadable artifact.
+- Prerequisites: a frozen candidate commit and intended distribution path; explicit authorization for automated checks; owner decisions about third-party redistribution and the root license. Preserve the local archive and historical Git records.
+- Scenario: inspect the proposed distribution without the local research archive; exercise ignore behavior for newly generated runs and the excluded migration report; inspect tracked contents and history separately; inspect branch/PR CI triggers before publication.
+- Expected result: excluded run/source material is not newly distributed; ignored paths are not mistaken for removal of tracked or historical bytes; only rights-cleared content is packaged; a framework preview, tested release, scientific admission and signed artifact remain distinct outcomes. The older pilot release manifest is not relabeled as a schema v0.3 manifest.
+- Current status: pending. Existing public omissions and ignore patterns were read statically; no packaging, scan, validator, CI dispatch or publication was executed for this preparation.
+- Blocking prerequisites: repository-wide rights and ownership decisions remain open; no new artifact manifest or downloadable bundle has been produced. Existing CI runs on `codex/**` pushes and pull requests, so that execution requires explicit authorization.
+
+### V03-222 / Fresh public checkout onboarding and bounded execution (2026-10-05)
+
+- Object: commands and environment requirements in `schema v0.3/GETTING_STARTED.md` and `WORKFLOW.md`.
+- Prerequisites: a clean public-source checkout without `schema v0.3/runs/`; pinned Python/uv; explicit authorization for installation, network and model usage as applicable; a compatible authenticated CLI. Proof work additionally requires a prepared frozen environment and macOS sandbox.
+- Scenario: install runtime dependencies; start bounded source acquisition and candidate research with a fresh output path; observe unavailable sources, exhausted budgets and a source label absent from extracted output; distinguish normal incomplete exit 2 from argument failure; exercise explicit evidence imports and resume refusal for BUSY/reserved or changed-runtime plans.
+- Expected result: no undistributed historical file is silently required by the fresh research route; model/network effects match the guide; failure and incomplete states are reported accurately; imports retain provenance; resume neither replenishes budgets nor adopts an unexplained worker. Proof prerequisites remain explicit and no unrestricted fallback is used.
+- Current status: pending, not executed. Commands and effects were read from source; installation, examples, model calls, audits and Lean builds were not run. Existing V03-214–V03-218 retain their separate execution and implementation scopes.
+- Blocking prerequisites: a portable public proof-environment bootstrap and rights-cleared historical replay bundle are not provided. Missing inputs must remain blockers; do not fabricate them to make the instructions appear reproducible.
+
+### V03-221 / English release documentation navigation and rendering (2026-10-05)
+
+- Object: root README, English vision/citation/release guides, schema v0.3 README/WORKFLOW/GETTING_STARTED, changelog, PR evidence template and contribution/release/security entry points.
+- Prerequisites: exact candidate documentation bytes; GitHub-compatible Markdown rendering; explicit authorization for link or rendering validators. Keep original Chinese design and historical evidence unchanged.
+- Scenario: follow the public reading path from purpose to workflow, onboarding, reported evidence and release decisions; inspect links and the existing workflow diagram; read on a narrow viewport; distinguish archived run identifiers from public links and historical successes from current evidence.
+- Expected result: public navigation resolves, commands remain readable, archived records are not promised as downloads, release claims stay within schema v0.3 and project vision, and execution is not implied by opening the guide. Candidate counts, compiled modules, accepted support edges and source alignment remain separate.
+- Current status: pending. Prose, source references and diffs received static review only; no link checker, renderer, validator or browser smoke test was run. No runtime or schema change was made by this documentation preparation.
+- Blocking prerequisites: none for editorial review; rendered-layout and automated-link results require separately authorized execution. Licensing, publication and scientific-review decisions are tracked by the existing governance policy, not resolved by this item.
+
 ### V03-220 / proof_walk 加固：根审计格式、无探测不出证书、平凡性审计、certify 先审计、失败审阅内容（2026-09-24）
 
 - 对象：`proof_walk.run_walk`（根审计逐项按 `$defs.RootAudit` 校验；输入图节点自带 `root_audit` 即拒绝）、`scheduler._root_audited`（删去无人生成的 NO_LIBRARY_PROVIDES_THIS 分支）、`certify.certificate`（定义豁免按图节点 kind 判断）与 `certify.main`（调用 `audit_proof_walk.audit`，异常也得到保留部分证据的 FAILED 报告）、`audit_proof_walk.Auditor`（`triviality` 用审计器内冻结的战术表；有 `triviality/` 目录也触发核对；`graph` 拒绝自带 root_audit 的输入图；可用依赖的 `kernel_attestation_state`、`environment_hypotheses` 与平凡性标志须与 scheduler 推导一致）、`review.subjects`；新增/修改的测试在 `schema v0.3/tests/test_review_certificate.py`（根审计三种非法状态、过期图与自带 root_audit 的输入图、未探测查询及改写 kernel_attestation_state 的记录、certify 拒绝审计失败的运行、失败审阅内容）与 `tests/test_library.py`（伪造平凡性标志）。

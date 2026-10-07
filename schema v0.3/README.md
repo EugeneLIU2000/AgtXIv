@@ -1,74 +1,62 @@
 # Schema contract ladder v0.3 — research/0.3.0 candidate framework
 
-**New here? Read [WORKFLOW.md](WORKFLOW.md) first.** It walks through the pipeline stage by stage (forward crawl →
-backward prune → bottom-up Lean formalization), with the commands and how far each stage has run. This public version
-omits the run records under `runs/`, which contain paper sources and verbatim extracted text (see
-[What this public version leaves out](WORKFLOW.md#what-this-public-version-leaves-out)); `runs/` paths below refer to
-that local archive.
+Schema v0.3 provides source ingestion, candidate dependency graphs, persistent execution accounting, Lean proof attempts, human-review records, and conditional chain certificates. Its workflow is **forward crawl → backward prune → bottom-up formalization**: collect relevant source evidence, select the branches needed by a query, then attempt their mathematical prerequisites first.
 
-This directory advances the **schema contract ladder**, separately from the older AgtXIv protocol version numbers. It implements source ingestion, candidate graph selection, durable run accounting, actual model-call receipts, Lean-environment evidence, library root audits, human review records and chain certificates. It does **not yet** implement a completed autonomous paper-to-proof loop: every stage exists, but no automated model→Lean run has covered a real query graph.
+**Status: experimental; the research case remains `CHAIN_INCOMPLETE`.** Historical records demonstrate four-paper research, one real model-to-Lean step, and a separately constructed mathematical branch compiled in one environment. No automated model-to-Lean run has covered a real paper query graph. Source alignment remains unreviewed and accepted support edges remain zero.
 
-Read [STATUS.md](STATUS.md) for the current evidence and limits. The recursive controller has connected up to four papers (latest: `runs/research-doi-available-20260922`, 683 nodes, 0 accepted support edges). The 2026-09-24 revision adds a single-theorem query (`--query-label`), compact graphs and a new claim-reference policy; on `thm:solvable`, with library root audits, a stubbed proof walk (no model or Lean) reaches 5 attemptable nodes where the legacy graph gave 0. Separately, the 60-module Lean branch for that theorem compiles in one common environment. Source alignment is unreviewed, and these audits do not establish mathematical completeness.
+This is the **schema contract ladder**, numbered separately from the older AgtXIv protocol versions and the wider AgtXIv V3 design.
 
-The active case is [arXiv:2607.26154](https://arxiv.org/abs/2607.26154). The controller binds either every extracted target-paper candidate or, with `--query-label`, the claims at named source labels as queries, then repeatedly prunes the upstream graph to those queries. The older `pipeline.py` is a separate historical-DAG migration case; it is not the new semantic runner. No inventory is presented as a proven enumeration of all mathematical claims.
+## Start here
 
-## Run and read
+- [Getting started](GETTING_STARTED.md): prerequisites, public-checkout limitations, and execution instructions.
+- [Workflow](WORKFLOW.md): stages, entry points, artifacts, and their evidence boundaries.
+- [Progress and evidence boundaries](../docs/releases/schema-v0.3-progress.md): English analysis of the September changes, mathematical progress, and unfinished work.
+- [Design](../docs/superpowers/specs/2026-09-19-schema-v03-design.md): contract rationale and dated revisions. [STATUS.md](STATUS.md) preserves the detailed historical record, primarily in Chinese.
 
-From the repository root, with the repository Python environment:
+## What the retained development records show
 
-```sh
-.venv/bin/python 'schema v0.3/host/research.py' \
-  --paper 2607.26154v1 --query-label thm:solvable --candidate-exploration \
-  --output 'schema v0.3/runs/my-new-run' \
-  --max-papers 5 --max-model-calls 12
-```
+These figures describe historical scopes; they are not current test results or percentages of the paper proved.
 
-Each new plan needs a new output directory. Without explicit evidence imports, the controller uses real bounded Codex CLI calls and existing account authentication; requested engine classes do not assert measured model-tier savings. `--imports` reuses frozen prior candidate evidence with provenance, and `--network-sources` enables bounded version-pinned arXiv acquisition. [SEMANTIC.md](host/SEMANTIC.md) explains imported evidence, query binding, strict versus exploratory decisions, and resumption limits. Lean proof work is the separate `host/proof_walk.py` stage on a published graph ([PROOF_BACKEND.md](host/PROOF_BACKEND.md)). Case execution is authorized by the 2026-09-19 user request; unrelated test suites remain unexecuted under the repository policy.
+| Scope | Recorded result | Remaining boundary |
+| --- | --- | --- |
+| Recursive research | Four papers; 240 target-paper candidates; 683 graph nodes and 269 support groups. | Zero accepted support edges; source completeness is not asserted. |
+| Real proof worker | One model call produced one Lean theorem candidate for a source-bound normalization step. | Premise nonvacuity and source alignment remain unaccepted; no multi-node query proof. |
+| Mathematical branch | 60 modules compiled in a common Lean v4.33.0 / mathlib / Physlib environment; 54 selected declarations audited: 44 theorems and 10 definitions. | Agents wrote and repaired the branch. Its terminal theorem is not yet bound to the research graph's query node. |
+| Single-query dispatch | A retained-data stub demonstration reached five target-only attempts and six after upstream joins, compared with zero on the legacy graph. | The stub called neither a model nor Lean; it establishes dispatch reachability only. |
 
-Exit **2** means `CHAIN_INCOMPLETE`, even when implemented research operations succeed. This runner currently cannot emit a completed chain certificate. Its artifact audit is separate:
+The active case is arXiv:2607.26154v1. Archive identifiers include `runs/research-doi-available-20260922`, `runs/proof-worker-normalization-attempt02-20260919`, `runs/candidate-compile-20260923`, and `runs/v03-revision-evidence-20260924`. **The public framework checkout omits `runs/`.** These identifiers refer to retained local evidence, not bundled downloadable examples. Some profiles and historical tools therefore require inputs absent from this checkout; the source release alone does not reproduce the reported results. See the [public artifact boundary](WORKFLOW.md#what-this-public-version-leaves-out).
 
-```sh
-.venv/bin/python 'schema v0.3/host/audit_research.py' \
-  --run 'schema v0.3/runs/my-new-run' \
-  --output 'schema v0.3/runs/my-new-run/integrity-report.json'
-```
+## Implementation and boundaries
 
-Read `summary.json`, then `checkpoint.json`, `frontier.json` and `ledger.json`; immutable graph/checkpoint histories sit alongside them. The older migration command `pipeline.py` still supports `--lean --network --model`, emits its own `REPORT.md` and incomplete `chain-certificate.json`, and uses `validate.py` for that older case. `runs/latest.json` refers to that registered migration result, not the newer semantic recursion. Earlier failures and audits are retained. Neo4j files remain projection artifacts, not a running database service.
+| Component | Present implementation | What it does not establish |
+| --- | --- | --- |
+| [Sources](host/INGEST.md) | Exact-version acquisition, frozen bytes, literal includes, UTF-8 spans, macro inventory, bibliography and identifier parsing. | Complete mathematical extraction, TeX expansion, bibliographic identity acceptance, or earliest origins. |
+| [Candidates](host/SEMANTIC.md) | Bound response bytes and quotations, external statement requests, claim-index support, a separate mentions table, and conservative occurrence expansion. | A citation is not a supporting theorem. The new claim-reference response fields have no recorded live extraction yet. |
+| [Graph](host/GRAPH.md) | Joint premises within groups (AND), alternative groups (OR), cycle handling, ancestor selection, shared costs, required bridges, blocker propagation, sensitivity diagnostics, and `COMPACT_V1`. | Scientific acceptance or optimality when costs are unknown or search is bounded. |
+| [State and accounting](host/core.py) | Host-derived state, frozen SQLite plans, model/proof reservations, receipts, issues, and persistent provider-failure handling. | Calibrated decisions, known monetary cost when the provider does not report it, or automatic worker recovery. |
+| [Research controller](host/SEMANTIC.md#recursive-controller) | Extraction, evidence reuse, source matching, admission, repeated pruning, all-candidate or source-label query selection. | A completed automatic proof chain; recursion still needs explicit arXiv identifiers or imported PDF sources. |
+| [Proof worker and library search](host/PROOF_BACKEND.md) | Environment-bound lexical retrieval, root audits, bounded model-to-Lean attempts, actual declaration types, structure-held premises, axiom and direct proof-term evidence. | A search hit is not a binding. Compilation does not establish source alignment, nonvacuity, or full transitive composition. |
+| [Review and certificate](host/PROOF_BACKEND.md#human-review-and-chain-certificate) | HumanReview templates and scoped decisions; ChainCertificate generation and audited recertification. | No recorded human reviews yet. ACCEPT lifts a support-group blocker inside a walk without rewriting research-graph disposition. |
+| [PDF path](host/PDF_REGIONS.md) | Retained page images, region anchors, proof-context and recovery interfaces. | A page region is not an exact text quotation. Multimodal proof and retained-PDF recursive admission lack recorded execution coverage. |
 
-## Implemented boundaries
+## Execution and interpreting results
 
-| Part | Implementation | What it does not establish |
-|---|---|---|
-| Frozen extraction | Reuses `tools/extract_provisional_claims.py`; literal includes, UTF-8 byte anchors, macro inventory, bibliography parsing, occurrence/curated overlap bridges | Semantic completeness, TeX expansion, correctness of overlap as claim identity |
-| Source acquisition | Bounded exact-version arXiv source download and existing safe archive extraction | A unique entry file when upstream source is ambiguous |
-| Internal references | Every reference is resolved or receives an explicit unresolved result | A citation/reference alone is not support; a pending classification is not a final exclusion |
-| External identifiers | Explicit arXiv/DOI identifiers and bounded Crossref fallback with raw evidence | Fuzzy identity, subject support, exhaustive earliest-origin search; ADS adapter remains pending |
-| Graph | SCC condensation, ancestors, AND/OR routes with shared costs, ties/bounds, mandatory bridges, blocked propagation, deletion sensitivity; lossless `COMPACT_V1` output (47.1 MB → 7.0 MB on the 4-paper graph) | Promotion of candidate edges or an optimum when costs are unknown |
-| State and accounting | Host-only state derivation, SQLite plan/call/issue ledger, reservations, no-progress counters | Calibrated decisions without a registered held-out calibration curve |
-| Lean | Current types, Prop hypotheses including structure fields, axiom audit, direct term-constant composition; the 60-module query branch compiles in one common environment (`runs/candidate-compile-20260923`) | Source alignment, inhabited scientific premises, or transitive composition through unaudited intermediates; the branch was agent-written, not produced by the proof worker |
-| Historical case driver | Explicit migration replay and source ingestion of selected existing upstream papers; report/certificate artifacts | Does not substitute for new semantic extraction or recursive model work |
-| New semantic graph | `host/candidates.py` binds actual response bytes, resolves occurrence mappings, records external statement requests; `CLAIM_REFERENCE_V1` adds claim-index support, a separate mentions table and occurrence expansion that never adds a cycle | A citation is not an upstream theorem; untyped uncertainty prose is a blocker; no extraction with the new fields has run yet |
-| Recursive research controller | `host/research.py` connects extraction, cached/live matches, paper admission, repeated pruning, label or all-claim query binding, persistent budgets and failure classification; up to four-paper runs recorded | Recursion needs explicit arXiv identifiers or imported PDF sources; earliest-origin search is unchanged; source truth and completeness are unaccepted |
-| Proof scheduler and worker | `host/scheduler.py`, `PlanLedger` and `proof_walk.py` reserve and run model→Lean attempts bottom-up with a statement-triviality probe; one real single-node run recorded | No real walk over a query graph yet; live worker supervision and crash recovery remain limited |
-| Library retrieval | `host/library.py` + `lean/LibraryIndex.lean` index a frozen environment and write `LIBRARY_SEARCHED` root audits; unknown-identifier lookup feeds retries | Lexical and weak; a search result is never a binding or alignment |
-| Review and certificate | `host/review.py` HumanReview templates/records; `host/certify.py` writes a ChainCertificate for every walk | An emitted certificate is a kernel-checked implication conditional on its listed premises, not the paper's truth; no review records exist yet; accepted support edges are 0, and a HumanReview ACCEPT only lifts a walk blocker, it does not set `SOURCE_FROZEN_HUMAN_SIGNED` |
+Use [Getting started](GETTING_STARTED.md) before running a command. `host/research.py` is the semantic research entry point; `host/proof_walk.py` separately consumes a prepared graph, frozen sources, a Lean environment, and root bindings or audits. `host/pipeline.py` and `host/validate.py` serve the older historical-DAG migration case. The archived `runs/latest.json` names that migration result, not the latest semantic recursion.
 
-## Design decisions and corrections
+Each new research plan needs a fresh output directory. Without imported evidence, research can make real Codex CLI model calls using configured account authentication. `--network-sources` enables bounded source acquisition; `--imports` reuses explicitly identified evidence. Plans freeze their [model routing](host/MODEL_ROUTING.md), budgets, environment, and decision policy. The configured engine tiers do not imply measured quality equivalence or cost savings.
 
-The supplied design is input to the implementation; the user's current request remains authoritative. PhysLib remains a requested dependency. A local PhysLib checkout has Pauli infrastructure, correcting the design's zero-Pauli statement. Its Lean/mathlib epoch differs from the existing AgtXIv projects. Separate audits record that difference and cannot be silently combined.
+The default policy is strict. Explicit `CANDIDATE_EXPLORATION` allows unreviewed search and proof attempts while preserving review blockers and preventing scientific promotion. Source-label queries such as `--query-label thm:solvable` select bounded work; they do not establish complete paper coverage or change canonical source claims.
 
-Historical graph edges lack AND/OR grouping. The migration imports all incoming support edges jointly, marking that assumption as an unreviewed candidate. It does not infer that each single edge is an independently sufficient route. The source's known false fixed-window monotonicity claim retains its own counterexample blocker.
+Start reading an actual run at `summary.json`, then inspect `checkpoint.json`, `frontier.json`, and `ledger.json`. Graph and checkpoint histories retain earlier states. Normal research completion exits **2** for `CHAIN_INCOMPLETE`; argument errors can also exit 2. Read stderr and the actual artifacts together rather than interpreting that code alone as success.
 
-An automatic model emits candidates and self-reported confidence. The host owns states, blockers, coverage, and gates. Only a registered calibrated confidence can advance an automatic gate; self-reports remain awaiting review. A threshold without a calibration curve is an anecdote. Promotion of a candidate edge to a load-bearing premise is a checked judgement, never a graph property.
+`research.py` emits no completed chain certificate. A proof walk's `CHAIN_CERTIFICATE_EMITTED`, when its gates are satisfied, means a **kernel-checked formal implication conditional on the premises read from Lean**. Open reviews and unknown nonvacuity remain visible. It does not mean that the paper is correct or that the formalization faithfully represents it. Definitions and theorem proofs have separate coverage; their counts must not be combined into a success rate.
 
-Frozen plans may explicitly choose `decision_policy: CANDIDATE_EXPLORATION` to schedule unreviewed search/proof work. This does not grant scientific acceptance: review blockers propagate, `promotion_allowed` stays false, and OR routes remain explicit. Omitted policy is strict. Proof dispatch additionally requires `limits.max_proof_attempts` and a frozen `environment.lean_environment_sha256`; callbacks receive a durable reservation and must independently reserve model/money quotas. Interrupted reservations remain locked until worker termination is established.
+## Contracts, authority, and further work
 
-The root tags remain `FRONTIER` unless an exhausted-search record justifies `ORIGIN`. A root with no incoming graph edge is not evidence that the earliest literature has been found. Bibliography membership alone does not admit another paper.
+The [Draft 2020-12 contracts](schemas/research.schema.json) and [`host/core.py::derive_state`](host/core.py) define the machine-facing records and state derivation. Models propose candidates; the host owns state, blockers, and coverage. Only registered calibrated confidence can advance an automatic decision gate. Human acceptance is a separate scoped judgment. A graph root remains `FRONTIER` unless an exhausted-search record justifies `ORIGIN`.
 
-Definitions and theorem proofs have separate coverage rows. A definition elaborating, or a package building, never supplies a missing source-alignment judgement. A successful final chain would establish only a kernel-checked implication from explicit, environment-extracted premises to the formalized query. `research.py` issues no certificate and `pipeline.py`'s stays incomplete; a `proof_walk` certificate can print such a conditional conclusion, for its own queries only.
+Read the design together with its dated revisions and implementation corrections. Physlib remains part of the requested scope; separate Lean environments cannot be silently combined. [Lean evidence](lean/README.md), [candidate integration](lean/CANDIDATE_INTEGRATION.md), and [epoch migration](epoch-migration/README.md) distinguish historical environments, compilation scopes, and conditional mathematical statements. Historical source objections and the fixed-window monotonicity counterexample remain preserved.
 
-## Contracts and pending work
+This package serves the wider [AgtXIv vision](../AgtXIv.md), while implementing a bounded mathematical workflow. It does not change the [Charter's pending ratification](../CHARTER.md), replace the contracts governing older records, or establish completion of the wider V3 knowledge system.
 
-The Draft 2020-12 contracts are in `schemas/`. `host/core.py::derive_state` is the published state function. `host/graph.py` and [GRAPH.md](host/GRAPH.md) describe route semantics. [lean/README.md](lean/README.md) describes formal evidence and remaining mathematical gaps.
-
-All added or affected test scenarios are tracked only in [`schema v0.1/PENDING_TESTS.md`](../schema%20v0.1/PENDING_TESTS.md). The unit suite (no model, no Lean by default; `AGTXIV_LEAN_TESTS=1` enables one real-Lean probe) runs, when authorized, as `.venv/bin/python -m pytest 'schema v0.3/tests' 'schema v0.3/host/test_clause_evidence.py' -q`. Current case execution does not replace unrun adversarial, concurrency, fresh-paper, calibration or full proof-loop tests.
+Execution follows [AGENTS.md](../AGENTS.md): tests, validators, example replays, audits, and Lean builds require explicit authorization for the requested scope. Historical case authorization does not authorize a new run. All added or affected execution scenarios are tracked only in [`schema v0.1/PENDING_TESTS.md`](../schema%20v0.1/PENDING_TESTS.md). No test or build was run for this documentation revision.

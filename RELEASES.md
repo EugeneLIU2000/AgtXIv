@@ -6,8 +6,35 @@ AgtXIv has several independent kinds of versioned objects. This policy prevents
 a Git tag, schema number, database revision, or paper version from being
 mistaken for another kind of release.
 
-There is no stable AgtXIv V2 software release yet. Planned names in the roadmap
-are targets, not claims that those releases already exist.
+There is no stable AgtXIv software release yet. The current public
+`schema-v0.3-framework` branch is an experimental framework preview, not a
+software version tag. Planned names in older roadmaps remain targets, not
+claims that those releases already exist.
+
+## Current schema v0.3 publication scope
+
+The [release preparation](docs/releases/schema-v0.3-release.md) binds the public
+baseline, included documentation, excluded local evidence, compatibility and
+remaining owner decisions. The [draft notes](docs/releases/schema-v0.3-notes.md)
+describe actual framework capabilities and their scientific limits.
+
+`research/0.3.0` is a contract-family identifier on the schema ladder. It must
+not automatically become a software SemVer tag, supersede the older protocol
+ladder, or imply completion of the broader V3 design. Existing V2 release rules
+below retain their original scope; a framework preview does not claim V2 Paper
+Agent archival or production Knowledge Base admission.
+
+Historical local runs are not distributed as a public evidence bundle. Keep
+the documented exclusions when preparing a public commit or artifact. The
+older root `release-manifest.json` is not a schema v0.3 release manifest.
+
+Release checks remain required before a tested release can be asserted, but
+the repository's current no-execution instruction takes precedence over
+running them automatically. Record affected scenarios only in
+[`schema v0.1/PENDING_TESTS.md`](schema%20v0.1/PENDING_TESTS.md), obtain explicit
+authorization for the scope, and retain new evidence. Pushes to `codex/**` and
+pull requests trigger existing CI, so that consequence must be included in
+the authorization for the publication step.
 
 ## Release events are not one approval
 

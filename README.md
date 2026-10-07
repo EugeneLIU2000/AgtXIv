@@ -1,123 +1,142 @@
 # AgtXIv
 
-AgtXIv turns scientific literature into auditable and reusable knowledge, preserving each claim's sources, assumptions, evidence, applicability, conflicts, and unresolved questions. The current [V3 design proposal](AgtXIv.md) connects query-independent Paper Agents to an accumulating knowledge base, with vibefeld as a mathematical argument layer between source claims and Lean, six separate assessment axes, and contribution records relative to an explicit knowledge baseline.
+**Trace scientific claims through their sources, assumptions and proof dependencies.**
 
-V3 implementation has begun with an experimental [schema v0.0 package](schema%20v0.0/README.md), offline contract checks, bounded local source inspection, and a six-axis reader. It is not a completed scientific pipeline; [the execution status](docs/roadmaps/v3-execution-status.md) records coverage and remaining work. Existing V1/V2 code, fixtures, pilot results, and records retain their original scope and authority. The proposed Charter remains pending ratification.
+AgtXIv develops auditable Paper Agents and reusable scientific knowledge. The
+aim is to let each new investigation build on earlier evidence while keeping
+its sources, conditions, disagreements and unfinished work visible. Read the
+[project vision](docs/VISION.md) for the wider direction.
+
+The current focus is **schema v0.3**, an experimental research framework for
+extracting mathematical claim candidates, following dependencies across
+papers, selecting a query's upstream branch, and attempting Lean 4
+formalization from the bottom up.
+
+**Release status:** public framework preview, with no tagged software release.
+The recorded case remains `CHAIN_INCOMPLETE`. There is no completed autonomous
+paper-to-proof run, and source alignment remains unreviewed. See the
+[progress analysis](docs/releases/schema-v0.3-progress.md) and
+[release scope](docs/releases/schema-v0.3-release.md).
+
+[Workflow](schema%20v0.3/WORKFLOW.md) ·
+[Getting started](schema%20v0.3/GETTING_STARTED.md) ·
+[Evidence and limits](docs/releases/schema-v0.3-progress.md) ·
+[Contributing](CONTRIBUTING.md)
+
+## What the framework does
+
+| Stage | What it produces |
+|---|---|
+| Freeze sources | Exact paper versions and source locations, with content identities and acquisition records. |
+| Extract and connect | Candidate statements, internal dependencies and cross-paper matches; citations that only mention a work remain separate from support. |
+| Select a query | A bounded upstream graph, with joint premises, alternative routes, unresolved roots and explicit blockers. |
+| Attempt formalization | Library-search records and scheduled model-to-Lean attempts, with the actual formal types, premises and proof dependencies. |
+| Retain the evidence | Plans, model receipts, budgets, checkpoints, review records and conditional chain-certificate machinery. |
+
+Models propose candidates. The host program derives states and enforces gates.
+Exploration does not accept a claim, and a compiled theorem does not establish
+that its statement faithfully represents a paper. These boundaries are part of
+the [schema v0.3 design](docs/superpowers/specs/2026-09-19-schema-v03-design.md).
 
 ## Start here
 
-The [research website](web/README.md) is the primary V3 reader and live arXiv
-submission service. It retrieves real source bytes, produces source-linked
-candidates and retains the result. The [release plan](docs/roadmaps/publishable-release-plan.md),
-[schema audit](docs/audits/schema-release-audit.md) and
-[TeX technical report](docs/technical-report/README.md) document the release
-requirements, exact contract coverage and scientific boundaries. Source analysis
-does not perform any of the six scientific assessments.
+You can read the [workflow](schema%20v0.3/WORKFLOW.md) and
+[progress analysis](docs/releases/schema-v0.3-progress.md) without installing
+anything. The published branch contains framework code and documentation;
+many historical research receipts and paper-source files remain in a local
+archive and are not included in a public checkout.
 
-To run the website with Node.js 26.7.0:
+For a source checkout:
 
-```bash
-cd web
-npm run build
-npm test
-npm run dev
+```sh
+git clone --branch schema-v0.3-framework --single-branch \
+  https://github.com/EugeneLIU2000/AgtXIv.git
+cd AgtXIv
 ```
 
-Open `http://127.0.0.1:8787`, submit a new arXiv identifier, and follow the retained
-job to its result. Existing `pages/` and `demo_*` surfaces keep their historical or
-research roles; they are not the new submission service.
+The repository pins Python 3.12.2 and uv 0.10.0. With that uv version
+available, `uv sync --locked --no-default-groups --python 3.12.2` installs the
+locked runtime environment. [Contributor setup](CONTRIBUTING.md#development-setup)
+also installs development dependency groups. This is a source-checkout
+workflow; no published `pip` package or standalone AgtXIv command is claimed.
 
-| Document or project | Role |
+The [getting-started guide](schema%20v0.3/GETTING_STARTED.md) explains the
+separate prerequisites for live research and Lean work. Research can call a
+model using the configured Codex CLI account; source downloads require an
+explicit option. A proof walk requires a prepared, frozen Lean environment
+and request. Read the guide before starting a run.
+
+## What the existing evidence supports
+
+The following are **historical results reported in the retained local
+records**, summarized in [STATUS.md](schema%20v0.3/STATUS.md). They are not
+fresh validation of this release preparation or a public replay bundle.
+
+| Recorded result | Its boundary |
 |---|---|
-| [`CHARTER.md`](CHARTER.md) | **Pending Charter proposal:** `AgtXIv-Charter/1.0`; highest-level normative authority only after authorized ratification on canonical `main` |
-| [`ADR 0007`](docs/adr/0007-adopt-project-charter.md) | **Pending Charter-adoption decision:** rationale, authorization conditions, ratification commit, and effective-time rule |
-| [`AgtXIv.md`](AgtXIv.md) | **Current V3 design proposal:** goals, full framework, argument layer, six-axis assessment, contribution, reuse, migration, and acceptance boundaries; subordinate to an adopted Charter only after ratification |
-| [`docs/roadmaps/v3-implementation-plan.md`](docs/roadmaps/v3-implementation-plan.md) | **V3 implementation plan:** P0–P8 tasks, dependencies, responsible roles, deliverables, and acceptance criteria |
-| [`schema v0.0`](schema%20v0.0/README.md) | **Experimental V3 contracts:** 64 English record schemas and a complete Chinese field reference |
-| [`V3 execution status`](docs/roadmaps/v3-execution-status.md) | **Implementation evidence:** task-by-task progress, commands, checks, remaining scientific and service boundaries |
-| [`docs/architecture/v3-vibefeld-integration.md`](docs/architecture/v3-vibefeld-integration.md) | **V3 integration design:** fixed-commit upstream findings, full argument snapshot, trust boundaries, and proposed acceptance cases |
-| [`docs/specifications/v2-paper-agentization.md`](docs/specifications/v2-paper-agentization.md) | **V2 normative architecture:** paper-first agentization, release, certification, and knowledge ingestion; subordinate to the Charter after ratification |
-| [`docs/governance/v2-charter-conformance.md`](docs/governance/v2-charter-conformance.md) | **Prospective V2 Charter conformance:** principle-by-principle status, known six-axis conflict, and post-adoption binding requirements |
-| [`docs/roadmaps/v2-end-to-end-implementation-plan.md`](docs/roadmaps/v2-end-to-end-implementation-plan.md) | **V2 execution baseline:** audited decisions, artifact coverage, M0--M8 milestones, and exit gates |
-| [`v0.6 pre-V3 archive`](docs/archive/specifications/AgtXIv-v0.6-pre-v3-2026-09-05.md) | Historical cross-version design reading copy; original bytes remain in Git history |
-| [`docs/specifications/v1-bridge.md`](docs/specifications/v1-bridge.md) | **V1 normative slice:** ScientificClaim--MathClaim alignment, conservative verification projection, and bounded Root Agent assessment |
-| [`docs/specifications/mathematics-pipeline.md`](docs/specifications/mathematics-pipeline.md) | Mathematical decomposition and verification detail; graph optimization and reuse are post-V1 capabilities |
-| [`docs/specifications/v0.3-to-v0.4-architecture-changes.md`](docs/specifications/v0.3-to-v0.4-architecture-changes.md) | Historical explanation of the v0.3-to-v0.4 architectural revision |
-| [`docs/roadmaps/v1-implementation-checklist.md`](docs/roadmaps/v1-implementation-checklist.md) | Product-v1 implementation and release checklist for the Stabilizerness vertical slice |
-| [`Stabilizerness/`](Stabilizerness/) | Active pilot artifacts, registry, claim DAGs, readers, and domain implementation |
-| [`formal/`](formal/) | Lean 4 projects used by the pilot |
-| [`web/`](web/README.md) | Primary V3 reader, actual arXiv intake, versioned HTTP API and standalone Worker build |
-| [`pages/`](pages/) and [`tools/build_pages_site.sh`](tools/build_pages_site.sh) | Legacy static pilot site source and release assembly |
-| [`Reference/`](Reference/) | Local implementation cache for frozen upstream sources; not a default per-work public-release path |
+| Recursive investigation across four papers: 240 target-paper candidates, 683 graph nodes and 269 support groups. | Accepted support edges remain **0**; the counts do not establish complete extraction or correctness. |
+| Single-theorem scheduling reaches 5 attempts on the target graph and 6 after an upstream join. | This demonstration used a stub that called neither a model nor Lean. |
+| One real single-node model-to-Lean proof attempt succeeded. | No real proof-worker walk over an entire query graph has completed. |
+| A 60-module Lean branch compiled in one common environment; 54 selected declarations were audited. | An agent wrote and repaired it. Its terminal theorem is not bound to the graph query, and source alignment is unreviewed. |
 
-## AgtXIv protocol and pilot repository map
+A chain certificate concerns a formal implication under its listed premises.
+It does not certify a paper's truth, the applicability of a physical model or
+the existence of instances satisfying every premise. The wider project keeps
+[six assessment axes separate](docs/VISION.md#six-questions-remain-separate).
 
-This monorepository develops the protocol, registries, and pilot. Historical per-work publication rules remain in the [v0.6 archive, Section 10.1](docs/archive/specifications/AgtXIv-v0.6-pre-v3-2026-09-05.md#101-per-publication-repository-and-canonical-referencing); the proposed V3 module and storage layout is described in `AgtXIv.md` Sections 11–12.
+## Documentation
 
-- `agents/`: source-bounded Paper Agent artifacts.
-- `foundations/`: external mathematical foundation records.
-- `graph/`: claim and paper dependency data.
-- `schemas/`: machine-readable contract schemas.
-- `schema v0.0/`: experimental V3 contracts; separate from historical V1/V2 schemas.
-- `figures/`: maintainable figure sources and publication exports.
-- `docs/`: specifications, roadmaps, research notes, assets, and non-normative archives.
-- `tools/`: validation and site-building scripts.
-- `web/`: the maintained V3 website and live source-analysis service; generated public copies are checked against their maintained inputs.
-- `src/agtxiv_web/`: bounded arXiv source extractor and its strict analysis response schema.
-- `local-archive/`: ignored preservation copies of unique historical local evidence, indexed by the archive manifest.
+| I want to understand… | Read |
+|---|---|
+| The project purpose and the role of this version | [Vision](docs/VISION.md) |
+| The three-stage research workflow | [Workflow](schema%20v0.3/WORKFLOW.md) |
+| Requirements, commands, outputs and limitations | [Getting started](schema%20v0.3/GETTING_STARTED.md) |
+| All major v0.3 changes and their evidence | [Progress analysis](docs/releases/schema-v0.3-progress.md) |
+| Release contents, TeXRA comparison and remaining decisions | [Release preparation](docs/releases/schema-v0.3-release.md) |
+| Graph semantics, model routing and proof execution | [Schema implementation map](schema%20v0.3/README.md) |
+| What changed for this preview | [Release notes](docs/releases/schema-v0.3-notes.md) and [changelog](CHANGELOG.md) |
 
-## Document policy
+## Repository map
 
-1. `CHARTER.md` (`AgtXIv-Charter/1.0`) is pending ratification. Only after the qualifying canonical-`main` commit exists does it become the highest-level normative authority, with the hierarchy Charter > version specifications and governance > ADRs, contracts, schemas, and plans > implementation and generated outputs.
-2. `AgtXIv.md` is the current cross-version design entry point, now carrying the V3 proposal. It does not change Charter ratification, replace V1/V2 authority over historical records, or establish completed V3 implementation. Older section references resolve against the applicable archived or Git version.
-3. A specification version is recorded in document metadata and Git history; files named `AgtXIv_v1.md` or `AgtXIv_v2.md` are not parallel authorities.
-4. Product release `v1` is an implementation milestone, not the specification version.
-5. Superseded documents and visual drafts under `docs/archive/` are retained only for provenance and are non-normative. The v0.6 reading archive identifies the original file hash and commit and only adjusts relative links for relocation. Pre-Charter immutable records retain the exact contracts and authority boundaries they originally bound; adoption does not silently rewrite or promote them.
-6. Generated site and inspection output (`_site/`, `tmp/`) is not versioned.
+- [`schema v0.3/`](schema%20v0.3/README.md): the current research framework,
+  JSON contracts, host code, Lean modules and technical documentation.
+- [`schema v0.0/`](schema%20v0.0/README.md),
+  [`schema v0.1/`](schema%20v0.1/README.md) and
+  [`schema v0.2/`](schema%20v0.2/README.md): earlier contract work, interpreted
+  under their original scope.
+- [`formal/`](formal/) and [`Stabilizerness/`](Stabilizerness/): earlier
+  mathematical projects and pilot artifacts used by the research line.
+- [`web/`](web/README.md): a separate V3 reader and source-intake service;
+  its results do not demonstrate completion of the v0.3 proof workflow.
+- [`docs/`](docs/): design, governance, release documentation and historical
+  records. [`AgtXIv.md`](AgtXIv.md) remains the broader V3 design entry point.
 
-## Validation
+Schema version, protocol version and software release version are independent.
+`research/0.3.0` is a contract-family identity, not a software release tag.
+See the [version policy](RELEASES.md).
 
-For this release's schema inventory, web projection and technical report:
+## Development and participation
 
-```bash
-.venv/bin/python tools/audit_schemas.py --check
-.venv/bin/python tools/export_web_library.py --check
-node --test tests/web/intake.test.mjs
-.venv/bin/python -m pytest tests/web tests/test_schema_audit.py -q
-.venv/bin/python docs/technical-report/generate_appendix.py --check
-bash docs/technical-report/build.sh
-```
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes. Under the
+current [repository policy](AGENTS.md), tests, validators, example replays and
+Lean builds require explicit user authorization. New or affected scenarios
+belong in the single [pending-tests record](schema%20v0.1/PENDING_TESTS.md).
+Historical successful runs are not evidence that a new revision passed.
 
-These checks complement the repository validation below. The complete live HTTP
-receipt for a newly submitted paper is retained under
-[`docs/evidence/publishable-release/`](docs/evidence/publishable-release/).
+Use [GitHub issues](https://github.com/EugeneLIU2000/AgtXIv/issues) for ordinary
+questions and bug reports. Include the exact commit, expected behavior and
+minimal shareable context. Follow [SECURITY.md](SECURITY.md) for sensitive
+reports. [Citing this work](docs/CITING.md) explains how to identify a snapshot
+without inventing a publication or DOI.
 
-For the new V3 experimental contracts and local mechanisms only:
+## License and project authority
 
-```bash
-.venv/bin/python tools/generate_v3_schema_v00.py --check
-.venv/bin/python tools/validate_v3.py --bundle-only
-.venv/bin/python -m pytest tests/v3 -q
-```
+The root license, copyright ownership and inbound contribution policy remain
+undecided. This preview does not grant an open-source license; stable public
+software release is blocked by those decisions. Third-party material retains
+its own terms. See [governance](GOVERNANCE.md#open-governance-blockers) and the
+[publication boundary](docs/releases/schema-v0.3-release.md#publication-boundary).
 
-These checks do not run a paper demo, vibefeld, Lean or a scientific experiment. They do not replace the repository-wide check below.
-
-Run the repository checks from the project root:
-
-```bash
-make bootstrap
-make check
-```
-
-The project pins Python and its validation dependencies in `.python-version`,
-`pyproject.toml`, and `uv.lock`. `make check` runs the offline fast profile through
-the repository's aggregate validator. Use `make list-checks`, `make check-full`,
-or `make check-nightly` to inspect or run the broader profiles. The full and
-nightly profiles also require their declared Node, Lean, Bash, and `rsync`
-toolchains; missing tools are reported explicitly rather than silently skipped.
-
-The GitHub Pages workflow assembles the release with:
-
-```bash
-bash tools/build_pages_site.sh _site
-```
+The [Charter](CHARTER.md) remains a pending proposal under
+[ADR 0007](docs/adr/0007-adopt-project-charter.md). This preview neither ratifies
+it nor changes the authority of historical records.

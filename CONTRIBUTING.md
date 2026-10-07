@@ -1,7 +1,10 @@
 # Contributing to AgtXIv
 
 Thank you for helping improve AgtXIv. This repository is developing a
-verification-aware paper-agent protocol and its reference implementation. A
+verification-aware paper-agent protocol and its reference implementation. The
+current framework entry point is [schema v0.3](schema%20v0.3/README.md); read
+its [getting-started guide](schema%20v0.3/GETTING_STARTED.md) and
+[progress analysis](docs/releases/schema-v0.3-progress.md) before changing it. A
 pull request can improve code or research infrastructure, but merging it does
 not certify a paper, archive a Paper Agent release, or admit scientific content
 to the Knowledge Base.
@@ -26,16 +29,23 @@ Do not use a public issue for a suspected vulnerability. Follow
 
 ## Development setup
 
-AgtXIv uses one pinned Python environment and a repository-level validation
-entry point:
+AgtXIv uses a pinned Python environment. Install it with the recorded uv
+version:
 
 ```bash
 make bootstrap
-make check
 ```
 
-`make check` is the offline, fast profile used by the required continuous
-integration check. The broader local profiles are:
+Setup does not authorize tests, validators, examples or Lean builds. The
+current [AGENTS.md](AGENTS.md) policy permits static reading and development;
+record all affected scenarios in
+[`schema v0.1/PENDING_TESTS.md`](schema%20v0.1/PENDING_TESTS.md) and wait for an
+explicit execution request. Each item records its object, prerequisites,
+scenario, expected outcome, current state and any blocking interface decision.
+
+When authorized, `make check` is the offline fast profile used by the existing
+repository CI. It is not a claim that schema v0.3's whole pipeline is covered.
+Other execution entry points, also subject to authorization, include:
 
 ```bash
 make list-checks
@@ -60,8 +70,10 @@ reported rather than silently rewritten.
    contributors may use a similarly descriptive prefix.
 5. Keep commits reviewable. Do not mix generated output, schema changes,
    migrations, and unrelated cleanup without explaining why they are atomic.
-6. Complete the pull-request template and run the checks relevant to every
-   changed layer.
+6. Complete the pull-request template, record relevant pending checks, and run
+   only the scope explicitly authorized. State unexecuted checks in the PR.
+   Existing CI triggers on pull requests and pushes to `codex/**`; include
+   that execution in the authorization before publishing a branch or PR.
 
 ## Contract and data changes
 
@@ -89,13 +101,22 @@ is not a software, schema, or Paper Agent release version. See
 ## Generated artifacts
 
 Do not hand-edit a tracked generated file. Regenerate it with the recorded
-producer, run its drift check, and commit the source and generated change
-together. Temporary builds, downloaded source caches, and arbitrary-paper bytes
-do not belong in Git merely because a tool produced them.
+producer, run its drift check when execution is authorized, and commit the
+source and generated change together. If execution is not authorized, retain
+the pending regeneration or check explicitly. Temporary builds, downloaded
+source caches, and arbitrary-paper bytes do not belong in Git merely because
+a tool produced them.
 
 Every generated artifact must follow
 [`docs/governance/generated-artifacts.md`](docs/governance/generated-artifacts.md),
 including its provenance, reproducibility, and arXiv-rights rules.
+
+The public framework branch excludes the local schema v0.3 run archive and
+one quotation-bearing migration report. Do not restore them through a broad
+merge or stage new run output by default. Read the
+[publication boundary](docs/releases/schema-v0.3-release.md#publication-boundary)
+before proposing new evidence files. A rights review and exact provenance are
+separate from whether a program produced a file successfully.
 
 ## Scientific and formal claims
 

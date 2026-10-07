@@ -61,14 +61,17 @@ Residual risks:
 
 ## Verification
 
-Commands run and results:
+Authorized commands run and results, or the explicit reason for non-execution:
 
 ```text
-make check
+Not run. Record the authorized scope and actual results here when available.
 ```
 
-<!-- Add focused, full, Lean, migration, browser, or adversarial checks as
-applicable. Missing tools and known blockers must be named, not counted as pass. -->
+<!-- Follow AGENTS.md. Record new/affected scenarios only in
+schema v0.1/PENDING_TESTS.md. Add focused, full, Lean, migration, browser, or
+adversarial results only when explicitly authorized and actually executed.
+Missing tools and known blockers must be named, not counted as pass.
+Opening a PR triggers CI; include that execution in publication authorization. -->
 
 ## Review routing
 

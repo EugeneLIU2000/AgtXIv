@@ -10,6 +10,35 @@ from commit messages alone.
 
 ## Unreleased
 
+### Schema v0.3 research framework
+
+The public framework baseline is `b389e9c9391882b6af132b56a58eba3e072f80e5`
+on `schema-v0.3-framework`. It is a branch snapshot, not a tagged software
+release. The following records the framework work already present there:
+
+- Source-bound mathematical candidates, recursive cross-paper matching,
+  query-focused AND/OR graphs and persistent execution accounting.
+- Frozen model routing, incremental reuse, compact graphs and label-specific
+  queries with separate support and mention records.
+- Library-root audits, bottom-up proof-worker interfaces, statement-triviality
+  probes, human-review records and conditional chain-certificate machinery.
+- Lean source for the separately constructed query branch, with historical
+  common-environment compilation described in retained reports.
+- PDF-region, recovery and amendment interfaces with remaining execution gaps.
+
+Release preparation dated 2026-10-05 adds English vision, onboarding, progress,
+release and citation guides; replaces the stale root entry point; corrects
+workflow instructions; and updates contribution/security scope. Public archive
+exclusions are documented and added to the branch's ignore rules. No runtime
+code, contract identity or historical evidence is changed by this preparation.
+
+The recorded case remains `CHAIN_INCOMPLETE`, with zero accepted support edges,
+unreviewed source alignment and no completed autonomous query-graph proof.
+No new checks ran. See [draft release notes](docs/releases/schema-v0.3-notes.md)
+and [the release boundary](docs/releases/schema-v0.3-release.md).
+
+### Earlier V2 infrastructure
+
 ### Added
 
 - The audited V2 end-to-end roadmap, M0 architecture decision records,
