@@ -1,7 +1,7 @@
 # Third-party papers used by the project
 
 Until October 2026 the repository carried the full sources (TeX, BibTeX, figures, PDFs and source archives) of the
-20 papers below, in `Reference/` and `References/`. They were removed from the current version on
+21 papers below, in `Reference/`, `References/` and `Stabilizerness/arXiv-2607.26154v1/`. They were removed from the current version on
 2026-10-07 at the owner's decision: most of them are distributed under arXiv's non-exclusive licence, which lets arXiv
 distribute them but does not let others redistribute them, and the project licence (see [LICENSE](../LICENSE)) must
 not appear to cover other people's work. Earlier commits still contain copies; removing those would need a separate
@@ -15,6 +15,7 @@ record the source hashes.
 
 | Paper | arXiv | Licence on arXiv | Former folder | Why it was here |
 |---|---|---|---|---|
+| Graph Theoretic Approach to Quantum Nonstabilizerness | [arXiv:2607.26154](https://arxiv.org/abs/2607.26154) | arXiv non-exclusive | `Stabilizerness/arXiv-2607.26154v1/` | The schema v0.3 query paper; the Stabilizerness pilot's anchors point into it (version v1) |
 | Agentic Publication Protocol: An Attempt to Modernize Scientific Publication | [arXiv:2606.27386](https://arxiv.org/abs/2606.27386) | CC BY 4.0 | `Reference/Agentic Publication Protocol An Attempt to Modernize Scientific Publication/` | Agentic publication protocols, repository structure and publication workflow |
 | Application of a resource theory for magic states to fault-tolerant quantum computing | [arXiv:1609.07488](https://arxiv.org/abs/1609.07488) | arXiv non-exclusive | `Reference/Application of a resource theory for magic states to fault-tolerant quantum computing/` | Stabilizerness and quantum-information pilot |
 | Can Theoretical Physics Research Benefit from Language Agents? | [arXiv:2506.06214](https://arxiv.org/abs/2506.06214) | arXiv non-exclusive | `Reference/Can Theoretical Physics Research Benefit from Language Agents/` | Language-agent workflows for theoretical-physics research |
