@@ -1,5 +1,7 @@
 # Schema v0.3 research framework preview notes
 
+> **Update 2026-10-07.** This text was integrated into `main`, which is now the public line. The owner has since decided the licences (code MIT, documentation and data CC BY 4.0; [LICENSING.md](../../LICENSING.md)), the copyright holder and a DCO-based inbound policy ([governance](../../GOVERNANCE.md#resolved-governance-decisions)). The rest of this document is kept as prepared on 2026-10-05.
+
 Status: draft release text prepared on 2026-10-05. No software version tag or
 new GitHub release has been created. Contract family: `research/0.3.0`.
 
@@ -78,8 +80,8 @@ quotation-bearing migration report. Historical counts are therefore reported
 results, not an independently replayable public evidence package. Source
 acquisition and account-backed model execution are explicit user actions.
 
-The root license, copyright ownership and inbound-contribution mechanism
-remain undecided. This preview is not a claim of stable open-source readiness.
+When this was written, the root license, copyright ownership and inbound-contribution mechanism
+were undecided (see the update at the top). This preview is not a claim of stable open-source readiness.
 See [release preparation](schema-v0.3-release.md), [contributing](../../CONTRIBUTING.md)
 and [security](../../SECURITY.md) before publication or participation.
 

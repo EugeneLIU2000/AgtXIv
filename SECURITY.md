@@ -11,8 +11,8 @@ The detailed V2 threat model is in
 ## Supported versions
 
 There is no production or stable software release yet. Security reports about
-the current `main` branch, active V2 development and the
-`schema-v0.3-framework` preview are accepted on a
+the current `main` branch, which carries the schema v0.3 framework preview and
+the schema v0.4 work, and active V2 development are accepted on a
 best-effort basis. Historical commits, local research artifacts, and abandoned
 branches do not receive a support guarantee.
 
@@ -21,7 +21,7 @@ software release is made.
 
 | Version | Security support |
 |---|---|
-| `main`, active V2 work and the schema v0.3 framework preview | Best-effort during development |
+| `main` (schema v0.3 preview, schema v0.4 in development) and active V2 work | Best-effort during development |
 | Historical snapshots and unmaintained branches | Not supported |
 
 ## Planned private reporting channel

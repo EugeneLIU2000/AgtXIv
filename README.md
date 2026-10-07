@@ -7,10 +7,18 @@ aim is to let each new investigation build on earlier evidence while keeping
 its sources, conditions, disagreements and unfinished work visible. Read the
 [project vision](docs/VISION.md) for the wider direction.
 
-The current focus is **schema v0.3**, an experimental research framework for
-extracting mathematical claim candidates, following dependencies across
-papers, selecting a query's upstream branch, and attempting Lean 4
-formalization from the bottom up.
+The research line has two current rungs:
+
+- **schema v0.3**, an experimental framework that takes one query claim of one
+  arXiv paper, extracts mathematical claim candidates, follows dependencies
+  across papers, selects the query's upstream branch, and attempts Lean 4
+  formalization from the bottom up;
+- **schema v0.4** (in development), its corpus-scale successor: one dependency
+  graph over a random sample of papers, built so that "which results do many
+  papers rest on" becomes a measurement. Its first real runs, on 50 random
+  quant-ph papers, are recorded with their limits.
+
+**Where the project stands and what is planned:** [project state](docs/PROJECT-STATE.md).
 
 **Release status:** public framework preview, with no tagged software release.
 The recorded case remains `CHAIN_INCOMPLETE`. There is no completed autonomous
@@ -18,8 +26,10 @@ paper-to-proof run, and source alignment remains unreviewed. See the
 [progress analysis](docs/releases/schema-v0.3-progress.md) and
 [release scope](docs/releases/schema-v0.3-release.md).
 
+[Project state](docs/PROJECT-STATE.md) ·
 [Workflow](schema%20v0.3/WORKFLOW.md) ·
 [Getting started](schema%20v0.3/GETTING_STARTED.md) ·
+[Schema v0.4](schema%20v0.4/README.md) ·
 [Evidence and limits](docs/releases/schema-v0.3-progress.md) ·
 [Contributing](CONTRIBUTING.md)
 
@@ -42,15 +52,14 @@ the [schema v0.3 design](docs/superpowers/specs/2026-09-19-schema-v03-design.md)
 
 You can read the [workflow](schema%20v0.3/WORKFLOW.md) and
 [progress analysis](docs/releases/schema-v0.3-progress.md) without installing
-anything. The published branch contains framework code and documentation;
-many historical research receipts and paper-source files remain in a local
-archive and are not included in a public checkout.
+anything. The public `main` branch contains framework code and documentation;
+historical research receipts and paper-source files remain in a local archive
+and are not included in a public checkout.
 
 For a source checkout:
 
 ```sh
-git clone --branch schema-v0.3-framework --single-branch \
-  https://github.com/EugeneLIU2000/AgtXIv.git
+git clone https://github.com/EugeneLIU2000/AgtXIv.git
 cd AgtXIv
 ```
 
@@ -88,6 +97,7 @@ the existence of instances satisfying every premise. The wider project keeps
 
 | I want to understand… | Read |
 |---|---|
+| Where the project stands: results, limits and plan | [Project state](docs/PROJECT-STATE.md) |
 | The project purpose and the role of this version | [Vision](docs/VISION.md) |
 | The three-stage research workflow | [Workflow](schema%20v0.3/WORKFLOW.md) |
 | Requirements, commands, outputs and limitations | [Getting started](schema%20v0.3/GETTING_STARTED.md) |
@@ -95,11 +105,17 @@ the existence of instances satisfying every premise. The wider project keeps
 | Release contents, TeXRA comparison and remaining decisions | [Release preparation](docs/releases/schema-v0.3-release.md) |
 | Graph semantics, model routing and proof execution | [Schema implementation map](schema%20v0.3/README.md) |
 | What changed for this preview | [Release notes](docs/releases/schema-v0.3-notes.md) and [changelog](CHANGELOG.md) |
+| The corpus-scale successor and its first runs | [Schema v0.4](schema%20v0.4/README.md) and its [design](docs/superpowers/specs/2026-09-25-schema-v04-design.md) |
+| The papers the project studies (not distributed here) | [References](docs/REFERENCES.md) |
+| What you may reuse, and on which terms | [Licensing](LICENSING.md) |
 
 ## Repository map
 
-- [`schema v0.3/`](schema%20v0.3/README.md): the current research framework,
+- [`schema v0.3/`](schema%20v0.3/README.md): the published research framework,
   JSON contracts, host code, Lean modules and technical documentation.
+- [`schema v0.4/`](schema%20v0.4/README.md): the corpus-scale dependency graph in
+  development: contracts, host code, Neo4j projection, a claim viewer and the
+  records of its first runs.
 - [`schema v0.0/`](schema%20v0.0/README.md),
   [`schema v0.1/`](schema%20v0.1/README.md) and
   [`schema v0.2/`](schema%20v0.2/README.md): earlier contract work, interpreted
@@ -131,11 +147,15 @@ without inventing a publication or DOI.
 
 ## License and project authority
 
-The root license, copyright ownership and inbound contribution policy remain
-undecided. This preview does not grant an open-source license; stable public
-software release is blocked by those decisions. Third-party material retains
-its own terms. See [governance](GOVERNANCE.md#open-governance-blockers) and the
-[publication boundary](docs/releases/schema-v0.3-release.md#publication-boundary).
+Code is licensed under the [MIT License](LICENSE); documentation, figures,
+slides and data under [CC BY 4.0](LICENSE-docs). Third-party material keeps its
+own terms: vendored web components, excerpts of other people's papers, and the
+papers listed in [References](docs/REFERENCES.md), which are not distributed
+here. [LICENSING.md](LICENSING.md) gives the scope. Contributions are accepted
+on the same terms with a Developer Certificate of Origin sign-off
+([CONTRIBUTING.md](CONTRIBUTING.md#licensing-of-contributions)). The owner made
+these decisions on 2026-10-07 ([governance](GOVERNANCE.md#resolved-governance-decisions));
+other governance questions stay [open](GOVERNANCE.md#open-governance-blockers).
 
 The [Charter](CHARTER.md) remains a pending proposal under
 [ADR 0007](docs/adr/0007-adopt-project-charter.md). This preview neither ratifies

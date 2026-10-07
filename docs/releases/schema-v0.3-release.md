@@ -1,5 +1,7 @@
 # Schema v0.3 release preparation
 
+> **Update 2026-10-07.** This text was integrated into `main`, which is now the public line. The owner has since decided the licences (code MIT, documentation and data CC BY 4.0; [LICENSING.md](../../LICENSING.md)), the copyright holder and a DCO-based inbound policy ([governance](../../GOVERNANCE.md#resolved-governance-decisions)). The rest of this document is kept as prepared on 2026-10-05.
+
 Date: 2026-10-05. Status: local documentation candidate; not a new published
 release, tag, or validation result.
 

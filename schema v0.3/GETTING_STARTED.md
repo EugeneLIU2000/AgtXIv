@@ -2,7 +2,7 @@
 
 Schema v0.3 is a source-checkout research framework for turning paper claims into explicit, reviewable dependency graphs and attempting Lean formalization. Start by reading its contracts and workflow. Running the research controller is an optional next step; completing an accepted paper-to-proof chain is still an open goal.
 
-The public `schema-v0.3-framework` branch publishes the implementation and documentation. It does **not** include the historical `schema v0.3/runs/` archive, all of its source material, or the compiled Lean environments. References to that archive in older documents describe retained local evidence, not files supplied by this checkout. A clean checkout cannot replay those historical experiments as provided.
+The public `main` branch publishes the implementation and documentation (first published on the `schema-v0.3-framework` branch). It does **not** include the historical `schema v0.3/runs/` archive, all of its source material, or the compiled Lean environments. References to that archive in older documents describe retained local evidence, not files supplied by this checkout. A clean checkout cannot replay those historical experiments as provided.
 
 ## 1. Read the public implementation
 
@@ -25,7 +25,7 @@ Use the [English progress analysis](../docs/releases/schema-v0.3-progress.md) fo
 If you do not already have the repository:
 
 ```sh
-git clone --branch schema-v0.3-framework https://github.com/EugeneLIU2000/AgtXIv.git
+git clone https://github.com/EugeneLIU2000/AgtXIv.git
 cd AgtXIv
 ```
 

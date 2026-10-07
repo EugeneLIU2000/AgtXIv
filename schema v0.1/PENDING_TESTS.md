@@ -2240,3 +2240,23 @@ V03-175 真实执行收尾：授权运行 session 47725 已退出 2。Luna 进�
 - 当前状态：未执行（脚本 2026-10-07 新写）。原脚本（取最新提交）2026-09-25 的实际运行记录见同目录的 `fetch.log`。
 - 前置阻塞：用户要求执行时。
 
+## 14. 公开主线整理（REPO-*，2026-10-07）
+
+用户 2026-10-07 的决定：项目公开；`main` 更新为整理后的版本；代码 MIT、文档与数据 CC BY 4.0；版权人 EugeneLIU2000；贡献沿用同样许可并要求 DCO 签名；第三方论文源文件与讲座材料移出公开版本；这次推送跳过自动检查（`[skip ci]`）。
+
+### REPO-1 / 新 `main` 上的自动检查（未执行：用户决定本次跳过）
+
+- 对象：`.github/workflows/ci.yml`（fast-validation）与依赖它的 `pages.yml`（网站部署）。
+- 准备条件：用户授权在 GitHub 上运行（手动触发 workflow_dispatch，或一次不带 `[skip ci]` 的推送）。
+- 操作情景：在新 `main` 上运行一次。
+- 预期结果：记录通过或失败及原因。`codex/agtxiv-v2` 上自 2026-09-17 起的运行全部失败；`Reference/` 移出后，依赖其文件的检查（例如 Stabilizerness 的来源锚点）预计还会失败。
+- 当前状态：未执行。网站仍显示旧内容，直到一次检查通过后的部署。
+- 前置阻塞：用户授权。
+
+### REPO-2 / 文档链接（未执行）
+
+- 对象：根 README、`docs/PROJECT-STATE.md`、`docs/REFERENCES.md`、`LICENSING.md`、`GOVERNANCE.md`、`CONTRIBUTING.md` 及 schema v0.3/v0.4 文档中的相对链接。
+- 操作情景：在 GitHub 上逐个打开；检查指向已移出内容（`Reference/`、`References/`、`schema v0.3/runs/`）的链接是否都有说明。
+- 预期结果：没有无说明的失效链接。
+- 当前状态：未执行。
+- 前置阻塞：用户要求执行时。

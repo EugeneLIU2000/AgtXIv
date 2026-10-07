@@ -6,9 +6,9 @@ AgtXIv has several independent kinds of versioned objects. This policy prevents
 a Git tag, schema number, database revision, or paper version from being
 mistaken for another kind of release.
 
-There is no stable AgtXIv software release yet. The current public
-`schema-v0.3-framework` branch is an experimental framework preview, not a
-software version tag. Planned names in older roadmaps remain targets, not
+There is no stable AgtXIv software release yet. The public `main` branch carries
+the schema v0.3 framework preview (first published on `schema-v0.3-framework`)
+and the schema v0.4 work in development; neither is a software version tag. Planned names in older roadmaps remain targets, not
 claims that those releases already exist.
 
 ## Current schema v0.3 publication scope

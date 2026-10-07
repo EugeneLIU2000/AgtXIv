@@ -10,6 +10,26 @@ from commit messages alone.
 
 ## Unreleased
 
+### Project organization (2026-10-07)
+
+- `main` now carries the whole public line: the schema v0.3 framework preview,
+  the schema v0.4 work, the slide decks and the release documentation. Earlier
+  branches (`codex/agtxiv-v2`, `schema-v0.3-framework`) are ancestors of it.
+- Licences: code under MIT, documentation, figures, slides and data under
+  CC BY 4.0, third-party material on its own terms ([LICENSING.md](LICENSING.md)).
+  Contributions are accepted on the same terms with a DCO sign-off.
+- Schema v0.4 added: the corpus-scale dependency-graph contracts, host, Neo4j
+  projection and claim viewer, the records of the first two quant-ph runs, and a
+  pinned fetch script for the arXiv metadata snapshot.
+- [docs/PROJECT-STATE.md](docs/PROJECT-STATE.md) summarizes results, limits and
+  the plan for collaborators.
+- The sources of 20 third-party papers (`Reference/`, `References/`) left the
+  repository; [docs/REFERENCES.md](docs/REFERENCES.md) lists them.
+- Unpublished slide work from 2026-09-17 to 2026-09-23 is included; a
+  third-party talk's recovered slides stay in the owner's local archive.
+- No test, validator or build ran; the push to `main` carried `[skip ci]` at the
+  owner's decision.
+
 ### Schema v0.3 research framework
 
 The public framework baseline is `b389e9c9391882b6af132b56a58eba3e072f80e5`
@@ -58,9 +78,8 @@ and [the release boundary](docs/releases/schema-v0.3-release.md).
 
 ### Known blockers
 
-- The root license and copyright holder or holders are undecided.
-- The inbound contribution mechanism (DCO, CLA, or an explicit alternative) is
-  undecided.
+- The root license, copyright holder and inbound contribution mechanism were
+  decided on 2026-10-07 (see Project organization above).
 - Scientific-reviewer identity, qualification, independence, quorum, and
   attestation are undecided.
 - The production signature suite, key custody, trust roots, rotation, and
